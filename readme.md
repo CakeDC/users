@@ -59,7 +59,7 @@ You can overwrite the render() method to fall back to the plugin views in the ca
 
 Declare the model 
 
-	App::import('Model', 'Users.Users);
+	App::import('Model', 'Users.User');
 	AppUser extends User {
 		public $useTable = 'users';
 		public $name = 'AppUser';
@@ -67,7 +67,7 @@ Declare the model
 
 It's important to override the AppUser::useTable property with the 'users' table.
 
-You can override/extend all properties like validation rules to suit your needs.
+You can override/extend all methods or properties like validation rules to suit your needs.
 
 ## Support ##
 
