@@ -56,6 +56,13 @@ class TestUsersController extends UsersController {
 	}
 
 /**
+ * Public interface to _setCookie
+ */
+	public function setCookie($options = array()) {
+		parent::_setCookie($options);
+	}
+
+/**
  * Auto render
  *
  * @var boolean
@@ -72,7 +79,7 @@ class TestUsersController extends UsersController {
 /**
  * Override controller method for testing
  */
-	public public function redirect($url, $status = null, $exit = true) {
+	public function redirect($url, $status = null, $exit = true) {
 		$this->redirectUrl = $url;
 	}
 
@@ -131,6 +138,7 @@ class UsersControllerTestCase extends CakeTestCase {
 			'admin' => false,
 			'plugin' => 'users',
 			'url' => array());
+		$this->Users->Email->delivery = 'debug';
 	}
 
 /**
@@ -264,7 +272,7 @@ class UsersControllerTestCase extends CakeTestCase {
 		$this->assertTrue(isset($this->Users->viewVars['user']));
 
 		$this->Users->view('INVALID-SLUG');
-		$this->assertEqual($this->Users->redirectUrl, array('action' => 'index'));
+		$this->assertEqual($this->Users->redirectUrl, '/');
 	}
 
 /**
@@ -371,6 +379,24 @@ class UsersControllerTestCase extends CakeTestCase {
 
 		$this->Users->admin_delete('INVALID-ID');
 		$this->assertEqual($this->Users->redirectUrl, array('action' => 'index'));
+	}
+
+/**
+ * Test setting the cookie
+ *
+ */
+	public function testSetCookie() {
+		$this->Users->data['User'] = array(
+			'remember_me' => 1,
+			'username' => 'test',
+			'password' => 'testtest');
+		$this->Users->setCookie(array(
+			'name' => 'userTestCookie'));
+		$this->Users->Cookie->name = 'userTestCookie';
+		$result = $this->Users->Cookie->read('User');
+		$this->assertEqual($result, array(
+			'username' => 'test',
+			'password' => 'testtest'));
 	}
 
 /**

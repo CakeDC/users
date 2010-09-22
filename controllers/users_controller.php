@@ -292,17 +292,7 @@ class UsersController extends UsersAppController {
 			$this->Session->setFlash(sprintf(__d('users', '%s you have successfully logged in', true), $this->Auth->user('username')));
 			if (!empty($this->data)) {
 				$data = $this->data[$this->modelClass];
-
-				$this->Cookie->name = 'rememberMe';
-				if (!isset($this->data[$this->modelClass]['remember_me'])) {
-					$this->Cookie->delete($this->modelClass);
-				} else {
-					$cookie = array();
-					$cookie[$this->Auth->fields['username']] = $this->data[$this->modelClass][$this->Auth->fields['username']];
-					$cookie[$this->Auth->fields['password']] = $this->data[$this->modelClass][$this->Auth->fields['password']];
-					$this->Cookie->write($this->modelClass, $cookie, true, '1 Month');
-				}
-				unset($this->data[$this->modelClass]['remember_me']);
+				$this->_setCookie();
 			}
 
 			if (empty($data['return_to'])) {
@@ -554,6 +544,37 @@ class UsersController extends UsersAppController {
 			}
 		}
 		$this->render('request_password_change');
+	}
+
+/**
+ * Sets the cookie to remember the user
+ *
+ * @param array Cookie properties
+ * @return void
+ * @access protected
+ * @link http://api13.cakephp.org/class/cookie-component
+ */
+	protected function _setCookie($options = array()) {
+		if (!isset($this->data[$this->modelClass]['remember_me'])) {
+			$this->Cookie->delete($this->modelClass);
+		} else {
+			$validProperties = array('domain', 'key', 'name', 'path', 'secure', 'time');
+			$defaults = array(
+				'name' => 'rememberMe');
+
+			$options = array_merge($defaults, $options);
+			foreach ($options as $key => $value) {
+				if (in_array($key, $validProperties)) {
+					$this->Cookie->{$key} = $value;
+				}
+			}
+
+			$cookie = array();
+			$cookie[$this->Auth->fields['username']] = $this->data[$this->modelClass][$this->Auth->fields['username']];
+			$cookie[$this->Auth->fields['password']] = $this->data[$this->modelClass][$this->Auth->fields['password']];
+			$this->Cookie->write($this->modelClass, $cookie, true, '1 Month');
+		}
+		unset($this->data[$this->modelClass]['remember_me']);
 	}
 
 /**
