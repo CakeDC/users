@@ -16,6 +16,10 @@ or
 
 You will also need the [CakeDC Search plugin](http://github.com/CakeDC/search), just grab it and put it into your application's plugin folder.
 
+If you would like to use admin routing, remember to un-comment the line in app/config/core.php: 
+
+	Configure::write('Routing.prefixes', array('admin')); 
+
 ## How to use it ##
 
 You can use the plugin as it comes if you're happy with it or, more common, extend your app specific user implementation from the plugin.
