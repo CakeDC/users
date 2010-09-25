@@ -1,0 +1,711 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: CakePHP Users Plugin\n"
+"POT-Creation-Date: 2010-09-16 16:33+0200\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Evgeny Tomenko <yevgeny.tomenko@cakedc.com>\n"
+"Language-Team: CakeDC\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Russian\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: /controllers/details_controller.php:57;138
+msgid "Invalid Detail."
+msgstr "Неверные данные."
+
+#: /controllers/details_controller.php:78
+msgid "Saved"
+msgstr "Сохренено"
+
+#: /controllers/details_controller.php:96
+msgid "%s details saved"
+msgstr "%s параметр соханен"
+
+#: /controllers/details_controller.php:113;196
+msgid "Invalid id for Detail"
+msgstr "Неверные данные."
+
+#: /controllers/details_controller.php:117;200
+msgid "Detail deleted"
+msgstr "Данные удалены."
+
+#: /controllers/details_controller.php:152;175
+msgid "The Detail has been saved"
+msgstr "Данные сохранены."
+
+#: /controllers/details_controller.php:155;178
+msgid "The Detail could not be saved. Please, try again."
+msgstr "Данные не удалось сохранить."
+
+#: /controllers/details_controller.php:170
+msgid "Invalid Detail"
+msgstr "Неверные данные"
+
+#: /controllers/users_controller.php:157
+msgid "Profile saved."
+msgstr "Профиль обновлен"
+
+#: /controllers/users_controller.php:159
+msgid "Could not save your profile."
+msgstr "Профиль сохранить не удалось."
+
+#: /controllers/users_controller.php:193
+msgid "Invalid User."
+msgstr "Неуществующий пользователь."
+
+#: /controllers/users_controller.php:207
+msgid "The User has been saved"
+msgstr "Пользователь был"
+
+#: /controllers/users_controller.php:223
+msgid "User saved"
+msgstr "Данные пользователя сохранены"
+
+#: /controllers/users_controller.php:247
+msgid "User deleted"
+msgstr "Данные о пользователе удалены"
+
+#: /controllers/users_controller.php:249
+#: /models/user.php:703
+msgid "Invalid User"
+msgstr "Неуществующий пользователь"
+
+#: /controllers/users_controller.php:273
+msgid "You are already registered and logged in!"
+msgstr "Вы уже зарегистрированы и авторизованы!"
+
+#: /controllers/users_controller.php:282
+#: /tests/cases/controllers/users_controller.test.php:194
+msgid "Your account has been created. You should receive an e-mail shortly to authenticate your account. Once validated you will be able to login."
+msgstr "Учетная запись успешно создана. Скоро вы получите e-mail, с помощью которого можно подтвердить аккаунт."
+
+#: /controllers/users_controller.php:287
+#: /tests/cases/controllers/users_controller.test.php:205
+msgid "Your account could not be created. Please, try again."
+msgstr "Учетную запись создать не удалось.  Попробуйте позднее."
+
+#: /controllers/users_controller.php:309
+msgid "%s you have successfully logged in"
+msgstr "%s, вы успешно авторизовались."
+
+#: /controllers/users_controller.php:383
+msgid "%s you have successfully logged out"
+msgstr "%s, вы успешно покинули систему."
+
+#: /controllers/users_controller.php:409
+msgid "There url you accessed is not longer valid"
+msgstr "Данная ссылка не доступна."
+
+#: /controllers/users_controller.php:432;545
+msgid "Password Reset"
+msgstr "Сбросить пароль"
+
+#: /controllers/users_controller.php:434
+msgid "Your password has been reset"
+msgstr "Ваш пароль был сброшен"
+
+#: /controllers/users_controller.php:435
+msgid "Please login using this password and change your password"
+msgstr "Пожалуйста авторизуйтесь и измените пароль"
+
+#: /controllers/users_controller.php:438
+msgid "Your password was sent to your registered email account"
+msgstr "Ваш пароль был отправлен на ваш почтовый адрес."
+
+#: /controllers/users_controller.php:444
+#: /tests/cases/controllers/users_controller.test.php:219
+msgid "Your e-mail has been validated!"
+msgstr "Ваш e-mail был подтвержен!"
+
+#: /controllers/users_controller.php:448
+msgid "There was an error trying to validate your e-mail address. Please check your e-mail for the URL you should use to verify your e-mail address."
+msgstr "При попытке подтвердить ваш электронный адрес произошла ошибка. Убедитесь что вы используете правильную ссылку для подтверждения своего почтового адреса."
+
+#: /controllers/users_controller.php:452
+#: /tests/cases/controllers/users_controller.test.php:224
+msgid "The url you accessed is not longer valid"
+msgstr "Данный адрес более не доступен."
+
+#: /controllers/users_controller.php:467
+msgid "Password changed."
+msgstr "Пароль изменен."
+
+#: /controllers/users_controller.php:521
+msgid "Account verification"
+msgstr "Проверка учетной записи"
+
+#: /controllers/users_controller.php:563
+msgid "%s has been sent an email with instruction to reset their password."
+msgstr "%s. Вам была отправлена инструкция для сброса пароля."
+
+#: /controllers/users_controller.php:567
+msgid "You should receive an email with further instructions shortly"
+msgstr "Вскоре вы получите письмо с дальнейшими инстукциями."
+
+#: /controllers/users_controller.php:571
+msgid "No user was found with that email."
+msgstr "С данным почтовым адресом не зарегистрирован ни один пользователь."
+
+#: /controllers/users_controller.php:588
+msgid "Invalid password reset token, try again."
+msgstr "Неверный код сброса пароля, попробуйте еще раз."
+
+#: /controllers/users_controller.php:594
+msgid "Password changed, you can now login with your new password."
+msgstr "Пароль изменен, вы можете авторизоваться с вашим новым паролем."
+
+#: /models/user.php:102
+msgid "Please enter a username"
+msgstr "Задайте имя пользователя"
+
+#: /models/user.php:105
+msgid "The username must be alphanumeric"
+msgstr "Имя пользователя должно snm буквенно-цифровым."
+
+#: /models/user.php:108
+msgid "This username is already in use."
+msgstr "Данное имя пользователя уже используется."
+
+#: /models/user.php:111
+msgid "The username must have at least 3 characters."
+msgstr "Имя пользователя должено содержать как минимум 3 символа."
+
+#: /models/user.php:116
+msgid "Please enter a valid email address."
+msgstr "Введите допустимый почтовый адрес."
+
+#: /models/user.php:119
+msgid "This email is already in use."
+msgstr "Данный почтовый адрес занят."
+
+#: /models/user.php:123
+msgid "The password must have at least 8 characters."
+msgstr "Длина пароль должена быть не менее 8 символов."
+
+#: /models/user.php:126
+msgid "Please enter a password."
+msgstr "Введите пароль."
+
+#: /models/user.php:129
+msgid "The passwords are not equal, please try again."
+msgstr "Пароли не совпадают, попробуйте еще раз."
+
+#: /models/user.php:132
+msgid "You must agree to the terms of use."
+msgstr "Вы должны подтвердить согласие с правилами пользования сервисом."
+
+#: /models/user.php:137;357
+msgid "The passwords are not equal."
+msgstr "Пароли не совпадают."
+
+#: /models/user.php:139
+msgid "Invalid password."
+msgstr "Неверный пароль."
+
+#: /models/user.php:150
+msgid "Invalid date"
+msgstr "Неверная дата"
+
+#: /models/user.php:315
+msgid "This Email Address exists but was never validated."
+msgstr "Почтовый адрес существует, но не подтвержден."
+
+#: /models/user.php:317
+msgid "This Email Address does not exist in the system."
+msgstr "Почтовый адрес системе не известен."
+
+#: /models/user.php:406
+msgid "$this->data['"
+msgstr ""
+
+#: /models/user.php:460
+msgid "The user does not exist."
+msgstr "Пользователь не существует."
+
+#: /models/user.php:505
+msgid "Please enter your email address."
+msgstr "Пожалуйста, заполните почтовый адрес"
+
+#: /models/user.php:515
+msgid "The email address does not exist in the system"
+msgstr "Данный почтовый адрес системе не известен."
+
+#: /models/user.php:520
+msgid "Your account is already authenticaed."
+msgstr "Ваша учетная запись уже подтверждена."
+
+#: /models/user.php:525
+msgid "Your account is disabled."
+msgstr "Ваша учетная запись заблокирована."
+
+#: /tests/cases/controllers/users_controller.test.php:34
+msgid "Sorry, but you need to login to access this location."
+msgstr "Вы должны авторизоваться, чтобы получить доступ к данной странице."
+
+#: /tests/cases/controllers/users_controller.test.php:35;174
+msgid "Invalid e-mail / password combination.  Please try again"
+msgstr "Неверный комбинация email и пароля, попробуйте еще раз."
+
+#: /tests/cases/controllers/users_controller.test.php:168
+msgid "testuser you have successfully logged in"
+msgstr "testuser вы успешно авторизовались"
+
+#: /tests/cases/controllers/users_controller.test.php:237
+msgid "floriank you have successfully logged out"
+msgstr "floriank вы успешно завершили сессию"
+
+#: /views/details/add.ctp:4
+#: /views/details/admin_add.ctp:4
+msgid "Add Detail"
+msgstr "Добавить данные"
+
+#: /views/details/add.ctp:17
+#: /views/details/admin_add.ctp:17
+#: /views/details/admin_edit.ctp:19
+#: /views/details/admin_view.ctp:45
+#: /views/details/view.ctp:45
+msgid "List Details"
+msgstr "Список данных"
+
+#: /views/details/add.ctp:18
+#: /views/details/admin_add.ctp:18
+#: /views/details/admin_edit.ctp:20
+#: /views/details/admin_index.ctp:67
+#: /views/details/admin_view.ctp:47
+#: /views/details/view.ctp:47
+#: /views/users/add.ctp:15
+#: /views/users/admin_add.ctp:13
+#: /views/users/admin_edit.ctp:15
+#: /views/users/admin_view.ctp:25
+msgid "List Users"
+msgstr "Список пользователей"
+
+#: /views/details/add.ctp:19
+#: /views/details/admin_add.ctp:19
+#: /views/details/admin_edit.ctp:21
+#: /views/details/admin_index.ctp:68
+#: /views/details/admin_view.ctp:48
+#: /views/details/view.ctp:48
+#: /views/users/admin_view.ctp:26
+#: /views/users/index.ctp:46
+msgid "New User"
+msgstr "Новый пользователь"
+
+#: /views/details/add.ctp:20
+#: /views/details/admin_add.ctp:20
+#: /views/details/admin_edit.ctp:22
+#: /views/details/admin_index.ctp:69
+#: /views/details/admin_view.ctp:49
+#: /views/details/view.ctp:49
+msgid "List Groups"
+msgstr "Список групп"
+
+#: /views/details/add.ctp:21
+#: /views/details/admin_add.ctp:21
+#: /views/details/admin_edit.ctp:23
+#: /views/details/admin_index.ctp:70
+#: /views/details/admin_view.ctp:50;95
+#: /views/details/view.ctp:50;95
+msgid "New Group"
+msgstr "Новая группа"
+
+#: /views/details/admin_edit.ctp:4
+#: /views/details/admin_view.ctp:43
+#: /views/details/edit.ctp:5
+#: /views/details/view.ctp:43
+msgid "Edit Detail"
+msgstr "Редактировать данные"
+
+#: /views/details/admin_edit.ctp:18
+#: /views/details/admin_index.ctp:53
+#: /views/details/admin_view.ctp:86
+#: /views/details/view.ctp:86
+#: /views/users/admin_edit.ctp:14
+#: /views/users/admin_index.ctp:47
+#: /views/users/groups.ctp:38
+#: /views/users/index.ctp:33
+msgid "Delete"
+msgstr "Удалить"
+
+#: /views/details/admin_edit.ctp:18
+#: /views/details/admin_index.ctp:53
+#: /views/details/admin_view.ctp:44;86
+#: /views/details/view.ctp:44;86
+#: /views/users/admin_edit.ctp:14
+#: /views/users/admin_index.ctp:47
+#: /views/users/admin_view.ctp:24
+#: /views/users/index.ctp:33
+msgid "Are you sure you want to delete # %s?"
+msgstr "Вы действительно хотите удалить  %s?"
+
+#: /views/details/admin_index.ctp:2
+#: /views/users/register.ctp:4
+msgid "Details"
+msgstr "Данные"
+
+#: /views/details/admin_index.ctp:6
+#: /views/users/index.ctp:6
+msgid "Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%"
+msgstr "Страница %page% из %pages%, показано %current% записей из %count%, начиная с %start%,и заканчивая %end%"
+
+#: /views/details/admin_index.ctp:18
+#: /views/details/admin_view.ctp:65
+#: /views/details/view.ctp:65
+#: /views/users/admin_index.ctp:21
+#: /views/users/groups.ctp:15;50
+#: /views/users/index.ctp:13
+msgid "Actions"
+msgstr "Действия"
+
+#: /views/details/admin_index.ctp:51
+#: /views/details/admin_view.ctp:84
+#: /views/details/view.ctp:84
+#: /views/users/admin_index.ctp:45
+#: /views/users/index.ctp:31
+msgid "View"
+msgstr "Просмотр"
+
+#: /views/details/admin_index.ctp:52
+#: /views/details/admin_view.ctp:85
+#: /views/details/view.ctp:85
+#: /views/users/admin_index.ctp:46
+#: /views/users/groups.ctp:33
+#: /views/users/index.ctp:32
+msgid "Edit"
+msgstr "Редактировать"
+
+#: /views/details/admin_index.ctp:60
+#: /views/users/index.ctp:40
+msgid "previous"
+msgstr "назад"
+
+#: /views/details/admin_index.ctp:62
+#: /views/users/index.ctp:42
+msgid "next"
+msgstr "вперед"
+
+#: /views/details/admin_index.ctp:66
+#: /views/details/admin_view.ctp:46
+#: /views/details/view.ctp:46
+msgid "New Detail"
+msgstr "Новые данные"
+
+#: /views/details/admin_view.ctp:2
+#: /views/details/view.ctp:2
+msgid "Detail"
+msgstr "Данные"
+
+#: /views/details/admin_view.ctp:4;58
+#: /views/details/view.ctp:4;58
+msgid "Id"
+msgstr "Id"
+
+#: /views/details/admin_view.ctp:9
+#: /views/details/view.ctp:9
+#: /views/users/admin_view.ctp:2
+#: /views/users/view.ctp:2
+msgid "User"
+msgstr "Пользователь"
+
+#: /views/details/admin_view.ctp:14
+#: /views/details/view.ctp:14
+msgid "Position"
+msgstr "Позиция"
+
+#: /views/details/admin_view.ctp:19
+#: /views/details/view.ctp:19
+msgid "Field"
+msgstr "Поле"
+
+#: /views/details/admin_view.ctp:24
+#: /views/details/view.ctp:24
+msgid "Value"
+msgstr "Значение"
+
+#: /views/details/admin_view.ctp:29;63
+#: /views/details/view.ctp:29;63
+#: /views/users/admin_view.ctp:9
+#: /views/users/view.ctp:9
+msgid "Created"
+msgstr "Дата создания"
+
+#: /views/details/admin_view.ctp:34;64
+#: /views/details/view.ctp:34;64
+#: /views/users/admin_view.ctp:14
+msgid "Modified"
+msgstr "Дата изменения"
+
+#: /views/details/admin_view.ctp:44
+#: /views/details/view.ctp:44
+msgid "Delete Detail"
+msgstr "Удалить данные"
+
+#: /views/details/admin_view.ctp:54
+#: /views/details/view.ctp:54
+msgid "Related Groups"
+msgstr "Связанные группы"
+
+#: /views/details/admin_view.ctp:59
+#: /views/details/view.ctp:59
+msgid "User Id"
+msgstr "Идентификатор пользователя"
+
+#: /views/details/admin_view.ctp:60
+#: /views/details/view.ctp:60
+msgid "Is Public"
+msgstr "Публичное?"
+
+#: /views/details/admin_view.ctp:61
+#: /views/details/view.ctp:61
+#: /views/users/groups.ctp:13;47
+#: /views/users/search.ctp:9
+msgid "Name"
+msgstr "Название"
+
+#: /views/details/admin_view.ctp:62
+#: /views/details/view.ctp:62
+#: /views/users/groups.ctp:48
+msgid "Description"
+msgstr "Описание"
+
+#: /views/details/index.ctp:17
+#: /views/users/change_password.ctp:16
+#: /views/users/login.ctp:13
+#: /views/users/register.ctp:33;89
+#: /views/users/request_password_change.ctp:12
+#: /views/users/reset_password.ctp:14
+msgid "Submit"
+msgstr "Сохранить"
+
+#: /views/elements/login.ctp:11
+#: /views/users/admin_index.ctp:10
+#: /views/users/login.ctp:8
+#: /views/users/register.ctp:71;78
+#: /views/users/search.ctp:7
+msgid "Email"
+msgstr "Email"
+
+#: /views/elements/login.ctp:13
+#: /views/users/login.ctp:10
+#: /views/users/register.ctp:19
+msgid "Password"
+msgstr "Пароль"
+
+#: /views/elements/login.ctp:15
+#: /views/users/login.ctp:1;3
+msgid "Login"
+msgstr "Войти"
+
+#: /views/elements/email/text/account_verification.ctp:2
+msgid "Hello %s,"
+msgstr "Здравствуйте  %s,"
+
+#: /views/elements/email/text/account_verification.ctp:4
+msgid "to validate your account, you must visit the URL below within 24 hours"
+msgstr "чтобы подтвердить вашу учетную запись, необходимо посетить слеждующую ссылку в течении 24 часов."
+
+#: /views/elements/email/text/password_reset_request.ctp:2
+msgid "A request to reset your password was sent. To change your password click the link below."
+msgstr "Запрос на сброс пароля отправлен. Чтобы сменить пароль воспользуйтесь следующей ссылкой:"
+
+#: /views/users/add.ctp:4
+#: /views/users/admin_add.ctp:4
+msgid "Add User"
+msgstr "Добавить пользователя"
+
+#: /views/users/admin_edit.ctp:4
+#: /views/users/admin_view.ctp:23
+#: /views/users/edit.ctp:3
+msgid "Edit User"
+msgstr "Редактировать пользователя"
+
+#: /views/users/admin_index.ctp:2
+#: /views/users/index.ctp:2
+msgid "Users"
+msgstr "Пользователи"
+
+#: /views/users/admin_index.ctp:4
+msgid "Filter"
+msgstr "Фильтр"
+
+#: /views/users/admin_index.ctp:8
+#: /views/users/admin_view.ctp:4
+#: /views/users/register.ctp:57;63
+#: /views/users/search.ctp:5
+#: /views/users/view.ctp:4
+msgid "Username"
+msgstr "Имя пользователя"
+
+#: /views/users/admin_index.ctp:11
+#: /views/users/search.ctp:10
+msgid "Search"
+msgstr "Поиск"
+
+#: /views/users/admin_view.ctp:24
+msgid "Delete User"
+msgstr "Удалить пользователя"
+
+#: /views/users/change_password.ctp:1
+msgid "Change your password"
+msgstr "Сменить ваш пароль"
+
+#: /views/users/change_password.ctp:3
+msgid "Please enter your old password because of security reasons and then your new password twice."
+msgstr "По правилам безопасности необходимо указать ваш старый пароль, а затем дважды новый пароль."
+
+#: /views/users/change_password.ctp:8
+msgid "Old Password"
+msgstr "Старый пароль"
+
+#: /views/users/change_password.ctp:11
+#: /views/users/reset_password.ctp:9
+msgid "New Password"
+msgstr "Новый пароль"
+
+#: /views/users/change_password.ctp:14
+#: /views/users/reset_password.ctp:12
+msgid "Confirm"
+msgstr "Подтвердить"
+
+#: /views/users/dashboard.ctp:2
+msgid "Welcome"
+msgstr "Добро пожаловать"
+
+#: /views/users/dashboard.ctp:3
+msgid "Recent broadcasts"
+msgstr "Свежие рассылки"
+
+#: /views/users/groups.ctp:2
+msgid "My Groups"
+msgstr "Мои группы"
+
+#: /views/users/groups.ctp:5
+msgid "Create a new group"
+msgstr "Создать новую группу"
+
+#: /views/users/groups.ctp:6
+msgid "Invite a user"
+msgstr "Пригласить пользователя"
+
+#: /views/users/groups.ctp:7
+msgid "Requests to join"
+msgstr "Запрос на присоединение"
+
+#: /views/users/groups.ctp:10
+msgid "My own groups"
+msgstr "Мои группы"
+
+#: /views/users/groups.ctp:14;49
+msgid "Members"
+msgstr "Участники"
+
+#: /views/users/groups.ctp:34
+msgid "Invite user"
+msgstr "Пригласить пользователя"
+
+#: /views/users/groups.ctp:35
+msgid "Manage Broadcast Scope"
+msgstr "Управление массовыми рассылками"
+
+#: /views/users/groups.ctp:36
+msgid "Access"
+msgstr "Доступ"
+
+#: /views/users/groups.ctp:37
+msgid "Addons"
+msgstr "Плагины"
+
+#: /views/users/groups.ctp:44
+msgid "Groups im a member in"
+msgstr "Группы, в которых я состою"
+
+#: /views/users/groups.ctp:68
+msgid "Leave group"
+msgstr "Покинуть группу"
+
+#: /views/users/login.ctp:11
+msgid "Remember Me"
+msgstr "Запомнить меня"
+
+#: /views/users/register.ctp:2
+msgid "Account registration"
+msgstr "Регистрация учетной записи"
+
+#: /views/users/register.ctp:10
+msgid "Please select a username that is not already in use"
+msgstr "Выберете не используемое имя пользователя"
+
+#: /views/users/register.ctp:11
+msgid "Must be at least 3 characters"
+msgstr "Как минимум 3 символа"
+
+#: /views/users/register.ctp:12
+msgid "Username must contain numbers and letters only"
+msgstr "Имя пользователя должно содержать только буквы и цифры"
+
+#: /views/users/register.ctp:13
+msgid "Please choose username"
+msgstr "Выберете имя пользователя"
+
+#: /views/users/register.ctp:15
+msgid "E-mail (used as login)"
+msgstr "Email (используется для входа)"
+
+#: /views/users/register.ctp:16
+msgid "Must be a valid email address"
+msgstr "Укажите верный адрес email"
+
+#: /views/users/register.ctp:17
+msgid "An account with that email already exists"
+msgstr "Учетная запись с данным email уже существует"
+
+#: /views/users/register.ctp:21
+msgid "Must be at least 5 characters long"
+msgstr "Должно быть как минимум 5 символов"
+
+#: /views/users/register.ctp:23
+msgid "Password (confirm)"
+msgstr "Пароль (подтверждение)"
+
+#: /views/users/register.ctp:25
+msgid "Passwords must match"
+msgstr "Пароли должны совпадать"
+
+#: /views/users/register.ctp:29;85
+msgid "I have read and agreed to "
+msgstr "Я прочитал и согласен с"
+
+#: /views/users/register.ctp:29;85
+msgid "Terms of Service"
+msgstr "правилами пользования сервисом"
+
+#: /views/users/register.ctp:30;86
+msgid "You must verify you have read the Terms of Service"
+msgstr "Необходимо подтвердить, что вы прочитали правила пользования сервисом."
+
+#: /views/users/register.ctp:46
+msgid "Openid Identifier"
+msgstr "Идентификация Openid"
+
+#: /views/users/request_password_change.ctp:1
+msgid "Forgot your password?"
+msgstr "Забыли пароль?"
+
+#: /views/users/request_password_change.ctp:3
+msgid "Please enter the email you used for registration and you'll get an email with further instructions."
+msgstr "Укажите email который использовался при регистрации и вы получите дальнейшие инструкции."
+
+#: /views/users/request_password_change.ctp:11
+msgid "Your Email"
+msgstr "Ваш почтовый адрес"
+
+#: /views/users/reset_password.ctp:1
+msgid "Reset your password"
+msgstr "Сбросить ваш пароль"
+
+#: /views/users/search.ctp:1
+msgid "Search for users"
+msgstr "Поиск пользователей"
+
