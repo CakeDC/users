@@ -57,6 +57,7 @@ class UsersController extends UsersAppController {
 		parent::beforeFilter();
 		$this->Auth->fields = array('username' => 'email', 'password' => 'passwd');
 		$this->Auth->loginAction = array('admin' => false, 'plugin'=>'users','controller' => 'users', 'action' => 'login');
+		$this->Auth->logoutRedirect = array('admin' => false, 'plugin'=>'users','controller' => 'users', 'action' => 'index');
 		$this->Auth->allow('register', 'reset', 'verify', 'logout', 'index', 'view', 'reset_password','login');
 
 		if ($this->action == 'register') {
@@ -292,36 +293,38 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	public function login() {
-		if ($this->Auth->user()) {
-			$this->User->id = $this->Auth->user('id');
-			$this->User->saveField('last_login', date('Y-m-d H:i:s'));
-			if ($this->here == $this->Auth->loginRedirect) {
-				$this->Auth->loginRedirect = '/';
-			}
-
-			$this->Session->setFlash(sprintf(__d('users', '%s you have successfully logged in', true), $this->Auth->user('username')));
-			if (!empty($this->data)) {
-				$data = $this->data[$this->modelClass];
-
-				$this->Cookie->name = 'rememberMe';
-				if (!isset($this->data[$this->modelClass]['remember_me'])) {
-					$this->Cookie->delete($this->modelClass);
-				} else {
-					$cookie = array();
-					$cookie[$this->Auth->fields['username']] = $this->data[$this->modelClass][$this->Auth->fields['username']];
-					$cookie[$this->Auth->fields['password']] = $this->data[$this->modelClass][$this->Auth->fields['password']];
-					$this->Cookie->write($this->modelClass, $cookie, true, '1 Month');
+		if($this->data){
+			if ($this->Auth->user()) {
+				$this->User->id = $this->Auth->user('id');
+				$this->User->saveField('last_login', date('Y-m-d H:i:s'));
+				if ($this->here == $this->Auth->loginRedirect) {
+					$this->Auth->loginRedirect = '/';
 				}
-				unset($this->data[$this->modelClass]['remember_me']);
+	
+				$this->Session->setFlash(sprintf(__d('users', '%s you have successfully logged in', true), $this->Auth->user('username')));
+				if (!empty($this->data)) {
+					$data = $this->data[$this->modelClass];
+	
+					$this->Cookie->name = 'rememberMe';
+					if (!isset($this->data[$this->modelClass]['remember_me'])) {
+						$this->Cookie->delete($this->modelClass);
+					} else {
+						$cookie = array();
+						$cookie[$this->Auth->fields['username']] = $this->data[$this->modelClass][$this->Auth->fields['username']];
+						$cookie[$this->Auth->fields['password']] = $this->data[$this->modelClass][$this->Auth->fields['password']];
+						$this->Cookie->write($this->modelClass, $cookie, true, '1 Month');
+					}
+					unset($this->data[$this->modelClass]['remember_me']);
+				}
+	
+				if (empty($data['return_to'])) {
+					$data['return_to'] = null;
+				}
+				$this->redirect($this->Auth->redirect($data['return_to']));
+			}else{
+				$this->Session->setFlash(sprintf(__d('users', 'Login Incorrect', true)));
+				$this->data[$this->modelClass][$this->Auth->fields['password']] = null;
 			}
-
-			if (empty($data['return_to'])) {
-				$data['return_to'] = null;
-			}
-			$this->redirect($this->Auth->redirect($data['return_to']));
-		}else{
-			$this->Session->setFlash(sprintf(__d('users', 'Login Incorrect', true)));
-			$this->data[$this->modelClass][$this->Auth->fields['password']] = null;
 		}
 		if (isset($this->params['named']['return_to'])) {
 			$this->set('return_to', urldecode($this->params['named']['return_to']));
@@ -376,7 +379,6 @@ class UsersController extends UsersAppController {
 		$message = sprintf(__d('users', '%s you have successfully logged out', true), $this->Auth->user('username'));
 		$this->Session->destroy();
 		$this->Cookie->destroy();
-		
 		$this->Session->setFlash($message);
 		$this->redirect($this->Auth->logout());
 	}
