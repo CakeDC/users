@@ -14,7 +14,7 @@
 	<legend><?php __d('users', 'Login') ?></legend>
 	<?php
 		echo $this->Form->create($model, array('url'=>array(
-			'action' => 'login', 'plugin'=>null)));
+			'action' => 'login')));
 		echo $this->Form->input('email', array(
 			'label' => __d('users', 'Email', true)));
 		echo $this->Form->input('passwd',  array(
