@@ -56,7 +56,7 @@ class UsersController extends UsersAppController {
 	public function beforeFilter() {
 		parent::beforeFilter();
 		$this->Auth->fields = array('username' => 'email', 'password' => 'passwd');
-		$this->Auth->allow('register', 'reset', 'verify', 'logout', 'index', 'view', 'reset_password');
+		$this->Auth->allow('register', 'reset', 'verify', 'logout', 'index', 'view', 'reset_password','login');
 
 		if ($this->action == 'register') {
 			$this->Auth->enabled = false;
@@ -195,6 +195,8 @@ class UsersController extends UsersAppController {
 		if ($this->User->add($this->data)) {
 			$this->Session->setFlash(__d('users', 'The User has been saved', true));
 			$this->redirect(array('action' => 'index'));
+		}else{
+			$this->Session->setFlash(__d('users', 'The User could not be saved', true));
 		}
 	}
 

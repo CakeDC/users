@@ -264,7 +264,7 @@ class UsersControllerTestCase extends CakeTestCase {
 		$this->assertTrue(isset($this->Users->viewVars['user']));
 
 		$this->Users->view('INVALID-SLUG');
-		$this->assertEqual($this->Users->redirectUrl, array('action' => 'index'));
+		$this->assertEqual($this->Users->redirectUrl, '/');
 	}
 
 /**
