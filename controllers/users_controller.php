@@ -193,11 +193,18 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	public function admin_add() {
-		if ($this->User->add($this->data)) {
-			$this->Session->setFlash(__d('users', 'The User has been saved', true));
-			$this->redirect(array('action' => 'index'));
-		}else{
-			$this->Session->setFlash(__d('users', 'The User could not be saved', true));
+		if($this->data){
+			if(isset($this->data[$this->modelClass]['temppassword'])){
+				$this->data[$this->modelClass]['temppassword'] = $this->Auth->password($this->data[$this->modelClass]['temppassword']);
+			}
+			if ($this->User->add($this->data)) {
+				$this->Session->setFlash(__d('users', 'The User has been saved', true));
+				$this->redirect(array('action' => 'index'));
+			}else{
+				$this->Session->setFlash(__d('users', 'The User could not be saved', true));
+				$this->data[$this->modelClass][$this->Auth->fields['password']] = null;
+				$this->data[$this->modelClass]['temppassword'] = null;
+			}
 		}
 	}
 

@@ -23,3 +23,7 @@
 	?>
 	</fieldset>
 <?php echo $this->Form->end('Submit');?>
+
+<td class="actions">
+	<?php echo $this->Html->link(__d('users', 'List Users', true), array('action'=>'index')); ?>
+</td>
