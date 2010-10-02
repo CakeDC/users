@@ -4,6 +4,8 @@ The users plugin is for allowing users to register and login manage their profil
 
 The plugin is thought as a base to extend your app specific users controller and model from.
 
+This fork is modified to work out of the box.
+
 ## Installation ##
 
 The plugin is pretty easy to set up, all you need to do is to copy it to you application plugins folder and load the needed tables. You can create database tables using either the schema shell or the [CakeDC Migrations plugin](http://github.com/CakeDC/migrations):
