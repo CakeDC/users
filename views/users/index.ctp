@@ -9,7 +9,7 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 ?>
-<div class="users index">
+<div class="users index"> 
 <h2><?php __d('users', 'Users');?></h2>
 <p>
 <?php

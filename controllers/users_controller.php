@@ -56,8 +56,6 @@ class UsersController extends UsersAppController {
 	public function beforeFilter() {
 		parent::beforeFilter();
 		$this->Auth->fields = array('username' => 'email', 'password' => 'passwd');
-		$this->Auth->loginAction = array('admin' => false, 'plugin'=>'users','controller' => 'users', 'action' => 'login');
-		$this->Auth->logoutRedirect = array('admin' => false, 'plugin'=>'users','controller' => 'users', 'action' => 'index');
 		$this->Auth->allow('register', 'reset', 'verify', 'logout', 'index', 'view', 'reset_password','login');
 
 		if ($this->action == 'register') {
