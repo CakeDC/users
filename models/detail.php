@@ -217,6 +217,9 @@ class Detail extends UsersAppModel {
 
 						$newDetail[$model]['field'] = $field;
 						$newDetail[$model]['value'] = $value;
+						$newDetail[$model]['input'] = '';
+						$newDetail[$model]['data_type'] = '';
+						$newDetail[$model]['label'] = '';
 						$this->save($newDetail, false);
 					}
 				} elseif (isset($this->{$model})) {
