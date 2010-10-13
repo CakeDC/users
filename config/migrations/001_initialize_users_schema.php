@@ -66,8 +66,9 @@ class M49c3417a54874a9d276811502cedc421 extends CakeMigration {
 					'modified' => array('type'=>'datetime', 'null' => true, 'default' => NULL),
 					'indexes' => array(
 						'PRIMARY' => array('column' => 'id', 'unique' => 1),
-						'BY_USERNAME' => array('column' => array('username', 'passwd'), 'unique' => 0),
-						'BY_EMAIL' => array('column' => array('email', 'passwd'), 'unique' => 0)),
+						'BY_USERNAME' => array('column' => array('username'), 'unique' => 0),
+						'BY_EMAIL' => array('column' => array('email'), 'unique' => 0)
+					),
 				),
 			),
 		),
