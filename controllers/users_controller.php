@@ -549,14 +549,14 @@ class UsersController extends UsersAppController {
 /**
  * Sets the cookie to remember the user
  *
- * @param array Cookie properties
+ * @param array Cookie component properties as array, like array('domain' => 'yourdomain.com')
+ * @param string Cookie data keyname for the userdata, its default is "User". This is set to User and NOT using the model alias to make sure it works with different apps with different user models accross different (sub)domains.
  * @return void
- * @access protected
  * @link http://api13.cakephp.org/class/cookie-component
  */
-	protected function _setCookie($options = array()) {
+	protected function _setCookie($options = array(), $cookieKey = 'User') {
 		if (!isset($this->data[$this->modelClass]['remember_me'])) {
-			$this->Cookie->delete($this->modelClass);
+			$this->Cookie->delete($cookieKey);
 		} else {
 			$validProperties = array('domain', 'key', 'name', 'path', 'secure', 'time');
 			$defaults = array(
@@ -569,10 +569,10 @@ class UsersController extends UsersAppController {
 				}
 			}
 
-			$cookie = array();
-			$cookie[$this->Auth->fields['username']] = $this->data[$this->modelClass][$this->Auth->fields['username']];
-			$cookie[$this->Auth->fields['password']] = $this->data[$this->modelClass][$this->Auth->fields['password']];
-			$this->Cookie->write($this->modelClass, $cookie, true, '1 Month');
+			$cookieData = array();
+			$cookieData[$this->Auth->fields['username']] = $this->data[$this->modelClass][$this->Auth->fields['username']];
+			$cookieData[$this->Auth->fields['password']] = $this->data[$this->modelClass][$this->Auth->fields['password']];
+			$this->Cookie->write($cookieKey, $cookieData, true, '1 Month');
 		}
 		unset($this->data[$this->modelClass]['remember_me']);
 	}
