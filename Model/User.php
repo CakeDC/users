@@ -68,6 +68,13 @@ class User extends UsersAppModel {
 	public $validate = array();
 
 /**
+ * Detail model
+ *
+ * @var Detail
+ */
+	public $Detail = null;
+
+/**
  * Constructor
  *
  * @param string $id ID
