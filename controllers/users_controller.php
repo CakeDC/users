@@ -365,7 +365,7 @@ class UsersController extends UsersAppController {
 	}
 
 /**
- * Confirm email action
+ * Confirm email action and password reset action
  *
  * @param string $type Type
  * @return void
