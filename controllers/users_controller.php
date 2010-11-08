@@ -55,9 +55,9 @@ class UsersController extends UsersAppController {
  */
 	public function beforeFilter() {
 		parent::beforeFilter();
-		$this->Auth->allow('register', 'reset', 'verify', 'logout', 'index', 'view', 'reset_password');
+		$this->Auth->allow('add', 'reset', 'verify', 'logout', 'index', 'view', 'reset_password');
 
-		if ($this->action == 'register') {
+		if ($this->action == 'add') {
 			$this->Auth->enabled = false;
 		}
 
@@ -252,7 +252,7 @@ class UsersController extends UsersAppController {
  *
  * @return void
  */
-	public function register() {
+	public function add() {
 		if ($this->Auth->user()) {
 			$this->Session->setFlash(__d('users', 'You are already registered and logged in!', true));
 			$this->redirect('/');
