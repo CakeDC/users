@@ -273,6 +273,14 @@ class UsersController extends UsersAppController {
 		}
 
 		$this->_setLanguages();
+
+		// Render the OpenID form if that data is present
+		$oid = $this->Session->read('openIdAuthData');
+		if ($oid) {
+			$this->autoRender = false;
+			$this->set('openIdAuthData', $oid);
+			$this->render('openid_add');
+		}
 	}
 
 /**
