@@ -370,64 +370,53 @@ class UsersController extends UsersAppController {
  * @param string $type Type
  * @return void
  */
-	public function verify($type = 'email') {
-		if (isset($this->passedArgs['1'])){
-			$token = $this->passedArgs['1'];
-		} else {
-			$this->redirect(array('action' => 'login'), null, true);
-		}
-
-		if ($type === 'email') {
-			$data = $this->User->validateToken($token);
-		} elseif($type === 'reset') {
-			$data = $this->User->validateToken($token, true);
-		} else {
-			$this->Session->setFlash(__d('users', 'There url you accessed is not longer valid', true));
-			$this->redirect('/');
-		}
-
-		if ($data !== false) {
-			$email = $data[$this->modelClass]['email'];
-			unset($data[$this->modelClass]['email']);
-
-			if ($type === 'reset') {
-				$newPassword = $data[$this->modelClass]['passwd'];
-				$data[$this->modelClass]['passwd'] = $this->Auth->password($newPassword);
-			}
-
-			if ($type === 'email') {
-				$data[$this->modelClass]['active'] = 1;
-			}
-
-			if ($this->User->save($data, false)) {
-				if ($type === 'reset') {
-					$this->Email->to = $email;
-					$this->Email->from = Configure::read('App.defaultEmail');
-					$this->Email->replyTo = Configure::read('App.defaultEmail');
-					$this->Email->return = Configure::read('App.defaultEmail');
-					$this->Email->subject = env('HTTP_HOST') . ' ' . __d('users', 'Password Reset', true);
-					$this->Email->template = null;
-					$content[] = __d('users', 'Your password has been reset', true);
-					$content[] = __d('users', 'Please login using this password and change your password', true);
-					$content[] = $newPassword;
-					$this->Email->send($content);
-					$this->Session->setFlash(__d('users', 'Your password was sent to your registered email account', true));
-					$this->redirect(array('action' => 'login'));
-				} else {
-					unset($data);
-					$data[$this->modelClass]['active'] = 1;
-					$this->User->save($data);
-					$this->Session->setFlash(__d('users', 'Your e-mail has been validated!', true));
-					$this->redirect(array('action' => 'login'));
-				}
-			} else {
-				$this->Session->setFlash(__d('users', 'There was an error trying to validate your e-mail address. Please check your e-mail for the URL you should use to verify your e-mail address.', true));
-				$this->redirect('/');
-			}
-		} else {
+	public function verify($type = 'email', $token = null) {
+		$verifyTypes = array('email', 'reset');
+		if (!$token || !in_array($type, $verifyTypes)) {
 			$this->Session->setFlash(__d('users', 'The url you accessed is not longer valid', true));
-			$this->redirect('/');
 		}
+
+		$data = $this->User->validateToken($token, $type === 'reset');
+		if (!data) {
+			$this->Session->setFlash(__d('users', 'The url you accessed is not longer valid', true));
+			return $this->redirect('/');
+		}
+
+		$email = $data[$this->modelClass]['email'];
+		unset($data[$this->modelClass]['email']);
+
+		if ($type === 'reset') {
+			$newPassword = $data[$this->modelClass]['passwd'];
+			$data[$this->modelClass]['passwd'] = $this->Auth->password($newPassword);
+		}
+		if ($type === 'email') {
+			$data[$this->modelClass]['active'] = 1;
+		}
+
+		if ($this->User->save($data, false)) {
+			if ($type === 'reset') {
+				$this->Email->to = $email;
+				$this->Email->from = Configure::read('App.defaultEmail');
+				$this->Email->replyTo = Configure::read('App.defaultEmail');
+				$this->Email->return = Configure::read('App.defaultEmail');
+				$this->Email->subject = env('HTTP_HOST') . ' ' . __d('users', 'Password Reset', true);
+				$this->Email->template = null;
+				$content[] = __d('users', 'Your password has been reset', true);
+				$content[] = __d('users', 'Please login using this password and change your password', true);
+				$content[] = $newPassword;
+				$this->Email->send($content);
+				$this->Session->setFlash(__d('users', 'Your password was sent to your registered email account', true));
+			} else {
+				unset($data);
+				$data[$this->modelClass]['active'] = 1;
+				$this->User->save($data);
+				$this->Session->setFlash(__d('users', 'Your e-mail has been validated!', true));
+			}
+			$this->redirect(array('action' => 'login'));
+		}
+
+		$this->Session->setFlash(__d('users', 'There was an error verifying your account. Please check the email you were sent, and retry the verification link.', true));
+		$this->redirect('/');
 	}
 
 /**
