@@ -106,9 +106,9 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	public function _setupAuth() {
-		$this->Auth->allow('register', 'reset', 'verify', 'logout', 'index', 'view', 'reset_password');
+		$this->Auth->allow('add', 'reset', 'verify', 'logout', 'index', 'view', 'reset_password');
 
-		if ($this->action == 'register') {
+		if ($this->action == 'add') {
 			$this->Components->disable('Auth');
 		}
 
