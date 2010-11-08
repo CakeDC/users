@@ -345,9 +345,8 @@ class UsersController extends UsersAppController {
 			'by' => $by,
 			'search' => $searchTerm,
 			'conditions' => array(
-					'AND' => array(
-						$this->modelClass . '.active' => 1,
-						$this->modelClass . '.email_authenticated' => 1)));
+				$this->modelClass . '.active' => 1,
+				$this->modelClass . '.email_authenticated' => 1));
 
 		$this->set('users', $this->paginate($this->modelClass));
 		$this->set('searchTerm', $searchTerm);
