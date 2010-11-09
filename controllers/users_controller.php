@@ -255,7 +255,7 @@ class UsersController extends UsersAppController {
 	public function add() {
 		if ($this->Auth->user()) {
 			$this->Session->setFlash(__d('users', 'You are already registered and logged in!', true));
-			$this->redirect('/');
+			return $this->redirect('/');
 		}
 
 		if (!empty($this->data)) {
@@ -264,7 +264,7 @@ class UsersController extends UsersAppController {
 				$this->set('user', $user);
 				$this->_sendVerificationEmail($user[$this->modelClass]['email']);
 				$this->Session->setFlash(__d('users', 'Your account has been created. You should receive an e-mail shortly to authenticate your account. Once validated you will be able to login.', true));
-				$this->redirect(array('action'=> 'login'));
+				return $this->redirect(array('action' => 'login'));
 			} else {
 				unset($this->data[$this->modelClass]['passwd']);
 				unset($this->data[$this->modelClass]['temppassword']);
