@@ -412,7 +412,7 @@ class UsersController extends UsersAppController {
 				$this->User->save($data);
 				$this->Session->setFlash(__d('users', 'Your e-mail has been validated!', true));
 			}
-			$this->redirect(array('action' => 'login'));
+			return $this->redirect(array('action' => 'login'));
 		}
 
 		$this->Session->setFlash(__d('users', 'There was an error verifying your account. Please check the email you were sent, and retry the verification link.', true));
