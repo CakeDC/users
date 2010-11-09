@@ -353,14 +353,15 @@ class UsersController extends UsersAppController {
 	}
 
 /**
- * Common logout action
+ * Logout action
  *
  * @return void
  */
 	public function logout() {
+		$message = sprintf(__d('users', '%s you have successfully logged out', true), $this->Auth->user('username'));
 		$this->Session->destroy();
 		$this->Cookie->destroy();
-		$this->Session->setFlash(sprintf(__d('users', '%s you have successfully logged out', true), $this->Auth->user('username')));
+		$this->Session->setFlash($message);
 		$this->redirect($this->Auth->logout());
 	}
 
