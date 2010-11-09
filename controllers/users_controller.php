@@ -36,7 +36,15 @@ class UsersController extends UsersAppController {
  *
  * @var array
  */
-	public $components = array('Auth', 'Session', 'Email', 'Cookie', 'Search.Prg');
+	public $components = array(
+		'Auth' => array(
+			'loginAction' => array('plugin' => 'users', 'controller' => 'users', 'action' => 'login'),
+		),
+		'Cookie',
+		'Email',
+		'Search.Prg',
+		'Session',
+	);
 
 /**
  * $presetVars
