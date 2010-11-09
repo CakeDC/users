@@ -192,8 +192,8 @@ class UsersControllerTestCase extends CakeTestCase {
  * Test user registration
  *
  */
-	public function testRegister() {
-		$this->Users->params['action'] = 'register';
+	public function testAdd() {
+		$this->Users->params['action'] = 'add';
 
 		$this->__setPost(array(
 			'User' => array(
@@ -203,7 +203,7 @@ class UsersControllerTestCase extends CakeTestCase {
 				'temppassword' => 'password',
 				'tos' => 1)));
 		$this->Users->beforeFilter();
-		$this->Users->register();
+		$this->Users->add();
 		$this->assertEqual($this->Users->Session->read('Message.flash.message'), __d('users', 'Your account has been created. You should receive an e-mail shortly to authenticate your account. Once validated you will be able to login.', true));
 
 		$this->__setPost(array(
@@ -214,7 +214,7 @@ class UsersControllerTestCase extends CakeTestCase {
 				'temppassword' => '',
 				'tos' => 0)));
 		$this->Users->beforeFilter();
-		$this->Users->register();
+		$this->Users->add();
 		$this->assertEqual($this->Users->Session->read('Message.flash.message'), __d('users', 'Your account could not be created. Please, try again.', true));
 	}
 
