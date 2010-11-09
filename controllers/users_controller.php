@@ -421,7 +421,7 @@ class UsersController extends UsersAppController {
 				unset($data);
 				$data[$this->modelClass]['active'] = 1;
 				$this->User->save($data);
-				$this->Session->setFlash(__d('users', 'Your e-mail has been validated!', true));
+				$this->Session->setFlash(__d('users', 'Your e-mail has been validated. You may now login.', true));
 			}
 			return $this->redirect(array('action' => 'login'));
 		}
