@@ -358,7 +358,9 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	public function logout() {
+		// Message is created first, to grab authentication information before destroying session
 		$message = sprintf(__d('users', '%s you have successfully logged out', true), $this->Auth->user('username'));
+
 		$this->Session->destroy();
 		$this->Cookie->destroy();
 		$this->Session->setFlash($message);
