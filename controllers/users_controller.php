@@ -317,11 +317,8 @@ class UsersController extends UsersAppController {
 			$this->redirect($this->Auth->redirect($data['return_to']));
 		}
 
-		if (isset($this->params['named']['return_to'])) {
-			$this->set('return_to', urldecode($this->params['named']['return_to']));
-		} else {
-			$this->set('return_to', false);
-		}
+		$return_to = isset($this->params['named']['return_to']) ? urldecode($this->params['named']['return_to']) : false;
+		$this->set('return_to', $return_to);
 	}
 
 /**
