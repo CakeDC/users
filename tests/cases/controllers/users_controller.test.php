@@ -50,9 +50,9 @@ class TestUsersController extends UsersController {
 		$this->Auth->autoRedirect = true;
 		$this->Auth->userModel = 'User';
 		$this->Auth->userScope = array(
-			'OR' => array(
-				'AND' =>
-					array('User.active' => 1, 'User.email_authenticated' => 1)));
+			'User.active' => 1,
+			'User.email_authenticated' => 1
+		);
 	}
 
 /**
