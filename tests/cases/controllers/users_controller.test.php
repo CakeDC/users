@@ -34,28 +34,6 @@ class TestUsersController extends UsersController {
 	public $uses = array('Users.User');
 
 /**
- * beforeFilter Callback
- *
- * @return void
- */
-	public function beforeFilter() {
-		parent::beforeFilter();
-		// $this->Auth->authorize = 'controller';
-		// $this->Auth->fields = array('username' => 'email', 'password' => 'passwd');
-		// $this->Auth->loginAction = array('controller' => 'users', 'action' => 'login', 'prefix' => 'admin', 'admin' => false, 'plugin' => 'users');
-		// $this->Auth->loginRedirect = $this->Session->read('Auth.redirect');
-		// $this->Auth->logoutRedirect = '/';
-		// $this->Auth->authError = __d('users', 'Sorry, but you need to login to access this location.', true);
-		// $this->Auth->loginError = __d('users', 'Invalid e-mail / password combination.  Please try again', true);
-		// $this->Auth->autoRedirect = true;
-		// $this->Auth->userModel = 'User';
-		// $this->Auth->userScope = array(
-		// 	'User.active' => 1,
-		// 	'User.email_authenticated' => 1
-		// );
-	}
-
-/**
  * Public interface to _setCookie
  */
 	public function setCookie($options = array()) {
