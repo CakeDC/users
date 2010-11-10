@@ -40,19 +40,19 @@ class TestUsersController extends UsersController {
  */
 	public function beforeFilter() {
 		parent::beforeFilter();
-		$this->Auth->authorize = 'controller';
-		$this->Auth->fields = array('username' => 'email', 'password' => 'passwd');
-		$this->Auth->loginAction = array('controller' => 'users', 'action' => 'login', 'prefix' => 'admin', 'admin' => false, 'plugin' => 'users');
-		$this->Auth->loginRedirect = $this->Session->read('Auth.redirect');
-		$this->Auth->logoutRedirect = '/';
-		$this->Auth->authError = __d('users', 'Sorry, but you need to login to access this location.', true);
-		$this->Auth->loginError = __d('users', 'Invalid e-mail / password combination.  Please try again', true);
-		$this->Auth->autoRedirect = true;
-		$this->Auth->userModel = 'User';
-		$this->Auth->userScope = array(
-			'User.active' => 1,
-			'User.email_authenticated' => 1
-		);
+		// $this->Auth->authorize = 'controller';
+		// $this->Auth->fields = array('username' => 'email', 'password' => 'passwd');
+		// $this->Auth->loginAction = array('controller' => 'users', 'action' => 'login', 'prefix' => 'admin', 'admin' => false, 'plugin' => 'users');
+		// $this->Auth->loginRedirect = $this->Session->read('Auth.redirect');
+		// $this->Auth->logoutRedirect = '/';
+		// $this->Auth->authError = __d('users', 'Sorry, but you need to login to access this location.', true);
+		// $this->Auth->loginError = __d('users', 'Invalid e-mail / password combination.  Please try again', true);
+		// $this->Auth->autoRedirect = true;
+		// $this->Auth->userModel = 'User';
+		// $this->Auth->userScope = array(
+		// 	'User.active' => 1,
+		// 	'User.email_authenticated' => 1
+		// );
 	}
 
 /**
@@ -179,13 +179,13 @@ class UsersControllerTestCase extends CakeTestCase {
 
 		$this->Users->Component->startup($this->Users);
 		$this->Users->login();
-		$this->assertEqual($this->Users->Session->read('Message.flash.message'), __d('users', 'testuser you have successfully logged in', true));
+		$this->assertEqual($this->Users->Session->read('Message.flash.message'), __d('users', 'testuser, you have successfully logged in.', true));
 		$this->assertEqual(Router::normalize($this->Users->redirectUrl), Router::normalize(Router::url($this->Users->Auth->loginRedirect)));
 
 		$this->__setPost(array('User' => $this->usersData['invalidUser']));
 		$this->Users->beforeFilter();
 		$this->Users->login();
-		$this->assertEqual($this->Users->Session->read('Message.auth.message'), __d('users', 'Invalid e-mail / password combination.  Please try again', true));
+		$this->assertEqual($this->Users->Session->read('Message.auth.message'), __d('users', 'Invalid e-mail / password combination. Please try again', true));
 	}
 
 /**
@@ -231,7 +231,7 @@ class UsersControllerTestCase extends CakeTestCase {
 
 		$this->Users->beforeFilter();
 		$this->Users->verify('email', 'invalid-token');
-		$this->assertEqual($this->Users->Session->read('Message.flash.message'), __d('users', 'The url you accessed is not longer valid', true));
+		$this->assertEqual($this->Users->Session->read('Message.flash.message'), __d('users', 'The url you have accessed is no longer valid', true));
 	}
 
 /**
@@ -243,7 +243,7 @@ class UsersControllerTestCase extends CakeTestCase {
 		$this->Users->beforeFilter();
 		$this->Users->Session->write('Auth.User', $this->usersData['validUser']);
 		$this->Users->logout();
-		$this->assertEqual($this->Users->Session->read('Message.flash.message'), __d('users', 'floriank you have successfully logged out', true));
+		$this->assertEqual($this->Users->Session->read('Message.flash.message'), __d('users', 'floriank, you have successfully logged out.', true));
 		$this->assertEqual($this->Users->redirectUrl, '/');
 	}
 
