@@ -381,7 +381,7 @@ class UsersControllerTestCase extends CakeTestCase {
  */
 	private function __setPost($data = array()) {
 		$_SERVER['REQUEST_METHOD'] = 'POST';
-		$this->Users->data = am($data, array('_method' => 'POST'));
+		$this->Users->data = array_merge($data, array('_method' => 'POST'));
 	}
 
 /**
