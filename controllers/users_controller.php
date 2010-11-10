@@ -595,8 +595,7 @@ class UsersController extends UsersAppController {
 			$this->Cookie->delete($cookieKey);
 		} else {
 			$validProperties = array('domain', 'key', 'name', 'path', 'secure', 'time');
-			$defaults = array(
-				'name' => 'rememberMe');
+			$defaults = array('name' => 'rememberMe');
 
 			$options = array_merge($defaults, $options);
 			foreach ($options as $key => $value) {
