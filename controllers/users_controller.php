@@ -222,7 +222,7 @@ class UsersController extends UsersAppController {
 	public function admin_view($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(__d('users', 'Invalid User.', true));
-			$this->redirect(array('action'=>'index'));
+			return $this->redirect(array('action' => 'index'));
 		}
 		$this->set('user', $this->User->read(null, $id));
 	}
@@ -339,7 +339,7 @@ class UsersController extends UsersAppController {
 				$this->Auth->loginRedirect = '/';
 			}
 
-			$this->Session->setFlash(sprintf(__d('users', '%s you have successfully logged in', true), $this->Auth->user('username')));
+			$this->Session->setFlash(sprintf(__d('users', '%s, you have successfully logged in', true), $this->Auth->user('username')));
 			if (!empty($this->data)) {
 				$data = $this->data[$this->modelClass];
 				$this->_setCookie();
