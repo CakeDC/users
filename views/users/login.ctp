@@ -10,7 +10,6 @@
  */
 ?>
 <div class="users form">
-	<h2><?php __d('users', 'Login') ?></h2>
 	<fieldset>
 		<legend><?php __d('users', 'Login') ?></legend>
 		<?php
