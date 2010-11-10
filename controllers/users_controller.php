@@ -64,6 +64,7 @@ class UsersController extends UsersAppController {
 	public function beforeFilter() {
 		parent::beforeFilter();
 		$this->Auth->allow('add', 'reset', 'verify', 'logout', 'index', 'view', 'reset_password');
+		$this->_setupAuth();
 
 		if ($this->action == 'add') {
 			$this->Auth->enabled = false;
@@ -78,6 +79,40 @@ class UsersController extends UsersAppController {
 		if (!Configure::read('App.defaultEmail')) {
 			Configure::write('App.defaultEmail', 'noreply@' . env('HTTP_HOST'));
 		}
+	}
+
+/**
+ * Setup Authentication for the controller
+ *
+ * This should be overridden on child classes to provide custom settings for the AuthComponent.
+ * When overriding, you can call parent::_setupAuth() to apply the class default settings before
+ * customising with your own settings.
+ *
+ * @return void
+ */
+	protected function _setupAuth() {
+		$this->Auth->authorize = 'controller';
+		$this->Auth->fields = array(
+			'username' => 'email',
+			'password' => 'passwd',
+		);
+		$this->Auth->loginAction = array(
+			'plugin' => 'users',
+			'controller' => 'users',
+			'action' => 'login',
+			'prefix' => 'admin',
+			'admin' => false,
+		);
+		$this->Auth->loginRedirect = $this->Session->read('Auth.redirect');
+		$this->Auth->logoutRedirect = '/';
+		$this->Auth->authError = __d('users', 'Sorry, but you need to login to access this location.', true);
+		$this->Auth->loginError = __d('users', 'Invalid e-mail / password combination. Please try again', true);
+		$this->Auth->autoRedirect = true;
+		$this->Auth->userModel = $this->modelClass;
+		$this->Auth->userScope = array(
+			$this->modelClass . '.active' => 1,
+			$this->modelClass . '.email_authenticated' => 1
+		);
 	}
 
 /**
@@ -103,11 +138,10 @@ class UsersController extends UsersAppController {
 			'order' => $this->modelClass . '.username ASC',
 			'by' => $searchTerm,
 			'conditions' => array(
-				'OR' => array(
-					'AND' => array(
-							$this->modelClass . '.active' => 1, 
-							$this->modelClass . '.email_authenticated' => 1))));
-
+				$this->modelClass . '.active' => 1, 
+				$this->modelClass . '.email_authenticated' => 1
+			)
+		);
 
 		$this->set('users', $this->paginate($this->modelClass));
 		$this->set('searchTerm', $searchTerm);
