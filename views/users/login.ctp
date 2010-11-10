@@ -22,3 +22,10 @@
 		?>
 	</fieldset>
 </div>
+<div class="actions">
+	<h3><?php __('Actions'); ?></h3>
+	<ul>
+		<li><?php echo $this->Html->link(__d('users', 'New User', true), array('action' => 'add')); ?></li>
+		<li><?php echo $this->Html->link(__d('users', 'Forgot Password', true), array('action' => 'reset_password')); ?> </li>
+	</ul>
+</div>
