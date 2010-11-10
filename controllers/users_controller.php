@@ -234,7 +234,7 @@ class UsersController extends UsersAppController {
  */
 	public function admin_add() {
 		if ($this->User->add($this->data)) {
-			$this->Session->setFlash(__d('users', 'The User has been saved', true));
+			$this->Session->setFlash(__d('users', 'User saved.', true));
 			$this->redirect(array('action' => 'index'));
 		}
 	}
@@ -249,7 +249,7 @@ class UsersController extends UsersAppController {
 		try {
 			$result = $this->User->edit($userId, $this->data);
 			if ($result === true) {
-				$this->Session->setFlash(__d('users', 'User saved', true));
+				$this->Session->setFlash(__d('users', 'User saved.', true));
 				$this->redirect(array('action' => 'index'));
 			} else {
 				$this->data = $result;
@@ -272,9 +272,9 @@ class UsersController extends UsersAppController {
  */
 	public function admin_delete($userId = null) {
 		if ($this->User->delete($userId)) {
-			$this->Session->setFlash(__d('users', 'User deleted', true));
+			$this->Session->setFlash(__d('users', 'User deleted.', true));
 		} else {
-			$this->Session->setFlash(__d('users', 'Invalid User', true));
+			$this->Session->setFlash(__d('users', 'Invalid User.', true));
 		}
 
 		$this->redirect(array('action' => 'index'));
@@ -296,7 +296,7 @@ class UsersController extends UsersAppController {
  */
 	public function add() {
 		if ($this->Auth->user()) {
-			$this->Session->setFlash(__d('users', 'You are already registered and logged in!', true));
+			$this->Session->setFlash(__d('users', 'You are already registered and logged in.', true));
 			return $this->redirect('/');
 		}
 
@@ -339,7 +339,7 @@ class UsersController extends UsersAppController {
 				$this->Auth->loginRedirect = '/';
 			}
 
-			$this->Session->setFlash(sprintf(__d('users', '%s, you have successfully logged in', true), $this->Auth->user('username')));
+			$this->Session->setFlash(sprintf(__d('users', '%s, you have successfully logged in.', true), $this->Auth->user('username')));
 			if (!empty($this->data)) {
 				$data = $this->data[$this->modelClass];
 				$this->_setCookie();
@@ -398,7 +398,7 @@ class UsersController extends UsersAppController {
  */
 	public function logout() {
 		// Message is created first, to grab authentication information before destroying session
-		$message = sprintf(__d('users', '%s you have successfully logged out', true), $this->Auth->user('username'));
+		$message = sprintf(__d('users', '%s, you have successfully logged out.', true), $this->Auth->user('username'));
 
 		$this->Session->destroy();
 		$this->Cookie->destroy();
@@ -415,12 +415,12 @@ class UsersController extends UsersAppController {
 	public function verify($type = 'email', $token = null) {
 		$verifyTypes = array('email', 'reset');
 		if (!$token || !in_array($type, $verifyTypes)) {
-			$this->Session->setFlash(__d('users', 'The url you accessed is not longer valid', true));
+			$this->Session->setFlash(__d('users', 'The url you have accessed is no longer valid.', true));
 		}
 
 		$data = $this->User->validateToken($token, $type === 'reset');
 		if (!$data) {
-			$this->Session->setFlash(__d('users', 'The url you accessed is not longer valid', true));
+			$this->Session->setFlash(__d('users', 'The url you have accessed is no longer valid', true));
 			return $this->redirect('/');
 		}
 
@@ -443,11 +443,11 @@ class UsersController extends UsersAppController {
 				$this->Email->return = Configure::read('App.defaultEmail');
 				$this->Email->subject = env('HTTP_HOST') . ' ' . __d('users', 'Password Reset', true);
 				$this->Email->template = null;
-				$content[] = __d('users', 'Your password has been reset', true);
-				$content[] = __d('users', 'Please login using this password and change your password', true);
+				$content[] = __d('users', 'Your password has been reset.', true);
+				$content[] = __d('users', 'Please login using this password and change your password.', true);
 				$content[] = $newPassword;
 				$this->Email->send($content);
-				$this->Session->setFlash(__d('users', 'Your password was sent to your registered email account', true));
+				$this->Session->setFlash(__d('users', 'Your password has been sent to your registered email address.', true));
 			} else {
 				unset($data);
 				$data[$this->modelClass]['active'] = 1;
@@ -470,7 +470,7 @@ class UsersController extends UsersAppController {
 		if (!empty($this->data)) {
 			$this->data[$this->modelClass]['id'] = $this->Auth->user('id');
 			if ($this->User->changePassword($this->data)) {
-				$this->Session->setFlash(__d('users', 'Password changed.', true));
+				$this->Session->setFlash(__d('users', 'Your password was successfully changed.', true));
 				$this->redirect('/');
 			}
 		}
@@ -524,7 +524,7 @@ class UsersController extends UsersAppController {
  */
 	protected function _sendVerificationEmail($to = null, $options = array()) {
 		$defaults = array(
-			'from' => 'noreply@' . env('HTTP_HOST'),
+			'from' => Configure::read('App.defaultEmail'),
 			'subject' => __d('users', 'Account verification', true),
 			'template' => 'account_verification');
 
@@ -567,11 +567,11 @@ class UsersController extends UsersAppController {
 				$this->Email->send();
 				if ($admin) {
 					$this->Session->setFlash(sprintf(
-						__d('users', '%s has been sent an email with instruction to reset their password.', true),
+						__d('users', '%s has been sent an email with instructions to reset their password.', true),
 						$user[$this->modelClass]['email']));
 					$this->redirect(array('action' => 'index', 'admin' => true));
 				} else {
-					$this->Session->setFlash(__d('users', 'You should receive an email with further instructions shortly', true));
+					$this->Session->setFlash(__d('users', 'Password reset requested. Please check your email for further instructions.', true));
 					$this->redirect(array('action' => 'login'));
 				}
 			} else {
@@ -622,7 +622,7 @@ class UsersController extends UsersAppController {
 	private function __resetPassword($token) {
 		$user = $this->User->checkPasswordToken($token);
 		if (empty($user)) {
-			$this->Session->setFlash(__d('users', 'Invalid password reset token, try again.', true));
+			$this->Session->setFlash(__d('users', 'Invalid password reset token, please try again.', true));
 			$this->redirect(array('action' => 'reset_password'));
 		}
 
