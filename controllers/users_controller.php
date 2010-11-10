@@ -551,7 +551,6 @@ class UsersController extends UsersAppController {
 			'from' => Configure::read('App.defaultEmail'),
 			'subject' => __d('users', 'Password Reset', true),
 			'template' => 'password_reset_request');
-
 		$options = array_merge($defaults, $options);
 
 		if (!empty($this->data)) {
