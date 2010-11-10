@@ -569,14 +569,14 @@ class UsersController extends UsersAppController {
 					$this->Session->setFlash(sprintf(
 						__d('users', '%s has been sent an email with instructions to reset their password.', true),
 						$user[$this->modelClass]['email']));
-					$this->redirect(array('action' => 'index', 'admin' => true));
+					return $this->redirect(array('action' => 'index', 'admin' => true));
 				} else {
 					$this->Session->setFlash(__d('users', 'Password reset requested. Please check your email for further instructions.', true));
-					$this->redirect(array('action' => 'login'));
+					return $this->redirect(array('action' => 'login'));
 				}
 			} else {
 				$this->Session->setFlash(__d('users', 'No user was found with that email.', true));
-				$this->redirect('/');
+				return $this->redirect(array('action' => 'reset_password'));
 			}
 		}
 		$this->render('request_password_change');
