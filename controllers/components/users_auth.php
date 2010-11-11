@@ -48,7 +48,7 @@ class UsersAuthComponent extends AuthComponent {
  *
  * ### Settings:
  *
- * - `cookieOptions`  mixed  False to not use cookies, or array of cookie settings:
+ * - `cookieOptions`  array  Array of cookie settings:
  *    - `domain`  string  Domain name to restrict cookie. Use '.domain.com' to
  *      allow all subdomains to access the cookie, or just 'domain.com' for the
  *      main domain.
@@ -99,10 +99,9 @@ class UsersAuthComponent extends AuthComponent {
 			'userScope' => array(
 				$controller->modelClass . '.active' => 1,
 				$controller->modelClass . '.email_authenticated' => 1),
-			// 'cookie' => false,
 			'cookieOptions' => array(
 				'domain' => env('HTTP_HOST'),
-				'name' => 'rememberMe',
+				'name' => 'Users',
 				'time' => '1 Month',
 				'path' => $controller->base),
 		);
@@ -116,7 +115,7 @@ class UsersAuthComponent extends AuthComponent {
  * @return boolean True if login is successful
  */
 	public function login($data = null) {
-		$loggedIn = parent::login($data);
+		$loggedIn = $this->_getCookie() || parent::login($data);
 		if ($loggedIn) {
 			$User = $this->getModel();
 			$User->id = $this->user($User->primaryKey);
@@ -139,7 +138,7 @@ class UsersAuthComponent extends AuthComponent {
  * @return void
  * @link http://api13.cakephp.org/class/cookie-component
  */
-	protected function _setCookie($options = array(), $cookieKey = 'User') {
+	protected function _setCookie($cookieKey = 'rememberMe') {
 		if (!isset($this->data[$this->userModel]['remember_me']) || !$this->data[$this->userModel]['remember_me']) {
 			$this->Cookie->delete($cookieKey);
 			return;
@@ -147,15 +146,25 @@ class UsersAuthComponent extends AuthComponent {
 
 		// Allow only specified values set on the cookie
 		$validProperties = array('domain', 'key', 'name', 'path', 'secure', 'time');
-		$options = array_merge($this->cookieOptions, $options);
-		$options = array_intersect_key($options, array_flip($validProperties));
+		$options = array_intersect_key($this->cookieOptions, array_flip($validProperties));
 		foreach ($options as $key => $value) {
 			$this->Cookie->{$key} = $value;
 		}
 
-		$cookieData = array();
-		$cookieData[$this->fields['username']] = $this->data[$this->userModel][$this->fields['username']];
-		$cookieData[$this->fields['password']] = $this->data[$this->userModel][$this->fields['password']];
+		$cookieData = array_intersect_key($this->data[$this->userModel], array_flip(array($this->fields['username'], $this->fields['password'])));
 		$this->Cookie->write($cookieKey, $cookieData);
+	}
+
+/**
+ * Attempts to automatically login the user if a valid cookie exists
+ *
+ * @return boolean True if successfully logged in
+ */
+	protected function _getCookie($cookieKey = 'rememberMe') {
+		$cookieData = $this->Cookie->read($cookieKey);
+		if ($cookieData === null) {
+			return false;
+		}
+		return $this->login(array($this->userModel => $cookieData));
 	}
 }
