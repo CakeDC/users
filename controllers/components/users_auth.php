@@ -1,4 +1,13 @@
 <?php
+/**
+ * Copyright 2010, Cake Development Corporation (http://cakedc.com)
+ *
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright Copyright 2010, Cake Development Corporation (http://cakedc.com)
+ * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
+ */
 
 App::import('Component', 'Auth');
 
@@ -79,26 +88,11 @@ class UsersAuthComponent extends AuthComponent {
 			$User->id = $this->user($User->primaryKey);
 			$User->saveField('last_login', date('Y-m-d H:i:s'));
 
-			// Prevent the user being redirected back to the login form if successfully logged in.
-			$url = Router::normalize(isset($this->params['url']['url']) ? $this->params['url']['url'] : '');
-// debug($this->params);
-// debug($this->loginRedirect);
-// debug($url);
-			if ($url == $this->loginRedirect) {
-				$this->loginRedirect = '/';
-			}
-
 			$this->Session->setFlash(sprintf(__d('users', '%s, you have successfully logged in.', true), $this->user('username')));
 			if (!empty($this->data)) {
 				$data = $this->data[$this->userModel];
 				//$this->_setCookie();
 			}
-// debug($data);
-			if (empty($data['return_to'])) {
-				$data['return_to'] = null;
-			}
-debug('here');
-			$this->redirect($this->Auth->redirect($data['return_to']));
 		}
 		return $loggedIn;
 	}
