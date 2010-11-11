@@ -102,6 +102,7 @@ class UsersAuthComponent extends AuthComponent {
 			'cookieOptions' => array(
 				'domain' => env('HTTP_HOST'),
 				'name' => 'Users',
+				'keyname' => 'rememberMe',
 				'time' => '1 Month',
 				'path' => $controller->base),
 		);
@@ -141,6 +142,20 @@ class UsersAuthComponent extends AuthComponent {
 	}
 
 /**
+ * Setup the cookies with options provided the the UsersAuth setup.
+ *
+ * @return void
+ */
+	protected function _setupCookies() {
+		// Allow only specified values set on the cookie
+		$validProperties = array('domain', 'key', 'name', 'path', 'secure', 'time');
+		$options = array_intersect_key($this->cookieOptions, array_flip($validProperties));
+		foreach ($options as $key => $value) {
+			$this->Cookie->{$key} = $value;
+		}
+	}
+
+/**
  * Sets the cookie to remember the user
  *
  * @param array Cookie component properties as array, like array('domain' => 'yourdomain.com')
@@ -148,21 +163,15 @@ class UsersAuthComponent extends AuthComponent {
  * @return void
  * @link http://api13.cakephp.org/class/cookie-component
  */
-	protected function _setCookie($cookieKey = 'rememberMe') {
+	protected function _setCookie() {
+		$this->_setupCookies();
 		if (!isset($this->data[$this->userModel]['remember_me']) || !$this->data[$this->userModel]['remember_me']) {
-			$this->Cookie->delete($cookieKey);
+			$this->Cookie->delete($this->cookieOptions['keyname']);
 			return;
 		}
 
-		// Allow only specified values set on the cookie
-		$validProperties = array('domain', 'key', 'name', 'path', 'secure', 'time');
-		$options = array_intersect_key($this->cookieOptions, array_flip($validProperties));
-		foreach ($options as $key => $value) {
-			$this->Cookie->{$key} = $value;
-		}
-
 		$cookieData = array_intersect_key($this->data[$this->userModel], array_flip(array($this->fields['username'], $this->fields['password'])));
-		$this->Cookie->write($cookieKey, $cookieData);
+		$this->Cookie->write($this->cookieOptions['keyname'], $cookieData);
 	}
 
 /**
@@ -170,8 +179,9 @@ class UsersAuthComponent extends AuthComponent {
  *
  * @return boolean True if successfully logged in
  */
-	protected function _getCookie($cookieKey = 'rememberMe') {
-		$cookieData = $this->Cookie->read($cookieKey);
+	protected function _getCookie() {
+		$this->_setupCookies();
+		$cookieData = $this->Cookie->read($this->cookieOptions['keyname']);
 		if ($cookieData === null) {
 			return false;
 		}
