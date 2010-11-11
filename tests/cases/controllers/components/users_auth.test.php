@@ -12,8 +12,18 @@
 class UsersAuthTestCase extends CakeTestCase {
 
 /**
+ * Setup for testing
+ *
+ * @return void
+ */
+	public function setUp() {
+		$this->User = ClassRegistry::init('Users.User');
+	}
+
+/**
  * Test setting the cookie
  *
+ * @return void
  */
 	public function testSetCookie() {
 		$this->Users->data['User'] = array(
