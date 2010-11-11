@@ -38,6 +38,16 @@ class UsersAuthComponent extends AuthComponent {
 		// auth component.
 		$controller->Auth = $this;
 
+		$loginRedirect = $this->Session->read('Auth.redirect');
+		if (empty($loginRedirect)) {
+			$loginRedirect = array(
+				'admin' => false,
+				'prefix' => 'admin',
+				'plugin' => 'users',
+				'controller' => 'users',
+				'action' => 'dashboard');
+		}
+
 		$defaults = array(
 			'loginAction' => array(
 				'admin' => false,
@@ -49,13 +59,7 @@ class UsersAuthComponent extends AuthComponent {
 			'fields' => array(
 				'username' => 'email',
 				'password' => 'passwd'),
-			'loginAction' => array(
-				'plugin' => 'users',
-				'controller' => 'users',
-				'action' => 'login',
-				'prefix' => 'admin',
-				'admin' => false),
-			'loginRedirect' => $this->Session->read('Auth.redirect'),
+			'loginRedirect' => $loginRedirect,
 			'logoutRedirect' => '/',
 			'authError' => __d('users', 'Sorry, but you need to login to access this location.', true),
 			'loginError' => __d('users', 'Invalid e-mail / password combination. Please try again', true),
@@ -69,9 +73,6 @@ class UsersAuthComponent extends AuthComponent {
 	}
 
 	public function login($data = null) {
-		if (empty($data)) {
-			$data = $this->data;
-		}
 		$loggedIn = parent::login($data);
 		if ($loggedIn) {
 			$User = $this->getModel();
@@ -80,6 +81,9 @@ class UsersAuthComponent extends AuthComponent {
 
 			// Prevent the user being redirected back to the login form if successfully logged in.
 			$url = Router::normalize(isset($this->params['url']['url']) ? $this->params['url']['url'] : '');
+// debug($this->params);
+// debug($this->loginRedirect);
+// debug($url);
 			if ($url == $this->loginRedirect) {
 				$this->loginRedirect = '/';
 			}
@@ -89,11 +93,12 @@ class UsersAuthComponent extends AuthComponent {
 				$data = $this->data[$this->userModel];
 				//$this->_setCookie();
 			}
-
+// debug($data);
 			if (empty($data['return_to'])) {
 				$data['return_to'] = null;
 			}
-			//$this->redirect($this->Auth->redirect($data['return_to']));
+debug('here');
+			$this->redirect($this->Auth->redirect($data['return_to']));
 		}
 		return $loggedIn;
 	}

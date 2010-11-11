@@ -68,6 +68,10 @@ class UsersController extends UsersAppController {
 		}
 
 		if ($this->action == 'login') {
+			if ($this->Auth->user()) {
+				$this->Session->setFlash(__d('users', 'You are already logged in.', true));
+				return $this->redirect($this->Auth->loginRedirect);
+			}
 			$this->Auth->autoRedirect = false;
 		}
 
@@ -294,25 +298,25 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	public function login() {
-		if ($this->Auth->user()) {
-			$this->User->id = $this->Auth->user('id');
-			$this->User->saveField('last_login', date('Y-m-d H:i:s'));
-
-			if ($this->here == $this->Auth->loginRedirect) {
-				$this->Auth->loginRedirect = '/';
-			}
-
-			$this->Session->setFlash(sprintf(__d('users', '%s, you have successfully logged in.', true), $this->Auth->user('username')));
-			if (!empty($this->data)) {
-				$data = $this->data[$this->modelClass];
-				$this->_setCookie();
-			}
-
-			if (empty($data['return_to'])) {
-				$data['return_to'] = null;
-			}
-			$this->redirect($this->Auth->redirect($data['return_to']));
-		}
+		// if ($this->Auth->user()) {
+		// 	$this->User->id = $this->Auth->user('id');
+		// 	$this->User->saveField('last_login', date('Y-m-d H:i:s'));
+		// 
+		// 	if ($this->here == $this->Auth->loginRedirect) {
+		// 		$this->Auth->loginRedirect = '/';
+		// 	}
+		// 
+		// 	$this->Session->setFlash(sprintf(__d('users', '%s, you have successfully logged in.', true), $this->Auth->user('username')));
+		// 	if (!empty($this->data)) {
+		// 		$data = $this->data[$this->modelClass];
+		// 		$this->_setCookie();
+		// 	}
+		// 
+		// 	if (empty($data['return_to'])) {
+		// 		$data['return_to'] = null;
+		// 	}
+		// 	$this->redirect($this->Auth->redirect($data['return_to']));
+		// }
 
 		$return_to = isset($this->params['named']['return_to']) ? urldecode($this->params['named']['return_to']) : false;
 		$this->set('return_to', $return_to);
