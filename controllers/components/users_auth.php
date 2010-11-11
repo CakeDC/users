@@ -131,6 +131,16 @@ class UsersAuthComponent extends AuthComponent {
 	}
 
 /**
+ * Destroy session and cookie information, and return the logoutRedirect URL
+ *
+ * @return string logoutRedirect url
+ */
+	public function logout() {
+		// Delete Cookie
+		return parent::logout();
+	}
+
+/**
  * Sets the cookie to remember the user
  *
  * @param array Cookie component properties as array, like array('domain' => 'yourdomain.com')
