@@ -104,8 +104,7 @@ class UsersAuthComponent extends AuthComponent {
 				'domain' => env('HTTP_HOST'),
 				'name' => 'rememberMe',
 				'time' => '1 Month',
-				'path' => $controller->base,
-				'key' => Configure::read('Security.salt')),
+				'path' => $controller->base),
 		);
 		parent::initialize($controller, array_merge($defaults, $settings));
 	}
@@ -146,20 +145,17 @@ class UsersAuthComponent extends AuthComponent {
 			return;
 		}
 
+		// Allow only specified values set on the cookie
 		$validProperties = array('domain', 'key', 'name', 'path', 'secure', 'time');
 		$options = array_merge($this->cookieOptions, $options);
-		// $options = array_intersect_key($options, array_flip($validProperties));
-		// $this->Cookie->set($options);
+		$options = array_intersect_key($options, array_flip($validProperties));
 		foreach ($options as $key => $value) {
-			if (in_array($key, $validProperties)) {
-				$this->Cookie->{$key} = $value;
-			}
+			$this->Cookie->{$key} = $value;
 		}
-		debug($this->Cookie);
 
 		$cookieData = array();
 		$cookieData[$this->fields['username']] = $this->data[$this->userModel][$this->fields['username']];
 		$cookieData[$this->fields['password']] = $this->data[$this->userModel][$this->fields['password']];
-		$this->Cookie->write($cookieKey, $cookieData, true, '1 Month');
+		$this->Cookie->write($cookieKey, $cookieData);
 	}
 }
