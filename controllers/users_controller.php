@@ -37,9 +37,7 @@ class UsersController extends UsersAppController {
  * @var array
  */
 	public $components = array(
-		'Auth' => array(
-			'loginAction' => array('plugin' => 'users', 'controller' => 'users', 'action' => 'login'),
-		),
+		'Users.UsersAuth',
 		'Cookie',
 		'Email',
 		'Search.Prg',
@@ -63,14 +61,17 @@ class UsersController extends UsersAppController {
  */
 	public function beforeFilter() {
 		parent::beforeFilter();
-		$this->Auth->allow('add', 'reset', 'verify', 'logout', 'index', 'view', 'reset_password');
-		$this->_setupAuth();
+		$this->Auth->allow('add', 'reset', 'verify', 'logout', /*'index',*/ 'view', 'reset_password');
 
 		if ($this->action == 'add') {
 			$this->Auth->enabled = false;
 		}
 
 		if ($this->action == 'login') {
+			if ($this->Auth->user()) {
+				$this->Session->setFlash(__d('users', 'You are already logged in.', true));
+				return $this->redirect($this->Auth->loginRedirect);
+			}
 			$this->Auth->autoRedirect = false;
 		}
 
@@ -79,40 +80,6 @@ class UsersController extends UsersAppController {
 		if (!Configure::read('App.defaultEmail')) {
 			Configure::write('App.defaultEmail', 'noreply@' . env('HTTP_HOST'));
 		}
-	}
-
-/**
- * Setup Authentication for the controller
- *
- * This should be overridden on child classes to provide custom settings for the AuthComponent.
- * When overriding, you can call parent::_setupAuth() to apply the class default settings before
- * customising with your own settings.
- *
- * @return void
- */
-	protected function _setupAuth() {
-		$this->Auth->authorize = 'controller';
-		$this->Auth->fields = array(
-			'username' => 'email',
-			'password' => 'passwd',
-		);
-		$this->Auth->loginAction = array(
-			'plugin' => 'users',
-			'controller' => 'users',
-			'action' => 'login',
-			'prefix' => 'admin',
-			'admin' => false,
-		);
-		$this->Auth->loginRedirect = $this->Session->read('Auth.redirect');
-		$this->Auth->logoutRedirect = '/';
-		$this->Auth->authError = __d('users', 'Sorry, but you need to login to access this location.', true);
-		$this->Auth->loginError = __d('users', 'Invalid e-mail / password combination. Please try again', true);
-		$this->Auth->autoRedirect = true;
-		$this->Auth->userModel = $this->modelClass;
-		$this->Auth->userScope = array(
-			$this->modelClass . '.active' => 1,
-			$this->modelClass . '.email_authenticated' => 1
-		);
 	}
 
 /**
@@ -297,7 +264,7 @@ class UsersController extends UsersAppController {
 	public function add() {
 		if ($this->Auth->user()) {
 			$this->Session->setFlash(__d('users', 'You are already registered and logged in.', true));
-			return $this->redirect('/');
+			return $this->redirect($this->Auth->loginRedirect);
 		}
 
 		if (!empty($this->data)) {
@@ -332,17 +299,8 @@ class UsersController extends UsersAppController {
  */
 	public function login() {
 		if ($this->Auth->user()) {
-			$this->User->id = $this->Auth->user('id');
-			$this->User->saveField('last_login', date('Y-m-d H:i:s'));
-
 			if ($this->here == $this->Auth->loginRedirect) {
 				$this->Auth->loginRedirect = '/';
-			}
-
-			$this->Session->setFlash(sprintf(__d('users', '%s, you have successfully logged in.', true), $this->Auth->user('username')));
-			if (!empty($this->data)) {
-				$data = $this->data[$this->modelClass];
-				$this->_setCookie();
 			}
 
 			if (empty($data['return_to'])) {
@@ -579,36 +537,6 @@ class UsersController extends UsersAppController {
 			}
 		}
 		$this->render('request_password_change');
-	}
-
-/**
- * Sets the cookie to remember the user
- *
- * @param array Cookie component properties as array, like array('domain' => 'yourdomain.com')
- * @param string Cookie data keyname for the userdata, its default is "User". This is set to User and NOT using the model alias to make sure it works with different apps with different user models accross different (sub)domains.
- * @return void
- * @link http://api13.cakephp.org/class/cookie-component
- */
-	protected function _setCookie($options = array(), $cookieKey = 'User') {
-		if (!isset($this->data[$this->modelClass]['remember_me'])) {
-			$this->Cookie->delete($cookieKey);
-		} else {
-			$validProperties = array('domain', 'key', 'name', 'path', 'secure', 'time');
-			$defaults = array('name' => 'rememberMe');
-
-			$options = array_merge($defaults, $options);
-			foreach ($options as $key => $value) {
-				if (in_array($key, $validProperties)) {
-					$this->Cookie->{$key} = $value;
-				}
-			}
-
-			$cookieData = array();
-			$cookieData[$this->Auth->fields['username']] = $this->data[$this->modelClass][$this->Auth->fields['username']];
-			$cookieData[$this->Auth->fields['password']] = $this->data[$this->modelClass][$this->Auth->fields['password']];
-			$this->Cookie->write($cookieKey, $cookieData, true, '1 Month');
-		}
-		unset($this->data[$this->modelClass]['remember_me']);
 	}
 
 /**

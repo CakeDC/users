@@ -358,24 +358,6 @@ class UsersControllerTestCase extends CakeTestCase {
 	}
 
 /**
- * Test setting the cookie
- *
- */
-	public function testSetCookie() {
-		$this->Users->data['User'] = array(
-			'remember_me' => 1,
-			'username' => 'test',
-			'password' => 'testtest');
-		$this->Users->setCookie(array(
-			'name' => 'userTestCookie'));
-		$this->Users->Cookie->name = 'userTestCookie';
-		$result = $this->Users->Cookie->read('User');
-		$this->assertEqual($result, array(
-			'username' => 'test',
-			'password' => 'testtest'));
-	}
-
-/**
  * Test
  *
  */
