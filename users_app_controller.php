@@ -13,7 +13,23 @@
  * Users App Controller
  *
  * @package users
- * @subpackage users.controllers
  */
 class UsersAppController extends AppController {
+
+/**
+ * Determine if the user is authorized to view the requested action
+ *
+ * Inspect the URL and return true if the user is authorized
+ *
+ * @return boolean Authorized to view action
+ */
+	public function isAuthorized() {
+		$authorized = true;
+
+		// Restrict "admin" prefix routes to users with the role "admin".
+		if (isset($this->params['prefix']) && $this->params['prefix'] == 'admin') {
+			$authorized = $this->Auth->user('role') === 'admin';
+		}
+		return $authorized;
+	}
 }

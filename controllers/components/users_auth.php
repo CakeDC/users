@@ -67,4 +67,34 @@ class UsersAuthComponent extends AuthComponent {
 		);
 		parent::initialize($controller, array_merge($defaults, $settings));
 	}
+
+	public function login($data = null) {
+		if (empty($data)) {
+			$data = $this->data;
+		}
+		$loggedIn = parent::login($data);
+		if ($loggedIn) {
+			$User = $this->getModel();
+			$User->id = $this->user($User->primaryKey);
+			$User->saveField('last_login', date('Y-m-d H:i:s'));
+
+			// Prevent the user being redirected back to the login form if successfully logged in.
+			$url = Router::normalize(isset($this->params['url']['url']) ? $this->params['url']['url'] : '');
+			if ($url == $this->loginRedirect) {
+				$this->loginRedirect = '/';
+			}
+
+			$this->Session->setFlash(sprintf(__d('users', '%s, you have successfully logged in.', true), $this->user('username')));
+			if (!empty($this->data)) {
+				$data = $this->data[$this->userModel];
+				//$this->_setCookie();
+			}
+
+			if (empty($data['return_to'])) {
+				$data['return_to'] = null;
+			}
+			//$this->redirect($this->Auth->redirect($data['return_to']));
+		}
+		return $loggedIn;
+	}
 }
