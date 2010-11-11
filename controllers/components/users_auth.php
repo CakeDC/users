@@ -171,8 +171,6 @@ class UsersAuthComponent extends AuthComponent {
 		}
 
 		$cookieData = array_intersect_key($this->data[$this->userModel], array_flip(array($this->fields['username'], $this->fields['password'])));
-		debug($this->cookieOptions['keyname']);
-		debug($cookieData);
 		$this->Cookie->write($this->cookieOptions['keyname'], $cookieData);
 	}
 
