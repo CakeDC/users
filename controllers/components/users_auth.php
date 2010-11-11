@@ -115,8 +115,8 @@ class UsersAuthComponent extends AuthComponent {
  * @param array $data Form data
  * @return boolean True if login is successful
  */
-	public function login($data = null) {
-		$loggedIn = $this->_getCookie() || parent::login($data);
+	public function login($data = null, $skipCookies = false) {
+		$loggedIn = (!$skipCookies && $this->_getCookie()) || parent::login($data);
 		if ($loggedIn) {
 			$User = $this->getModel();
 			$User->id = $this->user($User->primaryKey);
@@ -171,6 +171,8 @@ class UsersAuthComponent extends AuthComponent {
 		}
 
 		$cookieData = array_intersect_key($this->data[$this->userModel], array_flip(array($this->fields['username'], $this->fields['password'])));
+		debug($this->cookieOptions['keyname']);
+		debug($cookieData);
 		$this->Cookie->write($this->cookieOptions['keyname'], $cookieData);
 	}
 
@@ -185,6 +187,6 @@ class UsersAuthComponent extends AuthComponent {
 		if ($cookieData === null) {
 			return false;
 		}
-		return $this->login(array($this->userModel => $cookieData));
+		return $this->login(array($this->userModel => $cookieData), true);
 	}
 }
