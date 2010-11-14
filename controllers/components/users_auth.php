@@ -124,8 +124,7 @@ class UsersAuthComponent extends AuthComponent {
 
 			$this->Session->setFlash(sprintf(__d('users', '%s, you have successfully logged in.', true), $this->user('username')));
 			if (!empty($this->data)) {
-				$data = $this->data[$this->userModel];
-				$this->_setCookie();
+				!$skipCookies && $this->_setCookie();
 			}
 		}
 		return $loggedIn;
@@ -137,7 +136,7 @@ class UsersAuthComponent extends AuthComponent {
  * @return string logoutRedirect url
  */
 	public function logout() {
-		// Delete Cookie
+		$this->_deleteCookie();
 		return parent::logout();
 	}
 
@@ -186,5 +185,15 @@ class UsersAuthComponent extends AuthComponent {
 			return false;
 		}
 		return $this->login(array($this->userModel => $cookieData), true);
+	}
+
+/**
+ * Delete the remember cookie.
+ *
+ * @return void
+ */
+	protected function _deleteCookie() {
+		$this->_setupCookies();
+		$this->Cookie->delete($this->cookieOptions['keyname']);
 	}
 }

@@ -17,6 +17,10 @@
  */
 class UsersController extends UsersAppController {
 
+	public function session() {
+		debug($this->Session->read());
+	}
+
 /**
  * Controller name
  *
@@ -61,7 +65,7 @@ class UsersController extends UsersAppController {
  */
 	public function beforeFilter() {
 		parent::beforeFilter();
-		$this->Auth->allow('add', 'reset', 'verify', 'logout', /*'index',*/ 'view', 'reset_password');
+		$this->Auth->allow('add', 'reset', 'verify', 'logout', /*'index',*/ 'view', 'reset_password', 'session');
 
 		if ($this->action == 'add') {
 			$this->Auth->enabled = false;
@@ -70,6 +74,7 @@ class UsersController extends UsersAppController {
 		if ($this->action == 'login') {
 			if ($this->Auth->user()) {
 				$this->Session->setFlash(__d('users', 'You are already logged in.', true));
+				debug($this->Auth->loginRedirect);
 				return $this->redirect($this->Auth->loginRedirect);
 			}
 			$this->Auth->autoRedirect = false;
@@ -298,16 +303,16 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	public function login() {
-		if ($this->Auth->user()) {
-			if ($this->here == $this->Auth->loginRedirect) {
-				$this->Auth->loginRedirect = '/';
-			}
-
-			if (empty($data['return_to'])) {
-				$data['return_to'] = null;
-			}
-			$this->redirect($this->Auth->redirect($data['return_to']));
-		}
+		// if ($this->Auth->user()) {
+		// 	if ($this->here == $this->Auth->loginRedirect) {
+		// 		$this->Auth->loginRedirect = '/';
+		// 	}
+		// 
+		// 	if (empty($data['return_to'])) {
+		// 		$data['return_to'] = null;
+		// 	}
+		// 	$this->redirect($this->Auth->redirect($data['return_to']));
+		// }
 
 		$return_to = isset($this->params['named']['return_to']) ? urldecode($this->params['named']['return_to']) : false;
 		$this->set('return_to', $return_to);
