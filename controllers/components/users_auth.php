@@ -59,8 +59,8 @@ class UsersAuthComponent extends AuthComponent {
  *      'base' which is derived from the CakePHP app install location.
  *    - `secure`  boolean  True if values are to be secured / crypted.
  *
- * @param AppController $controller 
- * @param array $settings 
+ * @param AppController $controller
+ * @param array $settings
  * @return void
  */
 	public function initialize(AppController $controller, array $settings = array()) {
@@ -95,7 +95,7 @@ class UsersAuthComponent extends AuthComponent {
 			'authError' => __d('users', 'Sorry, but you need to login to access this location.', true),
 			'loginError' => __d('users', 'Invalid e-mail / password combination. Please try again', true),
 			'autoRedirect' => true,
-			'userModel' => $controller->modelClass,
+			'userModel' => 'Users.User',
 			'userScope' => array(
 				$controller->modelClass . '.active' => 1,
 				$controller->modelClass . '.email_authenticated' => 1),

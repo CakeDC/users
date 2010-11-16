@@ -15,6 +15,9 @@ or
 	cake migration all -plugin users
 
 You will also need the [CakeDC Search plugin](http://github.com/CakeDC/search), just grab it and put it into your application's plugin folder.
+and the [CakeDC Utils plugin](http://github.com/CakeDC/utils)
+
+just grab them and put it into your application's plugin folder.
 
 ## How to use it ##
 
