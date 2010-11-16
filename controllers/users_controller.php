@@ -17,10 +17,6 @@
  */
 class UsersController extends UsersAppController {
 
-	public function session() {
-		debug($this->Session->read());
-	}
-
 /**
  * Controller name
  *
@@ -74,7 +70,6 @@ class UsersController extends UsersAppController {
 		if ($this->action == 'login') {
 			if ($this->Auth->user()) {
 				$this->Session->setFlash(__d('users', 'You are already logged in.', true));
-				debug($this->Auth->loginRedirect);
 				return $this->redirect($this->Auth->loginRedirect);
 			}
 			$this->Auth->autoRedirect = false;
