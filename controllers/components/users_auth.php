@@ -63,7 +63,7 @@ class UsersAuthComponent extends AuthComponent {
  * @param array $settings
  * @return void
  */
-	public function initialize(AppController $controller, array $settings = array()) {
+	public function initialize(Controller $controller, array $settings = array()) {
 		// For legacy support, add the 'Auth' variable on the controller, so
 		// apps can still reference this auth component as if it were the core
 		// auth component.
@@ -104,7 +104,7 @@ class UsersAuthComponent extends AuthComponent {
 				'name' => 'Users',
 				'keyname' => 'rememberMe',
 				'time' => '1 Month',
-				'path' => $controller->base),
+				'path' => '/' . $controller->base),
 		);
 		parent::initialize($controller, array_merge($defaults, $settings));
 	}
@@ -116,7 +116,15 @@ class UsersAuthComponent extends AuthComponent {
  * @return boolean True if login is successful
  */
 	public function login($data = null, $skipCookies = false) {
-		$loggedIn = (!$skipCookies && $this->_getCookie()) || parent::login($data);
+		CakeLog::write(LOG_DEBUG, '>>> UsersAuth::login()');
+		CakeLog::write(LOG_DEBUG, '    $data == ');
+		CakeLog::write(LOG_DEBUG, var_export($data, true));
+		CakeLog::write(LOG_DEBUG, '    $skipCookies == ' . ($skipCookies ? 'TRUE' : 'FALSE'));
+		$loggedIn = 
+			parent::login($data) || (
+				!$skipCookies &&
+				$this->_getCookie()
+			);
 		if ($loggedIn) {
 			$User = $this->getModel();
 			$User->id = $this->user($User->primaryKey);
@@ -136,6 +144,7 @@ class UsersAuthComponent extends AuthComponent {
  * @return string logoutRedirect url
  */
 	public function logout() {
+		CakeLog::write(LOG_DEBUG, '>>> UsersAuth::logout()');
 		$this->_deleteCookie();
 		return parent::logout();
 	}
@@ -146,12 +155,14 @@ class UsersAuthComponent extends AuthComponent {
  * @return void
  */
 	protected function _setupCookies() {
+		CakeLog::write(LOG_DEBUG, '>>> UsersAuth::_setupCookies()');
 		// Allow only specified values set on the cookie
 		$validProperties = array('domain', 'key', 'name', 'path', 'secure', 'time');
 		$options = array_intersect_key($this->cookieOptions, array_flip($validProperties));
 		foreach ($options as $key => $value) {
 			$this->Cookie->{$key} = $value;
 		}
+		CakeLog::write(LOG_DEBUG, var_export($this->Cookie, true));
 	}
 
 /**
@@ -163,14 +174,19 @@ class UsersAuthComponent extends AuthComponent {
  * @link http://api13.cakephp.org/class/cookie-component
  */
 	protected function _setCookie() {
+		CakeLog::write(LOG_DEBUG, '>>> UsersAuth::_setCookie()');
 		$this->_setupCookies();
-		if (!isset($this->data[$this->userModel]['remember_me']) || !$this->data[$this->userModel]['remember_me']) {
+		list($plugin, $model) = pluginSplit($this->userModel);
+		if (!isset($this->data[$model]['remember_me']) || !$this->data[$model]['remember_me']) {
 			$this->Cookie->delete($this->cookieOptions['keyname']);
 			return;
 		}
 
-		$cookieData = array_intersect_key($this->data[$this->userModel], array_flip(array($this->fields['username'], $this->fields['password'])));
+		$cookieData = array_intersect_key($this->data[$model], array_flip(array($this->fields['username'], $this->fields['password'])));
 		$this->Cookie->write($this->cookieOptions['keyname'], $cookieData);
+
+		CakeLog::write(LOG_DEBUG, '$_COOKIE == ');
+		CakeLog::write(LOG_DEBUG, var_export($_COOKIE, true));
 	}
 
 /**
@@ -179,12 +195,20 @@ class UsersAuthComponent extends AuthComponent {
  * @return boolean True if successfully logged in
  */
 	protected function _getCookie() {
+		CakeLog::write(LOG_DEBUG, '>>> UsersAuth::_getCookie()');
 		$this->_setupCookies();
 		$cookieData = $this->Cookie->read($this->cookieOptions['keyname']);
+		CakeLog::write(LOG_DEBUG, 'UsersAuth::$cookieOptions[\'keyname\'] == \'' . $this->cookieOptions['keyname'] . '\'');
+		CakeLog::write(LOG_DEBUG, '$cookieData == ');
+		CakeLog::write(LOG_DEBUG, var_export($cookieData, true));
+		CakeLog::write(LOG_DEBUG, '$_COOKIE == ');
+		CakeLog::write(LOG_DEBUG, var_export($_COOKIE, true));
+
 		if ($cookieData === null) {
 			return false;
 		}
-		return $this->login(array($this->userModel => $cookieData), true);
+		list($plugin, $model) = pluginSplit($this->userModel);
+		return $this->login(array($model => $cookieData), true);
 	}
 
 /**
@@ -193,7 +217,10 @@ class UsersAuthComponent extends AuthComponent {
  * @return void
  */
 	protected function _deleteCookie() {
+		CakeLog::write(LOG_DEBUG, '>>> UsersAuth::_deleteCookie()');
 		$this->_setupCookies();
 		$this->Cookie->delete($this->cookieOptions['keyname']);
+		CakeLog::write(LOG_DEBUG, '$_COOKIE == ');
+		CakeLog::write(LOG_DEBUG, var_export($_COOKIE, true));
 	}
 }

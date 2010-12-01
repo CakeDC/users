@@ -298,16 +298,17 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	public function login() {
-		// if ($this->Auth->user()) {
-		// 	if ($this->here == $this->Auth->loginRedirect) {
-		// 		$this->Auth->loginRedirect = '/';
-		// 	}
-		// 
-		// 	if (empty($data['return_to'])) {
-		// 		$data['return_to'] = null;
-		// 	}
-		// 	$this->redirect($this->Auth->redirect($data['return_to']));
-		// }
+		CakeLog::write(LOG_DEBUG, '>>> UsersController::login()');
+		if ($this->Auth->user() || $this->Auth->login()) {
+			if ($this->here == $this->Auth->loginRedirect) {
+				$this->Auth->loginRedirect = '/';
+			}
+
+			if (empty($data['return_to'])) {
+				$data['return_to'] = null;
+			}
+			$this->redirect($this->Auth->redirect($data['return_to']));
+		}
 
 		$return_to = isset($this->params['named']['return_to']) ? urldecode($this->params['named']['return_to']) : false;
 		$this->set('return_to', $return_to);
@@ -359,7 +360,6 @@ class UsersController extends UsersAppController {
 		$message = sprintf(__d('users', '%s, you have successfully logged out.', true), $this->Auth->user('username'));
 
 		$this->Session->destroy();
-		$this->Cookie->destroy();
 		$this->Session->setFlash($message);
 		$this->redirect($this->Auth->logout());
 	}
@@ -560,5 +560,12 @@ class UsersController extends UsersAppController {
 		}
 
 		$this->set('token', $token);
+	}
+	
+	public function kill_session() {
+		if (Configure::read('debug')) {
+			$this->Session->destroy();
+			return $this->redirect('/');
+		}
 	}
 }
