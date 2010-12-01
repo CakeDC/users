@@ -116,10 +116,6 @@ class UsersAuthComponent extends AuthComponent {
  * @return boolean True if login is successful
  */
 	public function login($data = null, $skipCookies = false) {
-		CakeLog::write(LOG_DEBUG, '>>> UsersAuth::login()');
-		CakeLog::write(LOG_DEBUG, '    $data == ');
-		CakeLog::write(LOG_DEBUG, var_export($data, true));
-		CakeLog::write(LOG_DEBUG, '    $skipCookies == ' . ($skipCookies ? 'TRUE' : 'FALSE'));
 		$loggedIn = 
 			parent::login($data) || (
 				!$skipCookies &&
@@ -144,7 +140,6 @@ class UsersAuthComponent extends AuthComponent {
  * @return string logoutRedirect url
  */
 	public function logout() {
-		CakeLog::write(LOG_DEBUG, '>>> UsersAuth::logout()');
 		$this->_deleteCookie();
 		return parent::logout();
 	}
@@ -155,14 +150,12 @@ class UsersAuthComponent extends AuthComponent {
  * @return void
  */
 	protected function _setupCookies() {
-		CakeLog::write(LOG_DEBUG, '>>> UsersAuth::_setupCookies()');
 		// Allow only specified values set on the cookie
 		$validProperties = array('domain', 'key', 'name', 'path', 'secure', 'time');
 		$options = array_intersect_key($this->cookieOptions, array_flip($validProperties));
 		foreach ($options as $key => $value) {
 			$this->Cookie->{$key} = $value;
 		}
-		CakeLog::write(LOG_DEBUG, var_export($this->Cookie, true));
 	}
 
 /**
@@ -174,7 +167,6 @@ class UsersAuthComponent extends AuthComponent {
  * @link http://api13.cakephp.org/class/cookie-component
  */
 	protected function _setCookie() {
-		CakeLog::write(LOG_DEBUG, '>>> UsersAuth::_setCookie()');
 		$this->_setupCookies();
 		list($plugin, $model) = pluginSplit($this->userModel);
 		if (!isset($this->data[$model]['remember_me']) || !$this->data[$model]['remember_me']) {
@@ -184,9 +176,6 @@ class UsersAuthComponent extends AuthComponent {
 
 		$cookieData = array_intersect_key($this->data[$model], array_flip(array($this->fields['username'], $this->fields['password'])));
 		$this->Cookie->write($this->cookieOptions['keyname'], $cookieData);
-
-		CakeLog::write(LOG_DEBUG, '$_COOKIE == ');
-		CakeLog::write(LOG_DEBUG, var_export($_COOKIE, true));
 	}
 
 /**
@@ -195,14 +184,8 @@ class UsersAuthComponent extends AuthComponent {
  * @return boolean True if successfully logged in
  */
 	protected function _getCookie() {
-		CakeLog::write(LOG_DEBUG, '>>> UsersAuth::_getCookie()');
 		$this->_setupCookies();
 		$cookieData = $this->Cookie->read($this->cookieOptions['keyname']);
-		CakeLog::write(LOG_DEBUG, 'UsersAuth::$cookieOptions[\'keyname\'] == \'' . $this->cookieOptions['keyname'] . '\'');
-		CakeLog::write(LOG_DEBUG, '$cookieData == ');
-		CakeLog::write(LOG_DEBUG, var_export($cookieData, true));
-		CakeLog::write(LOG_DEBUG, '$_COOKIE == ');
-		CakeLog::write(LOG_DEBUG, var_export($_COOKIE, true));
 
 		if ($cookieData === null) {
 			return false;
@@ -217,10 +200,7 @@ class UsersAuthComponent extends AuthComponent {
  * @return void
  */
 	protected function _deleteCookie() {
-		CakeLog::write(LOG_DEBUG, '>>> UsersAuth::_deleteCookie()');
 		$this->_setupCookies();
 		$this->Cookie->delete($this->cookieOptions['keyname']);
-		CakeLog::write(LOG_DEBUG, '$_COOKIE == ');
-		CakeLog::write(LOG_DEBUG, var_export($_COOKIE, true));
 	}
 }
