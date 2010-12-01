@@ -298,7 +298,6 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	public function login() {
-		CakeLog::write(LOG_DEBUG, '>>> UsersController::login()');
 		if ($this->Auth->user() || $this->Auth->login()) {
 			if ($this->here == $this->Auth->loginRedirect) {
 				$this->Auth->loginRedirect = '/';
