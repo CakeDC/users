@@ -29,7 +29,13 @@ class UsersController extends UsersAppController {
  *
  * @var array
  */
-	public $helpers = array('Html', 'Form', 'Session', 'Time', 'Text', 'Utils.Gravatar');
+	public $helpers = array(
+		'Form',
+		'Html',
+		'Session',
+		'Text',
+		'Time',
+	);
 
 /**
  * Components
@@ -37,11 +43,11 @@ class UsersController extends UsersAppController {
  * @var array
  */
 	public $components = array(
-		'Users.UsersAuth',
 		'Cookie',
 		'Email',
 		'Search.Prg',
 		'Session',
+		'Users.UsersAuth',
 	);
 
 /**
