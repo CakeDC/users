@@ -299,7 +299,10 @@ class UsersController extends UsersAppController {
 	}
 
 /**
- * Common login action
+ * Login action
+ *
+ * Checks for posted login information, as well as processing cookie
+ * information if present, to automatically login the user.
  *
  * @return void
  */
@@ -309,10 +312,9 @@ class UsersController extends UsersAppController {
 				$this->Auth->loginRedirect = '/';
 			}
 
-			if (empty($data['return_to'])) {
-				$data['return_to'] = null;
-			}
-			$this->redirect($this->Auth->redirect($data['return_to']));
+			$data = $this->data[$this->modelClass];
+			$url = !empty($data['return_to']) ? $data['return_to'] : null;
+			$this->redirect($this->Auth->redirect($url));
 		}
 
 		$return_to = isset($this->params['named']['return_to']) ? urldecode($this->params['named']['return_to']) : false;
