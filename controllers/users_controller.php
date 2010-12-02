@@ -314,7 +314,7 @@ class UsersController extends UsersAppController {
 
 			$data = $this->data[$this->modelClass];
 			$url = !empty($data['return_to']) ? $data['return_to'] : null;
-			$this->redirect($this->Auth->redirect($url));
+			return $this->redirect($this->Auth->redirect($url));
 		}
 
 		$return_to = isset($this->params['named']['return_to']) ? urldecode($this->params['named']['return_to']) : false;
