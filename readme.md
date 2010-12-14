@@ -49,7 +49,10 @@ In the case you want to extend also the user model it's required to set the righ
 You can overwrite the render() method to fall back to the plugin views in the case you want to use some of them
 
 	public function render($action = null, $layout = null, $file = null) {
-		if (!file_exists(VIEWS . 'app_users' . DS . $action . '.ctp')) {
+		if (is_null($action)) {
+			$action = $this->action;
+		}
+		if (!file_exists(VIEWS . $this->viewPath . DS . $action . '.ctp')) {
 			$file = App::pluginPath('users') . 'views' . DS . 'users' . DS . $action . '.ctp';
 		}
 		return parent::render($action, $layout, $file);
