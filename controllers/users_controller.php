@@ -555,7 +555,7 @@ class UsersController extends UsersAppController {
  * @link http://api13.cakephp.org/class/cookie-component
  */
 	protected function _setCookie($options = array(), $cookieKey = 'User') {
-		if (!isset($this->data[$this->modelClass]['remember_me'])) {
+		if (empty($this->data[$this->modelClass]['remember_me'])) {
 			$this->Cookie->delete($cookieKey);
 		} else {
 			$validProperties = array('domain', 'key', 'name', 'path', 'secure', 'time');
