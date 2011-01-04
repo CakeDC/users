@@ -54,6 +54,6 @@ foreach ($users as $user):
 </div>
 <div class="actions">
 	<ul>
-		<li><?php echo $this->Html->link(__d('users', 'New User', true), array('action'=>'add')); ?></li>
+		<li><?php echo $this->Html->link(__d('users', 'Register an account', true), array('action' => 'register')); ?></li>
 	</ul>
 </div>
