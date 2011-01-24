@@ -67,7 +67,7 @@ class UsersController extends UsersAppController {
  */
 	public function beforeFilter() {
 		parent::beforeFilter();
-		$this->Auth->allow('add', 'reset', 'verify', 'logout', /*'index',*/ 'view', 'reset_password', 'session');
+		$this->Auth->allow('add', 'reset', 'verify', 'logout', 'index', 'view', 'reset_password', 'session');
 
 		if ($this->action == 'add') {
 			$this->Auth->enabled = false;
