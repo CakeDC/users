@@ -21,5 +21,6 @@
 	<h3><?php __d('users', 'Actions'); ?></h3>
 	<ul>
 		<li><?php echo $this->Html->link(__d('users', 'Logout', true), array('action' => 'logout')); ?></li>
+		<li><?php echo $this->Html->link(__d('users', 'Change Password', true), array('action' => 'change_password')); ?></li>
 	</ul>
 </div>
