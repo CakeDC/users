@@ -434,7 +434,7 @@ class UsersController extends UsersAppController {
 			$this->data[$this->modelClass]['id'] = $this->Auth->user('id');
 			if ($this->User->changePassword($this->data)) {
 				$this->Session->setFlash(__d('users', 'Your password was successfully changed.', true));
-				$this->redirect('/');
+				$this->redirect(array('action' => 'dashboard'));
 			}
 		}
 	}
