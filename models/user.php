@@ -109,8 +109,8 @@ class User extends UsersAppModel {
 					'message' => __d('users', 'This email is already in use.', true))),
 			'passwd' => array(
 				'to_short' => array(
-					'rule' => array('minLength', '4'),
-					'message' => __d('users', 'The password must have at least 8 characters.', true)),
+					'rule' => array('minLength', '6'),
+					'message' => __d('users', 'The password must have at least 6 characters.', true)),
 				'required' => array(
 					'rule' => 'notEmpty',
 					'message' => __d('users', 'Please enter a password.', true))),
