@@ -14,7 +14,7 @@
 <fieldset>
 	<legend><?php __d('users', 'Details');?></legend>
 	<?php
-		if (!isset($openIdAuthData)) {
+		if (empty($openIdAuthData)) {
 			echo $this->Form->create($model, array('url' => array('action'=>'register')));
 			echo $this->Form->input('username', array(
 				'error' => 	array(
