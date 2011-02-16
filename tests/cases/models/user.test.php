@@ -258,6 +258,19 @@ class UserTestCase extends CakeTestCase {
 		$this->assertEqual(array_keys($this->User->invalidFields()), array(
 			'username', 'email', 'temppassword', 'tos'));
 
+
+		$postData = array('User' => array(
+			'username' => 'validusername',
+			'email' => 'test@test.com',
+			'passwd' => '12345',
+			'temppassword' => '12345',
+			'tos' => 1));
+		$result = $this->User->register($postData);
+		$this->assertFalse($result);
+		$this->assertEqual(array_keys($this->User->invalidFields()), array(
+			'passwd'));
+
+
 		$postData = array('User' => array(
 			'username' => 'imanewuser',
 			'email' => 'foo@bar.com',
