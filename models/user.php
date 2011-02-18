@@ -76,13 +76,6 @@ class User extends UsersAppModel {
 	public $validate = array();
 
 /**
- * Detail model
- *
- * @var Detail
- */
-	public $Detail = null;
-
-/**
  * Constructor
  *
  * @param string $id ID
@@ -134,17 +127,25 @@ class User extends UsersAppModel {
 				'required' => array('rule' => array('compareFields', 'new_password', 'confirm_password'), 'required' => true, 'message' => __d('users', 'The passwords are not equal.', true))),
 			'old_password' => array(
 				'to_short' => array('rule' => 'validateOldPassword', 'required' => true, 'message' => __d('users', 'Invalid password.', true))));
+	}
 
+/**
+ * Sets some defaults for the detail model
+ *
+ * @return void
+ */
+	public function setupDetail() {
 		$this->Detail->sectionSchema[$this->alias] = array(
-			'birthday' => array(
-				'type' => 'date',
-				'null' => null,
-				'default' => null,
-				'length' => null));
+				'birthday' => array(
+					'type' => 'date',
+					'null' => null,
+					'default' => null,
+					'length' => null));
 
 		$this->Detail->sectionValidation[$this->alias] = array(
-			'birthday' => array(
-				'validDate' => array('rule' => array('date'), 'allowEmpty' => true, 'message' => __d('users', 'Invalid date', true))));
+				'birthday' => array(
+					'validDate' => array(
+						'rule' => array('date'), 'allowEmpty' => true, 'message' => __d('users', 'Invalid date', true))));
 	}
 
 /**
