@@ -18,7 +18,6 @@
 		echo $this->Form->input('position');
 		echo $this->Form->input('field');
 		echo $this->Form->input('value');
-		echo $this->Form->input('Group');
 	?>
 	</fieldset>
 <?php echo $this->Form->end('Submit');?>
@@ -28,7 +27,5 @@
 		<li><?php echo $this->Html->link(__d('users', 'List Details', true), array('action'=>'index'));?></li>
 		<li><?php echo $this->Html->link(__d('users', 'List Users', true), array('controller'=> 'users', 'action'=>'index')); ?> </li>
 		<li><?php echo $this->Html->link(__d('users', 'New User', true), array('controller'=> 'users', 'action'=>'add')); ?> </li>
-		<li><?php echo $this->Html->link(__d('users', 'List Groups', true), array('controller'=> 'groups', 'action'=>'index')); ?> </li>
-		<li><?php echo $this->Html->link(__d('users', 'New Group', true), array('controller'=> 'groups', 'action'=>'add')); ?> </li>
 	</ul>
 </div>

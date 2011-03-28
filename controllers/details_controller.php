@@ -163,9 +163,9 @@ class DetailsController extends UsersAppController {
 				$this->Session->setFlash(__d('users', 'The Detail could not be saved. Please, try again.', true));
 			}
 		}
-		$groups = $this->Detail->Group->find('list');
+
 		$users = $this->Detail->User->find('list');
-		$this->set(compact('groups', 'users'));
+		$this->set(compact('users'));
 	}
 
 /**
@@ -190,9 +190,9 @@ class DetailsController extends UsersAppController {
 		if (empty($this->data)) {
 			$this->data = $this->Detail->read(null, $id);
 		}
-		$groups = $this->Detail->Group->find('list');
+
 		$users = $this->Detail->User->find('list');
-		$this->set(compact('groups','users'));
+		$this->set(compact('users'));
 	}
 
 /**

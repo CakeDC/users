@@ -25,10 +25,11 @@
 	<?php echo $this->element('paging'); ?>
 	<table cellpadding="0" cellspacing="0">
 		<tr>
-			<th><?php echo $paginator->sort('username');?></th>
-			<th><?php echo $paginator->sort('email');?></th>
-			<th><?php echo $paginator->sort('created');?></th>
-			<th><?php echo $paginator->sort('modified');?></th>
+			<th><?php echo $this->Paginator->sort('username');?></th>
+			<th><?php echo $this->Paginator->sort('email');?></th>
+			<th><?php echo $this->Paginator->sort('email_authenticated');?></th>
+			<th><?php echo $this->Paginator->sort('active');?></th>
+			<th><?php echo $this->Paginator->sort('created');?></th>
 			<th class="actions"><?php __d('users', 'Actions');?></th>
 		</tr>
 			<?php
@@ -47,10 +48,13 @@
 					<?php echo $user[$model]['email']; ?>
 				</td>
 				<td>
-					<?php echo $user[$model]['created']; ?>
+					<?php echo $user[$model]['email_authenticated']; ?>
 				</td>
 				<td>
-					<?php echo $user[$model]['modified']; ?>
+					<?php echo $user[$model]['active']; ?>
+				</td>
+				<td>
+					<?php echo $user[$model]['created']; ?>
 				</td>
 				<td class="actions">
 					<?php echo $this->Html->link(__d('users', 'View', true), array('action'=>'view', $user[$model]['id'])); ?>
