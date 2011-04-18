@@ -435,13 +435,7 @@ class User extends UsersAppModel {
  * @return mixed
  */
 	public function register($postData = array(), $useEmailVerification = true) {
-		if ($useEmailVerification == true) {
-			$postData[$this->alias]['email_token'] = $this->generateToken();
-			$postData[$this->alias]['email_token_expires'] = date('Y-m-d H:i:s', time() + 86400);
-		} else {
-			$postData[$this->alias]['email_authenticated'] = 1;
-		}
-		$postData[$this->alias]['active'] = 1;
+		$postData = $this->_beforeRegistration($postData, $useEmailVerification);
 
 		$this->_removeExpiredRegistrations();
 
@@ -531,6 +525,24 @@ class User extends UsersAppModel {
 			}
 		}
 		return $token;
+	}
+
+/**
+ * Optional data manipulation before the registration record is saved
+ *
+ * @param array post data array
+ * @param boolean Use email generation, create token, default true
+ * @return array
+ */
+	protected function _beforeRegistration($postData = array(), $useEmailVerification = true) {
+		if ($useEmailVerification == true) {
+			$postData[$this->alias]['email_token'] = $this->generateToken();
+			$postData[$this->alias]['email_token_expires'] = date('Y-m-d H:i:s', time() + 86400);
+		} else {
+			$postData[$this->alias]['email_authenticated'] = 1;
+		}
+		$postData[$this->alias]['active'] = 1;
+		return $postData;
 	}
 
 /**
