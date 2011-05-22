@@ -73,11 +73,11 @@ class UserTestCase extends CakeTestCase {
  * @return void
  */
 	public function testConfirmPassword() {
-		$this->User->data['User']['passwd'] = 'password';
+		$this->User->data['User']['password'] = 'password';
 		$result = $this->User->confirmPassword(array('temppassword' => 'password'));
 		$this->assertTrue($result);
 
-		$this->User->data['User']['passwd'] = 'different_password';
+		$this->User->data['User']['password'] = 'different_password';
 		$result = $this->User->confirmPassword(array('temppassword' => 'password'));
 		$this->assertFalse($result);
 	}
@@ -213,11 +213,11 @@ class UserTestCase extends CakeTestCase {
 		App::import('Core', 'Security');
 		$password = Security::hash('password', null, true);
 		$this->User->id = '1';
-		$this->User->saveField('passwd', $password);
+		$this->User->saveField('password', $password);
 		$this->User->data = array(
 			'User' => array(
 				'id' => '1',
-				'passwd'));
+				'password'));
 		$this->assertTrue($this->User->validateOldPassword(array('old_password' => 'password')));
 		$this->assertFalse($this->User->validateOldPassword(array('old_password' => 'FAIL!')));
 	}
@@ -250,7 +250,7 @@ class UserTestCase extends CakeTestCase {
 		$postData = array('User' => array(
 			'username' => '#236236326sdg!!!.s#invalid',
 			'email' => 'invalid',
-			'passwd' => 'password',
+			'password' => 'password',
 			'temppassword' => 'wrong',
 			'tos' => 0));
 		$result = $this->User->register($postData);
@@ -262,26 +262,26 @@ class UserTestCase extends CakeTestCase {
 		$postData = array('User' => array(
 			'username' => 'validusername',
 			'email' => 'test@test.com',
-			'passwd' => '12345',
+			'password' => '12345',
 			'temppassword' => '12345',
 			'tos' => 1));
 		$result = $this->User->register($postData);
 		$this->assertFalse($result);
 		$this->assertEqual(array_keys($this->User->invalidFields()), array(
-			'passwd'));
+			'password'));
 
 
 		$postData = array('User' => array(
 			'username' => 'imanewuser',
 			'email' => 'foo@bar.com',
-			'passwd' => 'password',
+			'password' => 'password',
 			'temppassword' => 'password',
 			'tos' => 1));
 		$result = $this->User->register($postData);
 		$this->assertTrue(is_array($result));
 		$this->assertEqual($result['User']['active'], 1);
 		$this->assertEqual($result['User']['slug'], 'imanewuser');
-		$this->assertEqual($result['User']['passwd'], Security::hash('password', 'sha1', true));
+		$this->assertEqual($result['User']['password'], Security::hash('password', 'sha1', true));
 		$this->assertTrue(is_string($result['User']['email_token']));
 
 		$result = $this->User->findById($this->User->id);
@@ -323,7 +323,7 @@ class UserTestCase extends CakeTestCase {
 			'recursive' => -1,
 			'conditions' => array(
 				'User.id' => 1)));
-		$this->assertEqual($ressult['User']['passwd'], Security::hash('testtest', null, true));
+		$this->assertEqual($ressult['User']['password'], Security::hash('testtest', null, true));
 	}
 
 /**
@@ -425,7 +425,7 @@ class UserTestCase extends CakeTestCase {
 			'User' => array(
 				'username' => 'newusername',
 				'email' => 'newusername@newusername.com',
-				'passwd' => 'password',
+				'password' => 'password',
 				'temppassword' => 'password',
 				'tos' => 1));
 		$result = $this->User->add($postData);

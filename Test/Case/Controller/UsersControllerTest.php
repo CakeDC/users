@@ -41,7 +41,7 @@ class TestUsersController extends UsersController {
 	public function beforeFilter() {
 		parent::beforeFilter();
 		$this->Auth->authorize = 'controller';
-		$this->Auth->fields = array('username' => 'email', 'password' => 'passwd');
+		$this->Auth->fields = array('username' => 'email', 'password' => 'password');
 		$this->Auth->loginAction = array('controller' => 'users', 'action' => 'login', 'prefix' => 'admin', 'admin' => false, 'plugin' => 'users');
 		$this->Auth->loginRedirect = $this->Session->read('Auth.redirect');
 		$this->Auth->logoutRedirect = '/';
@@ -116,9 +116,9 @@ class UsersControllerTestCase extends CakeTestCase {
  * @var array
  */
 	public $usersData = array(
-		'admin' => array('email' => 'larry.masters@cakedc.com', 'username' => 'phpnut', 'passwd' => 'test'),
-		'validUser' => array('email' => 'florian.kraemer@cakedc.com', 'username' => 'floriank', 'passwd' => 'secretkey', 'redirect' => '/user/burzum'),
-		'invalidUser' => array('email' => 'wronguser@wronguser.com', 'username' => 'invalidUser', 'passwd' => 'invalid-password!'));
+		'admin' => array('email' => 'larry.masters@cakedc.com', 'username' => 'phpnut', 'password' => 'test'),
+		'validUser' => array('email' => 'florian.kraemer@cakedc.com', 'username' => 'floriank', 'password' => 'secretkey', 'redirect' => '/user/burzum'),
+		'invalidUser' => array('email' => 'wronguser@wronguser.com', 'username' => 'invalidUser', 'password' => 'invalid-password!'));
 
 /**
  * Start test
@@ -164,7 +164,7 @@ class UsersControllerTestCase extends CakeTestCase {
 				'id'  => '1',
 				'username' => 'testuser',
 				'slug' => 'testuser',
-				'passwd'  => Security::hash('test', null, true),
+				'password'  => Security::hash('test', null, true),
 			)), false);
 
 		$this->__setPost(array('User' => $this->usersData['admin']));
@@ -199,7 +199,7 @@ class UsersControllerTestCase extends CakeTestCase {
 			'User' => array(
 				'username' => 'newUser',
 				'email' => 'newUser@newemail.com',
-				'passwd' => 'password',
+				'password' => 'password',
 				'temppassword' => 'password',
 				'tos' => 1)));
 		$this->Users->beforeFilter();
@@ -210,7 +210,7 @@ class UsersControllerTestCase extends CakeTestCase {
 			'User' => array(
 				'username' => 'newUser',
 				'email' => '',
-				'passwd' => '',
+				'password' => '',
 				'temppassword' => '',
 				'tos' => 0)));
 		$this->Users->beforeFilter();

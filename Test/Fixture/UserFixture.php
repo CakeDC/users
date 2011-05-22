@@ -40,7 +40,7 @@ class UserFixture extends CakeTestFixture {
 			'id' => array('type'=>'string', 'null' => false, 'length' => 36, 'key' => 'primary'),
 			'username' => array('type'=>'string', 'null' => false, 'default' => NULL),
 			'slug' => array('type'=>'string', 'null' => false, 'default' => NULL),
-			'passwd' => array('type'=>'string', 'null' => true, 'default' => NULL, 'length' => 128),
+			'password' => array('type'=>'string', 'null' => true, 'default' => NULL, 'length' => 128),
 			'password_token' => array('type'=>'string', 'null' => true, 'default' => NULL, 'length' => 128),
 			'email' => array('type'=>'string', 'null' => true, 'default' => NULL),
 			'email_authenticated' => array('type'=>'boolean', 'null' => true, 'default' => '0'),
@@ -68,7 +68,7 @@ class UserFixture extends CakeTestFixture {
 			'id'  => '1',
 			'username'  => 'phpnut',
 			'slug' => 'phpnut',
-			'passwd'  => 'test', // test
+			'password'  => 'test', // test
 			'password_token'  => 'testtoken',
 			'email' => 'larry.masters@cakedc.com',
 			'email_authenticated' => 1,
@@ -87,7 +87,7 @@ class UserFixture extends CakeTestFixture {
 			'id'  => '47ea303a-3cyc-k251-b313-4811c0a800bf',
 			'username'  => 'floriank',
 			'slug' => 'floriank',
-			'passwd'  => 'secretkey', // secretkey
+			'password'  => 'secretkey', // secretkey
 			'password_token'  => '',
 			'email' => 'florian.kraemer@cakedc.com',
 			'email_authenticated' => '1',
@@ -106,7 +106,7 @@ class UserFixture extends CakeTestFixture {
 			'id'  => '37ea303a-3bdc-4251-b315-1316c0b300fa',
 			'username'  => 'user1',
 			'slug' => 'user1',
-			'passwd'  => 'newpass', // newpass
+			'password'  => 'newpass', // newpass
 			'password_token'  => '',
 			'email' => 'testuser1@testuser.com',
 			'email_authenticated' => 0,
@@ -125,7 +125,7 @@ class UserFixture extends CakeTestFixture {
 			'id' => '495e36a2-1f00-46b9-8247-58a367265f11',
 			'username'  => 'oidtest',
 			'slug' => 'oistest',
-			'passwd'  => 'newpass', // newpass
+			'password'  => 'newpass', // newpass
 			'password_token'  => '',
 			'email' => 'oidtest@testuser.com',
 			'email_authenticated' => 0,
@@ -144,7 +144,7 @@ class UserFixture extends CakeTestFixture {
 			'id' => '315e36a2-1fxj-46b9-8247-58a367265f11',
 			'username'  => 'oidtest2',
 			'slug' => 'oistest',
-			'passwd'  => 'newpass', // newpass
+			'password'  => 'newpass', // newpass
 			'password_token'  => '',
 			'email' => 'oidtest2@testuser.com',
 			'email_authenticated' => 0,
@@ -163,7 +163,7 @@ class UserFixture extends CakeTestFixture {
 			'id' => '515e36a2-5fjj-46b9-8247-584367265f11',
 			'username'  => 'resetuser',
 			'slug' => 'resetuser',
-			'passwd'  => 'newpass', // newpass
+			'password'  => 'newpass', // newpass
 			'password_token'  => 'testtoken',
 			'email' => 'resetuser@testuser.com',
 			'email_authenticated' => 1,
@@ -187,7 +187,7 @@ class UserFixture extends CakeTestFixture {
 		parent::__construct();
 		App::uses('Lib', 'Security');
 		foreach ($this->records as &$record) {
-			$record['passwd'] = Security::hash($record['passwd'], null, true);
+			$record['password'] = Security::hash($record['password'], null, true);
 		}
 	}
 

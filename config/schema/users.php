@@ -41,7 +41,7 @@ class usersSchema extends CakeSchema {
 		'id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary'),
 		'username' => array('type' => 'string', 'null' => false, 'default' => NULL, 'key' => 'index'),
 		'slug' => array('type' => 'string', 'null' => false, 'default' => NULL),
-		'passwd' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 128),
+		'password' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 128),
 		'password_token' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 128),
 		'email' => array('type' => 'string', 'null' => true, 'default' => NULL, 'key' => 'index'),
 		'email_authenticated' => array('type' => 'boolean', 'null' => true, 'default' => '0'),

@@ -107,7 +107,7 @@ class User extends UsersAppModel {
 				'isUnique' => array(
 					'rule' => array('isUnique','email'),
 					'message' => __d('users', 'This email is already in use.', true))),
-			'passwd' => array(
+			'password' => array(
 				'to_short' => array(
 					'rule' => array('minLength', '6'),
 					'message' => __d('users', 'The password must have at least 6 characters.', true)),
@@ -122,7 +122,7 @@ class User extends UsersAppModel {
 				'message' => __d('users', 'You must agree to the terms of use.', true)));
 
 		$this->validatePasswordChange = array(
-			'new_password' => $this->validate['passwd'],
+			'new_password' => $this->validate['password'],
 			'confirm_password' => array(
 				'required' => array('rule' => array('compareFields', 'new_password', 'confirm_password'), 'required' => true, 'message' => __d('users', 'The passwords are not equal.', true))),
 			'old_password' => array(
@@ -187,9 +187,9 @@ class User extends UsersAppModel {
  * @return boolean Success
  */
 	public function confirmPassword($password = null) {
-		if ((isset($this->data[$this->alias]['passwd']) && isset($password['temppassword']))
+		if ((isset($this->data[$this->alias]['password']) && isset($password['temppassword']))
 			&& !empty($password['temppassword'])
-			&& ($this->data[$this->alias]['passwd'] === $password['temppassword'])) {
+			&& ($this->data[$this->alias]['password'] === $password['temppassword'])) {
 			return true;
 		}
 		return false;
@@ -237,7 +237,7 @@ class User extends UsersAppModel {
 				$data[$this->alias]['email_authenticated'] = '1';
 
 				if ($reset === true) {
-					$data[$this->alias]['passwd'] = $this->generatePassword();
+					$data[$this->alias]['password'] = $this->generatePassword();
 					$data[$this->alias]['password_token'] = null;
 				}
 
@@ -320,7 +320,7 @@ class User extends UsersAppModel {
 		$result = false;
 		$tmp = $this->validate;
 		$this->validate = array(
-			'new_password' => $this->validate['passwd'],
+			'new_password' => $this->validate['password'],
 			'confirm_password' => array(
 				'required' => array(
 					'rule' => array('compareFields', 'new_password', 'confirm_password'), 
@@ -329,7 +329,7 @@ class User extends UsersAppModel {
 		$this->set($postData);
 		if ($this->validates()) {
 			App::import('Core', 'Security');
-			$this->data[$this->alias]['passwd'] = Security::hash($this->data[$this->alias]['new_password'], null, true);
+			$this->data[$this->alias]['password'] = Security::hash($this->data[$this->alias]['new_password'], null, true);
 			$this->data[$this->alias]['password_token'] = null;
 			$result = $this->save($this->data, false);
 		}
@@ -350,7 +350,7 @@ class User extends UsersAppModel {
 
 		if ($this->validates()) {
 			App::import('Core', 'Security');
-			$this->data[$this->alias]['passwd'] = Security::hash($this->data[$this->alias]['new_password'], null, true);
+			$this->data[$this->alias]['password'] = Security::hash($this->data[$this->alias]['new_password'], null, true);
 			$this->save($postData, array(
 				'validate' => false,
 				'callbacks' => false));
@@ -375,9 +375,9 @@ class User extends UsersAppModel {
 			}
 		}
 
-		$passwd = $this->field('passwd', array($this->alias . '.id' => $this->data[$this->alias]['id']));
+		$password = $this->field('password', array($this->alias . '.id' => $this->data[$this->alias]['id']));
 		App::import('Core', 'Security');
-		if ($passwd === Security::hash($password['old_password'], null, true)) {
+		if ($password === Security::hash($password['old_password'], null, true)) {
 			return true;
 		}
 		return false;
@@ -442,7 +442,7 @@ class User extends UsersAppModel {
 		$this->set($postData);
 		if ($this->validates()) {
 			App::import('Core', 'Security');
-			$postData[$this->alias]['passwd'] = Security::hash($postData[$this->alias]['passwd'], 'sha1', true);
+			$postData[$this->alias]['password'] = Security::hash($postData[$this->alias]['password'], 'sha1', true);
 			$this->create();
 			return $this->save($postData, false);
 		}

@@ -266,7 +266,7 @@ class UsersController extends UsersAppController {
 				$this->Session->setFlash(__d('users', 'Your account has been created. You should receive an e-mail shortly to authenticate your account. Once validated you will be able to login.', true));
 				$this->redirect(array('action'=> 'login'));
 			} else {
-				unset($this->data[$this->modelClass]['passwd']);
+				unset($this->data[$this->modelClass]['password']);
 				unset($this->data[$this->modelClass]['temppassword']);
 				$this->Session->setFlash(__d('users', 'Your account could not be created. Please, try again.', true), 'default', array('class' => 'message warning'));
 			}
@@ -386,8 +386,8 @@ class UsersController extends UsersAppController {
 			unset($data[$this->modelClass]['email']);
 
 			if ($type === 'reset') {
-				$newPassword = $data[$this->modelClass]['passwd'];
-				$data[$this->modelClass]['passwd'] = $this->Auth->password($newPassword);
+				$newPassword = $data[$this->modelClass]['password'];
+				$data[$this->modelClass]['password'] = $this->Auth->password($newPassword);
 			}
 
 			if ($type === 'email') {
