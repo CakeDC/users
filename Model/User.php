@@ -89,44 +89,44 @@ class User extends UsersAppModel {
 				'required' => array(
 					'rule' => array('notEmpty'),
 					'required' => true, 'allowEmpty' => false,
-					'message' => __d('users', 'Please enter a username', true)),
+					'message' => __d('users', 'Please enter a username')),
 				'alpha' => array(
 					'rule'=>array('alphaNumeric'), 
-					'message' => __d('users', 'The username must be alphanumeric', true)),
+					'message' => __d('users', 'The username must be alphanumeric')),
 				'unique_username' => array(
 					'rule'=>array('isUnique','username'),
-					'message' => __d('users', 'This username is already in use.', true)),
+					'message' => __d('users', 'This username is already in use.')),
 				'username_min' => array(
 					'rule' => array('minLength', '3'),
-					'message' => __d('users', 'The username must have at least 3 characters.', true))),
+					'message' => __d('users', 'The username must have at least 3 characters.'))),
 			'email' => array(
 				'isValid' => array(
 					'rule' => 'email',
 					'required' => true,
-					'message' => __d('users', 'Please enter a valid email address.', true)),
+					'message' => __d('users', 'Please enter a valid email address.')),
 				'isUnique' => array(
 					'rule' => array('isUnique','email'),
-					'message' => __d('users', 'This email is already in use.', true))),
+					'message' => __d('users', 'This email is already in use.'))),
 			'password' => array(
 				'to_short' => array(
 					'rule' => array('minLength', '6'),
-					'message' => __d('users', 'The password must have at least 6 characters.', true)),
+					'message' => __d('users', 'The password must have at least 6 characters.')),
 				'required' => array(
 					'rule' => 'notEmpty',
-					'message' => __d('users', 'Please enter a password.', true))),
+					'message' => __d('users', 'Please enter a password.'))),
 			'temppassword' => array(
 				'rule' => 'confirmPassword',
-				'message' => __d('users', 'The passwords are not equal, please try again.', true)),
+				'message' => __d('users', 'The passwords are not equal, please try again.')),
 			'tos' => array(
 				'rule' => array('custom','[1]'),
-				'message' => __d('users', 'You must agree to the terms of use.', true)));
+				'message' => __d('users', 'You must agree to the terms of use.')));
 
 		$this->validatePasswordChange = array(
 			'new_password' => $this->validate['password'],
 			'confirm_password' => array(
-				'required' => array('rule' => array('compareFields', 'new_password', 'confirm_password'), 'required' => true, 'message' => __d('users', 'The passwords are not equal.', true))),
+				'required' => array('rule' => array('compareFields', 'new_password', 'confirm_password'), 'required' => true, 'message' => __d('users', 'The passwords are not equal.'))),
 			'old_password' => array(
-				'to_short' => array('rule' => 'validateOldPassword', 'required' => true, 'message' => __d('users', 'Invalid password.', true))));
+				'to_short' => array('rule' => 'validateOldPassword', 'required' => true, 'message' => __d('users', 'Invalid password.'))));
 	}
 
 /**
@@ -145,7 +145,7 @@ class User extends UsersAppModel {
 		$this->Detail->sectionValidation[$this->alias] = array(
 				'birthday' => array(
 					'validDate' => array(
-						'rule' => array('date'), 'allowEmpty' => true, 'message' => __d('users', 'Invalid date', true))));
+						'rule' => array('date'), 'allowEmpty' => true, 'message' => __d('users', 'Invalid date'))));
 	}
 
 /**
@@ -284,9 +284,9 @@ class User extends UsersAppModel {
 			$user = $this->save($user, false);
 			return $user;
 		} elseif (!empty($user) && $user[$this->alias]['email_authenticated'] == 0){
-			$this->invalidate('email', __d('users', 'This Email Address exists but was never validated.', true));
+			$this->invalidate('email', __d('users', 'This Email Address exists but was never validated.'));
 		} else {
-			$this->invalidate('email', __d('users', 'This Email Address does not exist in the system.', true));
+			$this->invalidate('email', __d('users', 'This Email Address does not exist in the system.'));
 		}
 		return false;
 	}
@@ -324,7 +324,7 @@ class User extends UsersAppModel {
 			'confirm_password' => array(
 				'required' => array(
 					'rule' => array('compareFields', 'new_password', 'confirm_password'), 
-					'message' => __d('users', 'The passwords are not equal.', true))));
+					'message' => __d('users', 'The passwords are not equal.'))));
 
 		$this->set($postData);
 		if ($this->validates()) {
@@ -371,7 +371,7 @@ class User extends UsersAppModel {
 	public function validateOldPassword($password) {
 		if (!isset($this->data[$this->alias]['id']) || empty($this->data[$this->alias]['id'])) {
 			if (Configure::read('debug') > 0) {
-				throw new OutOfBoundsException(__d('users', '$this->data[\'' . $this->alias . '\'][\'id\'] has to be set and not empty', true));
+				throw new OutOfBoundsException(__d('users', '$this->data[\'' . $this->alias . '\'][\'id\'] has to be set and not empty'));
 			}
 		}
 
@@ -421,7 +421,7 @@ class User extends UsersAppModel {
 						))));
 
 		if (empty($user)) {
-			throw new Exception(__d('users', 'The user does not exist.', true));
+			throw new Exception(__d('users', 'The user does not exist.'));
 		}
 
 		return $user;
@@ -458,7 +458,7 @@ class User extends UsersAppModel {
  */
 	public function resendVerification($postData = array()) {
 		if (!isset($postData[$this->alias]['email']) || empty($postData[$this->alias]['email'])) {
-			$this->invalidate('email', __d('users', 'Please enter your email address.', true));
+			$this->invalidate('email', __d('users', 'Please enter your email address.'));
 			return false;
 		}
 
@@ -468,17 +468,17 @@ class User extends UsersAppModel {
 				$this->alias . '.email' => $postData[$this->alias]['email'])));
 
 		if (empty($user)) {
-			$this->invalidate('email', __d('users', 'The email address does not exist in the system', true));
+			$this->invalidate('email', __d('users', 'The email address does not exist in the system'));
 			return false;
 		}
 
 		if ($user[$this->alias]['email_authenticated'] == 1) {
-			$this->invalidate('email', __d('users', 'Your account is already authenticaed.', true));
+			$this->invalidate('email', __d('users', 'Your account is already authenticaed.'));
 			return false;
 		}
 
 		if ($user[$this->alias]['active'] == 0) {
-			$this->invalidate('email', __d('users', 'Your account is disabled.', true));
+			$this->invalidate('email', __d('users', 'Your account is disabled.'));
 			return false;
 		}
 
@@ -668,7 +668,7 @@ class User extends UsersAppModel {
 
 		$this->set($user);
 		if (empty($user)) {
-			throw new OutOfBoundsException(__d('users', 'Invalid User', true));
+			throw new OutOfBoundsException(__d('users', 'Invalid User'));
 		}
 
 		if (!empty($postData)) {

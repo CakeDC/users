@@ -49,9 +49,7 @@ class UsersAppModel extends AppModel {
 		if (isset($extra['type']) && isset($this->_findMethods[$extra['type']])) {
 			$extra['operation'] = 'count';
 			return $this->find($extra['type'], array_merge($parameters, $extra));
-		} else {
-			return $this->find('count', array_merge($parameters, $extra));
 		}
+		return $this->find('count', array_merge($parameters, $extra));
 	}
-
 }
