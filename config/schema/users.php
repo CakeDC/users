@@ -55,6 +55,6 @@ class usersSchema extends CakeSchema {
 		'role' => array('type' => 'string', 'null' => true, 'default' => NULL),
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
-		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1), 'BY_USERNAME' => array('column' => array('username', 'passwd'), 'unique' => 0), 'BY_EMAIL' => array('column' => array('email', 'passwd'), 'unique' => 0))
+		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1), 'BY_USERNAME' => array('column' => array('username'), 'unique' => 0), 'BY_EMAIL' => array('column' => array('email'), 'unique' => 0))
 	);
 }

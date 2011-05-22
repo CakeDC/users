@@ -13,19 +13,19 @@
 <h2><?php __d('users', 'Details');?></h2>
 <p>
 <?php
-echo $paginator->counter(array(
+echo $this->Paginator->counter(array(
 'format' => __d('users', 'Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%', true)
 ));
 ?></p>
 <table cellpadding="0" cellspacing="0">
 <tr>
-	<th><?php echo $paginator->sort('id');?></th>
-	<th><?php echo $paginator->sort('user_id');?></th>
-	<th><?php echo $paginator->sort('position');?></th>
-	<th><?php echo $paginator->sort('field');?></th>
-	<th><?php echo $paginator->sort('value');?></th>
-	<th><?php echo $paginator->sort('created');?></th>
-	<th><?php echo $paginator->sort('modified');?></th>
+	<th><?php echo $this->Paginator->sort('id');?></th>
+	<th><?php echo $this->Paginator->sort('user_id');?></th>
+	<th><?php echo $this->Paginator->sort('position');?></th>
+	<th><?php echo $this->Paginator->sort('field');?></th>
+	<th><?php echo $this->Paginator->sort('value');?></th>
+	<th><?php echo $this->Paginator->sort('created');?></th>
+	<th><?php echo $this->Paginator->sort('modified');?></th>
 	<th class="actions"><?php __d('users', 'Actions');?></th>
 </tr>
 <?php
@@ -68,16 +68,14 @@ foreach ($details as $detail):
 </table>
 </div>
 <div class="paging">
-	<?php echo $paginator->prev('<< '.__d('users', 'previous', true), array(), null, array('class'=>'disabled'));?>
- | 	<?php echo $paginator->numbers();?>
-	<?php echo $paginator->next(__d('users', 'next', true).' >>', array(), null, array('class'=>'disabled'));?>
+	<?php echo $this->Paginator->prev('<< '.__d('users', 'previous', true), array(), null, array('class'=>'disabled'));?>
+ | 	<?php echo $this->Paginator->numbers();?>
+	<?php echo $this->Paginator->next(__d('users', 'next', true).' >>', array(), null, array('class'=>'disabled'));?>
 </div>
 <div class="actions">
 	<ul>
 		<li><?php echo $this->Html->link(__d('users', 'New Detail', true), array('action'=>'add')); ?></li>
 		<li><?php echo $this->Html->link(__d('users', 'List Users', true), array('controller'=> 'users', 'action'=>'index')); ?> </li>
 		<li><?php echo $this->Html->link(__d('users', 'New User', true), array('controller'=> 'users', 'action'=>'add')); ?> </li>
-		<li><?php echo $this->Html->link(__d('users', 'List Groups', true), array('controller'=> 'groups', 'action'=>'index')); ?> </li>
-		<li><?php echo $this->Html->link(__d('users', 'New Group', true), array('controller'=> 'groups', 'action'=>'add')); ?> </li>
 	</ul>
 </div>

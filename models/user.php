@@ -109,8 +109,8 @@ class User extends UsersAppModel {
 					'message' => __d('users', 'This email is already in use.', true))),
 			'passwd' => array(
 				'to_short' => array(
-					'rule' => array('minLength', '4'),
-					'message' => __d('users', 'The password must have at least 8 characters.', true)),
+					'rule' => array('minLength', '6'),
+					'message' => __d('users', 'The password must have at least 6 characters.', true)),
 				'required' => array(
 					'rule' => 'notEmpty',
 					'message' => __d('users', 'Please enter a password.', true))),
@@ -127,17 +127,25 @@ class User extends UsersAppModel {
 				'required' => array('rule' => array('compareFields', 'new_password', 'confirm_password'), 'required' => true, 'message' => __d('users', 'The passwords are not equal.', true))),
 			'old_password' => array(
 				'to_short' => array('rule' => 'validateOldPassword', 'required' => true, 'message' => __d('users', 'Invalid password.', true))));
+	}
 
+/**
+ * Sets some defaults for the detail model
+ *
+ * @return void
+ */
+	public function setupDetail() {
 		$this->Detail->sectionSchema[$this->alias] = array(
-			'birthday' => array(
-				'type' => 'date',
-				'null' => null,
-				'default' => null,
-				'length' => null));
+				'birthday' => array(
+					'type' => 'date',
+					'null' => null,
+					'default' => null,
+					'length' => null));
 
 		$this->Detail->sectionValidation[$this->alias] = array(
-			'birthday' => array(
-				'validDate' => array('rule' => array('date'), 'allowEmpty' => true, 'message' => __d('users', 'Invalid date', true))));
+				'birthday' => array(
+					'validDate' => array(
+						'rule' => array('date'), 'allowEmpty' => true, 'message' => __d('users', 'Invalid date', true))));
 	}
 
 /**
@@ -427,13 +435,7 @@ class User extends UsersAppModel {
  * @return mixed
  */
 	public function register($postData = array(), $useEmailVerification = true) {
-		if ($useEmailVerification == true) {
-			$postData[$this->alias]['email_token'] = $this->generateToken();
-			$postData[$this->alias]['email_token_expires'] = date('Y-m-d H:i:s', time() + 86400);
-		} else {
-			$postData[$this->alias]['email_authenticated'] = 1;
-		}
-		$postData[$this->alias]['active'] = 1;
+		$postData = $this->_beforeRegistration($postData, $useEmailVerification);
 
 		$this->_removeExpiredRegistrations();
 
@@ -523,6 +525,24 @@ class User extends UsersAppModel {
 			}
 		}
 		return $token;
+	}
+
+/**
+ * Optional data manipulation before the registration record is saved
+ *
+ * @param array post data array
+ * @param boolean Use email generation, create token, default true
+ * @return array
+ */
+	protected function _beforeRegistration($postData = array(), $useEmailVerification = true) {
+		if ($useEmailVerification == true) {
+			$postData[$this->alias]['email_token'] = $this->generateToken();
+			$postData[$this->alias]['email_token_expires'] = date('Y-m-d H:i:s', time() + 86400);
+		} else {
+			$postData[$this->alias]['email_authenticated'] = 1;
+		}
+		$postData[$this->alias]['active'] = 1;
+		return $postData;
 	}
 
 /**
