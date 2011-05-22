@@ -75,7 +75,7 @@ You can override/extend all methods or properties like validation rules to suit 
 ## Requirements ##
 
 * PHP version: PHP 5.2+
-* CakePHP version: Cakephp 1.3 Stable
+* CakePHP version: Cakephp 2.0
 * [CakeDC Utils plugin](http://github.com/CakeDC/utils)
 * [CakeDC Search plugin](http://github.com/CakeDC/search)
 
