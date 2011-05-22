@@ -54,8 +54,8 @@ class DetailsController extends UsersAppController {
  */
 	public function view($id = null) {
 		if (!$id) {
-			$this->Session->setFlash(__d('users', 'Invalid Detail.', true));
-			$this->redirect(array('action'=>'index'));
+			$this->Session->setFlash(__d('users', 'Invalid Detail.'));
+			$this->redirect(array('action' => 'index'));
 		}
 		$this->set('detail', $this->Detail->read(null, $id));
 	}
@@ -76,7 +76,7 @@ class DetailsController extends UsersAppController {
 						array('Detail.user_id' => $userId, 'Detail.field' => $field));
 				}
 			}
-			$this->Session->setFlash(__d('users', 'Saved', true));
+			$this->Session->setFlash(__d('users', 'Saved'));
 		}
 		$this->redirect(array('action' => 'index'));
 	}
@@ -97,7 +97,7 @@ class DetailsController extends UsersAppController {
 		if (!empty($this->data)) {
 			$this->Detail->saveSection($this->Auth->user('id'), $this->data, $section);
 			$this->data['Detail'] = $this->Detail->getSection($this->Auth->user('id'), $section);
-			$this->Session->setFlash(sprintf(__d('users', '%s details saved', true), ucfirst($section)));
+			$this->Session->setFlash(sprintf(__d('users', '%s details saved'), ucfirst($section)));
 		}
 
 		if (empty($this->data)) {
@@ -115,12 +115,12 @@ class DetailsController extends UsersAppController {
  */
 	public function delete($id = null) {
 		if (!$id) {
-			$this->Session->setFlash(__d('users', 'Invalid id for Detail', true));
-			$this->redirect(array('action'=>'index'));
+			$this->Session->setFlash(__d('users', 'Invalid id for Detail'));
+			$this->redirect(array('action' => 'index'));
 		}
 		if ($this->Detail->delete($id)) {
-			$this->Session->setFlash(__d('users', 'Detail deleted', true));
-			$this->redirect(array('action'=>'index'));
+			$this->Session->setFlash(__d('users', 'Detail deleted'));
+			$this->redirect(array('action' => 'index'));
 		}
 	}
 
@@ -142,8 +142,8 @@ class DetailsController extends UsersAppController {
  */
 	public function admin_view($id = null) {
 		if (!$id) {
-			$this->Session->setFlash(__d('users', 'Invalid Detail.', true));
-			$this->redirect(array('action'=>'index'));
+			$this->Session->setFlash(__d('users', 'Invalid Detail.'));
+			$this->redirect(array('action' => 'index'));
 		}
 		$this->set('detail', $this->Detail->read(null, $id));
 	}
@@ -157,10 +157,10 @@ class DetailsController extends UsersAppController {
 		if (!empty($this->data)) {
 			$this->Detail->create();
 			if ($this->Detail->save($this->data)) {
-				$this->Session->setFlash(__d('users', 'The Detail has been saved', true));
-				$this->redirect(array('action'=>'index'));
+				$this->Session->setFlash(__d('users', 'The Detail has been saved'));
+				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__d('users', 'The Detail could not be saved. Please, try again.', true));
+				$this->Session->setFlash(__d('users', 'The Detail could not be saved. Please, try again.'));
 			}
 		}
 
@@ -176,15 +176,15 @@ class DetailsController extends UsersAppController {
  */
 	public function admin_edit($id = null) {
 		if (!$id && empty($this->data)) {
-			$this->Session->setFlash(__d('users', 'Invalid Detail', true));
-			$this->redirect(array('action'=>'index'));
+			$this->Session->setFlash(__d('users', 'Invalid Detail'));
+			$this->redirect(array('action' => 'index'));
 		}
 		if (!empty($this->data)) {
 			if ($this->Detail->save($this->data)) {
-				$this->Session->setFlash(__d('users', 'The Detail has been saved', true));
-				$this->redirect(array('action'=>'index'));
+				$this->Session->setFlash(__d('users', 'The Detail has been saved'));
+				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__d('users', 'The Detail could not be saved. Please, try again.', true));
+				$this->Session->setFlash(__d('users', 'The Detail could not be saved. Please, try again.'));
 			}
 		}
 		if (empty($this->data)) {
@@ -203,12 +203,12 @@ class DetailsController extends UsersAppController {
  */
 	public function admin_delete($id = null) {
 		if (!$id) {
-			$this->Session->setFlash(__d('users', 'Invalid id for Detail', true));
-			$this->redirect(array('action'=>'index'));
+			$this->Session->setFlash(__d('users', 'Invalid id for Detail'));
+			$this->redirect(array('action' => 'index'));
 		}
 		if ($this->Detail->delete($id)) {
-			$this->Session->setFlash(__d('users', 'Detail deleted', true));
-			$this->redirect(array('action'=>'index'));
+			$this->Session->setFlash(__d('users', 'Detail deleted'));
+			$this->redirect(array('action' => 'index'));
 		}
 	}
 }
