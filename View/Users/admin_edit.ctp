@@ -10,19 +10,19 @@
  */
 ?>
 <div class="users form">
-<?php echo $this->Form->create($model);?>
+<?php echo $this->Form->create($model); ?>
 	<fieldset>
- 		<legend><?php __d('users', 'Edit User');?></legend>
+ 		<legend><?php echo __d('users', 'Edit User'); ?></legend>
 	<?php
-		echo $this->Form->input('id');
-		echo $this->Form->input('username');
+	echo $this->Form->input('id');
+	echo $this->Form->input('username');
 	?>
 	</fieldset>
-<?php echo $this->Form->end('Submit');?>
+<?php echo $this->Form->end('Submit'); ?>
 </div>
 <div class="actions">
 	<ul>
-		<li><?php echo $this->Html->link(__d('users', 'Delete', true), array('action'=>'delete', $this->Form->value('User.id')), null, sprintf(__d('users', 'Are you sure you want to delete # %s?', true), $this->Form->value('User.id'))); ?></li>
-		<li><?php echo $this->Html->link(__d('users', 'List Users', true), array('action'=>'index'));?></li>
+		<li><?php echo $this->Html->link(__d('users', 'Delete'), array('action' => 'delete', $this->Form->value('User.id')), null, sprintf(__d('users', 'Are you sure you want to delete # %s?'), $this->Form->value('User.id'))); ?></li>
+		<li><?php echo $this->Html->link(__d('users', 'List Users'), array('action' => 'index')); ?></li>
 	</ul>
 </div>

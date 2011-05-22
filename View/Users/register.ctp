@@ -12,7 +12,7 @@
 <?php $openIdAuthData = $this->Session->read('openIdAuthData'); ?>
 <h2><?php echo __d('users', 'Account registration'); ?></h2>
 <fieldset>
-	<legend><?php echo __d('users', 'Details');?></legend>
+	<legend><?php echo __d('users', 'Details'); ?></legend>
 	<?php
 	if (!isset($openIdAuthData)) {
 		echo $this->Form->create($model, array('url' => array('action'=>'register')));

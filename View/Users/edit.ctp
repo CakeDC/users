@@ -9,14 +9,14 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 ?>
-<?php echo $this->Form->create($model);?>
+<?php echo $this->Form->create($model); ?>
 	<fieldset>
- 		<legend><?php __d('users', 'Edit User');?></legend>
+ 		<legend><?php echo __d('users', 'Edit User'); ?></legend>
 	<?php
-		echo $this->Form->input('id');
-		echo $this->Form->input('account_type');
-		echo $this->Form->input('url');
-		echo $this->Form->input('username');
+	echo $this->Form->input('id');
+	echo $this->Form->input('account_type');
+	echo $this->Form->input('url');
+	echo $this->Form->input('username');
 	?>
 	</fieldset>
-<?php echo $this->Form->end('Submit');?>
+<?php echo $this->Form->end('Submit'); ?>

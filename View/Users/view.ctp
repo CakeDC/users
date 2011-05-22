@@ -10,25 +10,25 @@
  */
 ?>
 <div class="users view">
-<h2><?php  __d('users', 'User');?></h2>
+<h2><?php echo __d('users', 'User'); ?></h2>
 	<dl><?php $i = 0; $class = ' class="altrow"';?>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __d('users', 'Username'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
+		<dt<?php if ($i % 2 == 0) echo $class; ?>><?php echo __d('users', 'Username'); ?></dt>
+		<dd<?php if ($i++ % 2 == 0) echo $class; ?>>
 			<?php echo $user[$model]['username']; ?>
 			&nbsp;
 		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __d('users', 'Created'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
+		<dt<?php if ($i % 2 == 0) echo $class; ?>><?php echo __d('users', 'Created'); ?></dt>
+		<dd<?php if ($i++ % 2 == 0) echo $class; ?>>
 			<?php echo $user[$model]['created']; ?>
 			&nbsp;
 		</dd>
 		<?php
-			if (!empty($user['Detail'])) {
-				foreach ($user['Detail'] as $detail) {
-					echo '<dt>' . $detail['field'] . '</dt>';
-					echo '<dd>' . $detail['value'] . '</dd>';
-				}
+		if (!empty($user['Detail'])) {
+			foreach ($user['Detail'] as $detail) {
+				echo '<dt>' . $detail['field'] . '</dt>';
+				echo '<dd>' . $detail['value'] . '</dd>';
 			}
+		}
 		?>
 	</dl>
 </div>
