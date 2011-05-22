@@ -10,17 +10,16 @@
  */
 ?>
 <div class="details form">
-<?php echo $this->Form->create('Detail', array(
-	'action' => 'edit'));?>
+<?php echo $this->Form->create('Detail', array('action' => 'edit')); ?>
 	<fieldset>
- 		<legend><?php __d('users', 'Edit Detail');?></legend>
+ 		<legend><?php echo __d('users', 'Edit Detail'); ?></legend>
 	<?php
-		echo $this->Form->input('firstname');
-		echo $this->Form->input('middlename');
-		echo $this->Form->input('lastname');
-		echo $this->Form->input('biography');
-		echo $this->Form->input('birthday');
+	echo $this->Form->input('firstname');
+	echo $this->Form->input('middlename');
+	echo $this->Form->input('lastname');
+	echo $this->Form->input('biography');
+	echo $this->Form->input('birthday');
 	?>
 	</fieldset>
-<?php echo $this->Form->end('Submit');?>
+<?php echo $this->Form->end('Submit'); ?>
 </div>

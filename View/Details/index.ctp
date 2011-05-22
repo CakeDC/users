@@ -24,5 +24,5 @@ if (!empty($details)) {
 		}
 		echo $this->Form->input($detail['Detail']['field'], ($options));
 	}
-	echo $this->Form->end(__d('users', 'Submit', true));
+	echo $this->Form->end(__d('users', 'Submit'));
 }
