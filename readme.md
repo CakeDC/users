@@ -36,7 +36,7 @@ The plugin itself is already capable of:
 
 Declare the controller class
 
-	App::import('Controller', 'Users.Users');
+	App::uses('Controller', 'Users.Users');
 	AppUsersController extends UsersController
 
 In the case you want to extend also the user model it's required to set the right user class in the beforeFilter() because the controller will use the inherited model which would be Users.User.
@@ -62,7 +62,7 @@ You can overwrite the render() method to fall back to the plugin views in the ca
 
 Declare the model 
 
-	App::import('Model', 'Users.User');
+	App::uses('Model', 'Users.User');
 	AppUser extends User {
 		public $useTable = 'users';
 		public $name = 'AppUser';
