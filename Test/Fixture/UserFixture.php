@@ -181,7 +181,8 @@ class UserFixture extends CakeTestFixture {
 	);
 
 /**
- * 
+ * Constructor
+ *
  */
 	public function __construct() {
 		parent::__construct();
