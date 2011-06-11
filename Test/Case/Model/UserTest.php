@@ -178,7 +178,7 @@ class UserTestCase extends CakeTestCase {
 	public function testCheckPasswordToken() {
 		$this->User->id = '1';
 		$this->User->saveField('email_token_expires', date('Y-m-d H:i:s', strtotime('+1 year')));
-		$this->assertTrue($this->User->checkPasswordToken('testtoken'));
+		$this->assertInternalType('array', $this->User->checkPasswordToken('testtoken'));
 		$this->assertFalse($this->User->checkPasswordToken('something-wrong-here'));
 	}
 
