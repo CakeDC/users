@@ -185,7 +185,7 @@ class UserFixture extends CakeTestFixture {
  */
 	public function __construct() {
 		parent::__construct();
-		App::uses('Lib', 'Security');
+		App::uses('Security', 'Utility');
 		foreach ($this->records as &$record) {
 			$record['password'] = Security::hash($record['password'], null, true);
 		}
