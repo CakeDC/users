@@ -9,6 +9,8 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
+App::uses('Security', 'Utility');
+
 /**
  * Users Plugin User Model
  *
@@ -345,7 +347,6 @@ class User extends UsersAppModel {
 
 		$this->set($postData);
 		if ($this->validates()) {
-			App::import('Core', 'Security');
 			$this->data[$this->alias]['password'] = Security::hash($this->data[$this->alias]['new_password'], null, true);
 			$this->data[$this->alias]['password_token'] = null;
 			$result = $this->save($this->data, false);
@@ -366,7 +367,6 @@ class User extends UsersAppModel {
 		$this->validate = $this->validatePasswordChange;
 
 		if ($this->validates()) {
-			App::import('Core', 'Security');
 			$this->data[$this->alias]['password'] = Security::hash($this->data[$this->alias]['new_password'], null, true);
 			$this->save($postData, array(
 				'validate' => false,
@@ -393,7 +393,6 @@ class User extends UsersAppModel {
 		}
 
 		$password = $this->field('password', array($this->alias . '.id' => $this->data[$this->alias]['id']));
-		App::import('Core', 'Security');
 		if ($password === Security::hash($password['old_password'], null, true)) {
 			return true;
 		}
@@ -458,7 +457,6 @@ class User extends UsersAppModel {
 
 		$this->set($postData);
 		if ($this->validates()) {
-			App::import('Core', 'Security');
 			$postData[$this->alias]['password'] = Security::hash($postData[$this->alias]['password'], 'sha1', true);
 			$this->create();
 			return $this->save($postData, false);
