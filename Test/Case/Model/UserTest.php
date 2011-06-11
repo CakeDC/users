@@ -217,8 +217,12 @@ class UserTestCase extends CakeTestCase {
 			'User' => array(
 				'id' => '1',
 				'password'));
-		$this->assertTrue($this->User->validateOldPassword(array('old_password' => 'password')));
-		$this->assertFalse($this->User->validateOldPassword(array('old_password' => 'FAIL!')));
+
+		$result = $this->User->validateOldPassword(array('old_password' => 'password'));
+		$this->assertTrue($result);
+
+		$result = $this->User->validateOldPassword(array('old_password' => 'FAIL!'));
+		$this->assertFalse($result);
 	}
 
 /**
