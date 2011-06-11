@@ -393,10 +393,7 @@ class User extends UsersAppModel {
 		}
 
 		$current_password = $this->field('password', array($this->alias . '.id' => $this->data[$this->alias]['id']));
-		if ($current_password === Security::hash($password['old_password'], null, true)) {
-			return true;
-		}
-		return false;
+		return $current_password === Security::hash($password['old_password'], null, true);
 	}
 
 /**
