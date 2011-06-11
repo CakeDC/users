@@ -278,7 +278,6 @@ class UserTestCase extends CakeTestCase {
 		$result = $this->User->register($postData);
 		$this->assertTrue(is_array($result));
 		$this->assertEqual($result['User']['active'], 1);
-		$this->assertEqual($result['User']['slug'], 'imanewuser');
 		$this->assertEqual($result['User']['password'], Security::hash('password', 'sha1', true));
 		$this->assertTrue(is_string($result['User']['email_token']));
 
@@ -375,11 +374,11 @@ class UserTestCase extends CakeTestCase {
  */
 	public function testGeneratePassword() {
 		$result = $this->User->generatePassword();
-		$this->assertIsA($result, 'string');
+		$this->assertInternalType('string', $result);
 		$this->assertEqual(strlen($result), 10);
 
 		$result = $this->User->generatePassword(15);
-		$this->assertIsA($result, 'string');
+		$this->assertInternalType('string', $result);
 		$this->assertEqual(strlen($result), 15);
 	}
 
@@ -393,17 +392,6 @@ class UserTestCase extends CakeTestCase {
 		$this->assertTrue($this->User->exists());
 		$this->assertTrue($this->User->delete('1'));
 		$this->assertFalse($this->User->exists());
-	}
-
-/**
- * testFindSearch
- *
- * @return void
- */
-	public function testFindSearch() {
-		$result = $this->User->find('search', array('by' => 'username', 'search' => 'php'));
-		$this->assertTrue(!empty($result));
-		$this->assertEqual($result[0]['User']['username'], 'phpnut');
 	}
 
 /**
@@ -439,12 +427,18 @@ class UserTestCase extends CakeTestCase {
 		$result = $this->User->read(null, 1);
 		$this->assertEqual($result['User']['username'], $data['User']['username']);
 		$this->assertEqual($result['User']['email'], $data['User']['email']);
-
-		try {
-			$this->User->edit('bogus id', $userId, $data);
-			$this->fail('No exception');
-		} catch (OutOfBoundsException $e) {
-			$this->pass('Correct exception thrown');
-		}
+	}
+	
+/**
+ * testEditException
+ *
+ * @return void
+ */
+	public function testEditException() {
+		$this->setExpectedException('OutOfBoundsException');
+		$userId = '1';
+		$data = $this->User->read(null, $userId);
+		$data['User']['email'] = 'anotherNewEmail@anothernewemail.com';
+		$this->User->edit('bogus id', $userId, $data);
 	}
 }
