@@ -155,14 +155,12 @@ class UserTestCase extends CakeTestCase {
 				'confirm_password' => 'dsgdsgsdg'));
 		$this->assertFalse($this->User->resetPassword($data));
 
-
 		$data = array(
 			'User' => array(
 				'id' => 1,
 				'new_password' => '',
 				'confirm_password' => ''));
 		$this->assertFalse($this->User->resetPassword($data));
-
 
 		$data = array(
 			'User' => array(
