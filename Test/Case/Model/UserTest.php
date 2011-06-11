@@ -210,7 +210,7 @@ class UserTestCase extends CakeTestCase {
  * @return void
  */
 	public function testValidateOldPassword() {
-		App::import('Core', 'Security');
+		App::uses('Security', 'Utility');
 		$password = Security::hash('password', null, true);
 		$this->User->id = '1';
 		$this->User->saveField('password', $password);
@@ -241,7 +241,7 @@ class UserTestCase extends CakeTestCase {
  * @return void
  */
 	public function testRegister() {
-		App::import('Core', 'Security');
+		App::uses('Security', 'Utility');
 		$postData = array();
 		$result = $this->User->register($postData);
 		$this->assertFalse($result);
