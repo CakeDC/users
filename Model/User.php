@@ -25,17 +25,6 @@ class User extends UsersAppModel {
 	public $name = 'User';
 
 /**
- * Behaviors
- *
- * @var array
- */
-	public $actsAs = array(
-		'Search.Searchable',
-		'Utils.Sluggable' => array(
-			'label' => 'username',
-			'method' => 'multibyteSlug'));
-
-/**
  * Additional Find methods
  *
  * @var array
@@ -83,7 +72,35 @@ class User extends UsersAppModel {
  * @param string $ds Datasource
  */
 	public function __construct($id = false, $table = null, $ds = null) {
+		$this->_attachBehaviors();
+		$this->_setupValidation();
 		parent::__construct($id, $table, $ds);
+	}
+
+/**
+ * Setup available plugins
+ *
+ * This checks for the existence of certain plugins, and if available, uses them.
+ *
+ * @return void
+ */
+	protected function _attachBehaviors() {
+		if (App::import('Behavior', 'Search.Searchable')) {
+			$this->actsAs[] = 'Search.Searchable';
+		}
+		if (App::import('Behavior', 'Utils.Sluggable')) {
+			$this->actsAs['Utils.Sluggable'] = array(
+				'label' => 'username',
+				'method' => 'multibyteSlug');
+		}
+	}
+
+/**
+ * Setup validation rules
+ *
+ * @return void
+ */
+	protected function _setupValidation() {
 		$this->validate = array(
 			'username' => array(
 				'required' => array(
