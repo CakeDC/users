@@ -349,7 +349,7 @@ class User extends UsersAppModel {
 		if ($this->validates()) {
 			$this->data[$this->alias]['password'] = Security::hash($this->data[$this->alias]['new_password'], null, true);
 			$this->data[$this->alias]['password_token'] = null;
-			$result = $this->save($this->data, false);
+			$result = is_array($this->save($this->data, false));
 		}
 		$this->validate = $tmp;
 		return $result;
