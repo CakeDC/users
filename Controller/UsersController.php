@@ -550,7 +550,7 @@ class UsersController extends UsersAppController {
  * Sets the cookie to remember the user
  *
  * @param array Cookie component properties as array, like array('domain' => 'yourdomain.com')
- * @param string Cookie data keyname for the userdata, its default is "User". This is set to User and NOT using the model alias to make sure it works with different apps with different user models accross different (sub)domains.
+ * @param string Cookie data keyname for the userdata, its default is "User". This is set to User and NOT using the model alias to make sure it works with different apps with different user models across different (sub)domains.
  * @return void
  * @link http://api13.cakephp.org/class/cookie-component
  */
