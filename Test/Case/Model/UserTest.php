@@ -25,9 +25,11 @@ class UserTestCase extends CakeTestCase {
 	public $User = null;
 
 /**
- * 
+ * Plugin name
+ *
+ * @var string
  */
-	public $plugin = 'users';
+	public $plugin = 'Users';
 
 /**
  * Fixtures
@@ -40,7 +42,7 @@ class UserTestCase extends CakeTestCase {
 		'plugin.users.identity');
 
 /**
- * 
+ * startTest
  *
  * @return void
  */
@@ -50,7 +52,7 @@ class UserTestCase extends CakeTestCase {
 	}
 
 /**
- * 
+ * endTest
  *
  * @return void
  */
@@ -108,7 +110,7 @@ class UserTestCase extends CakeTestCase {
 	}
 
 /**
- * 
+ * testValidateToken
  *
  * @return void
  */
@@ -126,7 +128,7 @@ class UserTestCase extends CakeTestCase {
 	}
 
 /**
- * 
+ * testUpdateLastActivity
  *
  * @return void
  */
@@ -141,7 +143,7 @@ class UserTestCase extends CakeTestCase {
 	}
 
 /**
- * 
+ * testResetPassword
  *
  * @return void
  */
@@ -171,7 +173,7 @@ class UserTestCase extends CakeTestCase {
 	}
 
 /**
- * 
+ * testCheckPasswordToken
  *
  * @return void
  */
@@ -183,7 +185,7 @@ class UserTestCase extends CakeTestCase {
 	}
 
 /**
- * 
+ * testPasswordReset
  *
  * @return void
  */
@@ -205,7 +207,7 @@ class UserTestCase extends CakeTestCase {
 	}
 
 /**
- * 
+ * testValidateOldPassword
  *
  * @return void
  */
@@ -223,7 +225,7 @@ class UserTestCase extends CakeTestCase {
 	}
 
 /**
- * 
+ * testView
  *
  * @return void
  */
