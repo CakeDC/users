@@ -106,7 +106,7 @@ class UserTestCase extends CakeTestCase {
  */
 	function testGenerateToken() {
 		$result = $this->User->generateToken();
-		$this->assertIsA($result, 'string');
+		$this->assertInternalType('string', $result);
 	}
 
 /**
