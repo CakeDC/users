@@ -201,7 +201,7 @@ class UserTestCase extends CakeTestCase {
 			'User' => array(
 				'id' => 1,
 				'email' => 'larry.masters@cakedc.com'));
-		$this->assertTrue($this->User->passwordReset($data));
+		$this->assertInternalType('array', $this->User->passwordReset($data));
 	}
 
 /**
