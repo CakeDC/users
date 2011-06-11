@@ -120,7 +120,7 @@ class UserTestCase extends CakeTestCase {
 
 		$now = strtotime('2008-03-25 02:48:46');
 		$result = $this->User->validateToken('testtoken2', false, $now);
-		$this->assertIsA($result, 'array');
+		$this->assertInternalType('array', $result);
 
 		$now = strtotime('2008-03-29 02:48:46');
 		$result = $this->User->validateToken('testtoken2', false, $now);
