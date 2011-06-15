@@ -39,10 +39,9 @@ class DetailTestCase extends CakeTestCase {
  *
  * @return void
  */
-	public function start() {
+	public function startTest() {
 		Configure::write('App.UserClass', null);
-		parent::start();
-		$this->Detail =& ClassRegistry::init('Users.Detail');
+		$this->Detail = ClassRegistry::init('Users.Detail');
 	}
 
 /**
@@ -51,7 +50,7 @@ class DetailTestCase extends CakeTestCase {
  * @return void
  */
 	public function testDetailInstance() {
-		$this->assertTrue(is_a($this->Detail, 'Detail'));
+		$this->assertInstanceOf('Detail', $this->Detail);
 	}
 
 /**
@@ -144,5 +143,4 @@ class DetailTestCase extends CakeTestCase {
 		$result = $this->Detail->User->field('User.email');
 		$this->assertEqual($result, 'foo@bar.com');
 	}
-
 }
