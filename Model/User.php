@@ -74,7 +74,7 @@ class User extends UsersAppModel {
  * @param string $ds Datasource
  */
 	public function __construct($id = false, $table = null, $ds = null) {
-		$this->_attachBehaviors();
+		$this->_setupBehaviors();
 		$this->_setupValidation();
 		parent::__construct($id, $table, $ds);
 	}
@@ -86,7 +86,7 @@ class User extends UsersAppModel {
  *
  * @return void
  */
-	protected function _attachBehaviors() {
+	protected function _setupBehaviors() {
 		if (App::import('Behavior', 'Search.Searchable')) {
 			$this->actsAs[] = 'Search.Searchable';
 		}

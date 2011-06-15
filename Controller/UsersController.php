@@ -31,14 +31,14 @@ class UsersController extends UsersAppController {
  *
  * @var array
  */
-	public $helpers = array('Html', 'Form', 'Session', 'Time', 'Text', 'Utils.Gravatar');
+	public $helpers = array('Html', 'Form', 'Session', 'Time', 'Text');
 
 /**
  * Components
  *
  * @var array
  */
-	public $components = array('Auth', 'Session', 'Email', 'Cookie', 'Search.Prg');
+	public $components = array('Auth', 'Session', 'Email', 'Cookie');
 
 /**
  * $presetVars
@@ -49,6 +49,40 @@ class UsersController extends UsersAppController {
 		array('field' => 'search', 'type' => 'value'),
 		array('field' => 'username', 'type' => 'value'),
 		array('field' => 'email', 'type' => 'value'));
+
+/**
+ * Constructor.
+ *
+ * @param CakeRequest $request Request object for this controller can be null for testing.
+ *  But expect that features that use the params will not work.
+ */
+	public function __construct($request = null) {
+		parent::__construct($request);
+		$this->_setupComponents();
+		$this->_setupHelpers();
+	}
+
+/**
+ * Setup components based on plugin availability
+ *
+ * @return void
+ */	
+	protected function _setupComponents() {
+		if (App::import('Component', 'Search.Prg')) {
+			$this->components[] = 'Search.Prg';
+		}
+	}
+
+/**
+ * Setup helpers based on plugin availability
+ *
+ * @return void
+ */	
+	protected function _setupHelpers() {
+		if (App::import('Helper', 'Goodies.Gravatar')) {
+			$this->helpers[] = 'Goodies.Gravatar';
+		}
+	}
 
 /**
  * beforeFilter callback
@@ -84,9 +118,9 @@ class UsersController extends UsersAppController {
 		$searchTerm = '';
 		$this->Prg->commonProcess($this->modelClass, $this->modelClass, 'index', false);
 
-		if (!empty($this->params['named']['search'])) {
-			if (!empty($this->params['named']['search'])) {
-				$searchTerm = $this->params['named']['search'];
+		if (!empty($this->request->params['named']['search'])) {
+			if (!empty($this->request->params['named']['search'])) {
+				$searchTerm = $this->request->params['named']['search'];
 			}
 			$this->data[$this->modelClass]['search'] = $searchTerm;
 		}
@@ -106,8 +140,8 @@ class UsersController extends UsersAppController {
 		$this->set('users', $this->paginate($this->modelClass));
 		$this->set('searchTerm', $searchTerm);
 
-		if (!isset($this->params['named']['sort'])) {
-			$this->params['named']['sort'] = 'username';
+		if (!isset($this->request->params['named']['sort'])) {
+			$this->request->params['named']['sort'] = 'username';
 		}
 	}
 
@@ -303,8 +337,8 @@ class UsersController extends UsersAppController {
 			$this->redirect($this->Auth->redirect($data['return_to']));
 		}
 
-		if (isset($this->params['named']['return_to'])) {
-			$this->set('return_to', urldecode($this->params['named']['return_to']));
+		if (isset($this->request->params['named']['return_to'])) {
+			$this->set('return_to', urldecode($this->request->params['named']['return_to']));
 		} else {
 			$this->set('return_to', false);
 		}
@@ -319,16 +353,16 @@ class UsersController extends UsersAppController {
 		$searchTerm = '';
 		$this->Prg->commonProcess($this->modelClass, $this->modelClass, 'search', false);
 
-		if (!empty($this->params['named']['search'])) {
-			$searchTerm = $this->params['named']['search'];
+		if (!empty($this->request->params['named']['search'])) {
+			$searchTerm = $this->request->params['named']['search'];
 			$by = 'any';
 		}
-		if (!empty($this->params['named']['username'])) {
-			$searchTerm = $this->params['named']['username'];
+		if (!empty($this->request->params['named']['username'])) {
+			$searchTerm = $this->request->params['named']['username'];
 			$by = 'username';
 		}
-		if (!empty($this->params['named']['email'])) {
-			$searchTerm = $this->params['named']['email'];
+		if (!empty($this->request->params['named']['email'])) {
+			$searchTerm = $this->request->params['named']['email'];
 			$by = 'email';
 		}
 		$this->data[$this->modelClass]['search'] = $searchTerm;

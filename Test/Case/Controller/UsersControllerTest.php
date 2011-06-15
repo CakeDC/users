@@ -131,8 +131,8 @@ class UsersControllerTestCase extends CakeTestCase {
 		Configure::write('App.UserClass', null);
 		$this->Users = new TestUsersController();
 		$this->Users->constructClasses();
-		$this->Users->Component->init($this->Users);
-		$this->Users->Component->initialize($this->Users);
+		// $this->Users->Components->init($this->Users);
+		// $this->Users->Components->initialize($this->Users);
 		$this->Users->params = array(
 			'pass' => array(),
 			'named' => array(),
@@ -158,8 +158,8 @@ class UsersControllerTestCase extends CakeTestCase {
  * @return void
  */
 	public function testUserLogin() {
-		$this->Users->params['action'] = 'login';
-		$this->Users->Component->startup($this->Users);
+		$this->Users->request->params['action'] = 'login';
+		// $this->Users->Components->initialize($this->Users);
 
 		$this->Users->User->save(array(
 			'User' => array(
@@ -171,7 +171,7 @@ class UsersControllerTestCase extends CakeTestCase {
 
 		$this->__setPost(array('User' => $this->usersData['admin']));
  		$this->Users->beforeFilter();
-		$this->Users->params = array(
+		$this->Users->request->params = array(
 			'controller' => 'users',
 			'action' => 'login',
 			'admin' => false,
@@ -179,9 +179,13 @@ class UsersControllerTestCase extends CakeTestCase {
 			'url' => array(
 				'url' => '/users/users/login'));
 
-		$this->Users->Component->startup($this->Users);
+//		$this->Users->Component->startup($this->Users);
 		$this->Users->login();
-		$this->assertEqual($this->Users->Session->read('Message.flash.message'), __d('users', 'testuser you have successfully logged in', true));
+		$result = $this->Users->Session->read('Message.flash.message');
+		var_dump($result);
+		$expected = __d('users', 'testuser you have successfully logged in', true);
+		$this->assertEqual($result, $expected);
+
 		$this->assertEqual(Router::normalize($this->Users->redirectUrl), Router::normalize(Router::url($this->Users->Auth->loginRedirect)));
 
 		$this->__setPost(array('User' => $this->usersData['invalidUser']));
