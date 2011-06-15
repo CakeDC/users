@@ -49,7 +49,6 @@ class TestUsersController extends UsersController {
 		$this->Auth->loginRedirect = $this->Session->read('Auth.redirect');
 		$this->Auth->logoutRedirect = '/';
 		$this->Auth->authError = __d('users', 'Sorry, but you need to login to access this location.', true);
-		$this->Auth->loginError = __d('users', 'Invalid e-mail / password combination.  Please try again', true);
 		$this->Auth->autoRedirect = true;
 		$this->Auth->userModel = 'User';
 		$this->Auth->userScope = array(
@@ -181,11 +180,16 @@ class UsersControllerTestCase extends CakeTestCase {
 		$this->assertEqual($result, $expected);
 
 		$this->assertEqual(Router::normalize($this->Users->redirectUrl), Router::normalize(Router::url($this->Users->Auth->loginRedirect)));
-
+	}
+	
+	public function testFailedUserLogin() {
+		$this->Users->request->params['action'] = 'login';
 		$this->__setPost(array('User' => $this->usersData['invalidUser']));
-		$this->Users->beforeFilter();
+ 		$this->Users->startupProcess();
 		$this->Users->login();
-		$this->assertEqual($this->Users->Session->read('Message.auth.message'), __d('users', 'Invalid e-mail / password combination.  Please try again', true));
+		$result = $this->Users->Session->read('Message.auth.message');
+		$expected = __d('users', 'Invalid e-mail / password combination.  Please try again', true);
+		$this->assertEqual($result, $expected);
 	}
 
 /**
