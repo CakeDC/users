@@ -9,6 +9,8 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
+App::uses('UsersAppController', 'Users.Controller');
+
 /**
  * Users Details Controller
  *

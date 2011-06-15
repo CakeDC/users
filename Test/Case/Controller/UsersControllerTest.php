@@ -9,9 +9,11 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-App::import('Controller', 'Users.Users');
-App::import('Model', 'Users.User');
-App::import('Component', array('Auth', 'Cookie', 'Session'));
+App::uses('UsersController', 'Users.Controller');
+App::uses('User', 'Users.User');
+App::uses('AuthComponent', 'Controller/Component');
+App::uses('CookieComponent', 'Controller/Component');
+App::uses('SessionComponent', 'Controller/Component');
 
 /**
  * TestUsersController
