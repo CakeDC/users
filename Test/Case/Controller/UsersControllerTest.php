@@ -131,8 +131,6 @@ class UsersControllerTestCase extends CakeTestCase {
 		Configure::write('App.UserClass', null);
 		$this->Users = new TestUsersController(new CakeRequest());
 		$this->Users->constructClasses();
-		// $this->Users->Components->init($this->Users);
-		// $this->Users->Components->initialize($this->Users);
 		$this->Users->request->params = array(
 			'pass' => array(),
 			'named' => array(),
@@ -159,7 +157,7 @@ class UsersControllerTestCase extends CakeTestCase {
  */
 	public function testUserLogin() {
 		$this->Users->request->params['action'] = 'login';
-		// $this->Users->Components->initialize($this->Users);
+ 		$this->Users->startupProcess();
 
 		$this->Users->User->save(array(
 			'User' => array(
@@ -170,16 +168,9 @@ class UsersControllerTestCase extends CakeTestCase {
 			)), false);
 
 		$this->__setPost(array('User' => $this->usersData['admin']));
- 		$this->Users->beforeFilter();
-		$this->Users->request->params = array(
-			'controller' => 'users',
-			'action' => 'login',
-			'admin' => false,
-			'plugin' => 'users',
-			'url' => array(
-				'url' => '/users/users/login'));
+		$this->Users->request->url = '/users/users/login';
+ 		$this->Users->startupProcess();
 
-//		$this->Users->Component->startup($this->Users);
 		$this->Users->login();
 		$result = $this->Users->Session->read('Message.flash.message');
 		$expected = __d('users', 'testuser you have successfully logged in', true);
