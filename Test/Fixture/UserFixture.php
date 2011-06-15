@@ -68,11 +68,11 @@ class UserFixture extends CakeTestFixture {
 	public $records = array(
 		array(
 			'id'  => '1',
-			'username'  => 'phpnut',
-			'slug' => 'phpnut',
+			'username'  => 'adminuser',
+			'slug' => 'adminuser',
 			'password'  => 'test', // test
 			'password_token'  => 'testtoken',
-			'email' => 'larry.masters@cakedc.com',
+			'email' => 'adminuser@cakedc.com',
 			'email_authenticated' => 1,
 			'email_token' => 'testtoken',
 			'email_token_expires' => '2008-03-25 02:45:46',
@@ -87,11 +87,11 @@ class UserFixture extends CakeTestFixture {
 		),
 		array(
 			'id'  => '47ea303a-3cyc-k251-b313-4811c0a800bf',
-			'username'  => 'floriank',
-			'slug' => 'floriank',
+			'username'  => 'testuser',
+			'slug' => 'testuser',
 			'password'  => 'secretkey', // secretkey
 			'password_token'  => '',
-			'email' => 'florian.kraemer@cakedc.com',
+			'email' => 'testuser@cakedc.com',
 			'email_authenticated' => '1',
 			'email_token' => '',
 			'email_token_expires' => '2008-03-25 02:45:46',

@@ -125,7 +125,7 @@ class UsersController extends UsersAppController {
 	public function index() {
 		//$this->User->contain('Detail');
 		$searchTerm = '';
-		$this->Prg->commonProcess($this->modelClass, $this->modelClass, 'index', false);
+		//$this->Prg->commonProcess($this->modelClass, $this->modelClass, 'index', false);
 
 		if (!empty($this->request->params['named']['search'])) {
 			if (!empty($this->request->params['named']['search'])) {
@@ -205,7 +205,7 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	public function admin_index() {
-		$this->Prg->commonProcess();
+//		$this->Prg->commonProcess();
 		$this->{$this->modelClass}->data[$this->modelClass] = $this->passedArgs;
 		$parsedConditions = $this->{$this->modelClass}->parseCriteria($this->passedArgs);
 
@@ -326,6 +326,7 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	public function login() {
+		$this->request->is('post') && $this->Auth->login();
 		if ($this->Auth->user()) {
 			$this->User->id = $this->Auth->user('id');
 			$this->User->saveField('last_login', date('Y-m-d H:i:s'));
@@ -358,37 +359,37 @@ class UsersController extends UsersAppController {
  *
  * @return void
  */
-	public function search() {
-		$searchTerm = '';
-		$this->Prg->commonProcess($this->modelClass, $this->modelClass, 'search', false);
-
-		if (!empty($this->request->params['named']['search'])) {
-			$searchTerm = $this->request->params['named']['search'];
-			$by = 'any';
-		}
-		if (!empty($this->request->params['named']['username'])) {
-			$searchTerm = $this->request->params['named']['username'];
-			$by = 'username';
-		}
-		if (!empty($this->request->params['named']['email'])) {
-			$searchTerm = $this->request->params['named']['email'];
-			$by = 'email';
-		}
-		$this->data[$this->modelClass]['search'] = $searchTerm;
-
-		$this->paginate = array(
-			'search',
-			'limit' => 12,
-			'by' => $by,
-			'search' => $searchTerm,
-			'conditions' => array(
-					'AND' => array(
-						$this->modelClass . '.active' => 1,
-						$this->modelClass . '.email_authenticated' => 1)));
-
-		$this->set('users', $this->paginate($this->modelClass));
-		$this->set('searchTerm', $searchTerm);
-	}
+	// public function search() {
+	// 	$searchTerm = '';
+	// 	$this->Prg->commonProcess($this->modelClass, $this->modelClass, 'search', false);
+	// 
+	// 	if (!empty($this->request->params['named']['search'])) {
+	// 		$searchTerm = $this->request->params['named']['search'];
+	// 		$by = 'any';
+	// 	}
+	// 	if (!empty($this->request->params['named']['username'])) {
+	// 		$searchTerm = $this->request->params['named']['username'];
+	// 		$by = 'username';
+	// 	}
+	// 	if (!empty($this->request->params['named']['email'])) {
+	// 		$searchTerm = $this->request->params['named']['email'];
+	// 		$by = 'email';
+	// 	}
+	// 	$this->data[$this->modelClass]['search'] = $searchTerm;
+	// 
+	// 	$this->paginate = array(
+	// 		'search',
+	// 		'limit' => 12,
+	// 		'by' => $by,
+	// 		'search' => $searchTerm,
+	// 		'conditions' => array(
+	// 				'AND' => array(
+	// 					$this->modelClass . '.active' => 1,
+	// 					$this->modelClass . '.email_authenticated' => 1)));
+	// 
+	// 	$this->set('users', $this->paginate($this->modelClass));
+	// 	$this->set('searchTerm', $searchTerm);
+	// }
 
 /**
  * Common logout action
@@ -515,7 +516,9 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	protected function _setLanguages($viewVar = 'languages') {
-		App::import('Lib', 'Utils.Languages');
+		if (!App::import('Lib', 'Utils.Languages')) {
+			return false;
+		}
 		$Languages = new Languages();
 		$this->set($viewVar, $Languages->lists('locale'));
 	}
@@ -619,7 +622,7 @@ class UsersController extends UsersAppController {
 			$cookieData[$this->Auth->fields['password']] = $this->data[$this->modelClass][$this->Auth->fields['password']];
 			$this->Cookie->write($cookieKey, $cookieData, true, '1 Month');
 		}
-		unset($this->data[$this->modelClass]['remember_me']);
+		unset($this->request->data[$this->modelClass]['remember_me']);
 	}
 
 /**

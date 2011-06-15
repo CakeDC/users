@@ -14,6 +14,7 @@ App::uses('User', 'Users.User');
 App::uses('AuthComponent', 'Controller/Component');
 App::uses('CookieComponent', 'Controller/Component');
 App::uses('SessionComponent', 'Controller/Component');
+App::uses('Security', 'Utility');
 
 /**
  * TestUsersController
@@ -42,7 +43,7 @@ class TestUsersController extends UsersController {
  */
 	public function beforeFilter() {
 		parent::beforeFilter();
-		$this->Auth->authorize = 'controller';
+		$this->Auth->authorize = array('Controller');
 		$this->Auth->fields = array('username' => 'email', 'password' => 'password');
 		$this->Auth->loginAction = array('controller' => 'users', 'action' => 'login', 'prefix' => 'admin', 'admin' => false, 'plugin' => 'users');
 		$this->Auth->loginRedirect = $this->Session->read('Auth.redirect');
@@ -118,9 +119,20 @@ class UsersControllerTestCase extends CakeTestCase {
  * @var array
  */
 	public $usersData = array(
-		'admin' => array('email' => 'larry.masters@cakedc.com', 'username' => 'phpnut', 'password' => 'test'),
-		'validUser' => array('email' => 'florian.kraemer@cakedc.com', 'username' => 'floriank', 'password' => 'secretkey', 'redirect' => '/user/burzum'),
-		'invalidUser' => array('email' => 'wronguser@wronguser.com', 'username' => 'invalidUser', 'password' => 'invalid-password!'));
+		'admin' => array(
+			'email' => 'adminuser@cakedc.com',
+			'username' => 'adminuser',
+			'password' => 'test'),
+		'validUser' => array(
+			'email' => 'testuser@cakedc.com',
+			'username' => 'testuser',
+			'password' => 'secretkey',
+			'redirect' => '/user/slugname'),
+		'invalidUser' => array(
+			'email' => 'wronguser@wronguser.com',
+			'username' => 'invalidUser',
+			'password' => 'invalid-password!'),
+	);
 
 /**
  * Start test
@@ -159,21 +171,13 @@ class UsersControllerTestCase extends CakeTestCase {
 		$this->Users->request->params['action'] = 'login';
  		$this->Users->startupProcess();
 
-		$this->Users->User->save(array(
-			'User' => array(
-				'id'  => '1',
-				'username' => 'testuser',
-				'slug' => 'testuser',
-				'password'  => Security::hash('test', null, true),
-			)), false);
-
 		$this->__setPost(array('User' => $this->usersData['admin']));
 		$this->Users->request->url = '/users/users/login';
  		$this->Users->startupProcess();
 
 		$this->Users->login();
 		$result = $this->Users->Session->read('Message.flash.message');
-		$expected = __d('users', 'testuser you have successfully logged in', true);
+		$expected = __d('users', 'adminuser you have successfully logged in', true);
 		$this->assertEqual($result, $expected);
 
 		$this->assertEqual(Router::normalize($this->Users->redirectUrl), Router::normalize(Router::url($this->Users->Auth->loginRedirect)));
@@ -276,15 +280,15 @@ class UsersControllerTestCase extends CakeTestCase {
  *
  * @return void
  */
-	public function testSearch() {
-		$this->Users->params = array(
-			'url' => array(),
-			'named' => array(
-				'search' => 'phpnut'));
-		$this->Users->passedArgs = array();
- 		$this->Users->search();
-		$this->assertTrue(isset($this->Users->viewVars['users']));
-	}
+	// public function testSearch() {
+	// 	$this->Users->params = array(
+	// 		'url' => array(),
+	// 		'named' => array(
+	// 			'search' => 'phpnut'));
+	// 	$this->Users->passedArgs = array();
+	//  		$this->Users->search();
+	// 	$this->assertTrue(isset($this->Users->viewVars['users']));
+	// }
 
 /**
  * change_password

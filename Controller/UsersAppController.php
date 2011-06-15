@@ -16,4 +16,15 @@
  * @subpackage users.controllers
  */
 class UsersAppController extends AppController {
+
+/**
+ * Default isAuthorized method
+ *
+ * This is called to see if a user (when logged in) is able to access an action
+ *
+ * @return boolean True if allowed
+ */
+	public function isAuthorized() {
+		return true;
+	}
 }
