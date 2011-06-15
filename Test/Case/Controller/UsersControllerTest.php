@@ -245,7 +245,7 @@ class UsersControllerTestCase extends CakeTestCase {
 		$this->Users->beforeFilter();
 		$this->Users->Session->write('Auth.User', $this->usersData['validUser']);
 		$this->Users->logout();
-		$this->assertEqual($this->Users->Session->read('Message.flash.message'), __d('users', 'floriank you have successfully logged out', true));
+		$this->assertEqual($this->Users->Session->read('Message.flash.message'), __d('users', 'testuser you have successfully logged out', true));
 		$this->assertEqual($this->Users->redirectUrl, '/');
 	}
 
@@ -327,7 +327,7 @@ class UsersControllerTestCase extends CakeTestCase {
 		$this->Users->User->saveField('email_token_expires', date('Y-m-d H:i:s', strtotime('+1 year')));
 		$this->Users->data = array(
 			'User' => array(
-				'email' => 'larry.masters@cakedc.com'));
+				'email' => 'adminuser@cakedc.com'));
 		$this->Users->reset_password();
 		$this->assertEqual($this->Users->redirectUrl, array('action' => 'login'));
 
