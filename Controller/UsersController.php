@@ -91,20 +91,29 @@ class UsersController extends UsersAppController {
  */
 	public function beforeFilter() {
 		parent::beforeFilter();
-		$this->Auth->allow('register', 'reset', 'verify', 'logout', 'index', 'view', 'reset_password');
-
-		if ($this->action == 'register') {
-			$this->Auth->enabled = false;
-		}
-
-		if ($this->action == 'login') {
-			$this->Auth->autoRedirect = false;
-		}
+		$this->_setupAuth();
 
 		$this->set('model', $this->modelClass);
 
 		if (!Configure::read('App.defaultEmail')) {
 			Configure::write('App.defaultEmail', 'noreply@' . env('HTTP_HOST'));
+		}
+	}
+
+/**
+ * Setup Authentication Component
+ *
+ * @return void
+ */
+	public function _setupAuth() {
+		$this->Auth->allow('register', 'reset', 'verify', 'logout', 'index', 'view', 'reset_password');
+
+		if ($this->action == 'register') {
+			$this->Components->disable('Auth');
+		}
+
+		if ($this->action == 'login') {
+			$this->Auth->autoRedirect = false;
 		}
 	}
 
