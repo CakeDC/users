@@ -181,7 +181,12 @@ class UsersControllerTestCase extends CakeTestCase {
 
 		$this->assertEqual(Router::normalize($this->Users->redirectUrl), Router::normalize(Router::url($this->Users->Auth->loginRedirect)));
 	}
-	
+
+/**
+ * testFailedUserLogin
+ *
+ * @return void
+ */
 	public function testFailedUserLogin() {
 		$this->Users->request->params['action'] = 'login';
 		$this->__setPost(array('User' => $this->usersData['invalidUser']));
