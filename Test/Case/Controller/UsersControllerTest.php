@@ -129,11 +129,11 @@ class UsersControllerTestCase extends CakeTestCase {
  */
 	public function startTest() {
 		Configure::write('App.UserClass', null);
-		$this->Users = new TestUsersController();
+		$this->Users = new TestUsersController(new CakeRequest());
 		$this->Users->constructClasses();
 		// $this->Users->Components->init($this->Users);
 		// $this->Users->Components->initialize($this->Users);
-		$this->Users->params = array(
+		$this->Users->request->params = array(
 			'pass' => array(),
 			'named' => array(),
 			'controller' => 'users',
@@ -149,7 +149,7 @@ class UsersControllerTestCase extends CakeTestCase {
  * @return void
  */
 	public function testUsersControllerInstance() {
-		$this->assertTrue(is_a($this->Users, 'UsersController'));
+		$this->assertInstanceOf('UsersController', $this->Users);
 	}
 
 /**
@@ -182,7 +182,6 @@ class UsersControllerTestCase extends CakeTestCase {
 //		$this->Users->Component->startup($this->Users);
 		$this->Users->login();
 		$result = $this->Users->Session->read('Message.flash.message');
-		var_dump($result);
 		$expected = __d('users', 'testuser you have successfully logged in', true);
 		$this->assertEqual($result, $expected);
 
