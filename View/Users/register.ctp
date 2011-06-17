@@ -38,6 +38,7 @@
 			'error' => __d('users', 'Passwords must match')
 		));
 		echo $this->Form->input('tos', array(
+			'type' => 'checkbox',
 			'label' => __d('users', 'I have read and agreed to ') . $this->Html->link(__d('users', 'Terms of Service'), array('controller' => 'pages', 'action' => 'tos')), 
 			'error' => __d('users', 'You must verify you have read the Terms of Service')
 		));

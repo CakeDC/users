@@ -10,6 +10,7 @@
  */
 
 App::uses('Security', 'Utility');
+App::import('Users.UsersAppModel');
 
 /**
  * Users Plugin User Model
@@ -31,7 +32,7 @@ class User extends UsersAppModel {
  *
  * @var array
  */
-	public $_findMethods = array('search' => true);
+	public $findMethods = array('search' => true);
 
 /**
  * @todo comment me
@@ -294,7 +295,7 @@ class User extends UsersAppModel {
 			'conditions' => array(
 				$this->alias . '.active' => 1,
 				$this->alias . '.email' => $postData[$this->alias]['email'])));
-
+                //debug($user);
 		if (!empty($user) && $user[$this->alias]['email_authenticated'] == 1) {
 			$sixtyMins = time() + 43000;
 			$token = $this->generateToken();

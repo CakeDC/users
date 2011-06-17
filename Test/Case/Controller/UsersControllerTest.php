@@ -149,7 +149,7 @@ class UsersControllerTestCase extends CakeTestCase {
 			'admin' => false,
 			'plugin' => 'users',
 			'url' => array());
-		$this->Users->Email->delivery = 'debug';
+		$this->Users->Email->delivery = 'Debug';
 	}
 
 /**
@@ -202,9 +202,9 @@ class UsersControllerTestCase extends CakeTestCase {
  *
  */
 	public function testRegister() {
+		$_SERVER['HTTP_HOST'] = 'test.com';
 		$this->Users->params['action'] = 'register';
-
-		$this->__setPost(array(
+                $this->__setPost(array(
 			'User' => array(
 				'username' => 'newUser',
 				'email' => 'newUser@newemail.com',
@@ -214,8 +214,7 @@ class UsersControllerTestCase extends CakeTestCase {
 		$this->Users->beforeFilter();
 		$this->Users->register();
 		$this->assertEqual($this->Users->Session->read('Message.flash.message'), __d('users', 'Your account has been created. You should receive an e-mail shortly to authenticate your account. Once validated you will be able to login.', true));
-
-		$this->__setPost(array(
+                $this->__setPost(array(
 			'User' => array(
 				'username' => 'newUser',
 				'email' => '',
@@ -264,8 +263,8 @@ class UsersControllerTestCase extends CakeTestCase {
  * @return void
  */
 	public function testIndex() {
-		$this->Users->params = array(
-			'url' => array());
+		//$this->Users->params = array(
+		//	'url' => array());
 		$this->Users->passedArgs = array();
  		$this->Users->index();
 		$this->assertTrue(isset($this->Users->viewVars['users']));
@@ -277,7 +276,7 @@ class UsersControllerTestCase extends CakeTestCase {
  * @return void
  */
 	public function testView() {
- 		$this->Users->view('phpnut');
+ 		$this->Users->view('adminuser');
 		$this->assertTrue(isset($this->Users->viewVars['user']));
 
 		$this->Users->view('INVALID-SLUG');
@@ -306,11 +305,11 @@ class UsersControllerTestCase extends CakeTestCase {
  */
 	public function testChangePassword() {
 		$this->Users->Session->write('Auth.User.id', '1');
-		$this->Users->data = array(
-			'User' => array(
+		$this->__setPost(array(
+                       	'User' => array(
 				'new_password' => 'newpassword',
 				'confirm_password' => 'newpassword',
-				'old_password' => 'test'));
+				'old_password' => 'test')));
 		$this->Users->change_password();
 		$this->assertEqual($this->Users->redirectUrl, '/');
 	}
@@ -332,6 +331,7 @@ class UsersControllerTestCase extends CakeTestCase {
  * @return void
  */
 	public function testResetPassword() {
+		$_SERVER['HTTP_HOST'] = 'test.com';
 		$this->Users->User->id = '1';
 		$this->Users->User->saveField('email_token_expires', date('Y-m-d H:i:s', strtotime('+1 year')));
 		$this->Users->data = array(
@@ -358,7 +358,7 @@ class UsersControllerTestCase extends CakeTestCase {
 		$this->Users->params = array(
 			'url' => array(),
 			'named' => array(
-				'search' => 'phpnut'));
+				'search' => 'adminuser'));
 		$this->Users->passedArgs = array();
  		$this->Users->admin_index();
 		$this->assertTrue(isset($this->Users->viewVars['users']));
@@ -395,7 +395,7 @@ class UsersControllerTestCase extends CakeTestCase {
  *
  */
 	public function testSetCookie() {
-		$this->Users->data['User'] = array(
+		$this->Users->request->data['User'] = array(
 			'remember_me' => 1,
 			'username' => 'test',
 			'password' => 'testtest');

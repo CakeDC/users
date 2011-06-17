@@ -199,7 +199,7 @@ class UserTestCase extends CakeTestCase {
 		$data = array(
 			'User' => array(
 				'id' => 1,
-				'email' => 'larry.masters@cakedc.com'));
+				'email' => 'adminuser@cakedc.com'));
 		$this->assertInternalType('array', $this->User->passwordReset($data));
 	}
 
@@ -230,7 +230,7 @@ class UserTestCase extends CakeTestCase {
  * @return void
  */
 	public function testView() {
-		$result = $this->User->view('phpnut');
+		$result = $this->User->view('adminuser');
 		$this->assertTrue(is_array($result) && !empty($result));
 
 		$this->expectException('Exception');
@@ -357,7 +357,7 @@ class UserTestCase extends CakeTestCase {
 
 		$postData = array(
 			'User' => array(
-				'email' => 'larry.masters@cakedc.com'));
+				'email' => 'adminuser@cakedc.com'));
 		$this->assertFalse($this->User->resendVerification($postData));
 
 		$postData = array(

@@ -38,7 +38,7 @@ class UsersController extends UsersAppController {
  *
  * @var array
  */
-	public $components = array('Auth', 'Session', 'Email', 'Cookie');
+	public $components = array('Auth', 'Session', 'Email', 'Cookie','Paginator');
 
 /**
  * $presetVars
@@ -131,7 +131,7 @@ class UsersController extends UsersAppController {
 			if (!empty($this->request->params['named']['search'])) {
 				$searchTerm = $this->request->params['named']['search'];
 			}
-			$this->data[$this->modelClass]['search'] = $searchTerm;
+			$this->request->data[$this->modelClass]['search'] = $searchTerm;
 		}
 
 		$this->paginate = array(
@@ -144,8 +144,6 @@ class UsersController extends UsersAppController {
 					'AND' => array(
 							$this->modelClass . '.active' => 1, 
 							$this->modelClass . '.email_authenticated' => 1))));
-
-
 		$this->set('users', $this->paginate($this->modelClass));
 		$this->set('searchTerm', $searchTerm);
 
@@ -186,14 +184,14 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	public function edit() {
-		if (!empty($this->data)) {
-			if ($this->User->Detail->saveSection($this->Auth->user('id'), $this->data, 'User')) {
+		if (!empty($this->request->data)) {
+			if ($this->User->Detail->saveSection($this->Auth->user('id'), $this->request->data, 'User')) {
 				$this->Session->setFlash(__d('users', 'Profile saved.'));
 			} else {
 				$this->Session->setFlash(__d('users', 'Could not save your profile.'));
 			}
 		} else {
-			$this->data = $this->User->read(null, $this->Auth->user('id'));
+			$this->request->data = $this->User->read(null, $this->Auth->user('id'));
 		}
 
 		$this->_setLanguages();
@@ -207,10 +205,13 @@ class UsersController extends UsersAppController {
 	public function admin_index() {
 //		$this->Prg->commonProcess();
 		$this->{$this->modelClass}->data[$this->modelClass] = $this->passedArgs;
-		$parsedConditions = $this->{$this->modelClass}->parseCriteria($this->passedArgs);
-
-		$this->paginate[$this->modelClass]['conditions'] = $parsedConditions;
-		$this->paginate[$this->modelClass]['order'] = array($this->modelClass . '.created' => 'desc');
+        if ($this->{$this->modelClass}->Behaviors->attached('Search.Searchable')) {
+        	$parsedConditions = $this->{$this->modelClass}->parseCriteria($this->Users->passedArgs);
+        } else {
+        	$parsedConditions = array();
+        }
+        $this->Paginator->settings[$this->modelClass]['conditions'] = $parsedConditions;
+		$this->Paginator->settings[$this->modelClass]['order'] = array($this->modelClass . '.created' => 'desc');
 
 		$this->{$this->modelClass}->recursive = 0;
 		$this->set('users', $this->paginate());
@@ -236,7 +237,7 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	public function admin_add() {
-		if ($this->User->add($this->data)) {
+		if ($this->User->add($this->request->data)) {
 			$this->Session->setFlash(__d('users', 'The User has been saved'));
 			$this->redirect(array('action' => 'index'));
 		}
@@ -250,20 +251,20 @@ class UsersController extends UsersAppController {
  */
 	public function admin_edit($userId = null) {
 		try {
-			$result = $this->User->edit($userId, $this->data);
+			$result = $this->User->edit($userId, $this->request->data);
 			if ($result === true) {
 				$this->Session->setFlash(__d('users', 'User saved'));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->data = $result;
+				$this->request->data = $result;
 			}
 		} catch (OutOfBoundsException $e) {
 			$this->Session->setFlash($e->getMessage());
 			$this->redirect(array('action' => 'index'));
 		}
 
-		if (empty($this->data)) {
-			$this->data = $this->User->read(null, $userId);
+		if (empty($this->request->data)) {
+			$this->request->data = $this->User->read(null, $userId);
 		}
 	}
 
@@ -303,16 +304,16 @@ class UsersController extends UsersAppController {
 			$this->redirect('/');
 		}
 
-		if (!empty($this->data)) {
-			$user = $this->User->register($this->data);
+		if (!empty($this->request->data)) {
+			$user = $this->User->register($this->request->data);
 			if ($user !== false) {
 				$this->set('user', $user);
 				$this->_sendVerificationEmail($user[$this->modelClass]['email']);
 				$this->Session->setFlash(__d('users', 'Your account has been created. You should receive an e-mail shortly to authenticate your account. Once validated you will be able to login.'));
 				$this->redirect(array('action' => 'login'));
 			} else {
-				unset($this->data[$this->modelClass]['password']);
-				unset($this->data[$this->modelClass]['temppassword']);
+				unset($this->request->data[$this->modelClass]['password']);
+				unset($this->request->data[$this->modelClass]['temppassword']);
 				$this->Session->setFlash(__d('users', 'Your account could not be created. Please, try again.'), 'default', array('class' => 'message warning'));
 			}
 		}
@@ -336,8 +337,8 @@ class UsersController extends UsersAppController {
 			}
 
 			$this->Session->setFlash(sprintf(__d('users', '%s you have successfully logged in'), $this->Auth->user('username')));
-			if (!empty($this->data)) {
-				$data = $this->data[$this->modelClass];
+			if (!empty($this->request->data)) {
+				$data = $this->request->data[$this->modelClass];
 				$this->_setCookie();
 			}
 
@@ -377,7 +378,7 @@ class UsersController extends UsersAppController {
 	// 		$searchTerm = $this->request->params['named']['email'];
 	// 		$by = 'email';
 	// 	}
-	// 	$this->data[$this->modelClass]['search'] = $searchTerm;
+	// 	$this->request->data[$this->modelClass]['search'] = $searchTerm;
 	// 
 	// 	$this->paginate = array(
 	// 		'search',
@@ -479,10 +480,10 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	public function change_password() {
-		if (!empty($this->data)) {
-			$this->data[$this->modelClass]['id'] = $this->Auth->user('id');
-			if ($this->User->changePassword($this->data)) {
-				$this->Session->setFlash(__d('users', 'Password changed.'));
+                if ($this->request->is('post')) {
+			$this->request->data[$this->modelClass]['id'] = $this->Auth->user('id');
+			if ($this->User->changePassword($this->request->data)) {
+                                $this->Session->setFlash(__d('users', 'Password changed.'));
 				$this->redirect('/');
 			}
 		}
@@ -502,7 +503,7 @@ class UsersController extends UsersAppController {
 		if (empty($token)) {
 			$admin = false;
 			if ($user) {
-				$this->data = $user;
+				$this->request->data = $user;
 				$admin = true;
 			}
 			$this->_sendPasswordReset($admin);
@@ -540,7 +541,7 @@ class UsersController extends UsersAppController {
 		$defaults = array(
 			'from' => 'noreply@' . env('HTTP_HOST'),
 			'subject' => __d('users', 'Account verification'),
-			'template' => 'account_verification');
+			'template' => 'Users.account_verification');
 
 		$options = array_merge($defaults, $options);
 
@@ -564,12 +565,12 @@ class UsersController extends UsersAppController {
 		$defaults = array(
 			'from' => 'noreply@' . env('HTTP_HOST'),
 			'subject' => __d('users', 'Password Reset'),
-			'template' => 'password_reset_request');
+			'template' => 'Users.password_reset_request');
 
 		$options = array_merge($defaults, $options);
 
-		if (!empty($this->data)) {
-			$user = $this->User->passwordReset($this->data);
+		if (!empty($this->request->data)) {
+			$user = $this->User->passwordReset($this->request->data);
 
 			if (!empty($user)) {
 				$this->set('token', $user[$this->modelClass]['password_token']);
@@ -605,7 +606,7 @@ class UsersController extends UsersAppController {
  * @link http://api13.cakephp.org/class/cookie-component
  */
 	protected function _setCookie($options = array(), $cookieKey = 'User') {
-		if (empty($this->data[$this->modelClass]['remember_me'])) {
+		if (empty($this->request->data[$this->modelClass]['remember_me'])) {
 			$this->Cookie->delete($cookieKey);
 		} else {
 			$validProperties = array('domain', 'key', 'name', 'path', 'secure', 'time');
@@ -620,8 +621,8 @@ class UsersController extends UsersAppController {
 			}
 
 			$cookieData = array();
-			$cookieData[$this->Auth->fields['username']] = $this->data[$this->modelClass][$this->Auth->fields['username']];
-			$cookieData[$this->Auth->fields['password']] = $this->data[$this->modelClass][$this->Auth->fields['password']];
+                        $cookieData['username'] = $this->request->data[$this->modelClass]['username'];
+			$cookieData['password'] = $this->request->data[$this->modelClass]['password'];
 			$this->Cookie->write($cookieKey, $cookieData, true, '1 Month');
 		}
 		unset($this->request->data[$this->modelClass]['remember_me']);
@@ -640,7 +641,7 @@ class UsersController extends UsersAppController {
 			$this->redirect(array('action' => 'reset_password'));
 		}
 
-		if (!empty($this->data) && $this->User->resetPassword(Set::merge($user, $this->data))) {
+		if (!empty($this->request->data) && $this->User->resetPassword(Set::merge($user, $this->request->data))) {
 			$this->Session->setFlash(__d('users', 'Password changed, you can now login with your new password.'));
 			$this->redirect($this->Auth->loginAction);
 		}
