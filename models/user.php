@@ -227,7 +227,7 @@ class User extends UsersAppModel {
 		$data = false;
 		$match = $this->find(array(
 			$this->alias . '.email_token' => $token),
-			'id, email, email_token_expires');
+			'id, email, email_token_expires, role');
 
 		if (!empty($match)){
 			$expires = strtotime($match[$this->alias]['email_token_expires']);
@@ -235,7 +235,8 @@ class User extends UsersAppModel {
 				$data[$this->alias]['id'] = $match[$this->alias]['id'];
 				$data[$this->alias]['email'] = $match[$this->alias]['email'];
 				$data[$this->alias]['email_authenticated'] = '1';
-
+				$data[$this->alias]['role'] = $match[$this->alias]['role'];
+				
 				if ($reset === true) {
 					$data[$this->alias]['passwd'] = $this->generatePassword();
 					$data[$this->alias]['password_token'] = null;
