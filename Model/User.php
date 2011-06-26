@@ -247,10 +247,10 @@ class User extends UsersAppModel {
 		$data = false;
 		$match = $this->find(array(
 			$this->alias . '.email_token' => $token),
-			'id, email, email_token_expires, role');
+			'id, email, email_token_expiry, role');
 
 		if (!empty($match)){
-			$expires = strtotime($match[$this->alias]['email_token_expires']);
+			$expires = strtotime($match[$this->alias]['email_token_expiry']);
 			if ($expires > $now) {
 				$data[$this->alias]['id'] = $match[$this->alias]['id'];
 				$data[$this->alias]['email'] = $match[$this->alias]['email'];
@@ -263,7 +263,7 @@ class User extends UsersAppModel {
 				}
 
 				$data[$this->alias]['email_token'] = null;
-				$data[$this->alias]['email_token_expires'] = null;
+				$data[$this->alias]['email_token_expiry'] = null;
 			}
 		}
 		return $data;
@@ -301,7 +301,7 @@ class User extends UsersAppModel {
 			$sixtyMins = time() + 43000;
 			$token = $this->generateToken();
 			$user[$this->alias]['password_token'] = $token;
-			$user[$this->alias]['email_token_expires'] = date('Y-m-d H:i:s', $sixtyMins);
+			$user[$this->alias]['email_token_expiry'] = date('Y-m-d H:i:s', $sixtyMins);
 			$user = $this->save($user, false);
 			return $user;
 		} elseif (!empty($user) && $user[$this->alias]['email_verified'] == 0){
@@ -324,7 +324,7 @@ class User extends UsersAppModel {
 			'conditions' => array(
 				$this->alias . '.active' => 1,
 				$this->alias . '.password_token' => $token,
-				$this->alias . '.email_token_expires >=' => date('Y-m-d H:i:s'))));
+				$this->alias . '.email_token_expiry >=' => date('Y-m-d H:i:s'))));
 		if (empty($user)) {
 			return false;
 		}
@@ -497,7 +497,7 @@ class User extends UsersAppModel {
 		}
 
 		$user[$this->alias]['email_token'] = $this->generateToken();
-		$user[$this->alias]['email_token_expires'] = date('Y-m-d H:i:s', time() + 86400);
+		$user[$this->alias]['email_token_expiry'] = date('Y-m-d H:i:s', time() + 86400);
 
 		return $this->save($user, false);
 	}
@@ -551,7 +551,7 @@ class User extends UsersAppModel {
 	protected function _beforeRegistration($postData = array(), $useEmailVerification = true) {
 		if ($useEmailVerification == true) {
 			$postData[$this->alias]['email_token'] = $this->generateToken();
-			$postData[$this->alias]['email_token_expires'] = date('Y-m-d H:i:s', time() + 86400);
+			$postData[$this->alias]['email_token_expiry'] = date('Y-m-d H:i:s', time() + 86400);
 		} else {
 			$postData[$this->alias]['email_verified'] = 1;
 		}
@@ -707,6 +707,6 @@ class User extends UsersAppModel {
 	protected function _removeExpiredRegistrations() {
 		$this->deleteAll(array(
 			$this->alias . '.email_verified' => 0,
-			$this->alias . '.email_token_expires <' => date('Y-m-d H:i:s')));
+			$this->alias . '.email_token_expiry <' => date('Y-m-d H:i:s')));
 	}
 }
