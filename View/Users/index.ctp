@@ -33,12 +33,8 @@
 		}
 		?>
 		<tr<?php echo $class; ?>>
-			<td>
-				<?php echo $user[$model]['username']; ?>
-			</td>
-			<td>
-				<?php echo $user[$model]['created']; ?>
-			</td>
+			<td><?php echo $user[$model]['username']; ?></td>
+			<td><?php echo $user[$model]['created']; ?></td>
 			<td class="actions">
 				<?php echo $this->Html->link(__d('users', 'View'), array('action' => 'view', $user[$model]['id'])); ?>
 				<?php echo $this->Html->link(__d('users', 'Edit'), array('action' => 'edit', $user[$model]['id'])); ?>
