@@ -31,7 +31,7 @@ class M49c3417a54874a9d276811502cedc421 extends CakeMigration {
 	public $migration = array(
 		'up' => array(
 			'create_table' => array(
-				'details' => array(
+				'user_details' => array(
 					'id' => array('type'=>'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary'),
 					'user_id' => array('type'=>'string', 'null' => false, 'default' => NULL, 'length' => 36),
 					'position' => array('type'=>'float', 'null' => false, 'default' => '1', 'length' => 4),
@@ -50,16 +50,16 @@ class M49c3417a54874a9d276811502cedc421 extends CakeMigration {
 					'id' => array('type'=>'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary'),
 					'username' => array('type'=>'string', 'null' => false, 'default' => NULL),
 					'slug' => array('type'=>'string', 'null' => false, 'default' => NULL),
-					'passwd' => array('type'=>'string', 'null' => true, 'default' => NULL, 'length' => 128),
+					'password' => array('type'=>'string', 'null' => true, 'default' => NULL, 'length' => 128),
 					'password_token' => array('type'=>'string', 'null' => true, 'default' => NULL, 'length' => 128),
 					'email' => array('type'=>'string', 'null' => true, 'default' => NULL),
 					'email_authenticated' => array('type'=>'boolean', 'null' => true, 'default' => '0'),
 					'email_token' => array('type'=>'string', 'null' => true, 'default' => NULL),
-					'email_token_expires' => array('type'=>'datetime', 'null' => true, 'default' => NULL),
+					'email_token_expiry' => array('type'=>'datetime', 'null' => true, 'default' => NULL),
 					'tos' => array('type'=>'boolean', 'null' => true, 'default' => '0'),
 					'active' => array('type'=>'boolean', 'null' => true, 'default' => '0'),
 					'last_login' => array('type'=>'datetime', 'null' => true, 'default' => NULL),
-					'last_activity' => array('type'=>'datetime', 'null' => true, 'default' => NULL),
+					'last_action' => array('type'=>'datetime', 'null' => true, 'default' => NULL),
 					'is_admin' => array('type'=>'boolean', 'null' => true, 'default' => '0'),
 					'role' => array('type'=>'string', 'null' => true, 'default' => NULL),
 					'created' => array('type'=>'datetime', 'null' => true, 'default' => NULL),

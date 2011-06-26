@@ -56,8 +56,8 @@ class User extends UsersAppModel {
  * @var array
  */
 	public $hasMany = array(
-		'Detail' => array(
-			'className' => 'Users.Detail',
+		'UserDetail' => array(
+			'className' => 'Users.UserDetail',
 			'foreign_key' => 'user_id'));
 
 /**
@@ -254,7 +254,7 @@ class User extends UsersAppModel {
 			if ($expires > $now) {
 				$data[$this->alias]['id'] = $match[$this->alias]['id'];
 				$data[$this->alias]['email'] = $match[$this->alias]['email'];
-				$data[$this->alias]['email_authenticated'] = '1';
+				$data[$this->alias]['email_verified'] = '1';
 
 				if ($reset === true) {
 					$data[$this->alias]['password'] = $this->generatePassword();
@@ -279,7 +279,7 @@ class User extends UsersAppModel {
 			$this->id = $userId;
 		}
 		if ($this->exists()) {
-			return $this->saveField('last_activity', date('Y-m-d H:i:s', time()));
+			return $this->saveField('last_action', date('Y-m-d H:i:s', time()));
 		}
 		return false;
 	}
@@ -296,14 +296,14 @@ class User extends UsersAppModel {
 				$this->alias . '.active' => 1,
 				$this->alias . '.email' => $postData[$this->alias]['email'])));
                 //debug($user);
-		if (!empty($user) && $user[$this->alias]['email_authenticated'] == 1) {
+		if (!empty($user) && $user[$this->alias]['email_verified'] == 1) {
 			$sixtyMins = time() + 43000;
 			$token = $this->generateToken();
 			$user[$this->alias]['password_token'] = $token;
 			$user[$this->alias]['email_token_expires'] = date('Y-m-d H:i:s', $sixtyMins);
 			$user = $this->save($user, false);
 			return $user;
-		} elseif (!empty($user) && $user[$this->alias]['email_authenticated'] == 0){
+		} elseif (!empty($user) && $user[$this->alias]['email_verified'] == 0){
 			$this->invalidate('email', __d('users', 'This Email Address exists but was never validated.'));
 		} else {
 			$this->invalidate('email', __d('users', 'This Email Address does not exist in the system.'));
@@ -430,7 +430,7 @@ class User extends UsersAppModel {
 				$this->alias . '.slug' => $slug,
 				'OR' => array(
 					'AND' =>
-						array($this->alias . '.active' => 1, $this->alias . '.email_authenticated' => 1),
+						array($this->alias . '.active' => 1, $this->alias . '.email_verified' => 1),
 						//array($this->alias . '.active' => 1, $this->alias . '.account_type' => 'remote')
 						))));
 
@@ -485,7 +485,7 @@ class User extends UsersAppModel {
 			return false;
 		}
 
-		if ($user[$this->alias]['email_authenticated'] == 1) {
+		if ($user[$this->alias]['email_verified'] == 1) {
 			$this->invalidate('email', __d('users', 'Your account is already authenticaed.'));
 			return false;
 		}
@@ -552,7 +552,7 @@ class User extends UsersAppModel {
 			$postData[$this->alias]['email_token'] = $this->generateToken();
 			$postData[$this->alias]['email_token_expires'] = date('Y-m-d H:i:s', time() + 86400);
 		} else {
-			$postData[$this->alias]['email_authenticated'] = 1;
+			$postData[$this->alias]['email_verified'] = 1;
 		}
 		$postData[$this->alias]['active'] = 1;
 		return $postData;
@@ -705,7 +705,7 @@ class User extends UsersAppModel {
  */
 	protected function _removeExpiredRegistrations() {
 		$this->deleteAll(array(
-			$this->alias . '.email_authenticated' => 0,
+			$this->alias . '.email_verified' => 0,
 			$this->alias . '.email_token_expires <' => date('Y-m-d H:i:s')));
 	}
 }

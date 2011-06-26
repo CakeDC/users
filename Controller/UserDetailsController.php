@@ -17,14 +17,14 @@ App::uses('UsersAppController', 'Users.Controller');
  * @package users
  * @subpackage users.controllers
  */
-class DetailsController extends UsersAppController {
+class UserDetailsController extends UsersAppController {
 
 /**
  * Name
  *
  * @var string
  */
-	public $name = 'Details';
+	public $name = 'UserDetails';
 
 /**
  * Helpers

@@ -15,14 +15,14 @@
  * @package users
  * @subpackage users.models
  */
-class Detail extends UsersAppModel {
+class UserDetail extends UsersAppModel {
 
 /**
  * Name
  *
  * @var string
  */
-	public $name = 'Detail';
+	public $name = 'UserDetail';
 
 /**
  * Displayfield

@@ -50,7 +50,7 @@ class usersSchema extends CakeSchema {
 		'tos' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
 		'active' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
 		'last_login' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
-		'last_activity' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
+		'last_action' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'is_admin' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
 		'role' => array('type' => 'string', 'null' => true, 'default' => NULL),
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),

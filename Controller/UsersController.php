@@ -143,7 +143,7 @@ class UsersController extends UsersAppController {
 				'OR' => array(
 					'AND' => array(
 							$this->modelClass . '.active' => 1, 
-							$this->modelClass . '.email_authenticated' => 1))));
+							$this->modelClass . '.email_verified' => 1))));
 		$this->set('users', $this->paginate($this->modelClass));
 		$this->set('searchTerm', $searchTerm);
 
@@ -388,7 +388,7 @@ class UsersController extends UsersAppController {
 	// 		'conditions' => array(
 	// 				'AND' => array(
 	// 					$this->modelClass . '.active' => 1,
-	// 					$this->modelClass . '.email_authenticated' => 1)));
+	// 					$this->modelClass . '.email_verified' => 1)));
 	// 
 	// 	$this->set('users', $this->paginate($this->modelClass));
 	// 	$this->set('searchTerm', $searchTerm);
