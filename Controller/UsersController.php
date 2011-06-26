@@ -298,7 +298,7 @@ class UsersController extends UsersAppController {
  *
  * @return void
  */
-	public function register() {
+	public function add() {
 		if ($this->Auth->user()) {
 			$this->Session->setFlash(__d('users', 'You are already registered and logged in!'));
 			$this->redirect('/');
