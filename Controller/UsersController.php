@@ -140,10 +140,8 @@ class UsersController extends UsersAppController {
 			'order' => $this->modelClass . '.username ASC',
 			'by' => $searchTerm,
 			'conditions' => array(
-				'OR' => array(
-					'AND' => array(
-							$this->modelClass . '.active' => 1, 
-							$this->modelClass . '.email_verified' => 1))));
+				$this->modelClass . '.active' => 1, 
+				$this->modelClass . '.email_verified' => 1));
 		$this->set('users', $this->paginate($this->modelClass));
 		$this->set('searchTerm', $searchTerm);
 
@@ -195,6 +193,14 @@ class UsersController extends UsersAppController {
 		}
 
 		$this->_setLanguages();
+		
+		// Render the OpenID form if that data is present
+		$oid = $this->Session->read('openIdAuthData');
+		if ($oid) {
+			$this->autoRender = false;
+			$this->set('openIdAuthData', $oid);
+			$this->render('openid_add');
+		}
 	}
 
 /**
