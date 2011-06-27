@@ -11,7 +11,7 @@
 ?>
 <div class="users form">
 	<fieldset>
- 		<legend><?php __d('users', 'Add User');?></legend>
+ 		<legend><?php echo __d('users', 'Add User');?></legend>
 		<?php
 		echo $this->Form->create($model);
 		echo $this->Form->input('username', array(
