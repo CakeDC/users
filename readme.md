@@ -16,15 +16,33 @@ or
 
 You will also need the [CakeDC Search plugin](http://github.com/CakeDC/search), just grab it and put it into your application's plugin folder.
 
-## How to use it ##
+Activate some necessary core components:
+
+	public $components = array('RequestHandler', 'Session', 'Auth');
+
+Add some lines to your `beforeFilter` and configure at your taste:
+
+	$this->Auth->authorize = 'controller';
+	$this->Auth->fields = array('username' => 'email', 'password' => 'passwd');
+	$this->Auth->loginAction = array('plugin' => 'users', 'controller' => 'users', 'action' => 'login', 'admin' => false);
+	$this->Auth->loginRedirect = '/';
+	$this->Auth->logoutRedirect = '/';
+	$this->Auth->authError = __('Sorry, but you need to login to access this location.', true);
+	$this->Auth->loginError = __('Invalid e-mail / password combination.  Please try again', true);
+	$this->Auth->autoRedirect = true;
+	$this->Auth->userModel = 'User';
+	$this->Auth->userScope = array('User.active' => 1);
+	$this->Auth->allowedActions = array('index');
+
+## What it is capable of ##
 
 You can use the plugin as it comes if you're happy with it or, more common, extend your app specific user implementation from the plugin.
 
 The plugin itself is already capable of:
 
-* User registration
+* User registration (http://localhost/users/users/register)
 * Account verification by a token sent via email
-* User login (email / password)
+* User login (email / password) (http://localhost/users/users/login)
 * Password reset based on requesting a token by email and entering a new password
 * Simple profiles for users
 * User search
@@ -60,7 +78,7 @@ You can overwrite the render() method to fall back to the plugin views in the ca
 
 ### Extending the model ###
 
-Declare the model 
+Declare the model
 
 	App::import('Model', 'Users.User');
 	AppUser extends User {
