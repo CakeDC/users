@@ -15,7 +15,7 @@
  * @package users
  * @subpackage users.tests.cases.models
  */
-class DetailTestCase extends CakeTestCase {
+class UserDetailTestCase extends CakeTestCase {
 
 /**
  * Detail instance
@@ -31,8 +31,7 @@ class DetailTestCase extends CakeTestCase {
  */
 	public $fixtures = array(
 		'plugin.users.user',
-		'plugin.users.detail',
-		'plugin.users.identity');
+		'plugin.users.user_detail');
 
 /**
  * start
@@ -41,7 +40,7 @@ class DetailTestCase extends CakeTestCase {
  */
 	public function startTest() {
 		Configure::write('App.UserClass', null);
-		$this->Detail = ClassRegistry::init('Users.Detail');
+		$this->Detail = ClassRegistry::init('Users.UserDetail');
 	}
 
 /**

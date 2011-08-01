@@ -15,21 +15,21 @@
  * @package users
  * @subpackage users.test.fixtures
  */
-class DetailFixture extends CakeTestFixture {
+class UserDetailFixture extends CakeTestFixture {
 
 /**
  * Name
  *
  * @var string $name
  */
-	public $name = 'Detail';
+	public $name = 'UserDetail';
 
 /**
  * Table
  *
  * @var array $table
  */
-	public $table = 'details';
+	public $table = 'user_details';
 
 /**
  * Fields
