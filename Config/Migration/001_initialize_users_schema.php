@@ -74,7 +74,7 @@ class M49c3417a54874a9d276811502cedc421 extends CakeMigration {
 		),
 		'down' => array(
 			'drop_table' => array(
-				'users', 'details'),
+				'users', 'user_details'),
 		)
 	);
 
