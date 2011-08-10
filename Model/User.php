@@ -434,7 +434,7 @@ class User extends UsersAppModel {
 		$user = $this->find('first', array(
 			'contain' => array(
 				//'Tag',
-				'Detail'),
+				'UserDetail'),
 			'conditions' => array(
 				$this->alias . '.slug' => $slug,
 				'OR' => array(
