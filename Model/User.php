@@ -59,13 +59,52 @@ class User extends UsersAppModel {
 		'UserDetail' => array(
 			'className' => 'Users.UserDetail',
 			'foreign_key' => 'user_id'));
+/**
+ * Validation domain for translations 
+ */
+	public $validationDomain = 'users';
 
 /**
  * Validation parameters
  *
  * @var array
  */
-	public $validate = array();
+	public $validate = array(
+			'username' => array(
+				'required' => array(
+					'rule' => array('notEmpty'),
+					'required' => true, 'allowEmpty' => false,
+					'message' => 'Please enter a username')),
+				'alpha' => array(
+					'rule' => array('alphaNumeric'), 
+					'message' => 'The username must be alphanumeric'),
+				'unique_username' => array(
+					'rule'=>array('isUnique','username'),
+					'message' => 'This username is already in use.'),
+				'username_min' => array(
+					'rule' => array('minLength', '3'),
+					'message' => 'The username must have at least 3 characters.'),
+			'email' => array(
+				'isValid' => array(
+					'rule' => 'email',
+					'required' => true,
+					'message' => 'Please enter a valid email address.')),
+				'isUnique' => array(
+					'rule' => array('isUnique','email'),
+					'message' => 'This email is already in use.'),
+			'password' => array(
+				'to_short' => array(
+					'rule' => array('minLength', '6'),
+					'message' => 'The password must have at least 6 characters.'),
+				'required' => array(
+					'rule' => 'notEmpty',
+					'message' => 'Please enter a password.')),
+			'temppassword' => array(
+				'rule' => 'confirmPassword',
+				'message' => 'The passwords are not equal, please try again.'),
+			'tos' => array(
+				'rule' => array('custom','[1]'),
+				'message' => 'You must agree to the terms of use.'));
 
 /**
  * UserDetail model
@@ -111,43 +150,6 @@ class User extends UsersAppModel {
  * @return void
  */
 	protected function _setupValidation() {
-		$this->validate = array(
-			'username' => array(
-				'required' => array(
-					'rule' => array('notEmpty'),
-					'required' => true, 'allowEmpty' => false,
-					'message' => __d('users', 'Please enter a username')),
-				'alpha' => array(
-					'rule'=>array('alphaNumeric'), 
-					'message' => __d('users', 'The username must be alphanumeric')),
-				'unique_username' => array(
-					'rule'=>array('isUnique','username'),
-					'message' => __d('users', 'This username is already in use.')),
-				'username_min' => array(
-					'rule' => array('minLength', '3'),
-					'message' => __d('users', 'The username must have at least 3 characters.'))),
-			'email' => array(
-				'isValid' => array(
-					'rule' => 'email',
-					'required' => true,
-					'message' => __d('users', 'Please enter a valid email address.')),
-				'isUnique' => array(
-					'rule' => array('isUnique','email'),
-					'message' => __d('users', 'This email is already in use.'))),
-			'password' => array(
-				'to_short' => array(
-					'rule' => array('minLength', '6'),
-					'message' => __d('users', 'The password must have at least 6 characters.')),
-				'required' => array(
-					'rule' => 'notEmpty',
-					'message' => __d('users', 'Please enter a password.'))),
-			'temppassword' => array(
-				'rule' => 'confirmPassword',
-				'message' => __d('users', 'The passwords are not equal, please try again.')),
-			'tos' => array(
-				'rule' => array('custom','[1]'),
-				'message' => __d('users', 'You must agree to the terms of use.')));
-
 		$this->validatePasswordChange = array(
 			'new_password' => $this->validate['password'],
 			'confirm_password' => array(

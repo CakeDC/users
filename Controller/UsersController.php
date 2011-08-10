@@ -56,8 +56,8 @@ class UsersController extends UsersAppController {
  * @param CakeRequest $request Request object for this controller can be null for testing.
  *  But expect that features that use the params will not work.
  */
-	public function __construct($request = null) {
-		parent::__construct($request);
+	public function __construct($request, $response) {
+		parent::__construct($request, $response);
 		$this->_setupComponents();
 		$this->_setupHelpers();
 	}
