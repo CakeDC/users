@@ -663,7 +663,7 @@ class User extends UsersAppModel {
  * Adds a new user
  * 
  * @param array post data, should be Controller->data
- * @return array
+ * @return boolean True if the data was saved successfully.
  */
 	public function add($postData = null) {
 		if (!empty($postData)) {
@@ -672,6 +672,7 @@ class User extends UsersAppModel {
 				return true;
 			}
 		}
+		return false;
 	}
 
 /**
