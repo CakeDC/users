@@ -46,7 +46,7 @@ class UserTestCase extends CakeTestCase {
  *
  * @return void
  */
-	public function startTest() {
+	public function setUp() {
 		Configure::write('App.UserClass', null);
 		$this->User = ClassRegistry::init('Users.User');
 	}
@@ -56,7 +56,7 @@ class UserTestCase extends CakeTestCase {
  *
  * @return void
  */
-	public function endTest() {
+	public function tearDown() {
 		unset($this->User);
 		ClassRegistry::flush(); 
 	}
@@ -66,7 +66,7 @@ class UserTestCase extends CakeTestCase {
  * @return void
  */
 	public function testUserInstance() {
-		$this->assertTrue(is_a($this->User, 'User'));
+		$this->assertType('User', $this->User);
 	}
 
 /**
