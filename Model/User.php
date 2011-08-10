@@ -200,8 +200,8 @@ class User extends UsersAppModel {
  */
 	public function afterFind($results, $primary = false) {
 		foreach ($results as &$row) {
-			if (isset($row['Detail']) && (is_array($row))) {
-				$row['Detail'] = $this->Detail->getSection($row[$this->alias]['id'], $this->alias);
+			if (isset($row['UserDetail']) && (is_array($row))) {
+				$row['UserDetail'] = $this->Detail->getSection($row[$this->alias]['id'], $this->alias);
 			}
 		}
 		return $results;
@@ -684,10 +684,9 @@ class User extends UsersAppModel {
  */
 	public function edit($userId = null, $postData = null) {
 		$user = $this->find('first', array(
-			'contain' => array(
-				'Detail'),
-			'conditions' => array(
-				$this->alias . '.id' => $userId)));
+			'contain' => array('UserDetail'),
+			'conditions' => array($this->alias . '.id' => $userId)
+		));
 
 		$this->set($user);
 		if (empty($user)) {
