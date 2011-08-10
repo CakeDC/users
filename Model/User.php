@@ -300,11 +300,11 @@ class User extends UsersAppModel {
  * @return mixed False or user data as array on success
  */
 	public function passwordReset($postData = array()) {
+		$this->recursive = -1;
 		$user = $this->find('first', array(
 			'conditions' => array(
 				$this->alias . '.active' => 1,
 				$this->alias . '.email' => $postData[$this->alias]['email'])));
-                //debug($user);
 		if (!empty($user) && $user[$this->alias]['email_verified'] == 1) {
 			$sixtyMins = time() + 43000;
 			$token = $this->generateToken();
