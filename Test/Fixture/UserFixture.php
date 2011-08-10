@@ -45,7 +45,7 @@ class UserFixture extends CakeTestFixture {
 			'password' => array('type'=>'string', 'null' => true, 'default' => NULL, 'length' => 128),
 			'password_token' => array('type'=>'string', 'null' => true, 'default' => NULL, 'length' => 128),
 			'email' => array('type'=>'string', 'null' => true, 'default' => NULL),
-			'email_authenticated' => array('type'=>'boolean', 'null' => true, 'default' => '0'),
+			'email_verified' => array('type'=>'boolean', 'null' => true, 'default' => '0'),
 			'email_token' => array('type'=>'string', 'null' => true, 'default' => NULL),
 			'email_token_expiry' => array('type'=>'datetime', 'null' => true, 'default' => NULL),
 			'tos' => array('type'=>'boolean', 'null' => true, 'default' => '0'),
@@ -73,7 +73,7 @@ class UserFixture extends CakeTestFixture {
 			'password'  => 'test', // test
 			'password_token'  => 'testtoken',
 			'email' => 'adminuser@cakedc.com',
-			'email_authenticated' => 1,
+			'email_verified' => 1,
 			'email_token' => 'testtoken',
 			'email_token_expiry' => '2008-03-25 02:45:46',
 			'tos' => 1,
@@ -92,7 +92,7 @@ class UserFixture extends CakeTestFixture {
 			'password'  => 'secretkey', // secretkey
 			'password_token'  => '',
 			'email' => 'testuser@cakedc.com',
-			'email_authenticated' => '1',
+			'email_verified' => '1',
 			'email_token' => '',
 			'email_token_expiry' => '2008-03-25 02:45:46',
 			'tos' => 1,
@@ -111,7 +111,7 @@ class UserFixture extends CakeTestFixture {
 			'password'  => 'newpass', // newpass
 			'password_token'  => '',
 			'email' => 'testuser1@testuser.com',
-			'email_authenticated' => 0,
+			'email_verified' => 0,
 			'email_token' => 'testtoken2',
 			'email_token_expiry' => '2008-03-28 02:45:46',
 			'tos' => 0,
@@ -130,7 +130,7 @@ class UserFixture extends CakeTestFixture {
 			'password'  => 'newpass', // newpass
 			'password_token'  => '',
 			'email' => 'oidtest@testuser.com',
-			'email_authenticated' => 0,
+			'email_verified' => 0,
 			'email_token' => 'testtoken2',
 			'email_token_expiry' => '2008-03-28 02:45:46',
 			'tos' => 0,
@@ -149,7 +149,7 @@ class UserFixture extends CakeTestFixture {
 			'password'  => 'newpass', // newpass
 			'password_token'  => '',
 			'email' => 'oidtest2@testuser.com',
-			'email_authenticated' => 0,
+			'email_verified' => 0,
 			'email_token' => 'testtoken2',
 			'email_token_expiry' => '2008-03-28 02:45:46',
 			'tos' => 1,
@@ -168,7 +168,7 @@ class UserFixture extends CakeTestFixture {
 			'password'  => 'newpass', // newpass
 			'password_token'  => 'testtoken',
 			'email' => 'resetuser@testuser.com',
-			'email_authenticated' => 1,
+			'email_verified' => 1,
 			'email_token' => 'testtoken',
 			'email_token_expiry' => '2008-03-28 02:45:46',
 			'tos' => 1,
