@@ -68,11 +68,11 @@ class User extends UsersAppModel {
 	public $validate = array();
 
 /**
- * Detail model
+ * UserDetail model
  *
- * @var Detail
+ * @var UserDetail
  */
-	public $Detail = null;
+	public $UserDetail = null;
 
 /**
  * Constructor
@@ -157,19 +157,19 @@ class User extends UsersAppModel {
 	}
 
 /**
- * Sets some defaults for the detail model
+ * Sets some defaults for the UserDetail model
  *
  * @return void
  */
 	public function setupDetail() {
-		$this->Detail->sectionSchema[$this->alias] = array(
+		$this->UserDetail->sectionSchema[$this->alias] = array(
 				'birthday' => array(
 					'type' => 'date',
 					'null' => null,
 					'default' => null,
 					'length' => null));
 
-		$this->Detail->sectionValidation[$this->alias] = array(
+		$this->UserDetail->sectionValidation[$this->alias] = array(
 				'birthday' => array(
 					'validDate' => array(
 						'rule' => array('date'), 'allowEmpty' => true, 'message' => __d('users', 'Invalid date'))));
@@ -201,7 +201,7 @@ class User extends UsersAppModel {
 	public function afterFind($results, $primary = false) {
 		foreach ($results as &$row) {
 			if (isset($row['UserDetail']) && (is_array($row))) {
-				$row['UserDetail'] = $this->Detail->getSection($row[$this->alias]['id'], $this->alias);
+				$row['UserDetail'] = $this->UserDetail->getSection($row[$this->alias]['id'], $this->alias);
 			}
 		}
 		return $results;
