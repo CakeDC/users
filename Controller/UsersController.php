@@ -435,8 +435,8 @@ class UsersController extends UsersAppController {
 		unset($data[$this->modelClass]['email']);
 
 		if ($type === 'reset') {
-			$newPassword = $data[$this->modelClass]['passwd'];
-			$data[$this->modelClass]['passwd'] = $this->Auth->password($newPassword);
+			$newPassword = $data[$this->modelClass]['password'];
+			$data[$this->modelClass]['password'] = $this->Auth->password($newPassword);
 		}
 		if ($type === 'email') {
  			$data[$this->modelClass]['active'] = 1;

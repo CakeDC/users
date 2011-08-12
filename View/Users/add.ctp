@@ -24,7 +24,7 @@
 			'label' => __d('users', 'E-mail (used as login)',true),
 			'error' => array('isValid' => __d('users', 'Must be a valid email address', true),
 			'isUnique' => __d('users', 'An account with that email already exists', true))));
-		echo $this->Form->input('passwd', array(
+		echo $this->Form->input('password', array(
 			'label' => __d('users', 'Password',true),
 			'type' => 'password',
 			'error' => __d('users', 'Must be at least 5 characters long', true)));
