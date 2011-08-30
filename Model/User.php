@@ -59,6 +59,7 @@ class User extends UsersAppModel {
 		'UserDetail' => array(
 			'className' => 'Users.UserDetail',
 			'foreign_key' => 'user_id'));
+
 /**
  * Validation domain for translations 
  */
@@ -74,7 +75,7 @@ class User extends UsersAppModel {
 				'required' => array(
 					'rule' => array('notEmpty'),
 					'required' => true, 'allowEmpty' => false,
-					'message' => 'Please enter a username')),
+					'message' => 'Please enter a username'),
 				'alpha' => array(
 					'rule' => array('alphaNumeric'), 
 					'message' => 'The username must be alphanumeric'),
@@ -83,7 +84,7 @@ class User extends UsersAppModel {
 					'message' => 'This username is already in use.'),
 				'username_min' => array(
 					'rule' => array('minLength', '3'),
-					'message' => 'The username must have at least 3 characters.'),
+					'message' => 'The username must have at least 3 characters.')),
 			'email' => array(
 				'isValid' => array(
 					'rule' => 'email',
@@ -435,7 +436,6 @@ class User extends UsersAppModel {
 	public function view($slug = null) {
 		$user = $this->find('first', array(
 			'contain' => array(
-				//'Tag',
 				'UserDetail'),
 			'conditions' => array(
 				$this->alias . '.slug' => $slug,

@@ -212,7 +212,7 @@ class UserDetail extends UsersAppModel {
 							$this->create();
 							$newDetail[$model]['user_id'] = $userId;
 						} else {
-							$newDetail[$model]['id'] = $detail['Detail']['id'];
+							$newDetail[$model]['id'] = $detail[$this->alias]['id'];
 						}
 
 						$newDetail[$model]['field'] = $field;

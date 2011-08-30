@@ -49,7 +49,7 @@ class UserDetailTestCase extends CakeTestCase {
  * @return void
  */
 	public function testDetailInstance() {
-		$this->assertInstanceOf('Detail', $this->Detail);
+		$this->assertTrue(is_a($this->Detail, 'UserDetail'));
 	}
 
 /**
@@ -107,7 +107,7 @@ class UserDetailTestCase extends CakeTestCase {
  */
 	public function testSaveSection() {
 		$data = array(
-			'Detail' => array(
+			'UserDetail' => array(
 				'biography' => 'Lipsum...',
 				'firstname' => 'Florian',
 				'lastname' => 'Krämer'));
@@ -121,7 +121,7 @@ class UserDetailTestCase extends CakeTestCase {
 
 
 		$data = array(
-			'Detail' => array(
+			'UserDetail' => array(
 				'biography' => 'Lipsum...',
 				'firstname' => 'Foo',
 				'lastname' => 'Bar'));
@@ -135,11 +135,13 @@ class UserDetailTestCase extends CakeTestCase {
 
 
 		$data = array(
-			'User' => array(
+			'UserDetail' => array(
 				'email' => 'foo@bar.com'));
 		$this->Detail->saveSection('47ea303a-3cyc-k251-b313-4811c0a800bf', $data, 'User');
+		$result = $this->Detail->getSection('47ea303a-3cyc-k251-b313-4811c0a800bf', 'User');
 		$this->Detail->User->id = '47ea303a-3cyc-k251-b313-4811c0a800bf';
 		$result = $this->Detail->User->field('User.email');
 		$this->assertEqual($result, 'foo@bar.com');
 	}
+
 }

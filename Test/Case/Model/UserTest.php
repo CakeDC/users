@@ -136,7 +136,8 @@ class UserTestCase extends CakeTestCase {
 		$id = '1';
 		$this->User->id = $id;
 		$lastDate = $this->User->field('last_action');
-		$this->User->updateLastActivity($id);
+		$this->assertTrue($this->User->updateLastActivity($id));
+		$this->User->id = $id;
 		$newDate = $this->User->field('last_action');
 		$this->assertTrue($lastDate < $newDate);
 		$this->assertFalse($this->User->updateLastActivity('invalid-id!'));
