@@ -38,8 +38,7 @@ class UserTestCase extends CakeTestCase {
  */
 	public $fixtures = array(
 		'plugin.users.user',
-		'plugin.users.user_detail',
-		'plugin.users.identity');
+		'plugin.users.user_detail');
 
 /**
  * startTest
@@ -57,6 +56,7 @@ class UserTestCase extends CakeTestCase {
  * @return void
  */
 	public function tearDown() {
+		parent::tearDown();
 		unset($this->User);
 		ClassRegistry::flush(); 
 	}
@@ -133,12 +133,13 @@ class UserTestCase extends CakeTestCase {
  * @return void
  */
 	public function testUpdateLastActivity() {
-		$id = '1';
+		$id = 1;
 		$this->User->id = $id;
 		$lastDate = $this->User->field('last_action');
-		$this->assertTrue($this->User->updateLastActivity($id));
+		$result = $this->User->updateLastActivity($id);
+		$this->assertTrue(is_array($result));
 		$this->User->id = $id;
-		$newDate = $this->User->field('last_action');
+		$newDate = $result['User']['last_action'];
 		$this->assertTrue($lastDate < $newDate);
 		$this->assertFalse($this->User->updateLastActivity('invalid-id!'));
 	}
@@ -277,8 +278,10 @@ class UserTestCase extends CakeTestCase {
 			'temppassword' => 'password',
 			'tos' => 1));
 		$result = $this->User->add($postData);
-		$this->assertTrue(is_array($result));
-		$this->assertEqual($result['User']['active'], 1);
+		$this->assertTrue($result);
+		$result = $this->User->data;
+
+		$this->assertEqual($result['User']['active'], 0);
 		$this->assertEqual($result['User']['password'], Security::hash('password', 'sha1', true));
 		$this->assertTrue(is_string($result['User']['email_token']));
 

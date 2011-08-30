@@ -426,7 +426,7 @@ class UsersController extends UsersAppController {
 		}
 
 		$data = $this->User->validateToken($token, $type === 'reset');
-		if (!data) {
+		if (!$data) {
 			$this->Session->setFlash(__d('users', 'The url you accessed is not longer valid', true));
 			return $this->redirect('/');
 		}

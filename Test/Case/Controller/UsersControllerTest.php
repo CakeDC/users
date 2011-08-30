@@ -109,8 +109,7 @@ class UsersControllerTestCase extends CakeTestCase {
  */
 	public $fixtures = array(
 		'plugin.users.user',
-		'plugin.users.detail',
-		'plugin.users.identity');
+		'plugin.users.user_detail');
 
 /**
  * Sampletdata used for post data
@@ -140,7 +139,11 @@ class UsersControllerTestCase extends CakeTestCase {
  */
 	public function startTest() {
 		Configure::write('App.UserClass', null);
-		$this->Users = new TestUsersController(new CakeRequest());
+
+		$request = new CakeRequest();
+		$response = $this->getMock('CakeResponse');
+		$this->Users = new TestUsersController($request, $response);
+
 		$this->Users->constructClasses();
 		$this->Users->request->params = array(
 			'pass' => array(),

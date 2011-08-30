@@ -108,13 +108,6 @@ class User extends UsersAppModel {
 				'message' => 'You must agree to the terms of use.'));
 
 /**
- * UserDetail model
- *
- * @var UserDetail
- */
-	public $UserDetail = null;
-
-/**
  * Constructor
  *
  * @param string $id ID
@@ -670,7 +663,10 @@ class User extends UsersAppModel {
 	public function add($postData = null) {
 		if (!empty($postData)) {
 			$this->create();
-			if ($this->save($postData)) {
+			$result = $this->save($postData);
+			if ($result) {
+				$result[$this->alias][$this->primaryKey] = $this->id;
+				$this->data = $result;
 				return true;
 			}
 		}
