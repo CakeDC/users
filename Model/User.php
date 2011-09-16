@@ -10,7 +10,7 @@
  */
 
 App::uses('Security', 'Utility');
-App::import('Users.UsersAppModel');
+App::uses('UsersAppModel', 'Users.Model');
 
 /**
  * Users Plugin User Model
