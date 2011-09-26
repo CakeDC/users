@@ -16,6 +16,11 @@
 	<?php
 		echo $this->Form->input('id');
 		echo $this->Form->input('username');
+		echo $this->Form->input('email');
+		echo $this->Form->input('slug');
+		echo $this->Form->input('role');
+		echo $this->Form->input('active');
+		echo $this->Form->input('is_admin');
 	?>
 	</fieldset>
 <?php echo $this->Form->end('Submit');?>
