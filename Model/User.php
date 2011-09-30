@@ -434,9 +434,7 @@ class User extends UsersAppModel {
 				$this->alias . '.slug' => $slug,
 				'OR' => array(
 					'AND' =>
-						array($this->alias . '.active' => 1, $this->alias . '.email_verified' => 1),
-						//array($this->alias . '.active' => 1, $this->alias . '.account_type' => 'remote')
-						))));
+						array($this->alias . '.active' => 1, $this->alias . '.email_verified' => 1)))));
 
 		if (empty($user)) {
 			throw new Exception(__d('users', 'The user does not exist.'));
@@ -448,20 +446,42 @@ class User extends UsersAppModel {
 /**
  * Registers a new user
  *
+ * Options:
+ * - bool emailVerification : Default is true, generates the token for email verification
+ * - bool removeExpiredRegistrations : Default is true, removes expired registrations to do cleanup when no cron is configured for that
+ * - bool returnData : Default is true, if false the method returns true/false the data is always available through $this->User->data
+ *
  * @param array $postData Post data from controller
- * @param boolean $useEmailVerification If set to true a token will be generated
+ * @param mixed should be array now but can be boolean for emailVerification because of backward compatibility
  * @return mixed
  */
-	public function register($postData = array(), $useEmailVerification = true) {
-		$postData = $this->_beforeRegistration($postData, $useEmailVerification);
+	public function register($postData = array(), $options = array()) {
+		if (is_bool($options)) {
+			$options = array('emailVerification' => $options);
+		}
 
-		$this->_removeExpiredRegistrations();
+		$defaults = array(
+			'emailVerification' => true,
+			'removeExpiredRegistrations' => true,
+			'returnData' => true);
+		extract(array_merge($defaults, $options));
+
+		$postData = $this->_beforeRegistration($postData, $emailVerification);
+
+		if ($removeExpiredRegistrations) {
+			$this->_removeExpiredRegistrations();
+		}
 
 		$this->set($postData);
 		if ($this->validates()) {
 			$postData[$this->alias]['password'] = Security::hash($postData[$this->alias]['password'], 'sha1', true);
 			$this->create();
-			return $this->save($postData, false);
+			$this->data = $this->save($postData, false);
+			$this->data[$this->alias]['id'] = $this->id;
+			if ($returnData) {
+				return $this->data;
+			}
+			return true;
 		}
 
 		return false;

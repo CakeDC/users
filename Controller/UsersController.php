@@ -108,7 +108,7 @@ class UsersController extends UsersAppController {
 	public function _setupAuth() {
 		$this->Auth->allow('add', 'reset', 'verify', 'logout', 'index', 'view', 'reset_password');
 
-		if ($this->action == 'add') {
+		if ($this->action == 'register') {
 			$this->Components->disable('Auth');
 		}
 
@@ -123,7 +123,6 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	public function index() {
-		//$this->User->contain('Detail');
 		$searchTerm = '';
 		//$this->Prg->commonProcess($this->modelClass, $this->modelClass, 'index', false);
 
@@ -193,8 +192,7 @@ class UsersController extends UsersAppController {
 		}
 
 		$this->_setLanguages();
-		
-		// Render the OpenID form if that data is present
+
 		$oid = $this->Session->read('openIdAuthData');
 		if ($oid) {
 			$this->autoRender = false;
@@ -211,12 +209,12 @@ class UsersController extends UsersAppController {
 	public function admin_index() {
 //		$this->Prg->commonProcess();
 		$this->{$this->modelClass}->data[$this->modelClass] = $this->passedArgs;
-        if ($this->{$this->modelClass}->Behaviors->attached('Search.Searchable')) {
-        	$parsedConditions = $this->{$this->modelClass}->parseCriteria($this->Users->passedArgs);
-        } else {
-        	$parsedConditions = array();
-        }
-        $this->Paginator->settings[$this->modelClass]['conditions'] = $parsedConditions;
+		if ($this->{$this->modelClass}->Behaviors->attached('Search.Searchable')) {
+			$parsedConditions = $this->{$this->modelClass}->parseCriteria($this->Users->passedArgs);
+		} else {
+			$parsedConditions = array();
+		}
+		$this->Paginator->settings[$this->modelClass]['conditions'] = $parsedConditions;
 		$this->Paginator->settings[$this->modelClass]['order'] = array($this->modelClass . '.created' => 'desc');
 
 		$this->{$this->modelClass}->recursive = 0;
@@ -368,37 +366,41 @@ class UsersController extends UsersAppController {
  *
  * @return void
  */
-	// public function search() {
-	// 	$searchTerm = '';
-	// 	$this->Prg->commonProcess($this->modelClass, $this->modelClass, 'search', false);
-	// 
-	// 	if (!empty($this->request->params['named']['search'])) {
-	// 		$searchTerm = $this->request->params['named']['search'];
-	// 		$by = 'any';
-	// 	}
-	// 	if (!empty($this->request->params['named']['username'])) {
-	// 		$searchTerm = $this->request->params['named']['username'];
-	// 		$by = 'username';
-	// 	}
-	// 	if (!empty($this->request->params['named']['email'])) {
-	// 		$searchTerm = $this->request->params['named']['email'];
-	// 		$by = 'email';
-	// 	}
-	// 	$this->request->data[$this->modelClass]['search'] = $searchTerm;
-	// 
-	// 	$this->paginate = array(
-	// 		'search',
-	// 		'limit' => 12,
-	// 		'by' => $by,
-	// 		'search' => $searchTerm,
-	// 		'conditions' => array(
-	// 				'AND' => array(
-	// 					$this->modelClass . '.active' => 1,
-	// 					$this->modelClass . '.email_verified' => 1)));
-	// 
-	// 	$this->set('users', $this->paginate($this->modelClass));
-	// 	$this->set('searchTerm', $searchTerm);
-	// }
+	public function search() {
+		if (!App::import('Component', 'Search.Prg')) {
+			throw new MissingPluginException(array('plugin' => 'Search'));
+		}
+
+		$searchTerm = '';
+		$this->Prg->commonProcess($this->modelClass, $this->modelClass, 'search', false);
+
+		if (!empty($this->request->params['named']['search'])) {
+			$searchTerm = $this->request->params['named']['search'];
+			$by = 'any';
+		}
+		if (!empty($this->request->params['named']['username'])) {
+			$searchTerm = $this->request->params['named']['username'];
+			$by = 'username';
+		}
+		if (!empty($this->request->params['named']['email'])) {
+			$searchTerm = $this->request->params['named']['email'];
+			$by = 'email';
+		}
+		$this->request->data[$this->modelClass]['search'] = $searchTerm;
+
+		$this->paginate = array(
+			'search',
+			'limit' => 12,
+			'by' => $by,
+			'search' => $searchTerm,
+			'conditions' => array(
+					'AND' => array(
+						$this->modelClass . '.active' => 1,
+						$this->modelClass . '.email_verified' => 1)));
+	
+		$this->set('users', $this->paginate($this->modelClass));
+		$this->set('searchTerm', $searchTerm);
+	}
 
 /**
  * Common logout action
@@ -406,10 +408,10 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	public function logout() {
+		$user = $this->Auth->user();
 		$this->Session->destroy();
 		$this->Cookie->destroy();
-		
-		$this->Session->setFlash(sprintf(__d('users', '%s you have successfully logged out'), $this->Auth->user('username')));
+		$this->Session->setFlash(sprintf(__d('users', '%s you have successfully logged out'), $user[$this->{$this->modelClass}->displayField]));
 		$this->redirect($this->Auth->logout());
 	}
 
