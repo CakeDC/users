@@ -611,7 +611,13 @@ class User extends UsersAppModel {
 				if (isset($query['group']) && is_array($query['group']) && !empty($query['group'])) {
 					return count($results);
 				}
-				return $results[0][0]['COUNT(DISTINCT ' . $this->alias . '.id)'];
+				if (isset($results[0][0]['COUNT(DISTINCT ' . $this->alias . '.id)'])) {
+					return $results[0][0]['COUNT(DISTINCT ' . $this->alias . '.id)'];
+				}
+				if (isset($results[0][0]['count'])) {
+					return $results[0][0]['count'];
+				}
+				return $results;
 			}
 			return $results;
 		}
