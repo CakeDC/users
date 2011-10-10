@@ -228,7 +228,6 @@ class User extends UsersAppModel {
 		$match = $this->find(array(
 			$this->alias . '.email_token' => $token),
 			'id, email, email_token_expires, role');
-
 		if (!empty($match)){
 			$expires = strtotime($match[$this->alias]['email_token_expires']);
 			if ($expires > $now) {
