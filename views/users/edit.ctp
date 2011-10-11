@@ -17,9 +17,6 @@
 		echo $this->Form->input('account_type');
 		echo $this->Form->input('url');
 		echo $this->Form->input('username');
-		echo $this->Form->input('BroadcastEvent');
-		echo $this->Form->input('UserGroup');
-		echo $this->Form->input('Addon');
 	?>
 	</fieldset>
 <?php echo $this->Form->end('Submit');?>

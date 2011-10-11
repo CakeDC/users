@@ -76,13 +76,6 @@ class User extends UsersAppModel {
 	public $validate = array();
 
 /**
- * Detail model
- *
- * @var Detail
- */
-	public $Detail = null;
-
-/**
  * Constructor
  *
  * @param string $id ID
@@ -116,8 +109,8 @@ class User extends UsersAppModel {
 					'message' => __d('users', 'This email is already in use.', true))),
 			'passwd' => array(
 				'to_short' => array(
-					'rule' => array('minLength', '4'),
-					'message' => __d('users', 'The password must have at least 8 characters.', true)),
+					'rule' => array('minLength', '6'),
+					'message' => __d('users', 'The password must have at least 6 characters.', true)),
 				'required' => array(
 					'rule' => 'notEmpty',
 					'message' => __d('users', 'Please enter a password.', true))),
@@ -134,17 +127,25 @@ class User extends UsersAppModel {
 				'required' => array('rule' => array('compareFields', 'new_password', 'confirm_password'), 'required' => true, 'message' => __d('users', 'The passwords are not equal.', true))),
 			'old_password' => array(
 				'to_short' => array('rule' => 'validateOldPassword', 'required' => true, 'message' => __d('users', 'Invalid password.', true))));
+	}
 
+/**
+ * Sets some defaults for the detail model
+ *
+ * @return void
+ */
+	public function setupDetail() {
 		$this->Detail->sectionSchema[$this->alias] = array(
-			'birthday' => array(
-				'type' => 'date',
-				'null' => null,
-				'default' => null,
-				'length' => null));
+				'birthday' => array(
+					'type' => 'date',
+					'null' => null,
+					'default' => null,
+					'length' => null));
 
 		$this->Detail->sectionValidation[$this->alias] = array(
-			'birthday' => array(
-				'validDate' => array('rule' => array('date'), 'allowEmpty' => true, 'message' => __d('users', 'Invalid date', true))));
+				'birthday' => array(
+					'validDate' => array(
+						'rule' => array('date'), 'allowEmpty' => true, 'message' => __d('users', 'Invalid date', true))));
 	}
 
 /**
@@ -226,15 +227,15 @@ class User extends UsersAppModel {
 		$data = false;
 		$match = $this->find(array(
 			$this->alias . '.email_token' => $token),
-			'id, email, email_token_expires');
-
+			'id, email, email_token_expires, role');
 		if (!empty($match)){
 			$expires = strtotime($match[$this->alias]['email_token_expires']);
 			if ($expires > $now) {
 				$data[$this->alias]['id'] = $match[$this->alias]['id'];
 				$data[$this->alias]['email'] = $match[$this->alias]['email'];
 				$data[$this->alias]['email_authenticated'] = '1';
-
+				$data[$this->alias]['role'] = $match[$this->alias]['role'];
+				
 				if ($reset === true) {
 					$data[$this->alias]['passwd'] = $this->generatePassword();
 					$data[$this->alias]['password_token'] = null;
@@ -431,13 +432,7 @@ class User extends UsersAppModel {
  * @return mixed
  */
 	public function register($postData = array(), $useEmailVerification = true) {
-		if ($useEmailVerification == true) {
-			$postData[$this->alias]['email_token'] = $this->generateToken();
-			$postData[$this->alias]['email_token_expires'] = date('Y-m-d H:i:s', time() + 86400);
-		} else {
-			$postData[$this->alias]['email_authenticated'] = 1;
-		}
-		$postData[$this->alias]['active'] = 1;
+		$postData = $this->_beforeRegistration($postData, $useEmailVerification);
 
 		$this->_removeExpiredRegistrations();
 
@@ -530,6 +525,24 @@ class User extends UsersAppModel {
 	}
 
 /**
+ * Optional data manipulation before the registration record is saved
+ *
+ * @param array post data array
+ * @param boolean Use email generation, create token, default true
+ * @return array
+ */
+	protected function _beforeRegistration($postData = array(), $useEmailVerification = true) {
+		if ($useEmailVerification == true) {
+			$postData[$this->alias]['email_token'] = $this->generateToken();
+			$postData[$this->alias]['email_token_expires'] = date('Y-m-d H:i:s', time() + 86400);
+		} else {
+			$postData[$this->alias]['email_authenticated'] = 1;
+		}
+		$postData[$this->alias]['active'] = 1;
+		return $postData;
+	}
+
+/**
  * Returns the search data
  *
  * @param string $state Find State
@@ -594,7 +607,13 @@ class User extends UsersAppModel {
 				if (isset($query['group']) && is_array($query['group']) && !empty($query['group'])) {
 					return count($results);
 				}
-				return $results[0][0]['COUNT(DISTINCT ' . $this->alias . '.id)'];
+				if (isset($results[0][0]['COUNT(DISTINCT ' . $this->alias . '.id)'])) {
+					return $results[0][0]['COUNT(DISTINCT ' . $this->alias . '.id)'];
+				}
+				if (isset($results[0][0]['count'])) {
+					return $results[0][0]['count'];
+				}
+				return $results;
 			}
 			return $results;
 		}
