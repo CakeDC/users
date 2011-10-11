@@ -30,7 +30,7 @@ class TestDetails extends DetailsController {
 class DetailsControllerTest extends CakeTestCase {
 	var $Details = null;
 
-	function setUp() {
+	function startTest() {
 		Configure::write('App.UserClass', null);
 		$this->Details = new TestDetails();
 	}
@@ -39,7 +39,7 @@ class DetailsControllerTest extends CakeTestCase {
 		$this->assertTrue(is_a($this->Details, 'DetailsController'));
 	}
 
-	function tearDown() {
+	function endTest() {
 		unset($this->Details);
 	}
 }

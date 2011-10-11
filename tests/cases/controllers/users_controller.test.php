@@ -34,28 +34,6 @@ class TestUsersController extends UsersController {
 	public $uses = array('Users.User');
 
 /**
- * beforeFilter Callback
- *
- * @return void
- */
-	public function beforeFilter() {
-		parent::beforeFilter();
-		$this->Auth->authorize = 'controller';
-		$this->Auth->fields = array('username' => 'email', 'password' => 'passwd');
-		$this->Auth->loginAction = array('controller' => 'users', 'action' => 'login', 'prefix' => 'admin', 'admin' => false, 'plugin' => 'users');
-		$this->Auth->loginRedirect = $this->Session->read('Auth.redirect');
-		$this->Auth->logoutRedirect = '/';
-		$this->Auth->authError = __d('users', 'Sorry, but you need to login to access this location.', true);
-		$this->Auth->loginError = __d('users', 'Invalid e-mail / password combination.  Please try again', true);
-		$this->Auth->autoRedirect = true;
-		$this->Auth->userModel = 'User';
-		$this->Auth->userScope = array(
-			'OR' => array(
-				'AND' =>
-					array('User.active' => 1, 'User.email_authenticated' => 1)));
-	}
-
-/**
  * Public interface to _setCookie
  */
 	public function setCookie($options = array()) {
@@ -179,22 +157,22 @@ class UsersControllerTestCase extends CakeTestCase {
 
 		$this->Users->Component->startup($this->Users);
 		$this->Users->login();
-		$this->assertEqual($this->Users->Session->read('Message.flash.message'), __d('users', 'testuser you have successfully logged in', true));
+		$this->assertEqual($this->Users->Session->read('Message.flash.message'), __d('users', 'testuser, you have successfully logged in.', true));
 		$this->assertEqual(Router::normalize($this->Users->redirectUrl), Router::normalize(Router::url($this->Users->Auth->loginRedirect)));
 
 		$this->__setPost(array('User' => $this->usersData['invalidUser']));
 		$this->Users->beforeFilter();
 		$this->Users->login();
-		$this->assertEqual($this->Users->Session->read('Message.auth.message'), __d('users', 'Invalid e-mail / password combination.  Please try again', true));
+		$this->assertEqual($this->Users->Session->read('Message.auth.message'), __d('users', 'Invalid e-mail / password combination. Please try again', true));
 	}
 
 /**
  * Test user registration
  *
  */
-	public function testRegister() {
-		$this->Users->params['action'] = 'register';
-
+	public function testAdd() {
+		$this->Users->Session->destroy();
+		$this->Users->params['action'] = 'add';
 		$this->__setPost(array(
 			'User' => array(
 				'username' => 'newUser',
@@ -203,7 +181,8 @@ class UsersControllerTestCase extends CakeTestCase {
 				'temppassword' => 'password',
 				'tos' => 1)));
 		$this->Users->beforeFilter();
-		$this->Users->register();
+		
+		$this->Users->add();
 		$this->assertEqual($this->Users->Session->read('Message.flash.message'), __d('users', 'Your account has been created. You should receive an e-mail shortly to authenticate your account. Once validated you will be able to login.', true));
 
 		$this->__setPost(array(
@@ -214,7 +193,7 @@ class UsersControllerTestCase extends CakeTestCase {
 				'temppassword' => '',
 				'tos' => 0)));
 		$this->Users->beforeFilter();
-		$this->Users->register();
+		$this->Users->add();
 		$this->assertEqual($this->Users->Session->read('Message.flash.message'), __d('users', 'Your account could not be created. Please, try again.', true));
 	}
 
@@ -224,16 +203,14 @@ class UsersControllerTestCase extends CakeTestCase {
  */
 	public function testVerify() {
 		$this->Users->beforeFilter();
-		$this->Users->passedArgs[1] = 'testtoken2';
 		$this->Users->User->id = '37ea303a-3bdc-4251-b315-1316c0b300fa';
-		$this->Users->User->saveField('email_token_expires', date('Y-m-d H:i:s', strtotime('+1 year')), array('validate' => false, 'callbacks' => false));
-		$this->Users->verify('email');
-		$this->assertEqual($this->Users->Session->read('Message.flash.message'), __d('users', 'Your e-mail has been validated!', true));
+		$this->Users->User->saveField('email_token_expires', date('Y-m-d H:i:s', strtotime('+1 year')));
+		$this->Users->verify('email', 'testtoken2');
+		$this->assertEqual($this->Users->Session->read('Message.flash.message'), __d('users', 'Your e-mail has been validated. You may now login.', true));
 
 		$this->Users->beforeFilter();
-		$this->Users->passedArgs[1] = 'invalid-token';
-		$this->Users->verify('email');
-		$this->assertEqual($this->Users->Session->read('Message.flash.message'), __d('users', 'The url you accessed is not longer valid', true));
+		$this->Users->verify('email', 'invalid-token');
+		$this->assertEqual($this->Users->Session->read('Message.flash.message'), __d('users', 'The url you have accessed is no longer valid', true));
 	}
 
 /**
@@ -245,7 +222,7 @@ class UsersControllerTestCase extends CakeTestCase {
 		$this->Users->beforeFilter();
 		$this->Users->Session->write('Auth.User', $this->usersData['validUser']);
 		$this->Users->logout();
-		$this->assertEqual($this->Users->Session->read('Message.flash.message'), __d('users', 'floriank you have successfully logged out', true));
+		$this->assertEqual($this->Users->Session->read('Message.flash.message'), __d('users', 'floriank, you have successfully logged out.', true));
 		$this->assertEqual($this->Users->redirectUrl, '/');
 	}
 
@@ -303,7 +280,7 @@ class UsersControllerTestCase extends CakeTestCase {
 				'confirm_password' => 'newpassword',
 				'old_password' => 'test'));
 		$this->Users->change_password();
-		$this->assertEqual($this->Users->redirectUrl, '/');
+		$this->assertEqual($this->Users->redirectUrl, array('action'  => 'dashboard'));
 	}
 
 /**
@@ -382,30 +359,12 @@ class UsersControllerTestCase extends CakeTestCase {
 	}
 
 /**
- * Test setting the cookie
- *
- */
-	public function testSetCookie() {
-		$this->Users->data['User'] = array(
-			'remember_me' => 1,
-			'username' => 'test',
-			'password' => 'testtest');
-		$this->Users->setCookie(array(
-			'name' => 'userTestCookie'));
-		$this->Users->Cookie->name = 'userTestCookie';
-		$result = $this->Users->Cookie->read('User');
-		$this->assertEqual($result, array(
-			'username' => 'test',
-			'password' => 'testtest'));
-	}
-
-/**
  * Test
  *
  */
 	private function __setPost($data = array()) {
 		$_SERVER['REQUEST_METHOD'] = 'POST';
-		$this->Users->data = am($data, array('_method' => 'POST'));
+		$this->Users->data = array_merge($data, array('_method' => 'POST'));
 	}
 
 /**
@@ -422,6 +381,7 @@ class UsersControllerTestCase extends CakeTestCase {
  */
 	public function endTest() {
 		$this->Users->Session->destroy();
+		$this->Users->Cookie->destroy();
 		unset($this->Users);
 		ClassRegistry::flush();
 	}
