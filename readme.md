@@ -6,6 +6,16 @@ The users plugin is for allowing users to register and login manage their profil
 
 The plugin is thought as a base to extend your app specific users controller and model from.
 
+
+## Requirements ##
+
+* PHP version: PHP 5.2+
+* CakePHP version: Cakephp 1.3 Stable
+* [CakeDC Utils plugin](http://github.com/CakeDC/utils)
+* [CakeDC Search plugin](http://github.com/CakeDC/search)
+
+Also note that the plugin is using UUIDs instead incrementing integers for the user id. Create your foreign keys associating user records in other tables according to that.
+
 ## Installation ##
 
 The plugin is pretty easy to set up, all you need to do is to copy it to you application plugins folder and load the needed tables. You can create database tables using either the schema shell or the [CakeDC Migrations plugin](http://github.com/CakeDC/migrations):
@@ -92,13 +102,6 @@ Declare the model
 It's important to override the AppUser::useTable property with the 'users' table.
 
 You can override/extend all methods or properties like validation rules to suit your needs.
-
-## Requirements ##
-
-* PHP version: PHP 5.2+
-* CakePHP version: Cakephp 1.3 Stable
-* [CakeDC Utils plugin](http://github.com/CakeDC/utils)
-* [CakeDC Search plugin](http://github.com/CakeDC/search)
 
 ## Support ##
 
