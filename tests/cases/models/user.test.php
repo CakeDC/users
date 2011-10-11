@@ -68,36 +68,6 @@ class UserTestCase extends CakeTestCase {
 	}
 
 /**
- * Test to compare the passwords when a user registers
- *
- * @return void
- */
-	public function testConfirmPassword() {
-		$this->User->data['User']['passwd'] = 'password';
-		$result = $this->User->confirmPassword(array('temppassword' => 'password'));
-		$this->assertTrue($result);
-
-		$this->User->data['User']['passwd'] = 'different_password';
-		$result = $this->User->confirmPassword(array('temppassword' => 'password'));
-		$this->assertFalse($result);
-	}
-
-/**
- * testValidateEmailConfirmation
- *
- * @return void
- */
-	public function testConfirmEmail() {
-		$this->User->data['User'] = array(
-			'email' => 'test@email.com');
-		$this->assertFalse($this->User->confirmEmail(array('confirm_email' => 'test@wrong.com')));
-
-		$this->User->data['User'] = array(
-			'email' => 'test@email.com');
-		$this->assertTrue($this->User->confirmEmail(array('confirm_email' => 'test@email.com')));
-	}
-
-/**
  * Test if the generated token is a string
  *
  * @return void

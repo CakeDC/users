@@ -115,7 +115,7 @@ class User extends UsersAppModel {
 					'rule' => 'notEmpty',
 					'message' => __d('users', 'Please enter a password.', true))),
 			'temppassword' => array(
-				'rule' => 'confirmPassword',
+				'rule' => array('compareFields', 'passwd', 'temppassword'),
 				'message' => __d('users', 'The passwords are not equal, please try again.', true)),
 			'tos' => array(
 				'rule' => array('custom','[1]'),
@@ -178,36 +178,6 @@ class User extends UsersAppModel {
 			}
 		}
 		return $results;
-	}
-
-/**
- * Custom validation method to ensure that the two entered passwords match
- *
- * @param string $password Password
- * @return boolean Success
- */
-	public function confirmPassword($password = null) {
-		if ((isset($this->data[$this->alias]['passwd']) && isset($password['temppassword']))
-			&& !empty($password['temppassword'])
-			&& ($this->data[$this->alias]['passwd'] === $password['temppassword'])) {
-			return true;
-		}
-		return false;
-	}
-
-/**
- * Compares the email confirmation
- *
- * @param array $email Email data
- * @return boolean
- */
-	public function confirmEmail($email = null) {
-		if ((isset($this->data[$this->alias]['email']) && isset($email['confirm_email']))
-			&& !empty($email['confirm_email'])
-			&& (strtolower($this->data[$this->alias]['email']) === strtolower($email['confirm_email']))) {
-				return true;
-		}
-		return false;
 	}
 
 /**
