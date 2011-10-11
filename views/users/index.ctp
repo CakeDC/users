@@ -39,7 +39,7 @@ foreach ($users as $user):
 			<?php echo $user[$model]['created']; ?>
 		</td>
 		<td class="actions">
-			<?php echo $this->Html->link(__d('users', 'View', true), array('action'=>'view', $user[$model]['id'])); ?>
+			<?php echo $this->Html->link(__d('users', 'View', true), array('action'=>'view', $user[$model]['slug'])); ?>
 			<?php echo $this->Html->link(__d('users', 'Edit', true), array('action'=>'edit', $user[$model]['id'])); ?>
 			<?php echo $this->Html->link(__d('users', 'Delete', true), array('action'=>'delete', $user[$model]['id']), null, sprintf(__d('users', 'Are you sure you want to delete # %s?', true), $user[$model]['id'])); ?>
 		</td>
@@ -54,6 +54,6 @@ foreach ($users as $user):
 </div>
 <div class="actions">
 	<ul>
-		<li><?php echo $this->Html->link(__d('users', 'Register an account', true), array('action' => 'register')); ?></li>
+		<li><?php echo $this->Html->link(__d('users', 'Register an account', true), array('action' => 'add')); ?></li>
 	</ul>
 </div>
