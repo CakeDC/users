@@ -29,11 +29,7 @@ class User extends UsersAppModel {
  *
  * @var array
  */
-	public $actsAs = array(
-		'Search.Searchable',
-		'Utils.Sluggable' => array(
-			'label' => 'username',
-			'method' => 'multibyteSlug'));
+	public $actsAs = array();
 
 /**
  * Additional Find methods
@@ -83,6 +79,7 @@ class User extends UsersAppModel {
  * @param string $ds Datasource
  */
 	public function __construct($id = false, $table = null, $ds = null) {
+		$this->_setupBehaviors();
 		parent::__construct($id, $table, $ds);
 		$this->validate = array(
 			'username' => array(
@@ -127,6 +124,24 @@ class User extends UsersAppModel {
 				'required' => array('rule' => array('compareFields', 'new_password', 'confirm_password'), 'required' => true, 'message' => __d('users', 'The passwords are not equal.', true))),
 			'old_password' => array(
 				'to_short' => array('rule' => 'validateOldPassword', 'required' => true, 'message' => __d('users', 'Invalid password.', true))));
+	}
+
+/**
+ * Setup optional plugins
+ *
+ * @return void
+ */
+	public function _setupBehaviors() {
+		$plugins = App::objects('plugin');
+		if (in_array('Search', $plugins)) {
+			$this->actsAs[] = 'Search.Searchable';
+		}
+
+		if (in_array('Utils', $plugins)) {
+			$this->actsAs['Utils.Sluggable'] = array(
+				'label' => 'username',
+				'method' => 'multibyteSlug');
+		}
 	}
 
 /**
@@ -377,16 +392,16 @@ class User extends UsersAppModel {
  * @param string $slug user slug
  * @return array
  */
-	public function view($slug = null) {
+	public function view($slugOrId = null) {
 		$user = $this->find('first', array(
 			'contain' => array(
-				//'Tag',
 				'Detail'),
 			'conditions' => array(
-				$this->alias . '.slug' => $slug,
+				'OR' => array(
+					$this->alias . '.slug' => $slugOrId,
+					$this->alias . '.id' => $slugOrId),
 				$this->alias . '.active' => 1,
-				$this->alias . '.email_authenticated' => 1),
-		));
+				$this->alias . '.email_authenticated' => 1)));
 
 		if (empty($user)) {
 			throw new Exception(__d('users', 'The user does not exist.', true));
