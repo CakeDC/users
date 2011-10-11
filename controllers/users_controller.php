@@ -89,7 +89,7 @@ class UsersController extends UsersAppController {
 			$this->data[$this->modelClass]['search'] = $searchTerm;
 		}
 
-		$this->paginate = array(
+		$this->paginate[$this->modelClass] = array(
 			'search',
 			'limit' => 12,
 			'order' => $this->modelClass . '.username ASC',
@@ -97,8 +97,8 @@ class UsersController extends UsersAppController {
 			'conditions' => array(
 				'OR' => array(
 					'AND' => array(
-							$this->modelClass . '.active' => 1, 
-							$this->modelClass . '.email_authenticated' => 1))));
+							$this->{$this->modelClass}->alias . '.active' => 1, 
+							$this->{$this->modelClass}->alias . '.email_authenticated' => 1))));
 
 
 		$this->set('users', $this->paginate($this->modelClass));
