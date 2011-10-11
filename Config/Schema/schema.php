@@ -24,7 +24,7 @@ class usersSchema extends CakeSchema {
 	function after($event = array()) {
 	}
 
-	var $details = array(
+	var $user_details = array(
 		'id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary'),
 		'user_id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36),
 		'position' => array('type' => 'float', 'null' => false, 'default' => '1'),
@@ -44,9 +44,9 @@ class usersSchema extends CakeSchema {
 		'password' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 128),
 		'password_token' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 128),
 		'email' => array('type' => 'string', 'null' => true, 'default' => NULL, 'key' => 'index'),
-		'email_authenticated' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
+		'email_verified' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
 		'email_token' => array('type' => 'string', 'null' => true, 'default' => NULL),
-		'email_token_expires' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
+		'email_token_expiry' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'tos' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
 		'active' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
 		'last_login' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
