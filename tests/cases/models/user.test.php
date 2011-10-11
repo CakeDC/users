@@ -201,6 +201,9 @@ class UserTestCase extends CakeTestCase {
 		$result = $this->User->view('phpnut');
 		$this->assertTrue(is_array($result) && !empty($result));
 
+		$result = $this->User->view('1');
+		$this->assertTrue(is_array($result) && !empty($result));
+
 		$this->expectException('Exception');
 		$result = $this->User->view('non-existing-user-slug');
 	}
