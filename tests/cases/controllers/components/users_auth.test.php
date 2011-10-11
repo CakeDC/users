@@ -16,6 +16,8 @@
  */
 class UsersAuthTestController extends Controller {
 
+	public $name = 'UsersAuthTest';
+
 	public $uses = array('Users.User');
 
 /**
@@ -48,6 +50,10 @@ class UsersAuthTestController extends Controller {
  */
 	public function redirect($url, $status = null, $exit = true) {
 		return Router::url($url);
+	}
+
+	public function test_action() {
+		
 	}
 }
 
@@ -118,6 +124,8 @@ class UsersAuthTestCase extends CakeTestCase {
 		$this->User = ClassRegistry::init('Users.User');
 		$this->Users = new UsersAuthTestController();
 		$this->Users->modelClass = 'User';
+		$this->Users->params = Router::parse('users_auth_test/login');
+		$this->Users->params['url']['url'] = 'users_auth_test/login';
 		$this->Users->Component->init($this->Users);
 		$this->Users->Component->initialize($this->Users);
 
@@ -157,16 +165,26 @@ class UsersAuthTestCase extends CakeTestCase {
 		$this->assertFalse($result);
 	}
 
+	public function testNotAllowedAction() {
+		$this->Users->Auth->startup(&$this->Users);
+		$this->Users->test_action();
+		$this->assertEqual($this->Users->Session->read('Message.auth.message'), 'Sorry, but you need to login to access this location.');
+	}
+
 /**
  * Test an invalid login
  *
  * @return void
  */
-	public function testLogin() {
+	public function testInvalidLogin() {
 		$this->Users->data = array(
 			'User' => array(
 				'email' => 'invalid-email',
 				'passwd' => 'testtest', null, true));
+
+		// overwrite the defaults to match the test controller
+		$this->Users->Auth->loginAction['controller'] = 'users_auth_test';
+		$this->Users->Auth->loginAction['plugin'] = null;
 
 		$this->Users->Auth->startup(&$this->Users);
 		$this->assertFalse($this->Users->Auth->login());
