@@ -106,7 +106,9 @@ class UsersAuthComponent extends AuthComponent {
 				'time' => '1 Month',
 				'path' => '/' . $controller->base),
 		);
+
 		parent::initialize($controller, array_merge($defaults, $settings));
+		$this->controller = $controller;
 	}
 
 /**
@@ -116,11 +118,16 @@ class UsersAuthComponent extends AuthComponent {
  * @return boolean True if login is successful
  */
 	public function login($data = null, $skipCookies = false) {
+		if (empty($data)) {
+			$data = $this->data;
+		}
+
 		$loggedIn = 
 			parent::login($data) || (
 				!$skipCookies &&
 				$this->_getCookie()
 			);
+
 		if ($loggedIn) {
 			$User = $this->getModel();
 			$User->id = $this->user($User->primaryKey);
@@ -171,7 +178,7 @@ class UsersAuthComponent extends AuthComponent {
 		list($plugin, $model) = pluginSplit($this->userModel);
 		if (!isset($this->data[$model]['remember_me']) || !$this->data[$model]['remember_me']) {
 			$this->Cookie->delete($this->cookieOptions['keyname']);
-			return;
+			return false;
 		}
 
 		$cookieData = array_intersect_key($this->data[$model], array_flip(array($this->fields['username'], $this->fields['password'])));
@@ -203,4 +210,5 @@ class UsersAuthComponent extends AuthComponent {
 		$this->_setupCookies();
 		$this->Cookie->delete($this->cookieOptions['keyname']);
 	}
+
 }

@@ -8,7 +8,6 @@
  * @copyright Copyright 2010, Cake Development Corporation (http://cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
-
 /**
  * Testing Controller
  *
@@ -16,6 +15,8 @@
  * @subpackage users.tests.cases.controllers.components
  */
 class UsersAuthTestController extends Controller {
+
+	public $uses = array('Users.User');
 
 /**
  * Components
@@ -34,7 +35,7 @@ class UsersAuthTestController extends Controller {
  * @return void
  */
 	public function login() {
-		
+		$this->Auth->login($this->data);
 	}
 
 /**
@@ -59,13 +60,29 @@ class UsersAuthTestController extends Controller {
 class UsersAuthTestCase extends CakeTestCase {
 
 /**
+ * 
+ */
+	public $plugin = 'users';
+
+/**
+ * Fixtures
+ *
+ * @var array
+ */
+	public $fixtures = array(
+		'plugin.users.user',
+		'plugin.users.detail',
+		'plugin.users.identity');
+	
+/**
  * Setup for testing
  *
  * @return void
  */
-	public function setUp() {
+	public function startTest() {
 		$this->User = ClassRegistry::init('Users.User');
 		$this->Users = new UsersAuthTestController();
+		$this->Users->modelClass = 'User';
 		$this->Users->Component->init($this->Users);
 		$this->Users->Component->initialize($this->Users);
 		$this->Users->beforeFilter();
@@ -75,7 +92,7 @@ class UsersAuthTestCase extends CakeTestCase {
 
 		$this->Users->params = Router::parse('users_auth_test/login');
 		$this->Users->params['url']['url'] = 'users_auth_test/login';
-		
+
 		$this->Users->Auth->startup($this->Users);
 
 		Router::reload();
@@ -86,14 +103,35 @@ class UsersAuthTestCase extends CakeTestCase {
  *
  * @return void
  */
-	public function tearDown() {
-		$this->Users->Session->delete('Auth');
-		$this->Users->Session->delete('Message.auth');
+	public function endTest() {
+		$this->Users->Cookie->destroy();
+		$this->Users->Session->destroy();
 		ClassRegistry::flush();
 	}
 
 /**
- * Test setting the cookie
+ * Test setting and destroying the user cookie
+ *
+ * @return void
+ */
+	public function testInitialize() {
+		$this->User = ClassRegistry::init('Users.User');
+		$this->Users = new UsersAuthTestController();
+		$this->Users->modelClass = 'User';
+		$this->Users->Component->init($this->Users);
+		$this->Users->Component->initialize($this->Users);
+
+		$this->assertEqual($this->Users->Auth->cookieOptions, array(
+			'domain' => 'plugins.cdc',
+			'name' => 'Users',
+			'keyname' => 'rememberMe',
+			'time' => '1 Month',
+			'path' => '/'));
+
+	}
+
+/**
+ * Test setting and destroying the user cookie
  *
  * @return void
  */
@@ -101,15 +139,38 @@ class UsersAuthTestCase extends CakeTestCase {
 		$this->Users->data = array(
 			'User' => array(
 				'remember_me' => 1,
-				'username' => 'test',
-				'password' => 'testtest'
-			)
-		);
-		$this->Users->Auth->login();
-//		$this->Users->Cookie->name = 'userTestCookie';
-		$result = $this->Users->Cookie->read('User');
+				'email' => 'larry.masters@cakedc.com',
+				'passwd' => 'test', null, true));
+
+		$this->Users->Auth->startup(&$this->Users);
+		$this->Users->login();
+		$result = $this->Users->Cookie->read('rememberMe');
+
 		$this->assertEqual($result, array(
-			'username' => 'test',
-			'password' => 'testtest'));
+			'email' => 'larry.masters@cakedc.com',
+			'passwd' => Security::hash('test', null, true)));
+
+		$this->assertEqual($this->Users->Session->read('Message.flash.message'), 'phpnut, you have successfully logged in.');
+
+		$this->Users->Auth->logout();
+		$result = $this->Users->Cookie->read('rememberMe');
+		$this->assertFalse($result);
 	}
+
+/**
+ * Test an invalid login
+ *
+ * @return void
+ */
+	public function testLogin() {
+		$this->Users->data = array(
+			'User' => array(
+				'email' => 'invalid-email',
+				'passwd' => 'testtest', null, true));
+
+		$this->Users->Auth->startup(&$this->Users);
+		$this->assertFalse($this->Users->Auth->login());
+		$this->assertEqual($this->Users->Session->read('Message.auth.message'), 'Invalid e-mail / password combination. Please try again');
+	}
+
 }
