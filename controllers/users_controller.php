@@ -45,7 +45,6 @@ class UsersController extends UsersAppController {
 	public $components = array(
 		'Cookie',
 		'Email',
-		'Search.Prg',
 		'Session',
 		'Users.UsersAuth',
 	);
@@ -59,6 +58,28 @@ class UsersController extends UsersAppController {
 		array('field' => 'search', 'type' => 'value'),
 		array('field' => 'username', 'type' => 'value'),
 		array('field' => 'email', 'type' => 'value'));
+
+/**
+ * Constructor
+ *
+ * @return void
+ */
+	public function __construct() {
+		$this->_setupComponents();
+		parent::__construct();
+	}
+
+/**
+ * Sets additional components up from other plugins
+ *
+ * @return void
+ */
+	protected function _setupComponents() {
+		$plugins = App::objects('plugin');
+		if (in_array('Search', $plugins)) {
+			$this->components[] = 'Search.Prg';
+		}
+	}
 
 /**
  * beforeFilter callback
@@ -94,7 +115,6 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	public function index() {
-		//$this->User->contain('Detail');
 		$searchTerm = '';
 		$this->Prg->commonProcess($this->modelClass, $this->modelClass, 'index', false);
 
