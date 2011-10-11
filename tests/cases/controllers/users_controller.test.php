@@ -171,8 +171,8 @@ class UsersControllerTestCase extends CakeTestCase {
  *
  */
 	public function testAdd() {
+		$this->Users->Session->destroy();
 		$this->Users->params['action'] = 'add';
-
 		$this->__setPost(array(
 			'User' => array(
 				'username' => 'newUser',
@@ -181,6 +181,7 @@ class UsersControllerTestCase extends CakeTestCase {
 				'temppassword' => 'password',
 				'tos' => 1)));
 		$this->Users->beforeFilter();
+		
 		$this->Users->add();
 		$this->assertEqual($this->Users->Session->read('Message.flash.message'), __d('users', 'Your account has been created. You should receive an e-mail shortly to authenticate your account. Once validated you will be able to login.', true));
 
@@ -279,7 +280,7 @@ class UsersControllerTestCase extends CakeTestCase {
 				'confirm_password' => 'newpassword',
 				'old_password' => 'test'));
 		$this->Users->change_password();
-		$this->assertEqual($this->Users->redirectUrl, '/');
+		$this->assertEqual($this->Users->redirectUrl, array('action'  => 'dashboard'));
 	}
 
 /**
@@ -380,6 +381,7 @@ class UsersControllerTestCase extends CakeTestCase {
  */
 	public function endTest() {
 		$this->Users->Session->destroy();
+		$this->Users->Cookie->destroy();
 		unset($this->Users);
 		ClassRegistry::flush();
 	}
