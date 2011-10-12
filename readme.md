@@ -47,6 +47,10 @@ Add some lines to your `beforeFilter` and configure at your taste:
 	$this->Auth->userModel = 'Users.User';
 	$this->Auth->userScope = array('User.active' => 1);
 
+If you would like to use admin routing, remember to un-comment the line in app/config/core.php: 
+
+	Configure::write('Routing.prefixes', array('admin')); 
+
 ## What it is capable of ##
 
 You can use the plugin as it comes if you're happy with it or, more common, extend your app specific user implementation from the plugin.
