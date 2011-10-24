@@ -10,7 +10,7 @@
  */
 
 App::uses('UsersController', 'Users.Controller');
-App::uses('User', 'Users.User');
+App::uses('User', 'Users.Model');
 App::uses('AuthComponent', 'Controller/Component');
 App::uses('CookieComponent', 'Controller/Component');
 App::uses('SessionComponent', 'Controller/Component');
