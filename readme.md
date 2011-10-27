@@ -72,6 +72,22 @@ It's important to override the AppUser::useTable property with the 'users' table
 
 You can override/extend all methods or properties like validation rules to suit your needs.
 
+### Routes for pretty URLs ###
+
+To remove the second users from /users/users in the url you can use routes.
+
+	Router::connect('/users', array('plugin' => 'users', 'controller' => 'users'));
+	Router::connect('/users/index/*', array('plugin' => 'users', 'controller' => 'users'));
+	Router::connect('/users/:action', array('plugin' => 'users', 'controller' => 'users'));
+	Router::connect('/users/users/:action', array('plugin' => 'users', 'controller' => 'users'));
+	Router::connect('/login/*', array('plugin' => 'users', 'controller' => 'users', 'action' => 'login'));
+	Router::connect('/logout/*', array('plugin' => 'users', 'controller' => 'users', 'action' => 'logout'));
+	Router::connect('/register/*', array('plugin' => 'users', 'controller' => 'users', 'action' => 'add'));
+
+If you're extending the plugin remove the plugin from the route by setting it to null and replace the controller with your controller extending the plugins users controller.
+
+Feel free to change the routes here or add others as you need for your application.
+
 ## Requirements ##
 
 * PHP version: PHP 5.2+
