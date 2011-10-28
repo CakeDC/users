@@ -143,9 +143,8 @@ class UsersControllerTestCase extends CakeTestCase {
 		$request = new CakeRequest();
 		$response = $this->getMock('CakeResponse');
 		$this->Users = new TestUsersController($request, $response);
-
 		$this->Users->constructClasses();
-		$this->Users->request->params = array(
+			$this->Users->request->params = array(
 			'pass' => array(),
 			'named' => array(),
 			'controller' => 'users',
@@ -204,10 +203,10 @@ class UsersControllerTestCase extends CakeTestCase {
  * Test user registration
  *
  */
-	public function testRegister() {
+	public function testAdd() {
 		$_SERVER['HTTP_HOST'] = 'test.com';
 		$this->Users->params['action'] = 'add';
-                $this->__setPost(array(
+		$this->__setPost(array(
 			'User' => array(
 				'username' => 'newUser',
 				'email' => 'newUser@newemail.com',
@@ -217,7 +216,7 @@ class UsersControllerTestCase extends CakeTestCase {
 		$this->Users->beforeFilter();
 		$this->Users->add();
 		$this->assertEqual($this->Users->Session->read('Message.flash.message'), __d('users', 'Your account has been created. You should receive an e-mail shortly to authenticate your account. Once validated you will be able to login.', true));
-                $this->__setPost(array(
+		$this->__setPost(array(
 			'User' => array(
 				'username' => 'newUser',
 				'email' => '',
@@ -235,15 +234,13 @@ class UsersControllerTestCase extends CakeTestCase {
  */
 	public function testVerify() {
 		$this->Users->beforeFilter();
-		$this->Users->passedArgs[1] = 'testtoken2';
 		$this->Users->User->id = '37ea303a-3bdc-4251-b315-1316c0b300fa';
-		$this->Users->User->saveField('email_token_expires', date('Y-m-d H:i:s', strtotime('+1 year')));
-		$this->Users->verify($type = 'email');
+		$this->Users->User->saveField('email_token_expiry', date('Y-m-d H:i:s', strtotime('+1 year')));
+		$this->Users->verify('email', 'testtoken2');
 		$this->assertEqual($this->Users->Session->read('Message.flash.message'), __d('users', 'Your e-mail has been validated!', true));
 
 		$this->Users->beforeFilter();
-		$this->Users->passedArgs[1] = 'invalid-token';
-		$this->Users->verify($type = 'email');
+		$this->Users->verify('email', 'invalid-token');
 		$this->assertEqual($this->Users->Session->read('Message.flash.message'), __d('users', 'The url you accessed is not longer valid', true));
 	}
 
@@ -266,8 +263,6 @@ class UsersControllerTestCase extends CakeTestCase {
  * @return void
  */
 	public function testIndex() {
-		//$this->Users->params = array(
-		//	'url' => array());
 		$this->Users->passedArgs = array();
  		$this->Users->index();
 		$this->assertTrue(isset($this->Users->viewVars['users']));
@@ -285,21 +280,6 @@ class UsersControllerTestCase extends CakeTestCase {
 		$this->Users->view('INVALID-SLUG');
 		$this->assertEqual($this->Users->redirectUrl, '/');
 	}
-
-/**
- * testSearch
- *
- * @return void
- */
-	// public function testSearch() {
-	// 	$this->Users->params = array(
-	// 		'url' => array(),
-	// 		'named' => array(
-	// 			'search' => 'phpnut'));
-	// 	$this->Users->passedArgs = array();
-	//  		$this->Users->search();
-	// 	$this->assertTrue(isset($this->Users->viewVars['users']));
-	// }
 
 /**
  * change_password

@@ -38,7 +38,7 @@ class UsersController extends UsersAppController {
  *
  * @var array
  */
-	public $components = array('Auth', 'Session', 'Email', 'Cookie','Paginator');
+	public $components = array('Auth', 'Session', 'Cookie','Paginator');
 
 /**
  * $presetVars
@@ -115,6 +115,19 @@ class UsersController extends UsersAppController {
 		if ($this->action == 'login') {
 			$this->Auth->autoRedirect = false;
 		}
+
+		$this->Auth->authenticate = array(
+			'Form' => array(
+				'fields' => array(
+					'username' => 'email',
+					'password' => 'password'),
+				'userModel' => 'Users.User', 
+				'scope' => array(
+					'Users.active' => 1)));
+
+		$this->Auth->loginRedirect = '/';
+		$this->Auth->logoutRedirect = '/';
+		$this->Auth->loginAction = array('plugin' => 'Users', 'controller' => 'users', 'action' => 'login');
 	}
 
 /**
@@ -207,7 +220,6 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	public function admin_index() {
-//		$this->Prg->commonProcess();
 		$this->{$this->modelClass}->data[$this->modelClass] = $this->passedArgs;
 		if ($this->{$this->modelClass}->Behaviors->attached('Search.Searchable')) {
 			$parsedConditions = $this->{$this->modelClass}->parseCriteria($this->Users->passedArgs);
@@ -311,8 +323,7 @@ class UsersController extends UsersAppController {
 		if (!empty($this->request->data)) {
 			$user = $this->User->register($this->request->data);
 			if ($user !== false) {
-				$this->set('user', $user);
-				$this->_sendVerificationEmail($user[$this->modelClass]['email']);
+				$this->_sendVerificationEmail($this->User->data);
 				$this->Session->setFlash(__d('users', 'Your account has been created. You should receive an e-mail shortly to authenticate your account. Once validated you will be able to login.'));
 				$this->redirect(array('action' => 'login'));
 			} else {
@@ -428,6 +439,7 @@ class UsersController extends UsersAppController {
 		}
 
 		$data = $this->User->validateToken($token, $type === 'reset');
+
 		if (!$data) {
 			$this->Session->setFlash(__d('users', 'The url you accessed is not longer valid', true));
 			return $this->redirect('/');
@@ -437,37 +449,51 @@ class UsersController extends UsersAppController {
 		unset($data[$this->modelClass]['email']);
 
 		if ($type === 'reset') {
-			$newPassword = $data[$this->modelClass]['password'];
+			$data[$this->modelClass]['new_password'] = $data[$this->modelClass]['password'];
 			$data[$this->modelClass]['password'] = $this->Auth->password($newPassword);
 		}
+
 		if ($type === 'email') {
  			$data[$this->modelClass]['active'] = 1;
 		}
 
-		if ($this->User->save($data, false)) {
+		if ($this->User->save($data, array('validate' => false))) {
 			if ($type === 'reset') {
-				$this->Email->to = $email;
-				$this->Email->from = Configure::read('App.defaultEmail');
-				$this->Email->replyTo = Configure::read('App.defaultEmail');
-				$this->Email->return = Configure::read('App.defaultEmail');
-				$this->Email->subject = env('HTTP_HOST') . ' ' . __d('users', 'Password Reset', true);
-				$this->Email->template = null;
-				$content[] = __d('users', 'Your password has been reset', true);
-				$content[] = __d('users', 'Please login using this password and change your password', true);
-				$content[] = $newPassword;
-				$this->Email->send($content);
+				$this->_sendReset($data);
 				$this->Session->setFlash(__d('users', 'Your password was sent to your registered email account', true));
 			} else {
 				unset($data);
 				$data[$this->modelClass]['active'] = 1;
-				$this->User->save($data);
+				$this->User->save($data, array('validate' => false, 'callbacks' => false));
 				$this->Session->setFlash(__d('users', 'Your e-mail has been validated!', true));
 			}
 			$this->redirect(array('action' => 'login'));
 		}
-		
 		$this->Session->setFlash(__d('users', 'There was an error verifying your account. Please check the email you were sent, and retry the verification link.', true));
 		$this->redirect('/');
+	}
+
+/**
+ * Sends the password reset email
+ *
+ * @param array
+ * @return void
+ */
+	protected function _sendReset($userData) {
+		$content = array();
+		$content[] = __d('users', 'Your password has been reset', true);
+		$content[] = __d('users', 'Please login using this password and change your password', true);
+		$content[] = $userData[$this->modelClass]['new_password'];
+
+		App::uses('CakeEmail', 'Network/Email');
+		$Email = new CakeEmail();
+		$Email->from(Configure::read('App.defaultEmail'))
+			->to($data[$this->modelClass]['email'])
+			->replyTo(Configure::read('App.defaultEmail'))
+			->return(Configure::read('App.defaultEmail'))
+			->subject(env('HTTP_HOST') . ' ' . __d('users', 'Password Reset', true))
+			->template(null)
+			->send($content);
 	}
 
 /**
@@ -476,10 +502,10 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	public function change_password() {
-                if ($this->request->is('post')) {
+		if ($this->request->is('post')) {
 			$this->request->data[$this->modelClass]['id'] = $this->Auth->user('id');
 			if ($this->User->changePassword($this->request->data)) {
-                                $this->Session->setFlash(__d('users', 'Password changed.'));
+				$this->Session->setFlash(__d('users', 'Password changed.'));
 				$this->redirect('/');
 			}
 		}
@@ -533,7 +559,7 @@ class UsersController extends UsersAppController {
  * @param array $options EmailComponent options
  * @return boolean Success
  */
-	protected function _sendVerificationEmail($to = null, $options = array()) {
+	protected function _sendVerificationEmail($userData, $options = array()) {
 		$defaults = array(
 			'from' => 'noreply@' . env('HTTP_HOST'),
 			'subject' => __d('users', 'Account verification'),
@@ -541,12 +567,14 @@ class UsersController extends UsersAppController {
 
 		$options = array_merge($defaults, $options);
 
-		$this->Email->to = $to;
-		$this->Email->from = $options['from'];
-		$this->Email->subject = $options['subject'];
-		$this->Email->template = $options['template'];
-
-		return $this->Email->send();
+		App::uses('CakeEmail', 'Network/Email');
+		$Email = new CakeEmail();
+		$Email->to($userData[$this->modelClass]['email'])
+			->from($options['from'])
+			->subject($options['subject'])
+			->template($options['template'])
+			->viewVars(array('user' => $userData))
+			->send();
 	}
 
 /**
@@ -569,13 +597,18 @@ class UsersController extends UsersAppController {
 			$user = $this->User->passwordReset($this->request->data);
 
 			if (!empty($user)) {
-				$this->set('token', $user[$this->modelClass]['password_token']);
-				$this->Email->to = $user[$this->modelClass]['email'];
-				$this->Email->from = $options['from'];
-				$this->Email->subject = $options['subject'];
-				$this->Email->template = $options['template'];
 
-				$this->Email->send();
+				App::uses('CakeEmail', 'Network/Email');
+				$Email = new CakeEmail();
+				$Email->to($user[$this->modelClass]['email'])
+					->from($options['from'])
+					->subject($options['subject'])
+					->template($options['template'])
+					->viewVars(array(
+						'user' => $this->User->data,
+						'token' => $this->User->data[$this->modelClass]['password_token']))
+					->send();
+
 				if ($admin) {
 					$this->Session->setFlash(sprintf(
 						__d('users', '%s has been sent an email with instruction to reset their password.'),
@@ -616,9 +649,9 @@ class UsersController extends UsersAppController {
 				}
 			}
 
-			$cookieData = array();
-                        $cookieData['username'] = $this->request->data[$this->modelClass]['username'];
-			$cookieData['password'] = $this->request->data[$this->modelClass]['password'];
+			$cookieData = array(
+				'username' => $this->request->data[$this->modelClass]['username'],
+				'password' => $this->request->data[$this->modelClass]['password']);
 			$this->Cookie->write($cookieKey, $cookieData, true, '1 Month');
 		}
 		unset($this->request->data[$this->modelClass]['remember_me']);

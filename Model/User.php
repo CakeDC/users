@@ -250,8 +250,7 @@ class User extends UsersAppModel {
 		$data = false;
 		$match = $this->find('first', array(
 			'conditions' => array($this->alias . '.email_token' => $token),
-			'fields' => array('id', 'email', 'email_token_expiry', 'role')
-		));
+			'fields' => array('id', 'email', 'email_token_expiry', 'role')));
 
 		if (!empty($match)) {
 			$expires = strtotime($match[$this->alias]['email_token_expiry']);
@@ -270,6 +269,7 @@ class User extends UsersAppModel {
 				$data[$this->alias]['email_token_expiry'] = null;
 			}
 		}
+
 		return $data;
 	}
 
@@ -307,6 +307,7 @@ class User extends UsersAppModel {
 			$user[$this->alias]['password_token'] = $token;
 			$user[$this->alias]['email_token_expiry'] = date('Y-m-d H:i:s', $sixtyMins);
 			$user = $this->save($user, false);
+			$this->data = $user;
 			return $user;
 		} elseif (!empty($user) && $user[$this->alias]['email_verified'] == 0){
 			$this->invalidate('email', __d('users', 'This Email Address exists but was never validated.'));
