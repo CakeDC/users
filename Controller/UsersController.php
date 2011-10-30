@@ -123,7 +123,7 @@ class UsersController extends UsersAppController {
 					'password' => 'password'),
 				'userModel' => 'Users.User', 
 				'scope' => array(
-					'Users.active' => 1)));
+					'User.active' => 1)));
 
 		$this->Auth->loginRedirect = '/';
 		$this->Auth->logoutRedirect = '/';
