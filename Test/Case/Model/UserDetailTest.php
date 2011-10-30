@@ -135,7 +135,7 @@ class UserDetailTestCase extends CakeTestCase {
 
 
 		$data = array(
-			'UserDetail' => array(
+			'User' => array(
 				'email' => 'foo@bar.com'));
 		$this->Detail->saveSection('47ea303a-3cyc-k251-b313-4811c0a800bf', $data, 'User');
 		$result = $this->Detail->getSection('47ea303a-3cyc-k251-b313-4811c0a800bf', 'User');
