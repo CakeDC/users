@@ -15,6 +15,7 @@ App::uses('AuthComponent', 'Controller/Component');
 App::uses('CookieComponent', 'Controller/Component');
 App::uses('SessionComponent', 'Controller/Component');
 App::uses('Security', 'Utility');
+App::uses('CakeEmail', 'Network/Email');
 
 /**
  * TestUsersController
@@ -93,6 +94,24 @@ class TestUsersController extends UsersController {
 	}
 }
 
+/**
+ * TestEmailTransport
+ *
+ * @package users
+ * @subpackage users.tests.controllers
+ */
+class TestEmailTransport extends CakeEmail {
+	
+/**
+ *
+ * Override send method for testing
+ */
+	public function send($content = null) {
+		// TODO: Return something meaningful to test on
+		return array();
+	}
+}
+
 class UsersControllerTestCase extends CakeTestCase {
 
 /**
@@ -151,6 +170,7 @@ class UsersControllerTestCase extends CakeTestCase {
 			'admin' => false,
 			'plugin' => 'users',
 			'url' => array());
+		$this->Users->Email = new TestEmailTransport();
 	}
 
 /**
