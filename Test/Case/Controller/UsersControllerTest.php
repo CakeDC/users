@@ -151,7 +151,6 @@ class UsersControllerTestCase extends CakeTestCase {
 			'admin' => false,
 			'plugin' => 'users',
 			'url' => array());
-		$this->Users->Email->delivery = 'Debug';
 	}
 
 /**
