@@ -178,7 +178,7 @@ class UsersControllerTestCase extends CakeTestCase {
 
 		$this->Users->login();
 		$result = $this->Users->Session->read('Message.flash.message');
-		$expected = __d('users', 'adminuser you have successfully logged in', true);
+		$expected = __d('users', 'adminuser you have successfully logged in');
 		$this->assertEqual($result, $expected);
 
 		$this->assertEqual(Router::normalize($this->Users->redirectUrl), Router::normalize(Router::url($this->Users->Auth->loginRedirect)));
@@ -195,7 +195,7 @@ class UsersControllerTestCase extends CakeTestCase {
  		$this->Users->startupProcess();
 		$this->Users->login();
 		$result = $this->Users->Session->read('Message.auth.message');
-		$expected = __d('users', 'Invalid e-mail / password combination.  Please try again', true);
+		$expected = __d('users', 'Invalid e-mail / password combination.  Please try again');
 		$this->assertEqual($result, $expected);
 	}
 
@@ -215,7 +215,7 @@ class UsersControllerTestCase extends CakeTestCase {
 				'tos' => 1)));
 		$this->Users->beforeFilter();
 		$this->Users->add();
-		$this->assertEqual($this->Users->Session->read('Message.flash.message'), __d('users', 'Your account has been created. You should receive an e-mail shortly to authenticate your account. Once validated you will be able to login.', true));
+		$this->assertEqual($this->Users->Session->read('Message.flash.message'), __d('users', 'Your account has been created. You should receive an e-mail shortly to authenticate your account. Once validated you will be able to login.'));
 		$this->__setPost(array(
 			'User' => array(
 				'username' => 'newUser',
@@ -225,7 +225,7 @@ class UsersControllerTestCase extends CakeTestCase {
 				'tos' => 0)));
 		$this->Users->beforeFilter();
 		$this->Users->add();
-		$this->assertEqual($this->Users->Session->read('Message.flash.message'), __d('users', 'Your account could not be created. Please, try again.', true));
+		$this->assertEqual($this->Users->Session->read('Message.flash.message'), __d('users', 'Your account could not be created. Please, try again.'));
 	}
 
 /**
@@ -237,11 +237,11 @@ class UsersControllerTestCase extends CakeTestCase {
 		$this->Users->User->id = '37ea303a-3bdc-4251-b315-1316c0b300fa';
 		$this->Users->User->saveField('email_token_expiry', date('Y-m-d H:i:s', strtotime('+1 year')));
 		$this->Users->verify('email', 'testtoken2');
-		$this->assertEqual($this->Users->Session->read('Message.flash.message'), __d('users', 'Your e-mail has been validated!', true));
+		$this->assertEqual($this->Users->Session->read('Message.flash.message'), __d('users', 'Your e-mail has been validated!'));
 
 		$this->Users->beforeFilter();
 		$this->Users->verify('email', 'invalid-token');
-		$this->assertEqual($this->Users->Session->read('Message.flash.message'), __d('users', 'The url you accessed is not longer valid', true));
+		$this->assertEqual($this->Users->Session->read('Message.flash.message'), __d('users', 'The url you accessed is not longer valid'));
 	}
 
 /**
@@ -253,7 +253,7 @@ class UsersControllerTestCase extends CakeTestCase {
 		$this->Users->beforeFilter();
 		$this->Users->Session->write('Auth.User', $this->usersData['validUser']);
 		$this->Users->logout();
-		$this->assertEqual($this->Users->Session->read('Message.flash.message'), __d('users', 'testuser you have successfully logged out', true));
+		$this->assertEqual($this->Users->Session->read('Message.flash.message'), __d('users', 'testuser you have successfully logged out'));
 		$this->assertEqual($this->Users->redirectUrl, '/');
 	}
 
