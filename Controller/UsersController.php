@@ -530,7 +530,7 @@ class UsersController extends UsersAppController {
 			}
 			$this->_sendPasswordReset($admin);
 		} else {
-			$this->__resetPassword($token);
+			$this->_resetPassword($token);
 		}
 	}
 
@@ -663,7 +663,7 @@ class UsersController extends UsersAppController {
  * @param string $token Token
  * @return void
  */
-	private function __resetPassword($token) {
+	protected function _resetPassword($token) {
 		$user = $this->User->checkPasswordToken($token);
 		if (empty($user)) {
 			$this->Session->setFlash(__d('users', 'Invalid password reset token, try again.'));
@@ -677,4 +677,5 @@ class UsersController extends UsersAppController {
 
 		$this->set('token', $token);
 	}
+
 }
