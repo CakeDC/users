@@ -485,8 +485,7 @@ class UsersController extends UsersAppController {
 		$content[] = __d('users', 'Please login using this password and change your password', true);
 		$content[] = $userData[$this->modelClass]['new_password'];
 
-		App::uses('CakeEmail', 'Network/Email');
-		$Email = new CakeEmail();
+		$Email = $this->_getMailInstance();
 		$Email->from(Configure::read('App.defaultEmail'))
 			->to($data[$this->modelClass]['email'])
 			->replyTo(Configure::read('App.defaultEmail'))
@@ -561,14 +560,13 @@ class UsersController extends UsersAppController {
  */
 	protected function _sendVerificationEmail($userData, $options = array()) {
 		$defaults = array(
-			'from' => Configure::write('App.defaultEmail'),
+			'from' => Configure::read('App.defaultEmail'),
 			'subject' => __d('users', 'Account verification'),
 			'template' => 'Users.account_verification');
 
 		$options = array_merge($defaults, $options);
 
-		App::uses('CakeEmail', 'Network/Email');
-		$Email = new CakeEmail();
+		$Email = $this->_getMailInstance();
 		$Email->to($userData[$this->modelClass]['email'])
 			->from($options['from'])
 			->subject($options['subject'])
@@ -598,8 +596,7 @@ class UsersController extends UsersAppController {
 
 			if (!empty($user)) {
 
-				App::uses('CakeEmail', 'Network/Email');
-				$Email = new CakeEmail();
+				$Email = $this->_getMailInstance();
 				$Email->to($user[$this->modelClass]['email'])
 					->from($options['from'])
 					->subject($options['subject'])
@@ -676,6 +673,16 @@ class UsersController extends UsersAppController {
 		}
 
 		$this->set('token', $token);
+	}
+
+/**
+ * Returns a CakeEmail object
+ *
+ * @return object CakeEmail instance
+ */
+	protected function _getMailInstance() {
+		App::uses('CakeEmail', 'Network/Email');
+		return $Email = new CakeEmail();
 	}
 
 }

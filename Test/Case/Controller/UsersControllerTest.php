@@ -15,6 +15,7 @@ App::uses('AuthComponent', 'Controller/Component');
 App::uses('CookieComponent', 'Controller/Component');
 App::uses('SessionComponent', 'Controller/Component');
 App::uses('Security', 'Utility');
+app::uses('CakeEmail', 'Network/Email');
 
 /**
  * TestUsersController
@@ -79,6 +80,13 @@ class TestUsersController extends UsersController {
 	public $redirectUrl = null;
 
 /**
+ * CakeEmail Mock
+ *
+ * @var object
+ */
+	public $CakeEmail = null;
+
+/**
  * Override controller method for testing
  */
 	public function redirect($url, $status = null, $exit = true) {
@@ -87,10 +95,25 @@ class TestUsersController extends UsersController {
 
 /**
  * Override controller method for testing
+ *
+ * @param string
+ * @param string
+ * @param string
+ * @return string
  */
 	public function render($action = null, $layout = null, $file = null) {
 		$this->renderedView = $action;
 	}
+
+/**
+ * Overriding the original method to return a mock object
+ *
+ * @return object CakeEmail instance
+ */
+	protected function _getMailInstance() {
+		return $this->CakeEmail;
+	}
+
 }
 
 class UsersControllerTestCase extends CakeTestCase {
@@ -151,6 +174,7 @@ class UsersControllerTestCase extends CakeTestCase {
 			'admin' => false,
 			'plugin' => 'users',
 			'url' => array());
+		$this->Users->CakeEmail = $this->getMock('CakeEmail', array('send'));
 	}
 
 /**
@@ -203,6 +227,9 @@ class UsersControllerTestCase extends CakeTestCase {
  *
  */
 	public function testAdd() {
+		$this->Users->CakeEmail->expects($this->at(0))
+			->method('send');
+
 		$_SERVER['HTTP_HOST'] = 'test.com';
 		$this->Users->params['action'] = 'add';
 		$this->__setPost(array(
@@ -215,6 +242,7 @@ class UsersControllerTestCase extends CakeTestCase {
 		$this->Users->beforeFilter();
 		$this->Users->add();
 		$this->assertEqual($this->Users->Session->read('Message.flash.message'), __d('users', 'Your account has been created. You should receive an e-mail shortly to authenticate your account. Once validated you will be able to login.'));
+
 		$this->__setPost(array(
 			'User' => array(
 				'username' => 'newUser',
@@ -230,6 +258,7 @@ class UsersControllerTestCase extends CakeTestCase {
 /**
  * Test
  *
+ * @return void
  */
 	public function testVerify() {
 		$this->Users->beforeFilter();
@@ -288,7 +317,7 @@ class UsersControllerTestCase extends CakeTestCase {
 	public function testChangePassword() {
 		$this->Users->Session->write('Auth.User.id', '1');
 		$this->__setPost(array(
-                       	'User' => array(
+			'User' => array(
 				'new_password' => 'newpassword',
 				'confirm_password' => 'newpassword',
 				'old_password' => 'test')));
@@ -313,6 +342,9 @@ class UsersControllerTestCase extends CakeTestCase {
  * @return void
  */
 	public function testResetPassword() {
+		$this->Users->CakeEmail->expects($this->at(0))
+			->method('send');
+
 		$_SERVER['HTTP_HOST'] = 'test.com';
 		$this->Users->User->id = '1';
 		$this->Users->User->saveField('email_token_expires', date('Y-m-d H:i:s', strtotime('+1 year')));
@@ -375,6 +407,7 @@ class UsersControllerTestCase extends CakeTestCase {
 /**
  * Test setting the cookie
  *
+ * @return void
  */
 	public function testSetCookie() {
 		$this->Users->request->data['User'] = array(
@@ -393,6 +426,7 @@ class UsersControllerTestCase extends CakeTestCase {
 /**
  * Test
  *
+ * @return void
  */
 	private function __setPost($data = array()) {
 		$_SERVER['REQUEST_METHOD'] = 'POST';
@@ -402,6 +436,7 @@ class UsersControllerTestCase extends CakeTestCase {
 /**
  * Test
  *
+ * @return void
  */
 	private function __setGet() {
 		$_SERVER['REQUEST_METHOD'] = 'GET';
@@ -410,6 +445,7 @@ class UsersControllerTestCase extends CakeTestCase {
 /**
  * Test
  *
+ * @return void
  */
 	public function endTest() {
 		$this->Users->Session->destroy();
