@@ -123,7 +123,7 @@ class UsersController extends UsersAppController {
 					'password' => 'password'),
 				'userModel' => 'Users.User', 
 				'scope' => array(
-					'Users.active' => 1)));
+					'User.active' => 1)));
 
 		$this->Auth->loginRedirect = '/';
 		$this->Auth->logoutRedirect = '/';
@@ -467,7 +467,7 @@ class UsersController extends UsersAppController {
 				$this->User->save($data, array('validate' => false, 'callbacks' => false));
 				$this->Session->setFlash(__d('users', 'Your e-mail has been validated!', true));
 			}
-			$this->redirect(array('action' => 'login'));
+			return $this->redirect(array('action' => 'login'));
 		}
 		$this->Session->setFlash(__d('users', 'There was an error verifying your account. Please check the email you were sent, and retry the verification link.', true));
 		$this->redirect('/');
@@ -485,9 +485,11 @@ class UsersController extends UsersAppController {
 		$content[] = __d('users', 'Please login using this password and change your password', true);
 		$content[] = $userData[$this->modelClass]['new_password'];
 
-		App::uses('CakeEmail', 'Network/Email');
-		$Email = new CakeEmail();
-		$Email->from(Configure::read('App.defaultEmail'))
+		if (!isset($this->Email)) {
+			App::uses('CakeEmail', 'Network/Email');
+			$this->Email = new CakeEmail();
+		}
+		$this->Email->from(Configure::read('App.defaultEmail'))
 			->to($data[$this->modelClass]['email'])
 			->replyTo(Configure::read('App.defaultEmail'))
 			->return(Configure::read('App.defaultEmail'))
@@ -567,9 +569,11 @@ class UsersController extends UsersAppController {
 
 		$options = array_merge($defaults, $options);
 
-		App::uses('CakeEmail', 'Network/Email');
-		$Email = new CakeEmail();
-		$Email->to($userData[$this->modelClass]['email'])
+		if (!isset($this->Email)) {
+			App::uses('CakeEmail', 'Network/Email');
+			$this->Email = new CakeEmail();
+		}
+		$this->Email->to($userData[$this->modelClass]['email'])
 			->from($options['from'])
 			->subject($options['subject'])
 			->template($options['template'])
@@ -598,9 +602,11 @@ class UsersController extends UsersAppController {
 
 			if (!empty($user)) {
 
-				App::uses('CakeEmail', 'Network/Email');
-				$Email = new CakeEmail();
-				$Email->to($user[$this->modelClass]['email'])
+				if (!isset($this->Email)) {
+					App::uses('CakeEmail', 'Network/Email');
+					$this->Email = new CakeEmail();
+				}
+				$this->Email->to($user[$this->modelClass]['email'])
 					->from($options['from'])
 					->subject($options['subject'])
 					->template($options['template'])
