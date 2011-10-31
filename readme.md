@@ -32,6 +32,14 @@ The plugin itself is already capable of:
 
 ## How to extend the plugin ##
 
+### Changing the default "from" email setting ###
+
+To change the plugins default "from" setting for outgoing emails put this into your bootstrap.php
+
+	Configure::write('App.defaultEmail', your@email.com);
+
+If not configured it will use 'noreply@' . env('HTTP_HOST'); as default from email address.
+
 ### Extending the controller ###
 
 Declare the controller class

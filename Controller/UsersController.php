@@ -561,7 +561,7 @@ class UsersController extends UsersAppController {
  */
 	protected function _sendVerificationEmail($userData, $options = array()) {
 		$defaults = array(
-			'from' => 'noreply@' . env('HTTP_HOST'),
+			'from' => Configure::write('App.defaultEmail'),
 			'subject' => __d('users', 'Account verification'),
 			'template' => 'Users.account_verification');
 
