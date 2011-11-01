@@ -14,8 +14,14 @@ App::uses('UsersAppController', 'Users.Controller');
 /**
  * Users Users Controller
  *
- * @package users
- * @subpackage users.controllers
+ * @package       Users
+ * @subpackage    Users.Controller
+ * @property      AuthComponent $Auth
+ * @property      CookieComponent $Cookie
+ * @property      PaginatorComponent $Paginator
+ * @property      SecurityComponent $Security
+ * @property      SessionComponent $Session
+ * @property      User $User
  */
 class UsersController extends UsersAppController {
 
@@ -31,19 +37,30 @@ class UsersController extends UsersAppController {
  *
  * @var array
  */
-	public $helpers = array('Html', 'Form', 'Session', 'Time', 'Text');
+	public $helpers = array(
+		'Html',
+		'Form',
+		'Session',
+		'Time',
+		'Text');
 
 /**
  * Components
  *
  * @var array
  */
-	public $components = array('Auth', 'Session', 'Cookie','Paginator');
+	public $components = array(
+		'Auth',
+		'Session',
+		'Cookie',
+		'Paginator',
+		'Security');
 
 /**
- * $presetVars
+ * Preset vars
  *
  * @var array $presetVars
+ * @link https://github.com/CakeDC/search
  */
 	public $presetVars = array(
 		array('field' => 'search', 'type' => 'value'),
@@ -51,21 +68,23 @@ class UsersController extends UsersAppController {
 		array('field' => 'email', 'type' => 'value'));
 
 /**
- * Constructor.
+ * Constructor
  *
- * @param CakeRequest $request Request object for this controller can be null for testing.
- *  But expect that features that use the params will not work.
+ * @param CakeRequest $request Request object for this controller. Can be null for testing,
+ *  but expect that features that use the request parameters will not work.
+ * @param CakeResponse $response Response object for this controller.
  */
 	public function __construct($request, $response) {
-		parent::__construct($request, $response);
 		$this->_setupComponents();
 		$this->_setupHelpers();
+		parent::__construct($request, $response);
 	}
 
 /**
  * Setup components based on plugin availability
  *
  * @return void
+ * @link https://github.com/CakeDC/search
  */	
 	protected function _setupComponents() {
 		if (App::import('Component', 'Search.Prg')) {
@@ -131,35 +150,17 @@ class UsersController extends UsersAppController {
 	}
 
 /**
- * List of all users
+ * Simple listing of all users
  *
  * @return void
  */
 	public function index() {
-		$searchTerm = '';
-		//$this->Prg->commonProcess($this->modelClass, $this->modelClass, 'index', false);
-
-		if (!empty($this->request->params['named']['search'])) {
-			if (!empty($this->request->params['named']['search'])) {
-				$searchTerm = $this->request->params['named']['search'];
-			}
-			$this->request->data[$this->modelClass]['search'] = $searchTerm;
-		}
-
 		$this->paginate = array(
-			'search',
 			'limit' => 12,
-			'order' => $this->modelClass . '.username ASC',
-			'by' => $searchTerm,
 			'conditions' => array(
 				$this->modelClass . '.active' => 1, 
 				$this->modelClass . '.email_verified' => 1));
 		$this->set('users', $this->paginate($this->modelClass));
-		$this->set('searchTerm', $searchTerm);
-
-		if (!isset($this->request->params['named']['sort'])) {
-			$this->request->params['named']['sort'] = 'username';
-		}
 	}
 
 /**
@@ -371,9 +372,10 @@ class UsersController extends UsersAppController {
 	}
 
 /**
- * Search
+ * Search - Requires the CakeDC Search plugin to work
  *
  * @return void
+ * @link https://github.com/CakeDC/search
  */
 	public function search() {
 		if (!App::import('Component', 'Search.Prg')) {
@@ -383,6 +385,7 @@ class UsersController extends UsersAppController {
 		$searchTerm = '';
 		$this->Prg->commonProcess($this->modelClass, $this->modelClass, 'search', false);
 
+		$by = null;
 		if (!empty($this->request->params['named']['search'])) {
 			$searchTerm = $this->request->params['named']['search'];
 			$by = 'any';
@@ -406,7 +409,7 @@ class UsersController extends UsersAppController {
 					'AND' => array(
 						$this->modelClass . '.active' => 1,
 						$this->modelClass . '.email_verified' => 1)));
-	
+
 		$this->set('users', $this->paginate($this->modelClass));
 		$this->set('searchTerm', $searchTerm);
 	}
@@ -536,10 +539,11 @@ class UsersController extends UsersAppController {
  *
  * @param string View variable name, default is languages
  * @return void
+ * @link https://github.com/CakeDC/utils
  */
 	protected function _setLanguages($viewVar = 'languages') {
 		if (!App::import('Lib', 'Utils.Languages')) {
-			return false;
+			throw new MissingPluginException(array('plugin' => 'Utils'));
 		}
 		$Languages = new Languages();
 		$this->set($viewVar, $Languages->lists('locale'));

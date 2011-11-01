@@ -33,7 +33,9 @@ class TestUsersController extends UsersController {
 	public $name = 'Users';
 
 /**
- * 
+ * Models
+ *
+ * @var array
  */
 	public $uses = array('Users.User');
 
@@ -132,7 +134,8 @@ class UsersControllerTestCase extends CakeTestCase {
  */
 	public $fixtures = array(
 		'plugin.users.user',
-		'plugin.users.user_detail');
+		'plugin.users.user_detail'
+	);
 
 /**
  * Sampletdata used for post data
@@ -165,6 +168,7 @@ class UsersControllerTestCase extends CakeTestCase {
 
 		$request = new CakeRequest();
 		$response = $this->getMock('CakeResponse');
+
 		$this->Users = new TestUsersController($request, $response);
 		$this->Users->constructClasses();
 			$this->Users->request->params = array(
@@ -174,7 +178,10 @@ class UsersControllerTestCase extends CakeTestCase {
 			'admin' => false,
 			'plugin' => 'users',
 			'url' => array());
+
 		$this->Users->CakeEmail = $this->getMock('CakeEmail', array('send'));
+
+		$this->Users->Components->disable('Security');
 	}
 
 /**

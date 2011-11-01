@@ -32,3 +32,9 @@
 		?>
 	</dl>
 </div>
+<div class="actions">
+	<ul>
+		<li><?php echo $this->Html->link(__d('users', 'List Users', true), array('action'=>'index'));?></li>
+		<li><?php echo $this->Html->link(__d('users', 'Register an account'), array('action' => 'add')); ?></li>
+	</ul>
+</div>

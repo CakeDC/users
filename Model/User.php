@@ -15,8 +15,8 @@ App::uses('UsersAppModel', 'Users.Model');
 /**
  * Users Plugin User Model
  *
- * @package users
- * @subpackage users.models
+ * @package User
+ * @subpackage User.Model
  */
 class User extends UsersAppModel {
 
@@ -75,10 +75,10 @@ class User extends UsersAppModel {
 			'required' => array(
 				'rule' => array('notEmpty'),
 				'required' => true, 'allowEmpty' => false,
-				'message' => 'Please enter a username'),
+				'message' => 'Please enter a username.'),
 			'alpha' => array(
-				'rule' => array('alphaNumeric'), 
-				'message' => 'The username must be alphanumeric'),
+				'rule' => array('alphaNumeric'),
+				'message' => 'The username must be alphanumeric.'),
 			'unique_username' => array(
 				'rule'=>array('isUnique', 'username'),
 				'message' => 'This username is already in use.'),
@@ -89,10 +89,10 @@ class User extends UsersAppModel {
 			'isValid' => array(
 				'rule' => 'email',
 				'required' => true,
-				'message' => 'Please enter a valid email address.')),
+				'message' => 'Please enter a valid email address.'),
 			'isUnique' => array(
 				'rule' => array('isUnique', 'email'),
-				'message' => 'This email is already in use.'),
+				'message' => 'This email is already in use.')),
 		'password' => array(
 			'to_short' => array(
 				'rule' => array('minLength', '6'),
@@ -126,12 +126,15 @@ class User extends UsersAppModel {
  * This checks for the existence of certain plugins, and if available, uses them.
  *
  * @return void
+ * @link https://github.com/CakeDC/search
+ * @link https://github.com/CakeDC/utils
  */
 	protected function _setupBehaviors() {
 		if (App::import('Behavior', 'Search.Searchable')) {
 			$this->actsAs[] = 'Search.Searchable';
 		}
-		if (App::import('Behavior', 'Utils.Sluggable')) {
+
+		if (App::import('Sluggable', 'Utils.Model/Behavior')) {
 			$this->actsAs['Utils.Sluggable'] = array(
 				'label' => 'username',
 				'method' => 'multibyteSlug');
@@ -159,16 +162,16 @@ class User extends UsersAppModel {
  */
 	public function setupDetail() {
 		$this->UserDetail->sectionSchema[$this->alias] = array(
-				'birthday' => array(
-					'type' => 'date',
-					'null' => null,
-					'default' => null,
-					'length' => null));
+			'birthday' => array(
+				'type' => 'date',
+				'null' => null,
+				'default' => null,
+				'length' => null));
 
 		$this->UserDetail->sectionValidation[$this->alias] = array(
-				'birthday' => array(
-					'validDate' => array(
-						'rule' => array('date'), 'allowEmpty' => true, 'message' => __d('users', 'Invalid date'))));
+			'birthday' => array(
+				'validDate' => array(
+					'rule' => array('date'), 'allowEmpty' => true, 'message' => __d('users', 'Invalid date'))));
 	}
 
 /**
@@ -432,10 +435,11 @@ class User extends UsersAppModel {
 			'contain' => array(
 				'UserDetail'),
 			'conditions' => array(
-				$this->alias . '.slug' => $slug,
 				'OR' => array(
-					'AND' =>
-						array($this->alias . '.active' => 1, $this->alias . '.email_verified' => 1)))));
+					$this->alias . '.slug' => $slug,
+					$this->alias . '.' . $this->primaryKey => $slug),
+				$this->alias . '.active' => 1,
+				$this->alias . '.email_verified' => 1)));
 
 		if (empty($user)) {
 			throw new Exception(__d('users', 'The user does not exist.'));
@@ -484,7 +488,6 @@ class User extends UsersAppModel {
 			}
 			return true;
 		}
-
 		return false;
 	}
 
@@ -584,14 +587,19 @@ class User extends UsersAppModel {
 	}
 
 /**
- * Returns the search data
+ * Returns the search data - Requires the CakeDC Search plugin to work
  *
  * @param string $state Find State
  * @param string $query Query options
  * @param string $results Result data
  * @return array
+ * @link https://github.com/CakeDC/search
  */
 	protected function _findSearch($state, $query, $results = array()) {
+		if (!App::import('Lib', 'Utils.Languages')) {
+			throw new MissingPluginException(array('plugin' => 'Search'));
+		}
+
 		if ($state == 'before') {
 			$this->Behaviors->attach('Containable', array('autoFields' => false));
 			$results = $query;
