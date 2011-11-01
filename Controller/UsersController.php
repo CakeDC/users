@@ -127,7 +127,7 @@ class UsersController extends UsersAppController {
 
 		$this->Auth->loginRedirect = '/';
 		$this->Auth->logoutRedirect = '/';
-		$this->Auth->loginAction = array('plugin' => 'Users', 'controller' => 'users', 'action' => 'login');
+		$this->Auth->loginAction = array('plugin' => 'users', 'controller' => 'users', 'action' => 'login');
 	}
 
 /**
@@ -332,8 +332,6 @@ class UsersController extends UsersAppController {
 				$this->Session->setFlash(__d('users', 'Your account could not be created. Please, try again.'), 'default', array('class' => 'message warning'));
 			}
 		}
-
-		$this->_setLanguages();
 	}
 
 /**
@@ -682,7 +680,7 @@ class UsersController extends UsersAppController {
  */
 	protected function _getMailInstance() {
 		App::uses('CakeEmail', 'Network/Email');
-		return $Email = new CakeEmail();
+		return new CakeEmail();
 	}
 
 }

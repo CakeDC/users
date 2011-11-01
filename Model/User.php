@@ -80,7 +80,7 @@ class User extends UsersAppModel {
 				'rule' => array('alphaNumeric'), 
 				'message' => 'The username must be alphanumeric'),
 			'unique_username' => array(
-				'rule'=>array('isUnique','username'),
+				'rule'=>array('isUnique', 'username'),
 				'message' => 'This username is already in use.'),
 			'username_min' => array(
 				'rule' => array('minLength', '3'),
@@ -91,7 +91,7 @@ class User extends UsersAppModel {
 				'required' => true,
 				'message' => 'Please enter a valid email address.')),
 			'isUnique' => array(
-				'rule' => array('isUnique','email'),
+				'rule' => array('isUnique', 'email'),
 				'message' => 'This email is already in use.'),
 		'password' => array(
 			'to_short' => array(
