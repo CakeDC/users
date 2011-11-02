@@ -420,19 +420,41 @@ class UsersController extends UsersAppController {
 	}
 
 /**
- * Confirm email action and password reset action
+ * Confirm email action
  *
- * @todo refactor the reset part, this method should not do two things at the same time
- * @param string $type Type
+ * @param string $type Type, deprecated, will be removed. Its just still there for a smooth transistion.
+ * @param string $token Token
  * @return void
  */
 	public function verify($type = 'email', $token = null) {
-		$verifyTypes = array('email', 'reset');
-		if (!$token || !in_array($type, $verifyTypes)) {
-			$this->Session->setFlash(__d('users', 'The url you accessed is not longer valid', true));
+		if ($type == 'reset') {
+			// Backward compatiblity
+			$this->verify_new_password($token);
 		}
 
-		$data = $this->User->validateToken($token, $type === 'reset');
+		try {
+			$this->User->verifyEmail($token);
+			$this->Session->setFlash(__d('users', 'Your e-mail has been validated!'));
+			return $this->redirect(array('action' => 'login'));
+		} catch (RuntimeException $e) {
+			$this->Session->setFlash($e->getMessage());
+			return $this->redirect('/');
+		}
+	}
+
+/**
+ * This method will send a new password to the user if the token matches the one sent to the user
+ *
+ * @deprecated Was this ever used? Just keeping it for backward compatibility in the case it was
+ * @param string $token Token
+ * @return void
+ */
+	public function verify_new_password($token = null) {
+		if (Configure::read('Users.sendPassword') !== true) {
+			throw new NotFoundException();
+		}
+
+		$data = $this->User->validateToken($token, true);
 
 		if (!$data) {
 			$this->Session->setFlash(__d('users', 'The url you accessed is not longer valid', true));
@@ -442,27 +464,12 @@ class UsersController extends UsersAppController {
 		$email = $data[$this->modelClass]['email'];
 		unset($data[$this->modelClass]['email']);
 
-		if ($type === 'reset') {
-			$data[$this->modelClass]['new_password'] = $data[$this->modelClass]['password'];
-			$data[$this->modelClass]['password'] = $this->Auth->password($newPassword);
-		}
-
-		if ($type === 'email') {
- 			$data[$this->modelClass]['active'] = 1;
-		}
-
 		if ($this->User->save($data, array('validate' => false))) {
-			if ($type === 'reset') {
-				$this->_sendPasswordResetEmail($data);
-				$this->Session->setFlash(__d('users', 'Your password was sent to your registered email account', true));
-			} else {
-				unset($data);
-				$data[$this->modelClass]['active'] = 1;
-				$this->User->save($data, array('validate' => false, 'callbacks' => false));
-				$this->Session->setFlash(__d('users', 'Your e-mail has been validated!', true));
-			}
+			$this->_sendPasswordResetEmail($data);
+			$this->Session->setFlash(__d('users', 'Your password was sent to your registered email account', true));
 			return $this->redirect(array('action' => 'login'));
 		}
+
 		$this->Session->setFlash(__d('users', 'There was an error verifying your account. Please check the email you were sent, and retry the verification link.', true));
 		$this->redirect('/');
 	}
@@ -490,7 +497,7 @@ class UsersController extends UsersAppController {
 	}
 
 /**
- * Allows the user to enter a new password, it needs to be confirmed
+ * Allows the user to enter a new password, it needs to be confirmed by entering the old password
  *
  * @return void
  */
@@ -625,7 +632,7 @@ class UsersController extends UsersAppController {
  * @param array Cookie component properties as array, like array('domain' => 'yourdomain.com')
  * @param string Cookie data keyname for the userdata, its default is "User". This is set to User and NOT using the model alias to make sure it works with different apps with different user models across different (sub)domains.
  * @return void
- * @link http://api13.cakephp.org/class/cookie-component
+ * @link http://book.cakephp.org/2.0/en/core-libraries/components/cookie.html
  */
 	protected function _setCookie($options = array(), $cookieKey = 'User') {
 		if (empty($this->request->data[$this->modelClass]['remember_me'])) {
@@ -675,6 +682,7 @@ class UsersController extends UsersAppController {
  * Returns a CakeEmail object
  *
  * @return object CakeEmail instance
+ * @link http://book.cakephp.org/2.0/en/core-utility-libraries/email.html
  */
 	protected function _getMailInstance() {
 		App::uses('CakeEmail', 'Network/Email');

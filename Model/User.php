@@ -35,9 +35,10 @@ class User extends UsersAppModel {
 	public $findMethods = array('search' => true);
 
 /**
- * @todo comment me
+ * All search fields need to be configured in the Model::filterArgs array.
  *
  * @var array
+ * @link https://github.com/CakeDC/search
  */
 	public $filterArgs = array(
 		array('name' => 'username', 'type' => 'string'),
@@ -62,6 +63,8 @@ class User extends UsersAppModel {
 
 /**
  * Validation domain for translations 
+ *
+ * @var string
  */
 	public $validationDomain = 'users';
 
@@ -182,10 +185,20 @@ class User extends UsersAppModel {
  */
 	public function afterSave($created) {
 		if ($created) {
-			if (!empty($this->data[$this->alias]['slug'])) {
-				if ($this->hasField('url')) {
-					$this->saveField('url', '/user/' . $this->data[$this->alias]['slug'], false);
-				}
+			$this->sluggedUserUrl();
+		}
+	}
+
+/**
+ * Override this method as needed to generate the url you want
+ *
+ * @return void
+ * @see User::afterSave();
+ */
+	public function sluggedUserUrl() {
+		if (!empty($this->data[$this->alias]['slug'])) {
+			if ($this->hasField('url')) {
+				$this->saveField('url', '/user/' . $this->data[$this->alias]['slug'], false);
 			}
 		}
 	}
@@ -237,8 +250,44 @@ class User extends UsersAppModel {
 	}
 
 /**
+ * Verifies a users email by a token that was sent to him via email and flags the user record as active
+ *
+ * @param string $token The token that wa sent to the user
+ * @return array On success it returns the user data record
+ */
+	public function verifyEmail($token = null) {
+		$user = $this->find('first', array(
+			'contain' => array(),
+			'conditions' => array(
+				$this->alias . '.email_token' => $token),
+			'fields' => array(
+				'id', 'email', 'email_token_expiry', 'role')));
+
+		if (empty($user)) {
+			throw new RuntimeException(__d('users', 'Invalid token, please check the email you were sent, and retry the verification link.'));
+		}
+
+		$expires = strtotime($user[$this->alias]['email_token_expiry']);
+		if ($expires < time()) {
+			throw new RuntimeException(__d('users', 'The token has expired.'));
+		}
+
+		$data[$this->alias]['active'] = 1;
+		$user[$this->alias]['email_verified'] = 1;
+		$user[$this->alias]['email_token'] = null;
+		$user[$this->alias]['email_token_expiry'] = null;
+
+		$user = $this->save($user, array(
+			'validate' => false,
+			'callbacks' => false));
+		$this->data = $user;
+		return $user;
+	}
+
+/**
  * Validates the user token
  *
+ * @deprecated See verifyEmail()
  * @param string $token Token
  * @param boolean $reset Reset boolean
  * @param boolean $now time() value
@@ -264,7 +313,10 @@ class User extends UsersAppModel {
 				$data[$this->alias]['role'] = $match[$this->alias]['role'];
 
 				if ($reset === true) {
-					$data[$this->alias]['password'] = $this->generatePassword();
+					App::uses('Security', 'Utility');
+					$newPassword = $this->generatePassword();
+					$data[$this->alias]['password'] = Security::hash($newPassword, null, true);
+					$data[$this->alias]['new_password'] = $newPassword;
 					$data[$this->alias]['password_token'] = null;
 				}
 
@@ -280,14 +332,15 @@ class User extends UsersAppModel {
  * Updates the last activity field of a user
  *
  * @param string $user User ID
+ * @param string $field Default is "last_action", changing it allows you to use this method also for "last_login" for example
  * @return boolean True on success
  */
-	public function updateLastActivity($userId = null) {
+	public function updateLastActivity($userId = null, $field = 'last_action') {
 		if (!empty($userId)) {
 			$this->id = $userId;
 		}
 		if ($this->exists()) {
-			return $this->saveField('last_action', date('Y-m-d H:i:s', time()));
+			return $this->saveField($field, date('Y-m-d H:i:s', time()));
 		}
 		return false;
 	}
@@ -304,6 +357,7 @@ class User extends UsersAppModel {
 			'conditions' => array(
 				$this->alias . '.active' => 1,
 				$this->alias . '.email' => $postData[$this->alias]['email'])));
+
 		if (!empty($user) && $user[$this->alias]['email_verified'] == 1) {
 			$sixtyMins = time() + 43000;
 			$token = $this->generateToken();
@@ -317,6 +371,7 @@ class User extends UsersAppModel {
 		} else {
 			$this->invalidate('email', __d('users', 'This Email Address does not exist in the system.'));
 		}
+
 		return false;
 	}
 
@@ -347,9 +402,10 @@ class User extends UsersAppModel {
  */
 	public function resetPassword($postData = array()) {
 		$result = false;
+
 		$tmp = $this->validate;
 		$this->validate = array(
-			'new_password' => $this->validate['password'],
+			'new_password' => $tmp['password'],
 			'confirm_password' => array(
 				'required' => array(
 					'rule' => array('compareFields', 'new_password', 'confirm_password'), 
@@ -359,8 +415,11 @@ class User extends UsersAppModel {
 		if ($this->validates()) {
 			$this->data[$this->alias]['password'] = Security::hash($this->data[$this->alias]['new_password'], null, true);
 			$this->data[$this->alias]['password_token'] = null;
-			$result = $this->save($this->data, false);
+			$result = $this->save($this->data, array(
+				'validate' => false,
+				'callbacks' => false));
 		}
+
 		$this->validate = $tmp;
 		return $result;
 	}
@@ -372,20 +431,16 @@ class User extends UsersAppModel {
  * @return boolean True on success
  */
 	public function changePassword($postData = array()) {
-		$this->set($postData);
-		//$tmp = $this->validate;
 		$this->validate = $this->validatePasswordChange;
 
+		$this->set($postData);
 		if ($this->validates()) {
 			$this->data[$this->alias]['password'] = Security::hash($this->data[$this->alias]['new_password'], null, true);
 			$this->save($postData, array(
 				'validate' => false,
 				'callbacks' => false));
-			//$this->validate = $tmp;
 			return true;
 		}
-
-		//$this->validate = $tmp;
 		return false;
 	}
 

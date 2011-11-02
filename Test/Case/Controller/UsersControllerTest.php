@@ -276,7 +276,7 @@ class UsersControllerTestCase extends CakeTestCase {
 
 		$this->Users->beforeFilter();
 		$this->Users->verify('email', 'invalid-token');
-		$this->assertEqual($this->Users->Session->read('Message.flash.message'), __d('users', 'The url you accessed is not longer valid'));
+		$this->assertEqual($this->Users->Session->read('Message.flash.message'), __d('users', 'Invalid token, please check the email you were sent, and retry the verification link.'));
 	}
 
 /**
