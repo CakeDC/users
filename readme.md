@@ -27,7 +27,7 @@ The plugin itself is already capable of:
 * User login (email / password)
 * Password reset based on requesting a token by email and entering a new password
 * Simple profiles for users
-* User search
+* User search (requires the CakeDC Search plugin)
 * User management using the "admin" section
 
 ## How to extend the plugin ##

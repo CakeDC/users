@@ -196,22 +196,13 @@ class UsersController extends UsersAppController {
  */
 	public function edit() {
 		if (!empty($this->request->data)) {
-			if ($this->User->Detail->saveSection($this->Auth->user('id'), $this->request->data, 'User')) {
+			if ($this->User->UserDetail->saveSection($this->Auth->user('id'), $this->request->data, 'User')) {
 				$this->Session->setFlash(__d('users', 'Profile saved.'));
 			} else {
 				$this->Session->setFlash(__d('users', 'Could not save your profile.'));
 			}
 		} else {
 			$this->request->data = $this->User->read(null, $this->Auth->user('id'));
-		}
-
-		$this->_setLanguages();
-
-		$oid = $this->Session->read('openIdAuthData');
-		if ($oid) {
-			$this->autoRender = false;
-			$this->set('openIdAuthData', $oid);
-			$this->render('openid_add');
 		}
 	}
 
@@ -359,9 +350,10 @@ class UsersController extends UsersAppController {
 			if (empty($data['return_to'])) {
 				$data['return_to'] = null;
 			}
-			$this->redirect($this->Auth->redirect($data['return_to']));
+
+			return $this->redirect($this->Auth->redirect($data['return_to']));
 		} else {
-			$this->Session->setFlash(__d('users', 'Invalid e-mail / password combination.  Please try again', true), null, null, 'auth');
+			$this->Auth->flash(__d('users', 'Invalid e-mail / password combination.  Please try again'));
 		}
 
 		if (isset($this->request->params['named']['return_to'])) {
@@ -430,6 +422,7 @@ class UsersController extends UsersAppController {
 /**
  * Confirm email action and password reset action
  *
+ * @todo refactor the reset part, this method should not do two things at the same time
  * @param string $type Type
  * @return void
  */
@@ -460,7 +453,7 @@ class UsersController extends UsersAppController {
 
 		if ($this->User->save($data, array('validate' => false))) {
 			if ($type === 'reset') {
-				$this->_sendReset($data);
+				$this->_sendPasswordResetEmail($data);
 				$this->Session->setFlash(__d('users', 'Your password was sent to your registered email account', true));
 			} else {
 				unset($data);
@@ -480,7 +473,7 @@ class UsersController extends UsersAppController {
  * @param array
  * @return void
  */
-	protected function _sendReset($userData) {
+	protected function _sendPasswordResetEmail($userData) {
 		$content = array();
 		$content[] = __d('users', 'Your password has been reset', true);
 		$content[] = __d('users', 'Please login using this password and change your password', true);
@@ -537,6 +530,7 @@ class UsersController extends UsersAppController {
 /**
  * Sets a list of languages to the view which can be used in selects
  *
+ * @deprecated No fallback provided, use the Utils plugin in your app directly
  * @param string View variable name, default is languages
  * @return void
  * @link https://github.com/CakeDC/utils

@@ -14,13 +14,16 @@
 	<fieldset>
 		<legend><?php echo __d('users', 'Login'); ?></legend>
 		<?php
-			echo $this->Form->create($model, array('action' => 'login'));
+			echo $this->Form->create($model, array(
+				'action' => 'login',
+				'id' => 'LoginForm'));
 			echo $this->Form->input('email', array(
 				'label' => __d('users', 'Email')));
 			echo $this->Form->input('password',  array(
 				'label' => __d('users', 'Password')));
 
 			echo '<p>' . __d('users', 'Remember Me') . $this->Form->checkbox('remember_me') . '</p>';
+			echo '<p>' . $this->Html->link(__d('users', 'I forgot my password'), array('action' => 'reset_password')) . '</p>';
 
 			echo $this->Form->hidden('User.return_to', array(
 				'value' => $return_to));
@@ -28,8 +31,4 @@
 		?>
 	</fieldset>
 </div>
-<div class="actions">
-	<ul>
-		<li><?php echo $this->Html->link(__d('users', 'Register an account'), array('action' => 'add')); ?></li>
-	</ul>
-</div>
+<?php echo $this->element('Users/sidebar'); ?>

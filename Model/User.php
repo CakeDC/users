@@ -262,7 +262,7 @@ class User extends UsersAppModel {
 				$data[$this->alias]['email'] = $match[$this->alias]['email'];
 				$data[$this->alias]['email_verified'] = '1';
 				$data[$this->alias]['role'] = $match[$this->alias]['role'];
-				
+
 				if ($reset === true) {
 					$data[$this->alias]['password'] = $this->generatePassword();
 					$data[$this->alias]['password_token'] = null;
@@ -711,9 +711,9 @@ class User extends UsersAppModel {
  */
 	public function edit($userId = null, $postData = null) {
 		$user = $this->find('first', array(
-			'contain' => array('UserDetail'),
-			'conditions' => array($this->alias . '.id' => $userId)
-		));
+			'contain' => array(
+				'UserDetail'),
+			'conditions' => array($this->alias . '.id' => $userId)));
 
 		$this->set($user);
 		if (empty($user)) {
