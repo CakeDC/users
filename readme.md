@@ -30,6 +30,8 @@ The plugin itself is already capable of:
 * User search (requires the CakeDC Search plugin)
 * User management using the "admin" section
 
+The default password reset process requires the user to enter his email address, an email is sent to the user with a link and a token. When the user accesses the URL with the token he can enter a new password.
+
 ## How to extend the plugin ##
 
 ### Changing the default "from" email setting ###

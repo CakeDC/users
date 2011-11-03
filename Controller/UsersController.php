@@ -429,7 +429,7 @@ class UsersController extends UsersAppController {
 	public function verify($type = 'email', $token = null) {
 		if ($type == 'reset') {
 			// Backward compatiblity
-			$this->verify_new_password($token);
+			$this->request_new_password($token);
 		}
 
 		try {
@@ -443,13 +443,12 @@ class UsersController extends UsersAppController {
 	}
 
 /**
- * This method will send a new password to the user if the token matches the one sent to the user
+ * This method will send a new password to the user
  *
- * @deprecated Was this ever used? Just keeping it for backward compatibility in the case it was
  * @param string $token Token
  * @return void
  */
-	public function verify_new_password($token = null) {
+	public function request_new_password($token = null) {
 		if (Configure::read('Users.sendPassword') !== true) {
 			throw new NotFoundException();
 		}
@@ -465,7 +464,7 @@ class UsersController extends UsersAppController {
 		unset($data[$this->modelClass]['email']);
 
 		if ($this->User->save($data, array('validate' => false))) {
-			$this->_sendPasswordResetEmail($data);
+			$this->_sendNewPassword($data);
 			$this->Session->setFlash(__d('users', 'Your password was sent to your registered email account', true));
 			return $this->redirect(array('action' => 'login'));
 		}
@@ -480,19 +479,17 @@ class UsersController extends UsersAppController {
  * @param array
  * @return void
  */
-	protected function _sendPasswordResetEmail($userData) {
-		$content = array();
-		$content[] = __d('users', 'Your password has been reset', true);
-		$content[] = __d('users', 'Please login using this password and change your password', true);
-		$content[] = $userData[$this->modelClass]['new_password'];
-
+	protected function _sendNewPassword($userData) {
 		$Email = $this->_getMailInstance();
 		$Email->from(Configure::read('App.defaultEmail'))
 			->to($data[$this->modelClass]['email'])
 			->replyTo(Configure::read('App.defaultEmail'))
 			->return(Configure::read('App.defaultEmail'))
 			->subject(env('HTTP_HOST') . ' ' . __d('users', 'Password Reset', true))
-			->template(null)
+			->template('new_password')
+			->viewVars(array(
+				'model' => $this->modelClass,
+				'userData' => $userData))
 			->send($content);
 	}
 
@@ -574,7 +571,9 @@ class UsersController extends UsersAppController {
 			->from($options['from'])
 			->subject($options['subject'])
 			->template($options['template'])
-			->viewVars(array('user' => $userData))
+			->viewVars(array(
+				'model' => $this->modelClass,
+				'user' => $userData))
 			->send();
 	}
 
@@ -605,6 +604,7 @@ class UsersController extends UsersAppController {
 					->subject($options['subject'])
 					->template($options['template'])
 					->viewVars(array(
+						'model' => $this->modelClass,
 						'user' => $this->User->data,
 						'token' => $this->User->data[$this->modelClass]['password_token']))
 					->send();

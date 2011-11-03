@@ -25,7 +25,7 @@
 		<tr>
 			<th><?php echo $this->Paginator->sort('username'); ?></th>
 			<th><?php echo $this->Paginator->sort('email'); ?></th>
-			<th><?php echo $this->Paginator->sort('email_authenticated'); ?></th>
+			<th><?php echo $this->Paginator->sort('email_verified'); ?></th>
 			<th><?php echo $this->Paginator->sort('active'); ?></th>
 			<th><?php echo $this->Paginator->sort('created'); ?></th>
 			<th class="actions"><?php echo __d('users', 'Actions'); ?></th>
@@ -46,10 +46,10 @@
 					<?php echo $user[$model]['email']; ?>
 				</td>
 				<td>
-					<?php echo $user[$model]['email_authenticated']; ?>
+					<?php echo $user[$model]['email_verified'] == 1 ? __d('users', 'Yes') : __d('users', 'No'); ?>
 				</td>
 				<td>
-					<?php echo $user[$model]['active']; ?>
+					<?php echo $user[$model]['active'] == 1 ? __d('users', 'Yes') : __d('users', 'No'); ?>
 				</td>
 				<td>
 					<?php echo $user[$model]['created']; ?>

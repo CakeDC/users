@@ -169,12 +169,28 @@ class User extends UsersAppModel {
 				'type' => 'date',
 				'null' => null,
 				'default' => null,
+				'length' => null),
+			'first_name' => array(
+				'type' => 'string',
+				'null' => null,
+				'default' => null,
+				'length' => null),
+			'last_name' => array(
+				'type' => 'string',
+				'null' => null,
+				'default' => null,
 				'length' => null));
 
 		$this->UserDetail->sectionValidation[$this->alias] = array(
 			'birthday' => array(
 				'validDate' => array(
-					'rule' => array('date'), 'allowEmpty' => true, 'message' => __d('users', 'Invalid date'))));
+					'rule' => array('date'), 'allowEmpty' => true, 'message' => __d('users', 'Invalid date'))),
+			'first_name' => array(
+				'notEmpty' => array(
+					'rule' => array('notEmpty'), 'allowEmpty' => true, 'message' => __d('users', 'Invalid date'))),
+			'last_name' => array(
+				'notEmpty' => array(
+					'rule' => array('notEmpty'), 'allowEmpty' => true, 'message' => __d('users', 'Invalid date'))));
 	}
 
 /**
@@ -259,6 +275,7 @@ class User extends UsersAppModel {
 		$user = $this->find('first', array(
 			'contain' => array(),
 			'conditions' => array(
+				$this->alias . '.email_verified' => 0,
 				$this->alias . '.email_token' => $token),
 			'fields' => array(
 				'id', 'email', 'email_token_expiry', 'role')));
@@ -298,11 +315,13 @@ class User extends UsersAppModel {
 			$now = time();
 		}
 
-		$this->recursive = -1;
 		$data = false;
 		$match = $this->find('first', array(
-			'conditions' => array($this->alias . '.email_token' => $token),
-			'fields' => array('id', 'email', 'email_token_expiry', 'role')));
+			'contain' => array(),
+			'conditions' => array(
+				$this->alias . '.email_token' => $token),
+			'fields' => array(
+				'id', 'email', 'email_token_expiry', 'role')));
 
 		if (!empty($match)) {
 			$expires = strtotime($match[$this->alias]['email_token_expiry']);

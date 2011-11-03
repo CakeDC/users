@@ -15,7 +15,14 @@
 			<legend><?php echo __d('users', 'Edit User'); ?></legend>
 			<?php
 				echo $this->Form->input('id');
-				echo $this->Form->input('username');
+				echo $this->Form->input('username', array(
+					'label' => __d('users', 'Username')));
+				echo $this->Form->input('email', array(
+					'label' => __d('users', 'Email')));
+				echo $this->Form->input('is_admin', array(
+					'label' => __d('users', 'Is Admin')));
+				echo $this->Form->input('active', array(
+					'label' => __d('users', 'Active')));
 			?>
 		</fieldset>
 	<?php echo $this->Form->end('Submit'); ?>
