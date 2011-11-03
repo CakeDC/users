@@ -10,15 +10,11 @@
  */
 ?>
 <div class="users form">
-<?php echo $this->Form->create($model); ?>
-	<fieldset>
- 		<legend><?php echo __d('users', 'Add User'); ?></legend>
-	<?php echo $this->Form->input('username'); ?>
-	</fieldset>
-<?php echo $this->Form->end('Submit'); ?>
+	<?php echo $this->Form->create($model); ?>
+		<fieldset>
+			<legend><?php echo __d('users', 'Add User'); ?></legend>
+			<?php echo $this->Form->input('username'); ?>
+		</fieldset>
+	<?php echo $this->Form->end('Submit'); ?>
 </div>
-<div class="actions">
-	<ul>
-		<li><?php echo $this->Html->link(__d('users', 'List Users'), array('action' => 'index')); ?></li>
-	</ul>
-</div>
+<?php echo $this->element('Users/admin_sidebar'); ?>

@@ -63,3 +63,4 @@
 		<?php endforeach; ?>
 	</table>
 </div>
+<?php echo $this->element('Users/admin_sidebar'); ?>

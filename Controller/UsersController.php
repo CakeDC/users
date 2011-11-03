@@ -146,7 +146,7 @@ class UsersController extends UsersAppController {
 
 		$this->Auth->loginRedirect = '/';
 		$this->Auth->logoutRedirect = '/';
-		$this->Auth->loginAction = array('plugin' => 'users', 'controller' => 'users', 'action' => 'login');
+		$this->Auth->loginAction = array('admin' => false, 'plugin' => 'users', 'controller' => 'users', 'action' => 'login');
 	}
 
 /**
