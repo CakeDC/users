@@ -12,7 +12,6 @@
 <div class="users index">
 <h2><?php echo __d('users', 'Login'); ?></h2>
 	<fieldset>
-		<legend><?php echo __d('users', 'Login'); ?></legend>
 		<?php
 			echo $this->Form->create($model, array(
 				'action' => 'login',
