@@ -9,6 +9,8 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
+App::uses('UsersAppModel', 'Users.Model');
+
 /**
  * Users Detail Model
  *
