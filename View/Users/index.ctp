@@ -41,10 +41,6 @@
 		</tr>
 	<?php endforeach; ?>
 	</table>
-	<div class="paging">
-		<?php echo $this->Paginator->prev('<< ' . __d('users', 'previous'), array(), null, array('class' => 'disabled')); ?>
-	 | 	<?php echo $this->Paginator->numbers(); ?>
-		<?php echo $this->Paginator->next(__d('users', 'next') . ' >>', array(), null, array('class' => 'disabled')); ?>
-	</div>
+	<?php echo $this->element('pagination'); ?>
 </div>
 <?php echo $this->element('Users/sidebar'); ?>
