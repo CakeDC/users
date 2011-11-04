@@ -45,7 +45,7 @@ class UserDetailsController extends UsersAppController {
 				'UserDetail.user_id' => $this->Auth->user('id'),
 				'UserDetail.field LIKE' => 'user.%'),
 			'order' => 'UserDetail.position DESC'));
-		$this->set('details', $details);
+		$this->set('user_details', $details);
 	}
 
 /**
@@ -59,7 +59,7 @@ class UserDetailsController extends UsersAppController {
 			$this->Session->setFlash(__d('users', 'Invalid Detail.'));
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->set('detail', $this->UserDetail->read(null, $id));
+		$this->set('user_detail', $this->UserDetail->read(null, $id));
 	}
 
 /**
@@ -99,7 +99,7 @@ class UserDetailsController extends UsersAppController {
 		if (!empty($this->data)) {
 			$this->UserDetail->saveSection($this->Auth->user('id'), $this->data, $section);
 			$this->data['UserDetail'] = $this->UserDetail->getSection($this->Auth->user('id'), $section);
-			$this->Session->setFlash(sprintf(__d('users', '%s details saved'), ucfirst($section)));
+			$this->Session->setFlash(sprintf(__d('users', '%s user details saved'), ucfirst($section)));
 		}
 
 		if (empty($this->data)) {
@@ -133,7 +133,7 @@ class UserDetailsController extends UsersAppController {
  */
 	public function admin_index() {
 		$this->UserDetail->recursive = 0;
-		$this->set('details', $this->paginate());
+		$this->set('user_details', $this->paginate());
 	}
 
 /**
@@ -147,7 +147,7 @@ class UserDetailsController extends UsersAppController {
 			$this->Session->setFlash(__d('users', 'Invalid Detail.'));
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->set('detail', $this->UserDetail->read(null, $id));
+		$this->set('user_detail', $this->UserDetail->read(null, $id));
 	}
 
 /**

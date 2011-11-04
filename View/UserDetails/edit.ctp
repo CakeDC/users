@@ -9,10 +9,10 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 ?>
-<div class="details form">
-<?php echo $this->Form->create('Detail', array('action' => 'edit')); ?>
+<div class="user_details form">
+<?php echo $this->Form->create('UserDetail', array('action' => 'edit')); ?>
 	<fieldset>
- 		<legend><?php echo __d('users', 'Edit Detail'); ?></legend>
+ 		<legend><?php echo __d('users', 'Edit User Detail'); ?></legend>
 	<?php
 	echo $this->Form->input('firstname');
 	echo $this->Form->input('middlename');
