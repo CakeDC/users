@@ -10,7 +10,7 @@
  */
 ?>
 <div class="users index">
-<h2><?php echo __d('users', 'Login'); ?></h2>
+	<h2><?php echo __d('users', 'Login'); ?></h2>
 	<fieldset>
 		<?php
 			echo $this->Form->create($model, array(

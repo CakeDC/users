@@ -10,8 +10,8 @@
  */
 ?>
 <div class="users form">
+	<h2><?php echo __d('users', 'Add User'); ?></h2>
 	<fieldset>
- 		<legend><?php echo __d('users', 'Add User');?></legend>
 		<?php
 			echo $this->Form->create($model);
 			echo $this->Form->input('username', array(
