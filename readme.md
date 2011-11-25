@@ -51,6 +51,21 @@ If you would like to use admin routing, remember to un-comment the line in app/c
 
 	Configure::write('Routing.prefixes', array('admin')); 
 
+### Using the "remember me" cookie ###
+
+To use the "remember me" checkbox which sets a cookie on the login page you will need to put this code or method call in your AppController::beforeFilter() method.
+
+	public function restoreLoginFromCookie() {
+		$this->Cookie->name = 'Users';
+		$cookie = $this->Cookie->read('rememberMe');
+		if (!empty($cookie) && !$this->Auth->user()) {
+			$data['User'][$this->Auth->fields['username']] = $cookie[$this->Auth->fields['username']];
+			$data['User'][$this->Auth->fields['password']] = $cookie[$this->Auth->fields['password']];
+		}
+	}
+
+The code will read the login credentials from the cookie and log the user in based on that information. Do not forget to change the cookie name or fields to what you are using if you have changed them in your application!
+
 ## What it is capable of ##
 
 You can use the plugin as it comes if you're happy with it or, more common, extend your app specific user implementation from the plugin.
