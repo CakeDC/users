@@ -32,6 +32,21 @@ The plugin itself is already capable of:
 
 The default password reset process requires the user to enter his email address, an email is sent to the user with a link and a token. When the user accesses the URL with the token he can enter a new password.
 
+### Using the "remember me" cookie ###
+
+To use the "remember me" checkbox which sets a cookie on the login page you will need to put this code or method call in your AppController::beforeFilter() method.
+
+	public function restoreLoginFromCookie() {
+		$this->Cookie->name = 'Users';
+		$cookie = $this->Cookie->read('rememberMe');
+		if (!empty($cookie) && !$this->Auth->user()) {
+			$data['User'][$this->Auth->fields['username']] = $cookie[$this->Auth->fields['username']];
+			$data['User'][$this->Auth->fields['password']] = $cookie[$this->Auth->fields['password']];
+		}
+	}
+
+The code will read the login credentials from the cookie and log the user in based on that information. Do not forget to change the cookie name or fields to what you are using if you have changed them in your application!
+
 ## How to extend the plugin ##
 
 ### Changing the default "from" email setting ###
@@ -85,6 +100,12 @@ You can override/extend all methods or properties like validation rules to suit 
 ### Routes for pretty URLs ###
 
 To remove the second users from /users/users in the url you can use routes.
+
+The plugin itself comes with a routes file but you need to explicitly load them. 
+
+	CakePlugin::load('Users', array('routes' => true));
+
+List of the used routes:
 
 	Router::connect('/users', array('plugin' => 'users', 'controller' => 'users'));
 	Router::connect('/users/index/*', array('plugin' => 'users', 'controller' => 'users'));
