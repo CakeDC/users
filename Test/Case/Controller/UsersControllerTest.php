@@ -51,7 +51,7 @@ class TestUsersController extends UsersController {
 		$this->Auth->loginAction = array('controller' => 'users', 'action' => 'login', 'prefix' => 'admin', 'admin' => false, 'plugin' => 'users');
 		$this->Auth->loginRedirect = $this->Session->read('Auth.redirect');
 		$this->Auth->logoutRedirect = '/';
-		$this->Auth->authError = __d('users', 'Sorry, but you need to login to access this location.', true);
+		$this->Auth->authError = __d('users', 'Sorry, but you need to login to access this location.');
 		$this->Auth->autoRedirect = true;
 		$this->Auth->userModel = 'User';
 		$this->Auth->userScope = array(

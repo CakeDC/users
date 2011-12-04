@@ -456,7 +456,7 @@ class UsersController extends UsersAppController {
 		$data = $this->User->validateToken($token, true);
 
 		if (!$data) {
-			$this->Session->setFlash(__d('users', 'The url you accessed is not longer valid', true));
+			$this->Session->setFlash(__d('users', 'The url you accessed is not longer valid'));
 			return $this->redirect('/');
 		}
 
@@ -465,11 +465,11 @@ class UsersController extends UsersAppController {
 
 		if ($this->User->save($data, array('validate' => false))) {
 			$this->_sendNewPassword($data);
-			$this->Session->setFlash(__d('users', 'Your password was sent to your registered email account', true));
+			$this->Session->setFlash(__d('users', 'Your password was sent to your registered email account'));
 			return $this->redirect(array('action' => 'login'));
 		}
 
-		$this->Session->setFlash(__d('users', 'There was an error verifying your account. Please check the email you were sent, and retry the verification link.', true));
+		$this->Session->setFlash(__d('users', 'There was an error verifying your account. Please check the email you were sent, and retry the verification link.'));
 		$this->redirect('/');
 	}
 
@@ -485,7 +485,7 @@ class UsersController extends UsersAppController {
 			->to($data[$this->modelClass]['email'])
 			->replyTo(Configure::read('App.defaultEmail'))
 			->return(Configure::read('App.defaultEmail'))
-			->subject(env('HTTP_HOST') . ' ' . __d('users', 'Password Reset', true))
+			->subject(env('HTTP_HOST') . ' ' . __d('users', 'Password Reset'))
 			->template('new_password')
 			->viewVars(array(
 				'model' => $this->modelClass,

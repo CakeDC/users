@@ -8,6 +8,6 @@
 			<li><?php echo $this->Html->link(__d('users', 'My Account'), array('action' => 'edit')); ?>
 		<?php endif ?>
 		<li>&nbsp;</li>
-		<li><?php echo $this->Html->link(__d('users', 'List Users', true), array('action'=>'index'));?></li>
+		<li><?php echo $this->Html->link(__d('users', 'List Users'), array('action'=>'index'));?></li>
 	</ul>
 </div>

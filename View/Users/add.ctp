@@ -17,19 +17,19 @@
 			echo $this->Form->input('username', array(
 				'label' => __d('users', 'Username')));
 			echo $this->Form->input('email', array(
-				'label' => __d('users', 'E-mail (used as login)',true),
-				'error' => array('isValid' => __d('users', 'Must be a valid email address', true),
-				'isUnique' => __d('users', 'An account with that email already exists', true))));
+				'label' => __d('users', 'E-mail (used as login)'),
+				'error' => array('isValid' => __d('users', 'Must be a valid email address'),
+				'isUnique' => __d('users', 'An account with that email already exists'))));
 			echo $this->Form->input('password', array(
-				'label' => __d('users', 'Password',true),
+				'label' => __d('users', 'Password'),
 				'type' => 'password'));
 			echo $this->Form->input('temppassword', array(
-				'label' => __d('users', 'Password (confirm)', true),
+				'label' => __d('users', 'Password (confirm)'),
 				'type' => 'password'));
-			$tosLink = $this->Html->link(__d('users', 'Terms of Service', true), array('controller' => 'pages', 'action' => 'tos'));
+			$tosLink = $this->Html->link(__d('users', 'Terms of Service'), array('controller' => 'pages', 'action' => 'tos'));
 			echo $this->Form->input('tos', array(
-				'label' => __d('users', 'I have read and agreed to ', true) . $tosLink));
-			echo $this->Form->end(__d('users', 'Submit',true));
+				'label' => __d('users', 'I have read and agreed to ') . $tosLink));
+			echo $this->Form->end(__d('users', 'Submit'));
 		?>
 	</fieldset>
 </div>
