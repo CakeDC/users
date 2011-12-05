@@ -127,11 +127,11 @@ class UsersController extends UsersAppController {
 	public function _setupAuth() {
 		$this->Auth->allow('add', 'reset', 'verify', 'logout', 'index', 'view', 'reset_password');
 
-		if ($this->action == 'register') {
+		if ($this->request->action == 'register') {
 			$this->Components->disable('Auth');
 		}
 
-		if ($this->action == 'login') {
+		if ($this->request->action == 'login') {
 			$this->Auth->autoRedirect = false;
 		}
 
