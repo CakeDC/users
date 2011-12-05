@@ -32,7 +32,7 @@
 	<tr>
 		<th><?php echo $this->Paginator->sort('username'); ?></th>
 		<th><?php echo $this->Paginator->sort('created'); ?></th>
-		<th class="actions"><?php __d('users', 'Actions'); ?></th>
+		<th class="actions"><?php echo __d('users', 'Actions'); ?></th>
 	</tr>
 	<?php
 	$i = 0;
