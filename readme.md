@@ -8,7 +8,7 @@ The plugin is thought as a base to extend your app specific users controller and
 
 The plugin is pretty easy to set up, all you need to do is to copy it to you application plugins folder and load the needed tables. You can create database tables using either the schema shell or the [CakeDC Migrations plugin](http://github.com/CakeDC/migrations):
 
-	cake schema create -plugin users -name users
+	cake schema create users -p Users
 
 or
 
