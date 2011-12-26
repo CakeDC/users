@@ -17,14 +17,14 @@ App::uses('UsersAppController', 'Users.Controller');
  * @package users
  * @subpackage users.controllers
  */
-class UserDetailsController extends UsersAppController {
+class DetailsController extends UsersAppController {
 
 /**
  * Name
  *
  * @var string
  */
-	public $name = 'UserDetails';
+	public $name = 'Details';
 
 /**
  * Helpers
@@ -39,12 +39,12 @@ class UserDetailsController extends UsersAppController {
  * @return void
  */
 	public function index() {
-		$details = $this->UserDetail->find('all', array(
+		$details = $this->Detail->find('all', array(
 			'contain' => array(),
 			'conditions' => array(
-				'UserDetail.user_id' => $this->Auth->user('id'),
-				'UserDetail.field LIKE' => 'user.%'),
-			'order' => 'UserDetail.position DESC'));
+				'Detail.user_id' => $this->Auth->user('id'),
+				'Detail.field LIKE' => 'user.%'),
+			'order' => 'Detail.position DESC'));
 		$this->set('user_details', $details);
 	}
 
@@ -59,7 +59,7 @@ class UserDetailsController extends UsersAppController {
 			$this->Session->setFlash(__d('users', 'Invalid Detail.'));
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->set('user_detail', $this->UserDetail->read(null, $id));
+		$this->set('user_detail', $this->Detail->read(null, $id));
 	}
 
 /**
@@ -73,9 +73,9 @@ class UserDetailsController extends UsersAppController {
 			foreach($this->data as $group => $options) {
 				foreach($options as $key => $value) {
 					$field = $group . '.' . $key;
-					$this->UserDetail->updateAll(
-						array('UserDetail.value' => "'$value'"),
-						array('UserDetail.user_id' => $userId, 'UserDetail.field' => $field));
+					$this->Detail->updateAll(
+						array('Detail.value' => "'$value'"),
+						array('Detail.user_id' => $userId, 'Detail.field' => $field));
 				}
 			}
 			$this->Session->setFlash(__d('users', 'Saved'));
@@ -97,13 +97,13 @@ class UserDetailsController extends UsersAppController {
 		}
 
 		if (!empty($this->data)) {
-			$this->UserDetail->saveSection($this->Auth->user('id'), $this->data, $section);
-			$this->data['UserDetail'] = $this->UserDetail->getSection($this->Auth->user('id'), $section);
+			$this->Detail->saveSection($this->Auth->user('id'), $this->data, $section);
+			$this->data['Detail'] = $this->Detail->getSection($this->Auth->user('id'), $section);
 			$this->Session->setFlash(sprintf(__d('users', '%s user details saved'), ucfirst($section)));
 		}
 
 		if (empty($this->data)) {
-			$this->data['UserDetail'] = $this->UserDetail->getSection($this->Auth->user('id'), $section);
+			$this->data['Detail'] = $this->Detail->getSection($this->Auth->user('id'), $section);
 		}
 
 		$this->set('section', $section);
@@ -120,7 +120,7 @@ class UserDetailsController extends UsersAppController {
 			$this->Session->setFlash(__d('users', 'Invalid id for Detail'));
 			$this->redirect(array('action' => 'index'));
 		}
-		if ($this->UserDetail->delete($id)) {
+		if ($this->Detail->delete($id)) {
 			$this->Session->setFlash(__d('users', 'User Detail deleted'));
 			$this->redirect(array('action' => 'index'));
 		}
@@ -132,7 +132,7 @@ class UserDetailsController extends UsersAppController {
  * @return void
  */
 	public function admin_index() {
-		$this->UserDetail->recursive = 0;
+		$this->Detail->recursive = 0;
 		$this->set('user_details', $this->paginate());
 	}
 
@@ -147,7 +147,7 @@ class UserDetailsController extends UsersAppController {
 			$this->Session->setFlash(__d('users', 'Invalid Detail.'));
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->set('user_detail', $this->UserDetail->read(null, $id));
+		$this->set('user_detail', $this->Detail->read(null, $id));
 	}
 
 /**
@@ -157,8 +157,8 @@ class UserDetailsController extends UsersAppController {
  */
 	public function admin_add() {
 		if (!empty($this->data)) {
-			$this->UserDetail->create();
-			if ($this->UserDetail->save($this->data)) {
+			$this->Detail->create();
+			if ($this->Detail->save($this->data)) {
 				$this->Session->setFlash(__d('users', 'The Detail has been saved'));
 				$this->redirect(array('action' => 'index'));
 			} else {
@@ -166,7 +166,7 @@ class UserDetailsController extends UsersAppController {
 			}
 		}
 
-		$users = $this->UserDetail->User->find('list');
+		$users = $this->Detail->User->find('list');
 		$this->set(compact('users'));
 	}
 
@@ -182,7 +182,7 @@ class UserDetailsController extends UsersAppController {
 			$this->redirect(array('action' => 'index'));
 		}
 		if (!empty($this->data)) {
-			if ($this->UserDetail->save($this->data)) {
+			if ($this->Detail->save($this->data)) {
 				$this->Session->setFlash(__d('users', 'The Detail has been saved'));
 				$this->redirect(array('action' => 'index'));
 			} else {
@@ -190,10 +190,10 @@ class UserDetailsController extends UsersAppController {
 			}
 		}
 		if (empty($this->data)) {
-			$this->data = $this->UserDetail->read(null, $id);
+			$this->data = $this->Detail->read(null, $id);
 		}
 
-		$users = $this->UserDetail->User->find('list');
+		$users = $this->Detail->User->find('list');
 		$this->set(compact('users'));
 	}
 
@@ -208,7 +208,7 @@ class UserDetailsController extends UsersAppController {
 			$this->Session->setFlash(__d('users', 'Invalid id for Detail'));
 			$this->redirect(array('action' => 'index'));
 		}
-		if ($this->UserDetail->delete($id)) {
+		if ($this->Detail->delete($id)) {
 			$this->Session->setFlash(__d('users', 'User Detail deleted'));
 			$this->redirect(array('action' => 'index'));
 		}

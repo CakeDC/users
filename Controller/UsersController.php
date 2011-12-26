@@ -196,7 +196,7 @@ class UsersController extends UsersAppController {
  */
 	public function edit() {
 		if (!empty($this->request->data)) {
-			if ($this->User->UserDetail->saveSection($this->Auth->user('id'), $this->request->data, 'User')) {
+			if ($this->User->Detail->saveSection($this->Auth->user('id'), $this->request->data, 'User')) {
 				$this->Session->setFlash(__d('users', 'Profile saved.'));
 			} else {
 				$this->Session->setFlash(__d('users', 'Could not save your profile.'));
