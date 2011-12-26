@@ -270,7 +270,7 @@ class UsersControllerTestCase extends CakeTestCase {
 	public function testVerify() {
 		$this->Users->beforeFilter();
 		$this->Users->User->id = '37ea303a-3bdc-4251-b315-1316c0b300fa';
-		$this->Users->User->saveField('email_token_expiry', date('Y-m-d H:i:s', strtotime('+1 year')));
+		$this->Users->User->saveField('email_token_expires', date('Y-m-d H:i:s', strtotime('+1 year')));
 		$this->Users->verify('email', 'testtoken2');
 		$this->assertEqual($this->Users->Session->read('Message.flash.message'), __d('users', 'Your e-mail has been validated!'));
 

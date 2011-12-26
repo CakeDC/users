@@ -9,7 +9,7 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-App::import('Controller', 'Users.UserDetails');
+App::import('Controller', 'Users.Details');
 
 /**
  * TestDetails
@@ -17,7 +17,7 @@ App::import('Controller', 'Users.UserDetails');
  * @package users
  * @subpackage users.tests.controllers
  */
-class TestUserDetails extends UserDetailsController {
+class TestDetails extends DetailsController {
 	var $autoRender = false;
 }
 
@@ -27,16 +27,16 @@ class TestUserDetails extends UserDetailsController {
  * @package users
  * @author users.tests.controllers
  */
-class UserDetailsControllerTest extends CakeTestCase {
+class DetailsControllerTest extends CakeTestCase {
 	var $Details = null;
 
 	function setUp() {
 		Configure::write('App.UserClass', null);
-		$this->Details = new TestUserDetails();
+		$this->Details = new TestDetails();
 	}
 
 	function testDetailsControllerInstance() {
-		$this->assertTrue(is_a($this->Details, 'UserDetailsController'));
+		$this->assertTrue(is_a($this->Details, 'DetailsController'));
 	}
 
 	function tearDown() {
