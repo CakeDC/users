@@ -17,14 +17,14 @@ App::uses('UsersAppModel', 'Users.Model');
  * @package users
  * @subpackage users.models
  */
-class UserDetail extends UsersAppModel {
+class Detail extends UsersAppModel {
 
 /**
  * Name
  *
  * @var string
  */
-	public $name = 'UserDetail';
+	public $name = 'Detail';
 
 /**
  * Displayfield

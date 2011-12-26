@@ -46,7 +46,7 @@ class usersSchema extends CakeSchema {
 		'email' => array('type' => 'string', 'null' => true, 'default' => NULL, 'key' => 'index'),
 		'email_verified' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
 		'email_token' => array('type' => 'string', 'null' => true, 'default' => NULL),
-		'email_token_expiry' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
+		'email_token_expires' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'tos' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
 		'active' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
 		'last_login' => array('type' => 'datetime', 'null' => true, 'default' => NULL),

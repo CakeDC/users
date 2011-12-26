@@ -57,8 +57,8 @@ class User extends UsersAppModel {
  * @var array
  */
 	public $hasMany = array(
-		'UserDetail' => array(
-			'className' => 'Users.UserDetail',
+		'Detail' => array(
+			'className' => 'Users.Detail',
 			'foreign_key' => 'user_id'));
 
 /**
@@ -159,12 +159,12 @@ class User extends UsersAppModel {
 	}
 
 /**
- * Sets some defaults for the UserDetail model
+ * Sets some defaults for the Detail model
  *
  * @return void
  */
 	public function setupDetail() {
-		$this->UserDetail->sectionSchema[$this->alias] = array(
+		$this->Detail->sectionSchema[$this->alias] = array(
 			'birthday' => array(
 				'type' => 'date',
 				'null' => null,
@@ -181,7 +181,7 @@ class User extends UsersAppModel {
 				'default' => null,
 				'length' => null));
 
-		$this->UserDetail->sectionValidation[$this->alias] = array(
+		$this->Detail->sectionValidation[$this->alias] = array(
 			'birthday' => array(
 				'validDate' => array(
 					'rule' => array('date'), 'allowEmpty' => true, 'message' => __d('users', 'Invalid date'))),
@@ -228,8 +228,8 @@ class User extends UsersAppModel {
  */
 	public function afterFind($results, $primary = false) {
 		foreach ($results as &$row) {
-			if (isset($row['UserDetail']) && (is_array($row))) {
-				$row['UserDetail'] = $this->UserDetail->getSection($row[$this->alias]['id'], $this->alias);
+			if (isset($row['Detail']) && (is_array($row))) {
+				$row['Detail'] = $this->Detail->getSection($row[$this->alias]['id'], $this->alias);
 			}
 		}
 		return $results;
@@ -278,13 +278,13 @@ class User extends UsersAppModel {
 				$this->alias . '.email_verified' => 0,
 				$this->alias . '.email_token' => $token),
 			'fields' => array(
-				'id', 'email', 'email_token_expiry', 'role')));
+				'id', 'email', 'email_token_expires', 'role')));
 
 		if (empty($user)) {
 			throw new RuntimeException(__d('users', 'Invalid token, please check the email you were sent, and retry the verification link.'));
 		}
 
-		$expires = strtotime($user[$this->alias]['email_token_expiry']);
+		$expires = strtotime($user[$this->alias]['email_token_expires']);
 		if ($expires < time()) {
 			throw new RuntimeException(__d('users', 'The token has expired.'));
 		}
@@ -292,7 +292,7 @@ class User extends UsersAppModel {
 		$data[$this->alias]['active'] = 1;
 		$user[$this->alias]['email_verified'] = 1;
 		$user[$this->alias]['email_token'] = null;
-		$user[$this->alias]['email_token_expiry'] = null;
+		$user[$this->alias]['email_token_expires'] = null;
 
 		$user = $this->save($user, array(
 			'validate' => false,
@@ -321,10 +321,10 @@ class User extends UsersAppModel {
 			'conditions' => array(
 				$this->alias . '.email_token' => $token),
 			'fields' => array(
-				'id', 'email', 'email_token_expiry', 'role')));
+				'id', 'email', 'email_token_expires', 'role')));
 
 		if (!empty($match)) {
-			$expires = strtotime($match[$this->alias]['email_token_expiry']);
+			$expires = strtotime($match[$this->alias]['email_token_expires']);
 			if ($expires > $now) {
 				$data[$this->alias]['id'] = $match[$this->alias]['id'];
 				$data[$this->alias]['email'] = $match[$this->alias]['email'];
@@ -340,7 +340,7 @@ class User extends UsersAppModel {
 				}
 
 				$data[$this->alias]['email_token'] = null;
-				$data[$this->alias]['email_token_expiry'] = null;
+				$data[$this->alias]['email_token_expires'] = null;
 			}
 		}
 
@@ -381,7 +381,7 @@ class User extends UsersAppModel {
 			$sixtyMins = time() + 43000;
 			$token = $this->generateToken();
 			$user[$this->alias]['password_token'] = $token;
-			$user[$this->alias]['email_token_expiry'] = date('Y-m-d H:i:s', $sixtyMins);
+			$user[$this->alias]['email_token_expires'] = date('Y-m-d H:i:s', $sixtyMins);
 			$user = $this->save($user, false);
 			$this->data = $user;
 			return $user;
@@ -406,7 +406,7 @@ class User extends UsersAppModel {
 			'conditions' => array(
 				$this->alias . '.active' => 1,
 				$this->alias . '.password_token' => $token,
-				$this->alias . '.email_token_expiry >=' => date('Y-m-d H:i:s'))));
+				$this->alias . '.email_token_expires >=' => date('Y-m-d H:i:s'))));
 		if (empty($user)) {
 			return false;
 		}
@@ -507,7 +507,7 @@ class User extends UsersAppModel {
 	public function view($slug = null) {
 		$user = $this->find('first', array(
 			'contain' => array(
-				'UserDetail'),
+				'Detail'),
 			'conditions' => array(
 				'OR' => array(
 					$this->alias . '.slug' => $slug,
@@ -598,7 +598,7 @@ class User extends UsersAppModel {
 		}
 
 		$user[$this->alias]['email_token'] = $this->generateToken();
-		$user[$this->alias]['email_token_expiry'] = date('Y-m-d H:i:s', time() + 86400);
+		$user[$this->alias]['email_token_expires'] = date('Y-m-d H:i:s', time() + 86400);
 
 		return $this->save($user, false);
 	}
@@ -652,7 +652,7 @@ class User extends UsersAppModel {
 	protected function _beforeRegistration($postData = array(), $useEmailVerification = true) {
 		if ($useEmailVerification == true) {
 			$postData[$this->alias]['email_token'] = $this->generateToken();
-			$postData[$this->alias]['email_token_expiry'] = date('Y-m-d H:i:s', time() + 86400);
+			$postData[$this->alias]['email_token_expires'] = date('Y-m-d H:i:s', time() + 86400);
 		} else {
 			$postData[$this->alias]['email_verified'] = 1;
 		}
@@ -786,7 +786,7 @@ class User extends UsersAppModel {
 	public function edit($userId = null, $postData = null) {
 		$user = $this->find('first', array(
 			'contain' => array(
-				'UserDetail'),
+				'Detail'),
 			'conditions' => array($this->alias . '.id' => $userId)));
 
 		$this->set($user);
@@ -816,6 +816,6 @@ class User extends UsersAppModel {
 	protected function _removeExpiredRegistrations() {
 		$this->deleteAll(array(
 			$this->alias . '.email_verified' => 0,
-			$this->alias . '.email_token_expiry <' => date('Y-m-d H:i:s')));
+			$this->alias . '.email_token_expires <' => date('Y-m-d H:i:s')));
 	}
 }

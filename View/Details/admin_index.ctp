@@ -37,30 +37,30 @@ foreach ($user_details as $detail):
 ?>
 	<tr<?php echo $class;?>>
 		<td>
-			<?php echo $detail['UserDetail']['id']; ?>
+			<?php echo $detail['Detail']['id']; ?>
 		</td>
 		<td>
 			<?php echo $this->Html->link($detail['User']['id'], array('controller' => 'users', 'action' => 'view', $detail['User']['id'])); ?>
 		</td>
 		<td>
-			<?php echo $detail['UserDetail']['position']; ?>
+			<?php echo $detail['Detail']['position']; ?>
 		</td>
 		<td>
-			<?php echo $detail['UserDetail']['field']; ?>
+			<?php echo $detail['Detail']['field']; ?>
 		</td>
 		<td>
-			<?php echo $detail['UserDetail']['value']; ?>
+			<?php echo $detail['Detail']['value']; ?>
 		</td>
 		<td>
-			<?php echo $detail['UserDetail']['created']; ?>
+			<?php echo $detail['Detail']['created']; ?>
 		</td>
 		<td>
-			<?php echo $detail['UserDetail']['modified']; ?>
+			<?php echo $detail['Detail']['modified']; ?>
 		</td>
 		<td class="actions">
-			<?php echo $this->Html->link(__d('users', 'View'), array('action'=>'view', $detail['UserDetail']['id'])); ?>
-			<?php echo $this->Html->link(__d('users', 'Edit'), array('action'=>'edit', $detail['UserDetail']['id'])); ?>
-			<?php echo $this->Html->link(__d('users', 'Delete'), array('action'=>'delete', $detail['UserDetail']['id']), null, sprintf(__d('users', 'Are you sure you want to delete # %s?'), $detail['UserDetail']['id'])); ?>
+			<?php echo $this->Html->link(__d('users', 'View'), array('action'=>'view', $detail['Detail']['id'])); ?>
+			<?php echo $this->Html->link(__d('users', 'Edit'), array('action'=>'edit', $detail['Detail']['id'])); ?>
+			<?php echo $this->Html->link(__d('users', 'Delete'), array('action'=>'delete', $detail['Detail']['id']), null, sprintf(__d('users', 'Are you sure you want to delete # %s?'), $detail['Detail']['id'])); ?>
 		</td>
 	</tr>
 <?php endforeach; ?>

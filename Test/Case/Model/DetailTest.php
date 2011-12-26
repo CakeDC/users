@@ -15,7 +15,7 @@
  * @package users
  * @subpackage users.tests.cases.models
  */
-class UserDetailTestCase extends CakeTestCase {
+class DetailTestCase extends CakeTestCase {
 
 /**
  * Detail instance
@@ -40,7 +40,7 @@ class UserDetailTestCase extends CakeTestCase {
  */
 	public function startTest() {
 		Configure::write('App.UserClass', null);
-		$this->Detail = ClassRegistry::init('Users.UserDetail');
+		$this->Detail = ClassRegistry::init('Users.Detail');
 	}
 
 /**
@@ -49,7 +49,7 @@ class UserDetailTestCase extends CakeTestCase {
  * @return void
  */
 	public function testDetailInstance() {
-		$this->assertTrue(is_a($this->Detail, 'UserDetail'));
+		$this->assertTrue(is_a($this->Detail, 'Detail'));
 	}
 
 /**
@@ -107,7 +107,7 @@ class UserDetailTestCase extends CakeTestCase {
  */
 	public function testSaveSection() {
 		$data = array(
-			'UserDetail' => array(
+			'Detail' => array(
 				'biography' => 'Lipsum...',
 				'firstname' => 'Florian',
 				'lastname' => 'Krämer'));
@@ -121,7 +121,7 @@ class UserDetailTestCase extends CakeTestCase {
 
 
 		$data = array(
-			'UserDetail' => array(
+			'Detail' => array(
 				'biography' => 'Lipsum...',
 				'firstname' => 'Foo',
 				'lastname' => 'Bar'));
