@@ -17,14 +17,14 @@ App::uses('UsersAppModel', 'Users.Model');
  * @package users
  * @subpackage users.models
  */
-class Detail extends UsersAppModel {
+class UserDetail extends UsersAppModel {
 
 /**
  * Name
  *
  * @var string
  */
-	public $name = 'Detail';
+	public $name = 'UserDetail';
 
 /**
  * Displayfield
@@ -158,9 +158,9 @@ class Detail extends UsersAppModel {
 		if (!empty($results)) {
 			foreach($results as $result) {
 				list($prefix, $field) = explode('.', $result[$this->alias]['field']);
-				$details[$prefix][$field] = $result[$this->alias]['value'];
+				$userDetails[$prefix][$field] = $result[$this->alias]['value'];
 			}
-			$results = $details;
+			$results = $userDetails;
 		}
 		return $results;
 	}
@@ -194,39 +194,39 @@ class Detail extends UsersAppModel {
 		}
 
 		if (!empty($data) && is_array($data)) {
-			foreach($data as $model => $details) {
+			foreach($data as $model => $userDetails) {
 				if ($model == $this->alias) {
 					// Save the details
-					foreach($details as $key => $value) {
+					foreach($userDetails as $key => $value) {
 						// Quickfix for date inputs - TODO Try to use $this->deconstruct()?
 						if (is_array($value) && array_keys($value) == array('month', 'day', 'year')) {
 							$value = $value['year'] . '-' . $value['month'] . '-' .  $value['day']; 
 						}
-						$newDetail = array();
+						$newUserDetail = array();
 						$field = $section . '.' . $key;
-						$detail = $this->find('first', array(
+						$userDetail = $this->find('first', array(
 							'recursive' => -1,
 							'conditions' => array(
 								'user_id' => $userId,
 								'field' => $field),
 							'fields' => array('id', 'field')));
-						if (empty($detail)) {
+						if (empty($userDetail)) {
 							$this->create();
-							$newDetail[$model]['user_id'] = $userId;
+							$newUserDetail[$model]['user_id'] = $userId;
 						} else {
-							$newDetail[$model]['id'] = $detail[$this->alias]['id'];
+							$newUserDetail[$model]['id'] = $userDetail[$this->alias]['id'];
 						}
 
-						$newDetail[$model]['field'] = $field;
-						$newDetail[$model]['value'] = $value;
-						$newDetail[$model]['input'] = '';
-						$newDetail[$model]['data_type'] = '';
-						$newDetail[$model]['label'] = '';
-						$this->save($newDetail, false);
+						$newUserDetail[$model]['field'] = $field;
+						$newUserDetail[$model]['value'] = $value;
+						$newUserDetail[$model]['input'] = '';
+						$newUserDetail[$model]['data_type'] = '';
+						$newUserDetail[$model]['label'] = '';
+						$this->save($newUserDetail, false);
 					}
 				} elseif (isset($this->{$model})) {
 					// Save other model data
-					$toSave[$model] = $details;
+					$toSave[$model] = $userDetails;
 					if (!empty($userId)) {
 						if ($model == 'User') {
 							$toSave[$model]['id'] = $userId;

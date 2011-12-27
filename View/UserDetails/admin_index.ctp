@@ -29,7 +29,7 @@ echo $this->Paginator->counter(array(
 </tr>
 <?php
 $i = 0;
-foreach ($user_details as $detail):
+foreach ($user_details as $user_detail):
 	$class = null;
 	if ($i++ % 2 == 0) {
 		$class = ' class="altrow"';
@@ -37,30 +37,30 @@ foreach ($user_details as $detail):
 ?>
 	<tr<?php echo $class;?>>
 		<td>
-			<?php echo $detail['Detail']['id']; ?>
+			<?php echo $user_detail['UserDetail']['id']; ?>
 		</td>
 		<td>
-			<?php echo $this->Html->link($detail['User']['id'], array('controller' => 'users', 'action' => 'view', $detail['User']['id'])); ?>
+			<?php echo $this->Html->link($user_detail['User']['id'], array('controller' => 'users', 'action' => 'view', $user_detail['User']['id'])); ?>
 		</td>
 		<td>
-			<?php echo $detail['Detail']['position']; ?>
+			<?php echo $user_detail['UserDetail']['position']; ?>
 		</td>
 		<td>
-			<?php echo $detail['Detail']['field']; ?>
+			<?php echo $user_detail['UserDetail']['field']; ?>
 		</td>
 		<td>
-			<?php echo $detail['Detail']['value']; ?>
+			<?php echo $user_detail['UserDetail']['value']; ?>
 		</td>
 		<td>
-			<?php echo $detail['Detail']['created']; ?>
+			<?php echo $user_detail['UserDetail']['created']; ?>
 		</td>
 		<td>
-			<?php echo $detail['Detail']['modified']; ?>
+			<?php echo $user_detail['UserDetail']['modified']; ?>
 		</td>
 		<td class="actions">
-			<?php echo $this->Html->link(__d('users', 'View'), array('action'=>'view', $detail['Detail']['id'])); ?>
-			<?php echo $this->Html->link(__d('users', 'Edit'), array('action'=>'edit', $detail['Detail']['id'])); ?>
-			<?php echo $this->Html->link(__d('users', 'Delete'), array('action'=>'delete', $detail['Detail']['id']), null, sprintf(__d('users', 'Are you sure you want to delete # %s?'), $detail['Detail']['id'])); ?>
+			<?php echo $this->Html->link(__d('users', 'View'), array('action'=>'view', $user_detail['UserDetail']['id'])); ?>
+			<?php echo $this->Html->link(__d('users', 'Edit'), array('action'=>'edit', $user_detail['UserDetail']['id'])); ?>
+			<?php echo $this->Html->link(__d('users', 'Delete'), array('action'=>'delete', $user_detail['UserDetail']['id']), null, sprintf(__d('users', 'Are you sure you want to delete # %s?'), $user_detail['UserDetail']['id'])); ?>
 		</td>
 	</tr>
 <?php endforeach; ?>

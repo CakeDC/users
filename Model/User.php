@@ -57,8 +57,8 @@ class User extends UsersAppModel {
  * @var array
  */
 	public $hasMany = array(
-		'Detail' => array(
-			'className' => 'Users.Detail',
+		'UserDetail' => array(
+			'className' => 'Users.UserDetail',
 			'foreign_key' => 'user_id'));
 
 /**
@@ -159,12 +159,12 @@ class User extends UsersAppModel {
 	}
 
 /**
- * Sets some defaults for the Detail model
+ * Sets some defaults for the UserDetail model
  *
  * @return void
  */
 	public function setupDetail() {
-		$this->Detail->sectionSchema[$this->alias] = array(
+		$this->UserDetail->sectionSchema[$this->alias] = array(
 			'birthday' => array(
 				'type' => 'date',
 				'null' => null,
@@ -181,7 +181,7 @@ class User extends UsersAppModel {
 				'default' => null,
 				'length' => null));
 
-		$this->Detail->sectionValidation[$this->alias] = array(
+		$this->UserDetail->sectionValidation[$this->alias] = array(
 			'birthday' => array(
 				'validDate' => array(
 					'rule' => array('date'), 'allowEmpty' => true, 'message' => __d('users', 'Invalid date'))),
@@ -228,8 +228,8 @@ class User extends UsersAppModel {
  */
 	public function afterFind($results, $primary = false) {
 		foreach ($results as &$row) {
-			if (isset($row['Detail']) && (is_array($row))) {
-				$row['Detail'] = $this->Detail->getSection($row[$this->alias]['id'], $this->alias);
+			if (isset($row['UserDetail']) && (is_array($row))) {
+				$row['UserDetail'] = $this->UserDetail->getSection($row[$this->alias]['id'], $this->alias);
 			}
 		}
 		return $results;
@@ -507,7 +507,7 @@ class User extends UsersAppModel {
 	public function view($slug = null) {
 		$user = $this->find('first', array(
 			'contain' => array(
-				'Detail'),
+				'UserDetail'),
 			'conditions' => array(
 				'OR' => array(
 					$this->alias . '.slug' => $slug,
@@ -786,7 +786,7 @@ class User extends UsersAppModel {
 	public function edit($userId = null, $postData = null) {
 		$user = $this->find('first', array(
 			'contain' => array(
-				'Detail'),
+				'UserDetail'),
 			'conditions' => array($this->alias . '.id' => $userId)));
 
 		$this->set($user);

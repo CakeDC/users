@@ -10,19 +10,19 @@
  */
 
 if (!empty($user_details)) {
-	echo $this->Form->create('Detail');
-	foreach ($user_details as $detail) {
+	echo $this->Form->create('UserDetail');
+	foreach ($user_details as $user_detail) {
 		$options = array();
-		$options['type'] = $detail['Detail']['input'];
-		if ($detail['Detail']['input'] == 'checkbox') {
-			if ($detail['Detail']['value'] == 1) {
+		$options['type'] = $user_detail['UserDetail']['input'];
+		if ($user_detail['UserDetail']['input'] == 'checkbox') {
+			if ($user_detail['UserDetail']['value'] == 1) {
 				$options['checked'] = true;
 			}
 		}
-		if ($detail['Detail']['input'] == 'text' || $detail['Detail']['input'] == 'textarea' ) {
-			$options['value'] = $detail['Detail']['value'];;
+		if ($user_detail['UserDetail']['input'] == 'text' || $user_detail['UserDetail']['input'] == 'textarea' ) {
+			$options['value'] = $user_detail['UserDetail']['value'];
 		}
-		echo $this->Form->input($detail['Detail']['field'], ($options));
+		echo $this->Form->input($user_detail['UserDetail']['field'], ($options));
 	}
 	echo $this->Form->end(__d('users', 'Submit'));
 }

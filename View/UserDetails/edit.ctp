@@ -10,7 +10,7 @@
  */
 ?>
 <div class="user_details form">
-<?php echo $this->Form->create('Detail', array('action' => 'edit')); ?>
+<?php echo $this->Form->create('UserDetail', array('action' => 'edit')); ?>
 	<fieldset>
  		<legend><?php echo __d('users', 'Edit User Detail'); ?></legend>
 	<?php
