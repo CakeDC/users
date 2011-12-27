@@ -516,7 +516,7 @@ class User extends UsersAppModel {
 				$this->alias . '.email_verified' => 1)));
 
 		if (empty($user)) {
-			throw new Exception(__d('users', 'The user does not exist.'));
+			throw new OutOfBoundsException(__d('users', 'The user does not exist.'));
 		}
 
 		return $user;
