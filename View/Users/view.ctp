@@ -23,10 +23,10 @@
 			&nbsp;
 		</dd>
 		<?php
-		if (!empty($user['Detail'])) {
-			foreach ($user['Detail'] as $detail) {
-				echo '<dt>' . $detail['field'] . '</dt>';
-				echo '<dd>' . $detail['value'] . '</dd>';
+		if (!empty($user['UserDetail'])) {
+			foreach ($user['UserDetail'] as $user_detail) {
+				echo '<dt>' . $user_detail['field'] . '</dt>';
+				echo '<dd>' . $user_detail['value'] . '</dd>';
 			}
 		}
 		?>

@@ -10,7 +10,7 @@
  */
 ?>
 <div class="user_details form">
-<?php echo $this->Form->create('Detail'); ?>
+<?php echo $this->Form->create('UserDetail'); ?>
 	<fieldset>
  		<legend><?php echo __d('users', 'Add User Detail'); ?></legend>
 	<?php
