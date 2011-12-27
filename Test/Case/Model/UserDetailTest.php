@@ -15,14 +15,14 @@
  * @package users
  * @subpackage users.tests.cases.models
  */
-class DetailTestCase extends CakeTestCase {
+class UserDetailTestCase extends CakeTestCase {
 
 /**
  * Detail instance
  *
  * @var object
  */
-	public $Detail = null;
+	public $UserDetail = null;
 	
 /**
  * Fixtures
@@ -40,7 +40,7 @@ class DetailTestCase extends CakeTestCase {
  */
 	public function startTest() {
 		Configure::write('App.UserClass', null);
-		$this->Detail = ClassRegistry::init('Users.Detail');
+		$this->UserDetail = ClassRegistry::init('Users.UserDetail');
 	}
 
 /**
@@ -49,7 +49,7 @@ class DetailTestCase extends CakeTestCase {
  * @return void
  */
 	public function testDetailInstance() {
-		$this->assertTrue(is_a($this->Detail, 'Detail'));
+		$this->assertTrue(is_a($this->UserDetail, 'UserDetail'));
 	}
 
 /**
@@ -57,9 +57,9 @@ class DetailTestCase extends CakeTestCase {
  *
  * @return void
  */
-	public function testDetailFind() {
-		$this->Detail->recursive = -1;
-		$results = $this->Detail->find('all');
+	public function testUserDetailFind() {
+		$this->UserDetail->recursive = -1;
+		$results = $this->UserDetail->find('all');
 		$this->assertTrue(!empty($results));
 		$this->assertTrue(is_array($results));
 	}
@@ -70,7 +70,7 @@ class DetailTestCase extends CakeTestCase {
  * @return void
  */
 	public function testGetSection() {
-		$result = $this->Detail->getSection('47ea303a-3b2c-4251-b313-4816c0a800fa', 'User'); // phpnut
+		$result = $this->UserDetail->getSection('47ea303a-3b2c-4251-b313-4816c0a800fa', 'User'); // phpnut
 		$this->assertTrue(is_array($result));
 		$this->assertTrue(!empty($result));
 		$this->assertEqual($result, array(
@@ -80,7 +80,7 @@ class DetailTestCase extends CakeTestCase {
 				'lastname' => 'Masters')));
 
 
-		$result = $this->Detail->getSection('47ea303a-3b2c-4251-b313-4816c0a800fa', 'Blog'); // phpnut
+		$result = $this->UserDetail->getSection('47ea303a-3b2c-4251-b313-4816c0a800fa', 'Blog'); // phpnut
 		$this->assertTrue(is_array($result));
 		$this->assertTrue(!empty($result));
 		$this->assertEqual($result, array(
@@ -88,7 +88,7 @@ class DetailTestCase extends CakeTestCase {
 				'name' => 'My blog')));
 
 
-		$result = $this->Detail->getSection('47ea303a-3b2c-4251-b313-4816c0a800fa'); // phpnut
+		$result = $this->UserDetail->getSection('47ea303a-3b2c-4251-b313-4816c0a800fa'); // phpnut
 		$this->assertTrue(is_array($result));
 		$this->assertTrue(!empty($result));
 		$this->assertEqual($result, array(
@@ -107,12 +107,12 @@ class DetailTestCase extends CakeTestCase {
  */
 	public function testSaveSection() {
 		$data = array(
-			'Detail' => array(
+			'UserDetail' => array(
 				'biography' => 'Lipsum...',
 				'firstname' => 'Florian',
 				'lastname' => 'Krämer'));
-		$this->Detail->saveSection('47ea303a-3cyc-k251-b313-4811c0a800bf', $data, 'User');
-		$result = $this->Detail->getSection('47ea303a-3cyc-k251-b313-4811c0a800bf', 'User');
+		$this->UserDetail->saveSection('47ea303a-3cyc-k251-b313-4811c0a800bf', $data, 'User');
+		$result = $this->UserDetail->getSection('47ea303a-3cyc-k251-b313-4811c0a800bf', 'User');
 		$this->assertEqual($result, array(
 			'User' => array(
 				'biography' => 'Lipsum...',
@@ -121,12 +121,12 @@ class DetailTestCase extends CakeTestCase {
 
 
 		$data = array(
-			'Detail' => array(
+			'UserDetail' => array(
 				'biography' => 'Lipsum...',
 				'firstname' => 'Foo',
 				'lastname' => 'Bar'));
-		$this->Detail->saveSection('47ea303a-3cyc-k251-b313-4811c0a800bf', $data, 'User');
-		$result = $this->Detail->getSection('47ea303a-3cyc-k251-b313-4811c0a800bf', 'User');
+		$this->UserDetail->saveSection('47ea303a-3cyc-k251-b313-4811c0a800bf', $data, 'User');
+		$result = $this->UserDetail->getSection('47ea303a-3cyc-k251-b313-4811c0a800bf', 'User');
 		$this->assertEqual($result, array(
 			'User' => array(
 				'biography' => 'Lipsum...',
@@ -137,10 +137,10 @@ class DetailTestCase extends CakeTestCase {
 		$data = array(
 			'User' => array(
 				'email' => 'foo@bar.com'));
-		$this->Detail->saveSection('47ea303a-3cyc-k251-b313-4811c0a800bf', $data, 'User');
-		$result = $this->Detail->getSection('47ea303a-3cyc-k251-b313-4811c0a800bf', 'User');
-		$this->Detail->User->id = '47ea303a-3cyc-k251-b313-4811c0a800bf';
-		$result = $this->Detail->User->field('User.email');
+		$this->UserDetail->saveSection('47ea303a-3cyc-k251-b313-4811c0a800bf', $data, 'User');
+		$result = $this->UserDetail->getSection('47ea303a-3cyc-k251-b313-4811c0a800bf', 'User');
+		$this->UserDetail->User->id = '47ea303a-3cyc-k251-b313-4811c0a800bf';
+		$result = $this->UserDetail->User->field('User.email');
 		$this->assertEqual($result, 'foo@bar.com');
 	}
 

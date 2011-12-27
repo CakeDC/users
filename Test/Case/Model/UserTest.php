@@ -66,7 +66,7 @@ class UserTestCase extends CakeTestCase {
  * @return void
  */
 	public function testUserInstance() {
-		$this->assertType('User', $this->User);
+		$this->assertTrue(is_a($this->User, 'User'));
 	}
 
 /**
@@ -235,7 +235,7 @@ class UserTestCase extends CakeTestCase {
 		$result = $this->User->view('adminuser');
 		$this->assertTrue(is_array($result) && !empty($result));
 
-		$this->expectException('Exception');
+		$this->expectException('OutOfBoundsException');
 		$result = $this->User->view('non-existing-user-slug');
 	}
 
