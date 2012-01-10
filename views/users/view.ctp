@@ -24,9 +24,9 @@
 		</dd>
 		<?php
 			if (!empty($user['Detail'])) {
-				foreach ($user['Detail'] as $detail) {
-					echo '<dt>' . $detail['field'] . '</dt>';
-					echo '<dd>' . $detail['value'] . '</dd>';
+				foreach ($user['Detail'] as $field => $value) {
+					echo '<dt>' . $field . '</dt>';
+					echo '<dd>' . $value . '</dd>';
 				}
 			}
 		?>
