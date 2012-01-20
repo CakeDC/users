@@ -476,8 +476,8 @@ class User extends UsersAppModel {
 			}
 		}
 
-		$current_password = $this->field('password', array($this->alias . '.id' => $this->data[$this->alias]['id']));
-		return $current_password === Security::hash($password['old_password'], null, true);
+		$currentPassword = $this->field('password', array($this->alias . '.id' => $this->data[$this->alias]['id']));
+		return $currentPassword === Security::hash($password['old_password'], null, true);
 	}
 
 /**
@@ -501,7 +501,7 @@ class User extends UsersAppModel {
 /**
  * Returns all data about a user
  *
- * @param string $slug user slug
+ * @param string $slug user slug or the uuid of a user
  * @return array
  */
 	public function view($slug = null) {

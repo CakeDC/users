@@ -32,7 +32,6 @@ class M4ef8ba03ff504ab2b415980575f6eb26 extends CakeMigration {
 		'up' => array(
 			'rename_field' => array(
 				'users' => array(
-					'email_authenticated' => 'email_verified',
 					'email_token_expiry' => 'email_token_expires'
 				),
 			),
@@ -43,7 +42,6 @@ class M4ef8ba03ff504ab2b415980575f6eb26 extends CakeMigration {
 		'down' => array(
 			'rename_field' => array(
 				'users' => array(
-					'email_verified' => 'email_authenticated',
 					'email_token_expires' => 'email_token_expiry'
 				),
 			),
