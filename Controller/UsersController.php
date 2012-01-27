@@ -202,7 +202,8 @@ class UsersController extends UsersAppController {
 				$this->Session->setFlash(__d('users', 'Could not save your profile.'));
 			}
 		} else {
-			$this->request->data = $this->User->read(null, $this->Auth->user('id'));
+			$data = $this->User->UserDetail->getSection($this->Auth->user('id'), 'User');
+			$this->request->data['UserDetail'] = $data['User'];
 		}
 	}
 

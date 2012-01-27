@@ -38,11 +38,15 @@ class UserDetailTestCase extends CakeTestCase {
  *
  * @return void
  */
-	public function startTest() {
+	public function setUp() {
 		Configure::write('App.UserClass', null);
 		$this->UserDetail = ClassRegistry::init('Users.UserDetail');
 	}
 
+	public function tearDown() {
+		ClassRegistry::flush();
+		unset($this->UserDetail);
+	}
 /**
  * testDetailInstance
  *
@@ -142,6 +146,27 @@ class UserDetailTestCase extends CakeTestCase {
 		$this->UserDetail->User->id = '47ea303a-3cyc-k251-b313-4811c0a800bf';
 		$result = $this->UserDetail->User->field('User.email');
 		$this->assertEqual($result, 'foo@bar.com');
+	}
+
+/**
+ * testDateSaving
+ *
+ * @return void
+ * @link https://github.com/CakeDC/users/issues/39
+ */
+	public function testDateSaving() {
+		$this->UserDetail->sectionSchema['User'] = array(
+			'birthday' => array('type' => 'date'));
+
+		$data = array(
+			'UserDetail' => array(
+				'birthday' => array(
+					'day' => '01',
+					'month' => '04',
+					'year' => '1983')));
+		$this->UserDetail->saveSection('47ea303a-3cyc-k251-b313-4811c0a800bf', $data, 'User');
+		$result = $this->UserDetail->getSection('47ea303a-3cyc-k251-b313-4811c0a800bf', 'User');
+		$this->assertEqual($result['UserDetail']['birthday'], '1983-04-01');
 	}
 
 }

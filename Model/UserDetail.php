@@ -177,6 +177,14 @@ class UserDetail extends UsersAppModel {
 		if (!empty($this->sectionSchema[$section])) {
 			$tmpSchema = $this->_schema;
 			$this->_schema = $this->sectionSchema[$section];
+
+			foreach($data as $model => $userDetails) {
+				if ($model == $this->alias) {
+					foreach($userDetails as $key => $value) {
+						$data[$model][$key] = $this->deconstruct($key, $value);
+					}
+				}
+			}
 		}
 
 		if (!empty($this->sectionValidation[$section])) {
@@ -198,10 +206,6 @@ class UserDetail extends UsersAppModel {
 				if ($model == $this->alias) {
 					// Save the details
 					foreach($userDetails as $key => $value) {
-						// Quickfix for date inputs - TODO Try to use $this->deconstruct()?
-						if (is_array($value) && array_keys($value) == array('month', 'day', 'year')) {
-							$value = $value['year'] . '-' . $value['month'] . '-' .  $value['day']; 
-						}
 						$newUserDetail = array();
 						$field = $section . '.' . $key;
 						$userDetail = $this->find('first', array(
