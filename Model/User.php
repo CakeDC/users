@@ -749,7 +749,7 @@ class User extends UsersAppModel {
 		if ($recursive != $this->recursive) {
 			$parameters['recursive'] = $recursive;
 		}
-		if (isset($extra['type']) && isset($this->_findMethods[$extra['type']])) {
+		if (isset($extra['type']) && isset($this->findMethods[$extra['type']])) {
 			$extra['operation'] = 'count';
 			return $this->find($extra['type'], array_merge($parameters, $extra));
 		} else {
