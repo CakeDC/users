@@ -281,7 +281,7 @@ class UserTestCase extends CakeTestCase {
 		$this->assertTrue($result);
 		$result = $this->User->data;
 
-		$this->assertEqual($result['User']['active'], 0);
+		$this->assertEqual($result['User']['active'], 1);
 		$this->assertEqual($result['User']['password'], Security::hash('password', 'sha1', true));
 		$this->assertTrue(is_string($result['User']['email_token']));
 
