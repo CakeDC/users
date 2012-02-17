@@ -656,7 +656,7 @@ class User extends UsersAppModel {
 		} else {
 			$postData[$this->alias]['email_verified'] = 1;
 		}
-		$postData[$this->alias]['active'] = 1;
+		$postData[$this->alias]['active'] = 0;
 		return $postData;
 	}
 
