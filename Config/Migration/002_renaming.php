@@ -35,18 +35,12 @@ class M4ef8ba03ff504ab2b415980575f6eb26 extends CakeMigration {
 					'email_token_expiry' => 'email_token_expires'
 				),
 			),
-			'rename_table' => array(
-				'user_details' => 'details',
-			),
 		),
 		'down' => array(
 			'rename_field' => array(
 				'users' => array(
 					'email_token_expires' => 'email_token_expiry'
 				),
-			),
-			'rename_table' => array(
-				'details' => 'user_details',
 			),
 		)
 	);
