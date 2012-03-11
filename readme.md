@@ -78,8 +78,8 @@ You can overwrite the render() method to fall back to the plugin views in the ca
 		if (is_null($action)) {
 			$action = $this->action;
 		}
-		if (!file_exists(VIEWS . $this->viewPath . DS . $action . '.ctp')) {
-			$file = App::pluginPath('users') . 'views' . DS . 'users' . DS . $action . '.ctp';
+		if (!file_exists(APP . 'View' . $this->viewPath . DS . $action . '.ctp')) {
+			$file = App::pluginPath('Users') . 'View' . DS . 'Users' . DS . $action . '.ctp';
 		}
 		return parent::render($action, $layout, $file);
 	}
