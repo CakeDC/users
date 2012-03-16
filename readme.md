@@ -120,6 +120,15 @@ If you're extending the plugin remove the plugin from the route by setting it to
 
 Feel free to change the routes here or add others as you need for your application.
 
+## Configuration options
+
+
+### Disable Slugs 
+
+If the Utils plugin is present the users model will auto attach and use the sluggable behavior.
+
+To not create slugs for a new user records put this in your configuration: Configure::write('Users.disableSlugs', true);
+
 ## Requirements ##
 
 * PHP version: PHP 5.2+
@@ -135,14 +144,14 @@ For more information about our Professional CakePHP Services please visit the [C
 
 ## License ##
 
-Copyright 2009-2010, [Cake Development Corporation](http://cakedc.com)
+Copyright 2009-2012, [Cake Development Corporation](http://cakedc.com)
 
 Licensed under [The MIT License](http://www.opensource.org/licenses/mit-license.php)<br/>
 Redistributions of files must retain the above copyright notice.
 
 ## Copyright ###
 
-Copyright 2009-2010<br/>
+Copyright 2009-2012<br/>
 [Cake Development Corporation](http://cakedc.com)<br/>
 1785 E. Sahara Avenue, Suite 490-423<br/>
 Las Vegas, Nevada 89104<br/>

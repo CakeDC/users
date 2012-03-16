@@ -445,4 +445,29 @@ class UserTestCase extends CakeTestCase {
 		$data['User']['email'] = 'anotherNewEmail@anothernewemail.com';
 		$this->User->edit('bogus id', $userId, $data);
 	}
+
+/**
+ * testDisableSlugs
+ *
+ * @return void
+ */
+	public function testDisableSlugs() {
+		ClassRegistry::flush();
+		$this->User = ClassRegistry::init('Users.User');
+		$this->User->create();
+		$this->User->save(array(
+			'username' => 'foo2'), array('validate' => false));
+		$result = $this->User->read(null, $this->User->id);
+		$this->assertEquals($result['User']['slug'], 'foo2');
+
+		ClassRegistry::flush();
+		Configure::write('Users.disableSlugs', true);
+		$this->User = ClassRegistry::init('Users.User');
+		$this->User->create();
+		$this->User->save(array(
+			'username' => 'bar2'), array('validate' => false));
+		$result = $this->User->read(null, $this->User->id);
+		$this->assertTrue(empty($result['User']['slug']));
+	}
+
 }
