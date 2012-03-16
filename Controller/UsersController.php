@@ -572,7 +572,7 @@ class UsersController extends UsersAppController {
 		$Email->to($userData[$this->modelClass]['email'])
 			->from($options['from'])
 			->subject($options['subject'])
-			->template($options['template'])
+			->template($options['template'], $options['layout'])
 			->viewVars(array(
 				'model' => $this->modelClass,
 				'user' => $userData))
@@ -604,7 +604,7 @@ class UsersController extends UsersAppController {
 				$Email->to($user[$this->modelClass]['email'])
 					->from($options['from'])
 					->subject($options['subject'])
-					->template($options['template'])
+					->template($options['template'], $options['layout'])
 					->viewVars(array(
 						'model' => $this->modelClass,
 						'user' => $this->User->data,
