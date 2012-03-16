@@ -564,7 +564,8 @@ class UsersController extends UsersAppController {
 		$defaults = array(
 			'from' => Configure::read('App.defaultEmail'),
 			'subject' => __d('users', 'Account verification'),
-			'template' => 'Users.account_verification');
+			'template' => 'Users.account_verification',
+			'layout'=> 'default');
 
 		$options = array_merge($defaults, $options);
 
@@ -591,7 +592,8 @@ class UsersController extends UsersAppController {
 		$defaults = array(
 			'from' => 'noreply@' . env('HTTP_HOST'),
 			'subject' => __d('users', 'Password Reset'),
-			'template' => 'Users.password_reset_request');
+			'template' => 'Users.password_reset_request',
+			'layout'=> 'default');
 
 		$options = array_merge($defaults, $options);
 
