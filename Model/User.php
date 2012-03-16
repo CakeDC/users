@@ -137,7 +137,7 @@ class User extends UsersAppModel {
 			$this->actsAs[] = 'Search.Searchable';
 		}
 
-		if (App::import('Sluggable', 'Utils.Model/Behavior')) {
+		if (App::import('Behavior', 'Utils.Sluggable')) {
 			$this->actsAs['Utils.Sluggable'] = array(
 				'label' => 'username',
 				'method' => 'multibyteSlug');
