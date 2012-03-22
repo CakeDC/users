@@ -166,6 +166,19 @@ class UserDetail extends UsersAppModel {
 	}
 
 /**
+ * Overriding this method to inject the active section schema
+ *
+ * @param mixed $field Set to true to reload schema, or a string to return a specific field
+ * @return array Array of table metadata
+ */
+	public function schema($field = false) {
+		if (isset($this->activeSectionSchema) && !empty($this->sectionSchema[$this->activeSectionSchema])) {
+			return $this->sectionSchema[$this->activeSectionSchema];
+		}
+		return parent::schema($field);
+	}
+
+/**
  * Save details for named section
  * 
  * @var string $userId User ID
@@ -175,8 +188,7 @@ class UserDetail extends UsersAppModel {
  */
 	public function saveSection($userId = null, $data = null, $section = null) {
 		if (!empty($this->sectionSchema[$section])) {
-			$tmpSchema = $this->_schema;
-			$this->_schema = $this->sectionSchema[$section];
+			$this->activeSectionSchema = $section;
 
 			foreach($data as $model => $userDetails) {
 				if ($model == $this->alias) {
@@ -197,8 +209,8 @@ class UserDetail extends UsersAppModel {
 			$this->validate = $tmpValidate;
 		}
 
-		if (isset($tmpSchema)) {
-			$this->_schema = $tmpSchema;
+		if (isset($this->activeSectionSchema)) {
+			unset($this->activeSectionSchema);
 		}
 
 		if (!empty($data) && is_array($data)) {
@@ -245,3 +257,4 @@ class UserDetail extends UsersAppModel {
 		return true;
 	}
 }
+;

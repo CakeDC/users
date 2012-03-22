@@ -156,17 +156,35 @@ class UserDetailTestCase extends CakeTestCase {
  */
 	public function testDateSaving() {
 		$this->UserDetail->sectionSchema['User'] = array(
-			'birthday' => array('type' => 'date'));
+			'birthday' => array('type' => 'date'),
+			'start_time' => array('type' => 'time'),
+			'date_time' => array('type' => 'datetime'));
 
 		$data = array(
 			'UserDetail' => array(
+				'date_time' => array(
+					'day' => '01',
+					'month' => '04',
+					'year' => '1983',
+					'hour' => '12',
+					'min' => '35',
+					'meridian' => 'pm'),
+				'start_time' => array(
+					'hour' => '12',
+					'min' => '35',
+					'meridian' => 'pm'),
 				'birthday' => array(
 					'day' => '01',
 					'month' => '04',
 					'year' => '1983')));
+
 		$this->UserDetail->saveSection('47ea303a-3cyc-k251-b313-4811c0a800bf', $data, 'User');
 		$result = $this->UserDetail->getSection('47ea303a-3cyc-k251-b313-4811c0a800bf', 'User');
-		$this->assertEqual($result['UserDetail']['birthday'], '1983-04-01');
+
+		$this->assertEqual($result['User'], array(
+			'birthday' => '1983-04-01',
+			'date_time' => '1983-04-01 12:35:00',
+			'start_time' => '12:35:00'));
 	}
 
 }
