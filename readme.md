@@ -8,11 +8,11 @@ The plugin is thought as a base to extend your app specific users controller and
 
 The plugin is pretty easy to set up, all you need to do is to copy it to you application plugins folder and load the needed tables. You can create database tables using either the schema shell or the [CakeDC Migrations plugin](http://github.com/CakeDC/migrations):
 
-	cake schema create users --plugin Users
+	./Console/cake schema create users --plugin Users
 
 or
 
-	cake Migrations.migration all --plugin Users
+	./Console/cake Migrations.migration all --plugin Users
 
 You will also need the [CakeDC Search plugin](http://github.com/CakeDC/search), just grab it and put it into your application's plugin folder.
 
@@ -62,8 +62,9 @@ If not configured it will use 'noreply@' . env('HTTP_HOST'); as default from ema
 
 Declare the controller class
 
-	App::uses('Controller', 'Users.Users');
-	AppUsersController extends UsersController
+	App::uses('UsersController', 'Users.Controller');
+	class AppUsersController extends UsersController {
+	}
 
 In the case you want to extend also the user model it's required to set the right user class in the beforeFilter() because the controller will use the inherited model which would be Users.User.
 
@@ -74,24 +75,26 @@ In the case you want to extend also the user model it's required to set the righ
 
 You can overwrite the render() method to fall back to the plugin views in the case you want to use some of them
 
-	public function render($action = null, $layout = null, $file = null) {
-		if (is_null($action)) {
-			$action = $this->action;
+	public function render($view = null, $layout = null) {
+		if (is_null($view)) {
+			$view = $this->action;
 		}
-		if (!file_exists(APP . 'View' . $this->viewPath . DS . $action . '.ctp')) {
-			$file = App::pluginPath('Users') . 'View' . DS . 'Users' . DS . $action . '.ctp';
+		$viewPath = substr(get_class($this), 0, strlen(get_class($this)) - 10);
+		if (!file_exists(APP . 'View' . DS . $viewPath . DS . $view . '.ctp')) {
+			$this->plugin = 'Users';
+		} else {
+			$this->viewPath = $viewPath;
 		}
-		return parent::render($action, $layout, $file);
+		return parent::render($view, $layout);
 	}
 
 ### Extending the model ###
 
 Declare the model 
 
-	App::uses('Model', 'Users.User');
-	AppUser extends User {
+	App::uses('User', 'Users.Model');
+	class AppUser extends User {
 		public $useTable = 'users';
-		public $name = 'AppUser';
 	}
 
 It's important to override the AppUser::useTable property with the 'users' table.
