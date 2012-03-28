@@ -420,7 +420,7 @@ class UsersController extends UsersAppController {
 				$this->redirect('/');
 			}
 		} else {
-			$this->Session->setFlash(__d('users', 'The url you accessed is not longer valid', true));
+			$this->Session->setFlash(__d('users', 'The url you accessed is no longer valid', true));
 			$this->redirect('/');
 		}
 	}
