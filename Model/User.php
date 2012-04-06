@@ -334,7 +334,6 @@ class User extends UsersAppModel {
 				$data[$this->alias]['role'] = $match[$this->alias]['role'];
 
 				if ($reset === true) {
-					App::uses('Security', 'Utility');
 					$newPassword = $this->generatePassword();
 					$data[$this->alias]['password'] = Security::hash($newPassword, null, true);
 					$data[$this->alias]['new_password'] = $newPassword;
