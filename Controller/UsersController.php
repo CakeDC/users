@@ -654,7 +654,7 @@ class UsersController extends UsersAppController {
 			}
 
 			$cookieData = array(
-				'username' => $this->request->data[$this->modelClass]['username'],
+				'email' => $this->request->data[$this->modelClass]['email'],
 				'password' => $this->request->data[$this->modelClass]['password']);
 			$this->Cookie->write($cookieKey, $cookieData, true, '1 Month');
 		}
