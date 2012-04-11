@@ -4,6 +4,8 @@ The users plugin is for allowing users to register and login manage their profil
 
 The plugin is thought as a base to extend your app specific users controller and model from.
 
+That it works out of the box does not mean it is thought to be used exactly like it is but to provide you a kick start. You will have to extend the plugin on app level to customize it. Read the how to use it instructions carefully.
+
 ## Installation ##
 
 The plugin is pretty easy to set up, all you need to do is to copy it to you application plugins folder and load the needed tables. You can create database tables using either the schema shell or the [CakeDC Migrations plugin](http://github.com/CakeDC/migrations):
@@ -88,6 +90,23 @@ You can overwrite the render() method to fall back to the plugin views in the ca
 		return parent::render($view, $layout);
 	}
 
+### Overwriting the default auth settings provided by the plugin
+
+To use the basics the plugin already offers but changing some of the settings overwrite the _setupAuth() method in the extending controller.
+
+	protected function _setupAuth() {
+		parent::_setupAuth();
+
+		$this->Auth->autoRedirect = false;
+		$this->Auth->loginRedirect = '/admin/users/users';
+		$this->Auth->loginRedirect = '/login';
+	}
+
+If you want to disable it simply overwrite it without any body
+
+	protected function _setupAuth() {
+	}
+
 ### Extending the model ###
 
 Declare the model 
@@ -122,6 +141,14 @@ List of the used routes:
 If you're extending the plugin remove the plugin from the route by setting it to null and replace the controller with your controller extending the plugins users controller.
 
 Feel free to change the routes here or add others as you need for your application.
+
+### Email Templates
+
+To modify the templates as needed copy them to
+
+	/app/View/Plugin/users/Emails/
+
+Note that you will have to overwrite any view that is linking to the plugin like the email verification email.
 
 ## Configuration options
 
