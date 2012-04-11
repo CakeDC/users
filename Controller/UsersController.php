@@ -590,7 +590,7 @@ class UsersController extends UsersAppController {
  */
 	protected function _sendPasswordReset($admin = null, $options = array()) {
 		$defaults = array(
-			'from' => 'noreply@' . env('HTTP_HOST'),
+			'from' => Configure::read('App.defaultEmail'),
 			'subject' => __d('users', 'Password Reset'),
 			'template' => 'Users.password_reset_request',
 			'layout'=> 'default');
