@@ -98,8 +98,7 @@ To use the basics the plugin already offers but changing some of the settings ov
 		parent::_setupAuth();
 
 		$this->Auth->autoRedirect = false;
-		$this->Auth->loginRedirect = '/admin/users/users';
-		$this->Auth->loginRedirect = '/login';
+		$this->Auth->loginRedirect = array('plugin' => null, 'admin' => false, 'controller' => 'app_users', 'action' => 'login');
 	}
 
 If you want to disable it simply overwrite it without any body
