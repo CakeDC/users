@@ -204,6 +204,9 @@ class UsersController extends UsersAppController {
 			}
 		} else {
 			$data = $this->User->UserDetail->getSection($this->Auth->user('id'), 'User');
+			if (!isset($data['User'])){
+				$data['User'] = array();
+			}
 			$this->request->data['UserDetail'] = $data['User'];
 		}
 	}

@@ -341,6 +341,10 @@ class UsersControllerTestCase extends CakeTestCase {
 		$this->Users->Session->write('Auth.User.id', '1');
 		$this->Users->edit();
 		$this->assertTrue(!empty($this->Users->data));
+		
+		$this->Users->Session->write('Auth.User.id', 'INVALID-ID');
+		$this->Users->edit();
+		$this->assertTrue(empty($this->Users->data['User']));
 	}
 
 /**
