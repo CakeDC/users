@@ -125,7 +125,7 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	protected function _setupAuth() {
-		$this->Auth->allow('add', 'reset', 'verify', 'logout', 'index', 'view', 'reset_password');
+		$this->Auth->allow('login', 'add', 'reset', 'verify', 'logout', 'index', 'view', 'reset_password');
 
 		if ($this->request->action == 'register') {
 			$this->Components->disable('Auth');
@@ -337,30 +337,30 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	public function login() {
-		$this->request->is('post') && $this->Auth->login();
-		if ($this->Auth->user()) {
-			$this->User->id = $this->Auth->user('id');
-			$this->User->saveField('last_login', date('Y-m-d H:i:s'));
+		if ($this->request->is('post')) {
+			if ($this->Auth->login()) {
+				$this->User->id = $this->Auth->user('id');
+				$this->User->saveField('last_login', date('Y-m-d H:i:s'));
 
-			if ($this->here == $this->Auth->loginRedirect) {
-				$this->Auth->loginRedirect = '/';
+				if ($this->here == $this->Auth->loginRedirect) {
+					$this->Auth->loginRedirect = '/';
+				}
+
+				$this->Session->setFlash(sprintf(__d('users', '%s you have successfully logged in'), $this->Auth->user('username')));
+				if (!empty($this->request->data)) {
+					$data = $this->request->data[$this->modelClass];
+					$this->_setCookie();
+				}
+
+				if (empty($data['return_to'])) {
+					$data['return_to'] = null;
+				}
+
+				return $this->redirect($this->Auth->redirect($data['return_to']));
+			} else {
+				$this->Auth->flash(__d('users', 'Invalid e-mail / password combination.  Please try again'));
 			}
-
-			$this->Session->setFlash(sprintf(__d('users', '%s you have successfully logged in'), $this->Auth->user('username')));
-			if (!empty($this->request->data)) {
-				$data = $this->request->data[$this->modelClass];
-				$this->_setCookie();
-			}
-
-			if (empty($data['return_to'])) {
-				$data['return_to'] = null;
-			}
-
-			return $this->redirect($this->Auth->redirect($data['return_to']));
-		} else {
-			$this->Auth->flash(__d('users', 'Invalid e-mail / password combination.  Please try again'));
 		}
-
 		if (isset($this->request->params['named']['return_to'])) {
 			$this->set('return_to', urldecode($this->request->params['named']['return_to']));
 		} else {

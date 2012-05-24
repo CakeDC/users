@@ -213,6 +213,19 @@ class UsersControllerTestCase extends CakeTestCase {
 
 		$this->assertEqual(Router::normalize($this->Users->redirectUrl), Router::normalize(Router::url($this->Users->Auth->loginRedirect)));
 	}
+	
+/**
+ * We should not see any flash message if we GET the login action
+ */	
+	public function testUserLoginGet() {
+		$this->Users->request->params['action'] = 'login';
+		$this->__setGet();
+ 		$this->Users->startupProcess();
+
+		$this->Users->login();
+		$result = $this->Users->Session->read('Message.auth.message');
+		$this->assertNull($result);
+	}
 
 /**
  * testFailedUserLogin
