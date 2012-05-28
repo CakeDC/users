@@ -48,7 +48,7 @@ class TestUsersController extends UsersController {
 		parent::beforeFilter();
 		$this->Auth->authorize = array('Controller');
 		$this->Auth->fields = array('username' => 'email', 'password' => 'password');
-		$this->Auth->loginAction = array('controller' => 'users', 'action' => 'login', 'prefix' => 'admin', 'admin' => false, 'plugin' => 'users');
+		$this->Auth->loginAction = array('controller' => 'users', 'action' => 'login', 'plugin' => 'users');
 		$this->Auth->loginRedirect = $this->Session->read('Auth.redirect');
 		$this->Auth->logoutRedirect = '/';
 		$this->Auth->authError = __d('users', 'Sorry, but you need to login to access this location.');
@@ -218,10 +218,11 @@ class UsersControllerTestCase extends CakeTestCase {
  * We should not see any flash message if we GET the login action
  */	
 	public function testUserLoginGet() {
+		// test with the login action
+		$this->Users->request->url = '/users/users/login';
 		$this->Users->request->params['action'] = 'login';
 		$this->__setGet();
  		$this->Users->startupProcess();
-
 		$this->Users->login();
 		$result = $this->Users->Session->read('Message.auth.message');
 		$this->assertNull($result);
