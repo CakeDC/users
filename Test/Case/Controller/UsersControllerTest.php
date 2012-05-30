@@ -116,7 +116,7 @@ class TestUsersController extends UsersController {
 		return $this->CakeEmail;
 	}
 
-}
+	}
 
 class UsersControllerTestCase extends CakeTestCase {
 
@@ -171,7 +171,7 @@ class UsersControllerTestCase extends CakeTestCase {
 
 		$this->Users = new TestUsersController($request, $response);
 		$this->Users->constructClasses();
-			$this->Users->request->params = array(
+		$this->Users->request->params = array(
 			'pass' => array(),
 			'named' => array(),
 			'controller' => 'users',
@@ -179,7 +179,22 @@ class UsersControllerTestCase extends CakeTestCase {
 			'plugin' => 'users',
 			'url' => array());
 
-		$this->Users->CakeEmail = $this->getMock('CakeEmail', array('send'));
+		$this->Users->CakeEmail = $this->getMock('CakeEmail');
+		$this->Users->CakeEmail->expects($this->any())
+             ->method('to')
+             ->will($this->returnSelf());
+		$this->Users->CakeEmail->expects($this->any())
+             ->method('from')
+             ->will($this->returnSelf());
+		$this->Users->CakeEmail->expects($this->any())
+             ->method('subject')
+             ->will($this->returnSelf());
+		$this->Users->CakeEmail->expects($this->any())
+             ->method('template')
+             ->will($this->returnSelf());
+		$this->Users->CakeEmail->expects($this->any())
+             ->method('viewVars')
+             ->will($this->returnSelf());
 
 		$this->Users->Components->disable('Security');
 	}
@@ -429,6 +444,13 @@ class UsersControllerTestCase extends CakeTestCase {
 		$this->assertEqual($this->Users->redirectUrl, array('action' => 'index'));
 	}
 
+//	public function testMailInstance() {
+//		// default instance shoult be "default"
+//		$cakeMail = $this->Users->getMailInstance();
+//		$this->assertFalse($cakeMail);
+//		// if configured, load the email config
+//	}
+	
 /**
  * Test setting the cookie
  *
@@ -447,7 +469,7 @@ class UsersControllerTestCase extends CakeTestCase {
 			'username' => 'test',
 			'password' => 'testtest'));
 	}
-
+	
 /**
  * Test
  *
