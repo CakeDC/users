@@ -9,8 +9,6 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-App::uses('Security', 'Utility');
-
 /**
  * UserFixture
  *
@@ -188,8 +186,9 @@ class UserFixture extends CakeTestFixture {
  */
 	public function __construct() {
 		parent::__construct();
+		$this->User = ClassRegistry::init('Users.User');
 		foreach ($this->records as &$record) {
-			$record['password'] = Security::hash($record['password'], null, true);
+			$record['password'] = $this->User->hash($record['password'], null, true);
 		}
 	}
 

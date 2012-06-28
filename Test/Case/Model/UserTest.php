@@ -211,7 +211,7 @@ class UserTestCase extends CakeTestCase {
  * @return void
  */
 	public function testValidateOldPassword() {
-		$password = Security::hash('password', null, true);
+		$password = $this->User->hash('password', null, true);
 		$this->User->id = '1';
 		$this->User->saveField('password', $password);
 		$this->User->data = array(
@@ -282,7 +282,7 @@ class UserTestCase extends CakeTestCase {
 		$result = $this->User->data;
 
 		$this->assertEqual($result['User']['active'], 1);
-		$this->assertEqual($result['User']['password'], Security::hash('password', 'sha1', true));
+		$this->assertEqual($result['User']['password'], $this->User->hash('password', 'sha1', true));
 		$this->assertTrue(is_string($result['User']['email_token']));
 
 		$result = $this->User->findById($this->User->id);
@@ -322,7 +322,7 @@ class UserTestCase extends CakeTestCase {
 			'recursive' => -1,
 			'conditions' => array(
 				'User.id' => 1)));
-		$this->assertEqual($ressult['User']['password'], Security::hash('testtest', null, true));
+		$this->assertEqual($ressult['User']['password'], $this->User->hash('testtest', null, true));
 	}
 
 /**

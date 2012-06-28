@@ -238,6 +238,22 @@ class User extends UsersAppModel {
 	}
 
 /**
+ * Create a hash from string using given method.
+ * Fallback on next available method.
+ *
+ * Override this method to use a different hashing method
+ *
+ * @param string $string String to hash
+ * @param string $type Method to use (sha1/sha256/md5)
+ * @param boolean $salt If true, automatically appends the application's salt
+ *     value to $string (Security.salt)
+ * @return string Hash
+ */
+	public function hash($string, $type = null, $salt = false) {
+		return Security::hash($string, $type, $salt);
+	}
+
+/**
  * Custom validation method to ensure that the two entered passwords match
  *
  * @param string $password Password
@@ -335,7 +351,7 @@ class User extends UsersAppModel {
 
 				if ($reset === true) {
 					$newPassword = $this->generatePassword();
-					$data[$this->alias]['password'] = Security::hash($newPassword, null, true);
+					$data[$this->alias]['password'] = $this->hash($newPassword, null, true);
 					$data[$this->alias]['new_password'] = $newPassword;
 					$data[$this->alias]['password_token'] = null;
 				}
@@ -433,7 +449,7 @@ class User extends UsersAppModel {
 
 		$this->set($postData);
 		if ($this->validates()) {
-			$this->data[$this->alias]['password'] = Security::hash($this->data[$this->alias]['new_password'], null, true);
+			$this->data[$this->alias]['password'] = $this->hash($this->data[$this->alias]['new_password'], null, true);
 			$this->data[$this->alias]['password_token'] = null;
 			$result = $this->save($this->data, array(
 				'validate' => false,
@@ -455,7 +471,7 @@ class User extends UsersAppModel {
 
 		$this->set($postData);
 		if ($this->validates()) {
-			$this->data[$this->alias]['password'] = Security::hash($this->data[$this->alias]['new_password'], null, true);
+			$this->data[$this->alias]['password'] = $this->hash($this->data[$this->alias]['new_password'], null, true);
 			$this->save($postData, array(
 				'validate' => false,
 				'callbacks' => false));
@@ -478,7 +494,7 @@ class User extends UsersAppModel {
 		}
 
 		$currentPassword = $this->field('password', array($this->alias . '.id' => $this->data[$this->alias]['id']));
-		return $currentPassword === Security::hash($password['old_password'], null, true);
+		return $currentPassword === $this->hash($password['old_password'], null, true);
 	}
 
 /**
@@ -554,7 +570,7 @@ class User extends UsersAppModel {
 
 		$this->set($postData);
 		if ($this->validates()) {
-			$postData[$this->alias]['password'] = Security::hash($postData[$this->alias]['password'], 'sha1', true);
+			$postData[$this->alias]['password'] = $this->hash($postData[$this->alias]['password'], 'sha1', true);
 			$this->create();
 			$this->data = $this->save($postData, false);
 			$this->data[$this->alias]['id'] = $this->id;
