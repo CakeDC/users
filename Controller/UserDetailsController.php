@@ -68,9 +68,9 @@ class UserDetailsController extends UsersAppController {
  * @return void
  */
 	public function add() {
-		if (!empty($this->data)) {
+		if (!empty($this->request->data)) {
 			$userId = $this->Auth->user('id');
-			foreach($this->data as $group => $options) {
+			foreach($this->request->data as $group => $options) {
 				foreach($options as $key => $value) {
 					$field = $group . '.' . $key;
 					$this->UserDetail->updateAll(
@@ -96,14 +96,14 @@ class UserDetailsController extends UsersAppController {
 			$section = 'user';
 		}
 
-		if (!empty($this->data)) {
-			$this->UserDetail->saveSection($this->Auth->user('id'), $this->data, $section);
-			$this->data['UserDetail'] = $this->UserDetail->getSection($this->Auth->user('id'), $section);
+		if (!empty($this->request->data)) {
+			$this->UserDetail->saveSection($this->Auth->user('id'), $this->request->data, $section);
 			$this->Session->setFlash(sprintf(__d('users', '%s user details saved'), ucfirst($section)));
 		}
 
-		if (empty($this->data)) {
-			$this->data['UserDetail'] = $this->UserDetail->getSection($this->Auth->user('id'), $section);
+		if (empty($this->request->data)) {
+            $detail = $this->UserDetail->getSection($this->Auth->user('id'), $section);
+            $this->request->data['UserDetail'] = $detail[$section];
 		}
 
 		$this->set('section', $section);
@@ -156,9 +156,9 @@ class UserDetailsController extends UsersAppController {
  * @return void
  */
 	public function admin_add() {
-		if (!empty($this->data)) {
+		if (!empty($this->request->data)) {
 			$this->UserDetail->create();
-			if ($this->UserDetail->save($this->data)) {
+			if ($this->UserDetail->save($this->request->data)) {
 				$this->Session->setFlash(__d('users', 'The Detail has been saved'));
 				$this->redirect(array('action' => 'index'));
 			} else {
@@ -177,20 +177,20 @@ class UserDetailsController extends UsersAppController {
  * @return void
  */
 	public function admin_edit($id = null) {
-		if (!$id && empty($this->data)) {
+		if (!$id && empty($this->request->data)) {
 			$this->Session->setFlash(__d('users', 'Invalid Detail'));
 			$this->redirect(array('action' => 'index'));
 		}
-		if (!empty($this->data)) {
-			if ($this->UserDetail->save($this->data)) {
+		if (!empty($this->request->data)) {
+			if ($this->UserDetail->save($this->request->data)) {
 				$this->Session->setFlash(__d('users', 'The Detail has been saved'));
 				$this->redirect(array('action' => 'index'));
 			} else {
 				$this->Session->setFlash(__d('users', 'The Detail could not be saved. Please, try again.'));
 			}
 		}
-		if (empty($this->data)) {
-			$this->data = $this->UserDetail->read(null, $id);
+		if (empty($this->request->data)) {
+			$this->request->data = $this->UserDetail->read(null, $id);
 		}
 
 		$users = $this->UserDetail->User->find('list');
