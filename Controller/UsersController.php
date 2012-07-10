@@ -338,13 +338,14 @@ class UsersController extends UsersAppController {
  */
 	public function login() {
 		if ($this->request->is('post')) {
-			if ($this->Auth->login()) {
+            if ($this->Auth->login()) {
 				$this->User->id = $this->Auth->user('id');
 				$this->User->saveField('last_login', date('Y-m-d H:i:s'));
 
 				if ($this->here == $this->Auth->loginRedirect) {
 					$this->Auth->loginRedirect = '/';
 				}
+                debug( $this->Auth->user('username'));
 				$this->Session->setFlash(sprintf(__d('users', '%s you have successfully logged in'), $this->Auth->user('username')));
 				if (!empty($this->request->data)) {
 					$data = $this->request->data[$this->modelClass];

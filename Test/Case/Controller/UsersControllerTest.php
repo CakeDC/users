@@ -246,12 +246,20 @@ class UsersControllerTestCase extends CakeTestCase {
  		$this->Users->startupProcess();
 		
 		$this->Collection = $this->getMock('ComponentCollection');
-		$this->Users->Session = $this->getMock('SessionComponent', array('setFlash'), array($this->Collection));
+        $this->Users->Auth = $this->getMock('AuthComponent', array('login', 'user'), array($this->Collection));
+        $this->Users->Auth->expects($this->once())
+            ->method('login')
+            ->will($this->returnValue(true));
+        $this->Users->Auth->expects($this->once())
+            ->method('user')
+            ->with('username')
+            ->will($this->returnValue('adminuser'));
+        $this->Users->Session = $this->getMock('SessionComponent', array('setFlash'), array($this->Collection));
 		$this->Users->Session->expects($this->any())
 				->method('setFlash')
 				->with(__d('users', 'adminuser you have successfully logged in'));
 		$this->Users->login();
-		$this->assertEqual(Router::normalize($this->Users->redirectUrl), Router::normalize(Router::url($this->Users->Auth->loginRedirect)));
+        $this->assertEqual(Router::normalize($this->Users->redirectUrl), Router::normalize(Router::url($this->Users->Auth->loginRedirect)));
 	}
 	
 /**
@@ -264,8 +272,10 @@ class UsersControllerTestCase extends CakeTestCase {
 		$this->__setGet();
  		$this->Users->startupProcess();
 		$this->Users->login();
-		$result = $this->Users->Session->read('Message.auth.message');
-		$this->assertNull($result);
+        $this->Collection = $this->getMock('ComponentCollection');
+        $this->Users->Session = $this->getMock('SessionComponent', array('setFlash'), array($this->Collection));
+        $this->Users->Session->expects($this->never())
+            ->method('setFlash');
 	}
 
 /**
@@ -277,10 +287,15 @@ class UsersControllerTestCase extends CakeTestCase {
 		$this->Users->request->params['action'] = 'login';
 		$this->__setPost(array('User' => $this->usersData['invalidUser']));
  		$this->Users->startupProcess();
-		$this->Users->login();
-		$result = $this->Users->Session->read('Message.auth.message');
-		$expected = __d('users', 'Invalid e-mail / password combination.  Please try again');
-		$this->assertEqual($result, $expected);
+        $this->Collection = $this->getMock('ComponentCollection');
+        $this->Users->Auth = $this->getMock('AuthComponent', array('flash', 'login'), array($this->Collection));
+        $this->Users->Auth->expects($this->once())
+            ->method('login')
+            ->will($this->returnValue(false));
+        $this->Users->Auth->expects($this->once())
+            ->method('flash')
+            ->with(__d('users', 'Invalid e-mail / password combination.  Please try again'));
+        $this->Users->login();
 	}
 
 /**
@@ -301,8 +316,13 @@ class UsersControllerTestCase extends CakeTestCase {
 				'temppassword' => 'password',
 				'tos' => 1)));
 		$this->Users->beforeFilter();
-		$this->Users->add();
-		$this->assertEqual($this->Users->Session->read('Message.flash.message'), __d('users', 'Your account has been created. You should receive an e-mail shortly to authenticate your account. Once validated you will be able to login.'));
+        $this->Collection = $this->getMock('ComponentCollection');
+        $this->Users->Session = $this->getMock('SessionComponent', array('setFlash'), array($this->Collection));
+        $this->Users->Session->expects($this->once())
+            ->method('setFlash')
+            ->with(__d('users', 'Your account has been created. You should receive an e-mail shortly to authenticate your account. Once validated you will be able to login.'));
+
+        $this->Users->add();
 
 		$this->__setPost(array(
 			'User' => array(
@@ -312,8 +332,11 @@ class UsersControllerTestCase extends CakeTestCase {
 				'temppassword' => '',
 				'tos' => 0)));
 		$this->Users->beforeFilter();
-		$this->Users->add();
-		$this->assertEqual($this->Users->Session->read('Message.flash.message'), __d('users', 'Your account could not be created. Please, try again.'));
+        $this->Users->Session = $this->getMock('SessionComponent', array('setFlash'), array($this->Collection));
+        $this->Users->Session->expects($this->once())
+            ->method('setFlash')
+            ->with(__d('users', 'Your account could not be created. Please, try again.'));
+        $this->Users->add();
 	}
 
 /**
@@ -325,12 +348,21 @@ class UsersControllerTestCase extends CakeTestCase {
 		$this->Users->beforeFilter();
 		$this->Users->User->id = '37ea303a-3bdc-4251-b315-1316c0b300fa';
 		$this->Users->User->saveField('email_token_expires', date('Y-m-d H:i:s', strtotime('+1 year')));
-		$this->Users->verify('email', 'testtoken2');
-		$this->assertEqual($this->Users->Session->read('Message.flash.message'), __d('users', 'Your e-mail has been validated!'));
+        $this->Collection = $this->getMock('ComponentCollection');
+        $this->Users->Session = $this->getMock('SessionComponent', array('setFlash'), array($this->Collection));
+        $this->Users->Session->expects($this->once())
+            ->method('setFlash')
+            ->with(__d('users', 'Your e-mail has been validated!'));
+
+        $this->Users->verify('email', 'testtoken2');
 
 		$this->Users->beforeFilter();
-		$this->Users->verify('email', 'invalid-token');
-		$this->assertEqual($this->Users->Session->read('Message.flash.message'), __d('users', 'Invalid token, please check the email you were sent, and retry the verification link.'));
+        $this->Users->Session = $this->getMock('SessionComponent', array('setFlash'), array($this->Collection));
+        $this->Users->Session->expects($this->once())
+            ->method('setFlash')
+            ->with(__d('users', 'Invalid token, please check the email you were sent, and retry the verification link.'));
+
+        $this->Users->verify('email', 'invalid-token');;
 	}
 
 /**
