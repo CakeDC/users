@@ -158,6 +158,12 @@ If the Utils plugin is present the users model will auto attach and use the slug
 
 To not create slugs for a new user records put this in your configuration: Configure::write('Users.disableSlugs', true);
 
+### Email configuration
+
+The plugin uses the $default email configuration (should be present in your Config/email.php file), but you can override it using
+
+Configure::write('Users.emailConfig', 'default');
+
 ## Requirements ##
 
 * PHP version: PHP 5.2+

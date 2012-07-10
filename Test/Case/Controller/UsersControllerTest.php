@@ -66,6 +66,13 @@ class TestUsersController extends UsersController {
 	public function setCookie($options = array()) {
 		parent::_setCookie($options);
 	}
+	
+/**
+ * Public intefface to _getMailInstance 
+ */	
+	public function getMailInstance() {
+		return parent::_getMailInstance();
+	}
 
 /**
  * Auto render
@@ -118,6 +125,23 @@ class TestUsersController extends UsersController {
 
 	}
 
+/**
+ * Email configuration override for testing 
+ */
+class EmailConfig {
+
+	public $default = array(
+		'transport' => 'Debug',
+		'from' => 'default@example.com',
+	);
+
+	public $another = array(
+		'transport' => 'Debug',
+		'from' => 'another@example.com',
+	);
+}
+	
+	
 class UsersControllerTestCase extends CakeTestCase {
 
 /**
@@ -220,12 +244,13 @@ class UsersControllerTestCase extends CakeTestCase {
 		$this->__setPost(array('User' => $this->usersData['admin']));
 		$this->Users->request->url = '/users/users/login';
  		$this->Users->startupProcess();
-
+		
+		$this->Collection = $this->getMock('ComponentCollection');
+		$this->Users->Session = $this->getMock('SessionComponent', array('setFlash'), array($this->Collection));
+		$this->Users->Session->expects($this->any())
+				->method('setFlash')
+				->with(__d('users', 'adminuser you have successfully logged in'));
 		$this->Users->login();
-		$result = $this->Users->Session->read('Message.flash.message');
-		$expected = __d('users', 'adminuser you have successfully logged in');
-		$this->assertEqual($result, $expected);
-
 		$this->assertEqual(Router::normalize($this->Users->redirectUrl), Router::normalize(Router::url($this->Users->Auth->loginRedirect)));
 	}
 	
@@ -351,7 +376,12 @@ class UsersControllerTestCase extends CakeTestCase {
  * @return void
  */
 	public function testChangePassword() {
-		$this->Users->Session->write('Auth.User.id', '1');
+		$this->Collection = $this->getMock('ComponentCollection');
+		$this->Users->Auth = $this->getMock('AuthComponent', array('user'), array($this->Collection));
+		$this->Users->Auth->staticExpects($this->once())
+				->method('user')
+				->with('id')
+				->will($this->returnValue(1));
 		$this->__setPost(array(
 			'User' => array(
 				'new_password' => 'newpassword',
@@ -470,6 +500,25 @@ class UsersControllerTestCase extends CakeTestCase {
 			'password' => 'testtest'));
 	}
 	
+/**
+ * Test getting default and setted email instance config
+ *
+ * @return void
+ */
+	public function testGetMailInstance() {
+		$defaultConfig = $this->Users->getMailInstance()->config();
+		$this->assertEqual($defaultConfig['from'], 'default@example.com');
+		
+		Configure::write('Users.emailConfig', 'another');
+		$anotherConfig = $this->Users->getMailInstance()->config();
+		$this->assertEqual($anotherConfig['from'], 'another@example.com');
+		
+		$this->setExpectedException('ConfigureException');
+		Configure::write('Users.emailConfig', 'doesnotexist');
+		$anotherConfig = $this->Users->getMailInstance()->config();
+		
+	}
+
 /**
  * Test
  *

@@ -345,7 +345,6 @@ class UsersController extends UsersAppController {
 				if ($this->here == $this->Auth->loginRedirect) {
 					$this->Auth->loginRedirect = '/';
 				}
-
 				$this->Session->setFlash(sprintf(__d('users', '%s you have successfully logged in'), $this->Auth->user('username')));
 				if (!empty($this->request->data)) {
 					$data = $this->request->data[$this->modelClass];
@@ -578,7 +577,7 @@ class UsersController extends UsersAppController {
 			->subject($options['subject'])
 			->template($options['template'], $options['layout'])
 			->viewVars(array(
-				'model' => $this->modelClass,
+			'model' => $this->modelClass,
 				'user' => $userData))
 			->send();
 	}
@@ -611,8 +610,8 @@ class UsersController extends UsersAppController {
 					->subject($options['subject'])
 					->template($options['template'], $options['layout'])
 					->viewVars(array(
-						'model' => $this->modelClass,
-						'user' => $this->User->data,
+					'model' => $this->modelClass,
+					'user' => $this->User->data,
 						'token' => $this->User->data[$this->modelClass]['password_token']))
 					->send();
 
@@ -693,7 +692,12 @@ class UsersController extends UsersAppController {
  */
 	protected function _getMailInstance() {
 		App::uses('CakeEmail', 'Network/Email');
-		return new CakeEmail();
+		$emailConfig = Configure::read('Users.emailConfig');
+		if ($emailConfig) {
+			return new CakeEmail($emailConfig);
+		} else {
+			return new CakeEmail('default');
+		}
 	}
 
 }
