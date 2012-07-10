@@ -239,12 +239,9 @@ class UsersControllerTestCase extends CakeTestCase {
  */
 	public function testUserLogin() {
 		$this->Users->request->params['action'] = 'login';
- 		$this->Users->startupProcess();
-
-		$this->__setPost(array('User' => $this->usersData['admin']));
+ 		$this->__setPost(array('User' => $this->usersData['admin']));
 		$this->Users->request->url = '/users/users/login';
- 		$this->Users->startupProcess();
-		
+ 		
 		$this->Collection = $this->getMock('ComponentCollection');
         $this->Users->Auth = $this->getMock('AuthComponent', array('login', 'user', 'redirect'), array($this->Collection));
         $this->Users->Auth->expects($this->once())
@@ -278,7 +275,7 @@ class UsersControllerTestCase extends CakeTestCase {
 		$this->Users->request->url = '/users/users/login';
 		$this->Users->request->params['action'] = 'login';
 		$this->__setGet();
- 		$this->Users->startupProcess();
+ 		
 		$this->Users->login();
         $this->Collection = $this->getMock('ComponentCollection');
         $this->Users->Session = $this->getMock('SessionComponent', array('setFlash'), array($this->Collection));
@@ -294,7 +291,7 @@ class UsersControllerTestCase extends CakeTestCase {
 	public function testFailedUserLogin() {
 		$this->Users->request->params['action'] = 'login';
 		$this->__setPost(array('User' => $this->usersData['invalidUser']));
- 		$this->Users->startupProcess();
+ 		
         $this->Collection = $this->getMock('ComponentCollection');
         $this->Users->Auth = $this->getMock('AuthComponent', array('flash', 'login'), array($this->Collection));
         $this->Users->Auth->expects($this->once())
