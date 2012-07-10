@@ -98,7 +98,7 @@ class UserDetailsController extends UsersAppController {
 
 		if (!empty($this->request->data)) {
 			$this->UserDetail->saveSection($this->Auth->user('id'), $this->request->data, $section);
-			$this->Session->setFlash(sprintf(__d('users', '%s user details saved'), ucfirst($section)));
+			$this->Session->setFlash(sprintf(__d('users', '%s details saved'), ucfirst($section)));
 		}
 
 		if (empty($this->request->data)) {
