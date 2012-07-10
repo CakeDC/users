@@ -64,7 +64,7 @@ class TestUsersController extends UsersController {
  * Public interface to _setCookie
  */
 	public function setCookie($options = array()) {
-		parent::_setCookie($options);
+        parent::_setCookie($options);
 	}
 	
 /**
@@ -246,14 +246,22 @@ class UsersControllerTestCase extends CakeTestCase {
  		$this->Users->startupProcess();
 		
 		$this->Collection = $this->getMock('ComponentCollection');
-        $this->Users->Auth = $this->getMock('AuthComponent', array('login', 'user'), array($this->Collection));
+        $this->Users->Auth = $this->getMock('AuthComponent', array('login', 'user', 'redirect'), array($this->Collection));
         $this->Users->Auth->expects($this->once())
             ->method('login')
             ->will($this->returnValue(true));
-        $this->Users->Auth->expects($this->once())
+        $this->Users->Auth->staticExpects($this->at(0))
+            ->method('user')
+            ->with('id')
+            ->will($this->returnValue(1));
+        $this->Users->Auth->staticExpects($this->at(1))
             ->method('user')
             ->with('username')
             ->will($this->returnValue('adminuser'));
+        $this->Users->Auth->expects($this->once())
+            ->method('redirect')
+            ->with(null)
+            ->will($this->returnValue(Router::normalize('/')));
         $this->Users->Session = $this->getMock('SessionComponent', array('setFlash'), array($this->Collection));
 		$this->Users->Session->expects($this->any())
 				->method('setFlash')
@@ -372,9 +380,22 @@ class UsersControllerTestCase extends CakeTestCase {
  */
 	public function testLogout() {
 		$this->Users->beforeFilter();
-		$this->Users->Session->write('Auth.User', $this->usersData['validUser']);
-		$this->Users->logout();
-		$this->assertEqual($this->Users->Session->read('Message.flash.message'), __d('users', 'testuser you have successfully logged out'));
+		$this->Collection = $this->getMock('ComponentCollection');
+        $this->Users->Cookie = $this->getMock('CookieComponent', array('destroy'), array($this->Collection));
+        $this->Users->Cookie->expects($this->once())
+            ->method('destroy');
+        $this->Users->Session = $this->getMock('SessionComponent', array('setFlash'), array($this->Collection));
+        $this->Users->Session->expects($this->once())
+            ->method('setFlash')
+            ->with(__d('users', 'testuser you have successfully logged out'));
+        $this->Users->Auth = $this->getMock('AuthComponent', array('logout', 'user'), array($this->Collection));
+        $this->Users->Auth->expects($this->once())
+            ->method('logout')
+            ->will($this->returnValue('/'));
+        $this->Users->Auth->staticExpects($this->at(0))
+            ->method('user')
+            ->will($this->returnValue($this->usersData['validUser']));
+        $this->Users->logout();
 		$this->assertEqual($this->Users->redirectUrl, '/');
 	}
 
@@ -519,17 +540,21 @@ class UsersControllerTestCase extends CakeTestCase {
  * @return void
  */
 	public function testSetCookie() {
-		$this->Users->request->data['User'] = array(
-			'remember_me' => 1,
-			'username' => 'test',
-			'password' => 'testtest');
+        $this->__setPost(array(
+            'User' => array(
+                'remember_me' => 1,
+                'email' => 'testuser@cakedc.com',
+                'username' => 'test',
+                'password' => 'testtest')
+        ));
 		$this->Users->setCookie(array(
 			'name' => 'userTestCookie'));
 		$this->Users->Cookie->name = 'userTestCookie';
 		$result = $this->Users->Cookie->read('User');
-		$this->assertEqual($result, array(
-			'username' => 'test',
-			'password' => 'testtest'));
+        $this->assertEqual($result, array(
+			'password' => 'testtest',
+            'email' => 'testuser@cakedc.com',
+        ));
 	}
 	
 /**
