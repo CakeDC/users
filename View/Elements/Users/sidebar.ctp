@@ -10,7 +10,9 @@
 			<li><?php echo $this->Html->link(__d('users', 'My Account'), array('action' => 'edit')); ?>
 			<li><?php echo $this->Html->link(__d('users', 'Change password'), array('action' => 'change_password')); ?>
 		<?php endif ?>
-		<li>&nbsp;</li>
-		<li><?php echo $this->Html->link(__d('users', 'List Users'), array('action'=>'index'));?></li>
+		<?php if($this->Session->check('Auth.User.is_admin')) : ?>
+            <li>&nbsp;</li>
+            <li><?php echo $this->Html->link(__d('users', 'List Users'), array('action'=>'index'));?></li>
+        <?php endif; ?>
 	</ul>
 </div>

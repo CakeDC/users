@@ -24,13 +24,14 @@ You can use the plugin as it comes if you're happy with it or, more common, exte
 
 The plugin itself is already capable of:
 
-* User registration
+* User registration (Enable by default)
 * Account verification by a token sent via email
 * User login (email / password)
 * Password reset based on requesting a token by email and entering a new password
 * Simple profiles for users
 * User search (requires the CakeDC Search plugin)
-* User management using the "admin" section
+* User management using the "admin" section (add / edit / delete)
+* Simple roles management
 
 The default password reset process requires the user to enter his email address, an email is sent to the user with a link and a token. When the user accesses the URL with the token he can enter a new password.
 
@@ -163,6 +164,20 @@ To not create slugs for a new user records put this in your configuration: Confi
 The plugin uses the $default email configuration (should be present in your Config/email.php file), but you can override it using
 
 Configure::write('Users.emailConfig', 'default');
+
+## Roles Management
+
+You can add Users.roles on bootstrap.php file and these roles will be used on Admin Add / Edit pages. i.e:
+
+Configure::write('Users.roles', array('admin' => 'Admin', 'registered' => 'Registered'));
+
+If you don't specify roles it will use 'admin' role (if is_admin is checked) or 'registered' role otherwise. You can override 'registered role setting Users.defaultRole on bootstrap.php. i.e:
+
+Configure::write('Users.defaultRole', 'user_registered');
+
+## Enabling / Disabling Registration
+
+Some application won't need to have registration enable so you can define Users.allowRegistration on bootstrap.php to enable / disable registration. By default registration will be enabled.
 
 ## Requirements ##
 
