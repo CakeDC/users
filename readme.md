@@ -163,7 +163,7 @@ To not create slugs for a new user records put this in your configuration: Confi
 
 The plugin uses the $default email configuration (should be present in your Config/email.php file), but you can override it using
 
-Configure::write('Users.emailConfig', 'default');
+	Configure::write('Users.emailConfig', 'default');
 
 ## Roles Management
 
