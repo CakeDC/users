@@ -54,7 +54,9 @@ class UsersController extends UsersAppController {
 		'Session',
 		'Cookie',
 		'Paginator',
-		'Security');
+		//'Security',
+        'Search.Prg',
+    );
 
 /**
  * Preset vars
@@ -125,8 +127,10 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	protected function _setupAuth() {
-		$this->Auth->allow('add', 'reset', 'verify', 'logout', 'index', 'view', 'reset_password');
-
+		$this->Auth->allow('add', 'reset', 'verify', 'logout', 'view', 'reset_password');
+        if (!is_null(Configure::read('Users.allowRegistration')) && !Configure::read('Users.allowRegistration')) {
+            //$this->Auth->deny('add');
+        }
 		if ($this->request->action == 'register') {
 			$this->Components->disable('Auth');
 		}
@@ -217,9 +221,12 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	public function admin_index() {
-		$this->{$this->modelClass}->data[$this->modelClass] = $this->passedArgs;
-		if ($this->{$this->modelClass}->Behaviors->attached('Search.Searchable')) {
-			$parsedConditions = $this->{$this->modelClass}->parseCriteria($this->Users->passedArgs);
+        $this->Prg->commonProcess();
+        $this->User->validator()->remove('username');
+        $this->User->validator()->remove('email');
+        $this->{$this->modelClass}->data[$this->modelClass] = $this->passedArgs;
+        if ($this->{$this->modelClass}->Behaviors->attached('Searchable')) {
+			$parsedConditions = $this->{$this->modelClass}->parseCriteria($this->passedArgs);
 		} else {
 			$parsedConditions = array();
 		}
@@ -250,10 +257,16 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	public function admin_add() {
-		if ($this->User->add($this->request->data)) {
-			$this->Session->setFlash(__d('users', 'The User has been saved'));
-			$this->redirect(array('action' => 'index'));
-		}
+        if (!empty($this->request->data)) {
+            $this->request->data['User']['tos'] = true;
+            $this->request->data['User']['email_verified'] = true;
+
+            if ($this->User->add($this->request->data)) {
+                $this->Session->setFlash(__d('users', 'The User has been saved'));
+                $this->redirect(array('action' => 'index'));
+            }
+        }
+        $this->set('roles', Configure::read('Users.roles'));
 	}
 
 /**
@@ -279,6 +292,7 @@ class UsersController extends UsersAppController {
 		if (empty($this->request->data)) {
 			$this->request->data = $this->User->read(null, $userId);
 		}
+        $this->set('roles', Configure::read('Users.roles'));
 	}
 
 /**
@@ -312,7 +326,7 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	public function add() {
-		if ($this->Auth->user()) {
+        if ($this->Auth->user()) {
 			$this->Session->setFlash(__d('users', 'You are already registered and logged in!'));
 			$this->redirect('/');
 		}
@@ -355,7 +369,7 @@ class UsersController extends UsersAppController {
 					$data['return_to'] = null;
 				}
 
-				return $this->redirect($this->Auth->redirect($data['return_to']));
+				$this->redirect($this->Auth->redirect($data['return_to']));
 			} else {
 				$this->Auth->flash(__d('users', 'Invalid e-mail / password combination.  Please try again'));
 			}
@@ -365,6 +379,8 @@ class UsersController extends UsersAppController {
 		} else {
 			$this->set('return_to', false);
 		}
+        $allowRegistration = Configure::read('Users.allowRegistration');
+        $this->set('allowRegistration', (is_null($allowRegistration) ? true : $allowRegistration));
 	}
 
 /**

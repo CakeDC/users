@@ -19,10 +19,14 @@
 					'label' => __d('users', 'Username')));
 				echo $this->Form->input('email', array(
 					'label' => __d('users', 'Email')));
-				echo $this->Form->input('is_admin', array(
-					'label' => __d('users', 'Is Admin')));
-				echo $this->Form->input('active', array(
-					'label' => __d('users', 'Active')));
+                if (!empty($roles)) {
+                    echo $this->Form->input('role', array(
+                        'label' => __d('users', 'Role'), 'values' => $roles));
+                }
+                echo $this->Form->input('is_admin', array(
+                        'label' => __d('users', 'Is Admin')));
+                    echo $this->Form->input('active', array(
+                        'label' => __d('users', 'Active')));
 			?>
 		</fieldset>
 	<?php echo $this->Form->end('Submit'); ?>

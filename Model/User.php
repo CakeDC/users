@@ -673,8 +673,14 @@ class User extends UsersAppModel {
 		} else {
 			$postData[$this->alias]['email_verified'] = 1;
 		}
-		$postData[$this->alias]['active'] = 1;
-		return $postData;
+        $postData[$this->alias]['active'] = 1;
+        $defaultRole = Configure::read('Users.defaultRole');
+        if ($defaultRole) {
+            $postData[$this->alias]['role'] = $defaultRole;
+        } else {
+            $postData[$this->alias]['role'] = 'registered';
+        }
+        return $postData;
 	}
 
 /**
@@ -782,13 +788,29 @@ class User extends UsersAppModel {
  */
 	public function add($postData = null) {
 		if (!empty($postData)) {
-			$this->create();
-			$result = $this->save($postData);
-			if ($result) {
-				$result[$this->alias][$this->primaryKey] = $this->id;
-				$this->data = $result;
-				return true;
-			}
+            $this->data = $postData;
+            if ($this->validates()) {
+                if (empty($postData[$this->alias]['role'])) {
+                    if (empty($postData[$this->alias]['is_admin'])) {
+                        $defaultRole = Configure::read('Users.defaultRole');
+                        if ($defaultRole) {
+                            $postData[$this->alias]['role'] = $defaultRole;
+                        } else {
+                            $postData[$this->alias]['role'] = 'registered';
+                        }
+                    } else {
+                        $postData[$this->alias]['role'] = 'admin';
+                    }
+                }
+                $postData[$this->alias]['password'] = $this->hash($postData[$this->alias]['password'], 'sha1', true);
+                $this->create();
+                $result = $this->save($postData, false);
+                if ($result) {
+                    $result[$this->alias][$this->primaryKey] = $this->id;
+                    $this->data = $result;
+                    return true;
+                }
+            }
 		}
 		return false;
 	}
