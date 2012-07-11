@@ -169,11 +169,11 @@ Configure::write('Users.emailConfig', 'default');
 
 You can add Users.roles on bootstrap.php file and these roles will be used on Admin Add / Edit pages. i.e:
 
-Configure::write('Users.roles', array('admin' => 'Admin', 'registered' => 'Registered'));
+	Configure::write('Users.roles', array('admin' => 'Admin', 'registered' => 'Registered'));
 
 If you don't specify roles it will use 'admin' role (if is_admin is checked) or 'registered' role otherwise. You can override 'registered role setting Users.defaultRole on bootstrap.php. i.e:
 
-Configure::write('Users.defaultRole', 'user_registered');
+	Configure::write('Users.defaultRole', 'user_registered');
 
 ## Enabling / Disabling Registration
 
