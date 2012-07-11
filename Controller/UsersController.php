@@ -150,7 +150,7 @@ class UsersController extends UsersAppController {
 					'User.email_verified' => 1)));
 
 		$this->Auth->loginRedirect = '/';
-		$this->Auth->logoutRedirect = '/';
+		$this->Auth->logoutRedirect = array('plugin' => 'users', 'controller' => 'users', 'action' => 'login');
 		$this->Auth->loginAction = array('admin' => false, 'plugin' => 'users', 'controller' => 'users', 'action' => 'login');
 	}
 
