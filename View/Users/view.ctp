@@ -24,9 +24,10 @@
 		</dd>
 		<?php
 		if (!empty($user['UserDetail'])) {
-			foreach ($user['UserDetail'] as $user_detail) {
-				echo '<dt>' . $user_detail['field'] . '</dt>';
-				echo '<dd>' . $user_detail['value'] . '</dd>';
+			foreach ($user['UserDetail'] as $section => $details) {
+			foreach ($details as $field => $value) {
+				echo '<dt>' . $section . ' - ' . $field . '</dt>';
+				echo '<dd>' . $value . '</dd>';
 			}
 		}
 		?>
