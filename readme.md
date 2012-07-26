@@ -146,7 +146,7 @@ Feel free to change the routes here or add others as you need for your applicati
 
 To modify the templates as needed copy them to
 
-	/app/View/Plugin/users/Emails/
+	/app/View/Plugin/Users/Emails/
 
 Note that you will have to overwrite any view that is linking to the plugin like the email verification email.
 
