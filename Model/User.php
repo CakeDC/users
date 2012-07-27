@@ -97,7 +97,7 @@ class User extends UsersAppModel {
 				'rule' => array('isUnique', 'email'),
 				'message' => 'This email is already in use.')),
 		'password' => array(
-			'to_short' => array(
+			'too_short' => array(
 				'rule' => array('minLength', '6'),
 				'message' => 'The password must have at least 6 characters.'),
 			'required' => array(

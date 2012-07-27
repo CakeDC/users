@@ -146,7 +146,7 @@ Feel free to change the routes here or add others as you need for your applicati
 
 To modify the templates as needed copy them to
 
-	/app/View/Plugin/users/Emails/
+	/app/View/Plugin/Users/Emails/
 
 Note that you will have to overwrite any view that is linking to the plugin like the email verification email.
 
@@ -163,17 +163,17 @@ To not create slugs for a new user records put this in your configuration: Confi
 
 The plugin uses the $default email configuration (should be present in your Config/email.php file), but you can override it using
 
-Configure::write('Users.emailConfig', 'default');
+	Configure::write('Users.emailConfig', 'default');
 
 ## Roles Management
 
 You can add Users.roles on bootstrap.php file and these roles will be used on Admin Add / Edit pages. i.e:
 
-Configure::write('Users.roles', array('admin' => 'Admin', 'registered' => 'Registered'));
+	Configure::write('Users.roles', array('admin' => 'Admin', 'registered' => 'Registered'));
 
 If you don't specify roles it will use 'admin' role (if is_admin is checked) or 'registered' role otherwise. You can override 'registered role setting Users.defaultRole on bootstrap.php. i.e:
 
-Configure::write('Users.defaultRole', 'user_registered');
+	Configure::write('Users.defaultRole', 'user_registered');
 
 ## Enabling / Disabling Registration
 
