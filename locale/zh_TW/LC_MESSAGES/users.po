@@ -1,0 +1,720 @@
+# LANGUAGE translation of the CakePHP Users plugin
+#
+# Copyright 2010, Cake Development Corporation (http://cakedc.com)
+#
+# Licensed under The MIT License
+# Redistributions of files must retain the above copyright notice.
+#
+# @copyright Copyright 2010, Cake Development Corporation (http://cakedc.com)
+# @license MIT License (http://www.opensource.org/licenses/mit-license.php)
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2010-09-15 15:48+0200\n"
+"PO-Revision-Date: 2012-03-06 02:04+0800\n"
+"Last-Translator: \n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: /controllers/details_controller.php:57;138
+msgid "Invalid Detail."
+msgstr "輸入詳細內容錯誤。"
+
+#: /controllers/details_controller.php:78
+msgid "Saved"
+msgstr "儲存成功。"
+
+#: /controllers/details_controller.php:96
+msgid "%s details saved"
+msgstr "%s 詳細資料儲存成功"
+
+#: /controllers/details_controller.php:113;196
+msgid "Invalid id for Detail"
+msgstr "錯誤的詳細資料 id"
+
+#: /controllers/details_controller.php:117;200
+msgid "Detail deleted"
+msgstr "已經刪除。"
+
+#: /controllers/details_controller.php:152;175
+msgid "The Detail has been saved"
+msgstr "詳情儲存成功。"
+
+#: /controllers/details_controller.php:155;178
+msgid "The Detail could not be saved. Please, try again."
+msgstr "詳情無法儲存，請稍後再試。"
+
+#: /controllers/details_controller.php:170
+msgid "Invalid Detail"
+msgstr "輸入詳細內容錯誤"
+
+#: /controllers/users_controller.php:157
+msgid "Profile saved."
+msgstr "個人檔案儲存成功。"
+
+#: /controllers/users_controller.php:159
+msgid "Could not save your profile."
+msgstr "無法儲存您的個人檔案。"
+
+#: /controllers/users_controller.php:193
+msgid "Invalid User."
+msgstr "錯誤的使用者。"
+
+#: /controllers/users_controller.php:207
+msgid "The User has been saved"
+msgstr "該使用者已經儲存成功。"
+
+#: /controllers/users_controller.php:223
+msgid "User saved"
+msgstr "使用者儲存成功。"
+
+#: /controllers/users_controller.php:247
+msgid "User deleted"
+msgstr "使用者已刪除"
+
+#: /controllers/users_controller.php:249
+#: /models/user.php:703
+msgid "Invalid User"
+msgstr "錯誤的使用者"
+
+#: /controllers/users_controller.php:273
+msgid "You are already registered and logged in!"
+msgstr "您已經註冊並且登入了！"
+
+#: /controllers/users_controller.php:282
+#: /tests/cases/controllers/users_controller.test.php:194
+msgid "Your account has been created. You should receive an e-mail shortly to authenticate your account. Once validated you will be able to login."
+msgstr "您的帳號已經建立。稍後您將會收到認證郵件，一旦認證完畢即可登入。"
+
+#: /controllers/users_controller.php:287
+#: /tests/cases/controllers/users_controller.test.php:205
+msgid "Your account could not be created. Please, try again."
+msgstr "您的帳號無法建立，請稍後再試。"
+
+#: /controllers/users_controller.php:309
+msgid "%s you have successfully logged in"
+msgstr "%s 您已經成功登入。"
+
+#: /controllers/users_controller.php:383
+msgid "%s you have successfully logged out"
+msgstr "% 您已經成功登出。"
+
+#: /controllers/users_controller.php:409
+msgid "There url you accessed is not longer valid"
+msgstr "您存取的網址已經失效。"
+
+#: /controllers/users_controller.php:432;545
+msgid "Password Reset"
+msgstr "重設密碼"
+
+#: /controllers/users_controller.php:434
+msgid "Your password has been reset"
+msgstr "您的密碼已被重設。"
+
+#: /controllers/users_controller.php:435
+msgid "Please login using this password and change your password"
+msgstr "請使用此密碼登入並更改密碼。"
+
+#: /controllers/users_controller.php:438
+msgid "Your password was sent to your registered email account"
+msgstr "您的密碼已經被送到您註冊的信箱。"
+
+#: /controllers/users_controller.php:444
+#: /tests/cases/controllers/users_controller.test.php:219
+msgid "Your e-mail has been validated!"
+msgstr "email 認證成功!"
+
+#: /controllers/users_controller.php:448
+msgid "There was an error trying to validate your e-mail address. Please check your e-mail for the URL you should use to verify your e-mail address."
+msgstr "您的 email 地址驗證出現錯誤。"
+
+#: /controllers/users_controller.php:452
+#: /tests/cases/controllers/users_controller.test.php:224
+msgid "The url you accessed is not longer valid"
+msgstr "您要存取的網址已經失效"
+
+#: /controllers/users_controller.php:467
+msgid "Password changed."
+msgstr "密碼更改成功。"
+
+#: /controllers/users_controller.php:521
+msgid "Account verification"
+msgstr "帳戶認證"
+
+#: /controllers/users_controller.php:563
+msgid "%s has been sent an email with instruction to reset their password."
+msgstr "一封指示怎麼重設密碼的郵件已經寄給 %s"
+
+#: /controllers/users_controller.php:567
+msgid "You should receive an email with further instructions shortly"
+msgstr "您應該稍後就會收到一封郵件，指示您進一步的操作。"
+
+#: /controllers/users_controller.php:571
+msgid "No user was found with that email."
+msgstr "該 email 並無使用者註冊。"
+
+#: /controllers/users_controller.php:588
+msgid "Invalid password reset token, try again."
+msgstr "token 錯誤，請重新再試。"
+
+#: /controllers/users_controller.php:594
+msgid "Password changed, you can now login with your new password."
+msgstr "密碼已經更改。您可以用新密碼登入。"
+
+#: /models/user.php:102
+msgid "Please enter a username"
+msgstr "請輸入使用者名稱。"
+
+#: /models/user.php:105
+msgid "The username must be alphanumeric"
+msgstr "使用者名稱只能包含英文與數字。"
+
+#: /models/user.php:108
+msgid "This username is already in use."
+msgstr "該使用者名稱已經被使用。"
+
+#: /models/user.php:111
+msgid "The username must have at least 3 characters."
+msgstr "使用者名稱必須至少含 3 個字元。"
+
+#: /models/user.php:116
+msgid "Please enter a valid email address."
+msgstr "請輸入正確的 email 地址。"
+
+#: /models/user.php:119
+msgid "This email is already in use."
+msgstr "此 email 已經被註冊。"
+
+#: /models/user.php:123
+msgid "The password must have at least 8 characters."
+msgstr "密碼必須至少含 8 個字元。"
+
+#: /models/user.php:126
+msgid "Please enter a password."
+msgstr "請輸入密碼"
+
+#: /models/user.php:129
+msgid "The passwords are not equal, please try again."
+msgstr "兩個密碼不一致，請重新再試"
+
+#: /models/user.php:132
+msgid "You must agree to the terms of use."
+msgstr "您必須同意使用者條款才行。"
+
+#: /models/user.php:137;357
+msgid "The passwords are not equal."
+msgstr "兩個密碼不一致。"
+
+#: /models/user.php:139
+msgid "Invalid password."
+msgstr "密碼錯誤"
+
+#: /models/user.php:150
+msgid "Invalid date"
+msgstr "錯誤的日期"
+
+#: /models/user.php:315
+msgid "This Email Address exists but was never validated."
+msgstr "該 Email 存在但是未認證通過。"
+
+#: /models/user.php:317
+msgid "This Email Address does not exist in the system."
+msgstr "系統中不存在該電子郵件信箱。"
+
+#: /models/user.php:406
+msgid "$this->data['"
+msgstr ""
+
+#: /models/user.php:460
+msgid "The user does not exist."
+msgstr "使用者不存在。"
+
+#: /models/user.php:505
+msgid "Please enter your email address."
+msgstr "請輸入您的 email。"
+
+#: /models/user.php:515
+msgid "The email address does not exist in the system"
+msgstr "系統中不存在該電子郵件信箱。"
+
+#: /models/user.php:520
+msgid "Your account is already authenticaed."
+msgstr "您的帳號已經認證。"
+
+#: /models/user.php:525
+msgid "Your account is disabled."
+msgstr "帳號停權中。"
+
+#: /tests/cases/controllers/users_controller.test.php:34
+msgid "Sorry, but you need to login to access this location."
+msgstr "抱歉，您需要登入才能觀看此頁面。"
+
+#: /tests/cases/controllers/users_controller.test.php:35;174
+msgid "Invalid e-mail / password combination.  Please try again"
+msgstr "錯誤的電子郵件 / 密碼組合。請重新再試。"
+
+#: /tests/cases/controllers/users_controller.test.php:168
+msgid "testuser you have successfully logged in"
+msgstr ""
+
+#: /tests/cases/controllers/users_controller.test.php:237
+msgid "floriank you have successfully logged out"
+msgstr ""
+
+#: /views/details/add.ctp:4
+#: /views/details/admin_add.ctp:4
+msgid "Add Detail"
+msgstr "新增詳細內容"
+
+#: /views/details/add.ctp:17
+#: /views/details/admin_add.ctp:17
+#: /views/details/admin_edit.ctp:19
+#: /views/details/admin_view.ctp:45
+#: /views/details/view.ctp:45
+msgid "List Details"
+msgstr "顯示細節"
+
+#: /views/details/add.ctp:18
+#: /views/details/admin_add.ctp:18
+#: /views/details/admin_edit.ctp:20
+#: /views/details/admin_index.ctp:67
+#: /views/details/admin_view.ctp:47
+#: /views/details/view.ctp:47
+#: /views/users/add.ctp:15
+#: /views/users/admin_add.ctp:13
+#: /views/users/admin_edit.ctp:15
+#: /views/users/admin_view.ctp:25
+msgid "List Users"
+msgstr "列出使用者"
+
+#: /views/details/add.ctp:19
+#: /views/details/admin_add.ctp:19
+#: /views/details/admin_edit.ctp:21
+#: /views/details/admin_index.ctp:68
+#: /views/details/admin_view.ctp:48
+#: /views/details/view.ctp:48
+#: /views/users/admin_view.ctp:26
+#: /views/users/index.ctp:46
+msgid "New User"
+msgstr "新使用者"
+
+#: /views/details/add.ctp:20
+#: /views/details/admin_add.ctp:20
+#: /views/details/admin_edit.ctp:22
+#: /views/details/admin_index.ctp:69
+#: /views/details/admin_view.ctp:49
+#: /views/details/view.ctp:49
+msgid "List Groups"
+msgstr "顯示群組"
+
+#: /views/details/add.ctp:21
+#: /views/details/admin_add.ctp:21
+#: /views/details/admin_edit.ctp:23
+#: /views/details/admin_index.ctp:70
+#: /views/details/admin_view.ctp:50;95
+#: /views/details/view.ctp:50;95
+msgid "New Group"
+msgstr "新群組"
+
+#: /views/details/admin_edit.ctp:4
+#: /views/details/admin_view.ctp:43
+#: /views/details/edit.ctp:5
+#: /views/details/view.ctp:43
+msgid "Edit Detail"
+msgstr "編輯內容"
+
+#: /views/details/admin_edit.ctp:18
+#: /views/details/admin_index.ctp:53
+#: /views/details/admin_view.ctp:86
+#: /views/details/view.ctp:86
+#: /views/users/admin_edit.ctp:14
+#: /views/users/admin_index.ctp:47
+#: /views/users/groups.ctp:38
+#: /views/users/index.ctp:33
+msgid "Delete"
+msgstr "刪除"
+
+#: /views/details/admin_edit.ctp:18
+#: /views/details/admin_index.ctp:53
+#: /views/details/admin_view.ctp:44;86
+#: /views/details/view.ctp:44;86
+#: /views/users/admin_edit.ctp:14
+#: /views/users/admin_index.ctp:47
+#: /views/users/admin_view.ctp:24
+#: /views/users/index.ctp:33
+msgid "Are you sure you want to delete # %s?"
+msgstr "確定要刪除 # %s?"
+
+#: /views/details/admin_index.ctp:2
+#: /views/users/register.ctp:4
+msgid "Details"
+msgstr "詳細內容"
+
+#: /views/details/admin_index.ctp:6
+#: /views/users/index.ctp:6
+msgid "Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%"
+msgstr "第 %page% 頁，共 %pages% 頁，顯示 %count% 筆記錄中的 %current% 筆，由第 %start% 筆開始至第 %end 筆"
+
+#: /views/details/admin_index.ctp:18
+#: /views/details/admin_view.ctp:65
+#: /views/details/view.ctp:65
+#: /views/users/admin_index.ctp:21
+#: /views/users/groups.ctp:15;50
+#: /views/users/index.ctp:13
+msgid "Actions"
+msgstr "操作"
+
+#: /views/details/admin_index.ctp:51
+#: /views/details/admin_view.ctp:84
+#: /views/details/view.ctp:84
+#: /views/users/admin_index.ctp:45
+#: /views/users/index.ctp:31
+msgid "View"
+msgstr "檢視"
+
+#: /views/details/admin_index.ctp:52
+#: /views/details/admin_view.ctp:85
+#: /views/details/view.ctp:85
+#: /views/users/admin_index.ctp:46
+#: /views/users/groups.ctp:33
+#: /views/users/index.ctp:32
+msgid "Edit"
+msgstr "編輯"
+
+#: /views/details/admin_index.ctp:60
+#: /views/users/index.ctp:40
+msgid "previous"
+msgstr "上一頁"
+
+#: /views/details/admin_index.ctp:62
+#: /views/users/index.ctp:42
+msgid "next"
+msgstr "下一頁"
+
+#: /views/details/admin_index.ctp:66
+#: /views/details/admin_view.ctp:46
+#: /views/details/view.ctp:46
+msgid "New Detail"
+msgstr "新詳細內容"
+
+#: /views/details/admin_view.ctp:2
+#: /views/details/view.ctp:2
+msgid "Detail"
+msgstr "詳細內容"
+
+#: /views/details/admin_view.ctp:4;58
+#: /views/details/view.ctp:4;58
+msgid "Id"
+msgstr "編號"
+
+#: /views/details/admin_view.ctp:9
+#: /views/details/view.ctp:9
+#: /views/users/admin_view.ctp:2
+#: /views/users/view.ctp:2
+msgid "User"
+msgstr "使用者"
+
+#: /views/details/admin_view.ctp:14
+#: /views/details/view.ctp:14
+msgid "Position"
+msgstr "位置"
+
+#: /views/details/admin_view.ctp:19
+#: /views/details/view.ctp:19
+msgid "Field"
+msgstr "欄位"
+
+#: /views/details/admin_view.ctp:24
+#: /views/details/view.ctp:24
+msgid "Value"
+msgstr "內容"
+
+#: /views/details/admin_view.ctp:29;63
+#: /views/details/view.ctp:29;63
+#: /views/users/admin_view.ctp:9
+#: /views/users/view.ctp:9
+msgid "Created"
+msgstr "建立時間"
+
+#: /views/details/admin_view.ctp:34;64
+#: /views/details/view.ctp:34;64
+#: /views/users/admin_view.ctp:14
+msgid "Modified"
+msgstr "更改時間"
+
+#: /views/details/admin_view.ctp:44
+#: /views/details/view.ctp:44
+msgid "Delete Detail"
+msgstr "刪除詳細內容"
+
+#: /views/details/admin_view.ctp:54
+#: /views/details/view.ctp:54
+msgid "Related Groups"
+msgstr "相關的群組"
+
+#: /views/details/admin_view.ctp:59
+#: /views/details/view.ctp:59
+msgid "User Id"
+msgstr "使用者編號"
+
+#: /views/details/admin_view.ctp:60
+#: /views/details/view.ctp:60
+msgid "Is Public"
+msgstr "是否公開"
+
+#: /views/details/admin_view.ctp:61
+#: /views/details/view.ctp:61
+#: /views/users/groups.ctp:13;47
+#: /views/users/search.ctp:9
+msgid "Name"
+msgstr "名稱"
+
+#: /views/details/admin_view.ctp:62
+#: /views/details/view.ctp:62
+#: /views/users/groups.ctp:48
+msgid "Description"
+msgstr "描述"
+
+#: /views/details/index.ctp:17
+#: /views/users/change_password.ctp:16
+#: /views/users/login.ctp:13
+#: /views/users/register.ctp:33;89
+#: /views/users/request_password_change.ctp:12
+#: /views/users/reset_password.ctp:14
+msgid "Submit"
+msgstr "送出"
+
+#: /views/elements/login.ctp:11
+#: /views/users/admin_index.ctp:10
+#: /views/users/login.ctp:8
+#: /views/users/register.ctp:71;78
+#: /views/users/search.ctp:7
+msgid "Email"
+msgstr "電子郵件"
+
+#: /views/elements/login.ctp:13
+#: /views/users/login.ctp:10
+#: /views/users/register.ctp:19
+msgid "Password"
+msgstr "密碼"
+
+#: /views/elements/login.ctp:15
+#: /views/users/login.ctp:1;3
+msgid "Login"
+msgstr "登入"
+
+#: /views/elements/email/text/account_verification.ctp:2
+msgid "Hello %s,"
+msgstr "%s 您好，"
+
+#: /views/elements/email/text/account_verification.ctp:4
+msgid "to validate your account, you must visit the URL below within 24 hours"
+msgstr "您必須在 24 小時內開啟下面的網址，來啟動您的帳號。"
+
+#: /views/elements/email/text/password_reset_request.ctp:2
+msgid "A request to reset your password was sent. To change your password click the link below."
+msgstr "要重設您的密碼，請點選下面的連結。"
+
+#: /views/users/add.ctp:4
+#: /views/users/admin_add.ctp:4
+msgid "Add User"
+msgstr "新增使用者"
+
+#: /views/users/admin_edit.ctp:4
+#: /views/users/admin_view.ctp:23
+#: /views/users/edit.ctp:3
+msgid "Edit User"
+msgstr "編輯使用者"
+
+#: /views/users/admin_index.ctp:2
+#: /views/users/index.ctp:2
+msgid "Users"
+msgstr "使用者列表"
+
+#: /views/users/admin_index.ctp:4
+msgid "Filter"
+msgstr "過濾"
+
+#: /views/users/admin_index.ctp:8
+#: /views/users/admin_view.ctp:4
+#: /views/users/register.ctp:57;63
+#: /views/users/search.ctp:5
+#: /views/users/view.ctp:4
+msgid "Username"
+msgstr "使用者名稱"
+
+#: /views/users/admin_index.ctp:11
+#: /views/users/search.ctp:10
+msgid "Search"
+msgstr "搜尋"
+
+#: /views/users/admin_view.ctp:24
+msgid "Delete User"
+msgstr "刪除使用者"
+
+#: /views/users/change_password.ctp:1
+msgid "Change your password"
+msgstr "更改密碼"
+
+#: /views/users/change_password.ctp:3
+msgid "Please enter your old password because of security reasons and then your new password twice."
+msgstr "為了安全考量，請輸入您的舊密碼，並輸入新密碼兩次。"
+
+#: /views/users/change_password.ctp:8
+msgid "Old Password"
+msgstr "舊密碼"
+
+#: /views/users/change_password.ctp:11
+#: /views/users/reset_password.ctp:9
+msgid "New Password"
+msgstr "新密碼"
+
+#: /views/users/change_password.ctp:14
+#: /views/users/reset_password.ctp:12
+msgid "Confirm"
+msgstr "確認"
+
+#: /views/users/dashboard.ctp:2
+msgid "Welcome"
+msgstr "歡迎光臨"
+
+#: /views/users/dashboard.ctp:3
+msgid "Recent broadcasts"
+msgstr "最新通知"
+
+#: /views/users/groups.ctp:2
+msgid "My Groups"
+msgstr "我的群組"
+
+#: /views/users/groups.ctp:5
+msgid "Create a new group"
+msgstr "建立一個新群組"
+
+#: /views/users/groups.ctp:6
+msgid "Invite a user"
+msgstr "邀請一個使用者"
+
+#: /views/users/groups.ctp:7
+msgid "Requests to join"
+msgstr "邀請列表"
+
+#: /views/users/groups.ctp:10
+msgid "My own groups"
+msgstr "我自己的群組"
+
+#: /views/users/groups.ctp:14;49
+msgid "Members"
+msgstr "成員"
+
+#: /views/users/groups.ctp:34
+msgid "Invite user"
+msgstr "邀請使用者"
+
+#: /views/users/groups.ctp:35
+msgid "Manage Broadcast Scope"
+msgstr "管理通知的範圍"
+
+#: /views/users/groups.ctp:36
+msgid "Access"
+msgstr "存取"
+
+#: /views/users/groups.ctp:37
+msgid "Addons"
+msgstr "附加"
+
+#: /views/users/groups.ctp:44
+msgid "Groups im a member in"
+msgstr "我加入的群組"
+
+#: /views/users/groups.ctp:68
+msgid "Leave group"
+msgstr "離開群組"
+
+#: /views/users/login.ctp:11
+msgid "Remember Me"
+msgstr "記住我的資訊"
+
+#: /views/users/register.ctp:2
+msgid "Account registration"
+msgstr "帳戶註冊"
+
+#: /views/users/register.ctp:10
+msgid "Please select a username that is not already in use"
+msgstr "請選一個沒人用過的使用者名稱"
+
+#: /views/users/register.ctp:11
+msgid "Must be at least 3 characters"
+msgstr "至少要 3 個字元"
+
+#: /views/users/register.ctp:12
+msgid "Username must contain numbers and letters only"
+msgstr "使用者名稱只能包含英文和數字"
+
+#: /views/users/register.ctp:13
+msgid "Please choose username"
+msgstr "請選擇使用者名稱"
+
+#: /views/users/register.ctp:15
+msgid "E-mail (used as login)"
+msgstr "電子郵件信箱 (登入使用)"
+
+#: /views/users/register.ctp:16
+msgid "Must be a valid email address"
+msgstr "必須是一個正確的 email"
+
+#: /views/users/register.ctp:17
+msgid "An account with that email already exists"
+msgstr "該 email 已經註冊帳號了"
+
+#: /views/users/register.ctp:21
+msgid "Must be at least 5 characters long"
+msgstr "至少要 5 個字元。"
+
+#: /views/users/register.ctp:23
+msgid "Password (confirm)"
+msgstr "確認密碼"
+
+#: /views/users/register.ctp:25
+msgid "Passwords must match"
+msgstr "兩個密碼必須一致"
+
+#: /views/users/register.ctp:29;85
+msgid "I have read and agreed to "
+msgstr "我已經閱讀並且同意"
+
+#: /views/users/register.ctp:29;85
+msgid "Terms of Service"
+msgstr "使用者條款"
+
+#: /views/users/register.ctp:30;86
+msgid "You must verify you have read the Terms of Service"
+msgstr "您必須確定您閱讀了使用者條款。"
+
+#: /views/users/register.ctp:46
+msgid "Openid Identifier"
+msgstr "Openid 名稱"
+
+#: /views/users/request_password_change.ctp:1
+msgid "Forgot your password?"
+msgstr "忘記密碼？"
+
+#: /views/users/request_password_change.ctp:3
+msgid "Please enter the email you used for registration and you'll get an email with further instructions."
+msgstr "請輸入您註冊的 email，您將會收到進一步的指示。"
+
+#: /views/users/request_password_change.ctp:11
+msgid "Your Email"
+msgstr "您的電子郵件信箱"
+
+#: /views/users/reset_password.ctp:1
+msgid "Reset your password"
+msgstr "重設密碼"
+
+#: /views/users/search.ctp:1
+msgid "Search for users"
+msgstr "搜尋使用者"
+

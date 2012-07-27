@@ -1,0 +1,17 @@
+{
+    "name": "cakedc/users",
+    "type": "cakephp-plugin",
+    "description": "Users Plugin for CakePHP",
+    "keywords": ["cakephp","users","auth"],
+    "homepage": "http://cakedc.com",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Cake Development Corporation",
+            "homepage": "http://cakedc.com"
+        }
+    ],
+    "require": {
+        "composer/installers": "*"
+    }
+}
