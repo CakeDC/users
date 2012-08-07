@@ -127,16 +127,12 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	protected function _setupAuth() {
-		$this->Auth->allow('add', 'reset', 'verify', 'logout', 'view', 'reset_password');
+		$this->Auth->allow('add', 'reset', 'verify', 'logout', 'view', 'reset_password', 'login');
         if (!is_null(Configure::read('Users.allowRegistration')) && !Configure::read('Users.allowRegistration')) {
             $this->Auth->deny('add');
         }
 		if ($this->request->action == 'register') {
 			$this->Components->disable('Auth');
-		}
-
-		if ($this->request->action == 'login') {
-			$this->Auth->autoRedirect = false;
 		}
 
 		$this->Auth->authenticate = array(
