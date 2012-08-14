@@ -100,7 +100,6 @@ To use the basics the plugin already offers but changing some of the settings ov
 	protected function _setupAuth() {
 		parent::_setupAuth();
 
-		$this->Auth->autoRedirect = false;
 		$this->Auth->loginRedirect = array('plugin' => null, 'admin' => false, 'controller' => 'app_users', 'action' => 'login');
 	}
 
