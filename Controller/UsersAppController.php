@@ -28,7 +28,7 @@ class UsersAppController extends AppController {
  * @return boolean True if allowed
  */
 	public function isAuthorized() {
-		return true;
+		return parent::isAuthorized;
 	}
 
 }
