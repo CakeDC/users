@@ -14,7 +14,7 @@
  * @package   plugins.users.config.migrations
  * @license   MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
-class M49c3417a54874a9d276811502cedc421 extends CakeMigration {
+class InitializeUsersSchema extends CakeMigration {
 /**
  * Dependency array. Define what minimum version required for other part of db schema
  *
