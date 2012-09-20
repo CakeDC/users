@@ -16,12 +16,12 @@ App::uses('UsersAppController', 'Users.Controller');
  *
  * @package       Users
  * @subpackage    Users.Controller
- * @property      AuthComponent $Auth
- * @property      CookieComponent $Cookie
- * @property      PaginatorComponent $Paginator
- * @property      SecurityComponent $Security
- * @property      SessionComponent $Session
- * @property      User $User
+ * @property	  AuthComponent $Auth
+ * @property	  CookieComponent $Cookie
+ * @property	  PaginatorComponent $Paginator
+ * @property	  SecurityComponent $Security
+ * @property	  SessionComponent $Session
+ * @property	  User $User
  */
 class UsersController extends UsersAppController {
 
@@ -54,9 +54,9 @@ class UsersController extends UsersAppController {
 		'Session',
 		'Cookie',
 		'Paginator',
-		//'Security',
-        'Search.Prg',
-    );
+		'Security',
+		'Search.Prg',
+	);
 
 /**
  * Preset vars
@@ -127,16 +127,12 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	protected function _setupAuth() {
-		$this->Auth->allow('add', 'reset', 'verify', 'logout', 'view', 'reset_password');
-        if (!is_null(Configure::read('Users.allowRegistration')) && !Configure::read('Users.allowRegistration')) {
-            $this->Auth->deny('add');
-        }
+		$this->Auth->allow('add', 'reset', 'verify', 'logout', 'view', 'reset_password', 'login');
+		if (!is_null(Configure::read('Users.allowRegistration')) && !Configure::read('Users.allowRegistration')) {
+			$this->Auth->deny('add');
+		}
 		if ($this->request->action == 'register') {
 			$this->Components->disable('Auth');
-		}
-
-		if ($this->request->action == 'login') {
-			$this->Auth->autoRedirect = false;
 		}
 
 		$this->Auth->authenticate = array(
@@ -221,11 +217,11 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	public function admin_index() {
-        $this->Prg->commonProcess();
-        $this->User->validator()->remove('username');
-        $this->User->validator()->remove('email');
-        $this->{$this->modelClass}->data[$this->modelClass] = $this->passedArgs;
-        if ($this->{$this->modelClass}->Behaviors->attached('Searchable')) {
+		$this->Prg->commonProcess();
+		$this->User->validator()->remove('username');
+		$this->User->validator()->remove('email');
+		$this->{$this->modelClass}->data[$this->modelClass] = $this->passedArgs;
+		if ($this->{$this->modelClass}->Behaviors->attached('Searchable')) {
 			$parsedConditions = $this->{$this->modelClass}->parseCriteria($this->passedArgs);
 		} else {
 			$parsedConditions = array();
@@ -257,16 +253,16 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	public function admin_add() {
-        if (!empty($this->request->data)) {
-            $this->request->data['User']['tos'] = true;
-            $this->request->data['User']['email_verified'] = true;
+		if (!empty($this->request->data)) {
+			$this->request->data['User']['tos'] = true;
+			$this->request->data['User']['email_verified'] = true;
 
-            if ($this->User->add($this->request->data)) {
-                $this->Session->setFlash(__d('users', 'The User has been saved'));
-                $this->redirect(array('action' => 'index'));
-            }
-        }
-        $this->set('roles', Configure::read('Users.roles'));
+			if ($this->User->add($this->request->data)) {
+				$this->Session->setFlash(__d('users', 'The User has been saved'));
+				$this->redirect(array('action' => 'index'));
+			}
+		}
+		$this->set('roles', Configure::read('Users.roles'));
 	}
 
 /**
@@ -292,7 +288,7 @@ class UsersController extends UsersAppController {
 		if (empty($this->request->data)) {
 			$this->request->data = $this->User->read(null, $userId);
 		}
-        $this->set('roles', Configure::read('Users.roles'));
+		$this->set('roles', Configure::read('Users.roles'));
 	}
 
 /**
@@ -326,7 +322,7 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	public function add() {
-        if ($this->Auth->user()) {
+		if ($this->Auth->user()) {
 			$this->Session->setFlash(__d('users', 'You are already registered and logged in!'));
 			$this->redirect('/');
 		}
@@ -352,14 +348,14 @@ class UsersController extends UsersAppController {
  */
 	public function login() {
 		if ($this->request->is('post')) {
-            if ($this->Auth->login()) {
+			if ($this->Auth->login()) {
 				$this->User->id = $this->Auth->user('id');
-                $this->User->saveField('last_login', date('Y-m-d H:i:s'));
+				$this->User->saveField('last_login', date('Y-m-d H:i:s'));
 
 				if ($this->here == $this->Auth->loginRedirect) {
 					$this->Auth->loginRedirect = '/';
 				}
-                $this->Session->setFlash(sprintf(__d('users', '%s you have successfully logged in'), $this->Auth->user('username')));
+				$this->Session->setFlash(sprintf(__d('users', '%s you have successfully logged in'), $this->Auth->user('username')));
 				if (!empty($this->request->data)) {
 					$data = $this->request->data[$this->modelClass];
 					$this->_setCookie();
@@ -379,8 +375,8 @@ class UsersController extends UsersAppController {
 		} else {
 			$this->set('return_to', false);
 		}
-        $allowRegistration = Configure::read('Users.allowRegistration');
-        $this->set('allowRegistration', (is_null($allowRegistration) ? true : $allowRegistration));
+		$allowRegistration = Configure::read('Users.allowRegistration');
+		$this->set('allowRegistration', (is_null($allowRegistration) ? true : $allowRegistration));
 	}
 
 /**
@@ -657,7 +653,7 @@ class UsersController extends UsersAppController {
  * @link http://book.cakephp.org/2.0/en/core-libraries/components/cookie.html
  */
 	protected function _setCookie($options = array(), $cookieKey = 'User') {
-        if (empty($this->request->data[$this->modelClass]['remember_me'])) {
+		if (empty($this->request->data[$this->modelClass]['remember_me'])) {
 			$this->Cookie->delete($cookieKey);
 		} else {
 			$validProperties = array('domain', 'key', 'name', 'path', 'secure', 'time');
