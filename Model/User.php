@@ -568,6 +568,10 @@ class User extends UsersAppModel {
 			$this->_removeExpiredRegistrations();
 		}
 
+		if (!empty($postData[$this->alias]['is_admin'])) {
+			unset($postData[$this->alias]['is_admin']);
+		}
+
 		$this->set($postData);
 		if ($this->validates()) {
 			$postData[$this->alias]['password'] = $this->hash($postData[$this->alias]['password'], 'sha1', true);
