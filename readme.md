@@ -16,7 +16,7 @@ The plugin is pretty easy to set up, all you need to do is to copy it to you app
 
 or
 
-	./Console/cake Migrations.migration all --plugin Users
+	./Console/cake Migrations.migration run all --plugin Users
 
 You will also need the [CakeDC Search plugin](http://github.com/CakeDC/search), just grab it and put it into your application's plugin folder.
 
