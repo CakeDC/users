@@ -2,7 +2,7 @@
 /**
  * Users CakePHP Plugin
  *
- * Copyright 2010 - 2011, Cake Development Corporation
+ * Copyright 2010 - 2012, Cake Development Corporation
  *                 1785 E. Sahara Avenue, Suite 490-423
  *                 Las Vegas, Nevada 89104
  *
