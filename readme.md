@@ -44,10 +44,10 @@ To use the "remember me" checkbox which sets a cookie on the login page you will
 	public function restoreLoginFromCookie() {
 		$this->Cookie->name = 'Users';
 		$cookie = $this->Cookie->read('rememberMe');
-		if (!empty($cookie) && !$this->Auth->user()) {
-			$data['User'][$this->Auth->fields['username']] = $cookie[$this->Auth->fields['username']];
-			$data['User'][$this->Auth->fields['password']] = $cookie[$this->Auth->fields['password']];
-			$this->Auth->login($data);
+		if (!empty($cookie)) {
+			$this->request->data['User'][$this->Auth->fields['username']] = $cookie[$this->Auth->fields['username']];
+			$this->request->data['User'][$this->Auth->fields['password']] = $cookie[$this->Auth->fields['password']];
+			$this->Auth->login();
 		}
 	}
 
