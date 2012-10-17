@@ -14,7 +14,6 @@ class RememberMeComponent extends Component {
  * @var array
  */
 	public $components = array(
-		'Auth',
 		'Cookie');
 
 /**
@@ -25,6 +24,13 @@ class RememberMeComponent extends Component {
 	public $request;
 
 /**
+ * Settings
+ *
+ * @var array
+ */
+	public $settings = array();
+
+/**
  * Default settings
  *
  * @var array
@@ -33,7 +39,8 @@ class RememberMeComponent extends Component {
 		'autoLogin' => true,
 		'userModel' => 'User',
 		'cookieKey' => 'rememberMe',
-		'cookieName' => 'Users',
+		'cookie' => array(
+			'name' => 'Users'),
 		'fields' => array(
 			'email',
 			'username',
@@ -49,10 +56,8 @@ class RememberMeComponent extends Component {
  */
 	public function __construct(ComponentCollection $collection, $settings = array()) {
 		parent::__construct($collection, $settings);
-
 		$this->settings = Set::merge($this->_defaults, $settings);
-		$this->Controller = $collection->getController();
-		$this->request = $this->Controller->request;
+		$this->configureCookie($this->settings['cookie']);
 	}
 
 /**
@@ -61,19 +66,24 @@ class RememberMeComponent extends Component {
  * @param Controller $controller
  * @return void
  */
-	public function initialize(Controller $controller) {
+	public function startup(Controller $controller) {
+		$this->Controller = $controller;
+		$this->request = $this->Controller->request;
+		$this->response = $this->Controller->response;
+		$this->Auth = $this->Controller->Auth;
+
 		if ($this->settings['autoLogin'] == true && !$this->Auth->loggedIn()) {
 			$this->restoreLoginFromCookie();
 		}
 	}
 
 /**
+ * Logs the user again in based on the cookie data
  *
+ * @return boolean True on login success, false on failure
  */
 	public function restoreLoginFromCookie() {
 		extract($this->settings);
-
-		$this->Cookie->name = $cookieName;
 		$cookie = $this->Cookie->read($cookieKey);
 
 		if (!empty($cookie)) {
@@ -82,27 +92,18 @@ class RememberMeComponent extends Component {
 					$this->request->data[$userModel][$field] = $cookie[$field];
 				}
 			}
-			$this->Auth->login();
+			return $this->Auth->login();
 		}
 	}
 
 /**
+ * Sets the cookie with the specified fields
  *
+ * @param options
+ * @return void
  */
-	public function setCookie($options = array()) {
+	public function setCookie() {
 		extract($this->settings);
-
-		$validProperties = array('domain', 'key', 'name', 'path', 'secure', 'time');
-		$defaults = array(
-			'name' => 'Users');
-
-		$options = array_merge($defaults, $options);
-
-		foreach ($options as $key => $value) {
-			if (in_array($key, $validProperties)) {
-				$this->Cookie->{$key} = $value;
-			}
-		}
 
 		$cookieData = array();
 		foreach ($fields as $field) {
@@ -111,13 +112,35 @@ class RememberMeComponent extends Component {
 			}
 		}
 
-		$this->Cookie->write($cookieKey, $cookieData, true, '1 Month');
+		$this->Cookie->write($cookieKey, $cookieData, true);
 	}
 
 	public function destroyCookie() {
 		extract($this->settings);
-		$this->Cookie->name = $cookieName;
 		$this->Cookie->destroy();
 	}
 
+/**
+ * Configures the cookie component instance
+ *
+ * @param array $options
+ * @throws InvalidArgumentException Thrown if an invalid option key was passed
+ * @return void
+ */
+	public function configureCookie($options = array()) {
+		$validProperties = array('domain', 'key', 'name', 'path', 'secure', 'time');
+		$defaults = array(
+			'time' => '1 month',
+			'name' => 'Users');
+
+		$options = array_merge($defaults, $options);
+
+		foreach ($options as $key => $value) {
+			if (in_array($key, $validProperties)) {
+				$this->Cookie->{$key} = $value;
+			} else {
+				throw new InvalidArgumentException(__('users', 'Invalid options %s', $key));
+			}
+		}
+	}
 }

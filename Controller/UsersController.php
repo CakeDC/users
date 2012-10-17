@@ -655,11 +655,14 @@ class UsersController extends UsersAppController {
  * Sets the cookie to remember the user
  *
  * @param array Cookie component properties as array, like array('domain' => 'yourdomain.com')
- * @param string Cookie data keyname for the userdata, its default is "User". This is set to User and NOT using the model alias to make sure it works with different apps with different user models across different (sub)domains.
+ * @param string $cookieKey
  * @return void
  * @link http://book.cakephp.org/2.0/en/core-libraries/components/cookie.html
+ * @deprecated Use the RememberMe Component
  */
-	protected function _setCookie($options = array(), $cookieKey = 'rememberMe') {
+	protected function _setCookie($options = array(), $cookieKey) {
+		$this->RememberMe->settings['cookieKey'] = $cookieKey;
+		$this->RememberMe->configureCookie($options);
 		$this->RememberMe->setCookie($options);
 	}
 
