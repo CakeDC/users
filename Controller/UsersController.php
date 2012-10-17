@@ -652,13 +652,13 @@ class UsersController extends UsersAppController {
  * @return void
  * @link http://book.cakephp.org/2.0/en/core-libraries/components/cookie.html
  */
-	protected function _setCookie($options = array(), $cookieKey = 'User') {
+	protected function _setCookie($options = array(), $cookieKey = 'rememberMe') {
 		if (empty($this->request->data[$this->modelClass]['remember_me'])) {
 			$this->Cookie->delete($cookieKey);
 		} else {
 			$validProperties = array('domain', 'key', 'name', 'path', 'secure', 'time');
 			$defaults = array(
-				'name' => 'rememberMe');
+				'name' => 'Users');
 
 			$options = array_merge($defaults, $options);
 			foreach ($options as $key => $value) {
