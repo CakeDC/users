@@ -56,9 +56,7 @@ class RememberMeComponent extends Component {
 		'fields' => array(
 			'email',
 			'username',
-			'password',
-		),
-	);
+			'password'));
 
 /**
  * Constructor
@@ -73,7 +71,7 @@ class RememberMeComponent extends Component {
 	}
 
 /**
- *
+ * startup
  *
  * @param Controller $controller
  * @return void
@@ -111,25 +109,35 @@ class RememberMeComponent extends Component {
 /**
  * Sets the cookie with the specified fields
  *
- * @param options
+ * @param array Optional, login credentials array in the form of Model.field, if empty this->request['<model>'] will be used
  * @return void
  */
-	public function setCookie() {
+	public function setCookie($data = array()) {
 		extract($this->settings);
 
+		if (empty($data)) {
+			$data = $this->request->data;
+		}
+
 		$cookieData = array();
+
 		foreach ($fields as $field) {
-			if (isset($this->request->data[$userModel][$field]) && !empty($this->request->data[$userModel][$field])) {
-				$cookieData[$field] = $this->request->data[$userModel][$field];
+			if (isset($data[$userModel][$field]) && !empty($data[$userModel][$field])) {
+				$cookieData[$field] = $data[$userModel][$field];
 			}
 		}
 
 		$this->Cookie->write($cookieKey, $cookieData, true);
 	}
 
+/**
+ * Destroys the remember me cookie
+ *
+ * @return void
+ */
 	public function destroyCookie() {
 		extract($this->settings);
-		$this->Cookie->destroy();
+		$this->Cookie->destroy($cookie['name']);
 	}
 
 /**
