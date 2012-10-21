@@ -342,6 +342,13 @@ class UsersController extends UsersAppController {
 	}
 
 /**
+ * Callback after a user is logged in
+ *
+ * @return void
+ */
+	protected function _afterLogin() {}
+
+/**
  * Common login action
  *
  * @return void
@@ -349,6 +356,7 @@ class UsersController extends UsersAppController {
 	public function login() {
 		if ($this->request->is('post')) {
 			if ($this->Auth->login()) {
+				$this->_afterLogin();
 				$this->User->id = $this->Auth->user('id');
 				$this->User->saveField('last_login', date('Y-m-d H:i:s'));
 
