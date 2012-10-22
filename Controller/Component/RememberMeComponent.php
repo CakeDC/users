@@ -52,7 +52,7 @@ class RememberMeComponent extends Component {
 		'userModel' => 'User',
 		'cookieKey' => 'rememberMe',
 		'cookie' => array(
-			'name' => 'Users'),
+			'name' => 'User'),
 		'fields' => array(
 			'email',
 			'username',
@@ -71,17 +71,23 @@ class RememberMeComponent extends Component {
 	}
 
 /**
+ * Initializes RememberMeComponent for use in the controller
+ *
+ * @param Controller $controller A reference to the instantiating controller object
+ * @return void
+ */
+	public function initialize(Controller $controller) {
+		$this->request = $controller->request;
+		$this->Auth = $this->Controller->Auth;
+	}
+
+/**
  * startup
  *
  * @param Controller $controller
  * @return void
  */
 	public function startup(Controller $controller) {
-		$this->Controller = $controller;
-		$this->request = $this->Controller->request;
-		$this->response = $this->Controller->response;
-		$this->Auth = $this->Controller->Auth;
-
 		if ($this->settings['autoLogin'] == true && !$this->Auth->loggedIn()) {
 			$this->restoreLoginFromCookie();
 		}
@@ -151,7 +157,7 @@ class RememberMeComponent extends Component {
 		$validProperties = array('domain', 'key', 'name', 'path', 'secure', 'time');
 		$defaults = array(
 			'time' => '1 month',
-			'name' => 'Users');
+			'name' => 'User');
 
 		$options = array_merge($defaults, $options);
 

@@ -14,6 +14,7 @@ App::uses('User', 'Users.Model');
 App::uses('AuthComponent', 'Controller/Component');
 App::uses('CookieComponent', 'Controller/Component');
 App::uses('SessionComponent', 'Controller/Component');
+App::uses('RememberMeComponent', 'Users.Controller/Component');
 App::uses('Security', 'Utility');
 app::uses('CakeEmail', 'Network/Email');
 
@@ -263,6 +264,10 @@ class UsersControllerTestCase extends CakeTestCase {
 		$this->Users->Session->expects($this->any())
 				->method('setFlash')
 				->with(__d('users', 'adminuser you have successfully logged in'));
+		$this->Users->RememberMe = $this->getMock('RememberMeComponent', array(), array($this->Collection));
+		$this->Users->RememberMe->expects($this->any())
+			->method('destroyCookie');
+
 		$this->Users->login();
 		$this->assertEqual(Router::normalize($this->Users->redirectUrl), Router::normalize(Router::url($this->Users->Auth->loginRedirect)));
 	}
@@ -392,6 +397,10 @@ class UsersControllerTestCase extends CakeTestCase {
 		$this->Users->Auth->staticExpects($this->at(0))
 			->method('user')
 			->will($this->returnValue($this->usersData['validUser']));
+		$this->Users->RememberMe = $this->getMock('RememberMeComponent', array(), array($this->Collection));
+		$this->Users->RememberMe->expects($this->any())
+			->method('destroyCookie');
+
 		$this->Users->logout();
 		$this->assertEqual($this->Users->redirectUrl, '/');
 	}
@@ -542,18 +551,19 @@ class UsersControllerTestCase extends CakeTestCase {
 				'remember_me' => 1,
 				'email' => 'testuser@cakedc.com',
 				'username' => 'test',
-				'password' => 'testtest')
-		));
+				'password' => 'testtest')));
+
 		$this->Users->setCookie(array(
 			'name' => 'userTestCookie'));
-		$this->Users->Cookie->name = 'userTestCookie';
-		$result = $this->Users->Cookie->read('User');
+
+		$this->Users->RememberMe->Cookie->name = 'userTestCookie';
+		$result = $this->Users->RememberMe->Cookie->read('User');
+
 		$this->assertEqual($result, array(
 			'password' => 'testtest',
-			'email' => 'testuser@cakedc.com',
-		));
+			'email' => 'testuser@cakedc.com'));
 	}
-	
+
 /**
  * Test getting default and setted email instance config
  *
@@ -570,7 +580,6 @@ class UsersControllerTestCase extends CakeTestCase {
 		$this->setExpectedException('ConfigureException');
 		Configure::write('Users.emailConfig', 'doesnotexist');
 		$anotherConfig = $this->Users->getMailInstance()->config();
-		
 	}
 
 /**

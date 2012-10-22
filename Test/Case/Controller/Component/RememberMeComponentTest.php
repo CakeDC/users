@@ -66,8 +66,8 @@ class RememberMeComponentTest extends CakeTestCase {
 		$this->RememberMe->Cookie->expects($this->once())
 			->method('write')
 			->with('rememberMe', array(
-					'email' => 'email',
-					'password' => 'password'), true);
+				'email' => 'email',
+				'password' => 'password'), true);
 
 		$this->RememberMe->setCookie(array(
 			'User' => array(
@@ -107,7 +107,7 @@ class RememberMeComponentTest extends CakeTestCase {
 	public function testDestroyCookie() {
 		$this->RememberMe->Cookie->expects($this->once())
 			->method('destroy')
-			->with($this->equalTo('Users'));
+			->with($this->equalTo('User'));
 		$this->RememberMe->destroyCookie();
 	}
 
