@@ -351,6 +351,10 @@ class UsersController extends UsersAppController {
 	public function login() {
 		if ($this->request->is('post')) {
 			if ($this->Auth->login()) {
+				$this->getEventManager()->dispatch(new CakeEvent('Users.afterLogin', $this, array(
+					'isFirstLogin' => !$this->Auth->user('last_login')
+				)));
+
 				$this->User->id = $this->Auth->user('id');
 				$this->User->saveField('last_login', date('Y-m-d H:i:s'));
 
