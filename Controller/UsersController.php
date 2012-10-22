@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2011, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2012, Cake Development Corporation (http://cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2011, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2012, Cake Development Corporation (http://cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -22,6 +22,7 @@ App::uses('UsersAppController', 'Users.Controller');
  * @property	  SecurityComponent $Security
  * @property	  SessionComponent $Session
  * @property	  User $User
+ * @property	  RememberMeComponent $RememberMe
  */
 class UsersController extends UsersAppController {
 
@@ -56,6 +57,7 @@ class UsersController extends UsersAppController {
 		'Paginator',
 		'Security',
 		'Search.Prg',
+		'Users.RememberMe',
 	);
 
 /**
@@ -358,7 +360,11 @@ class UsersController extends UsersAppController {
 				$this->Session->setFlash(sprintf(__d('users', '%s you have successfully logged in'), $this->Auth->user('username')));
 				if (!empty($this->request->data)) {
 					$data = $this->request->data[$this->modelClass];
-					$this->_setCookie();
+					if (empty($this->request->data[$this->modelClass]['remember_me'])) {
+						$this->RememberMe->destroyCookie();
+					} else {
+						$this->_setCookie();
+					}
 				}
 
 				if (empty($data['return_to'])) {
@@ -431,6 +437,7 @@ class UsersController extends UsersAppController {
 		$user = $this->Auth->user();
 		$this->Session->destroy();
 		$this->Cookie->destroy();
+		$this->RememberMe->destroyCookie();
 		$this->Session->setFlash(sprintf(__d('users', '%s you have successfully logged out'), $user[$this->{$this->modelClass}->displayField]));
 		$this->redirect($this->Auth->logout());
 	}
@@ -647,32 +654,16 @@ class UsersController extends UsersAppController {
 /**
  * Sets the cookie to remember the user
  *
- * @param array Cookie component properties as array, like array('domain' => 'yourdomain.com')
+ * @param array RememberMe (Cookie) component properties as array, like array('domain' => 'yourdomain.com')
  * @param string Cookie data keyname for the userdata, its default is "User". This is set to User and NOT using the model alias to make sure it works with different apps with different user models across different (sub)domains.
  * @return void
  * @link http://book.cakephp.org/2.0/en/core-libraries/components/cookie.html
+ * @deprecated Use the RememberMe Component
  */
-	protected function _setCookie($options = array(), $cookieKey = 'rememberMe') {
-		if (empty($this->request->data[$this->modelClass]['remember_me'])) {
-			$this->Cookie->delete($cookieKey);
-		} else {
-			$validProperties = array('domain', 'key', 'name', 'path', 'secure', 'time');
-			$defaults = array(
-				'name' => 'Users');
-
-			$options = array_merge($defaults, $options);
-			foreach ($options as $key => $value) {
-				if (in_array($key, $validProperties)) {
-					$this->Cookie->{$key} = $value;
-				}
-			}
-
-			$cookieData = array(
-				'email' => $this->request->data[$this->modelClass]['email'],
-				'password' => $this->request->data[$this->modelClass]['password']);
-			$this->Cookie->write($cookieKey, $cookieData, true, '1 Month');
-		}
-		unset($this->request->data[$this->modelClass]['remember_me']);
+	protected function _setCookie($options = array(), $cookieKey = 'User') {
+		$this->RememberMe->settings['cookieKey'] = $cookieKey;
+		$this->RememberMe->configureCookie($options);
+		$this->RememberMe->setCookie();
 	}
 
 /**
