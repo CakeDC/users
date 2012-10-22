@@ -553,15 +553,18 @@ class UsersControllerTestCase extends CakeTestCase {
 				'username' => 'test',
 				'password' => 'testtest')));
 
+		$this->Collection = $this->getMock('ComponentCollection');
+		$this->Users->RememberMe = $this->getMock('RememberMeComponent', array(), array($this->Collection));
+		$this->Users->RememberMe->expects($this->once())
+			->method('configureCookie')
+			->with(array('name' => 'userTestCookie'));
+		$this->Users->RememberMe->expects($this->once())
+			->method('setCookie');
+
 		$this->Users->setCookie(array(
 			'name' => 'userTestCookie'));
 
-		$this->Users->RememberMe->Cookie->name = 'userTestCookie';
-		$result = $this->Users->RememberMe->Cookie->read('User');
-
-		$this->assertEqual($result, array(
-			'password' => 'testtest',
-			'email' => 'testuser@cakedc.com'));
+		$this->assertEqual($this->Users->RememberMe->settings['cookieKey'], 'User');
 	}
 
 /**
