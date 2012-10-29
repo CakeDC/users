@@ -78,7 +78,7 @@ class RememberMeComponent extends Component {
  */
 	public function initialize(Controller $controller) {
 		$this->request = $controller->request;
-		$this->Auth = $this->Controller->Auth;
+		$this->Auth = $controller->Auth;
 	}
 
 /**
