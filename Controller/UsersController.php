@@ -349,6 +349,10 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	public function login() {
+		if ($this->Auth->user()) {
+			$this->Session->setFlash(__d('users', 'You are already logged in!'));
+			$this->redirect('/');
+		}
 		if ($this->request->is('post')) {
 			if ($this->Auth->login()) {
 				$this->getEventManager()->dispatch(new CakeEvent('Users.afterLogin', $this, array(
