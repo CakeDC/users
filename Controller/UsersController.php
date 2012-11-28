@@ -220,8 +220,8 @@ class UsersController extends UsersAppController {
  */
 	public function admin_index() {
 		$this->Prg->commonProcess();
-		$this->User->validator()->remove('username');
-		$this->User->validator()->remove('email');
+		unset($this->User->validate['username']);
+		unset($this->User->validate['email']);
 		$this->{$this->modelClass}->data[$this->modelClass] = $this->passedArgs;
 		if ($this->{$this->modelClass}->Behaviors->attached('Searchable')) {
 			$parsedConditions = $this->{$this->modelClass}->parseCriteria($this->passedArgs);
