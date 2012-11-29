@@ -57,8 +57,7 @@ class UsersController extends UsersAppController {
 		'Paginator',
 		'Security',
 		'Search.Prg',
-		'Users.RememberMe',
-	);
+		'Users.RememberMe');
 
 /**
  * Preset vars
@@ -664,7 +663,7 @@ class UsersController extends UsersAppController {
  * @link http://book.cakephp.org/2.0/en/core-libraries/components/cookie.html
  * @deprecated Use the RememberMe Component
  */
-	protected function _setCookie($options = array(), $cookieKey = 'User') {
+	protected function _setCookie($options = array(), $cookieKey = 'rememberMe') {
 		$this->RememberMe->settings['cookieKey'] = $cookieKey;
 		$this->RememberMe->configureCookie($options);
 		$this->RememberMe->setCookie();

@@ -26,7 +26,8 @@ class RememberMeComponent extends Component {
  * @var array
  */
 	public $components = array(
-		'Cookie');
+		'Cookie',
+		'Auth');
 
 /**
  * Request object
@@ -78,7 +79,6 @@ class RememberMeComponent extends Component {
  */
 	public function initialize(Controller $controller) {
 		$this->request = $controller->request;
-		$this->Auth = $this->Controller->Auth;
 	}
 
 /**
@@ -100,6 +100,7 @@ class RememberMeComponent extends Component {
  */
 	public function restoreLoginFromCookie() {
 		extract($this->settings);
+
 		$cookie = $this->Cookie->read($cookieKey);
 
 		if (!empty($cookie)) {
@@ -116,13 +117,20 @@ class RememberMeComponent extends Component {
  * Sets the cookie with the specified fields
  *
  * @param array Optional, login credentials array in the form of Model.field, if empty this->request['<model>'] will be used
- * @return void
+ * @return boolean
  */
 	public function setCookie($data = array()) {
 		extract($this->settings);
 
 		if (empty($data)) {
 			$data = $this->request->data;
+			if (empty($data)) {
+				$data = $this->Auth->user();
+			}
+		}
+
+		if (empty($data)) {
+			return false;
 		}
 
 		$cookieData = array();
@@ -133,7 +141,7 @@ class RememberMeComponent extends Component {
 			}
 		}
 
-		$this->Cookie->write($cookieKey, $cookieData, true);
+		return $this->Cookie->write($cookieKey, $cookieData, true, '+99 years');
 	}
 
 /**
