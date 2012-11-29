@@ -37,21 +37,31 @@ The plugin itself is already capable of:
 
 The default password reset process requires the user to enter his email address, an email is sent to the user with a link and a token. When the user accesses the URL with the token he can enter a new password.
 
-### Using the "remember me" cookie ###
+### Using the "remember me" functionality ###
 
-To use the "remember me" checkbox which sets a cookie on the login page you will need to put this code or method call in your AppController::beforeFilter() method.
+To use the "remember me" checkbox which sets a cookie on the login page you will need to add the RememberMe component to the AppController or the controllers you want to auto-login the user again based on the cookie.
 
-	public function restoreLoginFromCookie() {
-		$this->Cookie->name = 'Users';
-		$cookie = $this->Cookie->read('rememberMe');
-		if (!empty($cookie)) {
-			$this->request->data['User'][$this->Auth->fields['username']] = $cookie[$this->Auth->fields['username']];
-			$this->request->data['User'][$this->Auth->fields['password']] = $cookie[$this->Auth->fields['password']];
-			$this->Auth->login();
-		}
+	public $components = array(
+		'Users.RemembeMe');
+
+If you are using another user model than 'User' you'll have to configure it:
+
+	public $components = array(
+		'Users.RemembeMe' => array(
+			'userModel' => 'AppUser');
+
+And add this line
+
+	$this->RememberMe->restoreLoginFromCookie()
+
+to your controllers beforeFilter() callack
+
+	public function beforeFilter() {
+		parent::beforeFilter();
+		$this->RememberMe->restoreLoginFromCookie();
 	}
 
-The code will read the login credentials from the cookie and log the user in based on that information. Do not forget to change the cookie name or fields to what you are using if you have changed them in your application!
+The code will read the login credentials from the cookie and log the user in based on that information. Note that you have to use CakePHPs AuthComponent or an aliased Component implementing the same interface as AuthComponent.
 
 ## How to extend the plugin ##
 
