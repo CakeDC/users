@@ -96,11 +96,15 @@ class RememberMeComponent extends Component {
 /**
  * Logs the user again in based on the cookie data
  *
+ * @param boolean $checkLoginStatus
  * @return boolean True on login success, false on failure
  */
-	public function restoreLoginFromCookie() {
-		extract($this->settings);
+	public function restoreLoginFromCookie($checkLoginStatus = true) {
+		if ($checkLoginStatus && $this->Auth->loggedIn()) {
+			return true;
+		}
 
+		extract($this->settings);
 		$cookie = $this->Cookie->read($cookieKey);
 
 		if (!empty($cookie)) {
@@ -109,7 +113,10 @@ class RememberMeComponent extends Component {
 					$this->request->data[$userModel][$field] = $cookie[$field];
 				}
 			}
-			return $this->Auth->login();
+
+			$result = $this->Auth->login();
+			unset($this->request->data[$userModel]);
+			return $result;
 		}
 	}
 
