@@ -88,7 +88,7 @@ class UsersController extends UsersAppController {
  *
  * @return void
  * @link https://github.com/CakeDC/search
- */	
+ */
 	protected function _setupComponents() {
 		if (App::import('Component', 'Search.Prg')) {
 			$this->components[] = 'Search.Prg';
@@ -99,7 +99,7 @@ class UsersController extends UsersAppController {
  * Setup helpers based on plugin availability
  *
  * @return void
- */	
+ */
 	protected function _setupHelpers() {
 		if (App::import('Helper', 'Goodies.Gravatar')) {
 			$this->helpers[] = 'Goodies.Gravatar';
@@ -141,7 +141,7 @@ class UsersController extends UsersAppController {
 				'fields' => array(
 					'username' => 'email',
 					'password' => 'password'),
-				'userModel' => 'Users.User', 
+				'userModel' => 'Users.User',
 				'scope' => array(
 					'User.active' => 1,
 					'User.email_verified' => 1)));
@@ -160,7 +160,7 @@ class UsersController extends UsersAppController {
 		$this->paginate = array(
 			'limit' => 12,
 			'conditions' => array(
-				$this->modelClass . '.active' => 1, 
+				$this->modelClass . '.active' => 1,
 				$this->modelClass . '.email_verified' => 1));
 		$this->set('users', $this->paginate($this->modelClass));
 	}
@@ -205,7 +205,7 @@ class UsersController extends UsersAppController {
 			}
 		} else {
 			$data = $this->User->UserDetail->getSection($this->Auth->user('id'), 'User');
-			if (!isset($data['User'])){
+			if (!isset($data['User'])) {
 				$data['User'] = array();
 			}
 			$this->request->data['UserDetail'] = $data['User'];
@@ -391,6 +391,7 @@ class UsersController extends UsersAppController {
 /**
  * Search - Requires the CakeDC Search plugin to work
  *
+ * @throws MissingPluginException
  * @return void
  * @link https://github.com/CakeDC/search
  */
@@ -472,6 +473,7 @@ class UsersController extends UsersAppController {
  * This method will send a new password to the user
  *
  * @param string $token Token
+ * @throws NotFoundException
  * @return void
  */
 	public function request_new_password($token = null) {
@@ -561,7 +563,8 @@ class UsersController extends UsersAppController {
  * Sets a list of languages to the view which can be used in selects
  *
  * @deprecated No fallback provided, use the Utils plugin in your app directly
- * @param string View variable name, default is languages
+ * @param string $viewVar View variable name, default is languages
+ * @throws MissingPluginException
  * @return void
  * @link https://github.com/CakeDC/utils
  */
@@ -589,7 +592,7 @@ class UsersController extends UsersAppController {
 			'from' => Configure::read('App.defaultEmail'),
 			'subject' => __d('users', 'Account verification'),
 			'template' => 'Users.account_verification',
-			'layout'=> 'default');
+			'layout' => 'default');
 
 		$options = array_merge($defaults, $options);
 
@@ -617,7 +620,7 @@ class UsersController extends UsersAppController {
 			'from' => Configure::read('App.defaultEmail'),
 			'subject' => __d('users', 'Password Reset'),
 			'template' => 'Users.password_reset_request',
-			'layout'=> 'default');
+			'layout' => 'default');
 
 		$options = array_merge($defaults, $options);
 

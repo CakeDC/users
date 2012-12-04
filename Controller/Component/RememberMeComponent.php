@@ -20,6 +20,7 @@ App::uses('Component', 'Controller');
  * @property AuthComponent $Auth
  */
 class RememberMeComponent extends Component {
+
 /**
  * Components
  *
