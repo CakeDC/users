@@ -50,18 +50,22 @@ If you are using another user model than 'User' you'll have to configure it:
 		'Users.RemembeMe' => array(
 			'userModel' => 'AppUser');
 
-And add this line
-
-	$this->RememberMe->restoreLoginFromCookie()
-
-to your controllers beforeFilter() callack
+You also need to copy part of the UsersController::_setupAuth() function into each controller. Add this to AppController's beforeFilter() callback:
 
 	public function beforeFilter() {
 		parent::beforeFilter();
-		$this->RememberMe->restoreLoginFromCookie();
+		$this->Auth->authenticate = array(
+			'Form' => array(
+				'fields' => array(
+					'username' => 'email',
+					'password' => 'password'),
+				'userModel' => 'Users.User',
+				'scope' => array(
+					'User.active' => 1,
+					'User.email_verified' => 1)));
 	}
 
-The code will read the login credentials from the cookie and log the user in based on that information. Note that you have to use CakePHPs AuthComponent or an aliased Component implementing the same interface as AuthComponent.
+Note that you have to use CakePHPs AuthComponent or an aliased Component implementing the same interface as AuthComponent.
 
 ## How to extend the plugin ##
 
