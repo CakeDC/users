@@ -50,7 +50,7 @@ If you are using another user model than 'User' you'll have to configure it:
 		'Users.RemembeMe' => array(
 			'userModel' => 'AppUser');
 
-You also need to copy part of the UsersController::_setupAuth() function into each controller. Add this to AppController's beforeFilter() callback:
+Auth needs to be set up before the `restoreLoginFromCookie()` function is called. Copy part of the `UsersController::_setupAuth()` function into your AppController's `beforeFilter()` callback and then add the `restoreLoginFromCookie()` call like so:
 
 	public function beforeFilter() {
 		parent::beforeFilter();
@@ -64,8 +64,15 @@ You also need to copy part of the UsersController::_setupAuth() function into ea
 					'User.active' => 1,
 					'User.email_verified' => 1)));
 	}
+	$this->RememberMe->restoreLoginFromCookie();
 
 Note that you have to use CakePHPs AuthComponent or an aliased Component implementing the same interface as AuthComponent.
+
+### Enabling admin urls ###
+
+If you want to use admin urls like /admin/users/ then add the following to your `app/Config/core.php` file:
+
+	Configure::write('Routing.prefixes', array('admin'));
 
 ## How to extend the plugin ##
 
