@@ -159,7 +159,10 @@ class RememberMeComponent extends Component {
  */
 	public function destroyCookie() {
 		extract($this->settings);
-		$this->Cookie->destroy($cookie['name']);
+		if (isset($_COOKIE[$cookie['name']])) {
+			$this->Cookie->name = $cookie['name'];
+			$this->Cookie->destroy();
+		}
 	}
 
 /**
