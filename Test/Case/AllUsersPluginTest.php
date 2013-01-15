@@ -1,4 +1,14 @@
 <?php
+/**
+ * Copyright 2010 - 2012, Cake Development Corporation (http://cakedc.com)
+ *
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright Copyright 2010 - 2012, Cake Development Corporation (http://cakedc.com)
+ * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
+ */
+
 class AllTagsPluginTest extends PHPUnit_Framework_TestSuite {
 
 /**
@@ -10,6 +20,7 @@ class AllTagsPluginTest extends PHPUnit_Framework_TestSuite {
 		$suite = new PHPUnit_Framework_TestSuite('All Users Plugin Tests');
 
 		$basePath = CakePlugin::path('Users') . DS . 'Test' . DS . 'Case' . DS;
+
 		// controllers
 		$suite->addTestFile($basePath . 'Controller' . DS . 'UserDetailsControllerTest.php');
 		$suite->addTestFile($basePath . 'Controller' . DS . 'UsersControllerTest.php');

@@ -250,9 +250,13 @@ class UsersControllerTestCase extends CakeTestCase {
 			->will($this->returnValue(true));
 		$this->Users->Auth->staticExpects($this->at(0))
 			->method('user')
-			->with('id')
+			->with('last_login')
 			->will($this->returnValue(1));
 		$this->Users->Auth->staticExpects($this->at(1))
+			->method('user')
+			->with('id')
+			->will($this->returnValue(1));
+		$this->Users->Auth->staticExpects($this->at(2))
 			->method('user')
 			->with('username')
 			->will($this->returnValue('adminuser'));
@@ -262,8 +266,8 @@ class UsersControllerTestCase extends CakeTestCase {
 			->will($this->returnValue(Router::normalize('/')));
 		$this->Users->Session = $this->getMock('SessionComponent', array('setFlash'), array($this->Collection));
 		$this->Users->Session->expects($this->any())
-				->method('setFlash')
-				->with(__d('users', 'adminuser you have successfully logged in'));
+			->method('setFlash')
+			->with(__d('users', 'adminuser you have successfully logged in'));
 		$this->Users->RememberMe = $this->getMock('RememberMeComponent', array(), array($this->Collection));
 		$this->Users->RememberMe->expects($this->any())
 			->method('destroyCookie');
@@ -564,7 +568,7 @@ class UsersControllerTestCase extends CakeTestCase {
 		$this->Users->setCookie(array(
 			'name' => 'userTestCookie'));
 
-		$this->assertEqual($this->Users->RememberMe->settings['cookieKey'], 'User');
+		$this->assertEqual($this->Users->RememberMe->settings['cookieKey'], 'rememberMe');
 	}
 
 /**
