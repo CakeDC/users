@@ -34,6 +34,13 @@ class UsersController extends UsersAppController {
 	public $name = 'Users';
 
 /**
+ * If the controller is a plugin controller set the plugin name
+ *
+ * @var mixed
+ */
+	public $plugin = null;
+
+/**
  * Helpers
  *
  * @var array
@@ -81,6 +88,18 @@ class UsersController extends UsersAppController {
 		$this->_setupComponents();
 		$this->_setupHelpers();
 		parent::__construct($request, $response);
+	}
+
+/**
+ * Returns $this->plugin with a dot, used for plugin loading using the dot notation
+ *
+ * @return mixed string|null
+ */
+	protected function _pluginDot() {
+		if (is_string($this->plugin)) {
+			return $this->plugin . '.';
+		}
+		return $this->plugin;
 	}
 
 /**
@@ -141,14 +160,14 @@ class UsersController extends UsersAppController {
 				'fields' => array(
 					'username' => 'email',
 					'password' => 'password'),
-				'userModel' => 'Users.User',
+				'userModel' => $this->_pluginDot() . $this->modelClass,
 				'scope' => array(
-					'User.active' => 1,
-					'User.email_verified' => 1)));
+					$this->modelClass . '.active' => 1,
+					$this->modelClass . '.email_verified' => 1)));
 
 		$this->Auth->loginRedirect = '/';
-		$this->Auth->logoutRedirect = array('plugin' => 'users', 'controller' => 'users', 'action' => 'login');
-		$this->Auth->loginAction = array('admin' => false, 'plugin' => 'users', 'controller' => 'users', 'action' => 'login');
+		$this->Auth->logoutRedirect = array('plugin' => $this->plugin, 'controller' => 'users', 'action' => 'login');
+		$this->Auth->loginAction = array('admin' => false, 'plugin' => $this->plugin, 'controller' => 'users', 'action' => 'login');
 	}
 
 /**
@@ -351,8 +370,7 @@ class UsersController extends UsersAppController {
 		if ($this->request->is('post')) {
 			if ($this->Auth->login()) {
 				$this->getEventManager()->dispatch(new CakeEvent('Users.afterLogin', $this, array(
-					'isFirstLogin' => !$this->Auth->user('last_login')
-				)));
+					'isFirstLogin' => !$this->Auth->user('last_login'))));
 
 				$this->User->id = $this->Auth->user('id');
 				$this->User->saveField('last_login', date('Y-m-d H:i:s'));
@@ -514,7 +532,7 @@ class UsersController extends UsersAppController {
 			->replyTo(Configure::read('App.defaultEmail'))
 			->return(Configure::read('App.defaultEmail'))
 			->subject(env('HTTP_HOST') . ' ' . __d('users', 'Password Reset'))
-			->template('new_password')
+			->template($this->_pluginDot() . 'new_password')
 			->viewVars(array(
 				'model' => $this->modelClass,
 				'userData' => $userData))
@@ -591,7 +609,7 @@ class UsersController extends UsersAppController {
 		$defaults = array(
 			'from' => Configure::read('App.defaultEmail'),
 			'subject' => __d('users', 'Account verification'),
-			'template' => 'Users.account_verification',
+			'template' => $this->_pluginDot() . 'account_verification',
 			'layout' => 'default');
 
 		$options = array_merge($defaults, $options);
@@ -619,7 +637,7 @@ class UsersController extends UsersAppController {
 		$defaults = array(
 			'from' => Configure::read('App.defaultEmail'),
 			'subject' => __d('users', 'Password Reset'),
-			'template' => 'Users.password_reset_request',
+			'template' => $this->_pluginDot() . 'password_reset_request',
 			'layout' => 'default');
 
 		$options = array_merge($defaults, $options);
