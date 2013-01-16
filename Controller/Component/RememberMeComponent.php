@@ -109,6 +109,8 @@ class RememberMeComponent extends Component {
 		$cookie = $this->Cookie->read($cookieKey);
 
 		if (!empty($cookie)) {
+			$request = $this->request->data;
+
 			foreach ($fields as $field) {
 				if (!empty($cookie[$field])) {
 					$this->request->data[$userModel][$field] = $cookie[$field];
@@ -116,7 +118,11 @@ class RememberMeComponent extends Component {
 			}
 
 			$result = $this->Auth->login();
-			unset($this->request->data[$userModel]);
+
+			if (!$result) {
+				$this->request->data = $request;
+			}
+
 			return $result;
 		}
 	}
