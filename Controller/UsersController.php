@@ -207,7 +207,7 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	public function dashboard() {
-		$user = $this->User->read(null, $this->Auth->user('id'));
+		$user = $this->{$this->modelClass}->read(null, $this->Auth->user('id'));
 		$this->set('user', $user);
 	}
 
@@ -219,7 +219,7 @@ class UsersController extends UsersAppController {
  */
 	public function view($slug = null) {
 		try {
-			$this->set('user', $this->User->view($slug));
+			$this->set('user', $this->{$this->modelClass}->view($slug));
 		} catch (Exception $e) {
 			$this->Session->setFlash($e->getMessage());
 			$this->redirect('/');
@@ -234,17 +234,17 @@ class UsersController extends UsersAppController {
  */
 	public function edit() {
 		if (!empty($this->request->data)) {
-			if ($this->User->UserDetail->saveSection($this->Auth->user('id'), $this->request->data, 'User')) {
+			if ($this->{$this->modelClass}->UserDetail->saveSection($this->Auth->user('id'), $this->request->data, 'User')) {
 				$this->Session->setFlash(__d('users', 'Profile saved.'));
 			} else {
 				$this->Session->setFlash(__d('users', 'Could not save your profile.'));
 			}
 		} else {
-			$data = $this->User->UserDetail->getSection($this->Auth->user('id'), 'User');
-			if (!isset($data['User'])) {
-				$data['User'] = array();
+			$data = $this->{$this->modelClass}->UserDetail->getSection($this->Auth->user('id'), 'User');
+			if (!isset($data[$this->modelClass])) {
+				$data[$this->modelClass] = array();
 			}
-			$this->request->data['UserDetail'] = $data['User'];
+			$this->request->data['UserDetail'] = $data[$this->modelClass];
 		}
 	}
 
@@ -255,8 +255,8 @@ class UsersController extends UsersAppController {
  */
 	public function admin_index() {
 		$this->Prg->commonProcess();
-		unset($this->User->validate['username']);
-		unset($this->User->validate['email']);
+		unset($this->{$this->modelClass}->validate['username']);
+		unset($this->{$this->modelClass}->validate['email']);
 		$this->{$this->modelClass}->data[$this->modelClass] = $this->passedArgs;
 		if ($this->{$this->modelClass}->Behaviors->attached('Searchable')) {
 			$parsedConditions = $this->{$this->modelClass}->parseCriteria($this->passedArgs);
@@ -281,7 +281,7 @@ class UsersController extends UsersAppController {
 			$this->Session->setFlash(__d('users', 'Invalid User.'));
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->set('user', $this->User->read(null, $id));
+		$this->set('user', $this->{$this->modelClass}->read(null, $id));
 	}
 
 /**
@@ -291,10 +291,10 @@ class UsersController extends UsersAppController {
  */
 	public function admin_add() {
 		if (!empty($this->request->data)) {
-			$this->request->data['User']['tos'] = true;
-			$this->request->data['User']['email_verified'] = true;
+			$this->request->data[$this->modelClass]['tos'] = true;
+			$this->request->data[$this->modelClass]['email_verified'] = true;
 
-			if ($this->User->add($this->request->data)) {
+			if ($this->{$this->modelClass}->add($this->request->data)) {
 				$this->Session->setFlash(__d('users', 'The User has been saved'));
 				$this->redirect(array('action' => 'index'));
 			}
@@ -310,7 +310,7 @@ class UsersController extends UsersAppController {
  */
 	public function admin_edit($userId = null) {
 		try {
-			$result = $this->User->edit($userId, $this->request->data);
+			$result = $this->{$this->modelClass}->edit($userId, $this->request->data);
 			if ($result === true) {
 				$this->Session->setFlash(__d('users', 'User saved'));
 				$this->redirect(array('action' => 'index'));
@@ -323,7 +323,7 @@ class UsersController extends UsersAppController {
 		}
 
 		if (empty($this->request->data)) {
-			$this->request->data = $this->User->read(null, $userId);
+			$this->request->data = $this->{$this->modelClass}->read(null, $userId);
 		}
 		$this->set('roles', Configure::read('Users.roles'));
 	}
@@ -335,7 +335,7 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	public function admin_delete($userId = null) {
-		if ($this->User->delete($userId)) {
+		if ($this->{$this->modelClass}->delete($userId)) {
 			$this->Session->setFlash(__d('users', 'User deleted'));
 		} else {
 			$this->Session->setFlash(__d('users', 'Invalid User'));
@@ -365,9 +365,9 @@ class UsersController extends UsersAppController {
 		}
 
 		if (!empty($this->request->data)) {
-			$user = $this->User->register($this->request->data);
+			$user = $this->{$this->modelClass}->register($this->request->data);
 			if ($user !== false) {
-				$this->_sendVerificationEmail($this->User->data);
+				$this->_sendVerificationEmail($this->{$this->modelClass}->data);
 				$this->Session->setFlash(__d('users', 'Your account has been created. You should receive an e-mail shortly to authenticate your account. Once validated you will be able to login.'));
 				$this->redirect(array('action' => 'login'));
 			} else {
@@ -389,8 +389,8 @@ class UsersController extends UsersAppController {
 				$this->getEventManager()->dispatch(new CakeEvent('Users.afterLogin', $this, array(
 					'isFirstLogin' => !$this->Auth->user('last_login'))));
 
-				$this->User->id = $this->Auth->user('id');
-				$this->User->saveField('last_login', date('Y-m-d H:i:s'));
+				$this->{$this->modelClass}->id = $this->Auth->user('id');
+				$this->{$this->modelClass}->saveField('last_login', date('Y-m-d H:i:s'));
 
 				if ($this->here == $this->Auth->loginRedirect) {
 					$this->Auth->loginRedirect = '/';
@@ -495,7 +495,7 @@ class UsersController extends UsersAppController {
 		}
 
 		try {
-			$this->User->verifyEmail($token);
+			$this->{$this->modelClass}->verifyEmail($token);
 			$this->Session->setFlash(__d('users', 'Your e-mail has been validated!'));
 			return $this->redirect(array('action' => 'login'));
 		} catch (RuntimeException $e) {
@@ -516,7 +516,7 @@ class UsersController extends UsersAppController {
 			throw new NotFoundException();
 		}
 
-		$data = $this->User->validateToken($token, true);
+		$data = $this->{$this->modelClass}->validateToken($token, true);
 
 		if (!$data) {
 			$this->Session->setFlash(__d('users', 'The url you accessed is not longer valid'));
@@ -526,7 +526,7 @@ class UsersController extends UsersAppController {
 		$email = $data[$this->modelClass]['email'];
 		unset($data[$this->modelClass]['email']);
 
-		if ($this->User->save($data, array('validate' => false))) {
+		if ($this->{$this->modelClass}->save($data, array('validate' => false))) {
 			$this->_sendNewPassword($data);
 			$this->Session->setFlash(__d('users', 'Your password was sent to your registered email account'));
 			return $this->redirect(array('action' => 'login'));
@@ -545,7 +545,7 @@ class UsersController extends UsersAppController {
 	protected function _sendNewPassword($userData) {
 		$Email = $this->_getMailInstance();
 		$Email->from(Configure::read('App.defaultEmail'))
-			->to($data[$this->modelClass]['email'])
+			->to($userData[$this->modelClass]['email'])
 			->replyTo(Configure::read('App.defaultEmail'))
 			->return(Configure::read('App.defaultEmail'))
 			->subject(env('HTTP_HOST') . ' ' . __d('users', 'Password Reset'))
@@ -553,7 +553,7 @@ class UsersController extends UsersAppController {
 			->viewVars(array(
 				'model' => $this->modelClass,
 				'userData' => $userData))
-			->send($content);
+			->send();
 	}
 
 /**
@@ -564,7 +564,7 @@ class UsersController extends UsersAppController {
 	public function change_password() {
 		if ($this->request->is('post')) {
 			$this->request->data[$this->modelClass]['id'] = $this->Auth->user('id');
-			if ($this->User->changePassword($this->request->data)) {
+			if ($this->{$this->modelClass}->changePassword($this->request->data)) {
 				$this->Session->setFlash(__d('users', 'Password changed.'));
 				$this->redirect('/');
 			}
@@ -660,7 +660,7 @@ class UsersController extends UsersAppController {
 		$options = array_merge($defaults, $options);
 
 		if (!empty($this->request->data)) {
-			$user = $this->User->passwordReset($this->request->data);
+			$user = $this->{$this->modelClass}->passwordReset($this->request->data);
 
 			if (!empty($user)) {
 
@@ -671,8 +671,8 @@ class UsersController extends UsersAppController {
 					->template($options['template'], $options['layout'])
 					->viewVars(array(
 					'model' => $this->modelClass,
-					'user' => $this->User->data,
-						'token' => $this->User->data[$this->modelClass]['password_token']))
+					'user' => $this->{$this->modelClass}->data,
+						'token' => $this->{$this->modelClass}->data[$this->modelClass]['password_token']))
 					->send();
 
 				if ($admin) {
@@ -714,13 +714,13 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	protected function _resetPassword($token) {
-		$user = $this->User->checkPasswordToken($token);
+		$user = $this->{$this->modelClass}->checkPasswordToken($token);
 		if (empty($user)) {
 			$this->Session->setFlash(__d('users', 'Invalid password reset token, try again.'));
 			$this->redirect(array('action' => 'reset_password'));
 		}
 
-		if (!empty($this->request->data) && $this->User->resetPassword(Set::merge($user, $this->request->data))) {
+		if (!empty($this->request->data) && $this->{$this->modelClass}->resetPassword(Set::merge($user, $this->request->data))) {
 			$this->Session->setFlash(__d('users', 'Password changed, you can now login with your new password.'));
 			$this->redirect($this->Auth->loginAction);
 		}
