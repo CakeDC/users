@@ -88,6 +88,23 @@ class UsersController extends UsersAppController {
 		$this->_setupComponents();
 		$this->_setupHelpers();
 		parent::__construct($request, $response);
+		$this->_reInitControllerName();
+	}
+
+/**
+ * Providing backward compatibility to a fix that was just made recently to the core
+ * for users that want to upgrade the plugin but not the core
+ *
+ * @link http://cakephp.lighthouseapp.com/projects/42648-cakephp/tickets/3550-inherited-controllers-get-wrong-property-names
+ * @return void
+ */
+	protected function _reInitControllerName() {
+		$name = substr(get_class($this), 0, -10);
+		if ($this->name === null) {
+			$this->name = $name;
+		} elseif ($name !== $this->name) {
+			$this->name = $name;
+		}
 	}
 
 /**
