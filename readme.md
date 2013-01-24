@@ -50,7 +50,13 @@ If you are using another user model than 'User' you'll have to configure it:
 		'Users.RemembeMe' => array(
 			'userModel' => 'AppUser');
 
-Auth needs to be set up before the `restoreLoginFromCookie()` function is called. Copy part of the `UsersController::_setupAuth()` function into your AppController's `beforeFilter()` callback and then add the `restoreLoginFromCookie()` call like so:
+And add this line
+
+	$this->RememberMe->restoreLoginFromCookie()
+
+to your controllers beforeFilter() callack. This function will read the login credentials from the cookie and log the user in based on that information. 
+
+Auth needs to be set up before the `restoreLoginFromCookie()` function is called. One way to do that is to copy part of the `UsersController::_setupAuth()` function into your AppController's `beforeFilter()` callback before the `restoreLoginFromCookie()` call like so:
 
 	public function beforeFilter() {
 		parent::beforeFilter();
