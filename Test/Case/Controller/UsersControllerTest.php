@@ -187,7 +187,7 @@ class UsersControllerTestCase extends CakeTestCase {
  *
  * @return void
  */
-	public function startTest() {
+	public function startTest($method) {
 		Configure::write('App.UserClass', null);
 
 		$request = new CakeRequest();
@@ -597,7 +597,7 @@ class UsersControllerTestCase extends CakeTestCase {
  *
  * @return void
  */
-	public function endTest() {
+	public function endTest($method) {
 		$this->Users->Session->destroy();
 		unset($this->Users);
 		ClassRegistry::flush();
