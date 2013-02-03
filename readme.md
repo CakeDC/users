@@ -39,29 +39,44 @@ The default password reset process requires the user to enter his email address,
 
 ### Using the "remember me" functionality ###
 
-To use the "remember me" checkbox which sets a cookie on the login page you will need to add the RememberMe component to the AppController or the controllers you want to auto-login the user again based on the cookie.
+The "remember me" checkbox on the login page encrypts the user's login credentials and stores them in a cookie. The RememberMe component reads the cookie and automatically logs in the user. You need to add the RememberMe component to the AppController or the specific controllers where you want auto-login to work.
 
 	public $components = array(
 		'Users.RemembeMe');
 
-If you are using another user model than 'User' you'll have to configure it:
+If you are using a user model other than 'User' you need to configure it:
 
 	public $components = array(
 		'Users.RemembeMe' => array(
 			'userModel' => 'AppUser');
 
-And add this line
+Then add a call to `restoreLoginFromCookie()` to your controllers `beforeFilter()` callack like so:
 
 	$this->RememberMe->restoreLoginFromCookie()
 
-to your controllers beforeFilter() callack
+Auth needs to be set up before the `restoreLoginFromCookie()` function is called. One way to do that is to copy part of the `UsersController::_setupAuth()` function into your AppController's `beforeFilter()` callback before the `restoreLoginFromCookie()` call like so:
 
 	public function beforeFilter() {
 		parent::beforeFilter();
-		$this->RememberMe->restoreLoginFromCookie();
+		$this->Auth->authenticate = array(
+			'Form' => array(
+				'fields' => array(
+					'username' => 'email',
+					'password' => 'password'),
+				'userModel' => 'Users.User',
+				'scope' => array(
+					'User.active' => 1,
+					'User.email_verified' => 1)));
 	}
+	$this->RememberMe->restoreLoginFromCookie();
 
-The code will read the login credentials from the cookie and log the user in based on that information. Note that you have to use CakePHPs AuthComponent or an aliased Component implementing the same interface as AuthComponent.
+Note that you have to use CakePHPs AuthComponent or an aliased Component implementing the same interface as AuthComponent.
+
+### Enabling admin urls ###
+
+If you want to use admin urls like /admin/users/ then add the following to your `app/Config/core.php` file:
+
+	Configure::write('Routing.prefixes', array('admin'));
 
 ## How to extend the plugin ##
 
