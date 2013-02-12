@@ -25,10 +25,11 @@ class UsersAppController extends AppController {
  *
  * This is called to see if a user (when logged in) is able to access an action
  *
+ * @param array $user
  * @return boolean True if allowed
  */
-	public function isAuthorized() {
-		return parent::isAuthorized;
+	public function isAuthorized($user) {
+		return parent::isAuthorized($user);
 	}
 
 }

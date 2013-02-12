@@ -35,7 +35,7 @@ class M49c3417a54874a9d276811502cedc421 extends CakeMigration {
 					'id' => array('type'=>'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary'),
 					'user_id' => array('type'=>'string', 'null' => false, 'default' => NULL, 'length' => 36),
 					'position' => array('type'=>'float', 'null' => false, 'default' => '1', 'length' => 4),
-					'field' => array('type'=>'string', 'null' => false, 'default' => NULL, 'key' => 'index'),
+					'field' => array('type'=>'string', 'null' => false, 'default' => NULL, 'key' => 'index', 'length' => 60),
 					'value' => array('type'=>'text', 'null' => true, 'default' => NULL),
 					'input' => array('type'=>'string', 'null' => false, 'default' => NULL, 'length' => 16),
 					'data_type' => array('type'=>'string', 'null' => false, 'default' => NULL, 'length' => 16),

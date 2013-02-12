@@ -60,6 +60,7 @@ class UserTestCase extends CakeTestCase {
 		unset($this->User);
 		ClassRegistry::flush(); 
 	}
+
 /**
  * 
  *

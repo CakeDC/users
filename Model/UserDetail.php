@@ -147,7 +147,7 @@ class UserDetail extends UsersAppModel {
 			"{$this->alias}.user_id" => $userId);
 
 		if (!is_null($section)) {
-			$conditions["{$this->alias}.field LIKE"] = $section . '.%'; 
+			$conditions["{$this->alias}.field LIKE"] = $section . '.%';
 		}
 
 		$results = $this->find('all', array(
@@ -156,7 +156,7 @@ class UserDetail extends UsersAppModel {
 			'fields' => array("{$this->alias}.field", "{$this->alias}.value")));
 
 		if (!empty($results)) {
-			foreach($results as $result) {
+			foreach ($results as $result) {
 				list($prefix, $field) = explode('.', $result[$this->alias]['field']);
 				$userDetails[$prefix][$field] = $result[$this->alias]['value'];
 			}
@@ -190,9 +190,9 @@ class UserDetail extends UsersAppModel {
 		if (!empty($this->sectionSchema[$section])) {
 			$this->activeSectionSchema = $section;
 
-			foreach($data as $model => $userDetails) {
+			foreach ($data as $model => $userDetails) {
 				if ($model == $this->alias) {
-					foreach($userDetails as $key => $value) {
+					foreach ($userDetails as $key => $value) {
 						$data[$model][$key] = $this->deconstruct($key, $value);
 					}
 				}
@@ -214,10 +214,10 @@ class UserDetail extends UsersAppModel {
 		}
 
 		if (!empty($data) && is_array($data)) {
-			foreach($data as $model => $userDetails) {
+			foreach ($data as $model => $userDetails) {
 				if ($model == $this->alias) {
 					// Save the details
-					foreach($userDetails as $key => $value) {
+					foreach ($userDetails as $key => $value) {
 						$newUserDetail = array();
 						$field = $section . '.' . $key;
 						$userDetail = $this->find('first', array(
@@ -257,4 +257,3 @@ class UserDetail extends UsersAppModel {
 		return true;
 	}
 }
-;

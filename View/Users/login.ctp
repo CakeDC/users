@@ -21,7 +21,7 @@
 			echo $this->Form->input('password',  array(
 				'label' => __d('users', 'Password')));
 
-			echo '<p>' . __d('users', 'Remember Me') . $this->Form->checkbox('remember_me') . '</p>';
+			echo '<p>' . $this->Form->input('remember_me', array('type' => 'checkbox', 'label' =>  __d('users', 'Remember Me'))) . '</p>';
 			echo '<p>' . $this->Html->link(__d('users', 'I forgot my password'), array('action' => 'reset_password')) . '</p>';
 
 			echo $this->Form->hidden('User.return_to', array(
