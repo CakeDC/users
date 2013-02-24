@@ -411,7 +411,7 @@ class UsersController extends UsersAppController {
 
 				$this->redirect($this->Auth->redirect($data['return_to']));
 			} else {
-				$this->Auth->flash(__d('users', 'Invalid e-mail / password combination.  Please try again'));
+				$this->Session->setFlash(__d('users', 'Invalid e-mail / password combination.  Please try again'));
 			}
 		}
 		if (isset($this->request->params['named']['return_to'])) {
