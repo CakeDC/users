@@ -42,12 +42,12 @@ The default password reset process requires the user to enter his email address,
 To use the "remember me" checkbox which sets a cookie on the login page you will need to add the RememberMe component to the AppController or the controllers you want to auto-login the user again based on the cookie.
 
 	public $components = array(
-		'Users.RemembeMe');
+		'Users.RememberMe');
 
 If you are using another user model than 'User' you'll have to configure it:
 
 	public $components = array(
-		'Users.RemembeMe' => array(
+		'Users.RememberMe' => array(
 			'userModel' => 'AppUser');
 
 And add this line
