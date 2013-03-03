@@ -21,6 +21,7 @@
 	?>
 
 	<?php echo $this->element('paging'); ?>
+	<?php echo $this->element('pagination'); ?>
 	<table cellpadding="0" cellspacing="0">
 		<tr>
 			<th><?php echo $this->Paginator->sort('username'); ?></th>
@@ -62,5 +63,6 @@
 			</tr>
 		<?php endforeach; ?>
 	</table>
+	<?php echo $this->element('pagination'); ?>
 </div>
 <?php echo $this->element('Users/admin_sidebar'); ?>
