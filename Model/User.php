@@ -585,7 +585,7 @@ class User extends UsersAppModel {
 			$this->data = $this->save($postData, false);
 			$this->data[$this->alias]['id'] = $this->id;
 			if ($returnData) {
-				$Event = new CakeEvent('Users.User.afterRegister', $this, $this->request->data);
+				$Event = new CakeEvent('Users.User.afterRegister', $this, $this->data);
 				$this->getEventManager()->dispatch($Event);
 				if ($Event->isStopped()) {
 					return $Event->result;

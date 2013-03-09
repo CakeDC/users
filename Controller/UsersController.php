@@ -365,15 +365,15 @@ class UsersController extends UsersAppController {
 		}
 
 		if (!empty($this->request->data)) {
-			$user = $this->{$this->modelClass}->register($this->request->data);
-			if ($user !== false) {
-				$Event = new CakeEvent('Users.UsersController.afterRegistration', $this, $this->request->data);
+			$user = $this->{$this->modelClass}->register($this->request->data, array('returnData' => true));
+			if ($user) {
+				$Event = new CakeEvent('Users.UsersController.afterRegistration', $this, $user);
 				$this->getEventManager()->dispatch($Event);
 				if ($Event->isStopped()) {
 					$this->redirect(array('action' => 'login'));
 				}
 
-				$this->_sendVerificationEmail($this->{$this->modelClass}->data);
+				$this->_sendVerificationEmail($user);
 				$this->Session->setFlash(__d('users', 'Your account has been created. You should receive an e-mail shortly to authenticate your account. Once validated you will be able to login.'));
 				$this->redirect(array('action' => 'login'));
 			} else {
