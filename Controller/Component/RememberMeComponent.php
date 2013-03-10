@@ -125,6 +125,7 @@ class RememberMeComponent extends Component {
 
 			return $result;
 		}
+		return false;
 	}
 
 /**
