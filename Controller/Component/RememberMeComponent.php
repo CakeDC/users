@@ -155,7 +155,8 @@ class RememberMeComponent extends Component {
 			}
 		}
 
-		return $this->Cookie->write($cookieKey, $cookieData, true, '+99 years');
+		$this->Cookie->write($cookieKey, $cookieData, true, '+99 years');
+		return true;
 	}
 
 /**
