@@ -113,7 +113,7 @@ class User extends UsersAppModel {
 /**
  * Constructor
  *
- * @param string $id ID
+ * @param bool|string $id ID
  * @param string $table Table
  * @param string $ds Datasource
  */
@@ -368,7 +368,7 @@ class User extends UsersAppModel {
 /**
  * Updates the last activity field of a user
  *
- * @param string $user User ID
+ * @param null $userId
  * @param string $field Default is "last_action", changing it allows you to use this method also for "last_login" for example
  * @return boolean True on success
  */
@@ -572,6 +572,12 @@ class User extends UsersAppModel {
 			$this->_removeExpiredRegistrations();
 		}
 
+		$Event = new CakeEvent('Users.User.beforeRegister', $this);
+		$this->getEventManager()->dispatch($Event);
+		if ($Event->isStopped()) {
+			return $Event->result;
+		}
+
 		$this->set($postData);
 		if ($this->validates()) {
 			$postData[$this->alias]['password'] = $this->hash($postData[$this->alias]['password'], 'sha1', true);
@@ -579,6 +585,11 @@ class User extends UsersAppModel {
 			$this->data = $this->save($postData, false);
 			$this->data[$this->alias]['id'] = $this->id;
 			if ($returnData) {
+				$Event = new CakeEvent('Users.User.afterRegister', $this, $this->data);
+				$this->getEventManager()->dispatch($Event);
+				if ($Event->isStopped()) {
+					return $Event->result;
+				}
 				return $this->data;
 			}
 			return true;
@@ -699,7 +710,7 @@ class User extends UsersAppModel {
  */
 	protected function _findSearch($state, $query, $results = array()) {
 		if (!App::import('Lib', 'Utils.Languages')) {
-			throw new MissingPluginException(array('plugin' => 'Search'));
+			throw new MissingPluginException(array('plugin' => 'Utils'));
 		}
 
 		if ($state == 'before') {
@@ -785,7 +796,10 @@ class User extends UsersAppModel {
 	}
 
 /**
- * Adds a new user
+ * Adds a new user, to be called from admin like user roles or interfaces
+ *
+ * This method is not sending any email like the register() method, its simply
+ * adding a new user record and sets a default role.
  * 
  * @param array post data, should be Controller->data
  * @return boolean True if the data was saved successfully.
@@ -824,6 +838,7 @@ class User extends UsersAppModel {
  *
  * @param string $userId User ID
  * @param array $postData controller post data usually $this->data
+ * @throws NotFoundException
  * @return mixed True on successfully save else post data as array
  */
 	public function edit($userId = null, $postData = null) {
@@ -834,7 +849,7 @@ class User extends UsersAppModel {
 
 		$this->set($user);
 		if (empty($user)) {
-			throw new OutOfBoundsException(__d('users', 'Invalid User'));
+			throw new NotFoundException(__d('users', 'Invalid User'));
 		}
 
 		if (!empty($postData)) {
@@ -861,4 +876,5 @@ class User extends UsersAppModel {
 			$this->alias . '.email_verified' => 0,
 			$this->alias . '.email_token_expires <' => date('Y-m-d H:i:s')));
 	}
+
 }
