@@ -450,6 +450,10 @@ class UsersControllerTestCase extends CakeTestCase {
 				'new_password' => 'newpassword',
 				'confirm_password' => 'newpassword',
 				'old_password' => 'test')));
+		$this->Users->RememberMe = $this->getMock('RememberMeComponent', array(), array($this->Collection));
+		$this->Users->RememberMe->expects($this->any())
+			->method('destroyCookie');
+
 		$this->Users->change_password();
 		$this->assertEqual($this->Users->redirectUrl, '/');
 	}

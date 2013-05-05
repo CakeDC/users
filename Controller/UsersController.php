@@ -566,6 +566,8 @@ class UsersController extends UsersAppController {
 			$this->request->data[$this->modelClass]['id'] = $this->Auth->user('id');
 			if ($this->{$this->modelClass}->changePassword($this->request->data)) {
 				$this->Session->setFlash(__d('users', 'Password changed.'));
+				// we don't want to keep the cookie with the old password around
+				$this->RememberMe->destroyCookie();
 				$this->redirect('/');
 			}
 		}
