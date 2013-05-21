@@ -73,9 +73,9 @@ class UsersController extends UsersAppController {
  * @link https://github.com/CakeDC/search
  */
 	public $presetVars = array(
-		array('field' => 'search', 'type' => 'value'),
-		array('field' => 'username', 'type' => 'value'),
-		array('field' => 'email', 'type' => 'value'));
+		array('name' => 'search', 'type' => 'value'),
+		array('name' => 'username', 'type' => 'value'),
+		array('name' => 'email', 'type' => 'value'));
 
 /**
  * Constructor
