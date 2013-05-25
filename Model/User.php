@@ -41,8 +41,8 @@ class User extends UsersAppModel {
  * @link https://github.com/CakeDC/search
  */
 	public $filterArgs = array(
-		array('name' => 'username', 'type' => 'string'),
-		array('name' => 'email', 'type' => 'string'));
+		array('name' => 'username', 'type' => 'value'),
+		array('name' => 'email', 'type' => 'value'));
 
 /**
  * Displayfield
