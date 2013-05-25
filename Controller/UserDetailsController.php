@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2011, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2013, Cake Development Corporation (http://cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2011, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2013, Cake Development Corporation (http://cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -39,13 +39,13 @@ class UserDetailsController extends UsersAppController {
  * @return void
  */
 	public function index() {
-		$user_details = $this->UserDetail->find('all', array(
+		$userDetails = $this->UserDetail->find('all', array(
 			'contain' => array(),
 			'conditions' => array(
 				'UserDetail.user_id' => $this->Auth->user('id'),
 				'UserDetail.field LIKE' => 'user.%'),
 			'order' => 'UserDetail.position DESC'));
-		$this->set('user_details', $user_details);
+		$this->set('user_details', $userDetails);
 	}
 
 /**
@@ -70,8 +70,8 @@ class UserDetailsController extends UsersAppController {
 	public function add() {
 		if (!empty($this->request->data)) {
 			$userId = $this->Auth->user('id');
-			foreach($this->request->data as $group => $options) {
-				foreach($options as $key => $value) {
+			foreach ($this->request->data as $group => $options) {
+				foreach ($options as $key => $value) {
 					$field = $group . '.' . $key;
 					$this->UserDetail->updateAll(
 						array('Detail.value' => "'$value'"),
@@ -102,8 +102,8 @@ class UserDetailsController extends UsersAppController {
 		}
 
 		if (empty($this->request->data)) {
-            $detail = $this->UserDetail->getSection($this->Auth->user('id'), $section);
-            $this->request->data['UserDetail'] = $detail[$section];
+			$detail = $this->UserDetail->getSection($this->Auth->user('id'), $section);
+			$this->request->data['UserDetail'] = $detail[$section];
 		}
 
 		$this->set('section', $section);

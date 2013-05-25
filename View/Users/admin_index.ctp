@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2011, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2013, Cake Development Corporation (http://cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2011, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2013, Cake Development Corporation (http://cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 ?>
@@ -21,6 +21,7 @@
 	?>
 
 	<?php echo $this->element('paging'); ?>
+	<?php echo $this->element('pagination'); ?>
 	<table cellpadding="0" cellspacing="0">
 		<tr>
 			<th><?php echo $this->Paginator->sort('username'); ?></th>
@@ -62,5 +63,6 @@
 			</tr>
 		<?php endforeach; ?>
 	</table>
+	<?php echo $this->element('pagination'); ?>
 </div>
 <?php echo $this->element('Users/admin_sidebar'); ?>
