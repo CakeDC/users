@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2011, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2013, Cake Development Corporation (http://cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2011, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2013, Cake Development Corporation (http://cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -14,6 +14,7 @@ App::uses('User', 'Users.Model');
 App::uses('AuthComponent', 'Controller/Component');
 App::uses('CookieComponent', 'Controller/Component');
 App::uses('SessionComponent', 'Controller/Component');
+App::uses('RememberMeComponent', 'Users.Controller/Component');
 App::uses('Security', 'Utility');
 app::uses('CakeEmail', 'Network/Email');
 
@@ -64,7 +65,7 @@ class TestUsersController extends UsersController {
  * Public interface to _setCookie
  */
 	public function setCookie($options = array()) {
-        parent::_setCookie($options);
+		parent::_setCookie($options);
 	}
 	
 /**
@@ -187,7 +188,7 @@ class UsersControllerTestCase extends CakeTestCase {
  *
  * @return void
  */
-	public function startTest() {
+	public function startTest($method) {
 		Configure::write('App.UserClass', null);
 
 		$request = new CakeRequest();
@@ -205,20 +206,20 @@ class UsersControllerTestCase extends CakeTestCase {
 
 		$this->Users->CakeEmail = $this->getMock('CakeEmail');
 		$this->Users->CakeEmail->expects($this->any())
-             ->method('to')
-             ->will($this->returnSelf());
+			 ->method('to')
+			 ->will($this->returnSelf());
 		$this->Users->CakeEmail->expects($this->any())
-             ->method('from')
-             ->will($this->returnSelf());
+			 ->method('from')
+			 ->will($this->returnSelf());
 		$this->Users->CakeEmail->expects($this->any())
-             ->method('subject')
-             ->will($this->returnSelf());
+			 ->method('subject')
+			 ->will($this->returnSelf());
 		$this->Users->CakeEmail->expects($this->any())
-             ->method('template')
-             ->will($this->returnSelf());
+			 ->method('template')
+			 ->will($this->returnSelf());
 		$this->Users->CakeEmail->expects($this->any())
-             ->method('viewVars')
-             ->will($this->returnSelf());
+			 ->method('viewVars')
+			 ->will($this->returnSelf());
 
 		$this->Users->Components->disable('Security');
 	}
@@ -243,28 +244,36 @@ class UsersControllerTestCase extends CakeTestCase {
 		$this->Users->request->url = '/users/users/login';
  		
 		$this->Collection = $this->getMock('ComponentCollection');
-        $this->Users->Auth = $this->getMock('AuthComponent', array('login', 'user', 'redirect'), array($this->Collection));
-        $this->Users->Auth->expects($this->once())
-            ->method('login')
-            ->will($this->returnValue(true));
-        $this->Users->Auth->staticExpects($this->at(0))
-            ->method('user')
-            ->with('id')
-            ->will($this->returnValue(1));
-        $this->Users->Auth->staticExpects($this->at(1))
-            ->method('user')
-            ->with('username')
-            ->will($this->returnValue('adminuser'));
-        $this->Users->Auth->expects($this->once())
-            ->method('redirect')
-            ->with(null)
-            ->will($this->returnValue(Router::normalize('/')));
-        $this->Users->Session = $this->getMock('SessionComponent', array('setFlash'), array($this->Collection));
+		$this->Users->Auth = $this->getMock('AuthComponent', array('login', 'user', 'redirect'), array($this->Collection));
+		$this->Users->Auth->expects($this->once())
+			->method('login')
+			->will($this->returnValue(true));
+		$this->Users->Auth->staticExpects($this->at(0))
+			->method('user')
+			->with('last_login')
+			->will($this->returnValue(1));
+		$this->Users->Auth->staticExpects($this->at(1))
+			->method('user')
+			->with('id')
+			->will($this->returnValue(1));
+		$this->Users->Auth->staticExpects($this->at(2))
+			->method('user')
+			->with('username')
+			->will($this->returnValue('adminuser'));
+		$this->Users->Auth->expects($this->once())
+			->method('redirect')
+			->with(null)
+			->will($this->returnValue(Router::normalize('/')));
+		$this->Users->Session = $this->getMock('SessionComponent', array('setFlash'), array($this->Collection));
 		$this->Users->Session->expects($this->any())
-				->method('setFlash')
-				->with(__d('users', 'adminuser you have successfully logged in'));
+			->method('setFlash')
+			->with(__d('users', 'adminuser you have successfully logged in'));
+		$this->Users->RememberMe = $this->getMock('RememberMeComponent', array(), array($this->Collection));
+		$this->Users->RememberMe->expects($this->any())
+			->method('destroyCookie');
+
 		$this->Users->login();
-        $this->assertEqual(Router::normalize($this->Users->redirectUrl), Router::normalize(Router::url($this->Users->Auth->loginRedirect)));
+		$this->assertEqual(Router::normalize($this->Users->redirectUrl), Router::normalize(Router::url($this->Users->Auth->loginRedirect)));
 	}
 	
 /**
@@ -277,10 +286,10 @@ class UsersControllerTestCase extends CakeTestCase {
 		$this->__setGet();
  		
 		$this->Users->login();
-        $this->Collection = $this->getMock('ComponentCollection');
-        $this->Users->Session = $this->getMock('SessionComponent', array('setFlash'), array($this->Collection));
-        $this->Users->Session->expects($this->never())
-            ->method('setFlash');
+		$this->Collection = $this->getMock('ComponentCollection');
+		$this->Users->Session = $this->getMock('SessionComponent', array('setFlash'), array($this->Collection));
+		$this->Users->Session->expects($this->never())
+			->method('setFlash');
 	}
 
 /**
@@ -292,15 +301,15 @@ class UsersControllerTestCase extends CakeTestCase {
 		$this->Users->request->params['action'] = 'login';
 		$this->__setPost(array('User' => $this->usersData['invalidUser']));
  		
-        $this->Collection = $this->getMock('ComponentCollection');
-        $this->Users->Auth = $this->getMock('AuthComponent', array('flash', 'login'), array($this->Collection));
-        $this->Users->Auth->expects($this->once())
-            ->method('login')
-            ->will($this->returnValue(false));
-        $this->Users->Auth->expects($this->once())
-            ->method('flash')
-            ->with(__d('users', 'Invalid e-mail / password combination.  Please try again'));
-        $this->Users->login();
+		$this->Collection = $this->getMock('ComponentCollection');
+		$this->Users->Auth = $this->getMock('AuthComponent', array('flash', 'login'), array($this->Collection));
+		$this->Users->Auth->expects($this->once())
+			->method('login')
+			->will($this->returnValue(false));
+		$this->Users->Auth->expects($this->once())
+			->method('flash')
+			->with(__d('users', 'Invalid e-mail / password combination.  Please try again'));
+		$this->Users->login();
 	}
 
 /**
@@ -321,13 +330,13 @@ class UsersControllerTestCase extends CakeTestCase {
 				'temppassword' => 'password',
 				'tos' => 1)));
 		$this->Users->beforeFilter();
-        $this->Collection = $this->getMock('ComponentCollection');
-        $this->Users->Session = $this->getMock('SessionComponent', array('setFlash'), array($this->Collection));
-        $this->Users->Session->expects($this->once())
-            ->method('setFlash')
-            ->with(__d('users', 'Your account has been created. You should receive an e-mail shortly to authenticate your account. Once validated you will be able to login.'));
+		$this->Collection = $this->getMock('ComponentCollection');
+		$this->Users->Session = $this->getMock('SessionComponent', array('setFlash'), array($this->Collection));
+		$this->Users->Session->expects($this->once())
+			->method('setFlash')
+			->with(__d('users', 'Your account has been created. You should receive an e-mail shortly to authenticate your account. Once validated you will be able to login.'));
 
-        $this->Users->add();
+		$this->Users->add();
 
 		$this->__setPost(array(
 			'User' => array(
@@ -337,11 +346,11 @@ class UsersControllerTestCase extends CakeTestCase {
 				'temppassword' => '',
 				'tos' => 0)));
 		$this->Users->beforeFilter();
-        $this->Users->Session = $this->getMock('SessionComponent', array('setFlash'), array($this->Collection));
-        $this->Users->Session->expects($this->once())
-            ->method('setFlash')
-            ->with(__d('users', 'Your account could not be created. Please, try again.'));
-        $this->Users->add();
+		$this->Users->Session = $this->getMock('SessionComponent', array('setFlash'), array($this->Collection));
+		$this->Users->Session->expects($this->once())
+			->method('setFlash')
+			->with(__d('users', 'Your account could not be created. Please, try again.'));
+		$this->Users->add();
 	}
 
 /**
@@ -353,21 +362,21 @@ class UsersControllerTestCase extends CakeTestCase {
 		$this->Users->beforeFilter();
 		$this->Users->User->id = '37ea303a-3bdc-4251-b315-1316c0b300fa';
 		$this->Users->User->saveField('email_token_expires', date('Y-m-d H:i:s', strtotime('+1 year')));
-        $this->Collection = $this->getMock('ComponentCollection');
-        $this->Users->Session = $this->getMock('SessionComponent', array('setFlash'), array($this->Collection));
-        $this->Users->Session->expects($this->once())
-            ->method('setFlash')
-            ->with(__d('users', 'Your e-mail has been validated!'));
+		$this->Collection = $this->getMock('ComponentCollection');
+		$this->Users->Session = $this->getMock('SessionComponent', array('setFlash'), array($this->Collection));
+		$this->Users->Session->expects($this->once())
+			->method('setFlash')
+			->with(__d('users', 'Your e-mail has been validated!'));
 
-        $this->Users->verify('email', 'testtoken2');
+		$this->Users->verify('email', 'testtoken2');
 
 		$this->Users->beforeFilter();
-        $this->Users->Session = $this->getMock('SessionComponent', array('setFlash'), array($this->Collection));
-        $this->Users->Session->expects($this->once())
-            ->method('setFlash')
-            ->with(__d('users', 'Invalid token, please check the email you were sent, and retry the verification link.'));
+		$this->Users->Session = $this->getMock('SessionComponent', array('setFlash'), array($this->Collection));
+		$this->Users->Session->expects($this->once())
+			->method('setFlash')
+			->with(__d('users', 'Invalid token, please check the email you were sent, and retry the verification link.'));
 
-        $this->Users->verify('email', 'invalid-token');;
+		$this->Users->verify('email', 'invalid-token');;
 	}
 
 /**
@@ -378,21 +387,25 @@ class UsersControllerTestCase extends CakeTestCase {
 	public function testLogout() {
 		$this->Users->beforeFilter();
 		$this->Collection = $this->getMock('ComponentCollection');
-        $this->Users->Cookie = $this->getMock('CookieComponent', array('destroy'), array($this->Collection));
-        $this->Users->Cookie->expects($this->once())
-            ->method('destroy');
-        $this->Users->Session = $this->getMock('SessionComponent', array('setFlash'), array($this->Collection));
-        $this->Users->Session->expects($this->once())
-            ->method('setFlash')
-            ->with(__d('users', 'testuser you have successfully logged out'));
-        $this->Users->Auth = $this->getMock('AuthComponent', array('logout', 'user'), array($this->Collection));
-        $this->Users->Auth->expects($this->once())
-            ->method('logout')
-            ->will($this->returnValue('/'));
-        $this->Users->Auth->staticExpects($this->at(0))
-            ->method('user')
-            ->will($this->returnValue($this->usersData['validUser']));
-        $this->Users->logout();
+		$this->Users->Cookie = $this->getMock('CookieComponent', array('destroy'), array($this->Collection));
+		$this->Users->Cookie->expects($this->once())
+			->method('destroy');
+		$this->Users->Session = $this->getMock('SessionComponent', array('setFlash'), array($this->Collection));
+		$this->Users->Session->expects($this->once())
+			->method('setFlash')
+			->with(__d('users', 'testuser you have successfully logged out'));
+		$this->Users->Auth = $this->getMock('AuthComponent', array('logout', 'user'), array($this->Collection));
+		$this->Users->Auth->expects($this->once())
+			->method('logout')
+			->will($this->returnValue('/'));
+		$this->Users->Auth->staticExpects($this->at(0))
+			->method('user')
+			->will($this->returnValue($this->usersData['validUser']));
+		$this->Users->RememberMe = $this->getMock('RememberMeComponent', array(), array($this->Collection));
+		$this->Users->RememberMe->expects($this->any())
+			->method('destroyCookie');
+
+		$this->Users->logout();
 		$this->assertEqual($this->Users->redirectUrl, '/');
 	}
 
@@ -437,6 +450,10 @@ class UsersControllerTestCase extends CakeTestCase {
 				'new_password' => 'newpassword',
 				'confirm_password' => 'newpassword',
 				'old_password' => 'test')));
+		$this->Users->RememberMe = $this->getMock('RememberMeComponent', array(), array($this->Collection));
+		$this->Users->RememberMe->expects($this->any())
+			->method('destroyCookie');
+
 		$this->Users->change_password();
 		$this->assertEqual($this->Users->redirectUrl, '/');
 	}
@@ -537,23 +554,27 @@ class UsersControllerTestCase extends CakeTestCase {
  * @return void
  */
 	public function testSetCookie() {
-        $this->__setPost(array(
-            'User' => array(
-                'remember_me' => 1,
-                'email' => 'testuser@cakedc.com',
-                'username' => 'test',
-                'password' => 'testtest')
-        ));
+		$this->__setPost(array(
+			'User' => array(
+				'remember_me' => 1,
+				'email' => 'testuser@cakedc.com',
+				'username' => 'test',
+				'password' => 'testtest')));
+
+		$this->Collection = $this->getMock('ComponentCollection');
+		$this->Users->RememberMe = $this->getMock('RememberMeComponent', array(), array($this->Collection));
+		$this->Users->RememberMe->expects($this->once())
+			->method('configureCookie')
+			->with(array('name' => 'userTestCookie'));
+		$this->Users->RememberMe->expects($this->once())
+			->method('setCookie');
+
 		$this->Users->setCookie(array(
 			'name' => 'userTestCookie'));
-		$this->Users->Cookie->name = 'userTestCookie';
-		$result = $this->Users->Cookie->read('User');
-        $this->assertEqual($result, array(
-			'password' => 'testtest',
-            'email' => 'testuser@cakedc.com',
-        ));
+
+		$this->assertEqual($this->Users->RememberMe->settings['cookieKey'], 'rememberMe');
 	}
-	
+
 /**
  * Test getting default and setted email instance config
  *
@@ -570,7 +591,6 @@ class UsersControllerTestCase extends CakeTestCase {
 		$this->setExpectedException('ConfigureException');
 		Configure::write('Users.emailConfig', 'doesnotexist');
 		$anotherConfig = $this->Users->getMailInstance()->config();
-		
 	}
 
 /**
@@ -597,7 +617,7 @@ class UsersControllerTestCase extends CakeTestCase {
  *
  * @return void
  */
-	public function endTest() {
+	public function endTest($method) {
 		$this->Users->Session->destroy();
 		unset($this->Users);
 		ClassRegistry::flush();

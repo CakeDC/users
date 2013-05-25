@@ -1,6 +1,6 @@
 The MIT License
 
-Copyright 2009-2010
+Copyright 2009-2013
 Cake Development Corporation
 1785 E. Sahara Avenue, Suite 490-423
 Las Vegas, Nevada 89104

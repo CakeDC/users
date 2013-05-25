@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2011, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2013, Cake Development Corporation (http://cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2011, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2013, Cake Development Corporation (http://cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -83,7 +83,7 @@ class User extends UsersAppModel {
 				'rule' => array('alphaNumeric'),
 				'message' => 'The username must be alphanumeric.'),
 			'unique_username' => array(
-				'rule'=>array('isUnique', 'username'),
+				'rule' => array('isUnique', 'username'),
 				'message' => 'This username is already in use.'),
 			'username_min' => array(
 				'rule' => array('minLength', '3'),
@@ -246,7 +246,7 @@ class User extends UsersAppModel {
  * @param string $string String to hash
  * @param string $type Method to use (sha1/sha256/md5)
  * @param boolean $salt If true, automatically appends the application's salt
- *     value to $string (Security.salt)
+ *	 value to $string (Security.salt)
  * @return string Hash
  */
 	public function hash($string, $type = null, $salt = false) {
@@ -287,6 +287,7 @@ class User extends UsersAppModel {
  * Verifies a users email by a token that was sent to him via email and flags the user record as active
  *
  * @param string $token The token that wa sent to the user
+ * @throws RuntimeException
  * @return array On success it returns the user data record
  */
 	public function verifyEmail($token = null) {
@@ -402,7 +403,7 @@ class User extends UsersAppModel {
 			$user = $this->save($user, false);
 			$this->data = $user;
 			return $user;
-		} elseif (!empty($user) && $user[$this->alias]['email_verified'] == 0){
+		} elseif (!empty($user) && $user[$this->alias]['email_verified'] == 0) {
 			$this->invalidate('email', __d('users', 'This Email Address exists but was never validated.'));
 		} else {
 			$this->invalidate('email', __d('users', 'This Email Address does not exist in the system.'));
@@ -444,7 +445,7 @@ class User extends UsersAppModel {
 			'new_password' => $tmp['password'],
 			'confirm_password' => array(
 				'required' => array(
-					'rule' => array('compareFields', 'new_password', 'confirm_password'), 
+					'rule' => array('compareFields', 'new_password', 'confirm_password'),
 					'message' => __d('users', 'The passwords are not equal.'))));
 
 		$this->set($postData);
@@ -483,7 +484,8 @@ class User extends UsersAppModel {
 /**
  * Validation method to check the old password
  *
- * @param array $password 
+ * @param array $password
+ * @throws OutOfBoundsException
  * @return boolean True on success
  */
 	public function validateOldPassword($password) {
@@ -508,7 +510,8 @@ class User extends UsersAppModel {
 		if (is_array($field1)) {
 			$field1 = key($field1);
 		}
-		if (isset($this->data[$this->alias][$field1]) && isset($this->data[$this->alias][$field2]) && 
+
+		if (isset($this->data[$this->alias][$field1]) && isset($this->data[$this->alias][$field2]) &&
 			$this->data[$this->alias][$field1] == $this->data[$this->alias][$field2]) {
 			return true;
 		}
@@ -519,6 +522,7 @@ class User extends UsersAppModel {
  * Returns all data about a user
  *
  * @param string $slug user slug or the uuid of a user
+ * @throws OutOfBoundsException
  * @return array
  */
 	public function view($slug = null) {
@@ -673,14 +677,14 @@ class User extends UsersAppModel {
 		} else {
 			$postData[$this->alias]['email_verified'] = 1;
 		}
-        $postData[$this->alias]['active'] = 1;
-        $defaultRole = Configure::read('Users.defaultRole');
-        if ($defaultRole) {
-            $postData[$this->alias]['role'] = $defaultRole;
-        } else {
-            $postData[$this->alias]['role'] = 'registered';
-        }
-        return $postData;
+		$postData[$this->alias]['active'] = 1;
+		$defaultRole = Configure::read('Users.defaultRole');
+		if ($defaultRole) {
+			$postData[$this->alias]['role'] = $defaultRole;
+		} else {
+			$postData[$this->alias]['role'] = 'registered';
+		}
+		return $postData;
 	}
 
 /**
@@ -688,7 +692,8 @@ class User extends UsersAppModel {
  *
  * @param string $state Find State
  * @param string $query Query options
- * @param string $results Result data
+ * @param array|string $results Result data
+ * @throws MissingPluginException
  * @return array
  * @link https://github.com/CakeDC/search
  */
@@ -708,10 +713,9 @@ class User extends UsersAppModel {
 				$query['search'] = '';
 			}
 
-			$db =& ConnectionManager::getDataSource($this->useDbConfig);
+			$db = ConnectionManager::getDataSource($this->useDbConfig);
 			$by = $query['by'];
 			$search = $query['search'];
-			$byQuoted = $db->value($search);
 			$like = '%' . $query['search'] . '%';
 
 			switch ($by) {
@@ -767,7 +771,7 @@ class User extends UsersAppModel {
  * @param array $extra Extra options
  * @return array
  */
-	function paginateCount($conditions = array(), $recursive = 0, $extra = array()) {
+	public function paginateCount($conditions = array(), $recursive = 0, $extra = array()) {
 		$parameters = compact('conditions');
 		if ($recursive != $this->recursive) {
 			$parameters['recursive'] = $recursive;
@@ -788,29 +792,29 @@ class User extends UsersAppModel {
  */
 	public function add($postData = null) {
 		if (!empty($postData)) {
-            $this->data = $postData;
-            if ($this->validates()) {
-                if (empty($postData[$this->alias]['role'])) {
-                    if (empty($postData[$this->alias]['is_admin'])) {
-                        $defaultRole = Configure::read('Users.defaultRole');
-                        if ($defaultRole) {
-                            $postData[$this->alias]['role'] = $defaultRole;
-                        } else {
-                            $postData[$this->alias]['role'] = 'registered';
-                        }
-                    } else {
-                        $postData[$this->alias]['role'] = 'admin';
-                    }
-                }
-                $postData[$this->alias]['password'] = $this->hash($postData[$this->alias]['password'], 'sha1', true);
-                $this->create();
-                $result = $this->save($postData, false);
-                if ($result) {
-                    $result[$this->alias][$this->primaryKey] = $this->id;
-                    $this->data = $result;
-                    return true;
-                }
-            }
+			$this->data = $postData;
+			if ($this->validates()) {
+				if (empty($postData[$this->alias]['role'])) {
+					if (empty($postData[$this->alias]['is_admin'])) {
+						$defaultRole = Configure::read('Users.defaultRole');
+						if ($defaultRole) {
+							$postData[$this->alias]['role'] = $defaultRole;
+						} else {
+							$postData[$this->alias]['role'] = 'registered';
+						}
+					} else {
+						$postData[$this->alias]['role'] = 'admin';
+					}
+				}
+				$postData[$this->alias]['password'] = $this->hash($postData[$this->alias]['password'], 'sha1', true);
+				$this->create();
+				$result = $this->save($postData, false);
+				if ($result) {
+					$result[$this->alias][$this->primaryKey] = $this->id;
+					$this->data = $result;
+					return true;
+				}
+			}
 		}
 		return false;
 	}
