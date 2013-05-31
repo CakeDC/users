@@ -629,13 +629,16 @@ class UsersController extends UsersAppController {
 			'from' => Configure::read('App.defaultEmail'),
 			'subject' => __d('users', 'Account verification'),
 			'template' => $this->_pluginDot() . 'account_verification',
-			'layout' => 'default');
+			'layout' => 'default',
+			'emailFormat' => CakeEmail::MESSAGE_TEXT
+		);
 
 		$options = array_merge($defaults, $options);
 
 		$Email = $this->_getMailInstance();
 		$Email->to($userData[$this->modelClass]['email'])
 			->from($options['from'])
+			->emailFormat($options['emailFormat'])
 			->subject($options['subject'])
 			->template($options['template'], $options['layout'])
 			->viewVars(array(
@@ -657,7 +660,9 @@ class UsersController extends UsersAppController {
 			'from' => Configure::read('App.defaultEmail'),
 			'subject' => __d('users', 'Password Reset'),
 			'template' => $this->_pluginDot() . 'password_reset_request',
-			'layout' => 'default');
+			'emailFormat' => CakeEmail::MESSAGE_TEXT,
+			'layout' => 'default'
+		);
 
 		$options = array_merge($defaults, $options);
 
@@ -669,6 +674,7 @@ class UsersController extends UsersAppController {
 				$Email = $this->_getMailInstance();
 				$Email->to($user[$this->modelClass]['email'])
 					->from($options['from'])
+					->emailFormat($options['emailFormat'])
 					->subject($options['subject'])
 					->template($options['template'], $options['layout'])
 					->viewVars(array(
