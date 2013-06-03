@@ -74,52 +74,52 @@ class UserDetail extends UsersAppModel {
 	public function createDefaults($userId) {
 		$entries = array(
 			array(
-				'field' => 'user.firstname',
+				'field' => 'User.firstname',
 				'value' => '',
 				'input' => 'text',
 				'data_type' => 'string'),
 			array(
-				'field' => 'user.middlename',
+				'field' => 'User.middlename',
 				'value' => '',
 				'input' => 'text',
 				'data_type' => 'string'),
 			array(
-				'field' => 'user.lastname',
+				'field' => 'User.lastname',
 				'value' => '',
 				'input' => 'text',
 				'data_type' => 'string'),
 			array(
-				'field' => 'user.abbr-country-name',
+				'field' => 'User.abbr-country-name',
 				'value' => '',
 				'input' => 'text',
 				'data_type' => 'string'),
 			array(
-				'field' => 'user.abbr-region',
+				'field' => 'User.abbr-region',
 				'value' => '',
 				'input' => 'text',
 				'data_type' => 'string'),
 			array(
-				'field' => 'user.country-name',
+				'field' => 'User.country-name',
 				'value' => '',
 				'input' => 'text',
 				'data_type' => 'string'),
 			array(
-				'field' => 'user.location',
+				'field' => 'User.location',
 				'value' => '',
 				'input' => 'text',
 				'data_type' => 'string'),
 			array(
-				'field' => 'user.postal-code',
+				'field' => 'User.postal-code',
 				'value' => '',
 				'input' => 'text',
 				'data_type' => 'string'),
 			array(
-				'field' => 'user.region',
+				'field' => 'User.region',
 				'value' => '',
 				'input' => 'text',
 				'data_type' => 'string'),
 			array(
-				'field' => 'user.timeoffset',
+				'field' => 'User.timeoffset',
 				'value' => '',
 				'input' => 'text',
 				'data_type' => 'string'));
