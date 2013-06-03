@@ -405,11 +405,11 @@ class UsersController extends UsersAppController {
 					}
 				}
 
-				if (empty($data['return_to'])) {
-					$data['return_to'] = null;
+				if (empty($data[$this->modelClass]['return_to'])) {
+					$data[$this->modelClass]['return_to'] = null;
 				}
 
-				$this->redirect($this->Auth->redirect($data['return_to']));
+				$this->redirect($this->Auth->redirect($data[$this->modelClass]['return_to']));
 			} else {
 				$this->Auth->flash(__d('users', 'Invalid e-mail / password combination.  Please try again'));
 			}
