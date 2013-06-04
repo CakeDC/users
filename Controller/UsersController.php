@@ -164,7 +164,7 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	protected function _setupAuth() {
-		$this->Auth->allow('add', 'reset', 'verify', 'logout', 'view', 'reset_password', 'login');
+		$this->Auth->allow('add', 'reset', 'verify', 'logout', 'view', 'reset_password', 'login', 'resend_verification');
 		if (!is_null(Configure::read('Users.allowRegistration')) && !Configure::read('Users.allowRegistration')) {
 			$this->Auth->deny('add');
 		}
@@ -479,6 +479,23 @@ class UsersController extends UsersAppController {
 		$this->RememberMe->destroyCookie();
 		$this->Session->setFlash(sprintf(__d('users', '%s you have successfully logged out'), $user[$this->{$this->modelClass}->displayField]));
 		$this->redirect($this->Auth->logout());
+	}
+
+/**
+ * Checks if an email is already verified and if not renews the expiration time
+ *
+ * @return void
+ */
+	public function resend_verification() {
+		if ($this->request->is('post')) {
+			try {
+				if ($this->{$this->modelClass}->checkEmailVerification($this->request->data)) {
+					$this->_sendVerificationEmail($this->{$this->modelClass}->data);
+				}
+			} catch (Exception $e) {
+				$this->Session->setFlash($e->getMessage());
+			}
+		}
 	}
 
 /**
