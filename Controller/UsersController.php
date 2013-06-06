@@ -492,6 +492,8 @@ class UsersController extends UsersAppController {
 			try {
 				if ($this->{$this->modelClass}->checkEmailVerification($this->request->data)) {
 					$this->_sendVerificationEmail($this->{$this->modelClass}->data);
+					$this->Session->setFlash(__d('users', 'The email was resent. Please check your inbox.'));
+					$this->redirect('login');
 				} else {
 					$this->Session->setFlash(__d('users', 'The email could not be sent. Please check errors.'));
 				}
