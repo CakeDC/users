@@ -9,6 +9,7 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
+App::uses('CakeEmail', 'Network/Email');
 App::uses('UsersAppController', 'Users.Controller');
 
 /**
@@ -763,7 +764,6 @@ class UsersController extends UsersAppController {
  * @link http://book.cakephp.org/2.0/en/core-utility-libraries/email.html
  */
 	protected function _getMailInstance() {
-		App::uses('CakeEmail', 'Network/Email');
 		$emailConfig = Configure::read('Users.emailConfig');
 		if ($emailConfig) {
 			return new CakeEmail($emailConfig);
