@@ -216,7 +216,7 @@ class RememberMeComponent extends Component {
 			if (in_array($key, $validProperties)) {
 				$this->Cookie->{$key} = $value;
 			} else {
-				throw new InvalidArgumentException(__('users', 'Invalid options %s', $key));
+				throw new InvalidArgumentException(__d('users', 'Invalid options %s', $key));
 			}
 		}
 	}
