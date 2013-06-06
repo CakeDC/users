@@ -559,7 +559,7 @@ class User extends UsersAppModel {
  */
 	public function checkEmailVerification($postData = array(), $renew = true) {
 		$user = $this->find('first', array(
-			'contain' => array(),
+			'contain' => array('Profile'),
 			'conditions' => array(
 				$this->alias . '.email' => $postData[$this->alias]['email']
 			)

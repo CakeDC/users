@@ -491,6 +491,8 @@ class UsersController extends UsersAppController {
 			try {
 				if ($this->{$this->modelClass}->checkEmailVerification($this->request->data)) {
 					$this->_sendVerificationEmail($this->{$this->modelClass}->data);
+				} else {
+					$this->Session->setFlash(__d('users', 'The email could not be sent. Please check errors.'));
 				}
 			} catch (Exception $e) {
 				$this->Session->setFlash($e->getMessage());
@@ -659,8 +661,9 @@ class UsersController extends UsersAppController {
 			->subject($options['subject'])
 			->template($options['template'], $options['layout'])
 			->viewVars(array(
-			'model' => $this->modelClass,
-				'user' => $userData))
+				'model' => $this->modelClass,
+				'user' => $userData
+			))
 			->send();
 	}
 
