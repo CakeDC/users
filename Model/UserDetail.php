@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2011, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2013, Cake Development Corporation (http://cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2011, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2013, Cake Development Corporation (http://cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -74,52 +74,52 @@ class UserDetail extends UsersAppModel {
 	public function createDefaults($userId) {
 		$entries = array(
 			array(
-				'field' => 'user.firstname',
+				'field' => 'User.firstname',
 				'value' => '',
 				'input' => 'text',
 				'data_type' => 'string'),
 			array(
-				'field' => 'user.middlename',
+				'field' => 'User.middlename',
 				'value' => '',
 				'input' => 'text',
 				'data_type' => 'string'),
 			array(
-				'field' => 'user.lastname',
+				'field' => 'User.lastname',
 				'value' => '',
 				'input' => 'text',
 				'data_type' => 'string'),
 			array(
-				'field' => 'user.abbr-country-name',
+				'field' => 'User.abbr-country-name',
 				'value' => '',
 				'input' => 'text',
 				'data_type' => 'string'),
 			array(
-				'field' => 'user.abbr-region',
+				'field' => 'User.abbr-region',
 				'value' => '',
 				'input' => 'text',
 				'data_type' => 'string'),
 			array(
-				'field' => 'user.country-name',
+				'field' => 'User.country-name',
 				'value' => '',
 				'input' => 'text',
 				'data_type' => 'string'),
 			array(
-				'field' => 'user.location',
+				'field' => 'User.location',
 				'value' => '',
 				'input' => 'text',
 				'data_type' => 'string'),
 			array(
-				'field' => 'user.postal-code',
+				'field' => 'User.postal-code',
 				'value' => '',
 				'input' => 'text',
 				'data_type' => 'string'),
 			array(
-				'field' => 'user.region',
+				'field' => 'User.region',
 				'value' => '',
 				'input' => 'text',
 				'data_type' => 'string'),
 			array(
-				'field' => 'user.timeoffset',
+				'field' => 'User.timeoffset',
 				'value' => '',
 				'input' => 'text',
 				'data_type' => 'string'));
@@ -147,7 +147,7 @@ class UserDetail extends UsersAppModel {
 			"{$this->alias}.user_id" => $userId);
 
 		if (!is_null($section)) {
-			$conditions["{$this->alias}.field LIKE"] = $section . '.%'; 
+			$conditions["{$this->alias}.field LIKE"] = $section . '.%';
 		}
 
 		$results = $this->find('all', array(
@@ -156,7 +156,7 @@ class UserDetail extends UsersAppModel {
 			'fields' => array("{$this->alias}.field", "{$this->alias}.value")));
 
 		if (!empty($results)) {
-			foreach($results as $result) {
+			foreach ($results as $result) {
 				list($prefix, $field) = explode('.', $result[$this->alias]['field']);
 				$userDetails[$prefix][$field] = $result[$this->alias]['value'];
 			}
@@ -190,9 +190,9 @@ class UserDetail extends UsersAppModel {
 		if (!empty($this->sectionSchema[$section])) {
 			$this->activeSectionSchema = $section;
 
-			foreach($data as $model => $userDetails) {
+			foreach ($data as $model => $userDetails) {
 				if ($model == $this->alias) {
-					foreach($userDetails as $key => $value) {
+					foreach ($userDetails as $key => $value) {
 						$data[$model][$key] = $this->deconstruct($key, $value);
 					}
 				}
@@ -214,10 +214,10 @@ class UserDetail extends UsersAppModel {
 		}
 
 		if (!empty($data) && is_array($data)) {
-			foreach($data as $model => $userDetails) {
+			foreach ($data as $model => $userDetails) {
 				if ($model == $this->alias) {
 					// Save the details
-					foreach($userDetails as $key => $value) {
+					foreach ($userDetails as $key => $value) {
 						$newUserDetail = array();
 						$field = $section . '.' . $key;
 						$userDetail = $this->find('first', array(
@@ -257,4 +257,3 @@ class UserDetail extends UsersAppModel {
 		return true;
 	}
 }
-;
