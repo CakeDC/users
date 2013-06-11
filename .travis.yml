@@ -1,0 +1,32 @@
+language: php
+ 
+php:
+  - 5.2.8
+  - 5.3
+  - 5.4
+ 
+before_script:
+  - git clone --depth 1 git://github.com/cakephp/cakephp ../cakephp && cd ../cakephp
+  - git clone --depth 1 --branch develop git://github.com/CakeDC/search plugins/search
+  - cd plugins/Search
+  - git submodule update --init --recursive
+  - cd ../../
+  - mv ../Users plugins/Users
+  - sh -c "mysql -e 'CREATE DATABASE cakephp_test;'"
+  - chmod -R 777 ../cakephp/app/tmp
+  - echo "<?php
+    class DATABASE_CONFIG {
+    public \$test = array(
+      'datasource' => 'Database/Mysql',
+      'database' => 'cakephp_test',
+      'host' => '0.0.0.0',
+      'login' => 'travis',
+      'persistent' => false,
+    );
+    }" > ../cakephp/app/Config/database.php
+ 
+script:
+  - ./lib/Cake/Console/cake test Users AllUsersPlugin --stderr
+ 
+notifications:
+  email: false

@@ -188,7 +188,9 @@ class UsersControllerTestCase extends CakeTestCase {
  *
  * @return void
  */
-	public function startTest($method) {
+	public function setUp() {
+		parent::setUp();
+
 		Configure::write('App.UserClass', null);
 
 		$request = new CakeRequest();
@@ -219,6 +221,9 @@ class UsersControllerTestCase extends CakeTestCase {
 			 ->will($this->returnSelf());
 		$this->Users->CakeEmail->expects($this->any())
 			 ->method('viewVars')
+			 ->will($this->returnSelf());
+		$this->Users->CakeEmail->expects($this->any())
+			 ->method('emailFormat')
 			 ->will($this->returnSelf());
 
 		$this->Users->Components->disable('Security');
@@ -541,13 +546,6 @@ class UsersControllerTestCase extends CakeTestCase {
 		$this->assertEqual($this->Users->redirectUrl, array('action' => 'index'));
 	}
 
-//	public function testMailInstance() {
-//		// default instance shoult be "default"
-//		$cakeMail = $this->Users->getMailInstance();
-//		$this->assertFalse($cakeMail);
-//		// if configured, load the email config
-//	}
-	
 /**
  * Test setting the cookie
  *
