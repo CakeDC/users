@@ -53,7 +53,7 @@ class RememberMeComponent extends Component {
 		'autoLogin' => true,
 		'userModel' => 'User',
 		'cookieKey' => 'rememberMe',
-		'cookieLifeTime' => '+99 years',
+		'cookieLifeTime' => '+1 year',
 		'cookie' => array(
 			'name' => 'User'),
 		'fields' => array(
