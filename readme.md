@@ -16,7 +16,7 @@ The plugin is pretty easy to set up, all you need to do is to copy it to you app
 
 or
 
-	./Console/cake Migrations.migration all --plugin Users
+	./Console/cake Migrations.migration run all --plugin Users
 
 You will also need the [CakeDC Search plugin](http://github.com/CakeDC/search), just grab it and put it into your application's plugin folder.
 
@@ -37,21 +37,31 @@ The plugin itself is already capable of:
 
 The default password reset process requires the user to enter his email address, an email is sent to the user with a link and a token. When the user accesses the URL with the token he can enter a new password.
 
-### Using the "remember me" cookie ###
+### Using the "remember me" functionality ###
 
-To use the "remember me" checkbox which sets a cookie on the login page you will need to put this code or method call in your AppController::beforeFilter() method.
+To use the "remember me" checkbox which sets a cookie on the login page you will need to add the RememberMe component to the AppController or the controllers you want to auto-login the user again based on the cookie.
 
-	public function restoreLoginFromCookie() {
-		$this->Cookie->name = 'Users';
-		$cookie = $this->Cookie->read('rememberMe');
-		if (!empty($cookie) && !$this->Auth->user()) {
-			$data['User'][$this->Auth->fields['username']] = $cookie[$this->Auth->fields['username']];
-			$data['User'][$this->Auth->fields['password']] = $cookie[$this->Auth->fields['password']];
-			$this->Auth->login($data);
-		}
+	public $components = array(
+		'Users.RememberMe');
+
+If you are using another user model than 'User' you'll have to configure it:
+
+	public $components = array(
+		'Users.RememberMe' => array(
+			'userModel' => 'AppUser');
+
+And add this line
+
+	$this->RememberMe->restoreLoginFromCookie()
+
+to your controllers beforeFilter() callack
+
+	public function beforeFilter() {
+		parent::beforeFilter();
+		$this->RememberMe->restoreLoginFromCookie();
 	}
 
-The code will read the login credentials from the cookie and log the user in based on that information. Do not forget to change the cookie name or fields to what you are using if you have changed them in your application!
+The code will read the login credentials from the cookie and log the user in based on that information. Note that you have to use CakePHPs AuthComponent or an aliased Component implementing the same interface as AuthComponent.
 
 ## How to extend the plugin ##
 
@@ -69,6 +79,7 @@ Declare the controller class
 
 	App::uses('UsersController', 'Users.Controller');
 	class AppUsersController extends UsersController {
+	    public $name = 'AppUsers';
 	}
 
 In the case you want to extend also the user model it's required to set the right user class in the beforeFilter() because the controller will use the inherited model which would be Users.User.
@@ -76,6 +87,7 @@ In the case you want to extend also the user model it's required to set the righ
 	public function beforeFilter() {
 		parent::beforeFilter();
 		$this->User = ClassRegistry::init('AppUser');
+        $this->set('model', 'AppUser');
 	}
 
 You can overwrite the render() method to fall back to the plugin views in the case you want to use some of them
@@ -92,6 +104,8 @@ You can overwrite the render() method to fall back to the plugin views in the ca
 		}
 		return parent::render($view, $layout);
 	}
+
+Note: Depending on the CakePHP version you are using, you might need to bring a copy of the Views used in the plugin to your AppUsers view directory
 
 ### Overwriting the default auth settings provided by the plugin
 
