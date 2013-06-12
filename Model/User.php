@@ -41,8 +41,8 @@ class User extends UsersAppModel {
  * @link https://github.com/CakeDC/search
  */
 	public $filterArgs = array(
-		array('username', 'type' => 'like'),
-		array('email', 'type' => 'value')
+		'username' => array('type' => 'like'),
+		'email' => array('type' => 'value')
 	);
 
 /**
