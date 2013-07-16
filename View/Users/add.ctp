@@ -33,4 +33,4 @@
 		?>
 	</fieldset>
 </div>
-<?php echo $this->element('Users/sidebar'); ?>
+<?php echo $this->element('Users.Users/sidebar'); ?>
