@@ -729,7 +729,6 @@ class UsersController extends UsersAppController {
  * @param string Cookie data keyname for the userdata, its default is "User". This is set to User and NOT using the model alias to make sure it works with different apps with different user models across different (sub)domains.
  * @return void
  * @link http://book.cakephp.org/2.0/en/core-libraries/components/cookie.html
- * @deprecated Use the RememberMe Component
  */
 	protected function _setCookie($options = array(), $cookieKey = 'rememberMe') {
 		$this->RememberMe->settings['cookieKey'] = $cookieKey;
@@ -751,8 +750,13 @@ class UsersController extends UsersAppController {
 		}
 
 		if (!empty($this->request->data) && $this->{$this->modelClass}->resetPassword(Set::merge($user, $this->request->data))) {
-			$this->Session->setFlash(__d('users', 'Password changed, you can now login with your new password.'));
-			$this->redirect($this->Auth->loginAction);
+			if ($this->RememberMe->cookieIsSet()) {
+				$this->Session->setFlash(__d('users', 'Password changed.'));
+				$this->_setCookie();
+			} else {
+				$this->Session->setFlash(__d('users', 'Password changed, you can now login with your new password.'));
+				$this->redirect($this->Auth->loginAction);
+			}
 		}
 
 		$this->set('token', $token);
