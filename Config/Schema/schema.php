@@ -9,7 +9,7 @@
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @Copyright 2010 - 2011, Cake Development Corporation
+ * @Copyright 2010 - 2013, Cake Development Corporation
  * @link      http://github.com/CakeDC/users
  * @package   plugins.users.config.schema
  * @license   MIT License (http://www.opensource.org/licenses/mit-license.php)

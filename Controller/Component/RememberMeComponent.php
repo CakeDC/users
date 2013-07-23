@@ -53,6 +53,7 @@ class RememberMeComponent extends Component {
 		'autoLogin' => true,
 		'userModel' => 'User',
 		'cookieKey' => 'rememberMe',
+		'cookieLifeTime' => '+1 year',
 		'cookie' => array(
 			'name' => 'User'),
 		'fields' => array(
@@ -68,8 +69,31 @@ class RememberMeComponent extends Component {
  */
 	public function __construct(ComponentCollection $collection, $settings = array()) {
 		parent::__construct($collection, $settings);
+
+		$this->_checkAndSetCookieLifeTime();
 		$this->settings = Set::merge($this->_defaults, $settings);
 		$this->configureCookie($this->settings['cookie']);
+	}
+
+/**
+ * Check if the system is 32bit and uses DateTime() instead strtotime() to get
+ * an integer instead of a string that is passed on to CookieComponent::write()
+ * due to problems with strtotime() in CookieComponent::_expire(). See
+ * the link in this doc block.
+ *
+ * This method needs to be called in the constructor before the default config
+ * values are merged!
+ *
+ * @link https://cakephp.lighthouseapp.com/projects/42648-cakephp/tickets/3868-cookiecomponent_expires-fails-on-dates-set-far-in-the-future-on-32bit-systems
+ * @link http://stackoverflow.com/questions/3266077/php-strtotime-is-returning-false-for-a-future-date
+ * @return void
+ */
+	protected function _checkAndSetCookieLifeTime() {
+		$lifeTime = $this->_defaults['cookieLifeTime'];
+		if (is_string($lifeTime) && strtotime($lifeTime) === false) {
+			$Date = new DateTime($lifeTime);
+			$this->_defaults['cookieLifeTime'] = $Date->format('U');
+		}
 	}
 
 /**
@@ -125,6 +149,7 @@ class RememberMeComponent extends Component {
 
 			return $result;
 		}
+		return false;
 	}
 
 /**
@@ -155,7 +180,8 @@ class RememberMeComponent extends Component {
 			}
 		}
 
-		return $this->Cookie->write($cookieKey, $cookieData, true, '+99 years');
+		$this->Cookie->write($cookieKey, $cookieData, true, $cookieLifeTime);
+		return true;
 	}
 
 /**
@@ -190,7 +216,7 @@ class RememberMeComponent extends Component {
 			if (in_array($key, $validProperties)) {
 				$this->Cookie->{$key} = $value;
 			} else {
-				throw new InvalidArgumentException(__('users', 'Invalid options %s', $key));
+				throw new InvalidArgumentException(__d('users', 'Invalid options %s', $key));
 			}
 		}
 	}

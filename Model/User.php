@@ -41,8 +41,9 @@ class User extends UsersAppModel {
  * @link https://github.com/CakeDC/search
  */
 	public $filterArgs = array(
-		array('name' => 'username', 'type' => 'string'),
-		array('name' => 'email', 'type' => 'string'));
+		'username' => array('type' => 'like'),
+		'email' => array('type' => 'value')
+	);
 
 /**
  * Displayfield
@@ -50,6 +51,13 @@ class User extends UsersAppModel {
  * @var string $displayField
  */
 	public $displayField = 'username';
+
+/**
+ * Time the email verification token is valid in seconds
+ *
+ * @var integer
+ */
+	public $emailTokenExpirationTime = 86400;
 
 /**
  * hasMany associations
@@ -544,6 +552,45 @@ class User extends UsersAppModel {
 	}
 
 /**
+ * Checks if an email is already verified and if not renews the expiration time
+ *
+ * @param array $postData the post data from the request
+ * @param boolean $renew
+ * @return bool True if the email was not already verified
+ */
+	public function checkEmailVerification($postData = array(), $renew = true) {
+		$user = $this->find('first', array(
+			'contain' => array('Profile'),
+			'conditions' => array(
+				$this->alias . '.email' => $postData[$this->alias]['email']
+			)
+		));
+
+		if (empty($user)) {
+			$this->invalidate('email', __d('users', 'Invalid Email address.'));
+			return false;
+		}
+
+		if ($user[$this->alias]['email_verified'] == 1) {
+			$this->invalidate('email', __d('users', 'This email is already verified.'));
+			return false;
+		}
+
+		if ($user[$this->alias]['email_verified'] == 0) {
+			if ($renew === true) {
+				$user[$this->alias]['email_token_expires'] = $this->emailTokenExpirationTime();
+				$this->save($user, array(
+					'validate' => false,
+					'callbacks' => false,
+				));
+			}
+			$this->data = $user;
+			return true;
+		}
+
+	}
+
+/**
  * Registers a new user
  *
  * Options:
@@ -630,9 +677,18 @@ class User extends UsersAppModel {
 		}
 
 		$user[$this->alias]['email_token'] = $this->generateToken();
-		$user[$this->alias]['email_token_expires'] = date('Y-m-d H:i:s', time() + 86400);
+		$user[$this->alias]['email_token_expires'] = $this->emailTokenExpirationTime();
 
 		return $this->save($user, false);
+	}
+
+/**
+ * Returns the time the email verification token expires
+ *
+ * @return string
+ */
+	public function emailTokenExpirationTime() {
+		return date('Y-m-d H:i:s', time() + $this->emailTokenExpirationTime);
 	}
 
 /**
@@ -724,10 +780,9 @@ class User extends UsersAppModel {
 				$query['search'] = '';
 			}
 
-			$db =& ConnectionManager::getDataSource($this->useDbConfig);
+			$db = ConnectionManager::getDataSource($this->useDbConfig);
 			$by = $query['by'];
 			$search = $query['search'];
-			$byQuoted = $db->value($search);
 			$like = '%' . $query['search'] . '%';
 
 			switch ($by) {

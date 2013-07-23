@@ -41,6 +41,6 @@
 		</tr>
 	<?php endforeach; ?>
 	</table>
-	<?php echo $this->element('pagination'); ?>
+	<?php echo $this->element('Users.pagination'); ?>
 </div>
-<?php echo $this->element('Users/sidebar'); ?>
+<?php echo $this->element('Users.Users/sidebar'); ?>

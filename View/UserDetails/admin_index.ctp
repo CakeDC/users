@@ -66,7 +66,7 @@ foreach ($user_details as $user_detail):
 <?php endforeach; ?>
 </table>
 </div>
-<?php echo $this->element('pagination'); ?>
+<?php echo $this->element('Users.pagination'); ?>
 <div class="actions">
 	<ul>
 		<li><?php echo $this->Html->link(__d('users', 'New User Detail'), array('action' => 'add')); ?></li>

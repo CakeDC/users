@@ -9,7 +9,7 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-App::uses('Model', 'Model');
+App::uses('AppModel', 'Model');
 
 /**
  * Users App Model
@@ -31,7 +31,9 @@ class UsersAppModel extends AppModel {
  *
  * @var array
  */
-	public $actsAs = array('Containable');
+	public $actsAs = array(
+		'Containable'
+	);
 
 /**
  * Customized paginateCount method
@@ -41,7 +43,7 @@ class UsersAppModel extends AppModel {
  * @param array
  * @return 
  */
-	function paginateCount($conditions = array(), $recursive = 0, $extra = array()) {
+	public function paginateCount($conditions = array(), $recursive = 0, $extra = array()) {
 		$parameters = compact('conditions');
 		if ($recursive != $this->recursive) {
 			$parameters['recursive'] = $recursive;
@@ -52,4 +54,5 @@ class UsersAppModel extends AppModel {
 		}
 		return $this->find('count', array_merge($parameters, $extra));
 	}
+
 }

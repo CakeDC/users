@@ -42,12 +42,12 @@ The default password reset process requires the user to enter his email address,
 To use the "remember me" checkbox which sets a cookie on the login page you will need to add the RememberMe component to the AppController or the controllers you want to auto-login the user again based on the cookie.
 
 	public $components = array(
-		'Users.RemembeMe');
+		'Users.RememberMe');
 
 If you are using another user model than 'User' you'll have to configure it:
 
 	public $components = array(
-		'Users.RemembeMe' => array(
+		'Users.RememberMe' => array(
 			'userModel' => 'AppUser');
 
 And add this line
@@ -79,6 +79,7 @@ Declare the controller class
 
 	App::uses('UsersController', 'Users.Controller');
 	class AppUsersController extends UsersController {
+	    public $name = 'AppUsers';
 	}
 
 In the case you want to extend also the user model it's required to set the right user class in the beforeFilter() because the controller will use the inherited model which would be Users.User.
@@ -86,6 +87,7 @@ In the case you want to extend also the user model it's required to set the righ
 	public function beforeFilter() {
 		parent::beforeFilter();
 		$this->User = ClassRegistry::init('AppUser');
+        $this->set('model', 'AppUser');
 	}
 
 You can overwrite the render() method to fall back to the plugin views in the case you want to use some of them
@@ -102,6 +104,8 @@ You can overwrite the render() method to fall back to the plugin views in the ca
 		}
 		return parent::render($view, $layout);
 	}
+
+Note: Depending on the CakePHP version you are using, you might need to bring a copy of the Views used in the plugin to your AppUsers view directory
 
 ### Overwriting the default auth settings provided by the plugin
 
