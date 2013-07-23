@@ -191,12 +191,12 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	public function index() {
-		$this->paginate = array(
+		$this->Paginator->settings = array(
 			'limit' => 12,
 			'conditions' => array(
 				$this->modelClass . '.active' => 1,
 				$this->modelClass . '.email_verified' => 1));
-		$this->set('users', $this->paginate($this->modelClass));
+		$this->set('users', $this->Paginator->paginate($this->modelClass));
 	}
 
 /**
@@ -265,7 +265,7 @@ class UsersController extends UsersAppController {
 		$this->Paginator->settings[$this->modelClass]['order'] = array($this->modelClass . '.created' => 'desc');
 
 		$this->{$this->modelClass}->recursive = 0;
-		$this->set('users', $this->paginate());
+		$this->set('users', $this->Paginator->paginate());
 	}
 
 /**
@@ -451,7 +451,7 @@ class UsersController extends UsersAppController {
 		}
 		$this->request->data[$this->modelClass]['search'] = $searchTerm;
 
-		$this->paginate = array(
+		$this->Paginator->settings = array(
 			'search',
 			'limit' => 12,
 			'by' => $by,
@@ -461,7 +461,7 @@ class UsersController extends UsersAppController {
 						$this->modelClass . '.active' => 1,
 						$this->modelClass . '.email_verified' => 1)));
 
-		$this->set('users', $this->paginate($this->modelClass));
+		$this->set('users', $this->Paginator->paginate($this->modelClass));
 		$this->set('searchTerm', $searchTerm);
 	}
 
