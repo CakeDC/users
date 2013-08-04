@@ -231,19 +231,7 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	public function edit() {
-		if (!empty($this->request->data)) {
-			if ($this->{$this->modelClass}->UserDetail->saveSection($this->Auth->user('id'), $this->request->data, 'User')) {
-				$this->Session->setFlash(__d('users', 'Profile saved.'));
-			} else {
-				$this->Session->setFlash(__d('users', 'Could not save your profile.'));
-			}
-		} else {
-			$data = $this->{$this->modelClass}->UserDetail->getSection($this->Auth->user('id'), 'User');
-			if (!isset($data[$this->modelClass])) {
-				$data[$this->modelClass] = array();
-			}
-			$this->request->data['UserDetail'] = $data[$this->modelClass];
-		}
+		// @todo replace this with something better than the user details that were removed
 	}
 
 /**
