@@ -204,32 +204,6 @@ class User extends UsersAppModel {
 	}
 
 /**
- * After save callback
- *
- * @param boolean $created
- * @return void
- */
-	public function afterSave($created) {
-		if ($created) {
-			$this->sluggedUserUrl();
-		}
-	}
-
-/**
- * Override this method as needed to generate the url you want
- *
- * @return void
- * @see User::afterSave();
- */
-	public function sluggedUserUrl() {
-		if (!empty($this->data[$this->alias]['slug'])) {
-			if ($this->hasField('url')) {
-				$this->saveField('url', '/user/' . $this->data[$this->alias]['slug'], false);
-			}
-		}
-	}
-
-/**
  * afterFind callback
  *
  * @param array $results Result data
