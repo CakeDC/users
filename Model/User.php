@@ -754,24 +754,21 @@ class User extends UsersAppModel {
  * @link https://github.com/CakeDC/search
  */
 	protected function _findSearch($state, $query, $results = array()) {
-		if (!App::import('Lib', 'Utils.Languages')) {
+		if (!class_exists('SearchableBehavior')) {
 			throw new MissingPluginException(array('plugin' => 'Search'));
 		}
 
 		if ($state == 'before') {
-			$this->Behaviors->attach('Containable', array('autoFields' => false));
+			$this->Behaviors->load('Containable', array(
+				'autoFields' => false)
+			);
 			$results = $query;
-			if (!empty($query['by'])) {
-				$by = $query['by'];
-			}
 
 			if (empty($query['search'])) {
 				$query['search'] = '';
 			}
 
-			$db = ConnectionManager::getDataSource($this->useDbConfig);
 			$by = $query['by'];
-			$search = $query['search'];
 			$like = '%' . $query['search'] . '%';
 
 			switch ($by) {
@@ -804,9 +801,8 @@ class User extends UsersAppModel {
 
 			if (isset($query['operation']) && $query['operation'] == 'count') {
 				$results['fields'] = array('COUNT(DISTINCT ' . $this->alias . '.id)');
-			} else {
-				//$results['fields'] = array('DISTINCT User.*');
 			}
+
 			return $results;
 		} elseif ($state == 'after') {
 			if (isset($query['operation']) && $query['operation'] == 'count') {
