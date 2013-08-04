@@ -838,7 +838,10 @@ class User extends UsersAppModel {
 
 /**
  * Adds a new user
- * 
+ *
+ * The difference to register() is that this method here is intended to be used
+ * by admins to add new users without going through all the registration logic
+ *
  * @param array post data, should be Controller->data
  * @return boolean True if the data was saved successfully.
  */
