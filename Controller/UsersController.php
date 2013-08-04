@@ -244,7 +244,7 @@ class UsersController extends UsersAppController {
 		unset($this->{$this->modelClass}->validate['username']);
 		unset($this->{$this->modelClass}->validate['email']);
 		$this->{$this->modelClass}->data[$this->modelClass] = $this->passedArgs;
-		if ($this->{$this->modelClass}->Behaviors->attached('Searchable')) {
+		if ($this->{$this->modelClass}->Behaviors->loaded('Searchable')) {
 			$parsedConditions = $this->{$this->modelClass}->parseCriteria($this->passedArgs);
 		} else {
 			$parsedConditions = array();
