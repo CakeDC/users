@@ -129,10 +129,9 @@ class RememberMeComponent extends Component {
 			return true;
 		}
 
-		extract($this->settings);
-		$cookie = $this->Cookie->read($cookieKey);
-
-		if (!empty($cookie)) {
+		if ($this->cookieIsSet()) {
+			extract($this->settings);
+			$cookie = $this->Cookie->read($cookieKey);
 			$request = $this->request->data;
 
 			foreach ($fields as $field) {
@@ -182,6 +181,17 @@ class RememberMeComponent extends Component {
 
 		$this->Cookie->write($cookieKey, $cookieData, true, $cookieLifeTime);
 		return true;
+	}
+
+/**
+ * Checks if the remember me cookie is set
+ *
+ * @return boolean
+ */
+	public function cookieIsSet() {
+		extract($this->settings);
+		$cookie = $this->Cookie->read($cookieKey);
+		return (!empty($cookie));
 	}
 
 /**
