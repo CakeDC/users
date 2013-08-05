@@ -58,6 +58,6 @@
 		</tr>
 	<?php endforeach; ?>
 	</table>
-	<?php echo $this->element('Users.pagination'); ?>
+	<?php echo $this->element('Users.paging'); ?>
 </div>
 <?php echo $this->element('Users.Users/sidebar'); ?>

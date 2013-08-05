@@ -32,7 +32,9 @@ class User extends UsersAppModel {
  *
  * @var array
  */
-	public $findMethods = array('search' => true);
+	public $findMethods = array(
+		'search' => true
+	);
 
 /**
  * All search fields need to be configured in the Model::filterArgs array.
