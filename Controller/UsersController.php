@@ -84,7 +84,6 @@ class UsersController extends UsersAppController {
  */
 	public function __construct($request, $response) {
 		$this->_setupComponents();
-		$this->_setupHelpers();
 		parent::__construct($request, $response);
 		$this->_reInitControllerName();
 	}
@@ -118,25 +117,21 @@ class UsersController extends UsersAppController {
 	}
 
 /**
+ *
+ */
+	protected function _pluginLoaded($plugin) {
+		return CakePlugin::loaded($plugin);
+	}
+
+/**
  * Setup components based on plugin availability
  *
  * @return void
  * @link https://github.com/CakeDC/search
  */
 	protected function _setupComponents() {
-		if (App::import('Component', 'Search.Prg')) {
+		if ($this->_pluginLoaded('Search')) {
 			$this->components[] = 'Search.Prg';
-		}
-	}
-
-/**
- * Setup helpers based on plugin availability
- *
- * @return void
- */
-	protected function _setupHelpers() {
-		if (App::import('Helper', 'Goodies.Gravatar')) {
-			$this->helpers[] = 'Goodies.Gravatar';
 		}
 	}
 
@@ -231,19 +226,7 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	public function edit() {
-		if (!empty($this->request->data)) {
-			if ($this->{$this->modelClass}->UserDetail->saveSection($this->Auth->user('id'), $this->request->data, 'User')) {
-				$this->Session->setFlash(__d('users', 'Profile saved.'));
-			} else {
-				$this->Session->setFlash(__d('users', 'Could not save your profile.'));
-			}
-		} else {
-			$data = $this->{$this->modelClass}->UserDetail->getSection($this->Auth->user('id'), 'User');
-			if (!isset($data[$this->modelClass])) {
-				$data[$this->modelClass] = array();
-			}
-			$this->request->data['UserDetail'] = $data[$this->modelClass];
-		}
+		// @todo replace this with something better than the user details that were removed
 	}
 
 /**
@@ -256,7 +239,7 @@ class UsersController extends UsersAppController {
 		unset($this->{$this->modelClass}->validate['username']);
 		unset($this->{$this->modelClass}->validate['email']);
 		$this->{$this->modelClass}->data[$this->modelClass] = $this->passedArgs;
-		if ($this->{$this->modelClass}->Behaviors->attached('Searchable')) {
+		if ($this->{$this->modelClass}->Behaviors->loaded('Searchable')) {
 			$parsedConditions = $this->{$this->modelClass}->parseCriteria($this->passedArgs);
 		} else {
 			$parsedConditions = array();
@@ -429,12 +412,12 @@ class UsersController extends UsersAppController {
  * @link https://github.com/CakeDC/search
  */
 	public function search() {
-		if (!App::import('Component', 'Search.Prg')) {
+		if (!$this->_pluginLoaded('Search')) {
 			throw new MissingPluginException(array('plugin' => 'Search'));
 		}
 
 		$searchTerm = '';
-		$this->Prg->commonProcess($this->modelClass, $this->modelClass, 'search', false);
+		$this->Prg->commonProcess($this->modelClass);
 
 		$by = null;
 		if (!empty($this->request->params['named']['search'])) {
@@ -627,7 +610,7 @@ class UsersController extends UsersAppController {
  * @link https://github.com/CakeDC/utils
  */
 	protected function _setLanguages($viewVar = 'languages') {
-		if (!App::import('Lib', 'Utils.Languages')) {
+		if (!$this->_pluginLoaded('Utils')) {
 			throw new MissingPluginException(array('plugin' => 'Utils'));
 		}
 		$Languages = new Languages();

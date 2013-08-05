@@ -32,7 +32,9 @@ class User extends UsersAppModel {
  *
  * @var array
  */
-	public $findMethods = array('search' => true);
+	public $findMethods = array(
+		'search' => true
+	);
 
 /**
  * All search fields need to be configured in the Model::filterArgs array.
@@ -58,16 +60,6 @@ class User extends UsersAppModel {
  * @var integer
  */
 	public $emailTokenExpirationTime = 86400;
-
-/**
- * hasMany associations
- *
- * @var array
- */
-	public $hasMany = array(
-		'UserDetail' => array(
-			'className' => 'Users.UserDetail',
-			'foreignKey' => 'user_id'));
 
 /**
  * Validation domain for translations 
@@ -166,83 +158,6 @@ class User extends UsersAppModel {
 				'required' => array('rule' => array('compareFields', 'new_password', 'confirm_password'), 'required' => true, 'message' => __d('users', 'The passwords are not equal.'))),
 			'old_password' => array(
 				'to_short' => array('rule' => 'validateOldPassword', 'required' => true, 'message' => __d('users', 'Invalid password.'))));
-	}
-
-/**
- * Sets some defaults for the UserDetail model
- *
- * @return void
- */
-	public function setupDetail() {
-		$this->UserDetail->sectionSchema[$this->alias] = array(
-			'birthday' => array(
-				'type' => 'date',
-				'null' => null,
-				'default' => null,
-				'length' => null),
-			'first_name' => array(
-				'type' => 'string',
-				'null' => null,
-				'default' => null,
-				'length' => null),
-			'last_name' => array(
-				'type' => 'string',
-				'null' => null,
-				'default' => null,
-				'length' => null));
-
-		$this->UserDetail->sectionValidation[$this->alias] = array(
-			'birthday' => array(
-				'validDate' => array(
-					'rule' => array('date'), 'allowEmpty' => true, 'message' => __d('users', 'Invalid date'))),
-			'first_name' => array(
-				'notEmpty' => array(
-					'rule' => array('notEmpty'), 'allowEmpty' => true, 'message' => __d('users', 'Invalid date'))),
-			'last_name' => array(
-				'notEmpty' => array(
-					'rule' => array('notEmpty'), 'allowEmpty' => true, 'message' => __d('users', 'Invalid date'))));
-	}
-
-/**
- * After save callback
- *
- * @param boolean $created
- * @return void
- */
-	public function afterSave($created) {
-		if ($created) {
-			$this->sluggedUserUrl();
-		}
-	}
-
-/**
- * Override this method as needed to generate the url you want
- *
- * @return void
- * @see User::afterSave();
- */
-	public function sluggedUserUrl() {
-		if (!empty($this->data[$this->alias]['slug'])) {
-			if ($this->hasField('url')) {
-				$this->saveField('url', '/user/' . $this->data[$this->alias]['slug'], false);
-			}
-		}
-	}
-
-/**
- * afterFind callback
- *
- * @param array $results Result data
- * @param mixed $primary Primary query
- * @return array
- */
-	public function afterFind($results, $primary = false) {
-		foreach ($results as &$row) {
-			if (isset($row['UserDetail']) && (is_array($row))) {
-				$row['UserDetail'] = $this->UserDetail->getSection($row[$this->alias]['id'], $this->alias);
-			}
-		}
-		return $results;
 	}
 
 /**
@@ -535,8 +450,7 @@ class User extends UsersAppModel {
  */
 	public function view($slug = null) {
 		$user = $this->find('first', array(
-			'contain' => array(
-				'UserDetail'),
+			'contain' => array(),
 			'conditions' => array(
 				'OR' => array(
 					$this->alias . '.slug' => $slug,
@@ -754,24 +668,21 @@ class User extends UsersAppModel {
  * @link https://github.com/CakeDC/search
  */
 	protected function _findSearch($state, $query, $results = array()) {
-		if (!App::import('Lib', 'Utils.Languages')) {
+		if (!class_exists('SearchableBehavior')) {
 			throw new MissingPluginException(array('plugin' => 'Search'));
 		}
 
 		if ($state == 'before') {
-			$this->Behaviors->attach('Containable', array('autoFields' => false));
+			$this->Behaviors->load('Containable', array(
+				'autoFields' => false)
+			);
 			$results = $query;
-			if (!empty($query['by'])) {
-				$by = $query['by'];
-			}
 
 			if (empty($query['search'])) {
 				$query['search'] = '';
 			}
 
-			$db = ConnectionManager::getDataSource($this->useDbConfig);
 			$by = $query['by'];
-			$search = $query['search'];
 			$like = '%' . $query['search'] . '%';
 
 			switch ($by) {
@@ -804,9 +715,8 @@ class User extends UsersAppModel {
 
 			if (isset($query['operation']) && $query['operation'] == 'count') {
 				$results['fields'] = array('COUNT(DISTINCT ' . $this->alias . '.id)');
-			} else {
-				//$results['fields'] = array('DISTINCT User.*');
 			}
+
 			return $results;
 		} elseif ($state == 'after') {
 			if (isset($query['operation']) && $query['operation'] == 'count') {
@@ -842,7 +752,10 @@ class User extends UsersAppModel {
 
 /**
  * Adds a new user
- * 
+ *
+ * The difference to register() is that this method here is intended to be used
+ * by admins to add new users without going through all the registration logic
+ *
  * @param array post data, should be Controller->data
  * @return boolean True if the data was saved successfully.
  */
@@ -884,8 +797,7 @@ class User extends UsersAppModel {
  */
 	public function edit($userId = null, $postData = null) {
 		$user = $this->find('first', array(
-			'contain' => array(
-				'UserDetail'),
+			'contain' => array(),
 			'conditions' => array($this->alias . '.id' => $userId)));
 
 		$this->set($user);
