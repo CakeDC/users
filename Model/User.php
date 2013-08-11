@@ -70,7 +70,7 @@ class User extends UsersAppModel {
 			'foreignKey' => 'user_id'));
 
 /**
- * Validation domain for translations 
+ * Validation domain for translations
  *
  * @var string
  */
@@ -422,7 +422,7 @@ class User extends UsersAppModel {
 
 /**
  * Checks the token for a password change
- * 
+ *
  * @param string $token Token
  * @return mixed False or user data as array
  */
@@ -441,7 +441,7 @@ class User extends UsersAppModel {
 
 /**
  * Resets the password
- * 
+ *
  * @param array $postData Post data from controller
  * @return boolean True on success
  */
@@ -560,7 +560,6 @@ class User extends UsersAppModel {
  */
 	public function checkEmailVerification($postData = array(), $renew = true) {
 		$user = $this->find('first', array(
-			'contain' => array('Profile'),
 			'conditions' => array(
 				$this->alias . '.email' => $postData[$this->alias]['email']
 			)
@@ -842,7 +841,7 @@ class User extends UsersAppModel {
 
 /**
  * Adds a new user
- * 
+ *
  * @param array post data, should be Controller->data
  * @return boolean True if the data was saved successfully.
  */

@@ -63,7 +63,6 @@ class UsersController extends UsersAppController {
 		'Session',
 		'Cookie',
 		'Paginator',
-		'Security',
 		'Search.Prg',
 		'Users.RememberMe');
 
@@ -409,7 +408,7 @@ class UsersController extends UsersAppController {
 
 				$this->redirect($this->Auth->redirect($data[$this->modelClass]['return_to']));
 			} else {
-				$this->Auth->flash(__d('users', 'Invalid e-mail / password combination.  Please try again'));
+				$this->Auth->flash(__d('users', 'Invalid e-mail / password combination. Please try again'));
 			}
 		}
 		if (isset($this->request->params['named']['return_to'])) {
@@ -490,7 +489,8 @@ class UsersController extends UsersAppController {
 		if ($this->request->is('post')) {
 			try {
 				if ($this->{$this->modelClass}->checkEmailVerification($this->request->data)) {
-					$this->_sendVerificationEmail($this->{$this->modelClass}->data);
+					$user = $this->{$this->modelClass}->resendVerification($this->request->data);
+					$this->_sendVerificationEmail($user);
 					$this->Session->setFlash(__d('users', 'The email was resent. Please check your inbox.'));
 					$this->redirect('login');
 				} else {
