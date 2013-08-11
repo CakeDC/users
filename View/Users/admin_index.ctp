@@ -20,8 +20,8 @@
 	echo $this->Form->end(__d('users', 'Search'));
 	?>
 
-	<?php echo $this->element('paging'); ?>
-	<?php echo $this->element('pagination'); ?>
+	<?php echo $this->element('Users.paging'); ?>
+	<?php echo $this->element('Users.pagination'); ?>
 	<table cellpadding="0" cellspacing="0">
 		<tr>
 			<th><?php echo $this->Paginator->sort('username'); ?></th>
@@ -63,6 +63,6 @@
 			</tr>
 		<?php endforeach; ?>
 	</table>
-	<?php echo $this->element('pagination'); ?>
+	<?php echo $this->element('Users.pagination'); ?>
 </div>
-<?php echo $this->element('Users/admin_sidebar'); ?>
+<?php echo $this->element('Users.Users/admin_sidebar'); ?>

@@ -23,4 +23,4 @@
 	echo $this->Form->end();
 ?>
 </div>
-<?php echo $this->element('Users/sidebar'); ?>
+<?php echo $this->element('Users.Users/sidebar'); ?>
