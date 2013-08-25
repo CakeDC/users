@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2012, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2013, Cake Development Corporation (http://cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2012, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2013, Cake Development Corporation (http://cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -159,7 +159,6 @@ class UsersControllerTestCase extends CakeTestCase {
  */
 	public $fixtures = array(
 		'plugin.users.user',
-		'plugin.users.user_detail'
 	);
 
 /**
@@ -188,7 +187,10 @@ class UsersControllerTestCase extends CakeTestCase {
  *
  * @return void
  */
-	public function startTest() {
+	public function setUp() {
+		parent::setUp();
+
+		Configure::write('Config.language', 'eng');
 		Configure::write('App.UserClass', null);
 
 		$request = new CakeRequest();
@@ -220,6 +222,9 @@ class UsersControllerTestCase extends CakeTestCase {
 		$this->Users->CakeEmail->expects($this->any())
 			 ->method('viewVars')
 			 ->will($this->returnSelf());
+		$this->Users->CakeEmail->expects($this->any())
+			 ->method('emailFormat')
+			 ->will($this->returnSelf());
 
 		$this->Users->Components->disable('Security');
 	}
@@ -250,9 +255,13 @@ class UsersControllerTestCase extends CakeTestCase {
 			->will($this->returnValue(true));
 		$this->Users->Auth->staticExpects($this->at(0))
 			->method('user')
-			->with('id')
+			->with('last_login')
 			->will($this->returnValue(1));
 		$this->Users->Auth->staticExpects($this->at(1))
+			->method('user')
+			->with('id')
+			->will($this->returnValue(1));
+		$this->Users->Auth->staticExpects($this->at(2))
 			->method('user')
 			->with('username')
 			->will($this->returnValue('adminuser'));
@@ -262,8 +271,8 @@ class UsersControllerTestCase extends CakeTestCase {
 			->will($this->returnValue(Router::normalize('/')));
 		$this->Users->Session = $this->getMock('SessionComponent', array('setFlash'), array($this->Collection));
 		$this->Users->Session->expects($this->any())
-				->method('setFlash')
-				->with(__d('users', 'adminuser you have successfully logged in'));
+			->method('setFlash')
+			->with(__d('users', 'adminuser you have successfully logged in'));
 		$this->Users->RememberMe = $this->getMock('RememberMeComponent', array(), array($this->Collection));
 		$this->Users->RememberMe->expects($this->any())
 			->method('destroyCookie');
@@ -446,23 +455,12 @@ class UsersControllerTestCase extends CakeTestCase {
 				'new_password' => 'newpassword',
 				'confirm_password' => 'newpassword',
 				'old_password' => 'test')));
+		$this->Users->RememberMe = $this->getMock('RememberMeComponent', array(), array($this->Collection));
+		$this->Users->RememberMe->expects($this->any())
+			->method('destroyCookie');
+
 		$this->Users->change_password();
 		$this->assertEqual($this->Users->redirectUrl, '/');
-	}
-
-/**
- * testEdit
- *
- * @return void
- */
-	public function testEdit() {
-		$this->Users->Session->write('Auth.User.id', '1');
-		$this->Users->edit();
-		$this->assertTrue(!empty($this->Users->data));
-		
-		$this->Users->Session->write('Auth.User.id', 'INVALID-ID');
-		$this->Users->edit();
-		$this->assertTrue(empty($this->Users->data['User']));
 	}
 
 /**
@@ -533,13 +531,6 @@ class UsersControllerTestCase extends CakeTestCase {
 		$this->assertEqual($this->Users->redirectUrl, array('action' => 'index'));
 	}
 
-//	public function testMailInstance() {
-//		// default instance shoult be "default"
-//		$cakeMail = $this->Users->getMailInstance();
-//		$this->assertFalse($cakeMail);
-//		// if configured, load the email config
-//	}
-	
 /**
  * Test setting the cookie
  *
@@ -564,7 +555,7 @@ class UsersControllerTestCase extends CakeTestCase {
 		$this->Users->setCookie(array(
 			'name' => 'userTestCookie'));
 
-		$this->assertEqual($this->Users->RememberMe->settings['cookieKey'], 'User');
+		$this->assertEqual($this->Users->RememberMe->settings['cookieKey'], 'rememberMe');
 	}
 
 /**
@@ -609,7 +600,7 @@ class UsersControllerTestCase extends CakeTestCase {
  *
  * @return void
  */
-	public function endTest() {
+	public function endTest($method) {
 		$this->Users->Session->destroy();
 		unset($this->Users);
 		ClassRegistry::flush();

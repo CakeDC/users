@@ -2,14 +2,14 @@
 /**
  * Users CakePHP Plugin
  *
- * Copyright 2010 - 2012, Cake Development Corporation
+ * Copyright 2010 - 2013, Cake Development Corporation
  *                 1785 E. Sahara Avenue, Suite 490-423
  *                 Las Vegas, Nevada 89104
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @Copyright 2010 - 2011, Cake Development Corporation
+ * @Copyright 2010 - 2013, Cake Development Corporation
  * @link      http://github.com/CakeDC/users
  * @package   plugins.users.config.schema
  * @license   MIT License (http://www.opensource.org/licenses/mit-license.php)

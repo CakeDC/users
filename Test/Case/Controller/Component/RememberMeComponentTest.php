@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2012, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2013, Cake Development Corporation (http://cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2012, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2013, Cake Development Corporation (http://cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -39,12 +39,25 @@ class RememberMeComponentTest extends CakeTestCase {
 	public $Controller;
 
 /**
+ * User data
+ * @var array 
+ */	
+	public $usersData = array(
+		'test' => array(
+			'email' => 'test@cakedc.com',
+			'password' => 'test'),
+		'admin' => array(
+			'email' => 'admin@cakedc.com',
+			'password' => 'admin'));
+
+/**
  * start
  *
  * @return void
  */
 	public function setUp() {
 		$_COOKIE = array();
+		Configure::write('Config.language', 'eng');
 		$this->Controller = new RememberMeComponentTestController(new CakeRequest(), new CakeResponse());
 		$this->Controller->constructClasses();
 
@@ -84,31 +97,68 @@ class RememberMeComponentTest extends CakeTestCase {
 		$this->RememberMe->Cookie->expects($this->once())
 			->method('read')
 			->with($this->equalTo('rememberMe'))
-			->will($this->returnValue(array(
-				'email' => 'email',
-				'password' => 'password')));
+			->will($this->returnValue($this->usersData['admin']));
 
 		$this->RememberMe->Auth->expects($this->once())
-			->method('login');
+			->method('login')
+			->will($this->returnValue(true));
+		
+		$this->__setPostData(array('User' => $this->usersData['test']));
+		
+		$this->RememberMe->restoreLoginFromCookie();
 
+		// even if we post "test" user, we have a remember me cookie set and will priorize the cookie over the post
+		// NOTE we check if the user is logged in in the startup method of the Component
+		$this->assertEqual($this->RememberMe->request->data, array(
+			'User' => $this->usersData['admin']));
+	}
+
+/**
+ * testRestoreLoginFromCookieIncorrectLogin
+ * 
+ * We check the post request data is not modified when the cookie holds incorrect login credentials
+ *
+ * @return void
+ */
+	public function testRestoreLoginFromCookieIncorrectLogin() {
+		// cookie will hold "admin" data, and post request will have "test"
+		$this->RememberMe->Cookie->expects($this->once())
+			->method('read')
+			->with($this->equalTo('rememberMe'))
+			->will($this->returnValue($this->usersData['admin']));
+
+		// admin will not login
+		$this->RememberMe->Auth->expects($this->once())
+			->method('login')
+			->will($this->returnValue(false));
+		
+		// post has "test" data
+		$this->__setPostData(array('User' => $this->usersData['test']));
+		
 		$this->RememberMe->restoreLoginFromCookie();
 
 		$this->assertEqual($this->RememberMe->request->data, array(
-			'User' => array(
-				'email' => 'email',
-				'password' => 'password')));
+			'User' => $this->usersData['test']));
 	}
-
+	
 /**
  * testDestroyCookie
  *
  * @return void
  */
 	public function testDestroyCookie() {
+		$_COOKIE['User'] = 'defined';
 		$this->RememberMe->Cookie->expects($this->once())
-			->method('destroy')
-			->with($this->equalTo('User'));
+			->method('destroy');
 		$this->RememberMe->destroyCookie();
 	}
 
+/**
+ * Set post data to the test controller
+ * @param type $data
+ */	
+	private function __setPostData($data = array()) {
+		$_SERVER['REQUEST_METHOD'] = 'POST';
+		$this->RememberMe->request->data = array_merge($data);
+	}	
 }

@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2012, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2013, Cake Development Corporation (http://cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2012, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2013, Cake Development Corporation (http://cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -20,13 +20,15 @@ App::uses('Component', 'Controller');
  * @property AuthComponent $Auth
  */
 class RememberMeComponent extends Component {
+
 /**
  * Components
  *
  * @var array
  */
 	public $components = array(
-		'Cookie');
+		'Cookie',
+		'Auth');
 
 /**
  * Request object
@@ -51,6 +53,7 @@ class RememberMeComponent extends Component {
 		'autoLogin' => true,
 		'userModel' => 'User',
 		'cookieKey' => 'rememberMe',
+		'cookieLifeTime' => '+1 year',
 		'cookie' => array(
 			'name' => 'User'),
 		'fields' => array(
@@ -66,8 +69,31 @@ class RememberMeComponent extends Component {
  */
 	public function __construct(ComponentCollection $collection, $settings = array()) {
 		parent::__construct($collection, $settings);
+
+		$this->_checkAndSetCookieLifeTime();
 		$this->settings = Set::merge($this->_defaults, $settings);
 		$this->configureCookie($this->settings['cookie']);
+	}
+
+/**
+ * Check if the system is 32bit and uses DateTime() instead strtotime() to get
+ * an integer instead of a string that is passed on to CookieComponent::write()
+ * due to problems with strtotime() in CookieComponent::_expire(). See
+ * the link in this doc block.
+ *
+ * This method needs to be called in the constructor before the default config
+ * values are merged!
+ *
+ * @link https://cakephp.lighthouseapp.com/projects/42648-cakephp/tickets/3868-cookiecomponent_expires-fails-on-dates-set-far-in-the-future-on-32bit-systems
+ * @link http://stackoverflow.com/questions/3266077/php-strtotime-is-returning-false-for-a-future-date
+ * @return void
+ */
+	protected function _checkAndSetCookieLifeTime() {
+		$lifeTime = $this->_defaults['cookieLifeTime'];
+		if (is_string($lifeTime) && strtotime($lifeTime) === false) {
+			$Date = new DateTime($lifeTime);
+			$this->_defaults['cookieLifeTime'] = $Date->format('U');
+		}
 	}
 
 /**
@@ -96,33 +122,54 @@ class RememberMeComponent extends Component {
 /**
  * Logs the user again in based on the cookie data
  *
+ * @param boolean $checkLoginStatus
  * @return boolean True on login success, false on failure
  */
-	public function restoreLoginFromCookie() {
+	public function restoreLoginFromCookie($checkLoginStatus = true) {
+		if ($checkLoginStatus && $this->Auth->loggedIn()) {
+			return true;
+		}
+
+		if ($this->cookieIsSet()) {
 		extract($this->settings);
 		$cookie = $this->Cookie->read($cookieKey);
+			$request = $this->request->data;
 
-		if (!empty($cookie)) {
 			foreach ($fields as $field) {
 				if (!empty($cookie[$field])) {
 					$this->request->data[$userModel][$field] = $cookie[$field];
 				}
 			}
-			return $this->Auth->login();
+
+			$result = $this->Auth->login();
+
+			if (!$result) {
+				$this->request->data = $request;
 		}
+
+			return $result;
+	}
+		return false;
 	}
 
 /**
  * Sets the cookie with the specified fields
  *
  * @param array Optional, login credentials array in the form of Model.field, if empty this->request['<model>'] will be used
- * @return void
+ * @return boolean
  */
 	public function setCookie($data = array()) {
 		extract($this->settings);
 
 		if (empty($data)) {
 			$data = $this->request->data;
+			if (empty($data)) {
+				$data = $this->Auth->user();
+		}
+		}
+
+		if (empty($data)) {
+			return false;
 		}
 
 		$cookieData = array();
@@ -133,7 +180,19 @@ class RememberMeComponent extends Component {
 			}
 		}
 
-		$this->Cookie->write($cookieKey, $cookieData, true);
+		$this->Cookie->write($cookieKey, $cookieData, true, $cookieLifeTime);
+		return true;
+	}
+
+/**
+ * Checks if the remember me cookie is set
+ *
+ * @return boolean
+ */
+	public function cookieIsSet() {
+		extract($this->settings);
+		$cookie = $this->Cookie->read($cookieKey);
+		return (!empty($cookie));
 	}
 
 /**
@@ -143,7 +202,10 @@ class RememberMeComponent extends Component {
  */
 	public function destroyCookie() {
 		extract($this->settings);
-		$this->Cookie->destroy($cookie['name']);
+		if (isset($_COOKIE[$cookie['name']])) {
+			$this->Cookie->name = $cookie['name'];
+			$this->Cookie->destroy();
+	}
 	}
 
 /**
@@ -165,7 +227,7 @@ class RememberMeComponent extends Component {
 			if (in_array($key, $validProperties)) {
 				$this->Cookie->{$key} = $value;
 			} else {
-				throw new InvalidArgumentException(__('users', 'Invalid options %s', $key));
+				throw new InvalidArgumentException(__d('users', 'Invalid options %s', $key));
 			}
 		}
 	}

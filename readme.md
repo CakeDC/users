@@ -37,21 +37,38 @@ The plugin itself is already capable of:
 
 The default password reset process requires the user to enter his email address, an email is sent to the user with a link and a token. When the user accesses the URL with the token he can enter a new password.
 
-### Using the "remember me" cookie ###
+### Using the "remember me" functionality ###
 
-To use the "remember me" checkbox which sets a cookie on the login page you will need to put this code or method call in your AppController::beforeFilter() method.
+To use the "remember me" checkbox which sets a cookie on the login page you will need to add the RememberMe component to the AppController or the controllers you want to auto-login the user again based on the cookie.
 
-	public function restoreLoginFromCookie() {
-		$this->Cookie->name = 'Users';
-		$cookie = $this->Cookie->read('rememberMe');
-		if (!empty($cookie)) {
-			$this->request->data['User'][$this->Auth->fields['username']] = $cookie[$this->Auth->fields['username']];
-			$this->request->data['User'][$this->Auth->fields['password']] = $cookie[$this->Auth->fields['password']];
-			$this->Auth->login();
-		}
-	}
+```php
+public $components = array(
+	'Users.RememberMe'
+);
+```
 
-The code will read the login credentials from the cookie and log the user in based on that information. Do not forget to change the cookie name or fields to what you are using if you have changed them in your application!
+If you are using another user model than 'User' you'll have to configure it:
+
+	public $components = array(
+		'Users.RememberMe' => array(
+			'userModel' => 'AppUser');
+
+And add this line
+
+```php
+$this->RememberMe->restoreLoginFromCookie()
+```
+
+to your controllers beforeFilter() callack
+
+```php
+public function beforeFilter() {
+	parent::beforeFilter();
+	$this->RememberMe->restoreLoginFromCookie();
+}
+```
+
+The code will read the login credentials from the cookie and log the user in based on that information. Note that you have to use CakePHPs AuthComponent or an aliased Component implementing the same interface as AuthComponent.
 
 ## How to extend the plugin ##
 
@@ -59,7 +76,9 @@ The code will read the login credentials from the cookie and log the user in bas
 
 To change the plugins default "from" setting for outgoing emails put this into your bootstrap.php
 
-	Configure::write('App.defaultEmail', your@email.com);
+```php
+Configure::write('App.defaultEmail', your@email.com);
+```
 
 If not configured it will use 'noreply@' . env('HTTP_HOST'); as default from email address.
 
@@ -67,55 +86,75 @@ If not configured it will use 'noreply@' . env('HTTP_HOST'); as default from ema
 
 Declare the controller class
 
-	App::uses('UsersController', 'Users.Controller');
-	class AppUsersController extends UsersController {
-	}
+```php
+App::uses('UsersController', 'Users.Controller');
+class AppUsersController extends UsersController {
+	public $name = 'AppUsers';
+}
+```
 
 In the case you want to extend also the user model it's required to set the right user class in the beforeFilter() because the controller will use the inherited model which would be Users.User.
 
-	public function beforeFilter() {
-		parent::beforeFilter();
-		$this->User = ClassRegistry::init('AppUser');
-	}
+```php
+public function beforeFilter() {
+	parent::beforeFilter();
+	$this->User = ClassRegistry::init('AppUser');
+	$this->set('model', 'AppUser');
+}
+```
 
 You can overwrite the render() method to fall back to the plugin views in the case you want to use some of them
 
-	public function render($view = null, $layout = null) {
-		if (is_null($view)) {
-			$view = $this->action;
-		}
-		$viewPath = substr(get_class($this), 0, strlen(get_class($this)) - 10);
-		if (!file_exists(APP . 'View' . DS . $viewPath . DS . $view . '.ctp')) {
-			$this->plugin = 'Users';
-		} else {
-			$this->viewPath = $viewPath;
-		}
-		return parent::render($view, $layout);
+```php
+public function render($view = null, $layout = null) {
+	if (is_null($view)) {
+		$view = $this->action;
 	}
+	$viewPath = substr(get_class($this), 0, strlen(get_class($this)) - 10);
+	if (!file_exists(APP . 'View' . DS . $viewPath . DS . $view . '.ctp')) {
+		$this->plugin = 'Users';
+	} else {
+		$this->viewPath = $viewPath;
+	}
+	return parent::render($view, $layout);
+}
+```
+
+Note: Depending on the CakePHP version you are using, you might need to bring a copy of the Views used in the plugin to your AppUsers view directory
 
 ### Overwriting the default auth settings provided by the plugin
 
 To use the basics the plugin already offers but changing some of the settings overwrite the _setupAuth() method in the extending controller.
 
-	protected function _setupAuth() {
-		parent::_setupAuth();
-
-		$this->Auth->loginRedirect = array('plugin' => null, 'admin' => false, 'controller' => 'app_users', 'action' => 'login');
-	}
+```php
+protected function _setupAuth() {
+	parent::_setupAuth();
+	$this->Auth->loginRedirect = array(
+		'plugin' => null,
+		'admin' => false,
+		'controller' => 'app_users',
+		'action' => 'login'
+	);
+}
+```
 
 If you want to disable it simply overwrite it without any body
 
-	protected function _setupAuth() {
-	}
+```php
+protected function _setupAuth() {
+}
+```
 
 ### Extending the model ###
 
 Declare the model 
 
-	App::uses('User', 'Users.Model');
-	class AppUser extends User {
-		public $useTable = 'users';
-	}
+```php
+App::uses('User', 'Users.Model');
+class AppUser extends User {
+	public $useTable = 'users';
+}
+```
 
 It's important to override the AppUser::useTable property with the 'users' table.
 
@@ -127,17 +166,21 @@ To remove the second users from /users/users in the url you can use routes.
 
 The plugin itself comes with a routes file but you need to explicitly load them. 
 
-	CakePlugin::load('Users', array('routes' => true));
+```php
+CakePlugin::load('Users', array('routes' => true));
+```
 
 List of the used routes:
 
-	Router::connect('/users', array('plugin' => 'users', 'controller' => 'users'));
-	Router::connect('/users/index/*', array('plugin' => 'users', 'controller' => 'users'));
-	Router::connect('/users/:action/*', array('plugin' => 'users', 'controller' => 'users'));
-	Router::connect('/users/users/:action/*', array('plugin' => 'users', 'controller' => 'users'));
-	Router::connect('/login/*', array('plugin' => 'users', 'controller' => 'users', 'action' => 'login'));
-	Router::connect('/logout/*', array('plugin' => 'users', 'controller' => 'users', 'action' => 'logout'));
-	Router::connect('/register/*', array('plugin' => 'users', 'controller' => 'users', 'action' => 'add'));
+```php
+Router::connect('/users', array('plugin' => 'users', 'controller' => 'users'));
+Router::connect('/users/index/*', array('plugin' => 'users', 'controller' => 'users'));
+Router::connect('/users/:action/*', array('plugin' => 'users', 'controller' => 'users'));
+Router::connect('/users/users/:action/*', array('plugin' => 'users', 'controller' => 'users'));
+Router::connect('/login/*', array('plugin' => 'users', 'controller' => 'users', 'action' => 'login'));
+Router::connect('/logout/*', array('plugin' => 'users', 'controller' => 'users', 'action' => 'logout'));
+Router::connect('/register/*', array('plugin' => 'users', 'controller' => 'users', 'action' => 'add'));
+```
 
 If you're extending the plugin remove the plugin from the route by setting it to null and replace the controller with your controller extending the plugins users controller.
 
@@ -153,7 +196,6 @@ Note that you will have to overwrite any view that is linking to the plugin like
 
 ## Configuration options
 
-
 ### Disable Slugs 
 
 If the Utils plugin is present the users model will auto attach and use the sluggable behavior.
@@ -164,17 +206,23 @@ To not create slugs for a new user records put this in your configuration: Confi
 
 The plugin uses the $default email configuration (should be present in your Config/email.php file), but you can override it using
 
-	Configure::write('Users.emailConfig', 'default');
+```php
+Configure::write('Users.emailConfig', 'default');
+```
 
 ## Roles Management
 
 You can add Users.roles on bootstrap.php file and these roles will be used on Admin Add / Edit pages. i.e:
 
-	Configure::write('Users.roles', array('admin' => 'Admin', 'registered' => 'Registered'));
+```php
+Configure::write('Users.roles', array('admin' => 'Admin', 'registered' => 'Registered'));
+```
 
 If you don't specify roles it will use 'admin' role (if is_admin is checked) or 'registered' role otherwise. You can override 'registered role setting Users.defaultRole on bootstrap.php. i.e:
 
-	Configure::write('Users.defaultRole', 'user_registered');
+```php
+Configure::write('Users.defaultRole', 'user_registered');
+```
 
 ## Enabling / Disabling Registration
 
