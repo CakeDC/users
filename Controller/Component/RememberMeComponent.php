@@ -104,6 +104,7 @@ class RememberMeComponent extends Component {
  */
 	public function initialize(Controller $controller) {
 		$this->request = $controller->request;
+		$this->Auth = $controller->Auth;
 	}
 
 /**
@@ -130,8 +131,8 @@ class RememberMeComponent extends Component {
 		}
 
 		if ($this->cookieIsSet()) {
-			extract($this->settings);
-			$cookie = $this->Cookie->read($cookieKey);
+		extract($this->settings);
+		$cookie = $this->Cookie->read($cookieKey);
 			$request = $this->request->data;
 
 			foreach ($fields as $field) {
@@ -144,10 +145,10 @@ class RememberMeComponent extends Component {
 
 			if (!$result) {
 				$this->request->data = $request;
-			}
+		}
 
 			return $result;
-		}
+	}
 		return false;
 	}
 
@@ -164,7 +165,7 @@ class RememberMeComponent extends Component {
 			$data = $this->request->data;
 			if (empty($data)) {
 				$data = $this->Auth->user();
-			}
+		}
 		}
 
 		if (empty($data)) {
@@ -204,7 +205,7 @@ class RememberMeComponent extends Component {
 		if (isset($_COOKIE[$cookie['name']])) {
 			$this->Cookie->name = $cookie['name'];
 			$this->Cookie->destroy();
-		}
+	}
 	}
 
 /**
