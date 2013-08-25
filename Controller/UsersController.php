@@ -51,7 +51,8 @@ class UsersController extends UsersAppController {
 		'Form',
 		'Session',
 		'Time',
-		'Text');
+		'Text'
+	);
 
 /**
  * Components
@@ -65,7 +66,8 @@ class UsersController extends UsersAppController {
 		'Paginator',
 		'Security',
 		'Search.Prg',
-		'Users.RememberMe');
+		'Users.RememberMe'
+	);
 
 /**
  * Preset vars
@@ -773,6 +775,19 @@ class UsersController extends UsersAppController {
 		} else {
 			return new CakeEmail('default');
 		}
+	}
+
+/**
+ * Default isAuthorized method
+ *
+ * This is called to see if a user (when logged in) is able to access an action
+ *
+ * @param array $user
+ * @return boolean True if allowed
+ * @link http://book.cakephp.org/2.0/en/core-libraries/components/authentication.html#using-controllerauthorize
+ */
+	public function isAuthorized($user = null) {
+		return parent::isAuthorized($user);
 	}
 
 }
