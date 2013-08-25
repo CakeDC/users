@@ -122,8 +122,12 @@ class UsersController extends UsersAppController {
  * @param string $plugin
  * @return boolean
  */
-	protected function _pluginLoaded($plugin) {
-		return CakePlugin::loaded($plugin);
+	protected function _pluginLoaded($plugin, $exception = true) {
+		$result = CakePlugin::loaded($plugin);
+		if ($exception === true && $result === false) {
+			throw new MissingPluginException(array('plugin' => $plugin));
+		}
+		return $result;
 	}
 
 /**
@@ -133,7 +137,7 @@ class UsersController extends UsersAppController {
  * @link https://github.com/CakeDC/search
  */
 	protected function _setupComponents() {
-		if ($this->_pluginLoaded('Search')) {
+		if ($this->_pluginLoaded('Search', false)) {
 			$this->components[] = 'Search.Prg';
 		}
 	}
@@ -165,6 +169,7 @@ class UsersController extends UsersAppController {
 		}
 
 		$this->Auth->allow('add', 'reset', 'verify', 'logout', 'view', 'reset_password', 'login', 'resend_verification');
+
 		if (!is_null(Configure::read('Users.allowRegistration')) && !Configure::read('Users.allowRegistration')) {
 			$this->Auth->deny('add');
 		}
@@ -247,11 +252,13 @@ class UsersController extends UsersAppController {
 		unset($this->{$this->modelClass}->validate['username']);
 		unset($this->{$this->modelClass}->validate['email']);
 		$this->{$this->modelClass}->data[$this->modelClass] = $this->passedArgs;
+
 		if ($this->{$this->modelClass}->Behaviors->loaded('Searchable')) {
 			$parsedConditions = $this->{$this->modelClass}->parseCriteria($this->passedArgs);
 		} else {
 			$parsedConditions = array();
 		}
+
 		$this->Paginator->settings[$this->modelClass]['conditions'] = $parsedConditions;
 		$this->Paginator->settings[$this->modelClass]['order'] = array($this->modelClass . '.created' => 'desc');
 
@@ -266,11 +273,14 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	public function admin_view($id = null) {
-		if (!$id) {
+		try {
+			$user = $this->{$this->modelClass}->view($id, 'id');
+		} catch (NotFoundException $e) {
 			$this->Session->setFlash(__d('users', 'Invalid User.'));
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->set('user', $this->{$this->modelClass}->read(null, $id));
+
+		$this->set('user', $user);
 	}
 
 /**
@@ -420,9 +430,7 @@ class UsersController extends UsersAppController {
  * @link https://github.com/CakeDC/search
  */
 	public function search() {
-		if (!$this->_pluginLoaded('Search')) {
-			throw new MissingPluginException(array('plugin' => 'Search'));
-		}
+		$this->_pluginLoaded('Search');
 
 		$searchTerm = '';
 		$this->Prg->commonProcess($this->modelClass);
@@ -528,7 +536,7 @@ class UsersController extends UsersAppController {
 			throw new NotFoundException();
 		}
 
-		$data = $this->{$this->modelClass}->validateToken($token, true);
+		$data = $this->{$this->modelClass}->verifyEmail($token);
 
 		if (!$data) {
 			$this->Session->setFlash(__d('users', 'The url you accessed is not longer valid'));
@@ -618,9 +626,8 @@ class UsersController extends UsersAppController {
  * @link https://github.com/CakeDC/utils
  */
 	protected function _setLanguages($viewVar = 'languages') {
-		if (!$this->_pluginLoaded('Utils')) {
-			throw new MissingPluginException(array('plugin' => 'Utils'));
-		}
+		$this->_pluginLoaded('Utils');
+
 		$Languages = new Languages();
 		$this->set($viewVar, $Languages->lists('locale'));
 	}
