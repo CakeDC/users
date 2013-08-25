@@ -117,7 +117,10 @@ class UsersController extends UsersAppController {
 	}
 
 /**
+ * Wrapper for CakePlugin::loaded()
  *
+ * @param string $plugin
+ * @return boolean
  */
 	protected function _pluginLoaded($plugin) {
 		return CakePlugin::loaded($plugin);
@@ -157,10 +160,15 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	protected function _setupAuth() {
+		if (Configure::read('Users.disableDefaultAuth') === true) {
+			return;
+		}
+
 		$this->Auth->allow('add', 'reset', 'verify', 'logout', 'view', 'reset_password', 'login', 'resend_verification');
 		if (!is_null(Configure::read('Users.allowRegistration')) && !Configure::read('Users.allowRegistration')) {
 			$this->Auth->deny('add');
 		}
+
 		if ($this->request->action == 'register') {
 			$this->Components->disable('Auth');
 		}
