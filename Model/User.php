@@ -32,7 +32,9 @@ class User extends UsersAppModel {
  *
  * @var array
  */
-	public $findMethods = array('search' => true);
+	public $findMethods = array(
+		'search' => true
+	);
 
 /**
  * All search fields need to be configured in the Model::filterArgs array.
@@ -58,16 +60,6 @@ class User extends UsersAppModel {
  * @var integer
  */
 	public $emailTokenExpirationTime = 86400;
-
-/**
- * hasMany associations
- *
- * @var array
- */
-	public $hasMany = array(
-		'UserDetail' => array(
-			'className' => 'Users.UserDetail',
-			'foreignKey' => 'user_id'));
 
 /**
  * Validation domain for translations 
@@ -169,83 +161,6 @@ class User extends UsersAppModel {
 	}
 
 /**
- * Sets some defaults for the UserDetail model
- *
- * @return void
- */
-	public function setupDetail() {
-		$this->UserDetail->sectionSchema[$this->alias] = array(
-			'birthday' => array(
-				'type' => 'date',
-				'null' => null,
-				'default' => null,
-				'length' => null),
-			'first_name' => array(
-				'type' => 'string',
-				'null' => null,
-				'default' => null,
-				'length' => null),
-			'last_name' => array(
-				'type' => 'string',
-				'null' => null,
-				'default' => null,
-				'length' => null));
-
-		$this->UserDetail->sectionValidation[$this->alias] = array(
-			'birthday' => array(
-				'validDate' => array(
-					'rule' => array('date'), 'allowEmpty' => true, 'message' => __d('users', 'Invalid date'))),
-			'first_name' => array(
-				'notEmpty' => array(
-					'rule' => array('notEmpty'), 'allowEmpty' => true, 'message' => __d('users', 'Invalid date'))),
-			'last_name' => array(
-				'notEmpty' => array(
-					'rule' => array('notEmpty'), 'allowEmpty' => true, 'message' => __d('users', 'Invalid date'))));
-	}
-
-/**
- * After save callback
- *
- * @param boolean $created
- * @return void
- */
-	public function afterSave($created) {
-		if ($created) {
-			$this->sluggedUserUrl();
-		}
-	}
-
-/**
- * Override this method as needed to generate the url you want
- *
- * @return void
- * @see User::afterSave();
- */
-	public function sluggedUserUrl() {
-		if (!empty($this->data[$this->alias]['slug'])) {
-			if ($this->hasField('url')) {
-				$this->saveField('url', '/user/' . $this->data[$this->alias]['slug'], false);
-			}
-		}
-	}
-
-/**
- * afterFind callback
- *
- * @param array $results Result data
- * @param mixed $primary Primary query
- * @return array
- */
-	public function afterFind($results, $primary = false) {
-		foreach ($results as &$row) {
-			if (isset($row['UserDetail']) && (is_array($row))) {
-				$row['UserDetail'] = $this->UserDetail->getSection($row[$this->alias]['id'], $this->alias);
-			}
-		}
-		return $results;
-	}
-
-/**
  * Create a hash from string using given method.
  * Fallback on next available method.
  *
@@ -292,14 +207,13 @@ class User extends UsersAppModel {
 	}
 
 /**
- * Verifies a users email by a token that was sent to him via email and flags the user record as active
+ * Checks the token for email verification
  *
- * @param string $token The token that wa sent to the user
- * @throws RuntimeException
- * @return array On success it returns the user data record
+ * @param string $token
+ * @return array
  */
-	public function verifyEmail($token = null) {
-		$user = $this->find('first', array(
+	public function checkEmailVerfificationToken($token = null) {
+		$result = $this->find('first', array(
 			'contain' => array(),
 			'conditions' => array(
 				$this->alias . '.email_verified' => 0,
@@ -307,7 +221,24 @@ class User extends UsersAppModel {
 			'fields' => array(
 				'id', 'email', 'email_token_expires', 'role')));
 
-		if (empty($user)) {
+		if (empty($result)) {
+			return false;
+		}
+
+		return $result;
+	}
+
+/**
+ * Verifies a users email by a token that was sent to him via email and flags the user record as active
+ *
+ * @param string $token The token that wa sent to the user
+ * @throws RuntimeException
+ * @return array On success it returns the user data record
+ */
+	public function verifyEmail($token = null) {
+		$user = $this->checkEmailVerfificationToken($token);
+
+		if ($user === false) {
 			throw new RuntimeException(__d('users', 'Invalid token, please check the email you were sent, and retry the verification link.'));
 		}
 
@@ -329,54 +260,9 @@ class User extends UsersAppModel {
 	}
 
 /**
- * Validates the user token
- *
- * @deprecated See verifyEmail()
- * @param string $token Token
- * @param boolean $reset Reset boolean
- * @param boolean $now time() value
- * @return mixed false or user data
- */
-	public function validateToken($token = null, $reset = false, $now = null) {
-		if (!$now) {
-			$now = time();
-		}
-
-		$data = false;
-		$match = $this->find('first', array(
-			'contain' => array(),
-			'conditions' => array(
-				$this->alias . '.email_token' => $token),
-			'fields' => array(
-				'id', 'email', 'email_token_expires', 'role')));
-
-		if (!empty($match)) {
-			$expires = strtotime($match[$this->alias]['email_token_expires']);
-			if ($expires > $now) {
-				$data[$this->alias]['id'] = $match[$this->alias]['id'];
-				$data[$this->alias]['email'] = $match[$this->alias]['email'];
-				$data[$this->alias]['email_verified'] = '1';
-				$data[$this->alias]['role'] = $match[$this->alias]['role'];
-
-				if ($reset === true) {
-					$newPassword = $this->generatePassword();
-					$data[$this->alias]['password'] = $this->hash($newPassword, null, true);
-					$data[$this->alias]['new_password'] = $newPassword;
-					$data[$this->alias]['password_token'] = null;
-				}
-
-				$data[$this->alias]['email_token'] = null;
-				$data[$this->alias]['email_token_expires'] = null;
-			}
-		}
-
-		return $data;
-	}
-
-/**
  * Updates the last activity field of a user
  *
- * @param null $userId
+ * @param string $userId User id
  * @param string $field Default is "last_action", changing it allows you to use this method also for "last_login" for example
  * @return boolean True on success
  */
@@ -397,8 +283,8 @@ class User extends UsersAppModel {
  * @return mixed False or user data as array on success
  */
 	public function passwordReset($postData = array()) {
-		$this->recursive = -1;
 		$user = $this->find('first', array(
+			'contain' => array(),
 			'conditions' => array(
 				$this->alias . '.active' => 1,
 				$this->alias . '.email' => $postData[$this->alias]['email'])));
@@ -440,6 +326,20 @@ class User extends UsersAppModel {
 	}
 
 /**
+ * Changes the validation rules for the User::resetPassword() method
+ *
+ * @return array Set of rules required for the User::resetPassword() method
+ */
+	public function setUpResetPasswordValidationRules() {
+		return array(
+			'new_password' => $this->validate['password'],
+			'confirm_password' => array(
+				'required' => array(
+					'rule' => array('compareFields', 'new_password', 'confirm_password'),
+					'message' => __d('users', 'The passwords are not equal.'))));
+	}
+
+/**
  * Resets the password
  * 
  * @param array $postData Post data from controller
@@ -448,13 +348,8 @@ class User extends UsersAppModel {
 	public function resetPassword($postData = array()) {
 		$result = false;
 
-		$tmp = $this->validate;
-		$this->validate = array(
-			'new_password' => $tmp['password'],
-			'confirm_password' => array(
-				'required' => array(
-					'rule' => array('compareFields', 'new_password', 'confirm_password'),
-					'message' => __d('users', 'The passwords are not equal.'))));
+		//$tmp = $this->validate;
+		//$this->validate = $this->setUpResetPasswordValidationRules();
 
 		$this->set($postData);
 		if ($this->validates()) {
@@ -465,7 +360,7 @@ class User extends UsersAppModel {
 				'callbacks' => false));
 		}
 
-		$this->validate = $tmp;
+		//$this->validate = $tmp;
 		return $result;
 	}
 
@@ -529,26 +424,47 @@ class User extends UsersAppModel {
 /**
  * Returns all data about a user
  *
- * @param string $slug user slug or the uuid of a user
- * @throws OutOfBoundsException
+ * @param string|integer $slug user slug or the uuid of a user
+ * @param string $field
+ * @throws NotFoundException
  * @return array
  */
-	public function view($slug = null) {
+	public function view($slug = null, $field = 'slug') {
 		$user = $this->find('first', array(
-			'contain' => array(
-				'UserDetail'),
+			'contain' => array(),
 			'conditions' => array(
 				'OR' => array(
-					$this->alias . '.slug' => $slug,
+					$this->alias . '.' . $field => $slug,
 					$this->alias . '.' . $this->primaryKey => $slug),
 				$this->alias . '.active' => 1,
 				$this->alias . '.email_verified' => 1)));
 
 		if (empty($user)) {
-			throw new OutOfBoundsException(__d('users', 'The user does not exist.'));
+			throw new NotFoundException(__d('users', 'The user does not exist.'));
 		}
 
 		return $user;
+	}
+
+/**
+ * Finds an user simply by email
+ *
+ * Used by the following methods:
+ *  - checkEmailVerification
+ *  - resendVerification
+ *
+ * Override it as needed, to add additional models to contain for example
+ *
+ * @param string $email
+ * @return array
+ */
+	public function findByEmail($email = null) {
+		return $this->find('first', array(
+			'contain' => array(),
+			'conditions' => array(
+				$this->alias . '.email' => $email,
+			)
+		));
 	}
 
 /**
@@ -559,12 +475,7 @@ class User extends UsersAppModel {
  * @return bool True if the email was not already verified
  */
 	public function checkEmailVerification($postData = array(), $renew = true) {
-		$user = $this->find('first', array(
-			'contain' => array('Profile'),
-			'conditions' => array(
-				$this->alias . '.email' => $postData[$this->alias]['email']
-			)
-		));
+		$user = $this->findByEmail($postData[$this->alias]['email']);
 
 		if (empty($user)) {
 			$this->invalidate('email', __d('users', 'Invalid Email address.'));
@@ -587,7 +498,6 @@ class User extends UsersAppModel {
 			$this->data = $user;
 			return true;
 		}
-
 	}
 
 /**
@@ -656,10 +566,7 @@ class User extends UsersAppModel {
 			return false;
 		}
 
-		$user = $this->find('first', array(
-			'contain' => array(),
-			'conditions' => array(
-				$this->alias . '.email' => $postData[$this->alias]['email'])));
+		$user = $this->findByEmail($postData[$this->alias]['email']);
 
 		if (empty($user)) {
 			$this->invalidate('email', __d('users', 'The email address does not exist in the system'));
@@ -765,24 +672,21 @@ class User extends UsersAppModel {
  * @link https://github.com/CakeDC/search
  */
 	protected function _findSearch($state, $query, $results = array()) {
-		if (!App::import('Lib', 'Utils.Languages')) {
+		if (!class_exists('SearchableBehavior')) {
 			throw new MissingPluginException(array('plugin' => 'Utils'));
 		}
 
 		if ($state == 'before') {
-			$this->Behaviors->attach('Containable', array('autoFields' => false));
+			$this->Behaviors->load('Containable', array(
+				'autoFields' => false)
+			);
 			$results = $query;
-			if (!empty($query['by'])) {
-				$by = $query['by'];
-			}
 
 			if (empty($query['search'])) {
 				$query['search'] = '';
 			}
 
-			$db = ConnectionManager::getDataSource($this->useDbConfig);
 			$by = $query['by'];
-			$search = $query['search'];
 			$like = '%' . $query['search'] . '%';
 
 			switch ($by) {
@@ -815,9 +719,8 @@ class User extends UsersAppModel {
 
 			if (isset($query['operation']) && $query['operation'] == 'count') {
 				$results['fields'] = array('COUNT(DISTINCT ' . $this->alias . '.id)');
-			} else {
-				//$results['fields'] = array('DISTINCT User.*');
 			}
+
 			return $results;
 		} elseif ($state == 'after') {
 			if (isset($query['operation']) && $query['operation'] == 'count') {
@@ -856,7 +759,10 @@ class User extends UsersAppModel {
  *
  * This method is not sending any email like the register() method, its simply
  * adding a new user record and sets a default role.
- * 
+ *
+ * The difference to register() is that this method here is intended to be used
+ * by admins to add new users without going through all the registration logic
+ *
  * @param array post data, should be Controller->data
  * @return boolean True if the data was saved successfully.
  */
@@ -898,11 +804,7 @@ class User extends UsersAppModel {
  * @return mixed True on successfully save else post data as array
  */
 	public function edit($userId = null, $postData = null) {
-		$user = $this->find('first', array(
-			'contain' => array(
-				'UserDetail'),
-			'conditions' => array($this->alias . '.id' => $userId)));
-
+		$user = $this->getUserForEditing($userId);
 		$this->set($user);
 		if (empty($user)) {
 			throw new NotFoundException(__d('users', 'Invalid User'));
@@ -918,6 +820,26 @@ class User extends UsersAppModel {
 				return $postData;
 			}
 		}
+	}
+
+/**
+ * Gets the user data that needs to be edited
+ *
+ * Override this method and inject the conditions you need
+ */
+	public function getUserForEditing($userId = null, $options = array()) {
+		$defaults = array(
+			'contain' => array(),
+			'conditions' => array($this->alias . '.id' => $userId));
+		$options = Set::merge($defaults, $options);
+
+		$user = $this->find('first', $options);
+
+		if (empty($user)) {
+			throw new NotFoundException(__d('users', 'Invalid User'));
+		}
+
+		return $user;
 	}
 
 /**

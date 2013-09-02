@@ -51,7 +51,8 @@ class UsersController extends UsersAppController {
 		'Form',
 		'Session',
 		'Time',
-		'Text');
+		'Text'
+	);
 
 /**
  * Components
@@ -65,7 +66,8 @@ class UsersController extends UsersAppController {
 		'Paginator',
 		'Security',
 		'Search.Prg',
-		'Users.RememberMe');
+		'Users.RememberMe'
+	);
 
 /**
  * Preset vars
@@ -84,7 +86,6 @@ class UsersController extends UsersAppController {
  */
 	public function __construct($request, $response) {
 		$this->_setupComponents();
-		$this->_setupHelpers();
 		parent::__construct($request, $response);
 		$this->_reInitControllerName();
 	}
@@ -118,25 +119,28 @@ class UsersController extends UsersAppController {
 	}
 
 /**
+ * Wrapper for CakePlugin::loaded()
+ *
+ * @param string $plugin
+ * @return boolean
+ */
+	protected function _pluginLoaded($plugin, $exception = true) {
+		$result = CakePlugin::loaded($plugin);
+		if ($exception === true && $result === false) {
+			throw new MissingPluginException(array('plugin' => $plugin));
+		}
+		return $result;
+	}
+
+/**
  * Setup components based on plugin availability
  *
  * @return void
  * @link https://github.com/CakeDC/search
  */
 	protected function _setupComponents() {
-		if (App::import('Component', 'Search.Prg')) {
+		if ($this->_pluginLoaded('Search', false)) {
 			$this->components[] = 'Search.Prg';
-		}
-	}
-
-/**
- * Setup helpers based on plugin availability
- *
- * @return void
- */
-	protected function _setupHelpers() {
-		if (App::import('Helper', 'Goodies.Gravatar')) {
-			$this->helpers[] = 'Goodies.Gravatar';
 		}
 	}
 
@@ -162,10 +166,16 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	protected function _setupAuth() {
+		if (Configure::read('Users.disableDefaultAuth') === true) {
+			return;
+		}
+
 		$this->Auth->allow('add', 'reset', 'verify', 'logout', 'view', 'reset_password', 'login', 'resend_verification');
+
 		if (!is_null(Configure::read('Users.allowRegistration')) && !Configure::read('Users.allowRegistration')) {
 			$this->Auth->deny('add');
 		}
+
 		if ($this->request->action == 'register') {
 			$this->Components->disable('Auth');
 		}
@@ -231,19 +241,7 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	public function edit() {
-		if (!empty($this->request->data)) {
-			if ($this->{$this->modelClass}->UserDetail->saveSection($this->Auth->user('id'), $this->request->data, 'User')) {
-				$this->Session->setFlash(__d('users', 'Profile saved.'));
-			} else {
-				$this->Session->setFlash(__d('users', 'Could not save your profile.'));
-			}
-		} else {
-			$data = $this->{$this->modelClass}->UserDetail->getSection($this->Auth->user('id'), 'User');
-			if (!isset($data[$this->modelClass])) {
-				$data[$this->modelClass] = array();
-			}
-			$this->request->data['UserDetail'] = $data[$this->modelClass];
-		}
+		// @todo replace this with something better than the user details that were removed
 	}
 
 /**
@@ -256,11 +254,13 @@ class UsersController extends UsersAppController {
 		unset($this->{$this->modelClass}->validate['username']);
 		unset($this->{$this->modelClass}->validate['email']);
 		$this->{$this->modelClass}->data[$this->modelClass] = $this->passedArgs;
-		if ($this->{$this->modelClass}->Behaviors->attached('Searchable')) {
+
+		if ($this->{$this->modelClass}->Behaviors->loaded('Searchable')) {
 			$parsedConditions = $this->{$this->modelClass}->parseCriteria($this->passedArgs);
 		} else {
 			$parsedConditions = array();
 		}
+
 		$this->Paginator->settings[$this->modelClass]['conditions'] = $parsedConditions;
 		$this->Paginator->settings[$this->modelClass]['order'] = array($this->modelClass . '.created' => 'desc');
 
@@ -275,11 +275,14 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	public function admin_view($id = null) {
-		if (!$id) {
+		try {
+			$user = $this->{$this->modelClass}->view($id, 'id');
+		} catch (NotFoundException $e) {
 			$this->Session->setFlash(__d('users', 'Invalid User.'));
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->set('user', $this->{$this->modelClass}->read(null, $id));
+
+		$this->set('user', $user);
 	}
 
 /**
@@ -441,12 +444,10 @@ class UsersController extends UsersAppController {
  * @link https://github.com/CakeDC/search
  */
 	public function search() {
-		if (!App::import('Component', 'Search.Prg')) {
-			throw new MissingPluginException(array('plugin' => 'Search'));
-		}
+		$this->_pluginLoaded('Search');
 
 		$searchTerm = '';
-		$this->Prg->commonProcess($this->modelClass, $this->modelClass, 'search', false);
+		$this->Prg->commonProcess($this->modelClass);
 
 		$by = null;
 		if (!empty($this->request->params['named']['search'])) {
@@ -549,7 +550,7 @@ class UsersController extends UsersAppController {
 			throw new NotFoundException();
 		}
 
-		$data = $this->{$this->modelClass}->validateToken($token, true);
+		$data = $this->{$this->modelClass}->verifyEmail($token);
 
 		if (!$data) {
 			$this->Session->setFlash(__d('users', 'The url you accessed is not longer valid'));
@@ -638,9 +639,8 @@ class UsersController extends UsersAppController {
  * @link https://github.com/CakeDC/utils
  */
 	protected function _setLanguages($viewVar = 'languages') {
-		if (!App::import('Lib', 'Utils.Languages')) {
-			throw new MissingPluginException(array('plugin' => 'Utils'));
-		}
+		$this->_pluginLoaded('Utils');
+
 		$Languages = new Languages();
 		$this->set($viewVar, $Languages->lists('locale'));
 	}
@@ -740,7 +740,6 @@ class UsersController extends UsersAppController {
  * @param string Cookie data keyname for the userdata, its default is "User". This is set to User and NOT using the model alias to make sure it works with different apps with different user models across different (sub)domains.
  * @return void
  * @link http://book.cakephp.org/2.0/en/core-libraries/components/cookie.html
- * @deprecated Use the RememberMe Component
  */
 	protected function _setCookie($options = array(), $cookieKey = 'rememberMe') {
 		$this->RememberMe->settings['cookieKey'] = $cookieKey;
@@ -762,8 +761,13 @@ class UsersController extends UsersAppController {
 		}
 
 		if (!empty($this->request->data) && $this->{$this->modelClass}->resetPassword(Set::merge($user, $this->request->data))) {
-			$this->Session->setFlash(__d('users', 'Password changed, you can now login with your new password.'));
-			$this->redirect($this->Auth->loginAction);
+			if ($this->RememberMe->cookieIsSet()) {
+				$this->Session->setFlash(__d('users', 'Password changed.'));
+				$this->_setCookie();
+			} else {
+				$this->Session->setFlash(__d('users', 'Password changed, you can now login with your new password.'));
+				$this->redirect($this->Auth->loginAction);
+			}
 		}
 
 		$this->set('token', $token);
@@ -782,6 +786,19 @@ class UsersController extends UsersAppController {
 		} else {
 			return new CakeEmail('default');
 		}
+	}
+
+/**
+ * Default isAuthorized method
+ *
+ * This is called to see if a user (when logged in) is able to access an action
+ *
+ * @param array $user
+ * @return boolean True if allowed
+ * @link http://book.cakephp.org/2.0/en/core-libraries/components/authentication.html#using-controllerauthorize
+ */
+	public function isAuthorized($user = null) {
+		return parent::isAuthorized($user);
 	}
 
 }
