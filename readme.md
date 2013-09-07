@@ -234,6 +234,30 @@ Configure::write('Users.defaultRole', 'user_registered');
 
 Some application won't need to have registration enable so you can define Users.allowRegistration on bootstrap.php to enable / disable registration. By default registration will be enabled.
 
+## Configuration options
+
+The configuration settings can be written by using the Configure class.
+
+	Users.disableDefaultAuth
+
+Disables/enables the default auth setup that is implemented in the plugins UsersController::_setupAuth()
+
+	Users.allowRegistration
+
+Disables/enables the user registration.
+
+	Users.roles
+
+Optional array of user roles if you need it. This is not activly used by the plugin by default.
+
+	Users.sendPassword
+
+Disables/enables the password reset functionality
+
+	Users.emailConfig
+
+Email configuration settings array used by this plugin
+
 ## Requirements ##
 
 * PHP version: PHP 5.2+
@@ -258,7 +282,6 @@ All versions are updated with security patches.
 ## Contributing to this Plugin ##
 
 Please feel free to contribute to the plugin with new issues, requests, unit tests and code fixes or new features. If you want to contribute some code, create a feature branch from develop, and send us your pull request. Unit tests for new features and issues detected are mandatory to keep quality high. 
-
 
 ## License ##
 
