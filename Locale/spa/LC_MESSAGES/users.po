@@ -151,7 +151,7 @@ msgstr "%s ha sido enviado un correo con instrucciones para reiniciar su contras
 
 #: /controllers/users_controller.php:567
 msgid "You should receive an email with further instructions shortly"
-msgstr "Debe resibir un correo con más instrucciones en breve"
+msgstr "Debe recibir un correo con más instrucciones en breve"
 
 #: /controllers/users_controller.php:571
 msgid "No user was found with that email."
@@ -718,4 +718,3 @@ msgstr "Reiniciar contraseña"
 #: /views/users/search.ctp:1
 msgid "Search for users"
 msgstr "Buscar usuarios"
-
