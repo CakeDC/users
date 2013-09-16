@@ -397,7 +397,11 @@ class UsersController extends UsersAppController {
 		if (!empty($this->request->data)) {
 			$user = $this->{$this->modelClass}->register($this->request->data);
 			if ($user !== false) {
-				$Event = new CakeEvent('Users.UsersController.afterRegistration', $this, $this->request->data);
+				$Event = new CakeEvent(
+					'Users.Controller.Users.afterRegistration',
+					$this,
+					$this->request->data
+				);
 				$this->getEventManager()->dispatch($Event);
 				if ($Event->isStopped()) {
 					$this->redirect(array('action' => 'login'));
@@ -420,10 +424,27 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	public function login() {
+		$Event = new CakeEvent(
+			'Users.Controller.Users.beforeLogin',
+			$this
+		);
+
+		$this->getEventManager()->dispatch($Event);
+
+		if ($Event->isStopped()) {
+			return false;
+		}
+
 		if ($this->request->is('post')) {
 			if ($this->Auth->login()) {
-				$Event = new CakeEvent('Users.UsersController.afterLogin', $this, array(
-					'isFirstLogin' => !$this->Auth->user('last_login')));
+				$Event = new CakeEvent(
+					'Users.Controller.Users.afterLogin',
+					$this,
+					array(
+						'isFirstLogin' => !$this->Auth->user('last_login')
+					)
+				);
+
 				$this->getEventManager()->dispatch($Event);
 
 				$this->{$this->modelClass}->id = $this->Auth->user('id');

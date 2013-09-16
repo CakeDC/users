@@ -258,6 +258,23 @@ Disables/enables the password reset functionality
 
 Email configuration settings array used by this plugin
 
+## Events ##
+
+Events follow these conventions:
+
+	Users.Controller.Users.someCallBack
+	Users.Model.User.someCallBack
+	...
+
+Triggered events are:
+
+ * Users.Controller.Users.beforeRegister
+ * Users.Controller.Users.afterRegister
+ * Users.Controller.Users.beforeLogin
+ * Users.Controller.Users.afterLogin
+ * Users.Model.User.beforeRegister
+ * Users.Model.User.afterRegister
+
 ## Requirements ##
 
 * PHP version: PHP 5.2+

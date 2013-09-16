@@ -513,6 +513,17 @@ class User extends UsersAppModel {
  * @return mixed
  */
 	public function register($postData = array(), $options = array()) {
+		$Event = new CakeEvent(
+			'Users.Model.User.beforeRegister',
+			$this,
+			$this->request->data
+		);
+
+		$this->getEventManager()->dispatch($Event);
+		if ($Event->isStopped()) {
+			return $Event->result;
+		}
+
 		if (is_bool($options)) {
 			$options = array('emailVerification' => $options);
 		}
@@ -529,24 +540,25 @@ class User extends UsersAppModel {
 			$this->_removeExpiredRegistrations();
 		}
 
-		$Event = new CakeEvent('Users.User.beforeRegister', $this);
-		$this->getEventManager()->dispatch($Event);
-		if ($Event->isStopped()) {
-			return $Event->result;
-		}
-
 		$this->set($postData);
 		if ($this->validates()) {
 			$postData[$this->alias]['password'] = $this->hash($postData[$this->alias]['password'], 'sha1', true);
 			$this->create();
 			$this->data = $this->save($postData, false);
 			$this->data[$this->alias]['id'] = $this->id;
+
+			$Event = new CakeEvent(
+				'Users.Model.User.afterRegister',
+				$this
+			);
+
+			$this->getEventManager()->dispatch($Event);
+
+			if ($Event->isStopped()) {
+				return $Event->result;
+			}
+
 			if ($returnData) {
-				$Event = new CakeEvent('Users.User.afterRegister', $this, $this->request->data);
-				$this->getEventManager()->dispatch($Event);
-				if ($Event->isStopped()) {
-					return $Event->result;
-				}
 				return $this->data;
 			}
 			return true;
