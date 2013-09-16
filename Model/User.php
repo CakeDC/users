@@ -115,7 +115,7 @@ class User extends UsersAppModel {
 /**
  * Constructor
  *
- * @param string $id ID
+ * @param bool|string $id ID
  * @param string $table Table
  * @param string $ds Datasource
  */
@@ -513,6 +513,20 @@ class User extends UsersAppModel {
  * @return mixed
  */
 	public function register($postData = array(), $options = array()) {
+		$Event = new CakeEvent(
+			'Users.Model.User.beforeRegister',
+			$this,
+			array(
+				'data' => $postData,
+				'options' => $options
+			)
+		);
+
+		$this->getEventManager()->dispatch($Event);
+		if ($Event->isStopped()) {
+			return $Event->result;
+		}
+
 		if (is_bool($options)) {
 			$options = array('emailVerification' => $options);
 		}
@@ -535,6 +549,22 @@ class User extends UsersAppModel {
 			$this->create();
 			$this->data = $this->save($postData, false);
 			$this->data[$this->alias]['id'] = $this->id;
+
+			$Event = new CakeEvent(
+				'Users.Model.User.afterRegister',
+				$this,
+				array(
+					'data' => $this->data,
+					'options' => $options
+				)
+			);
+
+			$this->getEventManager()->dispatch($Event);
+
+			if ($Event->isStopped()) {
+				return $Event->result;
+			}
+
 			if ($returnData) {
 				return $this->data;
 			}
@@ -662,7 +692,7 @@ class User extends UsersAppModel {
  */
 	protected function _findSearch($state, $query, $results = array()) {
 		if (!class_exists('SearchableBehavior')) {
-			throw new MissingPluginException(array('plugin' => 'Search'));
+			throw new MissingPluginException(array('plugin' => 'Utils'));
 		}
 
 		if ($state == 'before') {
@@ -744,7 +774,10 @@ class User extends UsersAppModel {
 	}
 
 /**
- * Adds a new user
+ * Adds a new user, to be called from admin like user roles or interfaces
+ *
+ * This method is not sending any email like the register() method, its simply
+ * adding a new user record and sets a default role.
  *
  * The difference to register() is that this method here is intended to be used
  * by admins to add new users without going through all the registration logic
@@ -786,11 +819,15 @@ class User extends UsersAppModel {
  *
  * @param string $userId User ID
  * @param array $postData controller post data usually $this->data
+ * @throws NotFoundException
  * @return mixed True on successfully save else post data as array
  */
 	public function edit($userId = null, $postData = null) {
 		$user = $this->getUserForEditing($userId);
 		$this->set($user);
+		if (empty($user)) {
+			throw new NotFoundException(__d('users', 'Invalid User'));
+		}
 
 		if (!empty($postData)) {
 			$this->set($postData);

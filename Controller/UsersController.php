@@ -335,7 +335,7 @@ class UsersController extends UsersAppController {
 /**
  * Admin edit
  *
- * @param string $id User ID
+ * @param null $userId
  * @return void
  */
 	public function admin_edit($userId = null) {
@@ -397,6 +397,18 @@ class UsersController extends UsersAppController {
 		if (!empty($this->request->data)) {
 			$user = $this->{$this->modelClass}->register($this->request->data);
 			if ($user !== false) {
+				$Event = new CakeEvent(
+					'Users.Controller.Users.afterRegistration',
+					$this,
+					array(
+						'data' => $this->request->data,
+					)
+				);
+				$this->getEventManager()->dispatch($Event);
+				if ($Event->isStopped()) {
+					$this->redirect(array('action' => 'login'));
+				}
+
 				$this->_sendVerificationEmail($this->{$this->modelClass}->data);
 				$this->Session->setFlash(__d('users', 'Your account has been created. You should receive an e-mail shortly to authenticate your account. Once validated you will be able to login.'));
 				$this->redirect(array('action' => 'login'));
@@ -414,10 +426,32 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	public function login() {
+		$Event = new CakeEvent(
+			'Users.Controller.Users.beforeLogin',
+			$this,
+			array(
+				'data' => $this->request->data,
+			)
+		);
+
+		$this->getEventManager()->dispatch($Event);
+
+		if ($Event->isStopped()) {
+			return;
+		}
+
 		if ($this->request->is('post')) {
 			if ($this->Auth->login()) {
-				$this->getEventManager()->dispatch(new CakeEvent('Users.afterLogin', $this, array(
-					'isFirstLogin' => !$this->Auth->user('last_login'))));
+				$Event = new CakeEvent(
+					'Users.Controller.Users.afterLogin',
+					$this,
+					array(
+						'data' => $this->request->data,
+						'isFirstLogin' => !$this->Auth->user('last_login')
+					)
+				);
+
+				$this->getEventManager()->dispatch($Event);
 
 				$this->{$this->modelClass}->id = $this->Auth->user('id');
 				$this->{$this->modelClass}->saveField('last_login', date('Y-m-d H:i:s'));
@@ -439,7 +473,12 @@ class UsersController extends UsersAppController {
 					$data[$this->modelClass]['return_to'] = null;
 				}
 
-				$this->redirect($this->Auth->redirect($data[$this->modelClass]['return_to']));
+				// Checking for 2.3 but keeping a fallback for older versions
+				if (method_exists($this->Auth, 'redirectUrl')) {
+					$this->redirect($this->Auth->redirectUrl($data[$this->modelClass]['return_to']));
+				} else {
+					$this->redirect($this->Auth->redirect($data[$this->modelClass]['return_to']));
+				}
 			} else {
 				$this->Auth->flash(__d('users', 'Invalid e-mail / password combination.  Please try again'));
 			}
@@ -504,7 +543,7 @@ class UsersController extends UsersAppController {
 		$user = $this->Auth->user();
 		$this->Session->destroy();
 		if (isset($_COOKIE[$this->Cookie->name])) {
-			$this->Cookie->destroy();
+		$this->Cookie->destroy();
 		}
 		$this->RememberMe->destroyCookie();
 		$this->Session->setFlash(sprintf(__d('users', '%s you have successfully logged out'), $user[$this->{$this->modelClass}->displayField]));
@@ -669,7 +708,7 @@ class UsersController extends UsersAppController {
  *
  * @param string $to Receiver email address
  * @param array $options EmailComponent options
- * @return boolean Success
+ * @return void
  */
 	protected function _sendVerificationEmail($userData, $options = array()) {
 		$defaults = array(
@@ -689,7 +728,7 @@ class UsersController extends UsersAppController {
 			->subject($options['subject'])
 			->template($options['template'], $options['layout'])
 			->viewVars(array(
-				'model' => $this->modelClass,
+			'model' => $this->modelClass,
 				'user' => $userData
 			))
 			->send();
