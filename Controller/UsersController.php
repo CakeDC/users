@@ -400,7 +400,9 @@ class UsersController extends UsersAppController {
 				$Event = new CakeEvent(
 					'Users.Controller.Users.afterRegistration',
 					$this,
-					$this->request->data
+					array(
+						'data' => $this->request->data,
+					)
 				);
 				$this->getEventManager()->dispatch($Event);
 				if ($Event->isStopped()) {
@@ -426,13 +428,16 @@ class UsersController extends UsersAppController {
 	public function login() {
 		$Event = new CakeEvent(
 			'Users.Controller.Users.beforeLogin',
-			$this
+			$this,
+			array(
+				'data' => $this->request->data,
+			)
 		);
 
 		$this->getEventManager()->dispatch($Event);
 
 		if ($Event->isStopped()) {
-			return false;
+			return;
 		}
 
 		if ($this->request->is('post')) {
@@ -441,6 +446,7 @@ class UsersController extends UsersAppController {
 					'Users.Controller.Users.afterLogin',
 					$this,
 					array(
+						'data' => $this->request->data,
 						'isFirstLogin' => !$this->Auth->user('last_login')
 					)
 				);

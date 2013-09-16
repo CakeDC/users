@@ -516,7 +516,10 @@ class User extends UsersAppModel {
 		$Event = new CakeEvent(
 			'Users.Model.User.beforeRegister',
 			$this,
-			$this->request->data
+			array(
+				'data' => $postData,
+				'options' => $options
+			)
 		);
 
 		$this->getEventManager()->dispatch($Event);
@@ -549,7 +552,11 @@ class User extends UsersAppModel {
 
 			$Event = new CakeEvent(
 				'Users.Model.User.afterRegister',
-				$this
+				$this,
+				array(
+					'data' => $this->data,
+					'options' => $options
+				)
 			);
 
 			$this->getEventManager()->dispatch($Event);
