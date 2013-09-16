@@ -11,6 +11,8 @@
 
 App::uses('Security', 'Utility');
 App::uses('UsersAppModel', 'Users.Model');
+App::uses('SearchableBehavior', 'Search.Model/Behavior');
+App::uses('SluggableBehavior', 'Utils.Model/Behavior');
 
 /**
  * Users Plugin User Model
@@ -133,12 +135,10 @@ class User extends UsersAppModel {
  * @link https://github.com/CakeDC/utils
  */
 	protected function _setupBehaviors() {
-		App::uses('SearchableBehavior', 'Search.Model/Behavior');
 		if (class_exists('SearchableBehavior')) {
 			$this->actsAs[] = 'Search.Searchable';
 		}
 
-		App::uses('SluggableBehavior', 'Utils.Model/Behavior');
 		if (class_exists('SluggableBehavior') && Configure::read('Users.disableSlugs') !== true) {
 			$this->actsAs['Utils.Sluggable'] = array(
 				'label' => 'username',

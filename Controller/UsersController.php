@@ -66,7 +66,7 @@ class UsersController extends UsersAppController {
 		'Paginator',
 		'Security',
 		'Search.Prg',
-		'Users.RememberMe'
+		'Users.RememberMe',
 	);
 
 /**
@@ -152,12 +152,48 @@ class UsersController extends UsersAppController {
 	public function beforeFilter() {
 		parent::beforeFilter();
 		$this->_setupAuth();
+		$this->_setupPagination();
 
 		$this->set('model', $this->modelClass);
 
 		if (!Configure::read('App.defaultEmail')) {
 			Configure::write('App.defaultEmail', 'noreply@' . env('HTTP_HOST'));
 		}
+	}
+
+/**
+ * Sets the default pagination settings up
+ *
+ * Override this method or the index action directly if you want to change
+ * pagination settings.
+ *
+ * @return void
+ */
+	protected function _setupPagination() {
+		$this->Paginator->settings = array(
+			'limit' => 12,
+			'conditions' => array(
+				$this->modelClass . '.active' => 1,
+				$this->modelClass . '.email_verified' => 1
+			)
+		);
+	}
+
+/**
+ * Sets the default pagination settings up
+ *
+ * Override this method or the index() action directly if you want to change
+ * pagination settings. admin_index()
+ *
+ * @return void
+ */
+	protected function _setupAdminPagination() {
+		$this->Paginator->settings = array(
+			'limit' => 20,
+			'order' => array(
+				$this->modelClass . '.created' => 'desc'
+			)
+		);
 	}
 
 /**
@@ -201,11 +237,6 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	public function index() {
-		$this->Paginator->settings = array(
-			'limit' => 12,
-			'conditions' => array(
-				$this->modelClass . '.active' => 1,
-				$this->modelClass . '.email_verified' => 1));
 		$this->set('users', $this->Paginator->paginate($this->modelClass));
 	}
 
@@ -261,10 +292,8 @@ class UsersController extends UsersAppController {
 			$parsedConditions = array();
 		}
 
+		$this->_setupAdminPagination();
 		$this->Paginator->settings[$this->modelClass]['conditions'] = $parsedConditions;
-		$this->Paginator->settings[$this->modelClass]['order'] = array($this->modelClass . '.created' => 'desc');
-
-		$this->{$this->modelClass}->recursive = 0;
 		$this->set('users', $this->Paginator->paginate());
 	}
 
@@ -557,12 +586,10 @@ class UsersController extends UsersAppController {
 			return $this->redirect('/');
 		}
 
-		unset($data[$this->modelClass]['email']);
-
 		if ($this->{$this->modelClass}->save($data, array('validate' => false))) {
 			$this->_sendNewPassword($data);
 			$this->Session->setFlash(__d('users', 'Your password was sent to your registered email account'));
-			return $this->redirect(array('action' => 'login'));
+			$this->redirect(array('action' => 'login'));
 		}
 
 		$this->Session->setFlash(__d('users', 'There was an error verifying your account. Please check the email you were sent, and retry the verification link.'));
