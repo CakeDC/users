@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Users CakePHP plugin\n"
 "POT-Creation-Date: 2013-09-18 23:20+0200\n"
-"PO-Revision-Date: 2013-09-18 22:36-0000\n"
+"PO-Revision-Date: 2013-09-18 22:52-0000\n"
 "Last-Translator: Jorge González <steinkel@gmail.com>\n"
 "Language-Team: CakeDC <contact@cakedc.com>\n"
 "Language: \n"
@@ -321,7 +321,7 @@ msgstr "Condiciones del Servicio"
 
 #: View/Users/add.ctp:31
 msgid "I have read and agreed to "
-msgstr "He leído y estoy de acuerdo con"
+msgstr "He leído y estoy de acuerdo con las "
 
 #: View/Users/add.ctp:32
 #: View/Users/change_password.ctp:26
