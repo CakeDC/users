@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Users CakePHP plugin\n"
 "POT-Creation-Date: 2010-09-15 15:48+0200\n"
-"PO-Revision-Date: 2010-09-24 16:38-0400\n"
-"Last-Translator: José Lorenzo Rodríguez <jose.lorenzo@cakedc.com>\n"
+"PO-Revision-Date: 2013-09-18 22:13-0000\n"
+"Last-Translator: Jorge González <steinkel@gmail.com>\n"
 "Language-Team: CakeDC <contact@cakedc.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,7 +22,7 @@ msgstr ""
 
 #: /controllers/details_controller.php:57;138
 msgid "Invalid Detail."
-msgstr "Detalle no váido"
+msgstr "Detalle no válido."
 
 #: /controllers/details_controller.php:78
 msgid "Saved"
@@ -58,7 +58,7 @@ msgstr "Perfil guardado"
 
 #: /controllers/users_controller.php:159
 msgid "Could not save your profile."
-msgstr "No se pudo guardar su perfil"
+msgstr "No se pudo guardar su perfil."
 
 #: /controllers/users_controller.php:193
 msgid "Invalid User."
@@ -83,25 +83,25 @@ msgstr "Usuario no válido"
 
 #: /controllers/users_controller.php:273
 msgid "You are already registered and logged in!"
-msgstr "¡Ya estás registrado e iniciado la sesión!"
+msgstr "¡Ya estás registrado y has iniciado la sesión!"
 
 #: /controllers/users_controller.php:282
 #: /tests/cases/controllers/users_controller.test.php:194
 msgid "Your account has been created. You should receive an e-mail shortly to authenticate your account. Once validated you will be able to login."
-msgstr "Su cuenta ha sido creada. Debería recibir un correo para autenticar su cuenta. Una vez validada podrá iniciar sesión"
+msgstr "Su cuenta ha sido creada. Debería recibir un correo con un enlace para verificar su cuenta de correo. Una vez validado, podrá iniciar sesión."
 
 #: /controllers/users_controller.php:287
 #: /tests/cases/controllers/users_controller.test.php:205
 msgid "Your account could not be created. Please, try again."
-msgstr "Su suenta no pudo ser creada, intente de nuevo"
+msgstr "Su cuenta no pudo ser creada, por favor inténtelo de nuevo."
 
 #: /controllers/users_controller.php:309
 msgid "%s you have successfully logged in"
-msgstr "%s usted ha iniciado sesión"
+msgstr "%s ha iniciado sesión"
 
 #: /controllers/users_controller.php:383
 msgid "%s you have successfully logged out"
-msgstr "%s usted ha cerrado la sesión"
+msgstr "%s ha cerrado la sesión"
 
 #: /controllers/users_controller.php:409
 msgid "There url you accessed is not longer valid"
@@ -117,11 +117,11 @@ msgstr "Su contraseña ha sido reiniciada"
 
 #: /controllers/users_controller.php:435
 msgid "Please login using this password and change your password"
-msgstr "Por favor ingrese usando esta contraseña y luego cámbiela"
+msgstr "Por favor acceda usando esta contraseña y luego cámbiela"
 
 #: /controllers/users_controller.php:438
 msgid "Your password was sent to your registered email account"
-msgstr "Su contraseña fue enviada a su cuenta de correo registrada"
+msgstr "Su contraseña fue enviada a la cuenta de correo que utilizó al registrarse"
 
 #: /controllers/users_controller.php:444
 #: /tests/cases/controllers/users_controller.test.php:219
@@ -130,7 +130,7 @@ msgstr "¡Su correo ha sido validado!"
 
 #: /controllers/users_controller.php:448
 msgid "There was an error trying to validate your e-mail address. Please check your e-mail for the URL you should use to verify your e-mail address."
-msgstr "Ocurrió un error tratando de validar su dirección de correo. Por favor verifique su correo en busca del URL que debe usar para verificar su cuenta."
+msgstr "Ocurrió un error tratando de validar su dirección de correo. Por favor verifique su correo y utilice la URL que le hemos enviado para validar su cuenta. Tenga en cuenta que a veces los correos pueden ser clasificados como correo basura (SPAM) por error, por favor revise su bandeja de entrada y su bandeja de SPAM."
 
 #: /controllers/users_controller.php:452
 #: /tests/cases/controllers/users_controller.test.php:224
@@ -147,31 +147,31 @@ msgstr "Verificación de cuenta"
 
 #: /controllers/users_controller.php:563
 msgid "%s has been sent an email with instruction to reset their password."
-msgstr "%s ha sido enviado un correo con instrucciones para reiniciar su contraseña"
+msgstr "%s, le hemos enviado un correo con instrucciones para reiniciar su contraseña."
 
 #: /controllers/users_controller.php:567
 msgid "You should receive an email with further instructions shortly"
-msgstr "Debe resibir un correo con más instrucciones en breve"
+msgstr "Recibirá un correo con más instrucciones en breve"
 
 #: /controllers/users_controller.php:571
 msgid "No user was found with that email."
-msgstr "Ningún usuario fue encontrado con dicho correo"
+msgstr "Ningún usuario fue encontrado con dicho correo."
 
 #: /controllers/users_controller.php:588
 msgid "Invalid password reset token, try again."
-msgstr "Contraseña no válida"
+msgstr "Contraseña no válida, por favor inténtelo de nuevo."
 
 #: /controllers/users_controller.php:594
 msgid "Password changed, you can now login with your new password."
-msgstr "Contraseña modificada, ahora puede ingresar nuevamente"
+msgstr "Contraseña modificada, ahora puede acceder nuevamente."
 
 #: /models/user.php:102
 msgid "Please enter a username"
-msgstr "Por favor ingrese un nombre de usuario"
+msgstr "Por favor, introduzca un nombre de usuario"
 
 #: /models/user.php:105
 msgid "The username must be alphanumeric"
-msgstr "El nombre de usuario debe ser alfa-numérico"
+msgstr "El nombre de usuario debe estar compuesto únicamente por letras y números, sin espacios"
 
 #: /models/user.php:108
 msgid "This username is already in use."
@@ -183,35 +183,35 @@ msgstr "El nombre de usuario debe contener al menos 3 caracteres"
 
 #: /models/user.php:116
 msgid "Please enter a valid email address."
-msgstr "Por favor ingrese una dirección de correo electrónico válida"
+msgstr "Por favor introduzca una dirección de correo electrónico válida."
 
 #: /models/user.php:119
 msgid "This email is already in use."
-msgstr "Este correo ya se encuentra en uso"
+msgstr "Este correo ya se encuentra en uso."
 
 #: /models/user.php:123
 msgid "The password must have at least 8 characters."
-msgstr "La contraseña debe tener al menos 8 caracteres"
+msgstr "La contraseña debe tener al menos 8 caracteres."
 
 #: /models/user.php:126
 msgid "Please enter a password."
-msgstr "Por favor ingrese una contraseña"
+msgstr "Por favor introduzca una contraseña."
 
 #: /models/user.php:129
 msgid "The passwords are not equal, please try again."
-msgstr "Las contraseñas no coinciden, por favor intente de nuevo"
+msgstr "Las contraseñas no coinciden, por favor inténtelo de nuevo."
 
 #: /models/user.php:132
 msgid "You must agree to the terms of use."
-msgstr "Debe estar de acuerdo con los términos de uso"
+msgstr "Debe aceptar las condiciones de uso."
 
 #: /models/user.php:137;357
 msgid "The passwords are not equal."
-msgstr "Las contraseñas no coinciden"
+msgstr "Las contraseñas no coinciden."
 
 #: /models/user.php:139
 msgid "Invalid password."
-msgstr "Contraseña no válida"
+msgstr "Contraseña no válida."
 
 #: /models/user.php:150
 msgid "Invalid date"
@@ -219,11 +219,11 @@ msgstr "Fecha no válida"
 
 #: /models/user.php:315
 msgid "This Email Address exists but was never validated."
-msgstr "La dirección de correo existe, pero nunca fue validada"
+msgstr "La dirección de correo existe, pero nunca fue validada."
 
 #: /models/user.php:317
 msgid "This Email Address does not exist in the system."
-msgstr "Esta dirección de correo no existe en el sistema"
+msgstr "Esta dirección de correo no existe en el sistema."
 
 # Error?
 #: /models/user.php:406
@@ -232,11 +232,11 @@ msgstr ""
 
 #: /models/user.php:460
 msgid "The user does not exist."
-msgstr "El usuario no existe"
+msgstr "El usuario no existe."
 
 #: /models/user.php:505
 msgid "Please enter your email address."
-msgstr "Por favor ingresa tu dirección de correo"
+msgstr "Por favor introduce tu dirección de correo."
 
 #: /models/user.php:515
 msgid "The email address does not exist in the system"
@@ -244,11 +244,11 @@ msgstr "La dirección de correo no existe en el sistema"
 
 #: /models/user.php:520
 msgid "Your account is already authenticaed."
-msgstr "Yu cuenta ya ha sido autenticada"
+msgstr "Tu cuenta ya ha sido autenticada."
 
 #: /models/user.php:525
 msgid "Your account is disabled."
-msgstr "Tu cuenta está deshabilidata"
+msgstr "Tu cuenta está deshabilitada"
 
 #: /tests/cases/controllers/users_controller.test.php:34
 msgid "Sorry, but you need to login to access this location."
@@ -256,7 +256,7 @@ msgstr "Lo sentimos, pero debe iniciar sesión para acceder a esta ubicación"
 
 #: /tests/cases/controllers/users_controller.test.php:35;174
 msgid "Invalid e-mail / password combination.  Please try again"
-msgstr "Combinación de correo / contraseña no válida. Intente de nuevo"
+msgstr "Combinación de email / contraseña no válida. Por favor, inténtelo de nuevo"
 
 #: /tests/cases/controllers/users_controller.test.php:168
 msgid "testuser you have successfully logged in"
@@ -348,7 +348,7 @@ msgstr "Eliminar"
 #: /views/users/admin_view.ctp:24
 #: /views/users/index.ctp:33
 msgid "Are you sure you want to delete # %s?"
-msgstr "¿Está seguro que desea eliminar %s?"
+msgstr "¿Está seguro que desea eliminar # %s?"
 
 #: /views/details/admin_index.ctp:2
 #: /views/users/register.ctp:4
@@ -563,7 +563,7 @@ msgstr "Cambiar contraseña"
 
 #: /views/users/change_password.ctp:3
 msgid "Please enter your old password because of security reasons and then your new password twice."
-msgstr "Por favor ingrese su antigua contraseña por razones de seguridad y luego ingrese su nueva contraseña dos veces"
+msgstr "Por favor introduzca su contraseña anterior por razones de seguridad y luego su nueva contraseña dos veces."
 
 #: /views/users/change_password.ctp:8
 msgid "Old Password"
@@ -572,7 +572,7 @@ msgstr "Contraseña anterior"
 #: /views/users/change_password.ctp:11
 #: /views/users/reset_password.ctp:9
 msgid "New Password"
-msgstr "Nueva Contraseña"
+msgstr "Nueva contraseña"
 
 #: /views/users/change_password.ctp:14
 #: /views/users/reset_password.ctp:12
@@ -597,7 +597,7 @@ msgstr "Crear un nuevo grupo"
 
 #: /views/users/groups.ctp:6
 msgid "Invite a user"
-msgstr "Invitar un usuario"
+msgstr "Invitar a un usuario"
 
 #: /views/users/groups.ctp:7
 msgid "Requests to join"
@@ -661,7 +661,7 @@ msgstr "Por favor escoja un nombre de usuario"
 
 #: /views/users/register.ctp:15
 msgid "E-mail (used as login)"
-msgstr "Correo (usuado para ingresar)"
+msgstr "Correo (usado para acceder)"
 
 #: /views/users/register.ctp:16
 msgid "Must be a valid email address"
@@ -685,15 +685,15 @@ msgstr "Las contraseñas deben coincidir"
 
 #: /views/users/register.ctp:29;85
 msgid "I have read and agreed to "
-msgstr "He leido y estoy de acuerdo con"
+msgstr "He leído y estoy de acuerdo con"
 
 #: /views/users/register.ctp:29;85
 msgid "Terms of Service"
-msgstr "Términos del Servicio"
+msgstr "Condiciones del Servicio"
 
 #: /views/users/register.ctp:30;86
 msgid "You must verify you have read the Terms of Service"
-msgstr "Debe verificar que ha leído los Términos de Servicio"
+msgstr "Debe verificar que ha leído las Condiciones de Servicio"
 
 #: /views/users/register.ctp:46
 msgid "Openid Identifier"
@@ -705,7 +705,7 @@ msgstr "¿Olvidó su contraseña?"
 
 #: /views/users/request_password_change.ctp:3
 msgid "Please enter the email you used for registration and you'll get an email with further instructions."
-msgstr "Por favor ingrese el correo que utilizó para registrarse y recibirá un correo con más instrucciones"
+msgstr "Por favor introduzca el correo que utilizó para registrarse y recibirá un correo con más instrucciones"
 
 #: /views/users/request_password_change.ctp:11
 msgid "Your Email"

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2013-09-11 11:46+0200\n"
+"POT-Creation-Date: 2013-09-18 22:41+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -31,7 +31,7 @@ msgid "User deleted"
 msgstr ""
 
 #: Controller/UsersController.php:371
-#: Model/User.php:821
+#: Model/User.php:829;858
 msgid "Invalid User"
 msgstr ""
 
@@ -39,83 +39,83 @@ msgstr ""
 msgid "You are already registered and logged in!"
 msgstr ""
 
-#: Controller/UsersController.php:401
+#: Controller/UsersController.php:413
 #: Test/Case/Controller/UsersControllerTest.php:342
 msgid "Your account has been created. You should receive an e-mail shortly to authenticate your account. Once validated you will be able to login."
 msgstr ""
 
-#: Controller/UsersController.php:406
+#: Controller/UsersController.php:418
 #: Test/Case/Controller/UsersControllerTest.php:357
 msgid "Your account could not be created. Please, try again."
 msgstr ""
 
-#: Controller/UsersController.php:428
+#: Controller/UsersController.php:462
 msgid "%s you have successfully logged in"
 msgstr ""
 
-#: Controller/UsersController.php:444
+#: Controller/UsersController.php:483
 #: Test/Case/Controller/UsersControllerTest.php:316
 msgid "Invalid e-mail / password combination.  Please try again"
 msgstr ""
 
-#: Controller/UsersController.php:510
+#: Controller/UsersController.php:549
 msgid "%s you have successfully logged out"
 msgstr ""
 
-#: Controller/UsersController.php:524
+#: Controller/UsersController.php:563
 msgid "The email was resent. Please check your inbox."
 msgstr ""
 
-#: Controller/UsersController.php:527
+#: Controller/UsersController.php:566
 msgid "The email could not be sent. Please check errors."
 msgstr ""
 
-#: Controller/UsersController.php:550
+#: Controller/UsersController.php:589
 #: Test/Case/Controller/UsersControllerTest.php:374
 msgid "Your e-mail has been validated!"
 msgstr ""
 
-#: Controller/UsersController.php:573
+#: Controller/UsersController.php:612
 msgid "The url you accessed is not longer valid"
 msgstr ""
 
-#: Controller/UsersController.php:579
+#: Controller/UsersController.php:618
 msgid "Your password was sent to your registered email account"
 msgstr ""
 
-#: Controller/UsersController.php:583
+#: Controller/UsersController.php:622
 msgid "There was an error verifying your account. Please check the email you were sent, and retry the verification link."
 msgstr ""
 
-#: Controller/UsersController.php:599;709
+#: Controller/UsersController.php:638;748
 msgid "Password Reset"
 msgstr ""
 
-#: Controller/UsersController.php:616;780
+#: Controller/UsersController.php:655;819
 msgid "Password changed."
 msgstr ""
 
-#: Controller/UsersController.php:677
+#: Controller/UsersController.php:716
 msgid "Account verification"
 msgstr ""
 
-#: Controller/UsersController.php:736
+#: Controller/UsersController.php:775
 msgid "%s has been sent an email with instruction to reset their password."
 msgstr ""
 
-#: Controller/UsersController.php:740
+#: Controller/UsersController.php:779
 msgid "You should receive an email with further instructions shortly"
 msgstr ""
 
-#: Controller/UsersController.php:744
+#: Controller/UsersController.php:783
 msgid "No user was found with that email."
 msgstr ""
 
-#: Controller/UsersController.php:774
+#: Controller/UsersController.php:813
 msgid "Invalid password reset token, try again."
 msgstr ""
 
-#: Controller/UsersController.php:783
+#: Controller/UsersController.php:822
 msgid "Password changed, you can now login with your new password."
 msgstr ""
 
@@ -164,19 +164,19 @@ msgstr ""
 msgid "This email is already verified."
 msgstr ""
 
-#: Model/User.php:554
+#: Model/User.php:584
 msgid "Please enter your email address."
 msgstr ""
 
-#: Model/User.php:561
+#: Model/User.php:591
 msgid "The email address does not exist in the system"
 msgstr ""
 
-#: Model/User.php:566
+#: Model/User.php:596
 msgid "Your account is already authenticaed."
 msgstr ""
 
-#: Model/User.php:571
+#: Model/User.php:601
 msgid "Your account is disabled."
 msgstr ""
 
@@ -472,43 +472,43 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: Model/User.php:validation for field username
+#: Plugin/Users/Model/User.php:validation for field username
 msgid "Please enter a username."
 msgstr ""
 
-#: Model/User.php:validation for field username
+#: Plugin/Users/Model/User.php:validation for field username
 msgid "The username must be alphanumeric."
 msgstr ""
 
-#: Model/User.php:validation for field username
+#: Plugin/Users/Model/User.php:validation for field username
 msgid "This username is already in use."
 msgstr ""
 
-#: Model/User.php:validation for field username
+#: Plugin/Users/Model/User.php:validation for field username
 msgid "The username must have at least 3 characters."
 msgstr ""
 
-#: Model/User.php:validation for field email
+#: Plugin/Users/Model/User.php:validation for field email
 msgid "Please enter a valid email address."
 msgstr ""
 
-#: Model/User.php:validation for field email
+#: Plugin/Users/Model/User.php:validation for field email
 msgid "This email is already in use."
 msgstr ""
 
-#: Model/User.php:validation for field password
+#: Plugin/Users/Model/User.php:validation for field password
 msgid "The password must have at least 6 characters."
 msgstr ""
 
-#: Model/User.php:validation for field password
+#: Plugin/Users/Model/User.php:validation for field password
 msgid "Please enter a password."
 msgstr ""
 
-#: Model/User.php:validation for field temppassword
+#: Plugin/Users/Model/User.php:validation for field temppassword
 msgid "The passwords are not equal, please try again."
 msgstr ""
 
-#: Model/User.php:validation for field tos
+#: Plugin/Users/Model/User.php:validation for field tos
 msgid "You must agree to the terms of use."
 msgstr ""
 
