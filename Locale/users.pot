@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2013-09-18 22:41+0200\n"
+"POT-Creation-Date: 2013-09-18 23:20+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -123,6 +123,10 @@ msgstr ""
 msgid "Invalid options %s"
 msgstr ""
 
+#: Controller/Component/Auth/TokenAuthenticate.php:67
+msgid "You need to specify token parameter and/or header"
+msgstr ""
+
 #: Model/User.php:158;339
 msgid "The passwords are not equal."
 msgstr ""
@@ -190,6 +194,14 @@ msgstr ""
 
 #: Test/Case/Controller/UsersControllerTest.php:401
 msgid "testuser you have successfully logged out"
+msgstr ""
+
+#: View/Elements/pagination.ctp:14
+msgid "previous"
+msgstr ""
+
+#: View/Elements/pagination.ctp:16
+msgid "next"
 msgstr ""
 
 #: View/Elements/Users/admin_sidebar.ctp:3
