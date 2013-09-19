@@ -197,10 +197,10 @@ class User extends UsersAppModel {
 					'rule' => array('date'), 'allowEmpty' => true, 'message' => __d('users', 'Invalid date'))),
 			'first_name' => array(
 				'notEmpty' => array(
-					'rule' => array('notEmpty'), 'allowEmpty' => true, 'message' => __d('users', 'Invalid date'))),
+					'rule' => array('notEmpty'), 'allowEmpty' => true, 'message' => __d('users', 'Invalid first name'))),
 			'last_name' => array(
 				'notEmpty' => array(
-					'rule' => array('notEmpty'), 'allowEmpty' => true, 'message' => __d('users', 'Invalid date'))));
+					'rule' => array('notEmpty'), 'allowEmpty' => true, 'message' => __d('users', 'Invalid last name'))));
 	}
 
 /**
