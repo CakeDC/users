@@ -29,4 +29,4 @@
 		</dd>
 	</dl>
 </div>
-<?php echo $this->element('Users/admin_sidebar'); ?>
+<?php echo $this->element('Users.Users/admin_sidebar'); ?>

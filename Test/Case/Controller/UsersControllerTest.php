@@ -159,7 +159,6 @@ class UsersControllerTestCase extends CakeTestCase {
  */
 	public $fixtures = array(
 		'plugin.users.user',
-		'plugin.users.user_detail'
 	);
 
 /**
@@ -188,7 +187,10 @@ class UsersControllerTestCase extends CakeTestCase {
  *
  * @return void
  */
-	public function startTest($method) {
+	public function setUp() {
+		parent::setUp();
+
+		Configure::write('Config.language', 'eng');
 		Configure::write('App.UserClass', null);
 
 		$request = new CakeRequest();
@@ -219,6 +221,9 @@ class UsersControllerTestCase extends CakeTestCase {
 			 ->will($this->returnSelf());
 		$this->Users->CakeEmail->expects($this->any())
 			 ->method('viewVars')
+			 ->will($this->returnSelf());
+		$this->Users->CakeEmail->expects($this->any())
+			 ->method('emailFormat')
 			 ->will($this->returnSelf());
 
 		$this->Users->Components->disable('Security');
@@ -450,23 +455,12 @@ class UsersControllerTestCase extends CakeTestCase {
 				'new_password' => 'newpassword',
 				'confirm_password' => 'newpassword',
 				'old_password' => 'test')));
+		$this->Users->RememberMe = $this->getMock('RememberMeComponent', array(), array($this->Collection));
+		$this->Users->RememberMe->expects($this->any())
+			->method('destroyCookie');
+
 		$this->Users->change_password();
 		$this->assertEqual($this->Users->redirectUrl, '/');
-	}
-
-/**
- * testEdit
- *
- * @return void
- */
-	public function testEdit() {
-		$this->Users->Session->write('Auth.User.id', '1');
-		$this->Users->edit();
-		$this->assertTrue(!empty($this->Users->data));
-		
-		$this->Users->Session->write('Auth.User.id', 'INVALID-ID');
-		$this->Users->edit();
-		$this->assertTrue(empty($this->Users->data['User']));
 	}
 
 /**
@@ -537,13 +531,6 @@ class UsersControllerTestCase extends CakeTestCase {
 		$this->assertEqual($this->Users->redirectUrl, array('action' => 'index'));
 	}
 
-//	public function testMailInstance() {
-//		// default instance shoult be "default"
-//		$cakeMail = $this->Users->getMailInstance();
-//		$this->assertFalse($cakeMail);
-//		// if configured, load the email config
-//	}
-	
 /**
  * Test setting the cookie
  *

@@ -53,6 +53,7 @@ class RememberMeComponent extends Component {
 		'autoLogin' => true,
 		'userModel' => 'User',
 		'cookieKey' => 'rememberMe',
+		'cookieLifeTime' => '+1 year',
 		'cookie' => array(
 			'name' => 'User'),
 		'fields' => array(
@@ -68,8 +69,31 @@ class RememberMeComponent extends Component {
  */
 	public function __construct(ComponentCollection $collection, $settings = array()) {
 		parent::__construct($collection, $settings);
+
+		$this->_checkAndSetCookieLifeTime();
 		$this->settings = Set::merge($this->_defaults, $settings);
 		$this->configureCookie($this->settings['cookie']);
+	}
+
+/**
+ * Check if the system is 32bit and uses DateTime() instead strtotime() to get
+ * an integer instead of a string that is passed on to CookieComponent::write()
+ * due to problems with strtotime() in CookieComponent::_expire(). See
+ * the link in this doc block.
+ *
+ * This method needs to be called in the constructor before the default config
+ * values are merged!
+ *
+ * @link https://cakephp.lighthouseapp.com/projects/42648-cakephp/tickets/3868-cookiecomponent_expires-fails-on-dates-set-far-in-the-future-on-32bit-systems
+ * @link http://stackoverflow.com/questions/3266077/php-strtotime-is-returning-false-for-a-future-date
+ * @return void
+ */
+	protected function _checkAndSetCookieLifeTime() {
+		$lifeTime = $this->_defaults['cookieLifeTime'];
+		if (is_string($lifeTime) && strtotime($lifeTime) === false) {
+			$Date = new DateTime($lifeTime);
+			$this->_defaults['cookieLifeTime'] = $Date->format('U');
+		}
 	}
 
 /**
@@ -80,6 +104,7 @@ class RememberMeComponent extends Component {
  */
 	public function initialize(Controller $controller) {
 		$this->request = $controller->request;
+		$this->Auth = $controller->Auth;
 	}
 
 /**
@@ -105,10 +130,9 @@ class RememberMeComponent extends Component {
 			return true;
 		}
 
+		if ($this->cookieIsSet()) {
 		extract($this->settings);
 		$cookie = $this->Cookie->read($cookieKey);
-
-		if (!empty($cookie)) {
 			$request = $this->request->data;
 
 			foreach ($fields as $field) {
@@ -121,10 +145,11 @@ class RememberMeComponent extends Component {
 
 			if (!$result) {
 				$this->request->data = $request;
-			}
+		}
 
 			return $result;
-		}
+	}
+		return false;
 	}
 
 /**
@@ -140,7 +165,7 @@ class RememberMeComponent extends Component {
 			$data = $this->request->data;
 			if (empty($data)) {
 				$data = $this->Auth->user();
-			}
+		}
 		}
 
 		if (empty($data)) {
@@ -155,7 +180,19 @@ class RememberMeComponent extends Component {
 			}
 		}
 
-		return $this->Cookie->write($cookieKey, $cookieData, true, '+99 years');
+		$this->Cookie->write($cookieKey, $cookieData, true, $cookieLifeTime);
+		return true;
+	}
+
+/**
+ * Checks if the remember me cookie is set
+ *
+ * @return boolean
+ */
+	public function cookieIsSet() {
+		extract($this->settings);
+		$cookie = $this->Cookie->read($cookieKey);
+		return (!empty($cookie));
 	}
 
 /**
@@ -168,7 +205,7 @@ class RememberMeComponent extends Component {
 		if (isset($_COOKIE[$cookie['name']])) {
 			$this->Cookie->name = $cookie['name'];
 			$this->Cookie->destroy();
-		}
+	}
 	}
 
 /**
@@ -190,7 +227,7 @@ class RememberMeComponent extends Component {
 			if (in_array($key, $validProperties)) {
 				$this->Cookie->{$key} = $value;
 			} else {
-				throw new InvalidArgumentException(__('users', 'Invalid options %s', $key));
+				throw new InvalidArgumentException(__d('users', 'Invalid options %s', $key));
 			}
 		}
 	}

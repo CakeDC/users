@@ -22,11 +22,9 @@ class AllTagsPluginTest extends PHPUnit_Framework_TestSuite {
 		$basePath = CakePlugin::path('Users') . DS . 'Test' . DS . 'Case' . DS;
 
 		// controllers
-		$suite->addTestFile($basePath . 'Controller' . DS . 'UserDetailsControllerTest.php');
 		$suite->addTestFile($basePath . 'Controller' . DS . 'UsersControllerTest.php');
 
 		// models
-		$suite->addTestFile($basePath . 'Model' . DS . 'UserDetailTest.php');
 		$suite->addTestFile($basePath . 'Model' . DS . 'UserTest.php');
 
 		return $suite;

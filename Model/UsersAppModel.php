@@ -27,11 +27,20 @@ class UsersAppModel extends AppModel {
 	public $plugin = 'Users';
 
 /**
+ * Recursive level for finds
+ *
+ * @var integer
+ */
+	public $recursive = -1;
+
+/**
  * Behaviors
  *
  * @var array
  */
-	public $actsAs = array('Containable');
+	public $actsAs = array(
+		'Containable'
+	);
 
 /**
  * Customized paginateCount method
@@ -39,9 +48,9 @@ class UsersAppModel extends AppModel {
  * @param array
  * @param integer
  * @param array
- * @return 
+ * @return mixed
  */
-	function paginateCount($conditions = array(), $recursive = 0, $extra = array()) {
+	public function paginateCount($conditions = array(), $recursive = 0, $extra = array()) {
 		$parameters = compact('conditions');
 		if ($recursive != $this->recursive) {
 			$parameters['recursive'] = $recursive;
@@ -52,4 +61,5 @@ class UsersAppModel extends AppModel {
 		}
 		return $this->find('count', array_merge($parameters, $extra));
 	}
+
 }
