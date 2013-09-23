@@ -207,9 +207,10 @@ class User extends UsersAppModel {
  * After save callback
  *
  * @param boolean $created
+ * @param array $options
  * @return void
  */
-	public function afterSave($created) {
+	public function afterSave($created, $options = array()) {
 		if ($created) {
 			$this->sluggedUserUrl();
 		}
