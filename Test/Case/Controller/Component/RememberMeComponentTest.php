@@ -57,6 +57,7 @@ class RememberMeComponentTest extends CakeTestCase {
  */
 	public function setUp() {
 		$_COOKIE = array();
+		Configure::write('Config.language', 'eng');
 		$this->Controller = new RememberMeComponentTestController(new CakeRequest(), new CakeResponse());
 		$this->Controller->constructClasses();
 

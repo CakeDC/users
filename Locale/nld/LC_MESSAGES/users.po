@@ -1,0 +1,696 @@
+# LANGUAGE translation of the CakePHP Users plugin
+#
+# Copyright 2010, Cake Development Corporation (http://cakedc.com)
+#
+# Licensed under The MIT License
+# Redistributions of files must retain the above copyright notice.
+#
+# @copyright Copyright 2010, Cake Development Corporation (http://cakedc.com)
+# @license MIT License (http://www.opensource.org/licenses/mit-license.php)
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: CakeDC/Users\n"
+"POT-Creation-Date: 2013-09-11 11:46+0200\n"
+"PO-Revision-Date: 2013-09-11 11:49+0100\n"
+"Last-Translator: Gilles Wittenberg <poedit@gilleswittenberg.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"X-Generator: Poedit 1.5.5\n"
+
+#: Controller/UsersController.php:310
+msgid "Invalid User."
+msgstr "Ongeldige gebruiker."
+
+#: Controller/UsersController.php:328
+msgid "The User has been saved"
+msgstr "Gebruiker is opgeslagen"
+
+#: Controller/UsersController.php:345
+msgid "User saved"
+msgstr "Gebruiker is opgeslagen"
+
+#: Controller/UsersController.php:369
+msgid "User deleted"
+msgstr "Gebruiker is verwijderd"
+
+#: Controller/UsersController.php:371 Model/User.php:821
+msgid "Invalid User"
+msgstr "Ongeldige gebruiker"
+
+#: Controller/UsersController.php:393
+msgid "You are already registered and logged in!"
+msgstr "U bent al geregistreerd en ingelogd!"
+
+#: Controller/UsersController.php:401
+#: Test/Case/Controller/UsersControllerTest.php:342
+msgid ""
+"Your account has been created. You should receive an e-mail shortly to "
+"authenticate your account. Once validated you will be able to login."
+msgstr ""
+"Uw account is gecreëerd. U heeft een email ontvangen om uw account te "
+"verifiëren. Na verificatie bent u instaat in te loggen."
+
+#: Controller/UsersController.php:406
+#: Test/Case/Controller/UsersControllerTest.php:357
+msgid "Your account could not be created. Please, try again."
+msgstr "Uw account kon niet worden gecreëerd. Probeer opnieuw."
+
+#: Controller/UsersController.php:428
+msgid "%s you have successfully logged in"
+msgstr "%s, u ben succesvol ingelogd"
+
+#: Controller/UsersController.php:444
+#: Test/Case/Controller/UsersControllerTest.php:316
+msgid "Invalid e-mail / password combination.  Please try again"
+msgstr "Ongeldig emailadress / wachtwoord combinatie. Probeer opnieuw."
+
+#: Controller/UsersController.php:510
+msgid "%s you have successfully logged out"
+msgstr "%s, u bent succesvol uitgelogd"
+
+#: Controller/UsersController.php:524
+msgid "The email was resent. Please check your inbox."
+msgstr "E-mail is nogmaals verstuurd. Check uw inbox."
+
+#: Controller/UsersController.php:527
+msgid "The email could not be sent. Please check errors."
+msgstr "Gegeven kon niet worden opgeslagen. Probeer opnieuw."
+
+#: Controller/UsersController.php:550
+#: Test/Case/Controller/UsersControllerTest.php:374
+msgid "Your e-mail has been validated!"
+msgstr "Uw email is geverifiëerd"
+
+#: Controller/UsersController.php:573
+msgid "The url you accessed is not longer valid"
+msgstr "De URL, die u probeert te bezoeken, is niet langer geldig"
+
+#: Controller/UsersController.php:579
+msgid "Your password was sent to your registered email account"
+msgstr "Uw wachtwoord is naar uw, bij ons geregistreerde, email gestuurd"
+
+#: Controller/UsersController.php:583
+msgid ""
+"There was an error verifying your account. Please check the email you were "
+"sent, and retry the verification link."
+msgstr ""
+"Er heeft zich een error voorgedaan bij de verificatie van uw account. Bekijk "
+"uw e-mail en volg de verificatie link."
+
+#: Controller/UsersController.php:599;709
+msgid "Password Reset"
+msgstr "Wachtwoord wijzigen"
+
+#: Controller/UsersController.php:616;780
+msgid "Password changed."
+msgstr "Wachtwoord gewijzigd."
+
+#: Controller/UsersController.php:677
+msgid "Account verification"
+msgstr "Account verificatie"
+
+#: Controller/UsersController.php:736
+msgid "%s has been sent an email with instruction to reset their password."
+msgstr ""
+"Er is een email naar %s verstuurd met instructies om zijn/haar wachtwoord te "
+"wijzigen. "
+
+#: Controller/UsersController.php:740
+msgid "You should receive an email with further instructions shortly"
+msgstr "Er is een email verstuurd met verder te volgen instructies"
+
+#: Controller/UsersController.php:744
+msgid "No user was found with that email."
+msgstr "Er is geen gebruiker met dat emailadres."
+
+#: Controller/UsersController.php:774
+msgid "Invalid password reset token, try again."
+msgstr "Ongeldige token, probeer opnieuw."
+
+#: Controller/UsersController.php:783
+msgid "Password changed, you can now login with your new password."
+msgstr "Wachtwoord gewijzigd. U kunt nu inloggen met uw nieuwe wachtwoord."
+
+#: Controller/Component/RememberMeComponent.php:230
+msgid "Invalid options %s"
+msgstr "Ongeldig wachtwoord."
+
+#: Model/User.php:158;339
+msgid "The passwords are not equal."
+msgstr "De wachtwoorden zijn niet gelijk."
+
+#: Model/User.php:160
+msgid "Invalid password."
+msgstr "Ongeldig wachtwoord."
+
+#: Model/User.php:242 Test/Case/Controller/UsersControllerTest.php:382
+msgid ""
+"Invalid token, please check the email you were sent, and retry the "
+"verification link."
+msgstr "Ongeldige token. Bekijk uw e-mail en volg de verificatie link."
+
+#: Model/User.php:247
+msgid "The token has expired."
+msgstr "De token is verlopen."
+
+#: Model/User.php:301
+msgid "This Email Address exists but was never validated."
+msgstr "Dit emailadres bestaat, maar is nooit geverifiëerd."
+
+#: Model/User.php:303
+msgid "This Email Address does not exist in the system."
+msgstr "Dit emailadres bestaat niet in dit systeem"
+
+#: Model/User.php:397
+msgid "$this->data['"
+msgstr "$this->data['"
+
+#: Model/User.php:443
+msgid "The user does not exist."
+msgstr "De gebruiker bestaat niet."
+
+#: Model/User.php:481
+msgid "Invalid Email address."
+msgstr "Moet een geldig e-mailadres zijn"
+
+#: Model/User.php:486
+msgid "This email is already verified."
+msgstr "Het emailadres is al in gebruik."
+
+#: Model/User.php:554
+msgid "Please enter your email address."
+msgstr "Vul uw emailadres in."
+
+#: Model/User.php:561
+msgid "The email address does not exist in the system"
+msgstr "Het emailadres bestaat niet in dit systeem"
+
+#: Model/User.php:566
+msgid "Your account is already authenticaed."
+msgstr "Uw account is al geverifiëerd."
+
+#: Model/User.php:571
+msgid "Your account is disabled."
+msgstr "Uw account is uitgezet."
+
+#: Test/Case/Controller/UsersControllerTest.php:55
+msgid "Sorry, but you need to login to access this location."
+msgstr "U moet ingelogd zijn om deze locatie te bekijken."
+
+#: Test/Case/Controller/UsersControllerTest.php:275
+msgid "adminuser you have successfully logged in"
+msgstr "testuser, u bent succesvol ingelogd"
+
+#: Test/Case/Controller/UsersControllerTest.php:401
+msgid "testuser you have successfully logged out"
+msgstr "testuser, u bent succesvol ingelogd"
+
+#: View/Elements/Users/admin_sidebar.ctp:3 View/Elements/Users/sidebar.ctp:9
+msgid "Logout"
+msgstr "Uitloggen"
+
+#: View/Elements/Users/admin_sidebar.ctp:4 View/Elements/Users/sidebar.ctp:10
+msgid "My Account"
+msgstr "Mijn Account"
+
+#: View/Elements/Users/admin_sidebar.ctp:6
+msgid "Add Users"
+msgstr "Voeg gebruiker toe"
+
+#: View/Elements/Users/admin_sidebar.ctp:7 View/Elements/Users/sidebar.ctp:15
+msgid "List Users"
+msgstr "Toon gebruikers"
+
+#: View/Elements/Users/admin_sidebar.ctp:9
+msgid "Frontend"
+msgstr "Frontend"
+
+#: View/Elements/Users/sidebar.ctp:4 View/Users/login.ctp:13
+msgid "Login"
+msgstr "Inloggen"
+
+#: View/Elements/Users/sidebar.ctp:6
+msgid "Register an account"
+msgstr "Registreer een account"
+
+#: View/Elements/Users/sidebar.ctp:11
+msgid "Change password"
+msgstr "Wijzig uw wachtwoord"
+
+#: View/Emails/text/account_verification.ctp:12
+msgid "Hello %s,"
+msgstr "Hallo %s,"
+
+#: View/Emails/text/account_verification.ctp:14
+msgid "to validate your account, you must visit the URL below within 24 hours"
+msgstr "Om uw account te verifiëren, volg binnen 24 uur de volgende URL"
+
+#: View/Emails/text/new_password.ctp:12
+msgid "Your password has been reset"
+msgstr "Uw wachtwoord is gewijzigd"
+
+#: View/Emails/text/new_password.ctp:13
+msgid "Please login using this password and change your password"
+msgstr "Login met dit wachtwoord om daarna uw wachtwoord te wijzigen"
+
+#: View/Emails/text/new_password.ctp:15
+msgid "Your new password is: %s"
+msgstr "Uw wachtwoord is gewijzigd"
+
+#: View/Emails/text/password_reset_request.ctp:12
+msgid ""
+"A request to reset your password was sent. To change your password click the "
+"link below."
+msgstr ""
+"Een verzoek om uw wachtwoord te wijzigen is verstuurd. Om uw wachtwoord te "
+"wijzigen klik op de beneden staande link."
+
+#: View/Users/add.ctp:13 View/Users/admin_add.ctp:15
+msgid "Add User"
+msgstr "Voeg gebruiker toe"
+
+#: View/Users/add.ctp:18 View/Users/admin_add.ctp:18
+#: View/Users/admin_edit.ctp:19 View/Users/admin_index.ctp:18
+#: View/Users/admin_view.ctp:15 View/Users/search.ctp:18
+#: View/Users/view.ctp:15
+msgid "Username"
+msgstr "Gebruikersnaam"
+
+#: View/Users/add.ctp:20 View/Users/admin_add.ctp:20
+msgid "E-mail (used as login)"
+msgstr "E-mail (gebruik als login)"
+
+#: View/Users/add.ctp:21 View/Users/admin_add.ctp:21
+msgid "Must be a valid email address"
+msgstr "Moet een geldig e-mailadres zijn"
+
+#: View/Users/add.ctp:22 View/Users/admin_add.ctp:22
+msgid "An account with that email already exists"
+msgstr "Een account met dit e-mailadres bestaat al"
+
+#: View/Users/add.ctp:24 View/Users/admin_add.ctp:24 View/Users/login.ctp:23
+msgid "Password"
+msgstr "Wachtwoord"
+
+#: View/Users/add.ctp:27 View/Users/admin_add.ctp:27
+msgid "Password (confirm)"
+msgstr "Wachtwoord (bevestig)"
+
+#: View/Users/add.ctp:29
+msgid "Terms of Service"
+msgstr "Gebruikersvoorwaarden"
+
+#: View/Users/add.ctp:31
+msgid "I have read and agreed to "
+msgstr "Ik heb gelezen en ga akkoord met de "
+
+#: View/Users/add.ctp:32 View/Users/change_password.ctp:26
+#: View/Users/edit.ctp:25 View/Users/login.ctp:30
+#: View/Users/request_password_change.ctp:22
+#: View/Users/resend_verification.ctp:22 View/Users/reset_password.ctp:14
+msgid "Submit"
+msgstr "Opslaan"
+
+#: View/Users/admin_add.ctp:31 View/Users/admin_edit.ctp:24
+msgid "Role"
+msgstr "Rol"
+
+#: View/Users/admin_add.ctp:34 View/Users/admin_edit.ctp:27
+msgid "Is Admin"
+msgstr "Is Administrator"
+
+#: View/Users/admin_add.ctp:36 View/Users/admin_edit.ctp:29
+msgid "Active"
+msgstr "Actief"
+
+#: View/Users/admin_edit.ctp:15 View/Users/edit.ctp:15
+msgid "Edit User"
+msgstr "Wijzig gebruiker"
+
+#: View/Users/admin_edit.ctp:21 View/Users/admin_index.ctp:19
+#: View/Users/login.ctp:21 View/Users/search.ctp:20
+msgid "Email"
+msgstr "E-mail"
+
+#: View/Users/admin_index.ctp:13 View/Users/index.ctp:13
+#: View/Users/search.ctp:13
+msgid "Users"
+msgstr "Gebruikers"
+
+#: View/Users/admin_index.ctp:15
+msgid "Filter"
+msgstr "Filter"
+
+#: View/Users/admin_index.ctp:20 View/Users/search.ctp:23
+msgid "Search"
+msgstr "Zoeken"
+
+#: View/Users/admin_index.ctp:32 View/Users/index.ctp:25
+#: View/Users/search.ctp:35
+msgid "Actions"
+msgstr "Acties"
+
+#: View/Users/admin_index.ctp:50;53
+msgid "Yes"
+msgstr "Ja"
+
+#: View/Users/admin_index.ctp:50;53
+msgid "No"
+msgstr "Nee"
+
+#: View/Users/admin_index.ctp:59 View/Users/index.ctp:39
+#: View/Users/search.ctp:49
+msgid "View"
+msgstr "Bekijk"
+
+#: View/Users/admin_index.ctp:60 View/Users/search.ctp:50
+msgid "Edit"
+msgstr "Wijzig"
+
+#: View/Users/admin_index.ctp:61 View/Users/search.ctp:52
+msgid "Delete"
+msgstr "Verwijder"
+
+#: View/Users/admin_index.ctp:61 View/Users/search.ctp:55
+msgid "Are you sure you want to delete # %s?"
+msgstr "Weet u zeker dat u # %s wilt verwijderen?"
+
+#: View/Users/admin_view.ctp:13 View/Users/view.ctp:13
+msgid "User"
+msgstr "Gebruiker"
+
+#: View/Users/admin_view.ctp:20 View/Users/view.ctp:20
+msgid "Created"
+msgstr "Gecreëerd"
+
+#: View/Users/admin_view.ctp:25
+msgid "Modified"
+msgstr "Gewijzigd"
+
+#: View/Users/change_password.ctp:13 View/Users/edit.ctp:22
+msgid "Change your password"
+msgstr "Wijzig uw wachtwoord"
+
+#: View/Users/change_password.ctp:14
+msgid ""
+"Please enter your old password because of security reasons and then your new "
+"password twice."
+msgstr ""
+"Vul eerst uw oude wachtwoord in. En daarna tweemaal uw nieuwe wachtwoord."
+
+#: View/Users/change_password.ctp:18
+msgid "Old Password"
+msgstr "Oude wachtwoord"
+
+#: View/Users/change_password.ctp:21 View/Users/reset_password.ctp:9
+msgid "New Password"
+msgstr "Nieuw wachtwoord"
+
+#: View/Users/change_password.ctp:24 View/Users/reset_password.ctp:12
+msgid "Confirm"
+msgstr "Bevestig"
+
+#: View/Users/dashboard.ctp:13
+msgid "Welcome"
+msgstr "Welkom"
+
+#: View/Users/dashboard.ctp:14
+msgid "Recent broadcasts"
+msgstr "Recente uitzendingen"
+
+#: View/Users/index.ctp:17 View/Users/search.ctp:27
+msgid ""
+"Page %page% of %pages%, showing %current% records out of %count% total, "
+"starting on record %start%, ending on %end%"
+msgstr ""
+"Pagina %page% van %pages%, %current% van %count% objecten getoond, beginnend "
+"bij %start%, eindigend bij %end%"
+
+#: View/Users/login.ctp:25
+msgid "Remember Me"
+msgstr "Herinner mij"
+
+#: View/Users/login.ctp:26
+msgid "I forgot my password"
+msgstr "Wachtwoord vergeten?"
+
+#: View/Users/request_password_change.ctp:13
+msgid "Forgot your password?"
+msgstr "Wachtwoord vergeten?"
+
+#: View/Users/request_password_change.ctp:14
+#: View/Users/resend_verification.ctp:14
+msgid ""
+"Please enter the email you used for registration and you'll get an email "
+"with further instructions."
+msgstr ""
+"Vul het door u bij ons geregistreerde e-mailadres in om een e-mail met te "
+"volgen instructies te ontvangen."
+
+#: View/Users/request_password_change.ctp:21
+#: View/Users/resend_verification.ctp:21
+msgid "Your Email"
+msgstr "Uw E-mail"
+
+#: View/Users/resend_verification.ctp:13
+msgid "Resend the Email Verification"
+msgstr "Verstuur nogmaals de e-mail verificatie."
+
+#: View/Users/reset_password.ctp:2
+msgid "Reset your password"
+msgstr "Wijzig uw wachtwoord"
+
+#: View/Users/search.ctp:22
+msgid "Name"
+msgstr "Naam"
+
+#: Model/User.php:validation for field username
+msgid "Please enter a username."
+msgstr "Vul een gebruikersnaam in"
+
+#: Model/User.php:validation for field username
+msgid "The username must be alphanumeric."
+msgstr "Een gebruikersnaam kan alleen uit letters en cijfers bestaan"
+
+#: Model/User.php:validation for field username
+msgid "This username is already in use."
+msgstr "De gebruikersnaam is al in gebruik."
+
+#: Model/User.php:validation for field username
+msgid "The username must have at least 3 characters."
+msgstr "De gebruikersnaam moet uit minstens 3 karakters bestaan."
+
+#: Model/User.php:validation for field email
+msgid "Please enter a valid email address."
+msgstr "Vul een geldig emailadres in."
+
+#: Model/User.php:validation for field email
+msgid "This email is already in use."
+msgstr "Het emailadres is al in gebruik."
+
+#: Model/User.php:validation for field password
+msgid "The password must have at least 6 characters."
+msgstr "Een wachtwoord moet uit minstens 6 karakters bestaan."
+
+#: Model/User.php:validation for field password
+msgid "Please enter a password."
+msgstr "Vul een wachtwoord in."
+
+#: Model/User.php:validation for field temppassword
+msgid "The passwords are not equal, please try again."
+msgstr "De wachtwoorden zijn niet gelijk. Probeer opnieuw."
+
+#: Model/User.php:validation for field tos
+msgid "You must agree to the terms of use."
+msgstr "Ga akkoord met de gebruikersvoorwaarden."
+
+#~ msgid "Invalid Detail."
+#~ msgstr "Ongeldige gegevens."
+
+#~ msgid "Saved"
+#~ msgstr "Opgeslagen"
+
+#~ msgid "%s details saved"
+#~ msgstr "%s gegevens opgeslagen"
+
+#~ msgid "Invalid id for Detail"
+#~ msgstr "Ongeldige id voor Gegeven"
+
+#~ msgid "User Detail deleted"
+#~ msgstr "Gegeven verwijderd"
+
+#~ msgid "The Detail has been saved"
+#~ msgstr "Gegeven is opgeslagen"
+
+#~ msgid "The Detail could not be saved. Please, try again."
+#~ msgstr "Gegeven kon niet worden opgeslagen. Probeer opnieuw."
+
+#~ msgid "Invalid Detail"
+#~ msgstr "Ongeldig gegeven"
+
+#~ msgid "Profile saved."
+#~ msgstr "Profiel opgeslagen."
+
+#~ msgid "Could not save your profile."
+#~ msgstr "Profiel kon niet worden opgeslagen."
+
+#~ msgid "Invalid date"
+#~ msgstr "Ongeldige datum"
+
+#~ msgid "Add User Detail"
+#~ msgstr "Voeg gegeven toe"
+
+#~ msgid "List Details"
+#~ msgstr "Toon gegevens"
+
+#~ msgid "New User"
+#~ msgstr "Nieuwe gebruiker"
+
+#~ msgid "Edit User Detail"
+#~ msgstr "Wijzig gegeven"
+
+#~ msgid "User Details"
+#~ msgstr "Toon gegevens"
+
+#~ msgid "New User Detail"
+#~ msgstr "Voeg gegeven toe"
+
+#~ msgid "User Detail"
+#~ msgstr "Voeg gegeven toe"
+
+#~ msgid "Id"
+#~ msgstr "Id"
+
+#~ msgid "Position"
+#~ msgstr "Positie"
+
+#~ msgid "Field"
+#~ msgstr "Veld"
+
+#~ msgid "Value"
+#~ msgstr "Waarde"
+
+#~ msgid "Edit Detail"
+#~ msgstr "Wijzig gegeven"
+
+#~ msgid "Delete Detail"
+#~ msgstr "Verwijder gegeven"
+
+#~ msgid "New Detail"
+#~ msgstr "Voeg gegeven toe"
+
+#~ msgid "There url you accessed is not longer valid"
+#~ msgstr "De URL, die u probeert te bezoeken, is niet langer geldig"
+
+#~ msgid ""
+#~ "There was an error trying to validate your e-mail address. Please check "
+#~ "your e-mail for the URL you should use to verify your e-mail address."
+#~ msgstr ""
+#~ "Er is een error opgetreden bij het verifiëren van uw email. Controleer de "
+#~ "email voor de URL die moet worden gevolgt om uw emailadres te verifiëren."
+
+#~ msgid "floriank you have successfully logged out"
+#~ msgstr "floriank, u bent succesvol ingelogd"
+
+#~ msgid "List Groups"
+#~ msgstr "Toon groepen"
+
+#~ msgid "New Group"
+#~ msgstr "Nieuwe groep"
+
+#~ msgid "Details"
+#~ msgstr "Gegevens"
+
+#~ msgid "previous"
+#~ msgstr "vorige"
+
+#~ msgid "next"
+#~ msgstr "volgende"
+
+#~ msgid "Detail"
+#~ msgstr "Gegeven"
+
+#~ msgid "Related Groups"
+#~ msgstr "Gerelateerde Groepen"
+
+#~ msgid "User Id"
+#~ msgstr "Gebruiker Id"
+
+#~ msgid "Is Public"
+#~ msgstr "Publiekelijk"
+
+#~ msgid "Description"
+#~ msgstr "Omschrijving"
+
+#~ msgid "Delete User"
+#~ msgstr "Verwijder Gebruiker"
+
+#~ msgid "My Groups"
+#~ msgstr "Mijn Groepen"
+
+#~ msgid "Create a new group"
+#~ msgstr "Creëer een nieuwe groep"
+
+#~ msgid "Invite a user"
+#~ msgstr "Nodig een gebruiker uit"
+
+#~ msgid "Requests to join"
+#~ msgstr "Uitnodigen"
+
+#~ msgid "My own groups"
+#~ msgstr "Mijn eigen groepen"
+
+#~ msgid "Members"
+#~ msgstr "Leden"
+
+#~ msgid "Invite user"
+#~ msgstr "Nodig gebruiker uit"
+
+#~ msgid "Manage Broadcast Scope"
+#~ msgstr "Beheer uitzending bereik"
+
+#~ msgid "Access"
+#~ msgstr "Toegang"
+
+#~ msgid "Addons"
+#~ msgstr "Toevoegingen"
+
+#~ msgid "Groups im a member in"
+#~ msgstr "Groepen waartoe ik behoor"
+
+#~ msgid "Leave group"
+#~ msgstr "Verlaat groep"
+
+#~ msgid "Account registration"
+#~ msgstr "Account registratie"
+
+#~ msgid "Please select a username that is not already in use"
+#~ msgstr "Vul een gebruikersnaam in die nog niet in gebruik is"
+
+#~ msgid "Must be at least 3 characters"
+#~ msgstr "Moet minstens 3 karakters bevatten"
+
+#~ msgid "Username must contain numbers and letters only"
+#~ msgstr "Gebruikers naam kan alleen letters en cijfers bevatten"
+
+#~ msgid "Please choose username"
+#~ msgstr "Kies een gebruikersnaam"
+
+#~ msgid "Must be at least 5 characters long"
+#~ msgstr "Moet minstens 5 karakters bevatten"
+
+#~ msgid "Passwords must match"
+#~ msgstr "Wachtwoorden moeten gelijk zijn"
+
+#~ msgid "You must verify you have read the Terms of Service"
+#~ msgstr "U moet akkoord gaan met de gebruikersvoorwaarden"
+
+#~ msgid "Openid Identifier"
+#~ msgstr "Openid identificatie"
+
+#~ msgid "Search for users"
+#~ msgstr "Zoek gebruikers"
