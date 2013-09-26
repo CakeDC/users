@@ -11,6 +11,7 @@
 ?>
 <div class="users index">
 	<h2><?php echo __d('users', 'Login'); ?></h2>
+	<?php echo $this->Session->flash('auth');?>
 	<fieldset>
 		<?php
 			echo $this->Form->create($model, array(

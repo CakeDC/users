@@ -159,7 +159,6 @@ class UsersControllerTestCase extends CakeTestCase {
  */
 	public $fixtures = array(
 		'plugin.users.user',
-		'plugin.users.user_detail'
 	);
 
 /**
@@ -191,6 +190,7 @@ class UsersControllerTestCase extends CakeTestCase {
 	public function setUp() {
 		parent::setUp();
 
+		Configure::write('Config.language', 'eng');
 		Configure::write('App.UserClass', null);
 
 		$request = new CakeRequest();
@@ -461,21 +461,6 @@ class UsersControllerTestCase extends CakeTestCase {
 
 		$this->Users->change_password();
 		$this->assertEqual($this->Users->redirectUrl, '/');
-	}
-
-/**
- * testEdit
- *
- * @return void
- */
-	public function testEdit() {
-		$this->Users->Session->write('Auth.User.id', '1');
-		$this->Users->edit();
-		$this->assertTrue(!empty($this->Users->data));
-		
-		$this->Users->Session->write('Auth.User.id', 'INVALID-ID');
-		$this->Users->edit();
-		$this->assertTrue(empty($this->Users->data['User']));
 	}
 
 /**

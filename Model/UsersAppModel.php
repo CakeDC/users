@@ -27,6 +27,13 @@ class UsersAppModel extends AppModel {
 	public $plugin = 'Users';
 
 /**
+ * Recursive level for finds
+ *
+ * @var integer
+ */
+	public $recursive = -1;
+
+/**
  * Behaviors
  *
  * @var array
@@ -41,7 +48,7 @@ class UsersAppModel extends AppModel {
  * @param array
  * @param integer
  * @param array
- * @return 
+ * @return mixed
  */
 	public function paginateCount($conditions = array(), $recursive = 0, $extra = array()) {
 		$parameters = compact('conditions');

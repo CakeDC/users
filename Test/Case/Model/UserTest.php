@@ -38,7 +38,7 @@ class UserTestCase extends CakeTestCase {
  */
 	public $fixtures = array(
 		'plugin.users.user',
-		'plugin.users.user_detail');
+	);
 
 /**
  * startTest
