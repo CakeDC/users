@@ -247,7 +247,8 @@ class User extends UsersAppModel {
 			throw new RuntimeException(__d('users', 'The token has expired.'));
 		}
 
-		$data[$this->alias]['active'] = 1;
+        $defaultActivation = Configure::read('Users.defaultActivation');
+		$data[$this->alias]['active'] = ($defaultActivation === null ? 1 : $defaultActivation);
 		$user[$this->alias]['email_verified'] = 1;
 		$user[$this->alias]['email_token'] = null;
 		$user[$this->alias]['email_token_expires'] = null;
@@ -670,7 +671,10 @@ class User extends UsersAppModel {
 		} else {
 			$postData[$this->alias]['email_verified'] = 1;
 		}
-		$postData[$this->alias]['active'] = 1;
+
+        $defaultActivation = Configure::read('Users.defaultActivation');
+        $postData[$this->alias]['active'] = ($defaultActivation === null ? 1 : $defaultActivation);
+
 		$defaultRole = Configure::read('Users.defaultRole');
 		if ($defaultRole) {
 			$postData[$this->alias]['role'] = $defaultRole;
