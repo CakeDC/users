@@ -12,6 +12,7 @@
         }
     ],
     "require": {
-        "composer/installers": "*"
+        "composer/installers": "*",
+        "cakedc/search": "*"
     }
 }
