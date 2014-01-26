@@ -459,7 +459,7 @@ class UsersController extends UsersAppController {
 				if ($this->here == $this->Auth->loginRedirect) {
 					$this->Auth->loginRedirect = '/';
 				}
-				$this->Session->setFlash(sprintf(__d('users', '%s you have successfully logged in'), $this->Auth->user('username')));
+				$this->Session->setFlash(sprintf(__d('users', '%s you have successfully logged in'), $this->Auth->user($this->{$this->modelClass}->displayField)));
 				if (!empty($this->request->data)) {
 					$data = $this->request->data[$this->modelClass];
 					if (empty($this->request->data[$this->modelClass]['remember_me'])) {
@@ -480,7 +480,7 @@ class UsersController extends UsersAppController {
 					$this->redirect($this->Auth->redirect($data[$this->modelClass]['return_to']));
 				}
 			} else {
-				$this->Auth->flash(__d('users', 'Invalid e-mail / password combination.  Please try again'));
+				$this->Auth->flash(__d('users', 'Invalid e-mail / password combination. Please try again'));
 			}
 		}
 		if (isset($this->request->params['named']['return_to'])) {
