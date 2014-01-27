@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CakePHP Users Plugin\n"
 "POT-Creation-Date: 2010-09-15 15:48+0200\n"
-"PO-Revision-Date: 2010-09-23 19:54-0300\n"
+"PO-Revision-Date: 2014-01-25 14:40-0300\n"
 "Last-Translator: Renan Gonçalves <renan.saddam@gmail.com>\n"
 "Language-Team: CakeDC <renan.saddam@gmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -32,7 +32,7 @@ msgstr "Salvo"
 
 #: /controllers/details_controller.php:96
 msgid "%s details saved"
-msgstr "%s detalha salvo"
+msgstr "%s detalhe salvo"
 
 #: /controllers/details_controller.php:113;196
 msgid "Invalid id for Detail"
@@ -68,7 +68,7 @@ msgstr "Usuário inválido."
 
 #: /controllers/users_controller.php:207
 msgid "The User has been saved"
-msgstr "O Usuário foi saldo"
+msgstr "O Usuário foi salvo"
 
 #: /controllers/users_controller.php:223
 msgid "User saved"
@@ -90,12 +90,12 @@ msgstr "Você já está registrado e logado!"
 #: /controllers/users_controller.php:282
 #: /tests/cases/controllers/users_controller.test.php:194
 msgid "Your account has been created. You should receive an e-mail shortly to authenticate your account. Once validated you will be able to login."
-msgstr "Sua conta foi salva. Você logo receberá um e-mail para autenticar sua conta. Uma vez validada você poderá logar."
+msgstr "Sua conta foi salva. Logo você receberá um e-mail para confirmar sua conta. Uma vez validada você poderá logar."
 
 #: /controllers/users_controller.php:287
 #: /tests/cases/controllers/users_controller.test.php:205
 msgid "Your account could not be created. Please, try again."
-msgstr "Sua conta não pode ser criada. Por favor, tente novamente."
+msgstr "Sua conta não pôde ser criada. Por favor, tente novamente."
 
 #: /controllers/users_controller.php:309
 msgid "%s you have successfully logged in"
@@ -119,11 +119,11 @@ msgstr "Sua senha foi resetada"
 
 #: /controllers/users_controller.php:435
 msgid "Please login using this password and change your password"
-msgstr "Por favor faça o login usando essa senha e então mude-a"
+msgstr "Por favor faça o login usando esta senha e então mude-a o mais breve possível"
 
 #: /controllers/users_controller.php:438
 msgid "Your password was sent to your registered email account"
-msgstr "Sua senha foi enviado para seu e-mail registrado em sua conta"
+msgstr "Sua senha foi enviada para seu e-mail registrado em sua conta"
 
 #: /controllers/users_controller.php:444
 #: /tests/cases/controllers/users_controller.test.php:219
@@ -157,19 +157,19 @@ msgstr "Você deverá receber um email com mais instruções em breve"
 
 #: /controllers/users_controller.php:571
 msgid "No user was found with that email."
-msgstr "Nenhum usuário com esse e-mail foi encontrado."
+msgstr "Não foi localizado nenhum usuário com esse e-mail."
 
 #: /controllers/users_controller.php:588
 msgid "Invalid password reset token, try again."
-msgstr "Chave para redefinição de senha inválida, tente novamente."
+msgstr "Token para redefinição de senha inválido, tente novamente."
 
 #: /controllers/users_controller.php:594
 msgid "Password changed, you can now login with your new password."
-msgstr "Senha alterada, você pode agora logar com sua nova senha."
+msgstr "Senha alterada, você pode logar agora com sua nova senha."
 
 #: /models/user.php:102
 msgid "Please enter a username"
-msgstr "Por favor entre o nome de usuário"
+msgstr "Por favor informe o nome de usuário"
 
 #: /models/user.php:105
 msgid "The username must be alphanumeric"
@@ -185,7 +185,7 @@ msgstr "O nome de usuário deve ter no mínimo 3 caracteres."
 
 #: /models/user.php:116
 msgid "Please enter a valid email address."
-msgstr "Por favor entre um endereço de e-mail válido."
+msgstr "Por favor informe um endereço de e-mail válido."
 
 #: /models/user.php:119
 msgid "This email is already in use."
@@ -197,11 +197,11 @@ msgstr "A senha deve ter no mínimo 8 caracteres."
 
 #: /models/user.php:126
 msgid "Please enter a password."
-msgstr "Por favor entre a senha."
+msgstr "Por favor informe a sua senha."
 
 #: /models/user.php:129
 msgid "The passwords are not equal, please try again."
-msgstr "As senhas devem ser iguais, por favor tente novamente."
+msgstr "As senhas devem ser idênticas, por favor verifique."
 
 #: /models/user.php:132
 msgid "You must agree to the terms of use."
@@ -237,7 +237,7 @@ msgstr "O usuário não existe."
 
 #: /models/user.php:505
 msgid "Please enter your email address."
-msgstr "Por favor entre seu endereço de e-mail."
+msgstr "Por favor informe seu endereço de e-mail."
 
 #: /models/user.php:515
 msgid "The email address does not exist in the system"
@@ -261,11 +261,11 @@ msgstr "Combinação de e-mail/senha inválida. Por favor tente novamente."
 
 #: /tests/cases/controllers/users_controller.test.php:168
 msgid "testuser you have successfully logged in"
-msgstr ""
+msgstr "Usuário de teste você logou corretamente"
 
 #: /tests/cases/controllers/users_controller.test.php:237
 msgid "floriank you have successfully logged out"
-msgstr ""
+msgstr "Você realizou o logout com sucesso"
 
 #: /views/details/add.ctp:4
 #: /views/details/admin_add.ctp:4
@@ -359,7 +359,7 @@ msgstr "Detalhes"
 #: /views/details/admin_index.ctp:6
 #: /views/users/index.ctp:6
 msgid "Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%"
-msgstr "Página %page% de %pages%, mostrando %current% resultados de um total de %count%, começando em %start%, terminando em %end%"
+msgstr "Página %page% de %pages%, exibindo %current% resultados de um total de %count%, iniciando em %start%, terminando em %end%"
 
 #: /views/details/admin_index.ctp:18
 #: /views/details/admin_view.ctp:65
@@ -568,7 +568,7 @@ msgstr "Por favor digite sua senha antiga por razões de segurança e depois sua
 
 #: /views/users/change_password.ctp:8
 msgid "Old Password"
-msgstr "Antiga senha"
+msgstr "Senha antiga"
 
 #: /views/users/change_password.ctp:11
 #: /views/users/reset_password.ctp:9
@@ -582,7 +582,7 @@ msgstr "Confirmar"
 
 #: /views/users/dashboard.ctp:2
 msgid "Welcome"
-msgstr "Bem-vindo"
+msgstr "Bem-vindo(a)"
 
 #: /views/users/dashboard.ctp:3
 msgid "Recent broadcasts"
@@ -602,7 +602,7 @@ msgstr "Convide um usuário"
 
 #: /views/users/groups.ctp:7
 msgid "Requests to join"
-msgstr "Requisite para participar"
+msgstr "Convites para participar"
 
 #: /views/users/groups.ctp:10
 msgid "My own groups"
@@ -638,7 +638,7 @@ msgstr "Deixar grupo"
 
 #: /views/users/login.ctp:11
 msgid "Remember Me"
-msgstr "Lembre-me"
+msgstr "Lembrar-me"
 
 #: /views/users/register.ctp:2
 msgid "Account registration"
@@ -666,7 +666,7 @@ msgstr "E-mail (usado para logar)"
 
 #: /views/users/register.ctp:16
 msgid "Must be a valid email address"
-msgstr "Deve ser um endereço de e-mail válido"
+msgstr "O e-mail deve ser um endereço válido"
 
 #: /views/users/register.ctp:17
 msgid "An account with that email already exists"
@@ -678,15 +678,15 @@ msgstr "Deve ter pelo menos 5 caracteres"
 
 #: /views/users/register.ctp:23
 msgid "Password (confirm)"
-msgstr "Senha (confirmação)"
+msgstr "Confirme sua senha"
 
 #: /views/users/register.ctp:25
 msgid "Passwords must match"
-msgstr "As senhas devem ser iguais"
+msgstr "As senhas devem ser idênticas"
 
 #: /views/users/register.ctp:29;85
 msgid "I have read and agreed to "
-msgstr "Eu li e aceito em"
+msgstr "Eu li e concordo com "
 
 #: /views/users/register.ctp:29;85
 msgid "Terms of Service"
@@ -694,7 +694,7 @@ msgstr "Termos de Serviço"
 
 #: /views/users/register.ctp:30;86
 msgid "You must verify you have read the Terms of Service"
-msgstr "Você deve verificar se você leu os Termos de Serviços"
+msgstr "Você deve verificar se leu os Termos de Serviços"
 
 #: /views/users/register.ctp:46
 msgid "Openid Identifier"
