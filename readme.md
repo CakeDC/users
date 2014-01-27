@@ -51,12 +51,13 @@ If you are using another user model than 'User' you'll have to configure it:
 
 	public $components = array(
 		'Users.RememberMe' => array(
-			'userModel' => 'AppUser');
+			'userModel' => 'AppUser')
+	);
 
 And add this line
 
 ```php
-$this->RememberMe->restoreLoginFromCookie()
+$this->RememberMe->restoreLoginFromCookie();
 ```
 
 to your controllers beforeFilter() callack
