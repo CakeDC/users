@@ -28,9 +28,9 @@
 	$i = 0;
 	foreach ($users as $user):
 		$class = null;
-		if ($i++ % 2 == 0) {
+		if ($i++ % 2 == 0) :
 			$class = ' class="altrow"';
-		}
+		endif;
 		?>
 		<tr<?php echo $class; ?>>
 			<td><?php echo $this->Html->link($user[$model]['username'], array('action' => 'view', $user[$model]['id'])); ?></td>
