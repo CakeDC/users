@@ -308,7 +308,7 @@ class User extends UsersAppModel {
 
 /**
  * Checks the token for a password change
- * 
+ *
  * @param string $token Token
  * @return mixed False or user data as array
  */
@@ -341,7 +341,7 @@ class User extends UsersAppModel {
 
 /**
  * Resets the password
- * 
+ *
  * @param array $postData Post data from controller
  * @return boolean True on success
  */
@@ -845,6 +845,11 @@ class User extends UsersAppModel {
  * Gets the user data that needs to be edited
  *
  * Override this method and inject the conditions you need
+ *
+ * @var mixed $userId
+ * @var array $options
+ * @return array $user
+ * @throws NotFoundException
  */
 	public function getUserForEditing($userId = null, $options = array()) {
 		$defaults = array(

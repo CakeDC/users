@@ -41,7 +41,7 @@ class RememberMeComponentTest extends CakeTestCase {
 /**
  * User data
  * @var array 
- */	
+ */
 	public $usersData = array(
 		'test' => array(
 			'email' => 'test@cakedc.com',
@@ -102,9 +102,9 @@ class RememberMeComponentTest extends CakeTestCase {
 		$this->RememberMe->Auth->expects($this->once())
 			->method('login')
 			->will($this->returnValue(true));
-		
+
 		$this->__setPostData(array('User' => $this->usersData['test']));
-		
+
 		$this->RememberMe->restoreLoginFromCookie();
 
 		// even if we post "test" user, we have a remember me cookie set and will priorize the cookie over the post
@@ -126,21 +126,17 @@ class RememberMeComponentTest extends CakeTestCase {
 			->method('read')
 			->with($this->equalTo('rememberMe'))
 			->will($this->returnValue($this->usersData['admin']));
-
 		// admin will not login
 		$this->RememberMe->Auth->expects($this->once())
 			->method('login')
 			->will($this->returnValue(false));
-		
 		// post has "test" data
 		$this->__setPostData(array('User' => $this->usersData['test']));
-		
 		$this->RememberMe->restoreLoginFromCookie();
-
 		$this->assertEqual($this->RememberMe->request->data, array(
 			'User' => $this->usersData['test']));
 	}
-	
+
 /**
  * testDestroyCookie
  *
@@ -155,10 +151,12 @@ class RememberMeComponentTest extends CakeTestCase {
 
 /**
  * Set post data to the test controller
- * @param type $data
- */	
+ *
+ * @var array $data
+ * @return void
+ */
 	private function __setPostData($data = array()) {
 		$_SERVER['REQUEST_METHOD'] = 'POST';
 		$this->RememberMe->request->data = array_merge($data);
-	}	
+	}
 }
