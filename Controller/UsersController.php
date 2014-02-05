@@ -592,7 +592,7 @@ class UsersController extends UsersAppController {
 
 		try {
 			$this->{$this->modelClass}->verifyEmail($token);
-			$this->Session->setFlash(__d('users', 'Your e-mail has been validated!'));
+			$this->Session->setFlash(__d('users', 'Your e-mail has been verified! You can now login.'));
 			return $this->redirect(array('action' => 'login'));
 		} catch (RuntimeException $e) {
 			$this->Session->setFlash($e->getMessage());
