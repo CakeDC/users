@@ -398,7 +398,6 @@ class UsersController extends UsersAppController {
 		if (!empty($this->request->data)) {
 			if (Configure::read("Users.emailAsUsername")) {
 				$this->request->data['AppUser']['username'] = $this->request->data['AppUser']['email'];
-				var_dump($this->request->data);
 			}
 			$user = $this->{$this->modelClass}->register($this->request->data);
 			if ($user !== false) {
