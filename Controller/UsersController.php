@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2013, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2014, Cake Development Corporation (http://cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2013, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2014, Cake Development Corporation (http://cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -123,7 +123,8 @@ class UsersController extends UsersAppController {
  *
  * @throws MissingPluginException
  * @param string $plugin
- * @param boolean $exceiption
+ * @param boolean $exception
+ * @throws MissingPluginException
  * @return boolean
  */
 	protected function _pluginLoaded($plugin, $exception = true) {
@@ -394,8 +395,11 @@ class UsersController extends UsersAppController {
 			$this->Session->setFlash(__d('users', 'You are already registered and logged in!'));
 			$this->redirect('/');
 		}
-
 		if (!empty($this->request->data)) {
+			if (Configure::read("Users.emailAsUsername")) {
+				$this->request->data['AppUser']['username'] = $this->request->data['AppUser']['email'];
+				var_dump($this->request->data);
+			}
 			$user = $this->{$this->modelClass}->register($this->request->data);
 			if ($user !== false) {
 				$Event = new CakeEvent(
@@ -427,6 +431,8 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	public function login() {
+
+		$this->request->data['User'] = $this->request->data['AppUser'];
 		$Event = new CakeEvent(
 			'Users.Controller.Users.beforeLogin',
 			$this,
@@ -627,7 +633,7 @@ class UsersController extends UsersAppController {
 /**
  * Sends the password reset email
  *
- * @param array
+ * @param array $userData
  * @return void
  */
 	protected function _sendNewPassword($userData) {
@@ -707,7 +713,7 @@ class UsersController extends UsersAppController {
  * controller can override this method to change the varification mail sending
  * in any possible way.
  *
- * @param string $to Receiver email address
+ * @param string $userData Receiver email address
  * @param array $options EmailComponent options
  * @return void
  */

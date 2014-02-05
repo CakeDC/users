@@ -120,6 +120,9 @@ class User extends UsersAppModel {
  * @param string $ds Datasource
  */
 	public function __construct($id = false, $table = null, $ds = null) {
+		if (Configure::read("Users.emailAsUsername") === true) {
+			$this->emailAsUsername = true;
+		}
 		$this->_setupBehaviors();
 		$this->_setupValidation();
 		parent::__construct($id, $table, $ds);
@@ -152,12 +155,17 @@ class User extends UsersAppModel {
  * @return void
  */
 	protected function _setupValidation() {
+		if (Configure::read("Users.emailAsUsername") === true) {
+			unset($this->validate['username']['alpha']);
+			//var_dump($this->validate);
+		}
 		$this->validatePasswordChange = array(
 			'new_password' => $this->validate['password'],
 			'confirm_password' => array(
 				'required' => array('rule' => array('compareFields', 'new_password', 'confirm_password'), 'required' => true, 'message' => __d('users', 'The passwords are not equal.'))),
 			'old_password' => array(
 				'to_short' => array('rule' => 'validateOldPassword', 'required' => true, 'message' => __d('users', 'Invalid password.'))));
+
 	}
 
 /**
@@ -659,8 +667,8 @@ class User extends UsersAppModel {
 /**
  * Optional data manipulation before the registration record is saved
  *
- * @param array post data array
- * @param boolean Use email generation, create token, default true
+ * @param array $postData data array
+ * @param boolean $useEmailVerification Use email generation, create token, default true
  * @return array
  */
 	protected function _beforeRegistration($postData = array(), $useEmailVerification = true) {
@@ -782,7 +790,7 @@ class User extends UsersAppModel {
  * The difference to register() is that this method here is intended to be used
  * by admins to add new users without going through all the registration logic
  *
- * @param array post data, should be Controller->data
+ * @param array $postData, should be Controller->data
  * @return boolean True if the data was saved successfully.
  */
 	public function add($postData = null) {

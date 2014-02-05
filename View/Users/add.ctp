@@ -11,6 +11,7 @@
 ?>
 <div class="users form">
 	<h2><?php echo __d('users', 'Add User'); ?></h2>
+	<h2><?=$model?></h2>
 	<fieldset>
 		<?php
 			echo $this->Form->create($model);
