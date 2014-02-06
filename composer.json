@@ -13,6 +13,7 @@
     ],
     "require": {
         "composer/installers": "*",
-        "cakedc/search": "*"
+        "cakedc/search": "*",
+        "cakedc/utils": "dev-develop"
     }
 }
