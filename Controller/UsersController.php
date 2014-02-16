@@ -543,9 +543,6 @@ class UsersController extends UsersAppController {
 	public function logout() {
 		$user = $this->Auth->user();
 		$this->Session->destroy();
-		if (isset($_COOKIE[$this->Cookie->name])) {
-			$this->Cookie->destroy();
-		}
 		$this->RememberMe->destroyCookie();
 		$this->Session->setFlash(sprintf(__d('users', '%s you have successfully logged out'), $user[$this->{$this->modelClass}->displayField]));
 		$this->redirect($this->Auth->logout());
