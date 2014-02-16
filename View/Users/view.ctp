@@ -23,14 +23,14 @@
 			&nbsp;
 		</dd>
 		<?php
-		if (!empty($user['UserDetail'])) {
-			foreach ($user['UserDetail'] as $section => $details) {
-				foreach ($details as $field => $value) {
+		if (!empty($user['UserDetail'])) :
+			foreach ($user['UserDetail'] as $section => $details) :
+				foreach ($details as $field => $value) :
 					echo '<dt>' . $section . ' - ' . $field . '</dt>';
 					echo '<dd>' . $value . '</dd>';
-				}
-			}
-		}
+				endforeach;
+			endforeach;
+		endif;
 		?>
 	</dl>
 </div>

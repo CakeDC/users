@@ -845,6 +845,11 @@ class User extends UsersAppModel {
  * Gets the user data that needs to be edited
  *
  * Override this method and inject the conditions you need
+ *
+ * @var mixed $userId
+ * @var array $options
+ * @return array $user
+ * @throws NotFoundException
  */
 	public function getUserForEditing($userId = null, $options = array()) {
 		$defaults = array(

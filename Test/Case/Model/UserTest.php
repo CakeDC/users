@@ -58,11 +58,11 @@ class UserTestCase extends CakeTestCase {
 	public function tearDown() {
 		parent::tearDown();
 		unset($this->User);
-		ClassRegistry::flush(); 
+		ClassRegistry::flush();
 	}
 
 /**
- * 
+ * Test User Instance
  *
  * @return void
  */
@@ -105,7 +105,7 @@ class UserTestCase extends CakeTestCase {
  *
  * @return void
  */
-	function testGenerateToken() {
+	public function testGenerateToken() {
 		$result = $this->User->generateToken();
 		$this->assertInternalType('string', $result);
 	}
@@ -115,7 +115,7 @@ class UserTestCase extends CakeTestCase {
  *
  * @return void
  */
-	function testValidateToken() {
+	public function testValidateToken() {
 		$result = $this->User->validateToken('no valid token');
 		$this->assertFalse($result);
 
@@ -425,15 +425,13 @@ class UserTestCase extends CakeTestCase {
 		$userId = '1';
 		$data = $this->User->read(null, $userId);
 		$data['User']['email'] = 'anotherNewEmail@anothernewemail.com';
-
 		$result = $this->User->edit(1, $data);
 		$this->assertTrue($result);
-
 		$result = $this->User->read(null, 1);
 		$this->assertEqual($result['User']['username'], $data['User']['username']);
 		$this->assertEqual($result['User']['email'], $data['User']['email']);
 	}
-	
+
 /**
  * testEditException
  *
