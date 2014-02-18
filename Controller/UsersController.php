@@ -399,6 +399,9 @@ class UsersController extends UsersAppController {
 			if (Configure::read("Users.emailAsUsername")) {
 				$this->request->data['AppUser']['username'] = $this->request->data['AppUser']['email'];
 			}
+			if (Configure::read("Users.autoVerifyEmail")) {
+				$this->request->data['AppUser']['email_verified'] = 1;
+			}
 			$user = $this->{$this->modelClass}->register($this->request->data);
 			if ($user !== false) {
 				$Event = new CakeEvent(
@@ -414,8 +417,13 @@ class UsersController extends UsersAppController {
 				}
 
 				$this->_sendVerificationEmail($this->{$this->modelClass}->data);
-				$this->Session->setFlash(__d('users', 'Your account has been created. You should receive an e-mail shortly to authenticate your account. Once validated you will be able to login.'));
-				$this->redirect(array('action' => 'login'));
+				if (Configure::read("Users.loginAfterRegister")) {
+					$this->login($this->request->data['AppUser']);
+					$this->redirect("/");
+				} else {
+					$this->Session->setFlash(__d('users', 'Your account has been created. You should receive an e-mail shortly to authenticate your account. Once validated you will be able to login.'));
+					$this->redirect(array('action' => 'login'));
+				}
 			} else {
 				unset($this->request->data[$this->modelClass]['password']);
 				unset($this->request->data[$this->modelClass]['temppassword']);
@@ -430,8 +438,6 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	public function login() {
-
-		$this->request->data['User'] = $this->request->data['AppUser'];
 		$Event = new CakeEvent(
 			'Users.Controller.Users.beforeLogin',
 			$this,
