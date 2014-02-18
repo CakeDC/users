@@ -259,6 +259,18 @@ Disables/enables the password reset functionality
 
 Email configuration settings array used by this plugin
 
+	Users.autoVerifyEmail
+
+Auto set email to verified in DB
+
+	Users.loginAfterRegister
+
+Auto login a user after they register, requires email verification before
+
+	Users.emailAsUsername
+
+This is in works, might work might not.
+
 ## Events ##
 
 Events follow these conventions:
