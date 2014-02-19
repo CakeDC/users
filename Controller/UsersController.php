@@ -462,23 +462,23 @@ class UsersController extends UsersAppController {
 				}
 				$this->Session->setFlash(sprintf(__d('users', '%s you have successfully logged in'), $this->Auth->user($this->{$this->modelClass}->displayField)));
 				if (!empty($this->request->data)) {
-					$data = $this->request->data[$this->modelClass];
 					if (empty($this->request->data[$this->modelClass]['remember_me'])) {
 						$this->RememberMe->destroyCookie();
 					} else {
 						$this->_setCookie();
 					}
 				}
-
-				if (empty($data[$this->modelClass]['return_to'])) {
-					$data[$this->modelClass]['return_to'] = null;
+				
+				$return_to = $this->request->data[$this->modelClass]['return_to'];
+				if (empty($return_to)) {
+					$return_to = null;
 				}
 
 				// Checking for 2.3 but keeping a fallback for older versions
 				if (method_exists($this->Auth, 'redirectUrl')) {
-					$this->redirect($this->Auth->redirectUrl($data[$this->modelClass]['return_to']));
+					$this->redirect($this->Auth->redirectUrl($return_to));
 				} else {
-					$this->redirect($this->Auth->redirect($data[$this->modelClass]['return_to']));
+					$this->redirect($this->Auth->redirect($return_to));
 				}
 			} else {
 				$this->Auth->flash(__d('users', 'Invalid e-mail / password combination. Please try again'));
