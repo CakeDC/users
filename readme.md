@@ -258,6 +258,10 @@ Disables/enables the password reset functionality
 
 Email configuration settings array used by this plugin
 
+	Users.defaultActivation
+
+Disable/Enable user activation.
+
 ## Events ##
 
 Events follow these conventions:
