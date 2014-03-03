@@ -277,7 +277,7 @@ class UsersControllerTestCase extends CakeTestCase {
 			->method('destroyCookie');
 
 		$this->Users->login();
-		$this->assertEqual(Router::normalize($this->Users->redirectUrl), Router::normalize(Router::url($this->Users->Auth->loginRedirect)));
+		$this->assertEquals(Router::normalize($this->Users->redirectUrl), Router::normalize(Router::url($this->Users->Auth->loginRedirect)));
 	}
 
 /**
@@ -408,7 +408,7 @@ class UsersControllerTestCase extends CakeTestCase {
 			->method('destroyCookie');
 
 		$this->Users->logout();
-		$this->assertEqual($this->Users->redirectUrl, '/');
+		$this->assertEquals($this->Users->redirectUrl, '/');
 	}
 
 /**
@@ -432,7 +432,7 @@ class UsersControllerTestCase extends CakeTestCase {
 		$this->assertTrue(isset($this->Users->viewVars['user']));
 
 		$this->Users->view('INVALID-SLUG');
-		$this->assertEqual($this->Users->redirectUrl, '/');
+		$this->assertEquals($this->Users->redirectUrl, '/');
 	}
 
 /**
@@ -457,7 +457,7 @@ class UsersControllerTestCase extends CakeTestCase {
 			->method('destroyCookie');
 
 		$this->Users->change_password();
-		$this->assertEqual($this->Users->redirectUrl, '/');
+		$this->assertEquals($this->Users->redirectUrl, '/');
 	}
 
 /**
@@ -475,13 +475,13 @@ class UsersControllerTestCase extends CakeTestCase {
 			'User' => array(
 				'email' => 'adminuser@cakedc.com'));
 		$this->Users->reset_password();
-		$this->assertEqual($this->Users->redirectUrl, array('action' => 'login'));
+		$this->assertEquals($this->Users->redirectUrl, array('action' => 'login'));
 		$this->Users->data = array(
 			'User' => array(
 				'new_password' => 'newpassword',
 				'confirm_password' => 'newpassword'));
 		$this->Users->reset_password('testtoken');
-		$this->assertEqual($this->Users->redirectUrl, $this->Users->Auth->loginAction);
+		$this->assertEquals($this->Users->redirectUrl, $this->Users->Auth->loginAction);
 	}
 
 /**
@@ -518,10 +518,10 @@ class UsersControllerTestCase extends CakeTestCase {
 		$this->Users->User->id = '1';
 		$this->assertTrue($this->Users->User->exists(true));
 		$this->Users->admin_delete('1');
-		$this->assertEqual($this->Users->redirectUrl, array('action' => 'index'));
+		$this->assertEquals($this->Users->redirectUrl, array('action' => 'index'));
 		$this->assertFalse($this->Users->User->exists(true));
 		$this->Users->admin_delete('INVALID-ID');
-		$this->assertEqual($this->Users->redirectUrl, array('action' => 'index'));
+		$this->assertEquals($this->Users->redirectUrl, array('action' => 'index'));
 	}
 
 /**
@@ -545,7 +545,7 @@ class UsersControllerTestCase extends CakeTestCase {
 			->method('setCookie');
 		$this->Users->setCookie(array(
 			'name' => 'userTestCookie'));
-		$this->assertEqual($this->Users->RememberMe->settings['cookieKey'], 'rememberMe');
+		$this->assertEquals($this->Users->RememberMe->settings['cookieKey'], 'rememberMe');
 	}
 
 /**
@@ -555,10 +555,10 @@ class UsersControllerTestCase extends CakeTestCase {
  */
 	public function testGetMailInstance() {
 		$defaultConfig = $this->Users->getMailInstance()->config();
-		$this->assertEqual($defaultConfig['from'], 'default@example.com');
+		$this->assertEquals($defaultConfig['from'], 'default@example.com');
 		Configure::write('Users.emailConfig', 'another');
 		$anotherConfig = $this->Users->getMailInstance()->config();
-		$this->assertEqual($anotherConfig['from'], 'another@example.com');
+		$this->assertEquals($anotherConfig['from'], 'another@example.com');
 		$this->setExpectedException('ConfigureException');
 		Configure::write('Users.emailConfig', 'doesnotexist');
 		$anotherConfig = $this->Users->getMailInstance()->config();
