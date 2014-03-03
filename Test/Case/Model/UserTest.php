@@ -62,7 +62,7 @@ class UserTestCase extends CakeTestCase {
 	}
 
 /**
- *
+ * Test User Instance
  *
  * @return void
  */
@@ -105,7 +105,7 @@ class UserTestCase extends CakeTestCase {
  *
  * @return void
  */
-	function testGenerateToken() {
+	public function testGenerateToken() {
 		$result = $this->User->generateToken();
 		$this->assertInternalType('string', $result);
 	}

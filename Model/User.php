@@ -829,7 +829,7 @@ class User extends UsersAppModel {
 			throw new NotFoundException(__d('users', 'Invalid User'));
 		}
 
-		if(!empty($postData)) {
+		if (!empty($postData)) {
 			$this->set($postData);
 			if ($this->validates()) {
 				if(isset($this->data[$this->alias]['password'])) {
