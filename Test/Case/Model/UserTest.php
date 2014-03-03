@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Copyright 2010 - 2013, Cake Development Corporation (http://cakedc.com)
  *
@@ -111,24 +111,6 @@ class UserTestCase extends CakeTestCase {
 	}
 
 /**
- * testValidateToken
- *
- * @return void
- */
-	public function testValidateToken() {
-		$result = $this->User->validateToken('no valid token');
-		$this->assertFalse($result);
-
-		$now = strtotime('2008-03-25 02:48:46');
-		$result = $this->User->validateToken('testtoken2', false, $now);
-		$this->assertInternalType('array', $result);
-
-		$now = strtotime('2008-03-29 02:48:46');
-		$result = $this->User->validateToken('testtoken2', false, $now);
-		$this->assertFalse($result);
-	}
-
-/**
  * testUpdateLastActivity
  *
  * @return void
@@ -144,6 +126,7 @@ class UserTestCase extends CakeTestCase {
 		$this->assertTrue($lastDate < $newDate);
 		$this->assertFalse($this->User->updateLastActivity('invalid-id!'));
 	}
+
 
 /**
  * testResetPassword
@@ -236,7 +219,7 @@ class UserTestCase extends CakeTestCase {
 		$result = $this->User->view('adminuser');
 		$this->assertTrue(is_array($result) && !empty($result));
 
-		$this->expectException('OutOfBoundsException');
+		$this->expectException('NotFoundException');
 		$result = $this->User->view('non-existing-user-slug');
 	}
 
@@ -346,7 +329,7 @@ class UserTestCase extends CakeTestCase {
 	}
 
 /**
- * Test resending of the email authentication 
+ * Test resending of the email authentication
  *
  * @return void
  */
@@ -373,7 +356,7 @@ class UserTestCase extends CakeTestCase {
 	}
 
 /**
- * Test resending of the email authentication 
+ * Test resending of the email authentication
  *
  * @return void
  */
@@ -425,11 +408,45 @@ class UserTestCase extends CakeTestCase {
 		$userId = '1';
 		$data = $this->User->read(null, $userId);
 		$data['User']['email'] = 'anotherNewEmail@anothernewemail.com';
+
 		$result = $this->User->edit(1, $data);
 		$this->assertTrue($result);
+
 		$result = $this->User->read(null, 1);
 		$this->assertEqual($result['User']['username'], $data['User']['username']);
 		$this->assertEqual($result['User']['email'], $data['User']['email']);
+
+		$result = $this->User->edit(1);
+		$this->assertNull($result);
+	}
+
+/**
+ * testEditPassword
+ *
+ * @return void
+ **/
+	public function testEditPassword() {
+		$userId = '1';
+		$data = $this->User->read(null, $userId);
+		$data['User']['email'] = 'anotherNewEmail@anothernewemail.com';
+		$data['User']['password'] = 'anotherNewPassword';
+		$data['User']['temppassword'] = 'anotherNewPassword';
+
+		$result = $this->User->edit(1, $data);
+
+		$hashPassword = $this->User->hash($data['User']['password'], 'sha1', true);
+		$this->assertTrue($result);
+		$this->assertEqual($this->User->data['User']['password'], $hashPassword);
+
+		$data2['User']['email'] = 'anotherEmail@anotheremail.com';
+		$data2['User']['password'] = 'anotherNewPassword';
+		$data2['User']['temppassword'] = 'differentPassword';
+
+		$result = $this->User->edit(1, $data2);
+		$hashPassword = $this->User->hash($data2['User']['password'], 'sha1', true);
+
+		$this->assertNull($result);
+		$this->assertNotEqual($data, $data2);
 	}
 
 /**
@@ -438,7 +455,7 @@ class UserTestCase extends CakeTestCase {
  * @return void
  */
 	public function testEditException() {
-		$this->setExpectedException('OutOfBoundsException');
+		$this->setExpectedException('NotFoundException');
 		$userId = '1';
 		$data = $this->User->read(null, $userId);
 		$data['User']['email'] = 'anotherNewEmail@anothernewemail.com';

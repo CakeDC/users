@@ -64,7 +64,7 @@ class User extends UsersAppModel {
 	public $emailTokenExpirationTime = 86400;
 
 /**
- * Validation domain for translations 
+ * Validation domain for translations
  *
  * @var string
  */
@@ -348,8 +348,8 @@ class User extends UsersAppModel {
 	public function resetPassword($postData = array()) {
 		$result = false;
 
-		//$tmp = $this->validate;
-		//$this->validate = $this->setUpResetPasswordValidationRules();
+		$tmp = $this->validate;
+		$this->validate = $this->setUpResetPasswordValidationRules();
 
 		$this->set($postData);
 		if ($this->validates()) {
@@ -360,7 +360,7 @@ class User extends UsersAppModel {
 				'callbacks' => false));
 		}
 
-		//$this->validate = $tmp;
+		$this->validate = $tmp;
 		return $result;
 	}
 
@@ -831,10 +831,15 @@ class User extends UsersAppModel {
 
 		if (!empty($postData)) {
 			$this->set($postData);
-			$result = $this->save(null, true);
-			if ($result) {
-				$this->data = $result;
-				return true;
+			if ($this->validates()) {
+				if(isset($this->data[$this->alias]['password'])) {
+					$this->data[$this->alias]['password'] = $this->hash($this->data[$this->alias]['password'], 'sha1', true);
+				}
+				$result = $this->save(null, false);
+				if ($result) {
+					$this->data = $result;
+					return true;
+				}
 			} else {
 				return $postData;
 			}
