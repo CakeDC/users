@@ -442,10 +442,12 @@ class UserTestCase extends CakeTestCase {
 		$data2['User']['password'] = 'anotherNewPassword';
 		$data2['User']['temppassword'] = 'differentPassword';
 
-		$result = $this->User->edit(1, $data2);
-		$hashPassword = $this->User->hash($data2['User']['password'], 'sha1', true);
+		$this->User->edit(1, $data2);
 
-		$this->assertNull($result);
+		$invalid = $this->User->invalidFields();
+
+		$this->assertTrue(isset($invalid['temppassword']));
+		$this->assertFalse($this->User->validates());
 		$this->assertNotEquals($data, $data2);
 	}
 
