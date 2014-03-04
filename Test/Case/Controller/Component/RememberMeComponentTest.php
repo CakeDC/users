@@ -109,7 +109,7 @@ class RememberMeComponentTest extends CakeTestCase {
 
 		// even if we post "test" user, we have a remember me cookie set and will priorize the cookie over the post
 		// NOTE we check if the user is logged in in the startup method of the Component
-		$this->assertEqual($this->RememberMe->request->data, array(
+		$this->assertEquals($this->RememberMe->request->data, array(
 			'User' => $this->usersData['admin']));
 	}
 
@@ -133,7 +133,7 @@ class RememberMeComponentTest extends CakeTestCase {
 		// post has "test" data
 		$this->__setPostData(array('User' => $this->usersData['test']));
 		$this->RememberMe->restoreLoginFromCookie();
-		$this->assertEqual($this->RememberMe->request->data, array(
+		$this->assertEquals($this->RememberMe->request->data, array(
 			'User' => $this->usersData['test']));
 	}
 
