@@ -230,10 +230,6 @@ class UsersControllerTestCase extends CakeTestCase {
 		$this->Users->Components->disable('Security');
 	}
 
-	public function testTestTest() {
-		$this->assertTrue(true);
-	}
-
 /**
  * Test controller instance
  *
