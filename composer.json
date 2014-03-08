@@ -1,5 +1,5 @@
 {
-    "name": "cakedc/users",
+    "name": "stonelasley/users",
     "type": "cakephp-plugin",
     "description": "Users Plugin for CakePHP",
     "keywords": ["cakephp","users","auth"],

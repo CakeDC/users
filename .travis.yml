@@ -1,0 +1,42 @@
+language: php
+
+php:
+  - 5.3
+  - 5.4
+  - 5.5
+
+env:
+  global:
+    - PLUGIN_NAME=Users
+    - REQUIRE="cakedc/search:master cakedc/utils:master ceeram/authenticate:master"
+
+  matrix:
+    - DB=mysql CAKE_VERSION=2.4
+    - DB=mysql CAKE_VERSION=2.5
+
+matrix:
+  include:
+    - php: 5.4
+      env:
+        - COVERALLS=1
+    - php: 5.4
+      env:
+        - PHPCS=1
+    - php: 5.4
+      env:
+        - FOC_VALIDATE=1
+
+before_script:
+  - git clone -b master https://github.com/FriendsOfCake/travis.git --depth 1 ../travis
+  - ../travis/before_script.sh
+  - git clone -b master https://github.com/CakeDC/search.git --depth 1 ../cakephp/app/Plugin/Search
+  - git clone -b master https://github.com/CakeDC/utils.git --depth 1 ../cakephp/app/Plugin/Utils
+  - git clone -b master https://github.com/Ceeram/authenticate.git --depth 1 ../cakephp/app/Plugin/Authenticate
+script:
+  - ../travis/script.sh
+
+after_success:
+  - ../travis/after_success.sh
+
+notifications:
+  email: false

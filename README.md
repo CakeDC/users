@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/CakeDC/users.png?branch=master)](https://travis-ci.org/CakeDC/users) [![Coverage Status](https://coveralls.io/repos/CakeDC/users/badge.png?branch=master)](https://coveralls.io/r/CakeDC/users?branch=master) [![Total Downloads](https://poser.pugx.org/CakeDC/users/d/total.png)](https://packagist.org/packages/CakeDC/users) [![Latest Stable Version](https://poser.pugx.org/CakeDC/users/v/stable.png)](https://packagist.org/packages/CakeDC/users)
+
 # Users Plugin for CakePHP #
 
 for cake 2.x
@@ -8,17 +10,77 @@ The plugin is thought as a base to extend your app specific users controller and
 
 That it works out of the box does not mean it is thought to be used exactly like it is but to provide you a kick start. You will have to extend the plugin on app level to customize it. Read the how to use it instructions carefully.
 
+## Requirements ##
+  - [CakeDC Search plugin](http://github.com/CakeDC/search)
+
+### Required for sluggable behavior ###
+  - [CakeDC Utils plugin](http://github.com/CakeDC/utils)
+
+### Required for Cookie Authentication ###
+  - [Ceeram Authenticate plugin](http://github.com/ceeram/authenticate)
+
+All three are require for all tests to pass.
+
 ## Installation ##
 
-The plugin is pretty easy to set up, all you need to do is to copy it to you application plugins folder and load the needed tables. You can create database tables using either the schema shell or the [CakeDC Migrations plugin](http://github.com/CakeDC/migrations):
+_[Using [Composer](http://getcomposer.org/)]_
 
+Add the plugin to your project's `composer.json` - something like this:
+
+```composer
+  {
+    "require": {
+      "CakeDC/users": "dev-master"
+    }
+  }
+```
+Because this plugin has the type `cakephp-plugin` set in its own `composer.json`, Composer will install it inside your `/Plugins` directory, rather than in the usual vendors file. It is recommended that you add `/Plugins/Users` to your .gitignore file. (Why? [read this](http://getcomposer.org/doc/faqs/should-i-commit-the-dependencies-in-my-vendor-directory.md).)
+
+_[Manual]_
+
+* Download this: [http://github.com/CakeDC/users/zipball/master](http://github.com/CakeDC/users/zipball/master)
+* Unzip that download.
+* Copy the resulting folder to `app/Plugin`
+* Rename the folder you just copied to `Users`
+
+_[GIT Submodule]_
+
+In your app directory type:
+
+```bash
+  git submodule add -b master git://github.com/CakeDC/users.git Plugin/Users
+  git submodule init
+  git submodule update
+```
+
+_[GIT Clone]_
+
+In your `Plugin` directory type:
+
+    git clone -b master git://github.com/CakeDC/users.git Users
+
+### Enable plugin
+
+In 2.0 you need to enable the plugin in your `app/Config/bootstrap.php` file:
+
+```php
+  CakePlugin::load('Users');
+```
+
+If you are already using `CakePlugin::loadAll();`, then this is not necessary.
+
+### Create Tables ###
+
+ You can create database tables using either the schema shell or the [CakeDC Migrations plugin](http://github.com/CakeDC/migrations):
+
+```bash
 	./Console/cake schema create users --plugin Users
+```
 
 or
-
+```bash
 	./Console/cake Migrations.migration run all --plugin Users
-
-You will also need the [CakeDC Search plugin](http://github.com/CakeDC/search), just grab it and put it into your application's plugin folder.
+```
 
 ## How to use it ##
 
@@ -249,7 +311,7 @@ Disables/enables the user registration.
 
 	Users.roles
 
-Optional array of user roles if you need it. This is not activly used by the plugin by default.
+Optional array of user roles if you need it. This is not actively used by the plugin by default.
 
 	Users.sendPassword
 
@@ -303,14 +365,14 @@ Please feel free to contribute to the plugin with new issues, requests, unit tes
 
 ## License ##
 
-Copyright 2009-2013, [Cake Development Corporation](http://cakedc.com)
+Copyright 2009-2014, [Cake Development Corporation](http://cakedc.com)
 
 Licensed under [The MIT License](http://www.opensource.org/licenses/mit-license.php)<br/>
 Redistributions of files must retain the above copyright notice.
 
 ## Copyright ###
 
-Copyright 2009-2013<br/>
+Copyright 2009-2014<br/>
 [Cake Development Corporation](http://cakedc.com)<br/>
 1785 E. Sahara Avenue, Suite 490-423<br/>
 Las Vegas, Nevada 89104<br/>
