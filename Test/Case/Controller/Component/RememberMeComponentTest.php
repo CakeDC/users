@@ -94,7 +94,7 @@ class RememberMeComponentTest extends CakeTestCase {
  * @return void
  */
 	public function testRestoreLoginFromCookie() {
-		$this->RememberMe->Cookie->expects($this->once())
+		$this->RememberMe->Cookie->expects($this->any())
 			->method('read')
 			->with($this->equalTo('rememberMe'))
 			->will($this->returnValue($this->usersData['admin']));
@@ -122,12 +122,12 @@ class RememberMeComponentTest extends CakeTestCase {
  */
 	public function testRestoreLoginFromCookieIncorrectLogin() {
 		// cookie will hold "admin" data, and post request will have "test"
-		$this->RememberMe->Cookie->expects($this->once())
+		$this->RememberMe->Cookie->expects($this->any())
 			->method('read')
 			->with($this->equalTo('rememberMe'))
 			->will($this->returnValue($this->usersData['admin']));
 		// admin will not login
-		$this->RememberMe->Auth->expects($this->once())
+		$this->RememberMe->Auth->expects($this->any())
 			->method('login')
 			->will($this->returnValue(false));
 		// post has "test" data
