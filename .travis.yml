@@ -33,8 +33,6 @@ matrix:
 before_script:
   - git clone -b master https://github.com/FriendsOfCake/travis.git --depth 1 ../travis
   - ../travis/before_script.sh
-  - git clone -b master https://github.com/CakeDC/search.git --depth 1 ../cakephp/app/Plugin/Search
-  - git clone -b master https://github.com/CakeDC/utils.git --depth 1 ../cakephp/app/Plugin/Utils
   - git clone -b master https://github.com/Ceeram/authenticate.git --depth 1 ../cakephp/app/Plugin/Authenticate
 script:
   - ../travis/script.sh
