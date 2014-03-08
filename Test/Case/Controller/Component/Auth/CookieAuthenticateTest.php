@@ -85,7 +85,7 @@ class CookieAuthenticateTest extends CakeTestCase {
 		$result = $this->auth->authenticate($this->request, $this->response);
 		$this->assertFalse($result);
 
-		$this->Collection->Cookie->write('MultiUser', array('user' => 'mariano', 'password' => 'password'));
+		$this->Collection->Cookie->write('MultiUser', array('user' => 'mariano', 'password' => 'password'), false);
 		$result = $this->auth->authenticate($this->request, $this->response);
 		$this->assertEquals($expected, $result);
 	}
