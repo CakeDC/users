@@ -2,7 +2,8 @@ language: php
 
 branches:
   only:
-    - travis
+    - develop
+    - master
 
 php:
   - 5.3
