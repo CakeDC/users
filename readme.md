@@ -77,7 +77,7 @@ The code will read the login credentials from the cookie and log the user in bas
 To change the plugins default "from" setting for outgoing emails put this into your bootstrap.php
 
 ```php
-Configure::write('App.defaultEmail', your@email.com);
+Configure::write('App.defaultEmail', 'your@email.com');
 ```
 
 If not configured it will use 'noreply@' . env('HTTP_HOST'); as default from email address.
