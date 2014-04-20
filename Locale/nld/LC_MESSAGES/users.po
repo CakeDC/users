@@ -190,7 +190,7 @@ msgid "The email address does not exist in the system"
 msgstr "Het emailadres bestaat niet in dit systeem"
 
 #: Model/User.php:566
-msgid "Your account is already authenticaed."
+msgid "Your account is already authenticated."
 msgstr "Uw account is al geverifiëerd."
 
 #: Model/User.php:571

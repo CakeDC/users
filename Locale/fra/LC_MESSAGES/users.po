@@ -232,7 +232,7 @@ msgid "The email address does not exist in the system"
 msgstr "Cette adresse email n'existe pas dans le système."
 
 #: /models/user.php:520
-msgid "Your account is already authenticaed."
+msgid "Your account is already authenticated."
 msgstr "Votre compte est déjà authentifié."
 
 #: /models/user.php:525
