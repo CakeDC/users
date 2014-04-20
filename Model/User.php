@@ -593,7 +593,7 @@ class User extends UsersAppModel {
 		}
 
 		if ($user[$this->alias]['email_verified'] == 1) {
-			$this->invalidate('email', __d('users', 'Your account is already authenticaed.'));
+			$this->invalidate('email', __d('users', 'Your account is already authenticated.'));
 			return false;
 		}
 
