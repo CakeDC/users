@@ -10,6 +10,9 @@ env:
     - PLUGIN_NAME=Users
     - DB=mysql
 
+  matrix:
+    - DB=mysql CAKE_VERSION=master
+
 matrix:
   include:
     - php: 5.3
