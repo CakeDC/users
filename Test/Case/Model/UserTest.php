@@ -427,14 +427,21 @@ class UserTestCase extends CakeTestCase {
  **/
 	public function testEditPassword() {
 		$userId = '1';
-		$data = $this->User->read(null, $userId);
-		$data['User']['email'] = 'anotherNewEmail@anothernewemail.com';
-		$data['User']['password'] = 'anotherNewPassword';
-		$data['User']['temppassword'] = 'anotherNewPassword';
 
-		$result = $this->User->edit(1, $data);
+		$data1 = $this->User->read(null, $userId);
 
-		$hashPassword = $this->User->hash($data['User']['password'], 'sha1', true);
+		$data['User']['email'] = 'emailUpdate@anotheremail.com';
+		$result = $this->User->edit($userId, $data);
+		$this->assertTrue($result);
+		$this->assertEquals($this->User->data['User']['password'], $data1['User']['password']);
+
+		$data1['User']['email'] = 'anotherNewEmail@anothernewemail.com';
+		$data1['User']['password'] = 'anotherNewPassword';
+		$data1['User']['temppassword'] = 'anotherNewPassword';
+
+		$result = $this->User->edit($userId, $data1);
+
+		$hashPassword = $this->User->hash($data1['User']['password'], 'sha1', true);
 		$this->assertTrue($result);
 		$this->assertEquals($this->User->data['User']['password'], $hashPassword);
 
