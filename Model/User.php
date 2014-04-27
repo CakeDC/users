@@ -817,6 +817,8 @@ class User extends UsersAppModel {
 /**
  * Edits an existing user
  *
+ * When saving a password it get hashed if the field is present AND not empty
+ *
  * @param string $userId User ID
  * @param array $postData controller post data usually $this->data
  * @throws NotFoundException
@@ -825,14 +827,10 @@ class User extends UsersAppModel {
 	public function edit($userId = null, $postData = null) {
 		$user = $this->getUserForEditing($userId);
 		$this->set($user);
-		if (empty($user)) {
-			throw new NotFoundException(__d('users', 'Invalid User'));
-		}
-
 		if (!empty($postData)) {
 			$this->set($postData);
 			if ($this->validates()) {
-				if(isset($this->data[$this->alias]['password'])) {
+				if (!empty($this->data[$this->alias]['password'])) {
 					$this->data[$this->alias]['password'] = $this->hash($this->data[$this->alias]['password'], 'sha1', true);
 				}
 				$result = $this->save(null, false);
@@ -859,7 +857,10 @@ class User extends UsersAppModel {
 	public function getUserForEditing($userId = null, $options = array()) {
 		$defaults = array(
 			'contain' => array(),
-			'conditions' => array($this->alias . '.id' => $userId));
+			'conditions' => array(
+				$this->alias . '.id' => $userId
+			)
+		);
 		$options = Set::merge($defaults, $options);
 
 		$user = $this->find('first', $options);

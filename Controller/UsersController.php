@@ -268,7 +268,9 @@ class UsersController extends UsersAppController {
 	}
 
 /**
- * Edit
+ * Edit the current logged in user
+ *
+ * Extend the plugin and implement your custom logic here
  *
  * @return void
  */
@@ -346,6 +348,7 @@ class UsersController extends UsersAppController {
 				$this->Session->setFlash(__d('users', 'User saved'));
 				$this->redirect(array('action' => 'index'));
 			} else {
+				unset($result[$this->modelClass]['password']);
 				$this->request->data = $result;
 			}
 		} catch (OutOfBoundsException $e) {
@@ -355,6 +358,7 @@ class UsersController extends UsersAppController {
 
 		if (empty($this->request->data)) {
 			$this->request->data = $this->{$this->modelClass}->read(null, $userId);
+			unset($this->request->data[$this->modelClass]['password']);
 		}
 		$this->set('roles', Configure::read('Users.roles'));
 	}
