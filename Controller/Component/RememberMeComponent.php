@@ -28,7 +28,8 @@ class RememberMeComponent extends Component {
  */
 	public $components = array(
 		'Cookie',
-		'Auth');
+		'Auth'
+	);
 
 /**
  * Request object
@@ -55,11 +56,14 @@ class RememberMeComponent extends Component {
 		'cookieKey' => 'rememberMe',
 		'cookieLifeTime' => '+1 year',
 		'cookie' => array(
-			'name' => 'User'),
+			'name' => 'User'
+		),
 		'fields' => array(
 			'email',
 			'username',
-			'password'));
+			'password'
+		)
+	);
 
 /**
  * Constructor
