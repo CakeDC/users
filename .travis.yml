@@ -9,6 +9,7 @@ env:
   global:
     - PLUGIN_NAME=Users
     - DB=mysql
+    - REQUIRE="phpunit/phpunit:3.7.31"
 
   matrix:
     - DB=mysql CAKE_VERSION=master
