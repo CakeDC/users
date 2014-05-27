@@ -21,4 +21,5 @@ Documentation
 * [Installation](Documentation/Installation.md)
 * [Configuration](Documentation/Configuration.md)
 * [How to use it](Documentation/How-To-Use-It.md)
+* [User Details (Legacy)](Documentation/User-Details.md)
 * [Extending the Plugin](Documentation/Extending-The-Plugin.md)
