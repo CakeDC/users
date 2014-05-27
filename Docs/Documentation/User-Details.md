@@ -8,7 +8,7 @@ If you want to use it you'll have to add the associations by extending the plugi
 ```php
 class AppUser extends User {
 	public $hasMany = array(
-		'UserDetail' => arraya(
+		'UserDetail' => array(
 			'className' => 'Users.'UserDetail'
 		)
 	);
