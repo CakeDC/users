@@ -9,7 +9,7 @@ If you want to use it you'll have to add the associations by extending the plugi
 class AppUser extends User {
 	public $hasMany = array(
 		'UserDetail' => array(
-			'className' => 'Users.'UserDetail'
+			'className' => 'Users.UserDetail'
 		)
 	);
 }
@@ -20,7 +20,7 @@ Or using your custom profiles table.
 ```php
 class AppUser extends User {
 	public $hasOne = array(
-		'Profile' => arraya(
+		'Profile' => array(
 			'className' => 'Profile'
 		)
 	);
