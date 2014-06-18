@@ -46,6 +46,7 @@ class UserTestCase extends CakeTestCase {
  * @return void
  */
 	public function setUp() {
+		parent::setUp();
 		Configure::write('App.UserClass', null);
 		$this->User = ClassRegistry::init('Users.User');
 	}

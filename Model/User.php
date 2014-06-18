@@ -135,14 +135,15 @@ class User extends UsersAppModel {
  * @link https://github.com/CakeDC/utils
  */
 	protected function _setupBehaviors() {
-		if (class_exists('SearchableBehavior')) {
+		if (CakePlugin::loaded('Search') && class_exists('SearchableBehavior')) {
 			$this->actsAs[] = 'Search.Searchable';
 		}
 
-		if (class_exists('SluggableBehavior') && Configure::read('Users.disableSlugs') !== true) {
+		if (CakePlugin::loaded('Utils') && class_exists('SluggableBehavior') && Configure::read('Users.disableSlugs') !== true) {
 			$this->actsAs['Utils.Sluggable'] = array(
 				'label' => 'username',
-				'method' => 'multibyteSlug');
+				'method' => 'multibyteSlug'
+			);
 		}
 	}
 

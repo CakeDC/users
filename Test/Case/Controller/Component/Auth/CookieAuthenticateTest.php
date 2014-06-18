@@ -18,7 +18,7 @@
  */
 
 App::uses('ComponentCollection', 'Controller');
-App::uses('CookieAuthenticate', 'Authenticate.Controller/Component/Auth');
+App::uses('CookieAuthenticate', 'Users.Controller/Component/Auth');
 App::uses('CookieComponent', 'Controller/Component');
 App::uses('SessionComponent', 'Controller/Component');
 App::uses('AppModel', 'Model');
@@ -33,7 +33,7 @@ App::uses('Router', 'Routing');
  */
 class CookieAuthenticateTest extends CakeTestCase {
 
-	public $fixtures = array('plugin.authenticate.multi_user');
+	public $fixtures = array('plugin.users.multi_user');
 
 /**
  * setup

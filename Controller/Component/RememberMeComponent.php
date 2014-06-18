@@ -70,6 +70,7 @@ class RememberMeComponent extends Component {
  *
  * @param ComponentCollection $collection A ComponentCollection for this component
  * @param array $settings Array of settings.
+ * @return RememberMeComponent
  */
 	public function __construct(ComponentCollection $collection, $settings = array()) {
 		parent::__construct($collection, $settings);

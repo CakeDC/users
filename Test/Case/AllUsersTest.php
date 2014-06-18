@@ -17,17 +17,14 @@ class AllTagsPluginTest extends PHPUnit_Framework_TestSuite {
  * @return void
  */
 	public static function suite() {
-		$suite = new PHPUnit_Framework_TestSuite('All Users Plugin Tests');
+		$Suite = new CakeTestSuite('All Comments Plugin tests');
 
 		$basePath = CakePlugin::path('Users') . DS . 'Test' . DS . 'Case' . DS;
-
-		// controllers
-		$suite->addTestFile($basePath . 'Controller' . DS . 'UsersControllerTest.php');
-
-		// models
-		$suite->addTestFile($basePath . 'Model' . DS . 'UserTest.php');
-
-		return $suite;
+		$Suite->addTestDirectory($basePath . DS . 'Controller');
+		$Suite->addTestDirectory($basePath . DS . 'Controller' . DS . 'Component');
+		$Suite->addTestDirectory($basePath . DS . 'Controller' . DS . 'Component' . DS . 'Auth');
+		$Suite->addTestDirectory($basePath . DS . 'Model');
+		return $Suite;
 	}
 
 }

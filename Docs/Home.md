@@ -20,6 +20,9 @@ Documentation
 
 * [Installation](Documentation/Installation.md)
 * [Configuration](Documentation/Configuration.md)
-* [How to use it](Documentation/How-To-Use-It.md)
+* [Routing](Documentation/Routing.md)
+* [Features](Documentation/Features.md)
 * [User Details (Legacy)](Documentation/User-Details.md)
+* [Events](Documentation/Events.md)
+* [Remember Me Component](Documentation/Remember-Me-Component.md)
 * [Extending the Plugin](Documentation/Extending-The-Plugin.md)
