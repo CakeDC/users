@@ -75,7 +75,7 @@ class RememberMeComponent extends Component {
 		parent::__construct($collection, $settings);
 
 		$this->_checkAndSetCookieLifeTime();
-		$this->settings = Set::merge($this->_defaults, $settings);
+		$this->settings = Hash::merge($this->_defaults, $settings);
 		$this->configureCookie($this->settings['cookie']);
 	}
 

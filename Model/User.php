@@ -710,17 +710,17 @@ class User extends UsersAppModel {
 
 			switch ($by) {
 				case 'username':
-					$results['conditions'] = Set::merge(
+					$results['conditions'] = Hash::merge(
 						$query['conditions'],
 						array($this->alias . '.username LIKE' => $like));
 					break;
 				case 'email':
-					$results['conditions'] = Set::merge(
+					$results['conditions'] = Hash::merge(
 						$query['conditions'],
 						array($this->alias . '.email LIKE' => $like));
 					break;
 				case 'any':
-					$results['conditions'] = Set::merge(
+					$results['conditions'] = Hash::merge(
 						$query['conditions'],
 						array('OR' => array(
 							array($this->alias . '.username LIKE' => $like),
@@ -730,7 +730,7 @@ class User extends UsersAppModel {
 					$results['conditions'] = $query['conditions'];
 					break;
 				default :
-					$results['conditions'] = Set::merge(
+					$results['conditions'] = Hash::merge(
 						$query['conditions'],
 						array($this->alias . '.username LIKE' => $like));
 					break;
@@ -861,7 +861,7 @@ class User extends UsersAppModel {
 				$this->alias . '.id' => $userId
 			)
 		);
-		$options = Set::merge($defaults, $options);
+		$options = Hash::merge($defaults, $options);
 
 		$user = $this->find('first', $options);
 
@@ -882,7 +882,8 @@ class User extends UsersAppModel {
 	protected function _removeExpiredRegistrations() {
 		$this->deleteAll(array(
 			$this->alias . '.email_verified' => 0,
-			$this->alias . '.email_token_expires <' => date('Y-m-d H:i:s')));
+			$this->alias . '.email_token_expires <' => date('Y-m-d H:i:s'))
+		);
 	}
 
 }

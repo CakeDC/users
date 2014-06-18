@@ -816,7 +816,7 @@ class UsersController extends UsersAppController {
 			$this->redirect(array('action' => 'reset_password'));
 		}
 
-		if (!empty($this->request->data) && $this->{$this->modelClass}->resetPassword(Set::merge($user, $this->request->data))) {
+		if (!empty($this->request->data) && $this->{$this->modelClass}->resetPassword(Hash::merge($user, $this->request->data))) {
 			if ($this->RememberMe->cookieIsSet()) {
 				$this->Session->setFlash(__d('users', 'Password changed.'));
 				$this->_setCookie();
