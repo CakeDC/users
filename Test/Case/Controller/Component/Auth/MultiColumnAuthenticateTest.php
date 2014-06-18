@@ -18,7 +18,7 @@
  */
 
 App::uses('AuthComponent', 'Controller/Component');
-App::uses('MultiColumnAuthenticate', 'Authenticate.Controller/Component/Auth');
+App::uses('MultiColumnAuthenticate', 'Users.Controller/Component/Auth');
 App::uses('AppModel', 'Model');
 App::uses('CakeRequest', 'Network');
 App::uses('CakeResponse', 'Network');
@@ -30,7 +30,7 @@ App::uses('CakeResponse', 'Network');
  */
 class MultiColumnAuthenticateTest extends CakeTestCase {
 
-	public $fixtures = array('plugin.authenticate.multi_user');
+	public $fixtures = array('plugin.users.multi_user');
 
 /**
  * setup

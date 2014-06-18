@@ -531,9 +531,12 @@ class UsersController extends UsersAppController {
 			'by' => $by,
 			'search' => $searchTerm,
 			'conditions' => array(
-					'AND' => array(
-						$this->modelClass . '.active' => 1,
-						$this->modelClass . '.email_verified' => 1)));
+				'AND' => array(
+					$this->modelClass . '.active' => 1,
+					$this->modelClass . '.email_verified' => 1
+				)
+			)
+		);
 
 		$this->set('users', $this->Paginator->paginate($this->modelClass));
 		$this->set('searchTerm', $searchTerm);
@@ -816,7 +819,7 @@ class UsersController extends UsersAppController {
 			$this->redirect(array('action' => 'reset_password'));
 		}
 
-		if (!empty($this->request->data) && $this->{$this->modelClass}->resetPassword(Set::merge($user, $this->request->data))) {
+		if (!empty($this->request->data) && $this->{$this->modelClass}->resetPassword(Hash::merge($user, $this->request->data))) {
 			if ($this->RememberMe->cookieIsSet()) {
 				$this->Session->setFlash(__d('users', 'Password changed.'));
 				$this->_setCookie();

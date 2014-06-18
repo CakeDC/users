@@ -135,14 +135,15 @@ class User extends UsersAppModel {
  * @link https://github.com/CakeDC/utils
  */
 	protected function _setupBehaviors() {
-		if (class_exists('SearchableBehavior')) {
+		if (CakePlugin::loaded('Search') && class_exists('SearchableBehavior')) {
 			$this->actsAs[] = 'Search.Searchable';
 		}
 
-		if (class_exists('SluggableBehavior') && Configure::read('Users.disableSlugs') !== true) {
+		if (CakePlugin::loaded('Utils') && class_exists('SluggableBehavior') && Configure::read('Users.disableSlugs') !== true) {
 			$this->actsAs['Utils.Sluggable'] = array(
 				'label' => 'username',
-				'method' => 'multibyteSlug');
+				'method' => 'multibyteSlug'
+			);
 		}
 	}
 
@@ -710,17 +711,17 @@ class User extends UsersAppModel {
 
 			switch ($by) {
 				case 'username':
-					$results['conditions'] = Set::merge(
+					$results['conditions'] = Hash::merge(
 						$query['conditions'],
 						array($this->alias . '.username LIKE' => $like));
 					break;
 				case 'email':
-					$results['conditions'] = Set::merge(
+					$results['conditions'] = Hash::merge(
 						$query['conditions'],
 						array($this->alias . '.email LIKE' => $like));
 					break;
 				case 'any':
-					$results['conditions'] = Set::merge(
+					$results['conditions'] = Hash::merge(
 						$query['conditions'],
 						array('OR' => array(
 							array($this->alias . '.username LIKE' => $like),
@@ -730,7 +731,7 @@ class User extends UsersAppModel {
 					$results['conditions'] = $query['conditions'];
 					break;
 				default :
-					$results['conditions'] = Set::merge(
+					$results['conditions'] = Hash::merge(
 						$query['conditions'],
 						array($this->alias . '.username LIKE' => $like));
 					break;
@@ -861,7 +862,7 @@ class User extends UsersAppModel {
 				$this->alias . '.id' => $userId
 			)
 		);
-		$options = Set::merge($defaults, $options);
+		$options = Hash::merge($defaults, $options);
 
 		$user = $this->find('first', $options);
 
@@ -882,7 +883,8 @@ class User extends UsersAppModel {
 	protected function _removeExpiredRegistrations() {
 		$this->deleteAll(array(
 			$this->alias . '.email_verified' => 0,
-			$this->alias . '.email_token_expires <' => date('Y-m-d H:i:s')));
+			$this->alias . '.email_token_expires <' => date('Y-m-d H:i:s'))
+		);
 	}
 
 }

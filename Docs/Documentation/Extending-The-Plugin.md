@@ -1,4 +1,5 @@
-## How to extend the plugin ##
+Extending the Plugin
+====================
 
 ### Changing the default "from" email setting ###
 
@@ -10,7 +11,8 @@ Configure::write('App.defaultEmail', 'your@email.com');
 
 If not configured it will use 'noreply@' . env('HTTP_HOST'); as default from email address.
 
-### Extending the controller ###
+Extending the controller
+------------------------
 
 Declare the controller class
 
@@ -50,7 +52,8 @@ public function render($view = null, $layout = null) {
 
 Note: Depending on the CakePHP version you are using, you might need to bring a copy of the Views used in the plugin to your AppUsers view directory
 
-### Overwriting the default auth settings provided by the plugin
+Overwriting the default auth settings
+-------------------------------------
 
 To use the basics the plugin already offers but changing some of the settings overwrite the _setupAuth() method in the extending controller.
 
@@ -73,7 +76,7 @@ protected function _setupAuth() {
 }
 ```
 
-or you can use the configuration settings to disable it, for example in your boostrap.php
+or you can use the configuration settings to disable it, for example in your ```bootstrap.php```
 
 ```php
 Configure::write('Users.disableDefaultAuth');
@@ -86,10 +89,11 @@ Declare the model
 ```php
 App::uses('User', 'Users.Model');
 class AppUser extends User {
+	public $name = 'AppUser';
 	public $useTable = 'users';
 }
 ```
 
-It's important to override the AppUser::useTable property with the 'users' table.
+It's important to override the AppUser::useTable property with the ```users``` table.
 
 You can override/extend all methods or properties like validation rules to suit your needs.
