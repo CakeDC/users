@@ -18,10 +18,11 @@ Requirements
 Documentation
 -------------
 
+* [Features](Documentation/Features.md)
 * [Installation](Documentation/Installation.md)
 * [Configuration](Documentation/Configuration.md)
 * [Routing](Documentation/Routing.md)
-* [Features](Documentation/Features.md)
+* [Auth in the Users plugin](Documentation/Auth-In-The-Users-Plugin.md)
 * [User Details (Legacy)](Documentation/User-Details.md)
 * [Events](Documentation/Events.md)
 * [Remember Me Component](Documentation/Remember-Me-Component.md)

@@ -22,10 +22,10 @@ If you are using another user model than ```User``` you'll have to configure it:
 And add this line
 
 ```php
-$this->RememberMe->restoreLoginFromCookie()
+$this->RememberMe->restoreLoginFromCookie();
 ```
 
-to your controllers beforeFilter() callack
+to your controllers ```beforeFilter()``` callback
 
 ```php
 public function beforeFilter() {

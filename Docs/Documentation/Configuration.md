@@ -17,7 +17,11 @@ Disable Slugs
 
 If the Utils plugin is present the users model will auto attach and use the sluggable behavior.
 
-To not create slugs for a new user records put this in your configuration: Configure::write('Users.disableSlugs', true);
+If you don't want to create slugs for new users put this in your configuration:
+
+```php
+Configure::write('Users.disableSlugs', true);
+```
 
 Email configuration
 -------------------
@@ -27,9 +31,6 @@ The plugin uses the $default email configuration (should be present in your Conf
 ```php
 Configure::write('Users.emailConfig', 'default');
 ```
-
-Default Email Address
----------------------
 
 To change the plugins default "from" setting for outgoing emails put this into your bootstrap.php
 
@@ -45,7 +46,10 @@ Roles Management
 You can add ```Users.roles``` in the ```bootstrap.php``` file and these roles will be used on Admin Add / Edit pages. i.e:
 
 ```php
-Configure::write('Users.roles', array('admin' => 'Admin', 'registered' => 'Registered'));
+Configure::write('Users.roles', array(
+	'admin' => 'Admin',
+	'registered' => 'Registered'
+));
 ```
 
 If you don't specify roles it will use 'admin' role (if is_admin is checked) or 'registered' role otherwise. You can override 'registered role setting Users.defaultRole on bootstrap.php. i.e:
@@ -85,7 +89,7 @@ Disables/enables the user registration.
 Users.roles
 ```
 
-Optional array of user roles if you need it. This is not activly used by the plugin by default.
+Optional array of user roles if you need it. This is not actively used by the plugin by default.
 
 ```
 Users.sendPassword
