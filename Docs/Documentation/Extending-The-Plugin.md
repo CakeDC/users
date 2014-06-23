@@ -55,9 +55,9 @@ class AppUser extends User {
 }
 ```
 
-It's important to override the AppUser::useTable property with the ```users``` table. It won't use the correct table otherwise.
+It's important to override the ```AppUser::$useTable``` property with the ```users``` table. It won't use the correct table otherwise.
 
-You can override/extend all methods or properties like validation rules to suit your needs.
+You can override / extend all methods or properties like validation rules to suit your needs.
 
 Routing to preserve the /users URL when extending the plugin
 ------------------------------------------------------------

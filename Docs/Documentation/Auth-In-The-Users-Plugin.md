@@ -6,7 +6,7 @@ The users plugin is made to work out of the box with some default settings. If y
 Disable The Default Auth Settings
 ---------------------------------
 
-In the case you want to user your customized auth settings of your application, for example declared in the AppController::beforeFilter() method, you'll have to disable the default auth of the users plugin.
+In the case you want to user your customized auth settings of your application, for example declared in the ```AppController::beforeFilter()``` method, you'll have to disable the default auth of the users plugin.
 
 You can use the configuration settings to disable it, for example in your ```bootstrap.php```
 
@@ -24,7 +24,7 @@ protected function _setupAuth() {
 Overwriting the default auth settings
 -------------------------------------
 
-If you want to change some of the default auth settings of the users controller overwrite the _setupAuth() method in the extending controller.
+If you want to change some of the default auth settings of the users controller overwrite the ```_setupAuth()``` method in the extending controller.
 
 ```php
 protected function _setupAuth() {
