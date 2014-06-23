@@ -23,7 +23,7 @@ public function beforeFilter() {
 }
 ```
 
-You can overwrite the render() method to fall back to the plugin views in the case you want to use some of them
+You can overwrite the ```Controller::render()``` method to fall back to the plugin views in the case you want to use some of them
 
 ```php
 public function render($view = null, $layout = null) {
@@ -42,36 +42,6 @@ public function render($view = null, $layout = null) {
 
 Note: Depending on the CakePHP version you are using, you might need to bring a copy of the Views used in the plugin to your AppUsers view directory
 
-Overwriting the default auth settings
--------------------------------------
-
-To use the basics the plugin already offers but changing some of the settings overwrite the _setupAuth() method in the extending controller.
-
-```php
-protected function _setupAuth() {
-	parent::_setupAuth();
-	$this->Auth->loginRedirect = array(
-		'plugin' => null,
-		'admin' => false,
-		'controller' => 'app_users',
-		'action' => 'login'
-	);
-}
-```
-
-If you want to disable it simply overwrite it without any body
-
-```php
-protected function _setupAuth() {
-}
-```
-
-or you can use the configuration settings to disable it, for example in your ```bootstrap.php```
-
-```php
-Configure::write('Users.disableDefaultAuth');
-```
-
 Extending the model
 -------------------
 
@@ -88,3 +58,8 @@ class AppUser extends User {
 It's important to override the AppUser::useTable property with the ```users``` table. It won't use the correct table otherwise.
 
 You can override/extend all methods or properties like validation rules to suit your needs.
+
+Routing to preserve the /users URL when extending the plugin
+------------------------------------------------------------
+
+See the [Routing](Routing.md) documentation.
