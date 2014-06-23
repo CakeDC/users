@@ -471,6 +471,8 @@ class UserTestCase extends CakeTestCase {
  * @return void
  */
 	public function testDisableSlugs() {
+		$this->skipIf(CakePlugin::loaded('Utils') === false, __('Utils plugin not present, test skipped.'));
+
 		ClassRegistry::flush();
 		$this->User = ClassRegistry::init('Users.User');
 		$this->User->create();
