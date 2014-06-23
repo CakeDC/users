@@ -28,10 +28,21 @@ The plugin uses the $default email configuration (should be present in your Conf
 Configure::write('Users.emailConfig', 'default');
 ```
 
+Default Email Address
+---------------------
+
+To change the plugins default "from" setting for outgoing emails put this into your bootstrap.php
+
+```php
+Configure::write('App.defaultEmail', 'your@email.com');
+```
+
+If not configured it will use 'noreply@' . env('HTTP_HOST'); as default from email address.
+
 Roles Management
 ----------------
 
-You can add Users.roles on bootstrap.php file and these roles will be used on Admin Add / Edit pages. i.e:
+You can add ```Users.roles``` in the ```bootstrap.php``` file and these roles will be used on Admin Add / Edit pages. i.e:
 
 ```php
 Configure::write('Users.roles', array('admin' => 'Admin', 'registered' => 'Registered'));

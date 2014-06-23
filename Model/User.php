@@ -80,37 +80,51 @@ class User extends UsersAppModel {
 			'required' => array(
 				'rule' => array('notEmpty'),
 				'required' => true, 'allowEmpty' => false,
-				'message' => 'Please enter a username.'),
+				'message' => 'Please enter a username.'
+			),
 			'alpha' => array(
 				'rule' => array('alphaNumeric'),
-				'message' => 'The username must be alphanumeric.'),
+				'message' => 'The username must be alphanumeric.'
+			),
 			'unique_username' => array(
 				'rule' => array('isUnique', 'username'),
-				'message' => 'This username is already in use.'),
+				'message' => 'This username is already in use.'
+			),
 			'username_min' => array(
 				'rule' => array('minLength', '3'),
-				'message' => 'The username must have at least 3 characters.')),
+				'message' => 'The username must have at least 3 characters.'
+			)
+		),
 		'email' => array(
 			'isValid' => array(
 				'rule' => 'email',
 				'required' => true,
-				'message' => 'Please enter a valid email address.'),
+				'message' => 'Please enter a valid email address.'
+			),
 			'isUnique' => array(
 				'rule' => array('isUnique', 'email'),
-				'message' => 'This email is already in use.')),
+				'message' => 'This email is already in use.'
+			)
+		),
 		'password' => array(
 			'too_short' => array(
 				'rule' => array('minLength', '6'),
-				'message' => 'The password must have at least 6 characters.'),
+				'message' => 'The password must have at least 6 characters.'
+			),
 			'required' => array(
 				'rule' => 'notEmpty',
-				'message' => 'Please enter a password.')),
+				'message' => 'Please enter a password.'
+			)
+		),
 		'temppassword' => array(
 			'rule' => 'confirmPassword',
-			'message' => 'The passwords are not equal, please try again.'),
+			'message' => 'The passwords are not equal, please try again.'
+		),
 		'tos' => array(
 			'rule' => array('custom','[1]'),
-			'message' => 'You must agree to the terms of use.'));
+			'message' => 'You must agree to the terms of use.'
+		)
+	);
 
 /**
  * Constructor
@@ -337,7 +351,10 @@ class User extends UsersAppModel {
 			'confirm_password' => array(
 				'required' => array(
 					'rule' => array('compareFields', 'new_password', 'confirm_password'),
-					'message' => __d('users', 'The passwords are not equal.'))));
+					'message' => __d('users', 'The passwords are not equal.')
+				)
+			)
+		);
 	}
 
 /**
@@ -358,7 +375,8 @@ class User extends UsersAppModel {
 			$this->data[$this->alias]['password_token'] = null;
 			$result = $this->save($this->data, array(
 				'validate' => false,
-				'callbacks' => false));
+				'callbacks' => false)
+			);
 		}
 
 		$this->validate = $tmp;

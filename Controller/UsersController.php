@@ -65,7 +65,6 @@ class UsersController extends UsersAppController {
 		'Cookie',
 		'Paginator',
 		'Security',
-		'Search.Prg',
 		'Users.RememberMe',
 	);
 
@@ -284,10 +283,12 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	public function admin_index() {
-		$this->Prg->commonProcess();
-		unset($this->{$this->modelClass}->validate['username']);
-		unset($this->{$this->modelClass}->validate['email']);
-		$this->{$this->modelClass}->data[$this->modelClass] = $this->passedArgs;
+		if ($this->{$this->modelClass}->Behaviors->loaded('Searchable')) {
+			$this->Prg->commonProcess();
+			unset($this->{$this->modelClass}->validate['username']);
+			unset($this->{$this->modelClass}->validate['email']);
+			$this->{$this->modelClass}->data[$this->modelClass] = $this->passedArgs;
+		}
 
 		if ($this->{$this->modelClass}->Behaviors->loaded('Searchable')) {
 			$parsedConditions = $this->{$this->modelClass}->parseCriteria($this->passedArgs);
@@ -817,6 +818,7 @@ class UsersController extends UsersAppController {
 		if (empty($user)) {
 			$this->Session->setFlash(__d('users', 'Invalid password reset token, try again.'));
 			$this->redirect(array('action' => 'reset_password'));
+			return;
 		}
 
 		if (!empty($this->request->data) && $this->{$this->modelClass}->resetPassword(Hash::merge($user, $this->request->data))) {

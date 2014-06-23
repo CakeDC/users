@@ -1,20 +1,10 @@
 Extending the Plugin
 ====================
 
-### Changing the default "from" email setting ###
-
-To change the plugins default "from" setting for outgoing emails put this into your bootstrap.php
-
-```php
-Configure::write('App.defaultEmail', 'your@email.com');
-```
-
-If not configured it will use 'noreply@' . env('HTTP_HOST'); as default from email address.
-
 Extending the controller
 ------------------------
 
-Declare the controller class
+Declare the controller class. It is important to set the ```$name``` property here to make sure the controller initializes everything correct. If not setting the name the name setting is inherited and won't match the new controllers name.
 
 ```php
 App::uses('UsersController', 'Users.Controller');
@@ -82,9 +72,10 @@ or you can use the configuration settings to disable it, for example in your ```
 Configure::write('Users.disableDefaultAuth');
 ```
 
-### Extending the model ###
+Extending the model
+-------------------
 
-Declare the model
+Declare the model. Same as in the controller, set the ```$name``` property and set the ```$useTable``` property to ```users```.
 
 ```php
 App::uses('User', 'Users.Model');
@@ -94,6 +85,6 @@ class AppUser extends User {
 }
 ```
 
-It's important to override the AppUser::useTable property with the ```users``` table.
+It's important to override the AppUser::useTable property with the ```users``` table. It won't use the correct table otherwise.
 
 You can override/extend all methods or properties like validation rules to suit your needs.

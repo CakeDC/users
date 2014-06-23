@@ -36,7 +36,7 @@ class RememberMeComponent extends Component {
  *
  * @var CakeRequest
  */
-	public $request;
+	public $request = null;
 
 /**
  * Settings

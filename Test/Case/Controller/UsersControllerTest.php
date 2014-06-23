@@ -58,7 +58,10 @@ class TestUsersController extends UsersController {
 		$this->Auth->userScope = array(
 			'OR' => array(
 				'AND' =>
-					array('User.active' => 1, 'User.email_verified' => 1)));
+					array('User.active' => 1, 'User.email_verified' => 1
+				)
+			)
+		);
 	}
 
 /**
@@ -205,7 +208,11 @@ class UsersControllerTestCase extends CakeTestCase {
 			'plugin' => 'users',
 			'url' => array());
 
-		$this->Users->Prg = $this->getMock('Prg', array('commonProcess'));
+		if (CakePlugin::loaded('Search')) {
+			$this->Users->Prg = $this->getMock('PrgComponent',
+				array('commonProcess'),
+				array($this->Users->Components));
+		}
 
 		$this->Users->CakeEmail = $this->getMock('CakeEmail');
 		$this->Users->CakeEmail->expects($this->any())
@@ -479,15 +486,19 @@ class UsersControllerTestCase extends CakeTestCase {
 		$this->Users->User->saveField('email_token_expires', date('Y-m-d H:i:s', strtotime('+1 year')));
 		$this->Users->data = array(
 			'User' => array(
-				'email' => 'adminuser@cakedc.com'));
+				'email' => 'adminuser@cakedc.com'
+			)
+		);
 		$this->Users->reset_password();
 		$this->assertEquals($this->Users->redirectUrl, array('action' => 'login'));
 		$this->Users->data = array(
 			'User' => array(
 				'new_password' => 'newpassword',
-				'confirm_password' => 'newpassword'));
+				'confirm_password' => 'newpassword'
+			)
+		);
 		$this->Users->reset_password('testtoken');
-		$this->assertEquals($this->Users->redirectUrl, $this->Users->Auth->loginAction);
+		$this->assertEquals($this->Users->redirectUrl, array('action' => 'reset_password'));
 	}
 
 /**
