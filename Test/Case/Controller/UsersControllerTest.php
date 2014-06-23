@@ -211,7 +211,7 @@ class UsersControllerTestCase extends CakeTestCase {
 		if (CakePlugin::loaded('Search')) {
 			$this->Users->Prg = $this->getMock('PrgComponent',
 				array('commonProcess'),
-				array($this->Users->Components));
+				array($this->Users->Components, array()));
 		}
 
 		$this->Users->CakeEmail = $this->getMock('CakeEmail');
