@@ -727,8 +727,8 @@ class UsersController extends UsersAppController {
 			'from' => Configure::read('App.defaultEmail'),
 			'subject' => __d('users', Configure::read('Users.subjectPrefix') . 'Password Reset'),
 			'template' => $this->_pluginDot() . 'password_reset_request',
-			'emailFormat' => CakeEmail::MESSAGE_TEXT,
-			'layout' => 'default'
+			'emailFormat' => 'both',
+			'layout' => 'logoSocial'
 		);
 
 		$options = array_merge($defaults, $options);
