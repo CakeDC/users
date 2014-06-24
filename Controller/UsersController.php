@@ -725,7 +725,7 @@ class UsersController extends UsersAppController {
 	protected function _sendPasswordReset($admin = null, $options = array()) {
 		$defaults = array(
 			'from' => Configure::read('App.defaultEmail'),
-			'subject' => __d('users', 'Password Reset'),
+			'subject' => __d('users', Configure::read('Users.subjectPrefix') . 'Password Reset'),
 			'template' => $this->_pluginDot() . 'password_reset_request',
 			'emailFormat' => CakeEmail::MESSAGE_TEXT,
 			'layout' => 'default'
