@@ -43,7 +43,7 @@ If not configured it will use 'noreply@' . env('HTTP_HOST'); as default from ema
 Roles Management
 ----------------
 
-You can add ```Users.roles``` in the ```bootstrap.php``` file and these roles will be used on Admin Add / Edit pages. i.e:
+You can add `Users.roles` in `app/Config/bootstrap.php` file and these roles will be used on Admin Add / Edit pages. i.e:
 
 ```php
 Configure::write('Users.roles', array(
@@ -52,7 +52,7 @@ Configure::write('Users.roles', array(
 ));
 ```
 
-If you don't specify roles it will use 'admin' role (if is_admin is checked) or 'registered' role otherwise. You can override 'registered' role setting Users.defaultRole on bootstrap.php. i.e:
+If you don't specify roles it will use 'admin' role (if `is_admin` is checked) or 'registered' role otherwise. You can override 'registered' role setting Users.defaultRole in `app/Config/bootstrap.php`. i.e:
 
 ```php
 Configure::write('Users.defaultRole', 'user_registered');
@@ -61,7 +61,7 @@ Configure::write('Users.defaultRole', 'user_registered');
 Enabling / Disabling Registration
 ---------------------------------
 
-Some application won't need to have registration enable so you can define ```Users.allowRegistration``` in ```bootstrap.php``` to enable or disable registration. By default registration will be enabled.
+Some application won't need to have registration enable so you can define `Users.allowRegistration` in `app/Config/bootstrap.php` to enable or disable registration. By default registration will be enabled.
 
 ```
 // Disables the registration
@@ -77,7 +77,7 @@ The configuration settings can be written by using the Configure class.
 Users.disableDefaultAuth
 ```
 
-Disables/enables the default auth setup that is implemented in the plugins UsersController::_setupAuth()
+Disables/enables the default auth setup that is implemented in the plugins `UsersController::_setupAuth()`.
 
 ```
 Users.allowRegistration
@@ -95,7 +95,7 @@ Optional array of user roles if you need it. This is not actively used by the pl
 Users.sendPassword
 ```
 
-Disables/enables the password reset functionality
+Disables/enables the password reset functionality.
 
 ```
 Users.emailConfig
