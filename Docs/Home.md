@@ -12,8 +12,8 @@ Requirements
 
 * CakePHP 2.5+
 * PHP 5.2.8+
-* [CakeDC Utils plugin](http://github.com/CakeDC/utils)
-* [CakeDC Search plugin](http://github.com/CakeDC/search)
+* [CakeDC Utils plugin](http://github.com/CakeDC/utils) (Optional but recommended)
+* [CakeDC Search plugin](http://github.com/CakeDC/search) (Optional but recommended)
 
 Documentation
 -------------

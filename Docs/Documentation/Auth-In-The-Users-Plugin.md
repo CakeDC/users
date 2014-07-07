@@ -1,4 +1,4 @@
-Auth In The Users Plugin
+Auth in the Users Plugin
 ========================
 
 The users plugin is made to work out of the box with some default settings. If you want to customize them or user your application level auth settings you'll have to do a few things that are explained in this document.

@@ -1,9 +1,9 @@
 Events
 ======
 
-If you're not familiar with events look them up in [the official documentation](http://book.cakephp.org/2.0/en/core-libraries/events.html).
+If you're not familiar with events please look them up in [the official documentation](http://book.cakephp.org/2.0/en/core-libraries/events.html).
 
-Events follow these conventions <Plugin>.<MVC>.<Name>.<EventName>:
+The events in this plugin follow these conventions <Plugin>.<MVC>.<Name>.<EventName>:
 
 * Users.Controller.Users.someCallBack
 * Users.Model.User.someCallBack
