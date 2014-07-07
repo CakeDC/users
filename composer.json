@@ -18,7 +18,7 @@
 		"forum": "http://stackoverflow.com/tags/cakedc",
 		"wiki": "https://github.com/CakeDC/users/blob/master/Docs/Home.md",
 		"irc": "irc://irc.freenode.org/cakephp",
-		"source": "https://github.com/CakeDC/migrations"
+		"source": "https://github.com/CakeDC/users"
 	},
 	"require": {
 		"php": ">=5.2.8",
