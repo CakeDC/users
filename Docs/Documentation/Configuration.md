@@ -52,7 +52,7 @@ Configure::write('Users.roles', array(
 ));
 ```
 
-If you don't specify roles it will use 'admin' role (if is_admin is checked) or 'registered' role otherwise. You can override 'registered role setting Users.defaultRole on bootstrap.php. i.e:
+If you don't specify roles it will use 'admin' role (if is_admin is checked) or 'registered' role otherwise. You can override 'registered' role setting Users.defaultRole on bootstrap.php. i.e:
 
 ```php
 Configure::write('Users.defaultRole', 'user_registered');

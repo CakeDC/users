@@ -4,6 +4,8 @@ Changelog
 Release 2.1.0
 -------------
 
+https://github.com/CakeDC/users/tree/2.1.0
+
  * [aa5b58d](https://github.com/CakeDC/users/commit/aa5b58d) Fixing the PrgComponent mock so that the plugin tests work until the fix for the 2nd arg of the PrgConstuctor appears in the master branch.
  * [f4f0726](https://github.com/CakeDC/users/commit/f4f0726) Fixing tests and working on the documentation
  * [4b0b210](https://github.com/CakeDC/users/commit/4b0b210) Replacing Set with Hash

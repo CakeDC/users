@@ -1,20 +1,32 @@
 {
 	"name": "cakedc/users",
-	"type": "cakephp-plugin",
 	"description": "Users Plugin for CakePHP",
+	"type": "cakephp-plugin",
 	"keywords": ["cakephp","users","auth"],
 	"homepage": "http://cakedc.com",
 	"license": "MIT",
 	"authors": [
 		{
 			"name": "Cake Development Corporation",
+			"email": "team@cakedc.com",
 			"homepage": "http://cakedc.com"
 		}
 	],
+	"support": {
+		"email": "team@cakedc.com",
+		"issues": "https://github.com/CakeDC/migrations/issues",
+		"forum": "http://stackoverflow.com/tags/cakedc",
+		"wiki": "https://github.com/CakeDC/migrations/blob/master/Docs/Home.md",
+		"irc": "irc://irc.freenode.org/cakephp",
+		"source": "https://github.com/CakeDC/migrations"
+	},
 	"require": {
-		"composer/installers": "*",
-		"cakedc/search": "*",
-		"cakedc/utils": "*"
+		"php": ">=5.2.8",
+		"composer/installers": "*"
+	},
+	"suggest": {
+		"cakedc/search": "Search functionality for the admin.",
+		"cakedc/utils": "If you want to generate slugs based on the username."
 	},
 	"extra": {
 		"installer-name": "Users"
