@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2013, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2014, Cake Development Corporation (http://cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2013, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2014, Cake Development Corporation (http://cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -26,7 +26,8 @@ class RememberMeComponentTestController extends Controller {
  */
 	public $components = array(
 		'Users.RememberMe',
-		'Auth');
+		'Auth'
+	);
 }
 
 class RememberMeComponentTest extends CakeTestCase {
@@ -41,14 +42,17 @@ class RememberMeComponentTest extends CakeTestCase {
 /**
  * User data
  * @var array 
- */	
+ */
 	public $usersData = array(
 		'test' => array(
 			'email' => 'test@cakedc.com',
-			'password' => 'test'),
+			'password' => 'test'
+		),
 		'admin' => array(
 			'email' => 'admin@cakedc.com',
-			'password' => 'admin'));
+			'password' => 'admin'
+		)
+	);
 
 /**
  * start
@@ -58,7 +62,8 @@ class RememberMeComponentTest extends CakeTestCase {
 	public function setUp() {
 		$_COOKIE = array();
 		Configure::write('Config.language', 'eng');
-		$this->Controller = new RememberMeComponentTestController(new CakeRequest(), new CakeResponse());
+		$this->request = new CakeRequest();
+		$this->Controller = new RememberMeComponentTestController($this->request, new CakeResponse());
 		$this->Controller->constructClasses();
 
 		$this->RememberMe = $this->Controller->RememberMe;
@@ -68,6 +73,7 @@ class RememberMeComponentTest extends CakeTestCase {
 		$this->RememberMe->Auth = $this->getMock('AuthComponent',
 			array(),
 			array($this->Controller->Components));
+		$this->RememberMe->request = $this->request;
 	}
 
 /**
@@ -85,7 +91,9 @@ class RememberMeComponentTest extends CakeTestCase {
 		$this->RememberMe->setCookie(array(
 			'User' => array(
 				'email' => 'email',
-				'password' => 'password')));
+				'password' => 'password')
+			)
+		);
 	}
 
 /**
@@ -94,7 +102,7 @@ class RememberMeComponentTest extends CakeTestCase {
  * @return void
  */
 	public function testRestoreLoginFromCookie() {
-		$this->RememberMe->Cookie->expects($this->once())
+		$this->RememberMe->Cookie->expects($this->any())
 			->method('read')
 			->with($this->equalTo('rememberMe'))
 			->will($this->returnValue($this->usersData['admin']));
@@ -102,15 +110,16 @@ class RememberMeComponentTest extends CakeTestCase {
 		$this->RememberMe->Auth->expects($this->once())
 			->method('login')
 			->will($this->returnValue(true));
-		
+
 		$this->__setPostData(array('User' => $this->usersData['test']));
-		
+
 		$this->RememberMe->restoreLoginFromCookie();
 
-		// even if we post "test" user, we have a remember me cookie set and will priorize the cookie over the post
+		// even if we post "test" user, we have a remember me cookie set and will prioritize the cookie over the post
 		// NOTE we check if the user is logged in in the startup method of the Component
-		$this->assertEqual($this->RememberMe->request->data, array(
-			'User' => $this->usersData['admin']));
+		$this->assertEquals($this->RememberMe->request->data, array(
+			'User' => $this->usersData['admin']
+		));
 	}
 
 /**
@@ -122,25 +131,21 @@ class RememberMeComponentTest extends CakeTestCase {
  */
 	public function testRestoreLoginFromCookieIncorrectLogin() {
 		// cookie will hold "admin" data, and post request will have "test"
-		$this->RememberMe->Cookie->expects($this->once())
+		$this->RememberMe->Cookie->expects($this->any())
 			->method('read')
 			->with($this->equalTo('rememberMe'))
 			->will($this->returnValue($this->usersData['admin']));
-
 		// admin will not login
 		$this->RememberMe->Auth->expects($this->once())
 			->method('login')
 			->will($this->returnValue(false));
-		
 		// post has "test" data
 		$this->__setPostData(array('User' => $this->usersData['test']));
-		
 		$this->RememberMe->restoreLoginFromCookie();
-
-		$this->assertEqual($this->RememberMe->request->data, array(
+		$this->assertEquals($this->RememberMe->request->data, array(
 			'User' => $this->usersData['test']));
 	}
-	
+
 /**
  * testDestroyCookie
  *
@@ -155,10 +160,12 @@ class RememberMeComponentTest extends CakeTestCase {
 
 /**
  * Set post data to the test controller
- * @param type $data
- */	
+ *
+ * @var array $data
+ * @return void
+ */
 	private function __setPostData($data = array()) {
 		$_SERVER['REQUEST_METHOD'] = 'POST';
-		$this->RememberMe->request->data = array_merge($data);
-	}	
+		$this->RememberMe->request->data = $data;
+	}
 }

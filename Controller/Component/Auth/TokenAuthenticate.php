@@ -60,6 +60,7 @@ class TokenAuthenticate extends BaseAuthenticate {
  *
  * @param ComponentCollection $collection The Component collection used on this request.
  * @param array $settings Array of settings to use.
+ * @throws CakeException
  */
 	public function __construct(ComponentCollection $collection, $settings) {
 		parent::__construct($collection, $settings);
@@ -69,6 +70,7 @@ class TokenAuthenticate extends BaseAuthenticate {
 	}
 
 /**
+ * Authenticate user
  *
  * @param CakeRequest $request The request object
  * @param CakeResponse $response response object.
