@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2013, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2014, Cake Development Corporation (http://cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2013, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2014, Cake Development Corporation (http://cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -64,7 +64,7 @@ class User extends UsersAppModel {
 	public $emailTokenExpirationTime = 86400;
 
 /**
- * Validation domain for translations 
+ * Validation domain for translations
  *
  * @var string
  */
@@ -80,37 +80,51 @@ class User extends UsersAppModel {
 			'required' => array(
 				'rule' => array('notEmpty'),
 				'required' => true, 'allowEmpty' => false,
-				'message' => 'Please enter a username.'),
+				'message' => 'Please enter a username.'
+			),
 			'alpha' => array(
 				'rule' => array('alphaNumeric'),
-				'message' => 'The username must be alphanumeric.'),
+				'message' => 'The username must be alphanumeric.'
+			),
 			'unique_username' => array(
 				'rule' => array('isUnique', 'username'),
-				'message' => 'This username is already in use.'),
+				'message' => 'This username is already in use.'
+			),
 			'username_min' => array(
 				'rule' => array('minLength', '3'),
-				'message' => 'The username must have at least 3 characters.')),
+				'message' => 'The username must have at least 3 characters.'
+			)
+		),
 		'email' => array(
 			'isValid' => array(
 				'rule' => 'email',
 				'required' => true,
-				'message' => 'Please enter a valid email address.'),
+				'message' => 'Please enter a valid email address.'
+			),
 			'isUnique' => array(
 				'rule' => array('isUnique', 'email'),
-				'message' => 'This email is already in use.')),
+				'message' => 'This email is already in use.'
+			)
+		),
 		'password' => array(
 			'too_short' => array(
 				'rule' => array('minLength', '6'),
-				'message' => 'The password must have at least 6 characters.'),
+				'message' => 'The password must have at least 6 characters.'
+			),
 			'required' => array(
 				'rule' => 'notEmpty',
-				'message' => 'Please enter a password.')),
+				'message' => 'Please enter a password.'
+			)
+		),
 		'temppassword' => array(
 			'rule' => 'confirmPassword',
-			'message' => 'The passwords are not equal, please try again.'),
+			'message' => 'The passwords are not equal, please try again.'
+		),
 		'tos' => array(
 			'rule' => array('custom','[1]'),
-			'message' => 'You must agree to the terms of use.'));
+			'message' => 'You must agree to the terms of use.'
+		)
+	);
 
 /**
  * Constructor
@@ -135,14 +149,15 @@ class User extends UsersAppModel {
  * @link https://github.com/CakeDC/utils
  */
 	protected function _setupBehaviors() {
-		if (class_exists('SearchableBehavior')) {
+		if (CakePlugin::loaded('Search') && class_exists('SearchableBehavior')) {
 			$this->actsAs[] = 'Search.Searchable';
 		}
 
-		if (class_exists('SluggableBehavior') && Configure::read('Users.disableSlugs') !== true) {
+		if (CakePlugin::loaded('Utils') && class_exists('SluggableBehavior') && Configure::read('Users.disableSlugs') !== true) {
 			$this->actsAs['Utils.Sluggable'] = array(
 				'label' => 'username',
-				'method' => 'multibyteSlug');
+				'method' => 'multibyteSlug'
+			);
 		}
 	}
 
@@ -308,7 +323,7 @@ class User extends UsersAppModel {
 
 /**
  * Checks the token for a password change
- * 
+ *
  * @param string $token Token
  * @return mixed False or user data as array
  */
@@ -336,20 +351,23 @@ class User extends UsersAppModel {
 			'confirm_password' => array(
 				'required' => array(
 					'rule' => array('compareFields', 'new_password', 'confirm_password'),
-					'message' => __d('users', 'The passwords are not equal.'))));
+					'message' => __d('users', 'The passwords are not equal.')
+				)
+			)
+		);
 	}
 
 /**
  * Resets the password
- * 
+ *
  * @param array $postData Post data from controller
  * @return boolean True on success
  */
 	public function resetPassword($postData = array()) {
 		$result = false;
 
-		//$tmp = $this->validate;
-		//$this->validate = $this->setUpResetPasswordValidationRules();
+		$tmp = $this->validate;
+		$this->validate = $this->setUpResetPasswordValidationRules();
 
 		$this->set($postData);
 		if ($this->validates()) {
@@ -357,10 +375,11 @@ class User extends UsersAppModel {
 			$this->data[$this->alias]['password_token'] = null;
 			$result = $this->save($this->data, array(
 				'validate' => false,
-				'callbacks' => false));
+				'callbacks' => false)
+			);
 		}
 
-		//$this->validate = $tmp;
+		$this->validate = $tmp;
 		return $result;
 	}
 
@@ -593,7 +612,7 @@ class User extends UsersAppModel {
 		}
 
 		if ($user[$this->alias]['email_verified'] == 1) {
-			$this->invalidate('email', __d('users', 'Your account is already authenticaed.'));
+			$this->invalidate('email', __d('users', 'Your account is already authenticated.'));
 			return false;
 		}
 
@@ -710,17 +729,17 @@ class User extends UsersAppModel {
 
 			switch ($by) {
 				case 'username':
-					$results['conditions'] = Set::merge(
+					$results['conditions'] = Hash::merge(
 						$query['conditions'],
 						array($this->alias . '.username LIKE' => $like));
 					break;
 				case 'email':
-					$results['conditions'] = Set::merge(
+					$results['conditions'] = Hash::merge(
 						$query['conditions'],
 						array($this->alias . '.email LIKE' => $like));
 					break;
 				case 'any':
-					$results['conditions'] = Set::merge(
+					$results['conditions'] = Hash::merge(
 						$query['conditions'],
 						array('OR' => array(
 							array($this->alias . '.username LIKE' => $like),
@@ -730,7 +749,7 @@ class User extends UsersAppModel {
 					$results['conditions'] = $query['conditions'];
 					break;
 				default :
-					$results['conditions'] = Set::merge(
+					$results['conditions'] = Hash::merge(
 						$query['conditions'],
 						array($this->alias . '.username LIKE' => $like));
 					break;
@@ -817,6 +836,8 @@ class User extends UsersAppModel {
 /**
  * Edits an existing user
  *
+ * When saving a password it get hashed if the field is present AND not empty
+ *
  * @param string $userId User ID
  * @param array $postData controller post data usually $this->data
  * @throws NotFoundException
@@ -825,16 +846,17 @@ class User extends UsersAppModel {
 	public function edit($userId = null, $postData = null) {
 		$user = $this->getUserForEditing($userId);
 		$this->set($user);
-		if (empty($user)) {
-			throw new NotFoundException(__d('users', 'Invalid User'));
-		}
-
 		if (!empty($postData)) {
 			$this->set($postData);
-			$result = $this->save(null, true);
-			if ($result) {
-				$this->data = $result;
-				return true;
+			if ($this->validates()) {
+				if (!empty($this->data[$this->alias]['password'])) {
+					$this->data[$this->alias]['password'] = $this->hash($this->data[$this->alias]['password'], 'sha1', true);
+				}
+				$result = $this->save(null, false);
+				if ($result) {
+					$this->data = $result;
+					return true;
+				}
 			} else {
 				return $postData;
 			}
@@ -845,12 +867,20 @@ class User extends UsersAppModel {
  * Gets the user data that needs to be edited
  *
  * Override this method and inject the conditions you need
+ *
+ * @var mixed $userId
+ * @var array $options
+ * @return array $user
+ * @throws NotFoundException
  */
 	public function getUserForEditing($userId = null, $options = array()) {
 		$defaults = array(
 			'contain' => array(),
-			'conditions' => array($this->alias . '.id' => $userId));
-		$options = Set::merge($defaults, $options);
+			'conditions' => array(
+				$this->alias . '.id' => $userId
+			)
+		);
+		$options = Hash::merge($defaults, $options);
 
 		$user = $this->find('first', $options);
 
@@ -871,7 +901,8 @@ class User extends UsersAppModel {
 	protected function _removeExpiredRegistrations() {
 		$this->deleteAll(array(
 			$this->alias . '.email_verified' => 0,
-			$this->alias . '.email_token_expires <' => date('Y-m-d H:i:s')));
+			$this->alias . '.email_token_expires <' => date('Y-m-d H:i:s'))
+		);
 	}
 
 }

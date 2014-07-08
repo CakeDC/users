@@ -18,7 +18,7 @@
  */
 
 App::uses('AuthComponent', 'Controller/Component');
-App::uses('TokenAuthenticate', 'Authenticate.Controller/Component/Auth');
+App::uses('TokenAuthenticate', 'Users.Controller/Component/Auth');
 App::uses('AppModel', 'Model');
 App::uses('CakeRequest', 'Network');
 App::uses('CakeResponse', 'Network');
@@ -37,7 +37,7 @@ class TokenAuthenticateTest extends CakeTestCase {
  * @var array
  */
 	public $fixtures = array(
-		'plugin.authenticate.multi_user'
+		'plugin.users.multi_user'
 	);
 
 /**

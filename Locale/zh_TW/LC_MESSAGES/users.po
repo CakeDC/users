@@ -242,7 +242,7 @@ msgid "The email address does not exist in the system"
 msgstr "系統中不存在該電子郵件信箱。"
 
 #: /models/user.php:520
-msgid "Your account is already authenticaed."
+msgid "Your account is already authenticated."
 msgstr "您的帳號已經認證。"
 
 #: /models/user.php:525

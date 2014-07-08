@@ -34,6 +34,5 @@ class MultiUserFixture extends CakeTestFixture {
 		array('user' => 'larry', 'email' => 'larry@example.com', 'password' => '5f4dcc3b5aa765d61d8327deb882cf99', 'token' => '34567', 'created' => '2007-03-17 01:20:23', 'updated' => '2007-03-17 01:22:31'),
 		array('user' => 'garrett', 'email' => 'garrett@example.com', 'password' => '5f4dcc3b5aa765d61d8327deb882cf99', 'token' => '45678', 'created' => '2007-03-17 01:22:23', 'updated' => '2007-03-17 01:24:31'),
 		array('user' => 'chartjes', 'email' => 'chartjes@example.com', 'password' => '5f4dcc3b5aa765d61d8327deb882cf99', 'token' => '56789', 'created' => '2007-03-17 01:22:23', 'updated' => '2007-03-17 01:24:31'),
-
 	);
 }
