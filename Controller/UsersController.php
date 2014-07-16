@@ -156,9 +156,22 @@ class UsersController extends UsersAppController {
 		$this->_setupPagination();
 
 		$this->set('model', $this->modelClass);
+		$this->_setDefaultEmail();
+	}
 
+/**
+ * Sets the default from email config
+ *
+ * @return void
+ */
+	protected function _setDefaultEmail() {
 		if (!Configure::read('App.defaultEmail')) {
-			Configure::write('App.defaultEmail', 'noreply@' . env('HTTP_HOST'));
+			$config = $this->_getMailInstance()->config();
+			if (!empty($config['from'])) {
+				Configure::write('App.defaultEmail', $config['from']);
+			} else {
+				Configure::write('App.defaultEmail', 'noreply@' . env('HTTP_HOST'));
+			}
 		}
 	}
 
@@ -841,12 +854,7 @@ class UsersController extends UsersAppController {
  * @link http://book.cakephp.org/2.0/en/core-utility-libraries/email.html
  */
 	protected function _getMailInstance() {
-		$emailConfig = Configure::read('Users.emailConfig');
-		if ($emailConfig) {
-			return new CakeEmail($emailConfig);
-		} else {
-			return new CakeEmail('default');
-		}
+		return $this->{$this->modelClass}->getMailInstance();
 	}
 
 /**
