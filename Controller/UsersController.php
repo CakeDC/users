@@ -504,6 +504,8 @@ class UsersController extends UsersAppController {
 		}
 		if (isset($this->request->params['named']['return_to'])) {
 			$this->set('return_to', urldecode($this->request->params['named']['return_to']));
+		} elseif (isset($this->request->query['return_to'])) {
+			$this->set('return_to', $this->request->query['return_to']);
 		} else {
 			$this->set('return_to', false);
 		}
