@@ -34,3 +34,7 @@ Composer
 --------
 
 The plugin also provides a "composer.json" file, to easily use the plugin through the Composer dependency manager.
+
+```
+"cakedc/users": "~2.1.0"
+```
