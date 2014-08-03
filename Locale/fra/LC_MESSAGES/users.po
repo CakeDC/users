@@ -708,3 +708,6 @@ msgstr "Réinitialiser votre mot de passe"
 msgid "Search for users"
 msgstr "Rechercher des utilisateurs"
 
+#: View/Users/login.ctp:26
+msgid "I forgot my password"
+msgstr "Mot de passe oublié"
