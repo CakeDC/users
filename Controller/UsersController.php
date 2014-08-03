@@ -202,11 +202,11 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	protected function _setupAdminPagination() {
-		$this->Paginator->settings = array(
+		$this->Paginator->settings[$this->modelClass] = array(
 			'limit' => 20,
 			'order' => array(
 				$this->modelClass . '.created' => 'desc'
-			)
+			),
 		);
 	}
 
@@ -238,7 +238,10 @@ class UsersController extends UsersAppController {
 				'userModel' => $this->_pluginDot() . $this->modelClass,
 				'scope' => array(
 					$this->modelClass . '.active' => 1,
-					$this->modelClass . '.email_verified' => 1)));
+					$this->modelClass . '.email_verified' => 1
+				)
+			)
+		);
 
 		$this->Auth->loginRedirect = '/';
 		$this->Auth->logoutRedirect = array('plugin' => Inflector::underscore($this->plugin), 'controller' => 'users', 'action' => 'login');
@@ -282,12 +285,14 @@ class UsersController extends UsersAppController {
 /**
  * Edit the current logged in user
  *
- * Extend the plugin and implement your custom logic here
+ * Extend the plugin and implement your custom logic here, mostly thought to be
+ * used as a dashboard or profile page like method.
+ *
+ * See the plugins documentation for how to extend the plugin.
  *
  * @return void
  */
 	public function edit() {
-		// @todo replace this with something better than the user details that were removed
 	}
 
 /**
