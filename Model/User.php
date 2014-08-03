@@ -172,7 +172,9 @@ class User extends UsersAppModel {
 			'confirm_password' => array(
 				'required' => array('rule' => array('compareFields', 'new_password', 'confirm_password'), 'required' => true, 'message' => __d('users', 'The passwords are not equal.'))),
 			'old_password' => array(
-				'to_short' => array('rule' => 'validateOldPassword', 'required' => true, 'message' => __d('users', 'Invalid password.'))));
+				'to_short' => array('rule' => 'validateOldPassword', 'required' => true, 'message' => __d('users', 'Invalid password.'))
+			)
+		);
 	}
 
 /**
@@ -234,7 +236,9 @@ class User extends UsersAppModel {
 				$this->alias . '.email_verified' => 0,
 				$this->alias . '.email_token' => $token),
 			'fields' => array(
-				'id', 'email', 'email_token_expires', 'role')));
+				'id', 'email', 'email_token_expires', 'role')
+			)
+		);
 
 		if (empty($result)) {
 			return false;
@@ -269,7 +273,8 @@ class User extends UsersAppModel {
 
 		$user = $this->save($user, array(
 			'validate' => false,
-			'callbacks' => false));
+			'callbacks' => false
+		));
 		$this->data = $user;
 		return $user;
 	}
@@ -905,4 +910,17 @@ class User extends UsersAppModel {
 		);
 	}
 
+/**
+ * Returns a CakeEmail object
+ *
+ * @return object CakeEmail instance
+ * @link http://book.cakephp.org/2.0/en/core-utility-libraries/email.html
+ */
+	public function getMailInstance() {
+		$emailConfig = Configure::read('Users.emailConfig');
+		if ($emailConfig) {
+			return new CakeEmail($emailConfig);
+		}
+		return new CakeEmail('default');
+	}
 }

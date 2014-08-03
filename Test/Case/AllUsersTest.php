@@ -9,7 +9,7 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-class AllTagsPluginTest extends PHPUnit_Framework_TestSuite {
+class AllUsersPluginTest extends PHPUnit_Framework_TestSuite {
 
 /**
  * Suite define the tests for this suite
@@ -17,7 +17,7 @@ class AllTagsPluginTest extends PHPUnit_Framework_TestSuite {
  * @return void
  */
 	public static function suite() {
-		$Suite = new CakeTestSuite('All Comments Plugin tests');
+		$Suite = new CakeTestSuite('All Users Plugin tests');
 
 		$basePath = CakePlugin::path('Users') . DS . 'Test' . DS . 'Case' . DS;
 		$Suite->addTestDirectory($basePath . DS . 'Controller');

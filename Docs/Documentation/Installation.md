@@ -3,6 +3,12 @@ Installation
 
 To install the plugin, place the files in a directory labelled "Users/" in your "app/Plugin/" directory.
 
+Then, include the following line in your `app/Config/bootstrap.php` to load the plugin in your application.
+
+```
+CakePlugin::load('Users');
+```
+
 Git Submodule
 -------------
 

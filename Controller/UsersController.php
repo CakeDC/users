@@ -156,9 +156,22 @@ class UsersController extends UsersAppController {
 		$this->_setupPagination();
 
 		$this->set('model', $this->modelClass);
+		$this->_setDefaultEmail();
+	}
 
+/**
+ * Sets the default from email config
+ *
+ * @return void
+ */
+	protected function _setDefaultEmail() {
 		if (!Configure::read('App.defaultEmail')) {
-			Configure::write('App.defaultEmail', 'noreply@' . env('HTTP_HOST'));
+			$config = $this->_getMailInstance()->config();
+			if (!empty($config['from'])) {
+				Configure::write('App.defaultEmail', $config['from']);
+			} else {
+				Configure::write('App.defaultEmail', 'noreply@' . env('HTTP_HOST'));
+			}
 		}
 	}
 
@@ -189,11 +202,11 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	protected function _setupAdminPagination() {
-		$this->Paginator->settings = array(
+		$this->Paginator->settings[$this->modelClass] = array(
 			'limit' => 20,
 			'order' => array(
 				$this->modelClass . '.created' => 'desc'
-			)
+			),
 		);
 	}
 
@@ -225,7 +238,10 @@ class UsersController extends UsersAppController {
 				'userModel' => $this->_pluginDot() . $this->modelClass,
 				'scope' => array(
 					$this->modelClass . '.active' => 1,
-					$this->modelClass . '.email_verified' => 1)));
+					$this->modelClass . '.email_verified' => 1
+				)
+			)
+		);
 
 		$this->Auth->loginRedirect = '/';
 		$this->Auth->logoutRedirect = array('plugin' => Inflector::underscore($this->plugin), 'controller' => 'users', 'action' => 'login');
@@ -269,12 +285,14 @@ class UsersController extends UsersAppController {
 /**
  * Edit the current logged in user
  *
- * Extend the plugin and implement your custom logic here
+ * Extend the plugin and implement your custom logic here, mostly thought to be
+ * used as a dashboard or profile page like method.
+ *
+ * See the plugins documentation for how to extend the plugin.
  *
  * @return void
  */
 	public function edit() {
-		// @todo replace this with something better than the user details that were removed
 	}
 
 /**
@@ -491,6 +509,8 @@ class UsersController extends UsersAppController {
 		}
 		if (isset($this->request->params['named']['return_to'])) {
 			$this->set('return_to', urldecode($this->request->params['named']['return_to']));
+		} elseif (isset($this->request->query['return_to'])) {
+			$this->set('return_to', $this->request->query['return_to']);
 		} else {
 			$this->set('return_to', false);
 		}
@@ -841,12 +861,7 @@ class UsersController extends UsersAppController {
  * @link http://book.cakephp.org/2.0/en/core-utility-libraries/email.html
  */
 	protected function _getMailInstance() {
-		$emailConfig = Configure::read('Users.emailConfig');
-		if ($emailConfig) {
-			return new CakeEmail($emailConfig);
-		} else {
-			return new CakeEmail('default');
-		}
+		return $this->{$this->modelClass}->getMailInstance();
 	}
 
 /**
