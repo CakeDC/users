@@ -721,3 +721,6 @@ msgstr "Resette Dein Passwort"
 msgid "Search for users"
 msgstr "Nach Benutzern suchen"
 
+#: View/Users/login.ctp:26
+msgid "I forgot my password"
+msgstr "Ich habe mein Passwort vergessen"
