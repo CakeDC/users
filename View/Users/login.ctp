@@ -15,7 +15,6 @@
 	<fieldset>
 		<?php
 			echo $this->Form->create($model, array(
-				'action' => 'login',
 				'id' => 'LoginForm'));
 			echo $this->Form->input('email', array(
 				'label' => __d('users', 'Email')));
