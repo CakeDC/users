@@ -445,22 +445,18 @@ class UsersController extends UsersAppController {
 	 * @return void
 	 */
 	public function login() {
-
-		$Event = new CakeEvent(
-			'Users.Controller.Users.beforeLogin',
-			$this,
-			array(
-				'data' => $this->request->data,
-			)
-		);
-
 		$this->getEventManager()->dispatch($Event);
-
 		if ($Event->isStopped()) {
 			return;
 		}
-
 		if ($this->request->is('post')) {
+			$Event = new CakeEvent(
+				'Users.Controller.Users.beforeLogin',
+				$this,
+				array(
+					'data' => $this->request->data,
+				)
+			);
 			$this->_logUserIn();
 		}
 		if (isset($this->request->params['named']['return_to'])) {
@@ -837,20 +833,9 @@ class UsersController extends UsersAppController {
 
 	private function _logUserIn() {
 		if ($this->Auth->login()) {
-			$Event = new CakeEvent(
-				'Users.Controller.Users.afterLogin',
-				$this,
-				array(
-					'data' => $this->request->data,
-					'isFirstLogin' => !$this->Auth->user('last_login')
-				)
-			);
-
 			$this->getEventManager()->dispatch($Event);
-
 			$this->{$this->modelClass}->id = $this->Auth->user('id');
 			$this->{$this->modelClass}->saveField('last_login', date('Y-m-d H:i:s'));
-
 			if ($this->here == $this->Auth->loginRedirect) {
 				$this->Auth->loginRedirect = '/';
 			}
@@ -863,7 +848,14 @@ class UsersController extends UsersAppController {
 					$this->_setCookie();
 				}
 			}
-
+			$Event = new CakeEvent(
+				'Users.Controller.Users.afterLogin',
+				$this,
+				array(
+					'data' => $this->request->data,
+					'isFirstLogin' => !$this->Auth->user('last_login')
+				)
+			);
 			if (empty($data[$this->modelClass]['return_to'])) {
 				$data[$this->modelClass]['return_to'] = null;
 			}
