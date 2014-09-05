@@ -56,7 +56,7 @@ class M49c3417a54874a9d276811502cedc421 extends CakeMigration {
 					'email' => array('type' => 'string', 'null' => true, 'default' => null),
 					'email_verified' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
 					'email_token' => array('type' => 'string', 'null' => true, 'default' => null),
-					'email_token_expiry' => array('type' => 'datetime', 'null' => true, 'default' => null),
+					'email_token_expires' => array('type' => 'datetime', 'null' => true, 'default' => null),
 					'tos' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
 					'active' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
 					'last_login' => array('type' => 'datetime', 'null' => true, 'default' => null),
