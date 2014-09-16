@@ -757,7 +757,6 @@ class UsersController extends UsersAppController {
 				}
 			} else {
 				$this->Session->setFlash(__d('users', 'No user was found with that email.'));
-				$this->redirect($this->referer('/'));
 			}
 		}
 		$this->render('request_password_change');
