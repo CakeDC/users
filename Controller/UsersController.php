@@ -445,10 +445,6 @@ class UsersController extends UsersAppController {
 	 * @return void
 	 */
 	public function login() {
-		$this->getEventManager()->dispatch($Event);
-		if ($Event->isStopped()) {
-			return;
-		}
 		if ($this->request->is('post')) {
 			$Event = new CakeEvent(
 				'Users.Controller.Users.beforeLogin',
@@ -457,6 +453,10 @@ class UsersController extends UsersAppController {
 					'data' => $this->request->data,
 				)
 			);
+			$this->getEventManager()->dispatch($Event);
+			if ($Event->isStopped()) {
+				return;
+			}
 			$this->_logUserIn();
 		}
 		if (isset($this->request->params['named']['return_to'])) {
@@ -832,7 +832,6 @@ class UsersController extends UsersAppController {
 
 	private function _logUserIn() {
 		if ($this->Auth->login()) {
-			$this->getEventManager()->dispatch($Event);
 			$this->{$this->modelClass}->id = $this->Auth->user('id');
 			$this->{$this->modelClass}->saveField('last_login', date('Y-m-d H:i:s'));
 			if ($this->here == $this->Auth->loginRedirect) {
@@ -855,6 +854,7 @@ class UsersController extends UsersAppController {
 					'isFirstLogin' => !$this->Auth->user('last_login')
 				)
 			);
+			$this->getEventManager()->dispatch($Event);
 			if (empty($data[$this->modelClass]['return_to'])) {
 				$data[$this->modelClass]['return_to'] = null;
 			}
