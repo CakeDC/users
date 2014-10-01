@@ -857,8 +857,10 @@ class UsersController extends UsersAppController {
 			$this->getEventManager()->dispatch($Event);
 			if (empty($data[$this->modelClass]['return_to'])) {
 				$data[$this->modelClass]['return_to'] = null;
+				if ($data['return_to']) {
+					$data[$this->modelClass]['return_to'] = $data['return_to'];
+				}
 			}
-
 			// Checking for 2.3 but keeping a fallback for older versions
 			if (method_exists($this->Auth, 'redirectUrl')) {
 				$this->redirect($this->Auth->redirectUrl($data[$this->modelClass]['return_to']));
