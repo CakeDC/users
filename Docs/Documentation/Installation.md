@@ -40,3 +40,13 @@ Composer
 --------
 
 The plugin also provides a "composer.json" file, to easily use the plugin through the Composer dependency manager.
+
+Creating Required Tables
+------------------------
+You can create database tables using either the schema shell or the [CakeDC Migrations plugin](http://github.com/CakeDC/migrations):
+
+	./Console/cake schema create users --plugin Users
+
+or
+
+	./Console/cake Migrations.migration run all --plugin Users
