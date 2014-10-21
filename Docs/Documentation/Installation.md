@@ -15,7 +15,7 @@ Git Submodule
 If you're using git for version control, you may want to add the **Users** plugin as a submodule on your repository. To do so, run the following command from the base of your repository:
 
 ```
-git submodule add git@github.com:CakeDC/migrations.git app/Plugin/Users
+git submodule add git@github.com:CakeDC/users.git app/Plugin/Users
 ```
 
 After doing so, you will see the submodule in your changes pending, plus the file ".gitmodules". Simply commit and push to your repository.
@@ -40,3 +40,13 @@ Composer
 --------
 
 The plugin also provides a "composer.json" file, to easily use the plugin through the Composer dependency manager.
+
+Creating Required Tables
+------------------------
+You can create database tables using either the schema shell or the [CakeDC Migrations plugin](http://github.com/CakeDC/migrations):
+
+	./Console/cake schema create users --plugin Users
+
+or
+
+	./Console/cake Migrations.migration run all --plugin Users

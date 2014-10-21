@@ -1,6 +1,19 @@
 Changelog
 =========
 
+Release 2.1.1
+-------------
+
+https://github.com/CakeDC/users/tree/2.1.1
+
+ * [73aa350](https://github.com/cakedc/users/commit/73aa350) Fixing an issue with pagination settings for the admin_index()
+ * [3dd162d](https://github.com/cakedc/users/commit/3dd162d) Forgot password translation
+ * [09499fb](https://github.com/cakedc/users/commit/09499fb) Fixing some strings in the AllUsersTest.php to make sure the naming is correct
+ * [83f502b](https://github.com/cakedc/users/commit/83f502b) Changing the handling of the return_to parameter in the UsersController
+ * [3e9a378](https://github.com/cakedc/users/commit/3e9a378) Refs https://github.com/CakeDC/users/issues/189 Fixing the Email default "from" setting, some CS fixes and some code refactoring as well
+ * [d0f330e](https://github.com/cakedc/users/commit/d0f330e) Update Installation.md
+
+
 Release 2.1.0
 -------------
 
