@@ -229,7 +229,7 @@ class User extends UsersAppModel {
  * @param string $token
  * @return array
  */
-	public function checkEmailVerfificationToken($token = null) {
+	public function checkEmailVerificationToken($token = null) {
 		$result = $this->find('first', array(
 			'contain' => array(),
 			'conditions' => array(
@@ -255,7 +255,7 @@ class User extends UsersAppModel {
  * @return array On success it returns the user data record
  */
 	public function verifyEmail($token = null) {
-		$user = $this->checkEmailVerfificationToken($token);
+		$user = $this->checkEmailVerificationToken($token);
 
 		if ($user === false) {
 			throw new RuntimeException(__d('users', 'Invalid token, please check the email you were sent, and retry the verification link.'));
