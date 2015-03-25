@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2013, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2014, Cake Development Corporation (http://cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2013, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2014, Cake Development Corporation (http://cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -46,6 +46,7 @@ class UserTestCase extends CakeTestCase {
  * @return void
  */
 	public function setUp() {
+		parent::setUp();
 		Configure::write('App.UserClass', null);
 		$this->User = ClassRegistry::init('Users.User');
 	}
@@ -477,6 +478,8 @@ class UserTestCase extends CakeTestCase {
  * @return void
  */
 	public function testDisableSlugs() {
+		$this->skipIf(CakePlugin::loaded('Utils') === false, __('Utils plugin not present, test skipped.'));
+
 		ClassRegistry::flush();
 		$this->User = ClassRegistry::init('Users.User');
 		$this->User->create();

@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2013, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2014, Cake Development Corporation (http://cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2013, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2014, Cake Development Corporation (http://cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -28,14 +28,15 @@ class RememberMeComponent extends Component {
  */
 	public $components = array(
 		'Cookie',
-		'Auth');
+		'Auth'
+	);
 
 /**
  * Request object
  *
  * @var CakeRequest
  */
-	public $request;
+	public $request = null;
 
 /**
  * Settings
@@ -55,23 +56,27 @@ class RememberMeComponent extends Component {
 		'cookieKey' => 'rememberMe',
 		'cookieLifeTime' => '+1 year',
 		'cookie' => array(
-			'name' => 'User'),
+			'name' => 'User'
+		),
 		'fields' => array(
 			'email',
 			'username',
-			'password'));
+			'password'
+		)
+	);
 
 /**
  * Constructor
  *
  * @param ComponentCollection $collection A ComponentCollection for this component
  * @param array $settings Array of settings.
+ * @return RememberMeComponent
  */
 	public function __construct(ComponentCollection $collection, $settings = array()) {
 		parent::__construct($collection, $settings);
 
 		$this->_checkAndSetCookieLifeTime();
-		$this->settings = Set::merge($this->_defaults, $settings);
+		$this->settings = Hash::merge($this->_defaults, $settings);
 		$this->configureCookie($this->settings['cookie']);
 	}
 

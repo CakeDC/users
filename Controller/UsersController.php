@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2013, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2014, Cake Development Corporation (http://cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2013, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2014, Cake Development Corporation (http://cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -65,7 +65,6 @@ class UsersController extends UsersAppController {
 		'Cookie',
 		'Paginator',
 		'Security',
-		'Search.Prg',
 		'Users.RememberMe',
 	);
 
@@ -157,9 +156,22 @@ class UsersController extends UsersAppController {
 		$this->_setupPagination();
 
 		$this->set('model', $this->modelClass);
+		$this->_setDefaultEmail();
+	}
 
+/**
+ * Sets the default from email config
+ *
+ * @return void
+ */
+	protected function _setDefaultEmail() {
 		if (!Configure::read('App.defaultEmail')) {
-			Configure::write('App.defaultEmail', 'noreply@' . env('HTTP_HOST'));
+			$config = $this->_getMailInstance()->config();
+			if (!empty($config['from'])) {
+				Configure::write('App.defaultEmail', $config['from']);
+			} else {
+				Configure::write('App.defaultEmail', 'noreply@' . env('HTTP_HOST'));
+			}
 		}
 	}
 
@@ -190,11 +202,11 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	protected function _setupAdminPagination() {
-		$this->Paginator->settings = array(
+		$this->Paginator->settings[$this->modelClass] = array(
 			'limit' => 20,
 			'order' => array(
 				$this->modelClass . '.created' => 'desc'
-			)
+			),
 		);
 	}
 
@@ -226,7 +238,10 @@ class UsersController extends UsersAppController {
 				'userModel' => $this->_pluginDot() . $this->modelClass,
 				'scope' => array(
 					$this->modelClass . '.active' => 1,
-					$this->modelClass . '.email_verified' => 1)));
+					$this->modelClass . '.email_verified' => 1
+				)
+			)
+		);
 
 		$this->Auth->loginRedirect = '/';
 		$this->Auth->logoutRedirect = array('plugin' => Inflector::underscore($this->plugin), 'controller' => 'users', 'action' => 'login');
@@ -268,12 +283,16 @@ class UsersController extends UsersAppController {
 	}
 
 /**
- * Edit
+ * Edit the current logged in user
+ *
+ * Extend the plugin and implement your custom logic here, mostly thought to be
+ * used as a dashboard or profile page like method.
+ *
+ * See the plugins documentation for how to extend the plugin.
  *
  * @return void
  */
 	public function edit() {
-		// @todo replace this with something better than the user details that were removed
 	}
 
 /**
@@ -282,10 +301,12 @@ class UsersController extends UsersAppController {
  * @return void
  */
 	public function admin_index() {
-		$this->Prg->commonProcess();
-		unset($this->{$this->modelClass}->validate['username']);
-		unset($this->{$this->modelClass}->validate['email']);
-		$this->{$this->modelClass}->data[$this->modelClass] = $this->passedArgs;
+		if ($this->{$this->modelClass}->Behaviors->loaded('Searchable')) {
+			$this->Prg->commonProcess();
+			unset($this->{$this->modelClass}->validate['username']);
+			unset($this->{$this->modelClass}->validate['email']);
+			$this->{$this->modelClass}->data[$this->modelClass] = $this->passedArgs;
+		}
 
 		if ($this->{$this->modelClass}->Behaviors->loaded('Searchable')) {
 			$parsedConditions = $this->{$this->modelClass}->parseCriteria($this->passedArgs);
@@ -346,6 +367,7 @@ class UsersController extends UsersAppController {
 				$this->Session->setFlash(__d('users', 'User saved'));
 				$this->redirect(array('action' => 'index'));
 			} else {
+				unset($result[$this->modelClass]['password']);
 				$this->request->data = $result;
 			}
 		} catch (OutOfBoundsException $e) {
@@ -355,6 +377,7 @@ class UsersController extends UsersAppController {
 
 		if (empty($this->request->data)) {
 			$this->request->data = $this->{$this->modelClass}->read(null, $userId);
+			unset($this->request->data[$this->modelClass]['password']);
 		}
 		$this->set('roles', Configure::read('Users.roles'));
 	}
@@ -486,6 +509,8 @@ class UsersController extends UsersAppController {
 		}
 		if (isset($this->request->params['named']['return_to'])) {
 			$this->set('return_to', urldecode($this->request->params['named']['return_to']));
+		} elseif (isset($this->request->query['return_to'])) {
+			$this->set('return_to', $this->request->query['return_to']);
 		} else {
 			$this->set('return_to', false);
 		}
@@ -527,9 +552,12 @@ class UsersController extends UsersAppController {
 			'by' => $by,
 			'search' => $searchTerm,
 			'conditions' => array(
-					'AND' => array(
-						$this->modelClass . '.active' => 1,
-						$this->modelClass . '.email_verified' => 1)));
+				'AND' => array(
+					$this->modelClass . '.active' => 1,
+					$this->modelClass . '.email_verified' => 1
+				)
+			)
+		);
 
 		$this->set('users', $this->Paginator->paginate($this->modelClass));
 		$this->set('searchTerm', $searchTerm);
@@ -810,9 +838,10 @@ class UsersController extends UsersAppController {
 		if (empty($user)) {
 			$this->Session->setFlash(__d('users', 'Invalid password reset token, try again.'));
 			$this->redirect(array('action' => 'reset_password'));
+			return;
 		}
 
-		if (!empty($this->request->data) && $this->{$this->modelClass}->resetPassword(Set::merge($user, $this->request->data))) {
+		if (!empty($this->request->data) && $this->{$this->modelClass}->resetPassword(Hash::merge($user, $this->request->data))) {
 			if ($this->RememberMe->cookieIsSet()) {
 				$this->Session->setFlash(__d('users', 'Password changed.'));
 				$this->_setCookie();
@@ -832,12 +861,7 @@ class UsersController extends UsersAppController {
  * @link http://book.cakephp.org/2.0/en/core-utility-libraries/email.html
  */
 	protected function _getMailInstance() {
-		$emailConfig = Configure::read('Users.emailConfig');
-		if ($emailConfig) {
-			return new CakeEmail($emailConfig);
-		} else {
-			return new CakeEmail('default');
-		}
+		return $this->{$this->modelClass}->getMailInstance();
 	}
 
 /**

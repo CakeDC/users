@@ -12,13 +12,18 @@ Requirements
 
 * CakePHP 2.5+
 * PHP 5.2.8+
-* [CakeDC Utils plugin](http://github.com/CakeDC/utils)
-* [CakeDC Search plugin](http://github.com/CakeDC/search)
+* [CakeDC Utils plugin](http://github.com/CakeDC/utils) (Optional but recommended)
+* [CakeDC Search plugin](http://github.com/CakeDC/search) (Optional but recommended)
 
 Documentation
 -------------
 
+* [Overview](Documentation/Overview.md)
 * [Installation](Documentation/Installation.md)
 * [Configuration](Documentation/Configuration.md)
-* [How to use it](Documentation/How-To-Use-It.md)
-* [Extending the Plugin](Documentation/Extending-The-Plugin.md)
+* [Routing](Documentation/Routing.md)
+* [Auth in the Users Plugin](Documentation/Auth-in-the-Users-Plugin.md)
+* [User Details (Legacy)](Documentation/User-Details.md)
+* [Events](Documentation/Events.md)
+* [Remember Me Component](Documentation/Remember-Me-Component.md)
+* [Extending the Plugin](Documentation/Extending-the-Plugin.md)
