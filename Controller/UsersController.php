@@ -423,7 +423,7 @@ class UsersController extends UsersAppController {
 							'data' => $this->request->data,
 						)
 					);
-
+					$this->_sendVerificationEmail($this->{$this->modelClass}->data);
 					$this->getEventManager()->dispatch($Event);
 					$this->_logUserIn();
 				} else {
