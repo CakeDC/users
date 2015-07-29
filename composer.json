@@ -1,0 +1,29 @@
+{
+    "name": "cakedc/users",
+    "description": "Users plugin for CakePHP 3.x",
+    "type": "cakephp-plugin",
+    "require": {
+        "php": ">=5.4.16",
+        "cakephp/cakephp": "~3.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*"
+    },
+    "suggest": {
+        "opauth/opauth": "Used for Social Login, if you add Opauth, remember adding at least one strategy too",
+        "opauth/facebook": "Provide Social Login: Facebook Strategy, requires Opauth",
+        "opauth/twitter": "Provide Social Login: Twitter Strategy, requires Opauth"
+    },
+    "autoload": {
+        "psr-4": {
+            "Users\\": "src",
+            "Users\\Test\\Fixture\\": "tests\\Fixture"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Users\\Test\\": "tests",
+            "Cake\\Test\\": "./vendor/cakephp/cakephp/tests"
+        }
+    }
+}
