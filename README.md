@@ -5,6 +5,8 @@ CakeDC Users Plugin
 [![Downloads](https://poser.pugx.org/CakeDC/users/d/total.png)](https://packagist.org/packages/CakeDC/users)
 [![Latest Version](https://poser.pugx.org/CakeDC/users/v/stable.png)](https://packagist.org/packages/CakeDC/users)
 
+IMPORTANT: 3.x version is ALPHA status now, we are improving and testing it now.
+
 The **Users** plugin is back! 
 
 It covers the following features:
