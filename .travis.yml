@@ -19,12 +19,21 @@ matrix:
     - php: 5.3
       env:
         - CAKE_VERSION=2.6
+    - php: 5.3
+      env:
+        - CAKE_VERSION=2.7
     - php: 5.4
+      env:
+        - CAKE_VERSION=2.6
+    - php: 5.4
+      env:
+        - CAKE_VERSION=2.7
+    - php: 5.5
       env:
         - CAKE_VERSION=2.6
     - php: 5.5
       env:
-        - CAKE_VERSION=2.6
+        - CAKE_VERSION=2.7
 
 before_script:
   - git clone https://github.com/steinkel/travis.git --depth 1 ../travis
