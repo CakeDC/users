@@ -44,7 +44,7 @@ class SocialAccountsController extends AppController
      * @param string $token token
      * @return Response
      */
-    public function validate($provider, $reference, $token)
+    public function validateAccount($provider, $reference, $token)
     {
         try {
             $result = $this->SocialAccounts->validateAccount($provider, $reference, $token);
