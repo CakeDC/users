@@ -13,6 +13,8 @@ namespace Users\Model\Entity;
 
 use Cake\Auth\DefaultPasswordHasher;
 use Cake\ORM\Entity;
+use Cake\Utility\Text;
+use DateTime;
 
 /**
  * User Entity.
@@ -94,5 +96,19 @@ class User extends Entity
             $avatar = $this->_properties['social_accounts'][0]['avatar'];
         }
         return $avatar;
+    }
+
+    /**
+     * Generate token_expires and token in a user
+     * @param string $tokenExpiration new token_expires user.
+     *
+     * @return void
+     */
+    public function updateToken($tokenExpiration)
+    {
+        $expires = new DateTime();
+        $expires->modify(sprintf('+ {0} secs', $tokenExpiration));
+        $this->token_expires = $expires;
+        $this->token = str_replace('-', '', Text::uuid());
     }
 }

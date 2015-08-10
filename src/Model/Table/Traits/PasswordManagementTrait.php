@@ -1,0 +1,105 @@
+<?php
+/**
+ * Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ *
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
+ */
+
+namespace Users\Model\Table\Traits;
+
+/**
+ * Password management features
+ *
+ */
+trait PasswordManagementTrait
+{
+    /**
+     * Resets user token
+     *
+     * @param string $reference User username or email
+     * @param array $options checkActive, sendEmail, expiration
+     *
+     * @return string
+     * @throws InvalidArgumentException
+     * @throws UserNotFoundException
+     * @throws UserAlreadyActiveException
+     */
+    public function resetToken($reference, array $options = [])
+    {
+        if (empty($reference)) {
+            throw new InvalidArgumentException(__d('Users', "Reference cannot be null"));
+        }
+
+        if (empty(Hash::get($options, 'expiration'))) {
+            throw new InvalidArgumentException(__d('Users', "Token expiration cannot be null"));
+        }
+
+        $user = $this->findAllByUsernameOrEmail($reference, $reference)->first();
+
+        if (empty($user)) {
+            throw new UserNotFoundException(__d('Users', "User not found"));
+        }
+        if (Hash::get($options, 'checkActive')) {
+            if ($user->active) {
+                throw new UserAlreadyActiveException("User account already validated");
+            }
+            $user->active = false;
+            $user->activation_date = null;
+        }
+        $user->updateToken(Hash::get($options, 'expiration'));
+        $saveResult = $this->save($user);
+        if (Hash::get($options, 'sendEmail')) {
+            $this->sendResetPasswordEmail($saveResult);
+        }
+        return $saveResult;
+    }
+
+    /**
+     * Send the reset password email
+     *
+     * @param EntityInterface $user User entity
+     * @param Email $email instance, if null the default email configuration with the
+     * Users.validation template will be used, so set a ->template() if you pass an Email
+     * instance
+     * @return array email send result
+     */
+    public function sendResetPasswordEmail(EntityInterface $user, Email $email = null)
+    {
+        $firstName = isset($user['first_name'])? $user['first_name'] . ', ' : '';
+        $subject = __d('Users', '{0}Your reset password link', $firstName);
+        return $this->getEmailInstance($email)
+                ->template('Users.reset_password')
+                ->to($user['email'])
+                ->subject($subject)
+                ->viewVars($user->toArray())
+                ->send();
+    }
+
+    /**
+     * Change password method
+     *
+     * @param EntityInterface $user user data.
+     * @return mixed
+     */
+    public function changePassword(EntityInterface $user)
+    {
+        $currentUser = $this->get($user->id, [
+            'contain' => []
+        ]);
+
+        if (!empty($user->current_password)) {
+            if (!$user->checkPassword($user->current_password, $currentUser->password)) {
+                throw new WrongPasswordException(__d('Users', 'The old password does not match'));
+            }
+        }
+        $user = $this->save($user);
+        if (!empty($user)) {
+            $user = $this->_removesValidationToken($user);
+        }
+        return $user;
+    }
+}
