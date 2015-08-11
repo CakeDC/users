@@ -19,8 +19,10 @@ use Cake\Utility\Hash;
 use Cake\Validation\Validator;
 use Users\Exception\WrongPasswordException;
 use Users\Model\Entity\User;
+use Users\Model\Table\Traits\PasswordManagementTrait;
 use Users\Model\Table\Traits\RegisterTrait;
 use Users\Model\Table\Traits\SocialTrait;
+use Users\Traits\RandomStringTrait;
 
 /**
  * Users Model
