@@ -107,7 +107,7 @@ class User extends Entity
     public function updateToken($tokenExpiration)
     {
         $expires = new DateTime();
-        $expires->modify(sprintf('+ {0} secs', $tokenExpiration));
+        $expires->modify("+ $tokenExpiration secs");
         $this->token_expires = $expires;
         $this->token = str_replace('-', '', Text::uuid());
     }
