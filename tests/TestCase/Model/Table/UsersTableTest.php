@@ -353,7 +353,7 @@ Content-Transfer-Encoding: 8bit
 
 Hi FirstName,
 
-Please copy the following address in your web browser http://users.test/users/users/activate/12345
+Please copy the following address in your web browser http://users.test/users/users/validate-email/12345
 Thank you,
 ', $result['message']);
         $this->assertTextContains('Content-Type: text/html; charset=UTF-8
@@ -369,10 +369,10 @@ Content-Transfer-Encoding: 8bit
 Hi FirstName,
 </p>
 <p>
-    <strong><a href="http://users.test/users/users/activate/12345">Activate your account here</a></strong>
+    <strong><a href="http://users.test/users/users/validate-email/12345">Activate your account here</a></strong>
 </p>
 <p>
-    If the link is not correcly displayed, please copy the following address in your web browser http://users.test/users/users/activate/12345</p>
+    If the link is not correcly displayed, please copy the following address in your web browser http://users.test/users/users/validate-email/12345</p>
 <p>
     Thank you,
 </p>
@@ -405,7 +405,7 @@ Content-Transfer-Encoding: 8bit
 
 Hi FirstName,
 
-Please copy the following address in your web browser http://users.test/users/users/activate/12345
+Please copy the following address in your web browser http://users.test/users/users/reset-password/12345
 Thank you,
 ', $result['message']);
         $this->assertTextContains('Content-Type: text/html; charset=UTF-8
@@ -421,10 +421,10 @@ Content-Transfer-Encoding: 8bit
 Hi FirstName,
 </p>
 <p>
-    <strong><a href="http://users.test/users/users/activate/12345">Reset your password here</a></strong>
+    <strong><a href="http://users.test/users/users/reset-password/12345">Reset your password here</a></strong>
 </p>
 <p>
-    If the link is not correcly displayed, please copy the following address in your web browser http://users.test/users/users/activate/12345</p>
+    If the link is not correcly displayed, please copy the following address in your web browser http://users.test/users/users/reset-password/12345</p>
 <p>
     Thank you,
 </p>
