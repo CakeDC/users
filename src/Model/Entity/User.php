@@ -95,4 +95,18 @@ class User extends Entity
         }
         return $avatar;
     }
+
+    /**
+     * Generate token_expires and token in a user
+     * @param string $tokenExpiration new token_expires user.
+     *
+     * @return void
+     */
+    public function updateToken($tokenExpiration)
+    {
+        $expires = new DateTime();
+        $expires->modify("+ $tokenExpiration secs");
+        $this->token_expires = $expires;
+        $this->token = str_replace('-', '', Text::uuid());
+    }
 }
