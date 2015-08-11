@@ -91,7 +91,7 @@ trait PasswordManagementTrait
                 $resetUser = $this->getUsersTable()->resetToken($reference, [
                     'expiration' => Configure::read('Users.Token.expiration'),
                     'checkActive' => false,
-                    'sendMail' => true,
+                    'sendEmail' => true,
                 ]);
                 if ($resetUser) {
                     $msg = __d('Users', 'Please check your email to continue with password reset process');

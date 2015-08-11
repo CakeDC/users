@@ -102,7 +102,7 @@ class UsersAuthComponent extends Component
 
         $this->_registry->getController()->Auth->allow([
             'register',
-            'validate',
+            'validateEmail',
             'resendTokenValidation',
             'login',
             'socialEmail',
