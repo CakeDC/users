@@ -11,6 +11,14 @@
 
 namespace Users\Model\Table\Traits;
 
+use Cake\Datasource\EntityInterface;
+use Cake\Network\Email\Email;
+use Cake\Utility\Hash;
+use InvalidArgumentException;
+use Users\Exception\UserAlreadyActiveException;
+use Users\Exception\UserNotFoundException;
+use Users\Exception\WrongPasswordException;
+
 /**
  * Password management features
  *

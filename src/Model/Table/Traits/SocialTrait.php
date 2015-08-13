@@ -11,6 +11,14 @@
 
 namespace Users\Model\Table\Traits;
 
+use Cake\Datasource\EntityInterface;
+use Cake\Utility\Hash;
+use DateTime;
+use InvalidArgumentException;
+use Users\Exception\AccountNotActiveException;
+use Users\Exception\MissingEmailException;
+use Users\Model\Table\SocialAccountsTable;
+
 /**
  * Covers social features
  *
