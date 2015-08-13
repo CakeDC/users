@@ -167,59 +167,6 @@ class UsersTableTest extends TestCase
         $this->assertTrue($result->active);
     }
 
-    /**
-     * Test resetToken
-     *
-     */
-    public function testResetToken()
-    {
-        $user = $this->Users->findAllByUsername('user-1')->first();
-        $result = $this->Users->resetToken('user-1', [
-            'expiration' => 3600,
-            'checkActive' => true,
-        ]);
-        $this->assertNotEmpty($result->token);
-        $this->assertNotEquals($user->token, $result->token);
-        $this->assertNotEmpty($result->token_expires);
-        $this->assertEmpty($result->activation_date);
-        $this->assertFalse($result->active);
-    }
-
-    /**
-     * Test resetToken
-     *
-     * @expectedException InvalidArgumentException
-     */
-    public function testResetTokenWithNullParams()
-    {
-        $this->Users->resetToken(null);
-    }
-
-    /**
-     * Test resetToken
-     *
-     * @expectedException \Users\Exception\UserNotFoundException
-     */
-    public function testResetTokenNonExistentUser()
-    {
-        $this->Users->resetToken('user-not-found', [
-            'expiration' => 3600
-        ]);
-    }
-
-    /**
-     * Test resetToken
-     *
-     * @expectedException \Users\Exception\UserAlreadyActiveException
-     */
-    public function testResetTokenUserAlreadyActive()
-    {
-        $this->Users->resetToken('user-4', [
-            'expiration' => 3600,
-            'checkActive' => true,
-        ]);
-    }
-
     public function testSocialLogin()
     {
         $raw = [

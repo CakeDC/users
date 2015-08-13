@@ -46,7 +46,7 @@ trait PasswordManagementTrait
             throw new InvalidArgumentException(__d('Users', "Token expiration cannot be null"));
         }
 
-        $user = $this->findAllByUsernameOrEmail($reference, $reference)->first();
+        $user = $this->_getUser($reference);
 
         if (empty($user)) {
             throw new UserNotFoundException(__d('Users', "User not found"));
@@ -64,6 +64,17 @@ trait PasswordManagementTrait
             $this->sendResetPasswordEmail($saveResult);
         }
         return $saveResult;
+    }
+
+    /**
+     * Get the user by email or username
+     *
+     * @param string $reference reference could be either an email or username
+     * @return mixed user entity if found
+     */
+    protected function _getUser($reference)
+    {
+        return $this->findAllByUsernameOrEmail($reference, $reference)->first();
     }
 
     /**
