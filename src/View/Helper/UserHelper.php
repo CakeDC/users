@@ -11,6 +11,7 @@
 
 namespace Users\View\Helper;
 
+use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Utility\Hash;
 use Cake\View\Helper;
@@ -22,7 +23,7 @@ use Users\Controller\Component\UsersAuthComponent;
 class UserHelper extends Helper
 {
 
-    public $helpers = ['Html'];
+    public $helpers = ['Html', 'Form'];
 
     /**
      * Default configuration.
@@ -108,5 +109,30 @@ class UserHelper extends Helper
         $profileUrl = '/profile/' . $userId;
         $label = __d('Users', 'Welcome, {0}', $this->Html->link($this->request->session()->read('Auth.User.first_name'), $profileUrl));
         return $this->Html->tag('span', $label, ['class' => 'welcome']);
+    }
+
+    /**
+     * Add reCAPTCHA script
+     * @return mixed
+     */
+    public function addReCAPTCHAScript()
+    {
+        return $this->Html->script('https://www.google.com/recaptcha/api.js');
+    }
+
+    /**
+     * Add reCAPTCHA to the form
+     * @return mixed
+     */
+    public function addReCAPTCHA()
+    {
+        if (!Configure::check('Users.Registration.reCAPTCHA')) {
+            return false;
+        }
+        $this->Form->unlockField('g-recaptcha-response');
+        return $this->Html->tag('div', '', [
+            'class' => 'g-recaptcha',
+            'data-sitekey' => Configure::read('reCAPTCHA.key')
+        ]);
     }
 }

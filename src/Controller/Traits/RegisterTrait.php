@@ -23,6 +23,7 @@ use Users\Controller\Component\UsersAuthComponent;
 trait RegisterTrait
 {
     use PasswordManagementTrait;
+    use ReCaptchaTrait;
 
     /**
      * Register a new user
@@ -49,6 +50,7 @@ trait RegisterTrait
             'usersTable' => $usersTable,
             'options' => $options,
         ]);
+
         if ($event->result instanceof EntityInterface) {
             $options['validator'] = 'default';
             if ($userSaved = $usersTable->register($user, $event->result->toArray(), $options)) {
@@ -60,12 +62,22 @@ trait RegisterTrait
         }
 
         if ($this->request->is('post')) {
-            if ($userSaved = $usersTable->register($user, $requestData, $options)) {
-                return $this->_afterRegister($userSaved);
+            $validReCaptcha = $this->validateReCaptcha(
+                $this->request->data('g-recaptcha-response'),
+                $this->request->clientIp()
+            );
+            if ($validReCaptcha) {
+                if ($userSaved = $usersTable->register($user, $requestData, $options)) {
+                    return $this->_afterRegister($userSaved);
+                } else {
+                    $this->Flash->error(__d('Users', 'The user could not be saved'));
+                }
             } else {
-                $this->Flash->error(__d('Users', 'The user could not be saved'));
+                $this->Flash->error(__d('Users', 'The reCAPTCHA could not be validated'));
             }
         }
+
+
         $this->set(compact('user'));
         $this->set('_serialize', ['user']);
     }
