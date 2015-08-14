@@ -19,7 +19,7 @@ class SocialAccountsFixture extends TestFixture
     public $fields = [
         'id' => ['type' => 'uuid', 'length' => null, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
         'user_id' => ['type' => 'string', 'length' => 36, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'fixed' => null],
-        'provider' => ['type' => 'integer', 'length' => 2, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
+        'provider' => ['type' => 'string', 'length' => 255, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'username' => ['type' => 'string', 'length' => 255, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null, 'fixed' => null],
         'reference' => ['type' => 'string', 'length' => 255, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'fixed' => null],
         'avatar' => ['type' => 'string', 'length' => 255, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null, 'fixed' => null],
@@ -50,7 +50,7 @@ class SocialAccountsFixture extends TestFixture
         [
             'id' => 1,
             'user_id' => 1,
-            'provider' => 1,
+            'provider' => 'Facebook',
             'username' => 'user-1-fb',
             'reference' => 'reference-1-1234',
             'avatar' => 'Lorem ipsum dolor sit amet',
@@ -66,7 +66,7 @@ class SocialAccountsFixture extends TestFixture
         [
             'id' => 2,
             'user_id' => 1,
-            'provider' => 2,
+            'provider' => 'Twitter',
             'username' => 'user-1-tw',
             'reference' => 'reference-1-1234',
             'avatar' => 'Lorem ipsum dolor sit amet',
@@ -82,7 +82,7 @@ class SocialAccountsFixture extends TestFixture
         [
             'id' => 3,
             'user_id' => 2,
-            'provider' => 1,
+            'provider' => 'Facebook',
             'username' => 'user-2-fb',
             'reference' => 'reference-2-1',
             'avatar' => 'Lorem ipsum dolor sit amet',
@@ -98,7 +98,7 @@ class SocialAccountsFixture extends TestFixture
         [
             'id' => 4,
             'user_id' => 3,
-            'provider' => 2,
+            'provider' => 'Twitter',
             'username' => 'user-2-tw',
             'reference' => 'reference-2-2',
             'avatar' => 'Lorem ipsum dolor sit amet',
@@ -114,7 +114,7 @@ class SocialAccountsFixture extends TestFixture
         [
             'id' => 5,
             'user_id' => 4,
-            'provider' => 2,
+            'provider' => 'Twitter',
             'username' => 'user-2-tw',
             'reference' => 'reference-2-2',
             'avatar' => 'Lorem ipsum dolor sit amet',

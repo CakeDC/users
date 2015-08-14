@@ -11,6 +11,7 @@
 
 namespace Users\View\Helper;
 
+use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Utility\Hash;
 use Cake\View\Helper;
@@ -22,7 +23,7 @@ use Users\Controller\Component\UsersAuthComponent;
 class UserHelper extends Helper
 {
 
-    public $helpers = ['Html'];
+    public $helpers = ['Html', 'Form'];
 
     /**
      * Default configuration.
@@ -30,6 +31,18 @@ class UserHelper extends Helper
      * @var array
      */
     protected $_defaultConfig = [];
+
+    /**
+     * beforeLayou callback loads reCaptcha if enabled
+     *
+     * @param Event $event event
+     * @return void
+     */
+    public function beforeLayout(Event $event) {
+        if (Configure::read('Users.Registration.reCaptcha')) {
+            $this->addReCaptchaScript();
+        }
+    }
 
     /**
      * Facebook login link
@@ -108,5 +121,32 @@ class UserHelper extends Helper
         $profileUrl = '/profile/' . $userId;
         $label = __d('Users', 'Welcome, {0}', $this->Html->link($this->request->session()->read('Auth.User.first_name'), $profileUrl));
         return $this->Html->tag('span', $label, ['class' => 'welcome']);
+    }
+
+    /**
+     * Add reCaptcha script
+     * @return void
+     */
+    public function addReCaptchaScript()
+    {
+        $this->Html->script('https://www.google.com/recaptcha/api.js', [
+            'block' => 'script',
+        ]);
+    }
+
+    /**
+     * Add reCaptcha to the form
+     * @return mixed
+     */
+    public function addReCaptcha()
+    {
+        if (!Configure::check('Users.Registration.reCaptcha')) {
+            return false;
+        }
+        $this->Form->unlockField('g-recaptcha-response');
+        return $this->Html->tag('div', '', [
+            'class' => 'g-recaptcha',
+            'data-sitekey' => Configure::read('reCaptcha.key')
+        ]);
     }
 }
