@@ -22,21 +22,35 @@ trait ReCaptchaTrait
 {
 
     /**
-     * Validates reCAPTCHA response
-     * @param $recaptchaResponse
-     * @param $clientIp
+     * Validates reCaptcha response
+     *
+     * @param string $recaptchaResponse response
+     * @param string $clientIp client ip
      * @return bool
      */
     public function validateReCaptcha($recaptchaResponse, $clientIp)
     {
         $validReCaptcha = true;
-        $useReCaptcha = (bool)Configure::read('Users.Registration.reCAPTCHA');
-        $reCaptchaSecret = Configure::read('reCAPTCHA.secret');
-        if ($useReCaptcha && !empty($reCaptchaSecret)) {
-            $recaptcha = new ReCaptcha($reCaptchaSecret);
+        $recaptcha = $this->_getReCaptchaInstance();
+        if (!empty($recaptcha)) {
             $response = $recaptcha->verify($recaptchaResponse, $clientIp);
             $validReCaptcha = $response->isSuccess();
         }
         return $validReCaptcha;
+    }
+
+    /**
+     * Create reCaptcha instance if enabled in configuration
+     *
+     * @return ReCaptcha
+     */
+    protected function _getReCaptchaInstance()
+    {
+        $useReCaptcha = (bool)Configure::read('Users.Registration.reCaptcha');
+        $reCaptchaSecret = Configure::read('reCaptcha.secret');
+        if ($useReCaptcha && !empty($reCaptchaSecret)) {
+            return new ReCaptcha($reCaptchaSecret);
+        }
+        return null;
     }
 }

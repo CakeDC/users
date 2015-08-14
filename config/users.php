@@ -28,8 +28,8 @@ $config = [
         'Registration' => [
             //determines if the register is enabled
             'active' => true,
-            //determines if the reCAPTCHA is enabled for registration
-            'reCAPTCHA' => true,
+            //determines if the reCaptcha is enabled for registration
+            'reCaptcha' => true,
         ],
         'Tos' => [
             //determines if the user should include tos accepted

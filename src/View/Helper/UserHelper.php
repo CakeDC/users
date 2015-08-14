@@ -33,6 +33,18 @@ class UserHelper extends Helper
     protected $_defaultConfig = [];
 
     /**
+     * beforeLayou callback loads reCaptcha if enabled
+     *
+     * @param Event $event event
+     * @return void
+     */
+    public function beforeLayout(Event $event) {
+        if (Configure::read('Users.Registration.reCaptcha')) {
+            $this->addReCaptchaScript();
+        }
+    }
+
+    /**
      * Facebook login link
      *
      * @return string
@@ -112,27 +124,29 @@ class UserHelper extends Helper
     }
 
     /**
-     * Add reCAPTCHA script
-     * @return mixed
+     * Add reCaptcha script
+     * @return void
      */
-    public function addReCAPTCHAScript()
+    public function addReCaptchaScript()
     {
-        return $this->Html->script('https://www.google.com/recaptcha/api.js');
+        $this->Html->script('https://www.google.com/recaptcha/api.js', [
+            'block' => 'script',
+        ]);
     }
 
     /**
-     * Add reCAPTCHA to the form
+     * Add reCaptcha to the form
      * @return mixed
      */
-    public function addReCAPTCHA()
+    public function addReCaptcha()
     {
-        if (!Configure::check('Users.Registration.reCAPTCHA')) {
+        if (!Configure::check('Users.Registration.reCaptcha')) {
             return false;
         }
         $this->Form->unlockField('g-recaptcha-response');
         return $this->Html->tag('div', '', [
             'class' => 'g-recaptcha',
-            'data-sitekey' => Configure::read('reCAPTCHA.key')
+            'data-sitekey' => Configure::read('reCaptcha.key')
         ]);
     }
 }

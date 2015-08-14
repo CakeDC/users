@@ -14,5 +14,5 @@ The plugin itself is already capable of:
 * Simple roles management
 * Simple Rbac and SuperUser Authorize
 * RememberMe using cookie feature
-* reCAPTCHA for user registration
+* reCaptcha for user registration
 

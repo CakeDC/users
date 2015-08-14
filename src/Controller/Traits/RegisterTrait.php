@@ -73,7 +73,7 @@ trait RegisterTrait
                     $this->Flash->error(__d('Users', 'The user could not be saved'));
                 }
             } else {
-                $this->Flash->error(__d('Users', 'The reCAPTCHA could not be validated'));
+                $this->Flash->error(__d('Users', 'The reCaptcha could not be validated'));
             }
         }
 
