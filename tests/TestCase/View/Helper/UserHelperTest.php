@@ -32,8 +32,8 @@ class UserHelperTest extends TestCase
     {
         parent::setUp();
         Router::connect(':plugin/:controller/:action');
-        $view = new View();
-        $this->User = new UserHelper($view);
+        $this->View = $this->getMock('Cake\View\View', ['append']);
+        $this->User = new UserHelper($this->View);
         $this->request = new \Cake\Network\Request();
     }
 
@@ -191,5 +191,30 @@ class UserHelperTest extends TestCase
 
         $result = $this->User->welcome();
         $this->assertEmpty($result);
+    }
+
+    /**
+     * Test add ReCaptcha field
+     *
+     * @return void
+     */
+    public function testAddReCaptcha()
+    {
+        $result = $this->User->addReCaptcha();
+        $this->assertEquals('<div class="g-recaptcha"></div>', $result);
+    }
+
+
+    /**
+     * Test add ReCaptcha field
+     *
+     * @return void
+     */
+    public function testAddReCaptchaScript()
+    {
+        $this->View->expects($this->at(0))
+            ->method('append')
+            ->with('script', $this->stringContains('https://www.google.com/recaptcha/api.js'));
+        $this->User->addReCaptchaScript();
     }
 }
