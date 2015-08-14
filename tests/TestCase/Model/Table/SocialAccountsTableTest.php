@@ -16,6 +16,7 @@ use Cake\Network\Email\Email;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
+use Users\Model\Table\SocialAccountsTable;
 use Users\Model\Table\UsersTable;
 
 /**
@@ -76,7 +77,7 @@ class SocialAccountsTableTest extends TestCase
     public function testValidateEmail()
     {
         $token = 'token-1234';
-        $result = $this->SocialAccounts->validateAccount(1, 'reference-1-1234', $token);
+        $result = $this->SocialAccounts->validateAccount(SocialAccountsTable::PROVIDER_FACEBOOK, 'reference-1-1234', $token);
         $this->assertTrue($result->active);
         $this->assertEquals($token, $result->token);
     }
@@ -108,7 +109,7 @@ class SocialAccountsTableTest extends TestCase
      */
     public function testValidateEmailActiveAccount()
     {
-        $this->SocialAccounts->validateAccount(2, 'reference-1-1234', 'token-1234');
+        $this->SocialAccounts->validateAccount(SocialAccountsTable::PROVIDER_TWITTER, 'reference-1-1234', 'token-1234');
     }
 
     /**
@@ -183,16 +184,8 @@ class SocialAccountsTableTest extends TestCase
         $this->assertTextContains('From: test@example.com', $result['headers']);
         $this->assertTextContains('To: user-1@test.com', $result['headers']);
         $this->assertTextContains('Subject: first1, Your social account validation link', $result['headers']);
-        $this->assertTextContains('Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-Hi first1,
-
-Please copy the following address in your web browser to activate your social login http://users.test/users/social-accounts/validate-account/1/reference-1-1234/token-1234
-Thank you,
-', $result['message']);
         $this->assertTextContains('Hi first1,', $result['message']);
-        $this->assertTextContains('<a href="http://users.test/users/social-accounts/validate-account/1/reference-1-1234/token-1234">Activate your social login here</a>', $result['message']);
-        $this->assertTextContains('If the link is not correcly displayed, please copy the following address in your web browser http://users.test/users/social-accounts/validate-account/1/reference-1-1234/token-1234', $result['message']);
+        $this->assertTextContains('<a href="http://users.test/users/social-accounts/validate-account/Facebook/reference-1-1234/token-1234">Activate your social login here</a>', $result['message']);
+        $this->assertTextContains('If the link is not correcly displayed, please copy the following address in your web browser http://users.test/users/social-accounts/validate-account/Facebook/reference-1-1234/token-1234', $result['message']);
     }
 }
