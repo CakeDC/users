@@ -13,6 +13,8 @@ namespace Users\Model\Entity;
 
 use Cake\Auth\DefaultPasswordHasher;
 use Cake\ORM\Entity;
+use Cake\Utility\Text;
+use DateTime;
 
 /**
  * User Entity.

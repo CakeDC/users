@@ -11,7 +11,9 @@
 
 namespace Users\Test\TestCase\View\Helper;
 
+use Cake\Core\Configure;
 use Cake\Event\Event;
+use Cake\Network\Request;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use Cake\View\View;
@@ -34,7 +36,7 @@ class UserHelperTest extends TestCase
         Router::connect(':plugin/:controller/:action');
         $this->View = $this->getMock('Cake\View\View', ['append']);
         $this->User = new UserHelper($this->View);
-        $this->request = new \Cake\Network\Request();
+        $this->request = new Request();
     }
 
     /**
@@ -200,8 +202,11 @@ class UserHelperTest extends TestCase
      */
     public function testAddReCaptcha()
     {
+        $siteKey = Configure::read('reCaptcha.key');
+        Configure::write('reCaptcha.key', 'testKey');
         $result = $this->User->addReCaptcha();
-        $this->assertEquals('<div class="g-recaptcha"></div>', $result);
+        $this->assertEquals('<div class="g-recaptcha" data-sitekey="testKey"></div>', $result);
+        Configure::write('reCaptcha.key', $siteKey);
     }
 
 
