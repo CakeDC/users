@@ -12,10 +12,12 @@
 namespace Users\Test\TestCase\Controller\Traits;
 
 use Cake\Controller\Controller;
+use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Network\Request;
 use Cake\TestSuite\TestCase;
 use Opauth\Opauth\Response;
+use Users\Controller\Component\UsersAuthComponent;
 use Users\Controller\Traits\LoginTrait;
 
 class LoginTraitTest extends TestCase
@@ -93,6 +95,85 @@ class LoginTraitTest extends TestCase
                 ->method('redirect')
                 ->with($redirectLoginOK);
         $this->Trait->login();
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testLoginBeforeLoginReturningArray()
+    {
+        $user = [
+            'id' => 1
+        ];
+        $event = new Event('event');
+        $event->result = $user;
+        $this->Trait->expects($this->at(0))
+                ->method('dispatchEvent')
+                ->with(UsersAuthComponent::EVENT_BEFORE_LOGIN)
+                ->will($this->returnValue($event));
+        $this->Trait->expects($this->at(1))
+                ->method('dispatchEvent')
+                ->with(UsersAuthComponent::EVENT_AFTER_LOGIN)
+                ->will($this->returnValue(new Event('name')));
+        $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
+            ->setMethods(['setUser', 'redirectUrl'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $redirectLoginOK = '/';
+        $this->Trait->Auth->expects($this->once())
+                ->method('setUser')
+                ->with($user);
+        $this->Trait->Auth->expects($this->once())
+            ->method('redirectUrl')
+            ->will($this->returnValue($redirectLoginOK));
+        $this->Trait->expects($this->once())
+                ->method('redirect')
+                ->with($redirectLoginOK);
+        $this->Trait->login();
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testLoginBeforeLoginReturningStoppedEvent()
+    {
+        $event = new Event('event');
+        $event->result = '/';
+        $event->stopPropagation();
+        $this->Trait->expects($this->at(0))
+                ->method('dispatchEvent')
+                ->with(UsersAuthComponent::EVENT_BEFORE_LOGIN)
+                ->will($this->returnValue($event));
+        $this->Trait->expects($this->once())
+                ->method('redirect')
+                ->with('/');
+        $this->Trait->login();
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testLoginGet()
+    {
+        $this->_mockDispatchEvent(new Event('event'));
+        $socialLogin = Configure::read('Users.Social.login');
+        Configure::write('Users.Social.login', false);
+        $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
+            ->setMethods(['is'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->Trait->request->expects($this->once())
+                ->method('is')
+                ->with('post')
+                ->will($this->returnValue(false));
+        $this->Trait->login();
+        Configure::write('Users.Social.login', $socialLogin);
     }
 
     /**

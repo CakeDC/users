@@ -33,7 +33,6 @@ trait LoginTrait
     {
         $event = $this->dispatchEvent(UsersAuthComponent::EVENT_BEFORE_LOGIN);
         if (is_array($event->result)) {
-            $this->Auth->setUser($event->result);
             return $this->_afterIdentifyUser($event->result);
         }
         if ($event->isStopped()) {
