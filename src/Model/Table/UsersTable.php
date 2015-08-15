@@ -380,19 +380,20 @@ class UsersTable extends Table
      *
      * @todo: move into new behavior
      */
-    protected function _generateUsername($username)
+    public function generateUniqueUsername($username)
     {
         $i = 0;
+        $checkUsername = $username;
         while (true) {
-            $existingUsername = $this->find()->where([$this->alias() . '.username' => $username])->count();
+            $existingUsername = $this->find()->where([$this->alias() . '.username' => $checkUsername])->count();
             if ($existingUsername > 0) {
-                $username = $username . $i;
+                $checkUsername = $username . $i;
                 $i++;
                 continue;
             }
             break;
         }
-        return $username;
+        return $checkUsername;
     }
 
     /**
@@ -514,7 +515,7 @@ class UsersTable extends Table
                 }
 
             }
-            $userData['username'] = $this->_generateUsername(Hash::get($userData, 'username'));
+            $userData['username'] = $this->generateUniqueUsername(Hash::get($userData, 'username'));
             if ($useEmail) {
                 $userData['email'] = $data->email;
                 if (!$data->validated) {
