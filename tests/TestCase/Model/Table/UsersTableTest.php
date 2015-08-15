@@ -174,7 +174,8 @@ class UsersTableTest extends TestCase
             'first_name' => 'User 2',
             'gender' => 'female',
             'verified' => 1,
-            'user_email' => 'hello@test.com',
+            'user_email' => 'user-2@test.com',
+            'link' => 'link'
         ];
         $data = new Response(SocialAccountsTable::PROVIDER_FACEBOOK, $raw);
         $data->setData('uid', 'id');
@@ -250,12 +251,15 @@ class UsersTableTest extends TestCase
             'last_name' => 'Last Name',
             'gender' => 'male',
             'user_email' => 'user@test.com',
+            'twitter' => 'link'
         ];
 
         $data = new Response(SocialAccountsTable::PROVIDER_TWITTER, $raw);
         $data->setData('uid', 'id');
         $data->setData('info.first_name', 'first_name');
         $data->setData('info.last_name', 'last_name');
+        $data->setData('info.urls.twitter', 'twitter');
+
         $data->email = 'username@test.com';
         $data->credentials = [
             'token' => 'token',

@@ -74,6 +74,8 @@ NOTE: SOME keys were hidden in this doc page, please refer to `vendor/cakedc/use
         'Registration' => [
             //determines if the register is enabled
             'active' => true,
+            //determines if the reCaptcha is enabled for registration
+            'reCaptcha' => true,
         ],
         'Tos' => [
             //determines if the user should include tos accepted

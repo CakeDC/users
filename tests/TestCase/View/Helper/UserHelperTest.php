@@ -11,7 +11,9 @@
 
 namespace Users\Test\TestCase\View\Helper;
 
+use Cake\Core\Configure;
 use Cake\Event\Event;
+use Cake\Network\Request;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use Cake\View\View;
@@ -32,9 +34,9 @@ class UserHelperTest extends TestCase
     {
         parent::setUp();
         Router::connect(':plugin/:controller/:action');
-        $view = new View();
-        $this->User = new UserHelper($view);
-        $this->request = new \Cake\Network\Request();
+        $this->View = $this->getMock('Cake\View\View', ['append']);
+        $this->User = new UserHelper($this->View);
+        $this->request = new Request();
     }
 
     /**
@@ -191,5 +193,33 @@ class UserHelperTest extends TestCase
 
         $result = $this->User->welcome();
         $this->assertEmpty($result);
+    }
+
+    /**
+     * Test add ReCaptcha field
+     *
+     * @return void
+     */
+    public function testAddReCaptcha()
+    {
+        $siteKey = Configure::read('reCaptcha.key');
+        Configure::write('reCaptcha.key', 'testKey');
+        $result = $this->User->addReCaptcha();
+        $this->assertEquals('<div class="g-recaptcha" data-sitekey="testKey"></div>', $result);
+        Configure::write('reCaptcha.key', $siteKey);
+    }
+
+
+    /**
+     * Test add ReCaptcha field
+     *
+     * @return void
+     */
+    public function testAddReCaptchaScript()
+    {
+        $this->View->expects($this->at(0))
+            ->method('append')
+            ->with('script', $this->stringContains('https://www.google.com/recaptcha/api.js'));
+        $this->User->addReCaptchaScript();
     }
 }
