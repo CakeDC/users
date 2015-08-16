@@ -9,19 +9,22 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-use Cake\Routing\Router;
 use Cake\Core\Configure;
+use Cake\Routing\Router;
 
 Router::plugin('Users', function ($routes) {
     $routes->fallbacks('DashedRoute');
 });
 
-Router::scope('/auth', function ($routes) {
-    $routes->connect(
-        '/*',
-        Configure::read('Opauth.path')
-    );
-});
+if (is_array(Configure::read('Opauth.path'))) {
+    Router::scope('/auth', function ($routes) {
+        $routes->connect(
+            '/*',
+            Configure::read('Opauth.path')
+        );
+    });
+}
+
 Router::connect('/accounts/validate/*', [
     'admin' => false,
     'plugin' => 'Users',
