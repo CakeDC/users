@@ -9,25 +9,23 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Model\Table\Traits;
+namespace Users\Model\Behavior;
 
 use Cake\Datasource\EntityInterface;
-use Cake\Network\Email\Email;
 use Cake\Utility\Hash;
 use DateTime;
 use InvalidArgumentException;
 use Users\Exception\TokenExpiredException;
 use Users\Exception\UserAlreadyActiveException;
 use Users\Exception\UserNotFoundException;
+use Users\Model\Behavior\Behavior;
 use Users\Model\Entity\User;
 
 /**
- * Covers the login, logout and social login
- *
+ * Covers the user registration
  */
-trait RegisterTrait
+class RegisterBehavior extends Behavior
 {
-
     /**
      * Registers an user.
      *
@@ -36,7 +34,6 @@ trait RegisterTrait
      * @param array $options ['tokenExpiration]
      * @return bool|EntityInterface
      * @throws InvalidArgumentException
-     * @todo: move into new behavior
      */
     public function register($user, $data, $options)
     {
@@ -45,7 +42,7 @@ trait RegisterTrait
         if ($validateEmail) {
             $validator = 'email';
         }
-        $user = $this->patchEntity($user, $data, ['validate' => $validator]);
+        $user = $this->_table->patchEntity($user, $data, ['validate' => $validator]);
 
         $tokenExpiration = Hash::get($options, 'token_expiration');
         $useTos = Hash::get($options, 'use_tos');
@@ -57,54 +54,14 @@ trait RegisterTrait
             $user->tos_date = new DateTime();
         }
         $user->validated = false;
-        //@todo mov updateActive to afterSave?
-        $this->_updateActive($user, $validateEmail, $tokenExpiration);
-        $this->isValidateEmail = $validateEmail;
-        $userSaved = $this->save($user);
+        //@todo move updateActive to afterSave?
+        $user = $this->updateActive($user, $validateEmail, $tokenExpiration);
+        $this->_table->isValidateEmail = $validateEmail;
+        $userSaved = $this->_table->save($user);
         if ($userSaved && $validateEmail) {
-            $this->sendValidationEmail($user);
+            $this->_table->sendEmail($user, __d('Users', 'Your account validation link'));
         }
         return $userSaved;
-    }
-
-    /**
-     * DRY for update active and token based on validateEmail flag
-     *
-     * @param type $user Reference of user to be updated.
-     * @param type $validateEmail email user to validate.
-     * @param type $tokenExpiration token to be updated.
-     * @return void
-     */
-    protected function _updateActive(&$user, $validateEmail, $tokenExpiration)
-    {
-        $emailValidated = $user['validated'];
-        if (!$emailValidated && $validateEmail) {
-            $user['active'] = false;
-            $user->updateToken($tokenExpiration);
-        } else {
-            $user['active'] = true;
-            $user['activation_date'] = new DateTime();
-        }
-    }
-
-    /**
-     * Send the validation email to the newly registered user
-     *
-     * @param EntityInterface $user User entity
-     * @param Email $email instance, if null the default email configuration with the
-     * Users.validation template will be used, so set a ->template() if you pass an Email
-     * instance
-     * @return array email send result
-     */
-    public function sendValidationEmail(EntityInterface $user, Email $email = null)
-    {
-        $firstName = isset($user['first_name'])? $user['first_name'] . ', ' : '';
-        $subject = __d('Users', '{0}Your account validation link', $firstName);
-        return $this->getEmailInstance($email)
-                ->to($user['email'])
-                ->subject($subject)
-                ->viewVars($user->toArray())
-                ->send();
     }
 
     /**
@@ -118,14 +75,14 @@ trait RegisterTrait
      */
     public function validate($token, $callback = null)
     {
-        $user = $this->find()
+        $user = $this->_table->find()
             ->select(['token_expires', 'id', 'active', 'token'])
             ->where(['token' => $token])
             ->first();
         if (!empty($user)) {
             if (!$user->tokenExpired()) {
                 if (!empty($callback) && method_exists($this, $callback)) {
-                    return $this->{$callback}($user);
+                    return $this->_table->{$callback}($user);
                 } else {
                     return $user;
                 }
@@ -143,7 +100,6 @@ trait RegisterTrait
      * @param EntityInterface $user user object.
      * @return mixed User entity or bool false if the user could not be activated
      * @throws UserAlreadyActiveException
-     * @todo: move into new behavior
      */
     public function activateUser(EntityInterface $user)
     {
@@ -153,7 +109,7 @@ trait RegisterTrait
         $user = $this->_removesValidationToken($user);
         $user->activation_date = new DateTime();
         $user->active = true;
-        $result = $this->save($user);
+        $result = $this->_table->save($user);
 
         return $result;
     }
@@ -162,15 +118,13 @@ trait RegisterTrait
      * Removes user token for validation
      *
      * @param User $user user object.
-     * @return User
-     *
-     * @todo: move into new behavior
+     * @return EntityInterface
      */
     protected function _removesValidationToken(EntityInterface $user)
     {
         $user->token = null;
         $user->token_expires = null;
-        $result = $this->save($user);
+        $result = $this->_table->save($user);
 
         return $result;
     }

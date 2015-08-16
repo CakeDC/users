@@ -153,12 +153,12 @@ trait SocialTrait
             $userData['password'] = $this->randomString();
             $userData['avatar'] = Hash::get($data->info, 'image');
             $userData['validated'] = $data->validated;
-            $this->_updateActive($userData, false, $tokenExpiration);
             $userData['tos_date'] = date("Y-m-d H:i:s");
             $userData['gender'] = Hash::get($data->raw, 'gender');
             $userData['timezone'] = Hash::get($data->raw, 'timezone');
             $userData['social_accounts'][] = $accountData;
             $user = $this->newEntity($userData, ['associated' => ['SocialAccounts']]);
+            $user = $this->updateActive($user, false, $tokenExpiration);
         } else {
             if ($useEmail && !$data->validated) {
                 $accountData['active'] = false;

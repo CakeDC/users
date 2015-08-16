@@ -32,7 +32,6 @@ class UsersTable extends Table
 
     use PasswordManagementTrait;
     use RandomStringTrait;
-    use RegisterTrait;
     use SocialTrait;
 
     /**
@@ -56,6 +55,7 @@ class UsersTable extends Table
         $this->displayField('id');
         $this->primaryKey('id');
         $this->addBehavior('Timestamp');
+        $this->addBehavior('Users.Register');
         $this->hasMany('SocialAccounts', [
             'foreignKey' => 'user_id',
             'className' => 'Users.SocialAccounts'
@@ -186,22 +186,5 @@ class UsersTable extends Table
         }
 
         return $rules;
-    }
-
-    /**
-     * Get or initialize the email instance. Used for mocking.
-     *
-     * @param Email $email if email provided, we'll use the instance instead of creating a new one
-     * @return Email
-     */
-    public function getEmailInstance(Email $email = null)
-    {
-        if ($email === null) {
-            $email = new Email('default');
-            $email->template('Users.validation')
-                    ->emailFormat('both');
-        }
-
-        return $email;
     }
 }
