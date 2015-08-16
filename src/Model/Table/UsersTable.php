@@ -19,20 +19,12 @@ use Cake\Utility\Hash;
 use Cake\Validation\Validator;
 use Users\Exception\WrongPasswordException;
 use Users\Model\Entity\User;
-use Users\Model\Table\Traits\PasswordManagementTrait;
-use Users\Model\Table\Traits\RegisterTrait;
-use Users\Model\Table\Traits\SocialTrait;
-use Users\Traits\RandomStringTrait;
 
 /**
  * Users Model
  */
 class UsersTable extends Table
 {
-
-    use PasswordManagementTrait;
-    use RandomStringTrait;
-    use SocialTrait;
 
     /**
      * Flag to set email check in buildRules or not
@@ -56,6 +48,8 @@ class UsersTable extends Table
         $this->primaryKey('id');
         $this->addBehavior('Timestamp');
         $this->addBehavior('Users.Register');
+        $this->addBehavior('Users.Password');
+        $this->addBehavior('Users.Social');
         $this->hasMany('SocialAccounts', [
             'foreignKey' => 'user_id',
             'className' => 'Users.SocialAccounts'

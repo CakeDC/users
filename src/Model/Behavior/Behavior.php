@@ -33,10 +33,10 @@ class Behavior extends BaseBehavior
      *
      * @return array email send result
      */
-    public function sendEmail(EntityInterface $user, $subject, Email $email = null)
+    protected function _sendEmail(EntityInterface $user, $subject, Email $email = null)
     {
         $firstName = isset($user['first_name'])? $user['first_name'] . ', ' : '';
-        return $this->getEmailInstance($email)
+        return $this->_getEmailInstance($email)
                 ->to($user['email'])
                 ->subject($firstName . $subject)
                 ->viewVars($user->toArray())
@@ -49,7 +49,7 @@ class Behavior extends BaseBehavior
      * @param Email $email if email provided, we'll use the instance instead of creating a new one
      * @return Email
      */
-    public function getEmailInstance(Email $email = null)
+    protected function _getEmailInstance(Email $email = null)
     {
         if ($email === null) {
             $email = new Email('default');
@@ -68,7 +68,7 @@ class Behavior extends BaseBehavior
      * @param type $tokenExpiration token to be updated.
      * @return EntityInterface
      */
-    public function updateActive(EntityInterface $user, $validateEmail, $tokenExpiration)
+    protected function _updateActive(EntityInterface $user, $validateEmail, $tokenExpiration)
     {
         $emailValidated = $user['validated'];
         if (!$emailValidated && $validateEmail) {
@@ -80,5 +80,20 @@ class Behavior extends BaseBehavior
         }
 
         return $user;
+    }
+
+    /**
+     * Remove user token for validation
+     *
+     * @param User $user user object.
+     * @return EntityInterface
+     */
+    protected function _removeValidationToken(EntityInterface $user)
+    {
+        $user->token = null;
+        $user->token_expires = null;
+        $result = $this->_table->save($user);
+
+        return $result;
     }
 }

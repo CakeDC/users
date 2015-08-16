@@ -55,11 +55,11 @@ class RegisterBehavior extends Behavior
         }
         $user->validated = false;
         //@todo move updateActive to afterSave?
-        $user = $this->updateActive($user, $validateEmail, $tokenExpiration);
+        $user = $this->_updateActive($user, $validateEmail, $tokenExpiration);
         $this->_table->isValidateEmail = $validateEmail;
         $userSaved = $this->_table->save($user);
         if ($userSaved && $validateEmail) {
-            $this->_table->sendEmail($user, __d('Users', 'Your account validation link'));
+            $this->_sendEmail($user, __d('Users', 'Your account validation link'));
         }
         return $userSaved;
     }
@@ -106,24 +106,9 @@ class RegisterBehavior extends Behavior
         if ($user->active) {
             throw new UserAlreadyActiveException(__d('Users', "User account already validated"));
         }
-        $user = $this->_removesValidationToken($user);
+        $user = $this->_removeValidationToken($user);
         $user->activation_date = new DateTime();
         $user->active = true;
-        $result = $this->_table->save($user);
-
-        return $result;
-    }
-
-    /**
-     * Removes user token for validation
-     *
-     * @param User $user user object.
-     * @return EntityInterface
-     */
-    protected function _removesValidationToken(EntityInterface $user)
-    {
-        $user->token = null;
-        $user->token_expires = null;
         $result = $this->_table->save($user);
 
         return $result;

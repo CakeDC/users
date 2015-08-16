@@ -9,7 +9,7 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Model\Table\Traits;
+namespace Users\Model\Behavior;
 
 use Cake\Datasource\EntityInterface;
 use Cake\Network\Email\Email;
@@ -18,12 +18,12 @@ use InvalidArgumentException;
 use Users\Exception\UserAlreadyActiveException;
 use Users\Exception\UserNotFoundException;
 use Users\Exception\WrongPasswordException;
+use Users\Model\Behavior\Behavior;
 
 /**
- * Password management features
- *
+ * Covers the password management features
  */
-trait PasswordManagementTrait
+class PasswordBehavior extends Behavior
 {
     /**
      * Resets user token
@@ -59,7 +59,7 @@ trait PasswordManagementTrait
             $user->activation_date = null;
         }
         $user->updateToken(Hash::get($options, 'expiration'));
-        $saveResult = $this->save($user);
+        $saveResult = $this->_table->save($user);
         if (Hash::get($options, 'sendEmail')) {
             $this->sendResetPasswordEmail($saveResult);
         }
@@ -74,7 +74,7 @@ trait PasswordManagementTrait
      */
     protected function _getUser($reference)
     {
-        return $this->findAllByUsernameOrEmail($reference, $reference)->first();
+        return $this->_table->findAllByUsernameOrEmail($reference, $reference)->first();
     }
 
     /**
@@ -90,7 +90,7 @@ trait PasswordManagementTrait
     {
         $firstName = isset($user['first_name'])? $user['first_name'] . ', ' : '';
         $subject = __d('Users', '{0}Your reset password link', $firstName);
-        return $this->getEmailInstance($email)
+        return $this->_getEmailInstance($email)
                 ->template('Users.reset_password')
                 ->to($user['email'])
                 ->subject($subject)
@@ -106,7 +106,7 @@ trait PasswordManagementTrait
      */
     public function changePassword(EntityInterface $user)
     {
-        $currentUser = $this->get($user->id, [
+        $currentUser = $this->_table->get($user->id, [
             'contain' => []
         ]);
 
@@ -115,9 +115,9 @@ trait PasswordManagementTrait
                 throw new WrongPasswordException(__d('Users', 'The old password does not match'));
             }
         }
-        $user = $this->save($user);
+        $user = $this->_table->save($user);
         if (!empty($user)) {
-            $user = $this->_removesValidationToken($user);
+            $user = $this->removeValidationToken($user);
         }
         return $user;
     }

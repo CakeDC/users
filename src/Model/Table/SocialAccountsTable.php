@@ -51,11 +51,6 @@ class SocialAccountsTable extends Table
         $this->displayField('id');
         $this->primaryKey('id');
         $this->addBehavior('Timestamp');
-        $this->belongsTo('Users', [
-            'foreignKey' => 'user_id',
-            'joinType' => 'INNER',
-            'className' => Configure::read('Users.table')
-        ]);
     }
 
     /**
@@ -126,115 +121,5 @@ class SocialAccountsTable extends Table
         $rules->add($rules->isUnique(['username']));
         $rules->add($rules->existsIn(['user_id'], 'Users'));
         return $rules;
-    }
-
-    /**
-     * After save callback
-     *
-     * @param Event $event event
-     * @param Entity $entity entity
-     * @param ArrayObject $options options
-     * @return mixed
-     */
-    public function afterSave(Event $event, Entity $entity, $options)
-    {
-        if ($entity->active) {
-            return true;
-        }
-        $user = $this->Users->find()->where(['Users.id' => $entity->user_id, 'Users.active' => true])->first();
-        if (empty($user)) {
-            return true;
-        }
-        return $this->sendSocialValidationEmail($entity, $user);
-    }
-
-    /**
-     * Send social validation email to the user
-     *
-     * @param EntityInterface $socialAccount social account
-     * @param EntityInterface $user user
-     * @param Email $email Email instance or null to use 'default' configuration
-     * @return mixed
-     */
-    public function sendSocialValidationEmail(EntityInterface $socialAccount, EntityInterface $user, Email $email = null)
-    {
-        $email = $this->Users->getEmailInstance($email);
-        $email->template('Users.social_account_validation');
-        $firstName = isset($user['first_name'])? $user['first_name'] . ', ' : '';
-        //note: we control the space after the username in the previous line
-        $subject = __d('Users', '{0}Your social account validation link', $firstName);
-        return $email
-            ->to($user['email'])
-            ->subject($subject)
-            ->viewVars(compact('user', 'socialAccount'))
-            ->send();
-    }
-
-    /**
-     * Validates the social account
-     *
-     * @param string $provider provider
-     * @param string $reference reference
-     * @param string $token token
-     * @throws RecordNotFoundException
-     * @throws AccountAlreadyActiveException
-     * @return User
-     */
-    public function validateAccount($provider, $reference, $token)
-    {
-        $socialAccount = $this->find()
-            ->select(['id', 'provider', 'reference', 'active', 'token'])
-            ->where(['provider' => $provider, 'reference' => $reference])
-            ->first();
-
-        if (!empty($socialAccount) && $socialAccount->token === $token) {
-            if ($socialAccount->active) {
-                throw new AccountAlreadyActiveException(__d('Users', "Account already validated"));
-            }
-        } else {
-            throw new RecordNotFoundException(__d('Users', "Account not found for the given token and email."));
-        }
-
-        return $this->_activateAccount($socialAccount);
-    }
-
-    /**
-     * Validates the social account
-     *
-     * @param string $provider provider
-     * @param string $reference reference
-     * @throws RecordNotFoundException
-     * @throws AccountAlreadyActiveException
-     * @return User
-     */
-    public function resendValidation($provider, $reference)
-    {
-        $socialAccount = $this->find()
-            ->where(['provider' => $provider, 'reference' => $reference])
-            ->contain('Users')
-            ->first();
-
-        if (!empty($socialAccount)) {
-            if ($socialAccount->active) {
-                throw new AccountAlreadyActiveException(__d('Users', "Account already validated"));
-            }
-        } else {
-            throw new RecordNotFoundException(__d('Users', "Account not found for the given token and email."));
-        }
-
-        return $this->sendSocialValidationEmail($socialAccount, $socialAccount->user);
-    }
-
-    /**
-     * Activates an account
-     *
-     * @param Account $socialAccount social account
-     * @return Account
-     */
-    protected function _activateAccount($socialAccount)
-    {
-        $socialAccount->active = true;
-        $result = $this->save($socialAccount);
-        return $result;
     }
 }

@@ -15,12 +15,11 @@ use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use InvalidArgumentException;
 use Users\Exception\UserAlreadyActiveException;
-use Users\Model\Table\Traits\PasswordManagementTrait;
 
 /**
  * Test Case
  */
-class PasswordManagementTraitTest extends TestCase
+class PasswordBehaviorTest extends TestCase
 {
     /**
      * Fixtures
@@ -39,9 +38,13 @@ class PasswordManagementTraitTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->Trait = $this->getMockBuilder('Users\Model\Table\Traits\PasswordManagementTrait')
-                ->setMethods(['_getUser', 'save', 'sendResetPasswordEmail'])
-                ->getMockForTrait();
+        $this->table = $this->getMockBuilder('Cake\ORM\Table')
+                ->setMethods(['save'])
+                ->getMock();
+        $this->Behavior = $this->getMockBuilder('Users\Model\Behavior\PasswordBehavior')
+                ->setMethods(['_getUser'])
+                ->setConstructorArgs([$this->table])
+                ->getMock();
         $this->user = TableRegistry::get('Users.Users')->findAllByUsername('user-1')->first();
     }
 
@@ -52,7 +55,7 @@ class PasswordManagementTraitTest extends TestCase
      */
     public function tearDown()
     {
-        unset($this->Trait, $this->user);
+        unset($this->Behavior, $this->user);
         parent::tearDown();
     }
 
@@ -64,17 +67,17 @@ class PasswordManagementTraitTest extends TestCase
     public function testResetToken()
     {
         $token = $this->user->token;
-        $this->Trait->expects($this->once())
+        $this->Behavior->expects($this->once())
                 ->method('_getUser')
                 ->with('user-1')
                 ->will($this->returnValue($this->user));
-        $this->Trait->expects($this->once())
+        $this->table->expects($this->once())
                 ->method('save')
                 ->will($this->returnValue($this->user));
-        $this->Trait->expects($this->never())
+        $this->Behavior->expects($this->never())
                 ->method('sendResetPasswordEmail')
                 ->with($this->user);
-        $result = $this->Trait->resetToken('user-1', [
+        $result = $this->Behavior->resetToken('user-1', [
             'expiration' => 3600,
             'checkActive' => true,
         ]);
@@ -90,17 +93,17 @@ class PasswordManagementTraitTest extends TestCase
     public function testResetTokenSendEmail()
     {
         $token = $this->user->token;
-        $this->Trait->expects($this->once())
+        $this->Behavior->expects($this->once())
                 ->method('_getUser')
                 ->with('user-1')
                 ->will($this->returnValue($this->user));
-        $this->Trait->expects($this->once())
+        $this->table->expects($this->once())
                 ->method('save')
                 ->will($this->returnValue($this->user));
-        $this->Trait->expects($this->once())
+        $this->Behavior->expects($this->once())
                 ->method('sendResetPasswordEmail')
                 ->with($this->user);
-        $result = $this->Trait->resetToken('user-1', [
+        $result = $this->Behavior->resetToken('user-1', [
             'expiration' => 3600,
             'checkActive' => true,
             'sendEmail' => true
@@ -117,7 +120,7 @@ class PasswordManagementTraitTest extends TestCase
      */
     public function testResetTokenWithNullParams()
     {
-        $this->Trait->resetToken(null);
+        $this->Behavior->resetToken(null);
     }
 
     /**
@@ -127,7 +130,7 @@ class PasswordManagementTraitTest extends TestCase
      */
     public function testResetTokenNotExistingUser()
     {
-        $this->Trait->resetToken('user-not-found', [
+        $this->Behavior->resetToken('user-not-found', [
             'expiration' => 3600
         ]);
     }
@@ -140,17 +143,17 @@ class PasswordManagementTraitTest extends TestCase
     public function testResetTokenUserAlreadyActive()
     {
         $activeUser = TableRegistry::get('Users.Users')->findAllByUsername('user-4')->first();
-        $this->Trait->expects($this->once())
+        $this->Behavior->expects($this->once())
                 ->method('_getUser')
                 ->with('user-4')
                 ->will($this->returnValue($activeUser));
-        $this->Trait->expects($this->never())
+        $this->table->expects($this->never())
                 ->method('save')
                 ->will($this->returnValue($this->user));
-        $this->Trait->expects($this->never())
+        $this->Behavior->expects($this->never())
                 ->method('sendResetPasswordEmail')
                 ->with($this->user);
-        $this->Trait->resetToken('user-4', [
+        $this->Behavior->resetToken('user-4', [
             'expiration' => 3600,
             'checkActive' => true,
         ]);

@@ -9,7 +9,7 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Model\Table\Traits;
+namespace Users\Model\Behavior;
 
 use Cake\Datasource\EntityInterface;
 use Cake\Utility\Hash;
@@ -17,14 +17,18 @@ use DateTime;
 use InvalidArgumentException;
 use Users\Exception\AccountNotActiveException;
 use Users\Exception\MissingEmailException;
+use Users\Model\Behavior\Behavior;
 use Users\Model\Table\SocialAccountsTable;
+use Users\Traits\RandomStringTrait;
 
 /**
  * Covers social features
  *
  */
-trait SocialTrait
+class SocialBehavior extends Behavior
 {
+    use RandomStringTrait;
+
     /**
      * Performs social login
      *
@@ -36,7 +40,7 @@ trait SocialTrait
     {
         $provider = $data->provider;
         $reference = $data->uid;
-        $existingAccount = $this->SocialAccounts->find()
+        $existingAccount = $this->_table->SocialAccounts->find()
                 ->where(['SocialAccounts.reference' => $reference, 'SocialAccounts.provider' => $provider])
                 ->contain(['Users'])
                 ->first();
@@ -79,13 +83,13 @@ trait SocialTrait
         if ($useEmail && empty($data->email)) {
             throw new MissingEmailException(__d('Users', 'Email not present'));
         } else {
-            $existingUser = $this->find()
-                    ->where([$this->alias() . '.email' => $data->email])
+            $existingUser = $this->_table->find()
+                    ->where([$this->_table->alias() . '.email' => $data->email])
                     ->first();
         }
         $user = $this->_populateUser($data, $existingUser, $useEmail, $validateEmail, $tokenExpiration);
-        $this->isValidateEmail = $validateEmail;
-        $result = $this->save($user);
+        $this->_table->isValidateEmail = $validateEmail;
+        $result = $this->_table->save($user);
         return $result;
     }
 
@@ -157,13 +161,13 @@ trait SocialTrait
             $userData['gender'] = Hash::get($data->raw, 'gender');
             $userData['timezone'] = Hash::get($data->raw, 'timezone');
             $userData['social_accounts'][] = $accountData;
-            $user = $this->newEntity($userData, ['associated' => ['SocialAccounts']]);
-            $user = $this->updateActive($user, false, $tokenExpiration);
+            $user = $this->_table->newEntity($userData, ['associated' => ['SocialAccounts']]);
+            $user = $this->_updateActive($user, false, $tokenExpiration);
         } else {
             if ($useEmail && !$data->validated) {
                 $accountData['active'] = false;
             }
-            $user = $this->patchEntity($existingUser, [
+            $user = $this->_table->patchEntity($existingUser, [
                 'social_accounts' => [$accountData]
             ], ['associated' => ['SocialAccounts']]);
         }
@@ -180,7 +184,7 @@ trait SocialTrait
     {
         $i = 0;
         while (true) {
-            $existingUsername = $this->find()->where([$this->alias() . '.username' => $username])->count();
+            $existingUsername = $this->_table->find()->where([$this->_table->alias() . '.username' => $username])->count();
             if ($existingUsername > 0) {
                 $username = $username . $i;
                 $i++;
