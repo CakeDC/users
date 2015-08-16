@@ -31,22 +31,6 @@ class M49c3417a54874a9d276811502cedc421 extends CakeMigration {
 	public $migration = array(
 		'up' => array(
 			'create_table' => array(
-				'user_details' => array(
-					'id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 36, 'key' => 'primary'),
-					'user_id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 36),
-					'position' => array('type' => 'float', 'null' => false, 'default' => '1', 'length' => 4),
-					'field' => array('type' => 'string', 'null' => false, 'default' => null, 'key' => 'index', 'length' => 60),
-					'value' => array('type' => 'text', 'null' => true, 'default' => null),
-					'input' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 16),
-					'data_type' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 16),
-					'label' => array('type' => 'string', 'null' => false, 'default' => '', 'length' => 128),
-					'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
-					'modified' => array('type' => 'datetime', 'null' => true, 'default' => null),
-					'indexes' => array(
-						'PRIMARY' => array('column' => 'id', 'unique' => 1),
-						'UNIQUE_PROFILE_PROPERTY' => array('column' => array('field', 'user_id'), 'unique' => 1)
-					)
-				),
 				'users' => array(
 					'id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 36, 'key' => 'primary'),
 					'username' => array('type' => 'string', 'null' => false, 'default' => null),
@@ -74,8 +58,7 @@ class M49c3417a54874a9d276811502cedc421 extends CakeMigration {
 			),
 		),
 		'down' => array(
-			'drop_table' => array(
-				'users', 'user_details'),
+			'drop_table' => array('users'),
 		)
 	);
 
