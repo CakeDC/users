@@ -26,24 +26,39 @@ class PasswordManagementTraitTest extends TestCase
         'plugin.users.users',
     ];
 
+    /**
+     * setUp
+     *
+     * @return void
+     */
     public function setUp()
     {
         parent::setUp();
         $this->table = TableRegistry::get('Users.Users');
         $this->Trait = $this->getMockBuilder('Users\Controller\Traits\PasswordManagementTrait')
-                ->setMethods(['set', 'getUsersTable', 'redirect'])
+                ->setMethods(['set', 'getUsersTable', 'redirect', 'validate'])
                 ->getMockForTrait();
         $this->Trait->expects($this->any())
                 ->method('getUsersTable')
                 ->will($this->returnValue($this->table));
     }
 
+    /**
+     * tearDown
+     *
+     * @return void
+     */
     public function tearDown()
     {
         unset($this->table, $this->Trait);
         parent::tearDown();
     }
 
+    /**
+     * mock request for GET
+     *
+     * @return void
+     */
     protected function _mockRequestGet()
     {
         $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
@@ -55,6 +70,11 @@ class PasswordManagementTraitTest extends TestCase
                 ->will($this->returnValue(false));
     }
 
+    /**
+     * mock Flash Component
+     *
+     * @return void
+     */
     protected function _mockFlash()
     {
         $this->Trait->Flash = $this->getMockBuilder('Cake\Controller\Component\FlashComponent')
@@ -63,6 +83,11 @@ class PasswordManagementTraitTest extends TestCase
                 ->getMock();
     }
 
+    /**
+     * mock Request for POST
+     *
+     * @return void
+     */
     protected function _mockRequestPost()
     {
         $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
@@ -74,6 +99,11 @@ class PasswordManagementTraitTest extends TestCase
                 ->will($this->returnValue(true));
     }
 
+    /**
+     * Mock Auth and retur user id 1
+     *
+     * @return void
+     */
     protected function _mockAuthLoggedIn()
     {
         $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
@@ -93,6 +123,11 @@ class PasswordManagementTraitTest extends TestCase
             ->will($this->returnValue(1));
     }
 
+    /**
+     * Mock the Auth component
+     *
+     * @return void
+     */
     protected function _mockAuth()
     {
         $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
@@ -101,6 +136,11 @@ class PasswordManagementTraitTest extends TestCase
             ->getMock();
     }
 
+    /**
+     * test
+     *
+     * @return void
+     */
     public function testChangePasswordHappy()
     {
         $this->assertEquals('12345', $this->table->get(1)->password);
@@ -124,6 +164,11 @@ class PasswordManagementTraitTest extends TestCase
         $this->assertTrue($hasher->check('new', $this->table->get(1)->password));
     }
 
+    /**
+     * test
+     *
+     * @return void
+     */
     public function testChangePasswordGetLoggedIn()
     {
         $this->_mockRequestGet();
@@ -138,6 +183,11 @@ class PasswordManagementTraitTest extends TestCase
         $this->Trait->changePassword();
     }
 
+    /**
+     * test
+     *
+     * @return void
+     */
     public function testChangePasswordGetNotLoggedIn()
     {
         $this->_mockRequestGet();
@@ -152,13 +202,55 @@ class PasswordManagementTraitTest extends TestCase
         $this->Trait->changePassword();
     }
 
+    /**
+     * test
+     *
+     * @return void
+     */
     public function testResetPassword()
     {
-        $this->markTestIncomplete();
+        $token = 'token';
+        $this->Trait->expects($this->once())
+                ->method('validate')
+                ->with('password', $token);
+        $this->Trait->resetPassword($token);
     }
 
-    public function testRequestResetPassword()
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testRequestResetPasswordGet()
     {
-        $this->markTestIncomplete();
+        $this->assertEquals('xxx', $this->table->get(1)->token);
+        $this->_mockRequestGet();
+        $this->_mockFlash();
+        $this->Trait->request->expects($this->never())
+                ->method('data');
+        $this->Trait->requestResetPassword();
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testRequestPasswordHappy()
+    {
+        $this->assertEquals('xxx', $this->table->get(1)->token);
+        $this->_mockRequestPost();
+        $this->_mockAuthLoggedIn();
+        $this->_mockFlash();
+        $reference = 'user-1';
+        $this->Trait->request->expects($this->once())
+                ->method('data')
+                ->with('reference')
+                ->will($this->returnValue($reference));
+        $this->Trait->Flash->expects($this->any())
+            ->method('success')
+            ->with('Password has been changed successfully');
+        $this->Trait->requestResetPassword();
+        $this->assertNotEquals('xxx', $this->table->get(1)->token);
     }
 }

@@ -85,29 +85,31 @@ trait PasswordManagementTrait
      */
     public function requestResetPassword()
     {
-        if ($this->request->is('post')) {
-            $reference = $this->request->data('reference');
-            try {
-                $resetUser = $this->getUsersTable()->resetToken($reference, [
-                    'expiration' => Configure::read('Users.Token.expiration'),
-                    'checkActive' => false,
-                    'sendEmail' => true,
-                ]);
-                if ($resetUser) {
-                    $msg = __d('Users', 'Please check your email to continue with password reset process');
-                    $this->Flash->success($msg);
-                } else {
-                    $msg = __d('Users', 'The password token could not be generated. Please try again');
-                    $this->Flash->error($msg);
-                }
-                return $this->redirect(['action' => 'login']);
-            } catch (UserNotFoundException $exception) {
-                $this->Flash->error(__d('Users', 'User {0} was not found', $reference));
-            } catch (Exception $exception) {
-                $this->Flash->error(__d('Users', 'Token could not be reset'));
-            }
-        }
         $this->set('user', $this->getUsersTable()->newEntity());
         $this->set('_serialize', ['user']);
+        if (!$this->request->is('post')) {
+            return;
+        }
+
+        $reference = $this->request->data('reference');
+        try {
+            $resetUser = $this->getUsersTable()->resetToken($reference, [
+                'expiration' => Configure::read('Users.Token.expiration'),
+                'checkActive' => false,
+                'sendEmail' => true,
+            ]);
+            if ($resetUser) {
+                $msg = __d('Users', 'Please check your email to continue with password reset process');
+                $this->Flash->success($msg);
+            } else {
+                $msg = __d('Users', 'The password token could not be generated. Please try again');
+                $this->Flash->error($msg);
+            }
+            return $this->redirect(['action' => 'login']);
+        } catch (UserNotFoundException $exception) {
+            $this->Flash->error(__d('Users', 'User {0} was not found', $reference));
+        } catch (Exception $exception) {
+            $this->Flash->error(__d('Users', 'Token could not be reset'));
+        }
     }
 }
