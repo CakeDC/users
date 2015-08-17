@@ -137,7 +137,7 @@ trait ImpersonateTrait
         return $this->redirect('/');
     }
 }
-
+```
 Updating the Templates
 -------------------
 
