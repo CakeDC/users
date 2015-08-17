@@ -13,6 +13,7 @@ namespace Users\Controller\Traits;
 
 use Cake\Core\Configure;
 use Cake\Datasource\Exception\InvalidPrimaryKeyException;
+use Cake\Datasource\Exception\RecordNotFoundException;
 
 /**
  * Covers the login, logout and social login, proxy to UsersAuthComponent methods
@@ -41,9 +42,11 @@ trait ProfileTrait
             if ($user->id === $loggedUserId) {
                 $isCurrentUser = true;
             }
-
-        } catch (InvalidPrimaryKeyException $ipke) {
-            $this->Flash->error(__d('Users', 'User was not found', $id));
+        } catch (RecordNotFoundException $ex) {
+            $this->Flash->error(__d('Users', 'User was not found'));
+            return $this->redirect($this->request->referer());
+        } catch (InvalidPrimaryKeyException $ex) {
+            $this->Flash->error(__d('Users', 'Not authorized, please login first'));
             return $this->redirect($this->request->referer());
         }
         $this->set(compact('user', 'isCurrentUser'));

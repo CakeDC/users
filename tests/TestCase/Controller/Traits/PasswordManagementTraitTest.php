@@ -14,8 +14,9 @@ namespace Users\Test\TestCase\Controller\Traits;
 use Cake\Auth\PasswordHasherFactory;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use Users\Test\BaseTraitTest;
 
-class PasswordManagementTraitTest extends TestCase
+class PasswordManagementTraitTest extends BaseTraitTest
 {
     /**
      * Fixtures
@@ -52,88 +53,6 @@ class PasswordManagementTraitTest extends TestCase
     {
         unset($this->table, $this->Trait);
         parent::tearDown();
-    }
-
-    /**
-     * mock request for GET
-     *
-     * @return void
-     */
-    protected function _mockRequestGet()
-    {
-        $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
-                ->setMethods(['is'])
-                ->getMock();
-        $this->Trait->request->expects($this->once())
-                ->method('is')
-                ->with('post')
-                ->will($this->returnValue(false));
-    }
-
-    /**
-     * mock Flash Component
-     *
-     * @return void
-     */
-    protected function _mockFlash()
-    {
-        $this->Trait->Flash = $this->getMockBuilder('Cake\Controller\Component\FlashComponent')
-                ->setMethods(['error', 'success'])
-                ->disableOriginalConstructor()
-                ->getMock();
-    }
-
-    /**
-     * mock Request for POST
-     *
-     * @return void
-     */
-    protected function _mockRequestPost()
-    {
-        $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
-                ->setMethods(['is', 'data'])
-                ->getMock();
-        $this->Trait->request->expects($this->once())
-                ->method('is')
-                ->with('post')
-                ->will($this->returnValue(true));
-    }
-
-    /**
-     * Mock Auth and retur user id 1
-     *
-     * @return void
-     */
-    protected function _mockAuthLoggedIn()
-    {
-        $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
-            ->setMethods(['user', 'identify', 'setUser', 'redirectUrl'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $user = [
-            'id' => 1,
-            'password' => '12345',
-        ];
-        $this->Trait->Auth->expects($this->any())
-            ->method('identify')
-            ->will($this->returnValue($user));
-        $this->Trait->Auth->expects($this->any())
-            ->method('user')
-            ->with('id')
-            ->will($this->returnValue(1));
-    }
-
-    /**
-     * Mock the Auth component
-     *
-     * @return void
-     */
-    protected function _mockAuth()
-    {
-        $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
-            ->setMethods(['user', 'identify', 'setUser', 'redirectUrl'])
-            ->disableOriginalConstructor()
-            ->getMock();
     }
 
     /**
