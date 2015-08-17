@@ -23,6 +23,7 @@ use Users\Model\Table\UsersTable;
 class MyUsersTable extends UsersTable
 {
 }
+```
 
 * Create a new Entity under src/Model/Entity/MyUser.php
 
