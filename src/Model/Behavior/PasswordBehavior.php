@@ -117,7 +117,7 @@ class PasswordBehavior extends Behavior
         }
         $user = $this->_table->save($user);
         if (!empty($user)) {
-            $user = $this->removeValidationToken($user);
+            $user = $this->_removeValidationToken($user);
         }
         return $user;
     }
