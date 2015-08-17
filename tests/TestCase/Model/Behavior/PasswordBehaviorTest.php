@@ -15,6 +15,7 @@ use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use InvalidArgumentException;
 use Users\Exception\UserAlreadyActiveException;
+use Users\Model\Table\UsersTable;
 
 /**
  * Test Case
@@ -38,14 +39,11 @@ class PasswordBehaviorTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->table = $this->getMockBuilder('Cake\ORM\Table')
-                ->setMethods(['save'])
-                ->getMock();
+        $this->table = TableRegistry::get('Users.Users');
         $this->Behavior = $this->getMockBuilder('Users\Model\Behavior\PasswordBehavior')
-                ->setMethods(['_getUser'])
+                ->setMethods(['sendResetPasswordEmail'])
                 ->setConstructorArgs([$this->table])
                 ->getMock();
-        $this->user = TableRegistry::get('Users.Users')->findAllByUsername('user-1')->first();
     }
 
     /**
@@ -55,7 +53,7 @@ class PasswordBehaviorTest extends TestCase
      */
     public function tearDown()
     {
-        unset($this->Behavior, $this->user);
+        unset($this->table, $this->Behavior);
         parent::tearDown();
     }
 
@@ -66,17 +64,11 @@ class PasswordBehaviorTest extends TestCase
      */
     public function testResetToken()
     {
-        $token = $this->user->token;
-        $this->Behavior->expects($this->once())
-                ->method('_getUser')
-                ->with('user-1')
-                ->will($this->returnValue($this->user));
-        $this->table->expects($this->once())
-                ->method('save')
-                ->will($this->returnValue($this->user));
+        $user = $this->table->findAllByUsername('user-1')->first();
+        $token = $user->token;
         $this->Behavior->expects($this->never())
                 ->method('sendResetPasswordEmail')
-                ->with($this->user);
+                ->with($user);
         $result = $this->Behavior->resetToken('user-1', [
             'expiration' => 3600,
             'checkActive' => true,
@@ -92,23 +84,18 @@ class PasswordBehaviorTest extends TestCase
      */
     public function testResetTokenSendEmail()
     {
-        $token = $this->user->token;
+        $user = $this->table->findAllByUsername('user-1')->first();
+        $token = $user->token;
+        $tokenExpires = $user->token_expires;
         $this->Behavior->expects($this->once())
-                ->method('_getUser')
-                ->with('user-1')
-                ->will($this->returnValue($this->user));
-        $this->table->expects($this->once())
-                ->method('save')
-                ->will($this->returnValue($this->user));
-        $this->Behavior->expects($this->once())
-                ->method('sendResetPasswordEmail')
-                ->with($this->user);
+                ->method('sendResetPasswordEmail');
         $result = $this->Behavior->resetToken('user-1', [
             'expiration' => 3600,
             'checkActive' => true,
             'sendEmail' => true
         ]);
         $this->assertNotEquals($token, $result->token);
+        $this->assertNotEquals($tokenExpires, $result->token_expires);
         $this->assertEmpty($result->activation_date);
         $this->assertFalse($result->active);
     }
@@ -143,16 +130,12 @@ class PasswordBehaviorTest extends TestCase
     public function testResetTokenUserAlreadyActive()
     {
         $activeUser = TableRegistry::get('Users.Users')->findAllByUsername('user-4')->first();
-        $this->Behavior->expects($this->once())
-                ->method('_getUser')
-                ->with('user-4')
-                ->will($this->returnValue($activeUser));
+        $this->assertTrue($activeUser->active);
+        $this->table = $this->getMockForModel('Users.Users', ['save']);
         $this->table->expects($this->never())
-                ->method('save')
-                ->will($this->returnValue($this->user));
+                ->method('save');
         $this->Behavior->expects($this->never())
-                ->method('sendResetPasswordEmail')
-                ->with($this->user);
+                ->method('sendResetPasswordEmail');
         $this->Behavior->resetToken('user-4', [
             'expiration' => 3600,
             'checkActive' => true,

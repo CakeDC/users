@@ -120,6 +120,7 @@ class SocialAccountsTableTest extends TestCase
      */
     public function testAfterSaveSocialNotActiveUserNotActive()
     {
+        $this->markTestIncomplete('move to SocialAccountBehaviorTest');
         $event = new Event('eventName');
         $entity = $this->SocialAccounts->find()->first();
         $this->assertTrue($this->SocialAccounts->afterSave($event, $entity, []));
@@ -154,6 +155,7 @@ class SocialAccountsTableTest extends TestCase
      */
     public function testAfterSaveSocialActiveUserNotActive()
     {
+        $this->markTestIncomplete('move to SocialAccountBehaviorTest');
         $event = new Event('eventName');
         $entity = $this->SocialAccounts->findById(2)->first();
         $this->assertTrue($this->SocialAccounts->afterSave($event, $entity, []));
@@ -167,6 +169,7 @@ class SocialAccountsTableTest extends TestCase
      */
     public function testAfterSaveSocialActiveUserActive()
     {
+        $this->markTestIncomplete('move to SocialAccountBehaviorTest');
         $event = new Event('eventName');
         $entity = $this->SocialAccounts->findById(3)->first();
         $this->assertTrue($this->SocialAccounts->afterSave($event, $entity, []));
@@ -179,6 +182,7 @@ class SocialAccountsTableTest extends TestCase
      */
     public function testSendSocialValidationEmail()
     {
+        $this->markTestIncomplete('move to SocialAccountBehaviorTest');
         $user = $this->SocialAccounts->find()->contain('Users')->first();
         $this->Email->emailFormat('both');
         $result = $this->SocialAccounts->sendSocialValidationEmail($user, $user->user, $this->Email);

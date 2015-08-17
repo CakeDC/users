@@ -11,15 +11,19 @@
 
 namespace Users\Model\Behavior;
 
+use ArrayObject;
+use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
-use Cake\Utility\Hash;
-use DateTime;
+use Cake\Datasource\Exception\RecordNotFoundException;
+use Cake\Event\Event;
+use Cake\Network\Email\Email;
+use Cake\ORM\Entity;
 use InvalidArgumentException;
+use Users\Exception\AccountAlreadyActiveException;
 use Users\Exception\AccountNotActiveException;
 use Users\Exception\MissingEmailException;
 use Users\Model\Behavior\Behavior;
-use Users\Model\Table\SocialAccountsTable;
-use Users\Traits\RandomStringTrait;
+use Users\Model\Entity\User;
 
 /**
  * Covers social account features
@@ -143,7 +147,7 @@ class SocialAccountBehavior extends Behavior
      * Activates an account
      *
      * @param Account $socialAccount social account
-     * @return Account
+     * @return EntityInterface
      */
     protected function _activateAccount($socialAccount)
     {
