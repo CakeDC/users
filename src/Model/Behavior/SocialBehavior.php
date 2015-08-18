@@ -147,7 +147,7 @@ class SocialBehavior extends Behavior
                 }
 
             }
-            $userData['username'] = $this->_generateUsername(Hash::get($userData, 'username'));
+            $userData['username'] = $this->generateUniqueUsername(Hash::get($userData, 'username'));
             if ($useEmail) {
                 $userData['email'] = $data->email;
                 if (!$data->validated) {
@@ -180,7 +180,7 @@ class SocialBehavior extends Behavior
      * @param string $username username data.
      * @return string
      */
-    protected function _generateUsername($username)
+    public function generateUniqueUsername($username)
     {
         $i = 0;
         while (true) {
