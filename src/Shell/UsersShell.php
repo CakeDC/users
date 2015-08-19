@@ -219,6 +219,11 @@ class UsersShell extends Shell
             $this->error(__d('Users', 'The user was not found.'));
         }
         $user = $this->Users->patchEntity($user, $data);
+        collection($data)->filter(function ($value, $field) use ($user) {
+            return !$user->accessible($field);
+        })->each(function ($value, $field) use (&$user) {
+            $user->{$field} = $value;
+        });
         $savedUser = $this->Users->save($user);
         return $savedUser;
     }
