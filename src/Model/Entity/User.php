@@ -12,6 +12,7 @@
 namespace Users\Model\Entity;
 
 use Cake\Auth\DefaultPasswordHasher;
+use Cake\Core\Configure;
 use Cake\ORM\Entity;
 use Cake\Utility\Text;
 use DateTime;
@@ -52,7 +53,7 @@ class User extends Entity
      */
     protected function _setPassword($password)
     {
-        return (new DefaultPasswordHasher)->hash($password);
+        return $this->hashPassword($password);
     }
 
     /**
@@ -61,18 +62,47 @@ class User extends Entity
      */
     protected function _setConfirmPassword($password)
     {
-        return (new DefaultPasswordHasher)->hash($password);
+        return $this->hashPassword($password);
+    }
+
+    /**
+     * Hash a password using the configured password hasher,
+     * use DefaultPasswordHasher if no one was configured
+     *
+     * @param $password
+     * @return mixed
+     */
+    public function hashPassword($password)
+    {
+        $PasswordHasher = $this->getPasswordHasher();
+        return $PasswordHasher->hash($password);
+    }
+
+    /**
+     * Return the configured Password Hasher
+     *
+     * @return mixed
+     */
+    public function getPasswordHasher()
+    {
+        $passwordHasher = Configure::read('Users.passwordHasher');
+        if (!class_exists($passwordHasher)) {
+            $passwordHasher = '\Cake\Auth\DefaultPasswordHasher';
+        }
+        return new $passwordHasher;
     }
 
     /**
      * Checks if a password is correctly hashed
+     *
      * @param string $password password that will be check.
      * @param string $hashedPassword hash used to check password.
      * @return bool
      */
     public function checkPassword($password, $hashedPassword)
     {
-        return (new DefaultPasswordHasher)->check($password, $hashedPassword);
+        $PasswordHasher = $this->_getPasswordHasher();
+        return $PasswordHasher->check($password, $hashedPassword);
     }
 
     /**
@@ -87,6 +117,7 @@ class User extends Entity
 
     /**
      * Getter for user avatar
+     *
      * @return string|null avatar
      */
     protected function _getAvatar()

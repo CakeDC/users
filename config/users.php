@@ -17,6 +17,8 @@ $config = [
         'table' => 'Users.Users',
         //configure Auth component
         'auth' => true,
+        //Password Hasher
+        'passwordHasher' => '\Cake\Auth\DefaultPasswordHasher',
         //token expiration, 1 hour
         'Token' => ['expiration' => 3600],
         'Email' => [
