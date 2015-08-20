@@ -168,7 +168,7 @@ class UserHelperTest extends TestCase
             ->method('session')
             ->will($this->returnValue($session));
 
-        $expected = '<span class="welcome">Welcome, <a href="/profile/2">david</a></span>';
+        $expected = '<span class="welcome">Welcome, <a href="/Users/Users/profile">david</a></span>';
         $result = $this->User->welcome();
         $this->assertEquals($expected, $result);
     }

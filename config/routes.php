@@ -9,8 +9,8 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-use Cake\Routing\Router;
 use Cake\Core\Configure;
+use Cake\Routing\Router;
 
 Router::plugin('Users', function ($routes) {
     $routes->fallbacks('DashedRoute');
@@ -23,11 +23,10 @@ Router::scope('/auth', function ($routes) {
     );
 });
 Router::connect('/accounts/validate/*', [
-    'admin' => false,
     'plugin' => 'Users',
     'controller' => 'SocialAccounts',
     'action' => 'validate'
 ]);
-Router::connect('/profile/*', ['admin' => false, 'plugin' => 'Users', 'controller' => 'Users', 'action' => 'profile']);
-Router::connect('/login', ['admin' => false, 'plugin' => 'Users', 'controller' => 'Users', 'action' => 'login']);
-Router::connect('/logout', ['admin' => false, 'plugin' => 'Users', 'controller' => 'Users', 'action' => 'logout']);
+Router::connect('/profile/*', ['plugin' => 'Users', 'controller' => 'Users', 'action' => 'profile']);
+Router::connect('/login', ['plugin' => 'Users', 'controller' => 'Users', 'action' => 'login']);
+Router::connect('/logout', ['plugin' => 'Users', 'controller' => 'Users', 'action' => 'logout']);

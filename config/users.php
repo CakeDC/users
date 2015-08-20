@@ -44,7 +44,7 @@ $config = [
         'Profile' => [
             //Allow view other users profiles
             'viewOthers' => true,
-            'route' => '/profile/'
+            'route' => ['plugin' => 'Users', 'controller' => 'Users', 'action' => 'profile'],
         ],
         'Key' => [
             'Session' => [
@@ -103,7 +103,7 @@ $config = [
     'Opauth' => [
         'path' => ['plugin' => 'Users', 'controller' => 'Users', 'action' => 'opauthInit'],
         'callback_param' => 'callback',
-        'complete_url' => ['admin' => false, 'plugin' => 'Users', 'controller' => 'Users', 'action' => 'login'],
+        'complete_url' => ['plugin' => 'Users', 'controller' => 'Users', 'action' => 'login'],
         'Strategy' => [
             'Facebook' => [
                 'scope' => ['public_profile', 'user_friends', 'email']

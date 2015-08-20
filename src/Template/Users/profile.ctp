@@ -20,7 +20,8 @@
         )
         ?>
     </h3>
-    <?= $this->Html->link(__d('Users', 'Change Password'), ['admin' => false, 'plugin' => 'Users', 'controller' => 'Users', 'action' => 'changePassword']); ?>
+    <?php //@todo add to config ?>
+    <?= $this->Html->link(__d('Users', 'Change Password'), ['plugin' => 'Users', 'controller' => 'Users', 'action' => 'changePassword']); ?>
     <div class="row">
         <div class="large-6 columns strings">
             <h6 class="subheader"><?= __d('Users', 'Username') ?></h6>

@@ -62,7 +62,6 @@ class UsersAuthComponentTest extends TestCase
             );
         });
         Router::connect('/a/validate/*', [
-            'admin' => false,
             'plugin' => 'Users',
             'controller' => 'SocialAccounts',
             'action' => 'resendValidation'

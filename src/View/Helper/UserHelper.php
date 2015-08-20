@@ -38,7 +38,8 @@ class UserHelper extends Helper
      * @param Event $event event
      * @return void
      */
-    public function beforeLayout(Event $event) {
+    public function beforeLayout(Event $event)
+    {
         if (Configure::read('Users.Registration.reCaptcha')) {
             $this->addReCaptchaScript();
         }
@@ -118,7 +119,7 @@ class UserHelper extends Helper
             return;
         }
 
-        $profileUrl = Configure::read('Users.Profile.route') . $userId;
+        $profileUrl = Configure::read('Users.Profile.route');
         $label = __d('Users', 'Welcome, {0}', $this->Html->link($this->request->session()->read('Auth.User.first_name'), $profileUrl));
         return $this->Html->tag('span', $label, ['class' => 'welcome']);
     }
