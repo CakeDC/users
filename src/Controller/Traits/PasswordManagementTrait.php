@@ -37,12 +37,12 @@ trait PasswordManagementTrait
             $user->id = $this->Auth->user('id');
             $validatePassword = true;
             //@todo add to the documentation: list of routes used
-            $redirect = ['admin' => false, 'plugin' => 'Users', 'controller' => 'users', 'action' => 'profile'];
+            $redirect = Configure::read('Users.Profile.route');
         } else {
             $user->id = $this->request->session()->read(Configure::read('Users.Key.Session.resetPasswordUserId'));
             $validatePassword = false;
             //@todo add to the documentation: list of routes used
-            $redirect = ['admin' => false, 'plugin' => 'Users', 'controller' => 'users', 'action' => 'login'];
+            $redirect = $this->Auth->config('loginAction');
         }
         $this->set('validatePassword', $validatePassword);
         if ($this->request->is('post')) {
