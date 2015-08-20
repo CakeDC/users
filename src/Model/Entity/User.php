@@ -101,7 +101,7 @@ class User extends Entity
      */
     public function checkPassword($password, $hashedPassword)
     {
-        $PasswordHasher = $this->_getPasswordHasher();
+        $PasswordHasher = $this->getPasswordHasher();
         return $PasswordHasher->check($password, $hashedPassword);
     }
 
