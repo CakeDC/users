@@ -12,10 +12,19 @@
 namespace Users\Test\TestCase\Controller\Traits;
 
 use Cake\Network\Request;
-use Cake\TestSuite\TestCase;
+use Users\Test\BaseTraitTest;
 
-class UserValidationTraitTest extends TestCase
+class UserValidationTraitTest extends BaseTraitTest
 {
+    /**
+     * Fixtures
+     *
+     * @var array
+     */
+    public $fixtures = [
+        'plugin.users.users',
+    ];
+
     /**
      * setup
      *
@@ -23,22 +32,9 @@ class UserValidationTraitTest extends TestCase
      */
     public function setUp()
     {
+        $this->traitClassName = 'Users\Controller\Traits\UserValidationTrait';
+        $this->traitMockMethods = ['dispatchEvent', 'isStopped', 'redirect', 'getUsersTable'];
         parent::setUp();
-        $request = new Request();
-        $this->Trait = $this->getMockBuilder('Users\Controller\Traits\UserValidationTrait')
-            ->setMethods(['dispatchEvent', 'isStopped', 'redirect', 'getUsersTable'])
-            ->getMockForTrait();
-        $this->Trait->request = $request;
-    }
-
-    /**
-     * tearDown
-     *
-     * @return void
-     */
-    public function tearDown()
-    {
-        parent::tearDown();
     }
 
     /**
@@ -48,24 +44,14 @@ class UserValidationTraitTest extends TestCase
      */
     public function testValidateHappyToken()
     {
-        $usersTableMock = $this->getMockBuilder('Users\Model\Table\UsersTable')
-                ->setMethods(['validate'])
-                ->disableOriginalConstructor()
-                ->getMock();
-        $usersTableMock->expects($this->once())
-                ->method('validate')
-                ->with('token', 'activateUser')
-                ->will($this->returnValue(true));
-        $this->Trait->expects($this->once())
-                ->method('getUsersTable')
-                ->will($this->returnValue($usersTableMock));
-        $this->Trait->Flash = $this->getMockBuilder('Cake\Controller\Component\FlashComponent')
-            ->setMethods(['success'])
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->_mockFlash();
+        $user = $this->table->findByToken('xxx')->first();
+        $this->assertFalse($user->active);
         $this->Trait->Flash->expects($this->once())
                 ->method('success')
                 ->with('User account validated successfully');
-        $this->Trait->validate('email', 'token');
+        $this->Trait->validate('email', 'xxx');
+        $user = $this->table->findById($user->id)->first();
+        $this->assertTrue($user->active);
     }
 }
