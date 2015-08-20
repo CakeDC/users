@@ -11,37 +11,67 @@
 
 namespace Users\Test\TestCase\Controller\Traits;
 
-use Cake\TestSuite\TestCase;
+use Cake\ORM\TableRegistry;
+use Users\Test\BaseTraitTest;
 
-class RegisterTraitTest extends TestCase
+class RegisterTraitTest extends BaseTraitTest
 {
+    /**
+     * Fixtures
+     *
+     * @var array
+     */
+    public $fixtures = [
+        'plugin.users.users',
+    ];
+
+    /**
+     * setUp
+     *
+     * @return void
+     */
     public function setUp()
     {
+        $this->traitClassName = 'Users\Controller\Traits\RegisterTrait';
+        $this->traitMockMethods = ['validate', 'dispatchEvent', 'set'];
         parent::setUp();
-        $this->controller = $this->getMock(
-            '\Cake\Controller\Controller',
-            ['header', 'redirect', 'render', '_stop']
-        );
-        $this->controller->Trait = $this->getMockForTrait('Users\Controller\Traits\RegisterTrait');
     }
 
+    /**
+     * tearDown
+     *
+     * @return void
+     */
     public function tearDown()
     {
         parent::tearDown();
     }
 
-    public function testRegisterTest()
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testValidateEmail()
     {
-        $this->markTestIncomplete();
+        $token = 'token';
+        $this->Trait->expects($this->once())
+                ->method('validate')
+                ->with('email', $token);
+        $this->Trait->validateEmail($token);
     }
 
-    public function testValidateTest()
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testRegisterHappy()
     {
-        $this->markTestIncomplete();
-    }
-
-    public function testResendTokenValidation()
-    {
-        $this->markTestIncomplete();
+        $this->_mockRequestPost();
+        $this->_mockAuth();
+        $this->_mockFlash();
+        $this->_mockDispatchEvent();
+        $this->Trait->register();
     }
 }

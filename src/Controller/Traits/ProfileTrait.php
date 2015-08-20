@@ -16,7 +16,7 @@ use Cake\Datasource\Exception\InvalidPrimaryKeyException;
 use Cake\Datasource\Exception\RecordNotFoundException;
 
 /**
- * Covers the login, logout and social login, proxy to UsersAuthComponent methods
+ * Covers the profile action
  *
  */
 trait ProfileTrait

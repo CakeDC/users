@@ -34,14 +34,9 @@ class PasswordManagementTraitTest extends BaseTraitTest
      */
     public function setUp()
     {
+        $this->traitClassName = 'Users\Controller\Traits\PasswordManagementTrait';
+        $this->traitMockMethods = ['set', 'redirect', 'validate'];
         parent::setUp();
-        $this->table = TableRegistry::get('Users.Users');
-        $this->Trait = $this->getMockBuilder('Users\Controller\Traits\PasswordManagementTrait')
-                ->setMethods(['set', 'getUsersTable', 'redirect', 'validate'])
-                ->getMockForTrait();
-        $this->Trait->expects($this->any())
-                ->method('getUsersTable')
-                ->will($this->returnValue($this->table));
     }
 
     /**
@@ -51,7 +46,6 @@ class PasswordManagementTraitTest extends BaseTraitTest
      */
     public function tearDown()
     {
-        unset($this->table, $this->Trait);
         parent::tearDown();
     }
 

@@ -11,10 +11,55 @@
 
 namespace Users\Test;
 
+use Cake\Event\Event;
+use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use PHPUnit_Framework_MockObject_RuntimeException;
 
 abstract class BaseTraitTest extends TestCase
 {
+    /**
+     * Classname of the trait we are about to test
+     *
+     * @var string
+     */
+    public $traitClassName = '';
+    public $traitMockMethods = [];
+
+    /**
+     * SetUp and create Trait
+     *
+     * @return void
+     */
+    public function setUp()
+    {
+        parent::setUp();
+        $traitMockMethods = array_unique(array_merge(['getUsersTable'], $this->traitMockMethods));
+        $this->table = TableRegistry::get('Users.Users');
+        try {
+            $this->Trait = $this->getMockBuilder($this->traitClassName)
+                    ->setMethods($traitMockMethods)
+                    ->getMockForTrait();
+            $this->Trait->expects($this->any())
+                    ->method('getUsersTable')
+                    ->will($this->returnValue($this->table));
+        } catch (PHPUnit_Framework_MockObject_RuntimeException $ex) {
+            debug($ex);
+            $this->fail("Unit tests extending BaseTraitTest should declare the trait class name in the \$traitClassName variable before calling setUp()");
+        }
+    }
+
+    /**
+     * tearDown
+     *
+     * @return void
+     */
+    public function tearDown()
+    {
+        unset($this->table, $this->Trait);
+        parent::tearDown();
+    }
+
     /**
      * mock request for GET
      *
@@ -95,5 +140,21 @@ abstract class BaseTraitTest extends TestCase
             ->setMethods(['user', 'identify', 'setUser', 'redirectUrl'])
             ->disableOriginalConstructor()
             ->getMock();
+    }
+
+    /**
+     * mock utility
+     *
+     * @param Event $event event
+     * @return void
+     */
+    protected function _mockDispatchEvent(Event $event = null)
+    {
+        if (is_null($event)) {
+            $event = new Event('cool-name-here');
+        }
+        $this->Trait->expects($this->any())
+                ->method('dispatchEvent')
+                ->will($this->returnValue($event));
     }
 }

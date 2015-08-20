@@ -12,6 +12,7 @@
 namespace Users\Test\TestCase\Controller\Traits;
 
 use Cake\ORM\TableRegistry;
+use Users\Controller\Traits\ProfileTrait;
 use Users\Test\BaseTraitTest;
 
 class ProfileTraitTest extends BaseTraitTest
@@ -33,25 +34,9 @@ class ProfileTraitTest extends BaseTraitTest
      */
     public function setUp()
     {
+        $this->traitClassName = 'Users\Controller\Traits\ProfileTrait';
+        $this->traitMockMethods = ['set', 'getUsersTable', 'redirect', 'validate'];
         parent::setUp();
-        $this->table = TableRegistry::get('Users.Users');
-        $this->Trait = $this->getMockBuilder('Users\Controller\Traits\ProfileTrait')
-                ->setMethods(['set', 'getUsersTable', 'redirect', 'validate'])
-                ->getMockForTrait();
-        $this->Trait->expects($this->any())
-                ->method('getUsersTable')
-                ->will($this->returnValue($this->table));
-    }
-
-    /**
-     * tearDown
-     *
-     * @return void
-     */
-    public function tearDown()
-    {
-        unset($this->table, $this->Trait);
-        parent::tearDown();
     }
 
     /**
