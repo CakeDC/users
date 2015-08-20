@@ -70,63 +70,6 @@ class SocialAccountsTableTest extends TestCase
     }
 
     /**
-     * Test validateEmail method
-     *
-     * @return void
-     */
-    public function testValidateEmail()
-    {
-        $token = 'token-1234';
-        $result = $this->SocialAccounts->validateAccount(SocialAccountsTable::PROVIDER_FACEBOOK, 'reference-1-1234', $token);
-        $this->assertTrue($result->active);
-        $this->assertEquals($token, $result->token);
-    }
-
-    /**
-     * Test validateEmail method
-     *
-     * @expectedException \Cake\Datasource\Exception\RecordNotFoundException
-     */
-    public function testValidateEmailInvalidToken()
-    {
-        $this->SocialAccounts->validateAccount(1, 'reference-1234', 'invalid-token');
-    }
-
-    /**
-     * Test validateEmail method
-     *
-     * @expectedException \Cake\Datasource\Exception\RecordNotFoundException
-     */
-    public function testValidateEmailInvalidUser()
-    {
-        $this->SocialAccounts->validateAccount(1, 'invalid-user', 'token-1234');
-    }
-
-    /**
-     * Test validateEmail method
-     *
-     * @expectedException \Users\Exception\AccountAlreadyActiveException
-     */
-    public function testValidateEmailActiveAccount()
-    {
-        $this->SocialAccounts->validateAccount(SocialAccountsTable::PROVIDER_TWITTER, 'reference-1-1234', 'token-1234');
-    }
-
-    /**
-     * testAfterSaveSocialNotActiveUserNotActive
-     * don't send email, user is not active
-     *
-     * @return void
-     */
-    public function testAfterSaveSocialNotActiveUserNotActive()
-    {
-        $this->markTestIncomplete('move to SocialAccountBehaviorTest');
-        $event = new Event('eventName');
-        $entity = $this->SocialAccounts->find()->first();
-        $this->assertTrue($this->SocialAccounts->afterSave($event, $entity, []));
-    }
-
-    /**
      * testAfterSaveSocialNotActiveUserActive
      * send email here, social account is not active,
      * and user is active we need to link the account
@@ -140,39 +83,11 @@ class SocialAccountsTableTest extends TestCase
         $entity = $this->SocialAccounts->findById(5)->first();
         $this->SocialAccounts->Users = $this->getMockForModel('Users.Users', ['getEmailInstance']);
         $this->SocialAccounts->Users->expects($this->once())
-                ->method('getEmailInstance')
-                ->will($this->returnValue($this->Email));
+            ->method('getEmailInstance')
+            ->will($this->returnValue($this->Email));
         $result = $this->SocialAccounts->afterSave($event, $entity, []);
         $this->assertTextContains('Subject: FirstName4, Your social account validation link', $result['headers']);
         unset($this->SocialAccounts->Users);
-    }
-
-    /**
-     * testAfterSaveSocialActiveUserNotActive
-     * social account is active, don't send email
-     *
-     * @return void
-     */
-    public function testAfterSaveSocialActiveUserNotActive()
-    {
-        $this->markTestIncomplete('move to SocialAccountBehaviorTest');
-        $event = new Event('eventName');
-        $entity = $this->SocialAccounts->findById(2)->first();
-        $this->assertTrue($this->SocialAccounts->afterSave($event, $entity, []));
-    }
-
-    /**
-     * testAfterSaveSocialActiveUserActive
-     * social account is active, don't send email
-     *
-     * @return void
-     */
-    public function testAfterSaveSocialActiveUserActive()
-    {
-        $this->markTestIncomplete('move to SocialAccountBehaviorTest');
-        $event = new Event('eventName');
-        $entity = $this->SocialAccounts->findById(3)->first();
-        $this->assertTrue($this->SocialAccounts->afterSave($event, $entity, []));
     }
 
     /**
