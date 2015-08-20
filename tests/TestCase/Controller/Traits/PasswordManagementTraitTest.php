@@ -136,7 +136,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
      */
     public function testRequestResetPasswordGet()
     {
-        $this->assertEquals('xxx', $this->table->get(1)->token);
+        $this->assertEquals('ae93ddbe32664ce7927cf0c5c5a5e59d', $this->table->get(1)->token);
         $this->_mockRequestGet();
         $this->_mockFlash();
         $this->Trait->request->expects($this->never())
@@ -151,7 +151,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
      */
     public function testRequestPasswordHappy()
     {
-        $this->assertEquals('xxx', $this->table->get(1)->token);
+        $this->assertEquals('ae93ddbe32664ce7927cf0c5c5a5e59d', $this->table->get(1)->token);
         $this->_mockRequestPost();
         $this->_mockAuthLoggedIn();
         $this->_mockFlash();
