@@ -79,19 +79,17 @@ class RegisterBehavior extends Behavior
             ->select(['token_expires', 'id', 'active', 'token'])
             ->where(['token' => $token])
             ->first();
-        if (!empty($user)) {
-            if (!$user->tokenExpired()) {
-                if (!empty($callback) && method_exists($this, $callback)) {
-                    return $this->_table->{$callback}($user);
-                } else {
-                    return $user;
-                }
-            } else {
-                throw new TokenExpiredException(__d('Users', "Token has already expired user with no token"));
-            }
-        } else {
+        if (empty($user)) {
             throw new UserNotFoundException(__d('Users', "User not found for the given token and email."));
         }
+        if ($user->tokenExpired()) {
+            throw new TokenExpiredException(__d('Users', "Token has already expired user with no token"));
+        }
+        if (!method_exists($this, $callback)) {
+            return $user;
+        }
+
+        return $this->_table->{$callback}($user);
     }
 
     /**

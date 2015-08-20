@@ -42,15 +42,35 @@ class UserValidationTraitTest extends BaseTraitTest
      *
      * @return void
      */
-    public function testValidateHappyToken()
+    public function testValidateHappyEmail()
     {
         $this->_mockFlash();
-        $user = $this->table->findByToken('xxx')->first();
+        $user = $this->table->findByToken('token-3')->first();
         $this->assertFalse($user->active);
         $this->Trait->Flash->expects($this->once())
                 ->method('success')
                 ->with('User account validated successfully');
-        $this->Trait->validate('email', 'xxx');
+        $this->Trait->validate('email', 'token-3');
+        $user = $this->table->findById($user->id)->first();
+        $this->assertTrue($user->active);
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testValidateHappyPassword()
+    {
+        $this->markTestIncomplete('test is progress now');
+        $this->_mockFlash();
+        $user = $this->table->findByToken('token-4')->first();
+        $this->assertTrue($user->active);
+        $oldPassword = $user->password;
+        $this->Trait->Flash->expects($this->once())
+                ->method('success')
+                ->with('Reset password token was validated successfully');
+        $this->Trait->validate('password', 'token-4');
         $user = $this->table->findById($user->id)->first();
         $this->assertTrue($user->active);
     }
