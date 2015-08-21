@@ -19,6 +19,15 @@ use PHPUnit_Framework_MockObject_RuntimeException;
 abstract class BaseTraitTest extends TestCase
 {
     /**
+     * Fixtures
+     *
+     * @var array
+     */
+    public $fixtures = [
+        'plugin.users.users',
+    ];
+
+    /**
      * Classname of the trait we are about to test
      *
      * @var string
@@ -90,18 +99,19 @@ abstract class BaseTraitTest extends TestCase
     }
 
     /**
-     * mock Request for POST
+     * mock Request for POST, is and allow methods
      *
+     * @param mixed $with used in with
      * @return void
      */
-    protected function _mockRequestPost()
+    protected function _mockRequestPost($with = 'post')
     {
         $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
                 ->setMethods(['is', 'data'])
                 ->getMock();
-        $this->Trait->request->expects($this->once())
+        $this->Trait->request->expects($this->any())
                 ->method('is')
-                ->with('post')
+                ->with($with)
                 ->will($this->returnValue(true));
     }
 

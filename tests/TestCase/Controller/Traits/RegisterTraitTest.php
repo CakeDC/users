@@ -17,15 +17,6 @@ use Users\Test\BaseTraitTest;
 class RegisterTraitTest extends BaseTraitTest
 {
     /**
-     * Fixtures
-     *
-     * @var array
-     */
-    public $fixtures = [
-        'plugin.users.users',
-    ];
-
-    /**
      * setUp
      *
      * @return void
