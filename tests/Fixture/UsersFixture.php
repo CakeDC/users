@@ -121,7 +121,7 @@ class UsersFixture extends TestFixture
             'first_name' => 'FirstName4',
             'last_name' => 'Lorem ipsum dolor sit amet',
             'token' => 'token-4',
-            'token_expires' => '2015-06-24 17:33:54',
+            'token_expires' => '2030-06-24 17:33:54',
             'api_token' => 'Lorem ipsum dolor sit amet',
             'activation_date' => '2015-06-24 17:33:54',
             'tos_date' => '2015-06-24 17:33:54',

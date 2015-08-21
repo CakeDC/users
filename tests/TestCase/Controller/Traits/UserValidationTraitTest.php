@@ -33,7 +33,7 @@ class UserValidationTraitTest extends BaseTraitTest
     public function setUp()
     {
         $this->traitClassName = 'Users\Controller\Traits\UserValidationTrait';
-        $this->traitMockMethods = ['dispatchEvent', 'isStopped', 'redirect', 'getUsersTable'];
+        $this->traitMockMethods = ['dispatchEvent', 'isStopped', 'redirect', 'getUsersTable', 'set'];
         parent::setUp();
     }
 
@@ -50,6 +50,9 @@ class UserValidationTraitTest extends BaseTraitTest
         $this->Trait->Flash->expects($this->once())
                 ->method('success')
                 ->with('User account validated successfully');
+        $this->Trait->expects($this->once())
+                ->method('redirect')
+                ->with(['action' => 'login']);
         $this->Trait->validate('email', 'token-3');
         $user = $this->table->findById($user->id)->first();
         $this->assertTrue($user->active);
@@ -60,18 +63,140 @@ class UserValidationTraitTest extends BaseTraitTest
      *
      * @return void
      */
+    public function testValidateUserNotFound()
+    {
+        $this->_mockFlash();
+        $this->Trait->Flash->expects($this->once())
+                ->method('error')
+                ->with('Invalid token and/or email');
+        $this->Trait->expects($this->once())
+                ->method('redirect')
+                ->with(['action' => 'login']);
+        $this->Trait->validate('email', 'not-found');
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testValidateTokenExpired()
+    {
+        $this->_mockFlash();
+        $this->Trait->Flash->expects($this->once())
+                ->method('error')
+                ->with('Token already expired');
+        $this->Trait->expects($this->once())
+                ->method('redirect')
+                ->with(['action' => 'login']);
+        $this->Trait->validate('email', '6614f65816754310a5f0553436dd89e9');
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testValidateInvalidOp()
+    {
+        $this->_mockFlash();
+        $this->Trait->Flash->expects($this->once())
+                ->method('error')
+                ->with('Invalid validation type');
+        $this->Trait->expects($this->once())
+                ->method('redirect')
+                ->with(['action' => 'login']);
+        $this->Trait->validate('invalid-op', '6614f65816754310a5f0553436dd89e9');
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
     public function testValidateHappyPassword()
     {
-        $this->markTestIncomplete('test is progress now');
+        $this->_mockRequestGet();
         $this->_mockFlash();
         $user = $this->table->findByToken('token-4')->first();
         $this->assertTrue($user->active);
-        $oldPassword = $user->password;
         $this->Trait->Flash->expects($this->once())
                 ->method('success')
                 ->with('Reset password token was validated successfully');
+        $this->Trait->expects($this->once())
+                ->method('redirect')
+                ->with(['action' => 'changePassword']);
         $this->Trait->validate('password', 'token-4');
         $user = $this->table->findById($user->id)->first();
         $this->assertTrue($user->active);
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testResendTokenValidationHappy()
+    {
+        $this->_mockRequestPost();
+        $this->_mockFlash();
+        $this->Trait->request->expects($this->once())
+                ->method('data')
+                ->with('reference')
+                ->will($this->returnValue('user-3'));
+
+        $this->Trait->Flash->expects($this->once())
+                ->method('success')
+                ->with('Token has been reset successfully');
+        $this->Trait->expects($this->once())
+                ->method('redirect')
+                ->with(['action' => 'login']);
+        $this->Trait->resendTokenValidation();
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testResendTokenValidationAlreadyActive()
+    {
+        $this->_mockRequestPost();
+        $this->_mockFlash();
+        $this->Trait->request->expects($this->once())
+                ->method('data')
+                ->with('reference')
+                ->will($this->returnValue('user-4'));
+
+        $this->Trait->Flash->expects($this->once())
+                ->method('error')
+                ->with('User user-4 is already active');
+        $this->Trait->expects($this->never())
+                ->method('redirect')
+                ->with(['action' => 'login']);
+        $this->Trait->resendTokenValidation();
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testResendTokenValidationNotFound()
+    {
+        $this->_mockRequestPost();
+        $this->_mockFlash();
+        $this->Trait->request->expects($this->once())
+                ->method('data')
+                ->with('reference')
+                ->will($this->returnValue('not-found'));
+
+        $this->Trait->Flash->expects($this->once())
+                ->method('error')
+                ->with('User not-found was not found');
+        $this->Trait->expects($this->never())
+                ->method('redirect')
+                ->with(['action' => 'login']);
+        $this->Trait->resendTokenValidation();
     }
 }

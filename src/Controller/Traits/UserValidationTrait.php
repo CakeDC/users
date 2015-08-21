@@ -53,21 +53,20 @@ trait UserValidationTrait
                     if (!empty($result)) {
                         $this->Flash->success(__d('Users', 'Reset password token was validated successfully'));
                         $this->request->session()->write(Configure::read('Users.Key.Session.resetPasswordUserId'), $result->id);
-                        $this->redirect(['action' => 'changePassword']);
+                        return $this->redirect(['action' => 'changePassword']);
                     } else {
                         $this->Flash->error(__d('Users', 'Reset password token could not be validated'));
                     }
                     break;
                 default:
-                    throw new InvalidArgumentException();
+                    $this->Flash->error(__d('Users', 'Invalid validation type'));
             }
-        } catch (UserNotFoundException $exception) {
+        } catch (UserNotFoundException $ex) {
             $this->Flash->error(__d('Users', 'Invalid token and/or email'));
-        } catch (TokenExpiredException $exception) {
+        } catch (TokenExpiredException $ex) {
             $this->Flash->error(__d('Users', 'Token already expired'));
-        } catch (InvalidArgumentException $iae) {
-            $this->Flash->error(__d('Users', 'Invalid validation type'));
         }
+
         return $this->redirect(['action' => 'login']);
     }
 
