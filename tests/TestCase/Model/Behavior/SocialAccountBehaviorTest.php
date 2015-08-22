@@ -17,7 +17,6 @@ use Cake\TestSuite\TestCase;
 use InvalidArgumentException;
 use Users\Model\Table\SocialAccountsTable;
 
-
 /**
  * Test Case
  */
