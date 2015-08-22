@@ -13,7 +13,9 @@ namespace Users\Controller\Traits;
 
 use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
+use Cake\Network\Exception\NotFoundException;
 use Cake\Network\Response;
+use InvalidArgumentException;
 use Users\Controller\Component\UsersAuthComponent;
 
 /**
@@ -32,8 +34,8 @@ trait RegisterTrait
      */
     public function register()
     {
-        if (!Configure::check('Users.Registration.active')) {
-            throw new \Cake\Network\Exception\NotFoundException();
+        if (!Configure::read('Users.Registration.active')) {
+            throw new NotFoundException();
         }
         $usersTable = $this->getUsersTable();
         $user = $usersTable->newEntity();
@@ -61,25 +63,47 @@ trait RegisterTrait
             return $this->redirect($event->result);
         }
 
-        if ($this->request->is('post')) {
-            $validReCaptcha = $this->validateReCaptcha(
-                $this->request->data('g-recaptcha-response'),
-                $this->request->clientIp()
-            );
-            if ($validReCaptcha) {
-                if ($userSaved = $usersTable->register($user, $requestData, $options)) {
-                    return $this->_afterRegister($userSaved);
-                } else {
-                    $this->Flash->error(__d('Users', 'The user could not be saved'));
-                }
-            } else {
-                $this->Flash->error(__d('Users', 'The reCaptcha could not be validated'));
-            }
-        }
-
-
         $this->set(compact('user'));
         $this->set('_serialize', ['user']);
+
+        if (!$this->request->is('post')) {
+            return;
+        }
+
+        $validPost = $this->_validateRegisterPost();
+        if (!$validPost) {
+            $this->Flash->error(__d('Users', 'The reCaptcha could not be validated'));
+            return;
+        }
+        try {
+            $userSaved = $usersTable->register($user, $requestData, $options);
+        } catch (InvalidArgumentException $ex) {
+            $this->Flash->error($ex->getMessage());
+            return;
+        }
+        if (!$userSaved) {
+            $this->Flash->error(__d('Users', 'The user could not be saved'));
+            return;
+        }
+
+        return $this->_afterRegister($userSaved);
+    }
+
+    /**
+     * Check the POST and validate it for registration, for now we check the reCaptcha
+     *
+     * @return bool
+     */
+    protected function _validateRegisterPost()
+    {
+        if (!Configure::read('Users.Registration.reCaptcha')) {
+            return true;
+        }
+        $validReCaptcha = $this->validateReCaptcha(
+            $this->request->data('g-recaptcha-response'),
+            $this->request->clientIp()
+        );
+        return $validReCaptcha;
     }
 
     /**
