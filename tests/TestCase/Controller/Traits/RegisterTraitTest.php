@@ -11,6 +11,7 @@
 
 namespace Users\Test\TestCase\Controller\Traits;
 
+use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
 use Users\Test\BaseTraitTest;
 
@@ -24,7 +25,7 @@ class RegisterTraitTest extends BaseTraitTest
     public function setUp()
     {
         $this->traitClassName = 'Users\Controller\Traits\RegisterTrait';
-        $this->traitMockMethods = ['validate', 'dispatchEvent', 'set'];
+        $this->traitMockMethods = ['validate', 'dispatchEvent', 'set', 'validateReCaptcha', 'redirect'];
         parent::setUp();
     }
 
@@ -59,10 +60,205 @@ class RegisterTraitTest extends BaseTraitTest
      */
     public function testRegisterHappy()
     {
+        $this->assertEquals(0, $this->table->find()->where(['username' => 'testRegistration'])->count());
+        $this->_mockRequestPost();
+        $this->_mockAuth();
+        $this->_mockFlash();
+        $this->_mockDispatchEvent();
+        $this->Trait->Flash->expects($this->once())
+                ->method('success')
+                ->with('Please validate your account before log in');
+        $this->Trait->expects($this->once())
+                ->method('validateRecaptcha')
+                ->will($this->returnValue(true));
+        $this->Trait->expects($this->once())
+                ->method('redirect')
+                ->with(['action' => 'login']);
+        $this->Trait->request->data = [
+            'username' => 'testRegistration',
+            'password' => 'password',
+            'email' => 'test-registration@example.com',
+            'password_confirm' => 'password',
+            'tos' => 1
+        ];
+
+        $this->Trait->register();
+
+        $this->assertEquals(1, $this->table->find()->where(['username' => 'testRegistration'])->count());
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testRegisterValidationErrors()
+    {
+        $this->assertEquals(0, $this->table->find()->where(['username' => 'testRegistration'])->count());
+        $this->_mockRequestPost();
+        $this->_mockAuth();
+        $this->_mockFlash();
+        $this->_mockDispatchEvent();
+        $this->Trait->Flash->expects($this->once())
+                ->method('error')
+                ->with('The user could not be saved');
+        $this->Trait->expects($this->once())
+                ->method('validateRecaptcha')
+                ->will($this->returnValue(true));
+        $this->Trait->expects($this->never())
+                ->method('redirect');
+        $this->Trait->request->data = [
+            'username' => 'testRegistration',
+            'password' => 'password',
+            'email' => 'test-registration@example.com',
+            'password_confirm' => 'not-matching',
+            'tos' => 1
+        ];
+
+        $this->Trait->register();
+
+        $this->assertEquals(0, $this->table->find()->where(['username' => 'testRegistration'])->count());
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     * @todo: remove this use case once the TOS is refactored in RegisterBehavior
+     */
+    public function testRegisterNoTos()
+    {
+        $this->assertEquals(0, $this->table->find()->where(['username' => 'testRegistration'])->count());
+        $this->_mockRequestPost();
+        $this->_mockAuth();
+        $this->_mockFlash();
+        $this->_mockDispatchEvent();
+        $this->Trait->Flash->expects($this->once())
+                ->method('error')
+                ->with('The "tos" property is not present');
+        $this->Trait->expects($this->once())
+                ->method('validateRecaptcha')
+                ->will($this->returnValue(true));
+        $this->Trait->expects($this->never())
+                ->method('redirect');
+        $this->Trait->request->data = [
+            'username' => 'testRegistration',
+            'password' => 'password',
+            'email' => 'test-registration@example.com',
+            'password_confirm' => 'password',
+            'tos' => 0
+        ];
+
+        $this->Trait->register();
+
+        $this->assertEquals(0, $this->table->find()->where(['username' => 'testRegistration'])->count());
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testRegisterRecaptchaNotValid()
+    {
+        $this->assertEquals(0, $this->table->find()->where(['username' => 'testRegistration'])->count());
+        $this->_mockRequestPost();
+        $this->_mockAuth();
+        $this->_mockFlash();
+        $this->_mockDispatchEvent();
+        $this->Trait->Flash->expects($this->once())
+                ->method('error')
+                ->with('The reCaptcha could not be validated');
+        $this->Trait->expects($this->once())
+                ->method('validateRecaptcha')
+                ->will($this->returnValue(false));
+        $this->Trait->request->data = [
+            'username' => 'testRegistration',
+            'password' => 'password',
+            'email' => 'test-registration@example.com',
+            'password_confirm' => 'password',
+            'tos' => 1
+        ];
+
+        $this->Trait->register();
+
+        $this->assertEquals(0, $this->table->find()->where(['username' => 'testRegistration'])->count());
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testRegisterGet()
+    {
+        $this->assertEquals(0, $this->table->find()->where(['username' => 'testRegistration'])->count());
+        $this->_mockRequestGet();
+        $this->_mockAuth();
+        $this->_mockFlash();
+        $this->_mockDispatchEvent();
+        $this->Trait->Flash->expects($this->never())
+                ->method('success');
+        $this->Trait->expects($this->never())
+                ->method('validateRecaptcha');
+        $this->Trait->expects($this->never())
+                ->method('redirect');
+        $this->Trait->register();
+
+        $this->assertEquals(0, $this->table->find()->where(['username' => 'testRegistration'])->count());
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testRegisterRecaptchaDisabled()
+    {
+        $recaptcha = Configure::read('Users.Registration.reCaptcha');
+        Configure::write('Users.Registration.reCaptcha', false);
+        $this->assertEquals(0, $this->table->find()->where(['username' => 'testRegistration'])->count());
+        $this->_mockRequestPost();
+        $this->_mockAuth();
+        $this->_mockFlash();
+        $this->_mockDispatchEvent();
+        $this->Trait->Flash->expects($this->once())
+                ->method('success')
+                ->with('Please validate your account before log in');
+        $this->Trait->expects($this->never())
+                ->method('validateRecaptcha');
+        $this->Trait->expects($this->once())
+                ->method('redirect')
+                ->with(['action' => 'login']);
+        $this->Trait->request->data = [
+            'username' => 'testRegistration',
+            'password' => 'password',
+            'email' => 'test-registration@example.com',
+            'password_confirm' => 'password',
+            'tos' => 1
+        ];
+
+        $this->Trait->register();
+
+        $this->assertEquals(1, $this->table->find()->where(['username' => 'testRegistration'])->count());
+        Configure::write('Users.Registration.reCaptcha', $recaptcha);
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     * @expectedException Cake\Network\Exception\NotFoundException
+     */
+    public function testRegisterNotEnabled()
+    {
+        $active = Configure::read('Users.Registration.active');
+        Configure::write('Users.Registration.active', false);
         $this->_mockRequestPost();
         $this->_mockAuth();
         $this->_mockFlash();
         $this->_mockDispatchEvent();
         $this->Trait->register();
+        Configure::write('Users.Registration.active', $active);
     }
 }

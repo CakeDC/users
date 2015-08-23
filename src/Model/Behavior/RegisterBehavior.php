@@ -47,6 +47,7 @@ class RegisterBehavior extends Behavior
         $tokenExpiration = Hash::get($options, 'token_expiration');
         $useTos = Hash::get($options, 'use_tos');
         if ($useTos && !$user->tos) {
+            //@todo: move to a specific validation rule for TOS instead of managing validation in controller
             throw new InvalidArgumentException(__d('Users', 'The "tos" property is not present'));
         }
 
