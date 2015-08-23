@@ -77,10 +77,11 @@ class UsersShell extends Shell
     public function addUser()
     {
         $username = (empty($this->params['username']) ?
-            $this->_usernameSeed[array_rand($this->_usernameSeed)] : $this->params['username']);
+            $this->_generateRandomUsername() : $this->params['username']);
+
         $username = $this->Users->generateUniqueUsername($username);
         $password = (empty($this->params['password']) ?
-            str_replace('-', '', \Cake\Utility\Text::uuid()) : $this->params['password']);
+            $this->_generateRandomPassword() : $this->params['password']);
         $email = (empty($this->params['email']) ? $username . '@example.com' : $this->params['email']);
         $user = [
             'username' => $username,
@@ -108,7 +109,7 @@ class UsersShell extends Shell
     public function addSuperuser()
     {
         $username = $this->Users->generateUniqueUsername('superadmin');
-        $password = str_replace('-', '', \Cake\Utility\Text::uuid());
+        $password = $this->_generateRandomPassword();
         $user = [
             'username' => $username,
             'email' => $username . '@example.com',
@@ -142,7 +143,7 @@ class UsersShell extends Shell
         if (empty($password)) {
             $this->error(__d('Users', 'Please enter a password.'));
         }
-        $hashedPassword = (new User)->hashPassword($password);
+        $hashedPassword = $this->_generatedHashedPassword($password);
         $this->Users->updateAll(['password' => $hashedPassword], ['id IS NOT NULL']);
         $this->out(__d('Users', 'Password changed for all users'));
         $this->out(__d('Users', 'New password: {0}', $password));
@@ -321,6 +322,36 @@ class UsersShell extends Shell
         }
     }
 
+    /**
+     * Generates a random password.
+     *
+     * @return void
+     */
+    protected function _generateRandomPassword()
+    {
+        return str_replace('-', '', \Cake\Utility\Text::uuid());
+    }
+
+    /**
+     * Generates a random username based on a list of preexisting ones.
+     *
+     * @return void
+     */
+    protected function _generateRandomUsername()
+    {
+        return $this->_usernameSeed[array_rand($this->_usernameSeed)];
+    }
+
+    /**
+     * Hash a password
+     *
+     * @param password
+     * @return void
+     */
+    protected function _generatedHashedPassword($password)
+    {
+        return (new User)->hashPassword($password);
+    }
     //add filters LIKE in username and email to some tasks
     // --force to ignore "you are about to do X to Y users"
 }
