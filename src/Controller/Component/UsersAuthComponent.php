@@ -125,19 +125,19 @@ class UsersAuthComponent extends Component
         if (empty($this->_registry->getController()->Auth->user())) {
             return false;
         }
-        $url = Hash::get($event->data, 'url');
+        $url = Hash::get((array)$event->data, 'url');
         if (empty($url)) {
             return false;
         }
 
         if (is_array($url)) {
-            $requestParams = $url;
             $requestUrl = Router::reverse($url);
+            $requestParams = Router::parse($requestUrl);
         } else {
             $requestParams = Router::parse($url);
             $requestUrl = $url;
         }
-        $request = new Request($url);
+        $request = new Request($requestUrl);
         $request->params = $requestParams;
 
         $isAuthorized = $this->_registry->getController()->Auth->isAuthorized(null, $request);
