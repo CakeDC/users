@@ -41,7 +41,7 @@ use Cake\Core\Configure;
         </p>
     </fieldset>
     <?php
-    if (Configure::check('Users.Social.login')) : ?>
+    if (Configure::read('Users.Social.login')) : ?>
         <?= $this->User->facebookLogin(); ?>
         <?= $this->User->twitterLogin(); ?>
     <?php

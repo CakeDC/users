@@ -40,7 +40,7 @@ class UsersShell extends Shell
     public function initialize()
     {
         parent::initialize();
-        $this->loadModel('Users.Users');
+        $this->Users = $this->loadModel(Configure::read('Users.table'));
     }
 
     /**
@@ -121,11 +121,19 @@ class UsersShell extends Shell
         $userEntity->is_superuser = true;
         $userEntity->role = 'superuser';
         $savedUser = $this->Users->save($userEntity);
-        $this->out(__d('Users', 'Superuser added:'));
-        $this->out(__d('Users', 'Id: {0}', $savedUser->id));
-        $this->out(__d('Users', 'Username: {0}', $username));
-        $this->out(__d('Users', 'Email: {0}', $savedUser->email));
-        $this->out(__d('Users', 'Password: {0}', $password));
+        if (!empty($savedUser)) {
+            $this->out(__d('Users', 'Superuser added:'));
+            $this->out(__d('Users', 'Id: {0}', $savedUser->id));
+            $this->out(__d('Users', 'Username: {0}', $username));
+            $this->out(__d('Users', 'Email: {0}', $savedUser->email));
+            $this->out(__d('Users', 'Password: {0}', $password));
+        } else {
+            $this->out(__d('Users', 'Superuser could not be added:'));
+
+            collection($userEntity->errors())->each(function ($error, $field) {
+                $this->out(__d('Users', 'Field: {0} Error: {1}', $field, implode(',', $error)));
+            });
+        }
     }
 
     /**
