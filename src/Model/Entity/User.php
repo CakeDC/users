@@ -66,6 +66,18 @@ class User extends Entity
     }
 
     /**
+     * @param string $tos tos option. It will be set the tos_date
+     * @return bool
+     */
+    protected function _setTos($tos)
+    {
+        if ((bool)$tos === true) {
+            $this->set('tos_date', new DateTime());
+        }
+        return $tos;
+    }
+
+    /**
      * Hash a password using the configured password hasher,
      * use DefaultPasswordHasher if no one was configured
      *

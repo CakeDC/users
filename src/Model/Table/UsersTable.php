@@ -130,22 +130,6 @@ class UsersTable extends Table
     }
 
     /**
-     * Default+Email validation rules.
-     *
-     * @param Validator $validator Validator instance.
-     * @return Validator
-     */
-    public function validationEmail(Validator $validator)
-    {
-        $validator = $this->validationRegister($validator);
-        $validator
-                ->add('email', 'valid', ['rule' => 'email'])
-                ->requirePresence('email', 'create')
-                ->notEmpty('email');
-        return $validator;
-    }
-
-    /**
      * Wrapper for all validation rules for register
      * @param Validator $validator Cake validator object.
      *

@@ -124,40 +124,6 @@ class RegisterTraitTest extends BaseTraitTest
      * test
      *
      * @return void
-     * @todo: remove this use case once the TOS is refactored in RegisterBehavior
-     */
-    public function testRegisterNoTos()
-    {
-        $this->assertEquals(0, $this->table->find()->where(['username' => 'testRegistration'])->count());
-        $this->_mockRequestPost();
-        $this->_mockAuth();
-        $this->_mockFlash();
-        $this->_mockDispatchEvent();
-        $this->Trait->Flash->expects($this->once())
-                ->method('error')
-                ->with('The "tos" property is not present');
-        $this->Trait->expects($this->once())
-                ->method('validateRecaptcha')
-                ->will($this->returnValue(true));
-        $this->Trait->expects($this->never())
-                ->method('redirect');
-        $this->Trait->request->data = [
-            'username' => 'testRegistration',
-            'password' => 'password',
-            'email' => 'test-registration@example.com',
-            'password_confirm' => 'password',
-            'tos' => 0
-        ];
-
-        $this->Trait->register();
-
-        $this->assertEquals(0, $this->table->find()->where(['username' => 'testRegistration'])->count());
-    }
-
-    /**
-     * test
-     *
-     * @return void
      */
     public function testRegisterRecaptchaNotValid()
     {

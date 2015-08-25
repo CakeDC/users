@@ -11,8 +11,11 @@
 
 namespace Users\Model\Behavior;
 
+use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
+use Cake\Event\Event;
 use Cake\Utility\Hash;
+use Cake\Validation\Validator;
 use DateTime;
 use InvalidArgumentException;
 use Users\Exception\TokenExpiredException;
@@ -21,11 +24,25 @@ use Users\Exception\UserNotFoundException;
 use Users\Model\Behavior\Behavior;
 use Users\Model\Entity\User;
 
+
 /**
  * Covers the user registration
  */
 class RegisterBehavior extends Behavior
 {
+    /**
+     * Constructor hook method.
+     *
+     * @param array $config The configuration settings provided to this behavior.
+     * @return void
+     */
+    public function initialize(array $config)
+    {
+        parent::initialize($config);
+        $this->validateEmail = (bool)Configure::read('Users.Email.validate');
+        $this->useTos = (bool)Configure::read('Users.Tos.required');
+    }
+
     /**
      * Registers an user.
      *
@@ -38,29 +55,15 @@ class RegisterBehavior extends Behavior
     public function register($user, $data, $options)
     {
         $validateEmail = Hash::get($options, 'validate_email');
-        $validator = Hash::get($options, 'validator') ?: 'register';
-        if ($validateEmail) {
-            $validator = 'email';
-        }
-        $user = $this->_table->patchEntity($user, $data, ['validate' => $validator]);
-
         $tokenExpiration = Hash::get($options, 'token_expiration');
-        $useTos = Hash::get($options, 'use_tos');
-        if ($useTos && !$user->tos) {
-            //@todo: move to a specific validation rule for TOS instead of managing validation in controller
-            throw new InvalidArgumentException(__d('Users', 'The "tos" property is not present'));
-        }
-
-        if (!empty($user['tos'])) {
-            $user->tos_date = new DateTime();
-        }
+        $user = $this->_table->patchEntity($user, $data, ['validate' => Hash::get($options, 'validator') ?: $this->_getValidators($options)]);
         $user->validated = false;
         //@todo move updateActive to afterSave?
         $user = $this->_updateActive($user, $validateEmail, $tokenExpiration);
         $this->_table->isValidateEmail = $validateEmail;
         $userSaved = $this->_table->save($user);
         if ($userSaved && $validateEmail) {
-           // $this->_sendEmail($user, __d('Users', 'Your account validation link'));
+            $this->_sendEmail($user, __d('Users', 'Your account validation link'));
         }
         return $userSaved;
     }
@@ -111,5 +114,67 @@ class RegisterBehavior extends Behavior
         $result = $this->_table->save($user);
 
         return $result;
+    }
+
+    public function buildValidator(Event $event, Validator $validator, $name){
+        if ($name == 'default') {
+            $this->_emailValidator($validator, $this->validateEmail);
+        }
+    }
+
+    /**
+     * Email validator
+     *
+     * @param Validator $validator Validator instance.
+     * @param $validateEmail true when email needs to be required
+     * @return Validator
+     */
+    protected function _emailValidator(Validator $validator, $validateEmail)
+    {
+        $this->validateEmail = $validateEmail;
+        $validator
+            ->add('email', 'valid', ['rule' => 'email'])
+            ->notEmpty('email', 'This field is required', function ($context) {
+                return $this->validateEmail;
+            });
+        return $validator;
+    }
+
+    /**
+     * Tos validator
+     *
+     * @param Validator $validator Validator instance.
+     * @return Validator
+     */
+    protected function _tosValidator(Validator $validator)
+    {
+        $validator
+            ->requirePresence('tos', 'create')
+            ->notEmpty('tos');
+        return $validator;
+    }
+
+    /**
+     * Returns the list of validators
+     *
+     * @param array $options Array of options ['validate_email' => true/false, 'use_tos' => true/false]
+     * @return Validator
+     */
+    protected function _getValidators($options)
+    {
+        $validateEmail = Hash::get($options, 'validate_email');
+        $useTos = Hash::get($options, 'use_tos');
+
+        $validator = $this->_table->validationDefault(new Validator());
+        $validator = $this->_table->validationRegister($validator);
+        if ($useTos) {
+            $validator = $this->_tosValidator($validator);
+        }
+
+        if ($validateEmail) {
+            $validator = $this->_emailValidator($validator, $validateEmail);
+        }
+        return $validator;
+
     }
 }

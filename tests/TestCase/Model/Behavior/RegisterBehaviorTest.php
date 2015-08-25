@@ -51,7 +51,7 @@ class RegisterBehaviorTest extends TestCase
      */
     public function tearDown()
     {
-        unset($this->table, $this->Behavior);
+        unset($this->Table, $this->Behavior);
         parent::tearDown();
     }
 
@@ -93,7 +93,7 @@ class RegisterBehaviorTest extends TestCase
      *
      * @return void
      */
-    public function testValidateRegisterValidateEmail()
+    public function testValidateRegisterValidateEmailAndTos()
     {
         $user = [
             'username' => 'testuser',
@@ -107,12 +107,59 @@ class RegisterBehaviorTest extends TestCase
         $result = $this->Table->register($this->Table->newEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1]);
         $this->assertNotEmpty($result);
         $this->assertFalse($result->active);
+        $this->assertNotEmpty($result->tos_date);
     }
 
     /**
      * Test register method
      *
-     * @expectedException InvalidArgumentException
+     * @return void
+     */
+    public function testValidateRegisterValidatorOption()
+    {
+        $this->Table = $this->getMockForModel('Users.Users', ['validationCustom', 'patchEntity', 'errors', 'save']);
+
+        $this->Behavior = $this->getMockBuilder('Users\Model\Behavior\RegisterBehavior')
+            ->setMethods(['getValidators', '_updateActive'])
+            ->setConstructorArgs([$this->Table])
+            ->getMock();
+
+        $user = [
+            'username' => 'testuser',
+            'email' => 'testuser@test.com',
+            'password' => 'password',
+            'password_confirm' => 'password',
+            'first_name' => 'test',
+            'last_name' => 'user',
+            'tos' => 1
+        ];
+
+        $this->Behavior->expects($this->never())
+            ->method('getValidators');
+
+        $entityUser = $this->Table->newEntity($user);
+
+        $this->Behavior->expects($this->once())
+            ->method('_updateActive')
+            ->will($this->returnValue($entityUser));
+
+        $this->Table->expects($this->once())
+            ->method('patchEntity')
+            ->with($this->Table->newEntity(), $user, ['validate' => 'custom'])
+            ->will($this->returnValue($entityUser));
+
+        $this->Table->expects($this->once())
+            ->method('save')
+            ->with($entityUser)
+            ->will($this->returnValue($entityUser));
+
+        $result = $this->Behavior->register($this->Table->newEntity(), $user, ['validator' => 'custom', 'validate_email' => 1]);
+        $this->assertNotEmpty($result->tos_date);
+    }
+
+    /**
+     * Test register method
+     *
      */
     public function testValidateRegisterTosRequired()
     {
@@ -124,7 +171,8 @@ class RegisterBehaviorTest extends TestCase
             'first_name' => 'test',
             'last_name' => 'user',
         ];
-        $this->Table->register($this->Table->newEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1, 'use_tos' => 1]);
+        $result = $this->Table->register($this->Table->newEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1, 'use_tos' => 1]);
+        $this->assertFalse($result);
     }
 
     /**
