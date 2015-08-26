@@ -9,7 +9,7 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Test\TestCase\Controller\Traits;
+namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
 use Cake\TestSuite\TestCase;
 
@@ -23,7 +23,7 @@ class ReCaptchaTraitTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->Trait = $this->getMockBuilder('Users\Controller\Traits\ReCaptchaTrait')
+        $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\Traits\ReCaptchaTrait')
             ->setMethods(['_getReCaptchaInstance'])
             ->getMockForTrait();
     }

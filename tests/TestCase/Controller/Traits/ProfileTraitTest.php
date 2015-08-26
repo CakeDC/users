@@ -9,11 +9,11 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Test\TestCase\Controller\Traits;
+namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
 use Cake\ORM\TableRegistry;
-use Users\Controller\Traits\ProfileTrait;
-use Users\Test\BaseTraitTest;
+use CakeDC\Users\Controller\Traits\ProfileTrait;
+use CakeDC\Users\Test\BaseTraitTest;
 
 class ProfileTraitTest extends BaseTraitTest
 {
@@ -23,8 +23,8 @@ class ProfileTraitTest extends BaseTraitTest
      * @var array
      */
     public $fixtures = [
-        'plugin.users.users',
-        'plugin.users.social_accounts',
+        'plugin.CakeDC/Users.users',
+        'plugin.CakeDC/Users.social_accounts',
     ];
 
     /**
@@ -34,7 +34,7 @@ class ProfileTraitTest extends BaseTraitTest
      */
     public function setUp()
     {
-        $this->traitClassName = 'Users\Controller\Traits\ProfileTrait';
+        $this->traitClassName = 'CakeDC\Users\Controller\Traits\ProfileTrait';
         $this->traitMockMethods = ['set', 'getUsersTable', 'redirect', 'validate'];
         parent::setUp();
     }

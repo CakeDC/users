@@ -9,15 +9,15 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Controller;
+namespace CakeDC\Users\Controller;
 
-use Users\Controller\AppController;
-use Users\Controller\Traits\LoginTrait;
-use Users\Controller\Traits\ProfileTrait;
-use Users\Controller\Traits\RegisterTrait;
-use Users\Controller\Traits\SimpleCrudTrait;
-use Users\Controller\Traits\SocialTrait;
-use Users\Model\Table\UsersTable;
+use CakeDC\Users\Controller\AppController;
+use CakeDC\Users\Controller\Traits\LoginTrait;
+use CakeDC\Users\Controller\Traits\ProfileTrait;
+use CakeDC\Users\Controller\Traits\RegisterTrait;
+use CakeDC\Users\Controller\Traits\SimpleCrudTrait;
+use CakeDC\Users\Controller\Traits\SocialTrait;
+use CakeDC\Users\Model\Table\UsersTable;
 
 /**
  * Users Controller

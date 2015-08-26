@@ -9,16 +9,16 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Model\Behavior;
+namespace CakeDC\Users\Model\Behavior;
 
 use Cake\Datasource\EntityInterface;
 use Cake\Network\Email\Email;
 use Cake\Utility\Hash;
 use InvalidArgumentException;
-use Users\Exception\UserAlreadyActiveException;
-use Users\Exception\UserNotFoundException;
-use Users\Exception\WrongPasswordException;
-use Users\Model\Behavior\Behavior;
+use CakeDC\Users\Exception\UserAlreadyActiveException;
+use CakeDC\Users\Exception\UserNotFoundException;
+use CakeDC\Users\Exception\WrongPasswordException;
+use CakeDC\Users\Model\Behavior\Behavior;
 
 /**
  * Covers the password management features

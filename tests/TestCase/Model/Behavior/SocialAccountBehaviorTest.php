@@ -9,13 +9,13 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Test\TestCase\Model\Behavior;
+namespace CakeDC\Users\Test\TestCase\Model\Behavior;
 
 use Cake\Event\Event;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use InvalidArgumentException;
-use Users\Model\Table\SocialAccountsTable;
+use CakeDC\Users\Model\Table\SocialAccountsTable;
 
 /**
  * Test Case
@@ -28,8 +28,8 @@ class SocialAccountBehaviorTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.users.social_accounts',
-        'plugin.users.users'
+        'plugin.CakeDC/Users.social_accounts',
+        'plugin.CakeDC/Users.users'
     ];
 
     /**
@@ -40,8 +40,8 @@ class SocialAccountBehaviorTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $table = TableRegistry::get('Users.SocialAccounts');
-        $table->addBehavior('Users.SocialAccount');
+        $table = TableRegistry::get('CakeDC/Users.SocialAccounts');
+        $table->addBehavior('CakeDC/Users.SocialAccount');
         $this->Table = $table;
         $this->Behavior = $table->behaviors()->SocialAccount;
     }
@@ -93,7 +93,7 @@ class SocialAccountBehaviorTest extends TestCase
     /**
      * Test validateEmail method
      *
-     * @expectedException \Users\Exception\AccountAlreadyActiveException
+     * @expectedException CakeDC\Users\Exception\AccountAlreadyActiveException
      */
     public function testValidateEmailActiveAccount()
     {

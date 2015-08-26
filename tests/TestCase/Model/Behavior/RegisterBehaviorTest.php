@@ -9,7 +9,7 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Test\TestCase\Model\Behavior;
+namespace CakeDC\Users\Test\TestCase\Model\Behavior;
 
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
@@ -26,7 +26,7 @@ class RegisterBehaviorTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.users.users',
+        'plugin.CakeDC/Users.users',
     ];
 
     /**
@@ -37,8 +37,8 @@ class RegisterBehaviorTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $table = TableRegistry::get('Users.Users');
-        $table->addBehavior('Users/Register.Register');
+        $table = TableRegistry::get('CakeDC/Users.Users');
+        $table->addBehavior('CakeDC/Users/Register.Register');
         $this->Table = $table;
         $this->Behavior = $table->behaviors()->Register;
 
@@ -117,9 +117,9 @@ class RegisterBehaviorTest extends TestCase
      */
     public function testValidateRegisterValidatorOption()
     {
-        $this->Table = $this->getMockForModel('Users.Users', ['validationCustom', 'patchEntity', 'errors', 'save']);
+        $this->Table = $this->getMockForModel('CakeDC/Users.Users', ['validationCustom', 'patchEntity', 'errors', 'save']);
 
-        $this->Behavior = $this->getMockBuilder('Users\Model\Behavior\RegisterBehavior')
+        $this->Behavior = $this->getMockBuilder('CakeDC\Users\Model\Behavior\RegisterBehavior')
             ->setMethods(['getValidators', '_updateActive'])
             ->setConstructorArgs([$this->Table])
             ->getMock();
@@ -222,7 +222,7 @@ class RegisterBehaviorTest extends TestCase
      * Test Validate method
      *
      * @return void
-     * @expectedException \Users\Exception\TokenExpiredException
+     * @expectedException CakeDC\Users\Exception\TokenExpiredException
      */
     public function testValidateUserWithExpiredToken()
     {
@@ -233,7 +233,7 @@ class RegisterBehaviorTest extends TestCase
      * Test Validate method
      *
      * @return void
-     * @expectedException \Users\Exception\UserNotFoundException
+     * @expectedException CakeDC\Users\Exception\UserNotFoundException
      */
     public function testValidateNotExistingUser()
     {
@@ -248,7 +248,7 @@ class RegisterBehaviorTest extends TestCase
     public function testActiveUserRemoveValidationToken()
     {
         $user = $this->Table->find()->where(['id' => 1])->first();
-        $this->Behavior = $this->getMockBuilder('Users\Model\Behavior\RegisterBehavior')
+        $this->Behavior = $this->getMockBuilder('CakeDC\Users\Model\Behavior\RegisterBehavior')
             ->setMethods(['_removeValidationToken'])
             ->setConstructorArgs([$this->Table])
             ->getMock();

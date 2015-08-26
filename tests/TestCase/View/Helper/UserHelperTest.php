@@ -9,7 +9,7 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Test\TestCase\View\Helper;
+namespace CakeDC\Users\Test\TestCase\View\Helper;
 
 use Cake\Core\Configure;
 use Cake\Event\Event;
@@ -17,7 +17,7 @@ use Cake\Network\Request;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use Cake\View\View;
-use Users\View\Helper\UserHelper;
+use CakeDC\Users\View\Helper\UserHelper;
 
 /**
  * Users\View\Helper\UserHelper Test Case

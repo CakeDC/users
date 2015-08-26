@@ -9,13 +9,13 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Controller;
+namespace CakeDC\Users\Controller;
 
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Network\Response;
-use Users\Controller\AppController;
-use Users\Exception\AccountAlreadyActiveException;
-use Users\Model\Table\SocialAccountsTable;
+use CakeDC\Users\Controller\AppController;
+use CakeDC\Users\Exception\AccountAlreadyActiveException;
+use CakeDC\Users\Model\Table\SocialAccountsTable;
 
 /**
  * SocialAccounts Controller

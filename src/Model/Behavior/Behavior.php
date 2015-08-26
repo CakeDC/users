@@ -9,7 +9,7 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Model\Behavior;
+namespace CakeDC\Users\Model\Behavior;
 
 use Cake\Datasource\EntityInterface;
 use Cake\I18n\Time;

@@ -9,7 +9,7 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Test\TestCase\Shell;
+namespace CakeDC\Users\Test\TestCase\Shell;
 
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOutput;
@@ -24,7 +24,7 @@ class UsersShellTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.users.users',
+        'plugin.CakeDC/Users.users',
     ];
 
     /**
@@ -37,15 +37,15 @@ class UsersShellTest extends TestCase
         parent::setUp();
         $this->out = new ConsoleOutput();
         $this->io = new ConsoleIo($this->out);
-        $this->Users = TableRegistry::get('Users.Users');
+        $this->Users = TableRegistry::get('CakeDC/Users.Users');
 
-        $this->Shell = $this->getMockBuilder('Users\Shell\UsersShell')
+        $this->Shell = $this->getMockBuilder('CakeDC\Users\Shell\UsersShell')
             ->setMethods(['in', 'out', '_stop', 'clear', '_usernameSeed', '_generateRandomPassword',
                 '_generateRandomUsername', '_generatedHashedPassword', 'error'])
             ->setConstructorArgs([$this->io])
             ->getMock();
 
-        $this->Shell->Users = $this->getMockBuilder('Users\Model\UsersTable')
+        $this->Shell->Users = $this->getMockBuilder('CakeDC\Users\Model\UsersTable')
             ->setMethods(['generateUniqueUsername', 'newEntity', 'save', 'updateAll'])
             ->getMock();
 

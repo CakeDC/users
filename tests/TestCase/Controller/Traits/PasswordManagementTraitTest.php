@@ -9,12 +9,12 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Test\TestCase\Controller\Traits;
+namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
 use Cake\Auth\PasswordHasherFactory;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
-use Users\Test\BaseTraitTest;
+use CakeDC\Users\Test\BaseTraitTest;
 
 class PasswordManagementTraitTest extends BaseTraitTest
 {
@@ -25,7 +25,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
      */
     public function setUp()
     {
-        $this->traitClassName = 'Users\Controller\Traits\PasswordManagementTrait';
+        $this->traitClassName = 'CakeDC\Users\Controller\Traits\PasswordManagementTrait';
         $this->traitMockMethods = ['set', 'redirect', 'validate'];
         parent::setUp();
     }

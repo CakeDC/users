@@ -9,7 +9,7 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Test\Fixture;
+namespace CakeDC\Users\Test\Fixture;
 
 use Cake\TestSuite\Fixture\TestFixture;
 

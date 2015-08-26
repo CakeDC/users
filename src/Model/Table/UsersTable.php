@@ -9,7 +9,7 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Model\Table;
+namespace CakeDC\Users\Model\Table;
 
 use Cake\Datasource\EntityInterface;
 use Cake\Network\Email\Email;
@@ -17,8 +17,8 @@ use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Utility\Hash;
 use Cake\Validation\Validator;
-use Users\Exception\WrongPasswordException;
-use Users\Model\Entity\User;
+use CakeDC\Users\Exception\WrongPasswordException;
+use CakeDC\Users\Model\Entity\User;
 
 /**
  * Users Model
@@ -47,12 +47,12 @@ class UsersTable extends Table
         $this->displayField('id');
         $this->primaryKey('id');
         $this->addBehavior('Timestamp');
-        $this->addBehavior('Users.Register');
-        $this->addBehavior('Users.Password');
-        $this->addBehavior('Users.Social');
+        $this->addBehavior('CakeDC/Users.Register');
+        $this->addBehavior('CakeDC/Users.Password');
+        $this->addBehavior('CakeDC/Users.Social');
         $this->hasMany('SocialAccounts', [
             'foreignKey' => 'user_id',
-            'className' => 'Users.SocialAccounts'
+            'className' => 'CakeDC/Users.SocialAccounts'
         ]);
     }
 

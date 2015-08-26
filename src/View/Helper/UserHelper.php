@@ -9,13 +9,13 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\View\Helper;
+namespace CakeDC\Users\View\Helper;
 
 use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Utility\Hash;
 use Cake\View\Helper;
-use Users\Controller\Component\UsersAuthComponent;
+use CakeDC\Users\Controller\Component\UsersAuthComponent;
 
 /**
  * User helper

@@ -9,7 +9,7 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Controller\Component;
+namespace CakeDC\Users\Controller\Component;
 
 use Cake\Controller\Component;
 use Cake\Core\Configure;

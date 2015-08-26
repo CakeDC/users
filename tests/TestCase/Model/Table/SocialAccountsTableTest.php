@@ -9,15 +9,15 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Test\TestCase\Model\Table;
+namespace CakeDC\Users\Test\TestCase\Model\Table;
 
 use Cake\Event\Event;
 use Cake\Network\Email\Email;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
-use Users\Model\Table\SocialAccountsTable;
-use Users\Model\Table\UsersTable;
+use CakeDC\Users\Model\Table\SocialAccountsTable;
+use CakeDC\Users\Model\Table\UsersTable;
 
 /**
  * Users\Model\Table\UsersTable Test Case
@@ -31,8 +31,8 @@ class SocialAccountsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.users.social_accounts',
-        'plugin.users.users'
+        'plugin.CakeDC/Users.social_accounts',
+        'plugin.CakeDC/Users.users'
     ];
 
     /**
@@ -44,7 +44,7 @@ class SocialAccountsTableTest extends TestCase
     {
         parent::setUp();
         $config = TableRegistry::exists('SocialAccounts') ? [] : [
-            'className' => 'Users\Model\Table\SocialAccountsTable'
+            'className' => 'CakeDC\Users\Model\Table\SocialAccountsTable'
         ];
         $this->SocialAccounts = TableRegistry::get('SocialAccounts', $config);
         $this->fullBaseBackup = Router::fullBaseUrl();
@@ -81,7 +81,7 @@ class SocialAccountsTableTest extends TestCase
         $this->markTestIncomplete('fix this test after SocialBehavior done');
         $event = new Event('eventName');
         $entity = $this->SocialAccounts->findById(5)->first();
-        $this->SocialAccounts->Users = $this->getMockForModel('Users.Users', ['getEmailInstance']);
+        $this->SocialAccounts->Users = $this->getMockForModel('CakeDC/Users.Users', ['getEmailInstance']);
         $this->SocialAccounts->Users->expects($this->once())
             ->method('getEmailInstance')
             ->will($this->returnValue($this->Email));
