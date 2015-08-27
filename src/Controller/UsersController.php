@@ -11,6 +11,7 @@
 
 namespace Users\Controller;
 
+use Cake\Core\Configure;
 use Users\Controller\AppController;
 use Users\Controller\Traits\LoginTrait;
 use Users\Controller\Traits\ProfileTrait;
@@ -31,4 +32,15 @@ class UsersController extends AppController
     use RegisterTrait;
     use SimpleCrudTrait;
     use SocialTrait;
+
+    /**
+     * Override loadModel to load specific users table
+     * @param null $modelClass
+     * @param string $type
+     * @return object
+     */
+    public function loadModel($modelClass = null, $type = 'Table')
+    {
+        return parent::loadModel(Configure::read('Users.table'));
+    }
 }
