@@ -9,7 +9,7 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace CakeDC\Users\Test\Util;
+namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
 use Cake\Event\Event;
 use Cake\ORM\TableRegistry;
