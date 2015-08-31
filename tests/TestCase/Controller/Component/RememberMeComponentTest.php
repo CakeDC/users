@@ -44,8 +44,11 @@ class RememberMeComponentTest extends TestCase
         Security::salt('2a20bac195a9eb2e28f05b7ac7090afe599365a8fe480b7d8a5ce0f79687346e');
         $this->request = new Request('controller_posts/index');
         $this->request->params['pass'] = [];
-        $controller = new Controller($this->request);
-        $this->registry = new ComponentRegistry($controller);
+        $this->controller = $this->getMockBuilder('Cake\Controller\Controller')
+                ->setMethods(['redirect'])
+                ->setConstructorArgs([$this->request])
+                ->getMock();
+        $this->registry = new ComponentRegistry($this->controller);
         $this->rememberMeComponent = new RememberMeComponent($this->registry, []);
     }
 
@@ -150,8 +153,10 @@ class RememberMeComponentTest extends TestCase
         $this->rememberMeComponent->Auth->expects($this->once())
             ->method('redirectUrl')
             ->will($this->returnValue('/login'));
-        $response = $this->rememberMeComponent->beforeFilter($event);
-        $this->assertSame(Router::url('/login', true), $response->location());
+        $this->controller->expects($this->once())
+                ->method('redirect')
+                ->with('/login');
+        $this->rememberMeComponent->beforeFilter($event);
     }
 
     /**
