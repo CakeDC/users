@@ -116,9 +116,17 @@ class RegisterBehavior extends Behavior
         return $result;
     }
 
+    /**
+     * buildValidator
+     *
+     * @param Event $event event
+     * @param Validator $validator validator
+     * @param string $name name
+     * @return Validator
+     */
     public function buildValidator(Event $event, Validator $validator, $name){
-        if ($name == 'default') {
-            $this->_emailValidator($validator, $this->validateEmail);
+        if ($name === 'default') {
+            return $this->_emailValidator($validator, $this->validateEmail);
         }
     }
 
@@ -126,7 +134,7 @@ class RegisterBehavior extends Behavior
      * Email validator
      *
      * @param Validator $validator Validator instance.
-     * @param $validateEmail true when email needs to be required
+     * @param bool $validateEmail true when email needs to be required
      * @return Validator
      */
     protected function _emailValidator(Validator $validator, $validateEmail)
@@ -175,6 +183,5 @@ class RegisterBehavior extends Behavior
             $validator = $this->_emailValidator($validator, $validateEmail);
         }
         return $validator;
-
     }
 }
