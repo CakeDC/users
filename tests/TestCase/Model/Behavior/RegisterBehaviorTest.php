@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
  *
@@ -11,6 +12,7 @@
 
 namespace CakeDC\Users\Test\TestCase\Model\Behavior;
 
+use Cake\Network\Email\Email;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use InvalidArgumentException;
@@ -20,6 +22,7 @@ use InvalidArgumentException;
  */
 class RegisterBehaviorTest extends TestCase
 {
+
     /**
      * Fixtures
      *
@@ -41,7 +44,10 @@ class RegisterBehaviorTest extends TestCase
         $table->addBehavior('CakeDC/Users/Register.Register');
         $this->Table = $table;
         $this->Behavior = $table->behaviors()->Register;
-
+        Email::configTransport('test', [
+            'className' => 'Debug'
+        ]);
+        $this->Email = new Email(['from' => 'test@example.com', 'transport' => 'test']);
     }
 
     /**
@@ -52,16 +58,16 @@ class RegisterBehaviorTest extends TestCase
     public function tearDown()
     {
         unset($this->Table, $this->Behavior);
+        Email::dropTransport('test');
         parent::tearDown();
     }
-
 
     /**
      * Test register method
      *
      * @return void
      */
-     public function testValidateRegisterNoValidateEmail()
+    public function testValidateRegisterNoValidateEmail()
     {
         $user = [
             'username' => 'testuser',
@@ -72,7 +78,7 @@ class RegisterBehaviorTest extends TestCase
             'last_name' => 'user',
             'tos' => 1
         ];
-        $result = $this->Table->register($this->Table->newEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 0]);
+        $result = $this->Table->register($this->Table->newEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 0, 'email_class' => $this->Email]);
         $this->assertTrue($result->active);
     }
 
@@ -84,7 +90,7 @@ class RegisterBehaviorTest extends TestCase
     public function testValidateRegisterEmptyUser()
     {
         $user = [];
-        $result = $this->Table->register($this->Table->newEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1]);
+        $result = $this->Table->register($this->Table->newEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1, 'email_class' => $this->Email]);
         $this->assertFalse($result);
     }
 
@@ -104,7 +110,7 @@ class RegisterBehaviorTest extends TestCase
             'last_name' => 'user',
             'tos' => 1
         ];
-        $result = $this->Table->register($this->Table->newEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1]);
+        $result = $this->Table->register($this->Table->newEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1, 'email_class' => $this->Email]);
         $this->assertNotEmpty($result);
         $this->assertFalse($result->active);
         $this->assertNotEmpty($result->tos_date);
@@ -120,9 +126,9 @@ class RegisterBehaviorTest extends TestCase
         $this->Table = $this->getMockForModel('CakeDC/Users.Users', ['validationCustom', 'patchEntity', 'errors', 'save']);
 
         $this->Behavior = $this->getMockBuilder('CakeDC\Users\Model\Behavior\RegisterBehavior')
-            ->setMethods(['getValidators', '_updateActive'])
-            ->setConstructorArgs([$this->Table])
-            ->getMock();
+                ->setMethods(['getValidators', '_updateActive'])
+                ->setConstructorArgs([$this->Table])
+                ->getMock();
 
         $user = [
             'username' => 'testuser',
@@ -135,25 +141,25 @@ class RegisterBehaviorTest extends TestCase
         ];
 
         $this->Behavior->expects($this->never())
-            ->method('getValidators');
+                ->method('getValidators');
 
         $entityUser = $this->Table->newEntity($user);
 
         $this->Behavior->expects($this->once())
-            ->method('_updateActive')
-            ->will($this->returnValue($entityUser));
+                ->method('_updateActive')
+                ->will($this->returnValue($entityUser));
 
         $this->Table->expects($this->once())
-            ->method('patchEntity')
-            ->with($this->Table->newEntity(), $user, ['validate' => 'custom'])
-            ->will($this->returnValue($entityUser));
+                ->method('patchEntity')
+                ->with($this->Table->newEntity(), $user, ['validate' => 'custom'])
+                ->will($this->returnValue($entityUser));
 
         $this->Table->expects($this->once())
-            ->method('save')
-            ->with($entityUser)
-            ->will($this->returnValue($entityUser));
+                ->method('save')
+                ->with($entityUser)
+                ->will($this->returnValue($entityUser));
 
-        $result = $this->Behavior->register($this->Table->newEntity(), $user, ['validator' => 'custom', 'validate_email' => 1]);
+        $result = $this->Behavior->register($this->Table->newEntity(), $user, ['validator' => 'custom', 'validate_email' => 1, 'email_class' => $this->Email]);
         $this->assertNotEmpty($result->tos_date);
     }
 
@@ -171,7 +177,7 @@ class RegisterBehaviorTest extends TestCase
             'first_name' => 'test',
             'last_name' => 'user',
         ];
-        $result = $this->Table->register($this->Table->newEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1, 'use_tos' => 1]);
+        $result = $this->Table->register($this->Table->newEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1, 'use_tos' => 1, 'email_class' => $this->Email]);
         $this->assertFalse($result);
     }
 
@@ -190,7 +196,7 @@ class RegisterBehaviorTest extends TestCase
             'first_name' => 'test',
             'last_name' => 'user',
         ];
-        $result = $this->Table->register($this->Table->newEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1, 'use_tos' => 0]);
+        $result = $this->Table->register($this->Table->newEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1, 'use_tos' => 0, 'email_class' => $this->Email]);
         $this->assertNotEmpty($result);
     }
 
@@ -249,19 +255,18 @@ class RegisterBehaviorTest extends TestCase
     {
         $user = $this->Table->find()->where(['id' => 1])->first();
         $this->Behavior = $this->getMockBuilder('CakeDC\Users\Model\Behavior\RegisterBehavior')
-            ->setMethods(['_removeValidationToken'])
-            ->setConstructorArgs([$this->Table])
-            ->getMock();
+                ->setMethods(['_removeValidationToken'])
+                ->setConstructorArgs([$this->Table])
+                ->getMock();
 
         $resultValidationToken = $user;
         $resultValidationToken->token_expires = null;
         $resultValidationToken->token = null;
 
         $this->Behavior->expects($this->once())
-            ->method('_removeValidationToken')
-            ->will($this->returnValue($resultValidationToken));
+                ->method('_removeValidationToken')
+                ->will($this->returnValue($resultValidationToken));
 
         $this->Behavior->activateUser($user);
     }
-
 }

@@ -56,6 +56,7 @@ class RegisterBehavior extends Behavior
     {
         $validateEmail = Hash::get($options, 'validate_email');
         $tokenExpiration = Hash::get($options, 'token_expiration');
+        $emailClass = Hash::get($options, 'email_class');
         $user = $this->_table->patchEntity($user, $data, ['validate' => Hash::get($options, 'validator') ?: $this->_getValidators($options)]);
         $user->validated = false;
         //@todo move updateActive to afterSave?
@@ -63,7 +64,7 @@ class RegisterBehavior extends Behavior
         $this->_table->isValidateEmail = $validateEmail;
         $userSaved = $this->_table->save($user);
         if ($userSaved && $validateEmail) {
-            $this->_sendEmail($user, __d('Users', 'Your account validation link'));
+            $this->_sendEmail($user, __d('Users', 'Your account validation link'), $emailClass);
         }
         return $userSaved;
     }
