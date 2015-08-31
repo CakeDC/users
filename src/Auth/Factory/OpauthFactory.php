@@ -9,7 +9,7 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Auth\Factory;
+namespace CakeDC\Users\Auth\Factory;
 
 use Opauth\Opauth\Opauth;
 

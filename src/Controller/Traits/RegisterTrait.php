@@ -9,14 +9,14 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Controller\Traits;
+namespace CakeDC\Users\Controller\Traits;
 
 use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
 use Cake\Network\Exception\NotFoundException;
 use Cake\Network\Response;
 use InvalidArgumentException;
-use Users\Controller\Component\UsersAuthComponent;
+use CakeDC\Users\Controller\Component\UsersAuthComponent;
 
 /**
  * Covers registration features and email token validation

@@ -9,7 +9,7 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Test\TestCase\Controller;
+namespace CakeDC\Users\Test\TestCase\Controller;
 
 use Cake\TestSuite\IntegrationTestCase;
 
@@ -21,8 +21,8 @@ class SocialAccountsControllerTest extends IntegrationTestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.users.social_accounts',
-        'plugin.users.users'
+        'plugin.CakeDC/Users.social_accounts',
+        'plugin.CakeDC/Users.users'
     ];
 
     /**

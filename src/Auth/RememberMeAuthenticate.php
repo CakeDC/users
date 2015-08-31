@@ -9,7 +9,7 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Auth;
+namespace CakeDC\Users\Auth;
 
 use Cake\Auth\BaseAuthenticate;
 use Cake\Core\Configure;

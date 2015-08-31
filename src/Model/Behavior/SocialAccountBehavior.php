@@ -9,7 +9,7 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Model\Behavior;
+namespace CakeDC\Users\Model\Behavior;
 
 use ArrayObject;
 use Cake\Core\Configure;
@@ -19,11 +19,11 @@ use Cake\Event\Event;
 use Cake\Network\Email\Email;
 use Cake\ORM\Entity;
 use InvalidArgumentException;
-use Users\Exception\AccountAlreadyActiveException;
-use Users\Exception\AccountNotActiveException;
-use Users\Exception\MissingEmailException;
-use Users\Model\Behavior\Behavior;
-use Users\Model\Entity\User;
+use CakeDC\Users\Exception\AccountAlreadyActiveException;
+use CakeDC\Users\Exception\AccountNotActiveException;
+use CakeDC\Users\Exception\MissingEmailException;
+use CakeDC\Users\Model\Behavior\Behavior;
+use CakeDC\Users\Model\Entity\User;
 
 /**
  * Covers social account features

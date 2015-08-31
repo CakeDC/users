@@ -9,7 +9,7 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Auth;
+namespace CakeDC\Users\Auth;
 
 use Cake\Auth\BaseAuthorize;
 use Cake\Controller\ComponentRegistry;
@@ -77,7 +77,7 @@ class SimpleRbacAuthorize extends BaseAuthorize
      * @var array
      */
     protected $_defaultPermissions = [
-        //admin role allowed to use Users plugin actions
+        //admin role allowed to use CakeDC\Users plugin actions
         [
             'role' => 'admin',
             'plugin' => '*',

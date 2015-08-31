@@ -9,12 +9,12 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Controller\Traits;
+namespace CakeDC\Users\Controller\Traits;
 
 use Cake\Core\Configure;
-use Users\Controller\Component\UsersAuthComponent;
-use Users\Exception\AccountNotActiveException;
-use Users\Exception\MissingEmailException;
+use CakeDC\Users\Controller\Component\UsersAuthComponent;
+use CakeDC\Users\Exception\AccountNotActiveException;
+use CakeDC\Users\Exception\MissingEmailException;
 
 /**
  * Covers the login, logout and social login

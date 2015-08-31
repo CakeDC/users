@@ -9,7 +9,7 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Test\TestCase\Controller\Traits;
+namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
@@ -17,10 +17,10 @@ use Cake\Event\Event;
 use Cake\Network\Request;
 use Cake\TestSuite\TestCase;
 use Opauth\Opauth\Response;
-use Users\Controller\Component\UsersAuthComponent;
-use Users\Controller\Traits\LoginTrait;
-use Users\Exception\AccountNotActiveException;
-use Users\Exception\MissingEmailException;
+use CakeDC\Users\Controller\Component\UsersAuthComponent;
+use CakeDC\Users\Controller\Traits\LoginTrait;
+use CakeDC\Users\Exception\AccountNotActiveException;
+use CakeDC\Users\Exception\MissingEmailException;
 
 class LoginTraitTest extends TestCase
 {
@@ -33,7 +33,7 @@ class LoginTraitTest extends TestCase
     {
         parent::setUp();
         $request = new Request();
-        $this->Trait = $this->getMockBuilder('Users\Controller\Traits\LoginTrait')
+        $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\Traits\LoginTrait')
             ->setMethods(['dispatchEvent', 'redirect'])
             ->getMockForTrait();
         $this->Trait->request = $request;
@@ -140,7 +140,7 @@ class LoginTraitTest extends TestCase
      */
     public function testAfterIdentifyEmptyUserSocialLogin()
     {
-        $this->Trait = $this->getMockBuilder('Users\Controller\Traits\LoginTrait')
+        $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\Traits\LoginTrait')
             ->setMethods(['dispatchEvent', 'redirect', '_isSocialLogin'])
             ->getMockForTrait();
         $this->Trait->expects($this->any())
@@ -179,7 +179,7 @@ class LoginTraitTest extends TestCase
      */
     public function testLoginAfterIdentifyAccountNotActive()
     {
-        $this->Trait = $this->getMockBuilder('Users\Controller\Traits\LoginTrait')
+        $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\Traits\LoginTrait')
             ->setMethods(['dispatchEvent', 'redirect', '_afterIdentifyUser'])
             ->getMockForTrait();
         $this->_mockDispatchEvent(new Event('event'));
@@ -221,7 +221,7 @@ class LoginTraitTest extends TestCase
      */
     public function testLoginAfterIdentifyMissingEmailException()
     {
-        $this->Trait = $this->getMockBuilder('Users\Controller\Traits\LoginTrait')
+        $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\Traits\LoginTrait')
             ->setMethods(['dispatchEvent', 'redirect', '_afterIdentifyUser'])
             ->getMockForTrait();
         $this->_mockDispatchEvent(new Event('event'));

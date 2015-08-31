@@ -9,13 +9,13 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Shell;
+namespace CakeDC\Users\Shell;
 
 use Cake\Auth\DefaultPasswordHasher;
 use Cake\Console\Shell;
 use Cake\Core\Configure;
 use Cake\Utility\Hash;
-use Users\Model\Entity\User;
+use CakeDC\Users\Model\Entity\User;
 
 /**
  * Shell with utilities for the Users Plugin

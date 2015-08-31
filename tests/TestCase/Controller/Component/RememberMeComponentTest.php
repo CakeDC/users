@@ -9,7 +9,7 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Test\TestCase\Controller\Component;
+namespace CakeDC\Users\Test\TestCase\Controller\Component;
 
 use Cake\Controller\ComponentRegistry;
 use Cake\Controller\Component\AuthComponent;
@@ -22,7 +22,7 @@ use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Security;
 use InvalidArgumentException;
-use Users\Controller\Component\RememberMeComponent;
+use CakeDC\Users\Controller\Component\RememberMeComponent;
 
 /**
  * Users\Controller\Component\RememberMeComponent Test Case
@@ -31,7 +31,7 @@ class RememberMeComponentTest extends TestCase
 {
 
     public $fixtures = [
-        'plugin.users.users'
+        'plugin.CakeDC/Users.users'
     ];
     /**
      * setUp method

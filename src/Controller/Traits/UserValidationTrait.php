@@ -9,15 +9,15 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Controller\Traits;
+namespace CakeDC\Users\Controller\Traits;
 
 use Cake\Core\Configure;
 use Cake\Network\Response;
 use Exception;
 use InvalidArgumentException;
-use Users\Exception\TokenExpiredException;
-use Users\Exception\UserAlreadyActiveException;
-use Users\Exception\UserNotFoundException;
+use CakeDC\Users\Exception\TokenExpiredException;
+use CakeDC\Users\Exception\UserAlreadyActiveException;
+use CakeDC\Users\Exception\UserNotFoundException;
 
 /**
  * Covers the user validation

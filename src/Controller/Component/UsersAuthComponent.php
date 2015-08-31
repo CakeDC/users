@@ -9,7 +9,7 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Controller\Component;
+namespace CakeDC\Users\Controller\Component;
 
 use Cake\Controller\Component;
 use Cake\Core\Configure;
@@ -17,7 +17,7 @@ use Cake\Event\Event;
 use Cake\Network\Request;
 use Cake\Routing\Router;
 use Cake\Utility\Hash;
-use Users\Exception\BadConfigurationException;
+use CakeDC\Users\Exception\BadConfigurationException;
 
 class UsersAuthComponent extends Component
 {
@@ -75,7 +75,7 @@ class UsersAuthComponent extends Component
      */
     protected function _loadRememberMe()
     {
-        $this->_registry->getController()->loadComponent('Users.RememberMe');
+        $this->_registry->getController()->loadComponent('CakeDC/Users.RememberMe');
     }
 
     /**

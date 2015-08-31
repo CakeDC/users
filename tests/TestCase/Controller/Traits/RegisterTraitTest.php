@@ -9,11 +9,11 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Test\TestCase\Controller\Traits;
+namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
 use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
-use Users\Test\BaseTraitTest;
+use CakeDC\Users\Test\TestCase\Controller\Traits\BaseTraitTest;
 
 class RegisterTraitTest extends BaseTraitTest
 {
@@ -24,7 +24,7 @@ class RegisterTraitTest extends BaseTraitTest
      */
     public function setUp()
     {
-        $this->traitClassName = 'Users\Controller\Traits\RegisterTrait';
+        $this->traitClassName = 'CakeDC\Users\Controller\Traits\RegisterTrait';
         $this->traitMockMethods = ['validate', 'dispatchEvent', 'set', 'validateReCaptcha', 'redirect'];
         parent::setUp();
     }

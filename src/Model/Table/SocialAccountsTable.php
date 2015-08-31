@@ -9,7 +9,7 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Model\Table;
+namespace CakeDC\Users\Model\Table;
 
 use App\Model\Entity\Account;
 use ArrayObject;
@@ -22,8 +22,8 @@ use Cake\ORM\Entity;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
-use Users\Exception\AccountAlreadyActiveException;
-use Users\Model\Entity\User;
+use CakeDC\Users\Exception\AccountAlreadyActiveException;
+use CakeDC\Users\Model\Entity\User;
 
 /**
  * SocialAccounts Model
@@ -51,7 +51,7 @@ class SocialAccountsTable extends Table
         $this->displayField('id');
         $this->primaryKey('id');
         $this->addBehavior('Timestamp');
-        $this->addBehavior('Users.SocialAccount');
+        $this->addBehavior('CakeDC/Users.SocialAccount');
     }
 
     /**

@@ -9,7 +9,7 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Model\Entity;
+namespace CakeDC\Users\Model\Entity;
 
 use Cake\Auth\DefaultPasswordHasher;
 use Cake\Core\Configure;

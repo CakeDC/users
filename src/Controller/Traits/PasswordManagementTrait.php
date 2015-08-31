@@ -9,12 +9,12 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Controller\Traits;
+namespace CakeDC\Users\Controller\Traits;
 
 use Cake\Core\Configure;
 use Exception;
-use Users\Exception\UserNotFoundException;
-use Users\Exception\WrongPasswordException;
+use CakeDC\Users\Exception\UserNotFoundException;
+use CakeDC\Users\Exception\WrongPasswordException;
 
 /**
  * Covers the password management: reset, change

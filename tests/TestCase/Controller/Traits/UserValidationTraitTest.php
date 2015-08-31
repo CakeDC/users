@@ -9,10 +9,10 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Test\TestCase\Controller\Traits;
+namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
 use Cake\Network\Request;
-use Users\Test\BaseTraitTest;
+use CakeDC\Users\Test\TestCase\Controller\Traits\BaseTraitTest;
 
 class UserValidationTraitTest extends BaseTraitTest
 {
@@ -23,7 +23,7 @@ class UserValidationTraitTest extends BaseTraitTest
      */
     public function setUp()
     {
-        $this->traitClassName = 'Users\Controller\Traits\UserValidationTrait';
+        $this->traitClassName = 'CakeDC\Users\Controller\Traits\UserValidationTrait';
         $this->traitMockMethods = ['dispatchEvent', 'isStopped', 'redirect', 'getUsersTable', 'set'];
         parent::setUp();
     }

@@ -9,13 +9,13 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Test\TestCase\Model\Behavior;
+namespace CakeDC\Users\Test\TestCase\Model\Behavior;
 
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use InvalidArgumentException;
-use Users\Exception\UserAlreadyActiveException;
-use Users\Model\Table\UsersTable;
+use CakeDC\Users\Exception\UserAlreadyActiveException;
+use CakeDC\Users\Model\Table\UsersTable;
 
 /**
  * Test Case
@@ -28,7 +28,7 @@ class PasswordBehaviorTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.users.users',
+        'plugin.CakeDC/Users.users',
     ];
 
     /**
@@ -39,8 +39,8 @@ class PasswordBehaviorTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->table = TableRegistry::get('Users.Users');
-        $this->Behavior = $this->getMockBuilder('Users\Model\Behavior\PasswordBehavior')
+        $this->table = TableRegistry::get('CakeDC/Users.Users');
+        $this->Behavior = $this->getMockBuilder('CakeDC\Users\Model\Behavior\PasswordBehavior')
                 ->setMethods(['sendResetPasswordEmail'])
                 ->setConstructorArgs([$this->table])
                 ->getMock();
@@ -113,7 +113,7 @@ class PasswordBehaviorTest extends TestCase
     /**
      * Test resetToken
      *
-     * @expectedException Users\Exception\UserNotFoundException
+     * @expectedException CakeDC\Users\Exception\UserNotFoundException
      */
     public function testResetTokenNotExistingUser()
     {
@@ -125,13 +125,13 @@ class PasswordBehaviorTest extends TestCase
     /**
      * Test resetToken
      *
-     * @expectedException Users\Exception\UserAlreadyActiveException
+     * @expectedException CakeDC\Users\Exception\UserAlreadyActiveException
      */
     public function testResetTokenUserAlreadyActive()
     {
-        $activeUser = TableRegistry::get('Users.Users')->findAllByUsername('user-4')->first();
+        $activeUser = TableRegistry::get('CakeDC/Users.Users')->findAllByUsername('user-4')->first();
         $this->assertTrue($activeUser->active);
-        $this->table = $this->getMockForModel('Users.Users', ['save']);
+        $this->table = $this->getMockForModel('CakeDC/Users.Users', ['save']);
         $this->table->expects($this->never())
                 ->method('save');
         $this->Behavior->expects($this->never())

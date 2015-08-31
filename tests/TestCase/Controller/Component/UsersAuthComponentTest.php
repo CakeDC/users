@@ -9,7 +9,7 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Test\TestCase\Controller\Component;
+namespace CakeDC\Users\Test\TestCase\Controller\Component;
 
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
@@ -21,9 +21,9 @@ use Cake\ORM\Entity;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Security;
-use Users\Controller\Component\UsersAuthComponent;
-use Users\Exception\MissingEmailException;
-use Users\Exception\UserNotFoundException;
+use CakeDC\Users\Controller\Component\UsersAuthComponent;
+use CakeDC\Users\Exception\MissingEmailException;
+use CakeDC\Users\Exception\UserNotFoundException;
 
 /**
  * Users\Controller\Component\UsersAuthComponent Test Case
@@ -36,7 +36,7 @@ class UsersAuthComponentTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.users.users',
+        'plugin.CakeDC/Users.users',
     ];
 
     /**
@@ -101,7 +101,7 @@ class UsersAuthComponentTest extends TestCase
     {
         $this->Registry->unload('Auth');
         $this->Controller->UsersAuth = new UsersAuthComponent($this->Registry);
-        $this->assertInstanceOf('Users\Controller\Component\UsersAuthComponent', $this->Controller->UsersAuth);
+        $this->assertInstanceOf('CakeDC\Users\Controller\Component\UsersAuthComponent', $this->Controller->UsersAuth);
     }
 
     /**
@@ -111,7 +111,7 @@ class UsersAuthComponentTest extends TestCase
     public function testInitializeNoRequiredRememberMe()
     {
         Configure::write('Users.RememberMe.active', false);
-        $class = 'Users\Controller\Component\UsersAuthComponent';
+        $class = 'CakeDC\Users\Controller\Component\UsersAuthComponent';
         $this->Controller->UsersAuth = $this->getMockBuilder($class)
                 ->setMethods(['_loadRememberMe', '_initAuth', '_loadSocialLogin', '_attachPermissionChecker'])
                 ->disableOriginalConstructor()

@@ -9,7 +9,7 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Test\TestCase\Model\Table;
+namespace CakeDC\Users\Test\TestCase\Model\Table;
 
 use Cake\Network\Email\Email;
 use Cake\ORM\TableRegistry;
@@ -17,10 +17,10 @@ use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use InvalidArgumentException;
 use Opauth\Opauth\Response;
-use Users\Exception\AccountNotActiveException;
-use Users\Exception\UserAlreadyActiveException;
-use Users\Exception\UserNotFoundException;
-use Users\Model\Table\SocialAccountsTable;
+use CakeDC\Users\Exception\AccountNotActiveException;
+use CakeDC\Users\Exception\UserAlreadyActiveException;
+use CakeDC\Users\Exception\UserNotFoundException;
+use CakeDC\Users\Model\Table\SocialAccountsTable;
 
 /**
  * Users\Model\Table\UsersTable Test Case
@@ -34,8 +34,8 @@ class UsersTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.users.users',
-        'plugin.users.social_accounts'
+        'plugin.CakeDC/Users.users',
+        'plugin.CakeDC/Users.social_accounts'
     ];
 
     /**
@@ -46,7 +46,7 @@ class UsersTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->Users = TableRegistry::get('Users.Users');
+        $this->Users = TableRegistry::get('CakeDC/Users.Users');
         $this->fullBaseBackup = Router::fullBaseUrl();
         Router::fullBaseUrl('http://users.test');
         Email::configTransport('test', [
@@ -114,7 +114,7 @@ class UsersTableTest extends TestCase
     /**
      * Test socialLogin
      *
-     * @expectedException \Users\Exception\AccountNotActiveException
+     * @expectedException CakeDC\Users\Exception\AccountNotActiveException
      */
     public function testSocialLoginInactiveAccount()
     {

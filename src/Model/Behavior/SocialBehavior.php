@@ -9,17 +9,17 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Model\Behavior;
+namespace CakeDC\Users\Model\Behavior;
 
 use Cake\Datasource\EntityInterface;
 use Cake\Utility\Hash;
 use DateTime;
 use InvalidArgumentException;
-use Users\Exception\AccountNotActiveException;
-use Users\Exception\MissingEmailException;
-use Users\Model\Behavior\Behavior;
-use Users\Model\Table\SocialAccountsTable;
-use Users\Traits\RandomStringTrait;
+use CakeDC\Users\Exception\AccountNotActiveException;
+use CakeDC\Users\Exception\MissingEmailException;
+use CakeDC\Users\Model\Behavior\Behavior;
+use CakeDC\Users\Model\Table\SocialAccountsTable;
+use CakeDC\Users\Traits\RandomStringTrait;
 
 /**
  * Covers social features

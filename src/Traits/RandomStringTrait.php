@@ -9,7 +9,7 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Traits;
+namespace CakeDC\Users\Traits;
 
 trait RandomStringTrait
 {

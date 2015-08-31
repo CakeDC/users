@@ -1,10 +1,6 @@
 <?php
-use Cake\Core\Configure;
-use Cake\Core\Plugin;
-use Cake\Datasource\ConnectionManager;
-
 /**
- * Test suite bootstrap for Sequence
+ * Test suite bootstrap.
  *
  * This function is used to find the location of CakePHP whether CakePHP
  * has been installed as a dependency of the plugin, or the plugin is itself
@@ -23,8 +19,8 @@ $findRoot = function ($root) {
 $root = $findRoot(__FILE__);
 unset($findRoot);
 chdir($root);
+require $root . '/vendor/cakephp/cakephp/tests/bootstrap.php';
+\Cake\Core\Plugin::load('CakeDC/Users', ['path' => dirname(dirname(__FILE__)) . DS]);
 if (file_exists($root . '/config/bootstrap.php')) {
     require $root . '/config/bootstrap.php';
-    return;
 }
-require dirname(__DIR__) . '/vendor/cakephp/cakephp/tests/bootstrap.php';

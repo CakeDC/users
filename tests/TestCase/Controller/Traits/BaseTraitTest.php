@@ -9,7 +9,7 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Test;
+namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
 use Cake\Event\Event;
 use Cake\ORM\TableRegistry;
@@ -24,7 +24,7 @@ abstract class BaseTraitTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.users.users',
+        'plugin.CakeDC/Users.users',
     ];
 
     /**
@@ -44,7 +44,7 @@ abstract class BaseTraitTest extends TestCase
     {
         parent::setUp();
         $traitMockMethods = array_unique(array_merge(['getUsersTable'], $this->traitMockMethods));
-        $this->table = TableRegistry::get('Users.Users');
+        $this->table = TableRegistry::get('CakeDC/Users.Users');
         try {
             $this->Trait = $this->getMockBuilder($this->traitClassName)
                     ->setMethods($traitMockMethods)

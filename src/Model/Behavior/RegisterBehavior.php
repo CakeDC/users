@@ -9,7 +9,7 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Model\Behavior;
+namespace CakeDC\Users\Model\Behavior;
 
 use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
@@ -18,11 +18,11 @@ use Cake\Utility\Hash;
 use Cake\Validation\Validator;
 use DateTime;
 use InvalidArgumentException;
-use Users\Exception\TokenExpiredException;
-use Users\Exception\UserAlreadyActiveException;
-use Users\Exception\UserNotFoundException;
-use Users\Model\Behavior\Behavior;
-use Users\Model\Entity\User;
+use CakeDC\Users\Exception\TokenExpiredException;
+use CakeDC\Users\Exception\UserAlreadyActiveException;
+use CakeDC\Users\Exception\UserNotFoundException;
+use CakeDC\Users\Model\Behavior\Behavior;
+use CakeDC\Users\Model\Entity\User;
 
 
 /**
@@ -56,6 +56,7 @@ class RegisterBehavior extends Behavior
     {
         $validateEmail = Hash::get($options, 'validate_email');
         $tokenExpiration = Hash::get($options, 'token_expiration');
+        $emailClass = Hash::get($options, 'email_class');
         $user = $this->_table->patchEntity($user, $data, ['validate' => Hash::get($options, 'validator') ?: $this->_getValidators($options)]);
         $user->validated = false;
         //@todo move updateActive to afterSave?
@@ -63,7 +64,7 @@ class RegisterBehavior extends Behavior
         $this->_table->isValidateEmail = $validateEmail;
         $userSaved = $this->_table->save($user);
         if ($userSaved && $validateEmail) {
-            $this->_sendEmail($user, __d('Users', 'Your account validation link'));
+            $this->_sendEmail($user, __d('Users', 'Your account validation link'), $emailClass);
         }
         return $userSaved;
     }
