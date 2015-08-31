@@ -91,7 +91,7 @@ class PasswordBehavior extends Behavior
         $firstName = isset($user['first_name'])? $user['first_name'] . ', ' : '';
         $subject = __d('Users', '{0}Your reset password link', $firstName);
         return $this->_getEmailInstance($email)
-                ->template('Users.reset_password')
+                ->template('CakeDC/Users.reset_password')
                 ->to($user['email'])
                 ->subject($subject)
                 ->viewVars($user->toArray())
