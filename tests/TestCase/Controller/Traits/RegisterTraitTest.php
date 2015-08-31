@@ -13,7 +13,7 @@ namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
 use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
-use CakeDC\Users\Test\BaseTraitTest;
+use CakeDC\Users\Test\Util\BaseTraitTest;
 
 class RegisterTraitTest extends BaseTraitTest
 {
