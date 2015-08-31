@@ -17,8 +17,7 @@
     },
     "autoload": {
         "psr-4": {
-            "CakeDC\\Users\\": "src",
-            "CakeDC\\Users\\Test\\Fixture\\": "tests\\Fixture"
+            "CakeDC\\Users\\": "src"
         }
     },
     "autoload-dev": {
