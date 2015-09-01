@@ -6,6 +6,7 @@
  * has been installed as a dependency of the plugin, or the plugin is itself
  * installed as a dependency of an application.
  */
+
 $findRoot = function ($root) {
     do {
         $lastRoot = $root;
@@ -19,8 +20,14 @@ $findRoot = function ($root) {
 $root = $findRoot(__FILE__);
 unset($findRoot);
 chdir($root);
+
+define('CONFIG', $root . '/tests/config/');
+
 require $root . '/vendor/cakephp/cakephp/tests/bootstrap.php';
 \Cake\Core\Plugin::load('CakeDC/Users', ['path' => dirname(dirname(__FILE__)) . DS]);
+
+
 if (file_exists($root . '/config/bootstrap.php')) {
     require $root . '/config/bootstrap.php';
 }
+
