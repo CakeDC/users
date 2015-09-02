@@ -7,6 +7,10 @@
  * installed as a dependency of an application.
  */
 
+use Cake\Core\Configure;
+use Cake\Routing\DispatcherFactory;
+use Cake\Routing\Filter\ControllerFactory;
+
 $findRoot = function ($root) {
     do {
         $lastRoot = $root;
@@ -24,10 +28,18 @@ chdir($root);
 define('CONFIG', $root . '/tests/config/');
 
 require $root . '/vendor/cakephp/cakephp/tests/bootstrap.php';
-\Cake\Core\Plugin::load('CakeDC/Users', ['path' => dirname(dirname(__FILE__)) . DS]);
+\Cake\Core\Plugin::load('CakeDC/Users', [
+        'path' => dirname(dirname(__FILE__)) . DS,
+    ]);
 
 
 if (file_exists($root . '/config/bootstrap.php')) {
     require $root . '/config/bootstrap.php';
 }
+
+/**
+ * Connect middleware/dispatcher filters.
+ */
+DispatcherFactory::add('Routing');
+DispatcherFactory::add('ControllerFactory');
 
