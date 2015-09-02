@@ -11,7 +11,7 @@
 
 use Cake\Core\Configure;
 
-Configure::load('CakeDC/Users.users');
+Configure::load('Users.users');
 collection((array)Configure::read('Users.config'))->each(function ($file) {
     Configure::load($file);
 });
