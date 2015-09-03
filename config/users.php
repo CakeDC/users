@@ -91,12 +91,12 @@ $config = [
             'all' => [
                 'scope' => ['active' => 1]
             ],
-            'Users.RememberMe',
+            'CakeDC/Users.RememberMe',
             'Form',
         ],
         'authorize' => [
-            'Users.Superuser',
-            'Users.SimpleRbac',
+            'CakeDC/Users.Superuser',
+            'CakeDC/Users.SimpleRbac',
         ],
     ],
 //default Opauth configuration, you'll need to provide the strategy keys
