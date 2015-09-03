@@ -12,7 +12,7 @@
 use Cake\Core\Configure;
 use Cake\Routing\Router;
 
-Router::plugin('Users', function ($routes) {
+Router::plugin('CakeDC/Users', function ($routes) {
     $routes->fallbacks('DashedRoute');
 });
 
@@ -23,10 +23,10 @@ Router::scope('/auth', function ($routes) {
     );
 });
 Router::connect('/accounts/validate/*', [
-    'plugin' => 'Users',
+    'plugin' => 'CakeDC/Users',
     'controller' => 'SocialAccounts',
     'action' => 'validate'
 ]);
-Router::connect('/profile/*', ['plugin' => 'Users', 'controller' => 'Users', 'action' => 'profile']);
-Router::connect('/login', ['plugin' => 'Users', 'controller' => 'Users', 'action' => 'login']);
-Router::connect('/logout', ['plugin' => 'Users', 'controller' => 'Users', 'action' => 'logout']);
+Router::connect('/profile/*', ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile']);
+Router::connect('/login', ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
+Router::connect('/logout', ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'logout']);

@@ -60,11 +60,11 @@ class UsersAuthComponentTest extends TestCase
         Router::scope('/auth', function ($routes) {
             $routes->connect(
                 '/*',
-                ['plugin' => 'Users', 'controller' => 'Users', 'action' => 'opauthInit']
+                ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'opauthInit']
             );
         });
         Router::connect('/a/validate/*', [
-            'plugin' => 'Users',
+            'plugin' => 'CakeDC/Users',
             'controller' => 'SocialAccounts',
             'action' => 'resendValidation'
         ]);
@@ -183,7 +183,7 @@ class UsersAuthComponentTest extends TestCase
                 ->will($this->returnValue(['id' => 1]));
         $request = new Request('/a/validate');
         $request->params = [
-            'plugin' => 'Users',
+            'plugin' => 'CakeDC/Users',
             'controller' => 'SocialAccounts',
             'action' => 'resendValidation',
             'pass' => [],
@@ -206,7 +206,7 @@ class UsersAuthComponentTest extends TestCase
         $event = new Event('event');
         $event->data = [
             'url' => [
-                'plugin' => 'Users',
+                'plugin' => 'CakeDC/Users',
                 'controller' => 'SocialAccounts',
                 'action' => 'resendValidation',
                 'pass-one'
@@ -221,7 +221,7 @@ class UsersAuthComponentTest extends TestCase
                 ->will($this->returnValue(['id' => 1]));
         $request = new Request('/a/validate/pass-one');
         $request->params = [
-            'plugin' => 'Users',
+            'plugin' => 'CakeDC/Users',
             'controller' => 'SocialAccounts',
             'action' => 'resendValidation',
             'pass' => ['pass-one'],

@@ -215,7 +215,7 @@ class UsersTableTest extends TestCase
                 'email' => 'test@example.com',
                 'token' => '12345'
             ]);
-        $this->Email->template('Users.validation')
+        $this->Email->template('CakeDC/Users.validation')
             ->emailFormat('both');
 
         $result = $this->Users->sendValidationEmail($user, $this->Email);
@@ -267,7 +267,7 @@ Hi FirstName,
                 'email' => 'test@example.com',
                 'token' => '12345'
             ]);
-        $this->Email->template('Users.reset_password')
+        $this->Email->template('CakeDC/Users.reset_password')
             ->emailFormat('both');
 
         $result = $this->Users->sendResetPasswordEmail($user, $this->Email);

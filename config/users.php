@@ -44,7 +44,7 @@ $config = [
         'Profile' => [
             //Allow view other users profiles
             'viewOthers' => true,
-            'route' => ['plugin' => 'Users', 'controller' => 'Users', 'action' => 'profile'],
+            'route' => ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile'],
         ],
         'Key' => [
             'Session' => [
@@ -83,7 +83,7 @@ $config = [
 //default configuration used to auto-load the Auth Component, override to change the way Auth works
     'Auth' => [
         'loginAction' => [
-            'plugin' => 'Users',
+            'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'login',
         ],
@@ -101,9 +101,9 @@ $config = [
     ],
 //default Opauth configuration, you'll need to provide the strategy keys
     'Opauth' => [
-        'path' => ['plugin' => 'Users', 'controller' => 'Users', 'action' => 'opauthInit'],
+        'path' => ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'opauthInit'],
         'callback_param' => 'callback',
-        'complete_url' => ['plugin' => 'Users', 'controller' => 'Users', 'action' => 'login'],
+        'complete_url' => ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login'],
         'Strategy' => [
             'Facebook' => [
                 'scope' => ['public_profile', 'user_friends', 'email']

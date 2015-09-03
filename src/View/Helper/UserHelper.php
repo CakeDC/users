@@ -83,7 +83,7 @@ class UserHelper extends Helper
     public function logout($message = null, $options = [])
     {
         return $this->Html->link(empty($message) ? __d('Users', 'Logout') : $message, [
-            'plugin' => 'Users', 'controller' => 'Users', 'action' => 'logout'
+            'plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'logout'
             ], $options);
     }
 

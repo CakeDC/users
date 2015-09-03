@@ -53,7 +53,7 @@ class Behavior extends BaseBehavior
     {
         if ($email === null) {
             $email = new Email('default');
-            $email->template('Users.validation')
+            $email->template('CakeDC/Users.validation')
                     ->emailFormat('both');
         }
 

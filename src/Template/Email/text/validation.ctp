@@ -11,7 +11,7 @@
 
 $activationUrl = [
     '_full' => true,
-    'plugin' => 'Users',
+    'plugin' => 'CakeDC/Users',
     'controller' => 'Users',
     'action' => 'validateEmail',
     isset($token) ? $token : ''

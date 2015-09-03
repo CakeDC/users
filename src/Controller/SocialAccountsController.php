@@ -60,7 +60,7 @@ class SocialAccountsController extends AppController
         } catch (Exception $exception) {
             $this->Flash->error(__d('Users', 'Social Account could not be validated'));
         }
-        return $this->redirect(['plugin' => 'Users', 'controller' => 'Users', 'action' => 'login']);
+        return $this->redirect(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
     }
 
     /**
@@ -87,6 +87,6 @@ class SocialAccountsController extends AppController
         } catch (Exception $exception) {
             $this->Flash->error(__d('Users', 'Email could not be resent'));
         }
-        return $this->redirect(['plugin' => 'Users', 'controller' => 'Users', 'action' => 'login']);
+        return $this->redirect(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
     }
 }

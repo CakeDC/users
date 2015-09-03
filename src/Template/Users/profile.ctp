@@ -21,7 +21,7 @@
         ?>
     </h3>
     <?php //@todo add to config ?>
-    <?= $this->Html->link(__d('Users', 'Change Password'), ['plugin' => 'Users', 'controller' => 'Users', 'action' => 'changePassword']); ?>
+    <?= $this->Html->link(__d('Users', 'Change Password'), ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'changePassword']); ?>
     <div class="row">
         <div class="large-6 columns strings">
             <h6 class="subheader"><?= __d('Users', 'Username') ?></h6>

@@ -40,7 +40,7 @@ class SimpleRbacAuthorizeTest extends TestCase
         //specific actions allowed for the user role in Users plugin
         [
             'role' => 'user',
-            'plugin' => 'Users',
+            'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => ['profile', 'logout'],
         ],
