@@ -138,7 +138,7 @@ class UserValidationTraitTest extends BaseTraitTest
 
         $this->Trait->Flash->expects($this->once())
                 ->method('success')
-                ->with('Token has been reset successfully');
+                ->with('Token has been reset successfully. Please check your email.');
         $this->Trait->expects($this->once())
                 ->method('redirect')
                 ->with(['action' => 'login']);

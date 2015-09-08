@@ -88,7 +88,7 @@ trait UserValidationTrait
                 'expiration' => Configure::read('Users.Token.expiration'),
                 'checkActive' => true,
             ])) {
-                $this->Flash->success(__d('Users', 'Token has been reset successfully'));
+                $this->Flash->success(__d('Users', 'Token has been reset successfully. Please check your email.'));
             } else {
                 $this->Flash->error(__d('Users', 'Token could not be reset'));
             }
