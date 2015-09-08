@@ -35,9 +35,11 @@ trait ProfileTrait
             $id = $loggedUserId;
         }
         try {
+            $appContain = Configure::read('Auth.authenticate.' . \Cake\Controller\Component\AuthComponent::ALL . '.contain');
+            $socialContain =  Configure::read('Users.Social.login') ? ['SocialAccounts']: [];
             $user = $this->getUsersTable()->get($id, [
-                'contain' => ['SocialAccounts']
-            ]);
+                    'contain' => array_merge($appContain, $socialContain)
+                ]);
             $this->set('avatarPlaceholder', Configure::read('Users.Avatar.placeholder'));
             if ($user->id === $loggedUserId) {
                 $isCurrentUser = true;
