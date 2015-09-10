@@ -60,8 +60,9 @@ class PasswordBehavior extends Behavior
         }
         $user->updateToken(Hash::get($options, 'expiration'));
         $saveResult = $this->_table->save($user);
+        $template = !empty($options['emailTemplate']) ? $options['emailTemplate'] : 'CakeDC/Users.reset_password';
         if (Hash::get($options, 'sendEmail')) {
-            $this->sendResetPasswordEmail($saveResult);
+            $this->sendResetPasswordEmail($saveResult, null, $template);
         }
         return $saveResult;
     }
@@ -82,16 +83,17 @@ class PasswordBehavior extends Behavior
      *
      * @param EntityInterface $user User entity
      * @param Email $email instance, if null the default email configuration with the
+     * @param string $template email template
      * Users.validation template will be used, so set a ->template() if you pass an Email
      * instance
      * @return array email send result
      */
-    public function sendResetPasswordEmail(EntityInterface $user, Email $email = null)
+    public function sendResetPasswordEmail(EntityInterface $user, Email $email = null, $template)
     {
         $firstName = isset($user['first_name'])? $user['first_name'] . ', ' : '';
         $subject = __d('Users', '{0}Your reset password link', $firstName);
         return $this->_getEmailInstance($email)
-                ->template('CakeDC/Users.reset_password')
+                ->template($template)
                 ->to($user['email'])
                 ->subject($subject)
                 ->viewVars($user->toArray())

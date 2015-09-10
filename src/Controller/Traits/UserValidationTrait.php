@@ -87,7 +87,8 @@ trait UserValidationTrait
             if ($this->getUsersTable()->resetToken($reference, [
                 'expiration' => Configure::read('Users.Token.expiration'),
                 'checkActive' => true,
-                'sendEmail' => true
+                'sendEmail' => true,
+                'emailTemplate' => 'CakeDC/Users.validation'
             ])) {
                 $this->Flash->success(__d('Users', 'Token has been reset successfully. Please check your email.'));
             } else {
