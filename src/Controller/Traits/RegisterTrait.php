@@ -54,7 +54,6 @@ trait RegisterTrait
         ]);
 
         if ($event->result instanceof EntityInterface) {
-            $options['validator'] = 'default';
             if ($userSaved = $usersTable->register($user, $event->result->toArray(), $options)) {
                 return $this->_afterRegister($userSaved);
             }
