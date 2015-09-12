@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Test\TestCase\Model\Table;
 
+use Cake\Core\Plugin;
 use Cake\Network\Email\Email;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
@@ -53,6 +54,7 @@ class UsersTableTest extends TestCase
             'className' => 'Debug'
         ]);
         $this->Email = new Email(['from' => 'test@example.com', 'transport' => 'test']);
+        Plugin::routes('CakeDC/Users');
     }
 
     /**

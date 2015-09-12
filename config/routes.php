@@ -12,7 +12,7 @@
 use Cake\Core\Configure;
 use Cake\Routing\Router;
 
-Router::plugin('CakeDC/Users', function ($routes) {
+Router::plugin('CakeDC/Users', ['path' => '/users'], function ($routes) {
     $routes->fallbacks('DashedRoute');
 });
 

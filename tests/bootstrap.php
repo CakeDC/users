@@ -20,7 +20,9 @@ $root = $findRoot(__FILE__);
 unset($findRoot);
 chdir($root);
 require $root . '/vendor/cakephp/cakephp/tests/bootstrap.php';
-\Cake\Core\Plugin::load('CakeDC/Users', ['path' => dirname(dirname(__FILE__)) . DS]);
-if (file_exists($root . '/config/bootstrap.php')) {
-    require $root . '/config/bootstrap.php';
-}
+\Cake\Core\Plugin::load('CakeDC/Users', [
+    'path' => dirname(dirname(__FILE__)) . DS,
+    'routes' => true,
+]);
+require $root . '/config/bootstrap.php';
+unset($root);
