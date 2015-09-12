@@ -12,6 +12,8 @@
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
 use Cake\Core\Configure;
+use Cake\Core\Plugin;
+use Cake\Network\Email\Email;
 use Cake\ORM\TableRegistry;
 use CakeDC\Users\Test\TestCase\Controller\Traits\BaseTraitTest;
 
@@ -27,6 +29,17 @@ class RegisterTraitTest extends BaseTraitTest
         $this->traitClassName = 'CakeDC\Users\Controller\Traits\RegisterTrait';
         $this->traitMockMethods = ['validate', 'dispatchEvent', 'set', 'validateReCaptcha', 'redirect'];
         parent::setUp();
+
+        Plugin::routes('CakeDC/Users');
+
+        Email::configTransport('test', [
+            'className' => 'Debug'
+        ]);
+        $this->configEmail = Email::config('default');
+        Email::config('default', [
+            'transport' => 'test',
+            'from' => 'cakedc@example.com'
+        ]);
     }
 
     /**
@@ -36,6 +49,10 @@ class RegisterTraitTest extends BaseTraitTest
      */
     public function tearDown()
     {
+        Email::drop('default');
+        Email::dropTransport('test');
+        Email::config('default', $this->configEmail);
+
         parent::tearDown();
     }
 
