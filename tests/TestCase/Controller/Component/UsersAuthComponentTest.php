@@ -13,6 +13,7 @@ namespace CakeDC\Users\Test\TestCase\Controller\Component;
 
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
+use Cake\Core\Plugin;
 use Cake\Database\Exception;
 use Cake\Event\Event;
 use Cake\Network\Request;
@@ -49,25 +50,7 @@ class UsersAuthComponentTest extends TestCase
         parent::setUp();
         $this->backupUsersConfig = Configure::read('Users');
 
-        Router::scope('/', function ($routes) {
-            $routes->fallbacks('InflectedRoute');
-        });
-
-        Router::plugin('Users', function ($routes) {
-            $routes->fallbacks('InflectedRoute');
-        });
-
-        Router::scope('/auth', function ($routes) {
-            $routes->connect(
-                '/*',
-                ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'opauthInit']
-            );
-        });
-        Router::connect('/a/validate/*', [
-            'plugin' => 'CakeDC/Users',
-            'controller' => 'SocialAccounts',
-            'action' => 'resendValidation'
-        ]);
+        Plugin::routes('CakeDC/Users');
 
         Security::salt('YJfIxfs2guVoUubWDYhG93b0qyJfIxfs2guwvniR2G0FgaC9mi');
         Configure::write('App.namespace', 'Users');
@@ -219,7 +202,7 @@ class UsersAuthComponentTest extends TestCase
         $this->Controller->Auth->expects($this->once())
                 ->method('user')
                 ->will($this->returnValue(['id' => 1]));
-        $request = new Request('/a/validate/pass-one');
+        $request = new Request('/accounts/validate/pass-one');
         $request->params = [
             'plugin' => 'CakeDC/Users',
             'controller' => 'SocialAccounts',

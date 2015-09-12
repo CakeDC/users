@@ -7,7 +7,10 @@
         "cakephp/cakephp": "~3.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "*"
+        "phpunit/phpunit": "*",
+        "opauth/opauth": "*",
+        "opauth/facebook": "*",
+        "opauth/twitter": "*"
     },
     "suggest": {
         "opauth/opauth": "Used for Social Login, if you add Opauth, remember adding at least one strategy too",

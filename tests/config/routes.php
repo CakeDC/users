@@ -12,19 +12,16 @@
 use Cake\Core\Configure;
 use Cake\Routing\Router;
 
-Router::plugin('CakeDC/Users', ['path' => '/users'], function ($routes) {
+Router::plugin('CakeDC/Users', function ($routes) {
     $routes->fallbacks('DashedRoute');
 });
 
-$oauthPath = Configure::read('Opauth.path');
-if (is_array($oauthPath)) {
-    Router::scope('/auth', function ($routes) use ($oauthPath) {
-        $routes->connect(
-            '/*',
-            $oauthPath
-        );
-    });
-}
+Router::scope('/auth', function ($routes) {
+    $routes->connect(
+        '/*',
+        Configure::read('Opauth.path')
+    );
+});
 Router::connect('/accounts/validate/*', [
     'plugin' => 'CakeDC/Users',
     'controller' => 'SocialAccounts',
