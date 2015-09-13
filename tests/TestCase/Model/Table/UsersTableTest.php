@@ -53,6 +53,11 @@ class UsersTableTest extends TestCase
         Email::configTransport('test', [
             'className' => 'Debug'
         ]);
+        $this->configEmail = Email::config('default');
+        Email::config('default', [
+            'transport' => 'test',
+            'from' => 'cakedc@example.com'
+        ]);
         $this->Email = new Email(['from' => 'test@example.com', 'transport' => 'test']);
         Plugin::routes('CakeDC/Users');
     }
@@ -66,7 +71,9 @@ class UsersTableTest extends TestCase
     {
         unset($this->Users);
         Router::fullBaseUrl($this->fullBaseBackup);
+        Email::drop('default');
         Email::dropTransport('test');
+        Email::config('default', $this->configEmail);
 
         parent::tearDown();
     }

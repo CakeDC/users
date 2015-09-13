@@ -43,10 +43,7 @@ class SocialAccountsTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('SocialAccounts') ? [] : [
-            'className' => 'CakeDC\Users\Model\Table\SocialAccountsTable'
-        ];
-        $this->SocialAccounts = TableRegistry::get('SocialAccounts', $config);
+        $this->SocialAccounts = TableRegistry::get('CakeDC/Users.SocialAccounts');
         $this->fullBaseBackup = Router::fullBaseUrl();
         Router::fullBaseUrl('http://users.test');
         Email::configTransport('test', [
@@ -105,45 +102,11 @@ class SocialAccountsTableTest extends TestCase
     /**
      * Test validateEmail method
      *
-     * @expectedException \Users\Exception\AccountAlreadyActiveException
+     * @expectedException CakeDC\Users\Exception\AccountAlreadyActiveException
      */
     public function testValidateEmailActiveAccount()
     {
         $this->SocialAccounts->validateAccount(SocialAccountsTable::PROVIDER_TWITTER, 'reference-1-1234', 'token-1234');
-    }
-
-    /**
-     * testAfterSaveSocialNotActiveUserNotActive
-     * don't send email, user is not active
-     *
-     * @return void
-     */
-    public function testAfterSaveSocialNotActiveUserNotActive()
-    {
-        $event = new Event('eventName');
-        $entity = $this->SocialAccounts->find()->first();
-        $this->assertTrue($this->SocialAccounts->afterSave($event, $entity, []));
-    }
-
-    /**
-     * testAfterSaveSocialNotActiveUserActive
-     * send email here, social account is not active,
-     * and user is active we need to link the account
-     *
-     * @return void
-     */
-    public function testAfterSaveSocialNotActiveUserActive()
-    {
-        $this->markTestIncomplete('fix this test after SocialBehavior done');
-        $event = new Event('eventName');
-        $entity = $this->SocialAccounts->findById(5)->first();
-        $this->SocialAccounts->Users = $this->getMockForModel('CakeDC/Users.Users', ['getEmailInstance']);
-        $this->SocialAccounts->Users->expects($this->once())
-            ->method('getEmailInstance')
-            ->will($this->returnValue($this->Email));
-        $result = $this->SocialAccounts->afterSave($event, $entity, []);
-        $this->assertTextContains('Subject: FirstName4, Your social account validation link', $result['headers']);
-        unset($this->SocialAccounts->Users);
     }
 
     /**
