@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Test\TestCase\Model\Table;
 
+use Cake\Core\Plugin;
 use Cake\Network\Email\Email;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
@@ -53,6 +54,7 @@ class UsersTableTest extends TestCase
             'className' => 'Debug'
         ]);
         $this->Email = new Email(['from' => 'test@example.com', 'transport' => 'test']);
+        Plugin::routes('CakeDC/Users');
     }
 
     /**
@@ -269,8 +271,7 @@ Hi FirstName,
             ]);
         $this->Email->template('CakeDC/Users.reset_password')
             ->emailFormat('both');
-
-        $result = $this->Users->sendResetPasswordEmail($user, $this->Email);
+        $result = $this->Users->sendResetPasswordEmail($user, $this->Email, 'CakeDC/Users.reset_password');
         $this->assertTextContains('From: test@example.com', $result['headers']);
         $this->assertTextContains('To: test@example.com', $result['headers']);
         $this->assertTextContains('Subject: FirstName, Your reset password link', $result['headers']);

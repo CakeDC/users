@@ -19,7 +19,6 @@ $findRoot = function ($root) {
 $root = $findRoot(__FILE__);
 unset($findRoot);
 chdir($root);
-// require $root . '/vendor/cakephp/cakephp/tests/bootstrap.php';
 
 define('DS', DIRECTORY_SEPARATOR);
 define('ROOT', $root);
@@ -40,7 +39,6 @@ require ROOT . '/vendor/cakephp/cakephp/src/basics.php';
 require ROOT . '/vendor/autoload.php';
 
 Cake\Core\Configure::write('App', ['namespace' => 'Users\Test\App']);
-// Cake\Core\Configure::write('App', ['namespace' => 'App']);
 
 Cake\Core\Configure::write('debug', true);
 Cake\Core\Configure::write('App.encoding', 'UTF-8');
@@ -76,7 +74,10 @@ Cake\Core\Configure::write('Session', [
 ]);
 
 
-\Cake\Core\Plugin::load('CakeDC/Users', ['path' => dirname(dirname(__FILE__)) . DS]);
+\Cake\Core\Plugin::load('CakeDC/Users', [
+    'path' => dirname(dirname(__FILE__)) . DS,
+    'routes' => true
+]);
 if (file_exists($root . '/config/bootstrap.php')) {
     require $root . '/config/bootstrap.php';
 }
@@ -86,9 +87,6 @@ Cake\Routing\DispatcherFactory::add('ControllerFactory');
 
 
 class_alias('CakeDC\Users\Test\App\Controller\AppController', 'App\Controller\AppController');
-// echo class_exists('App\Controller\AppController');
-
-// exit;
 
 // Ensure default test connection is defined
 if (!getenv('db_dsn')) {
@@ -99,4 +97,3 @@ Cake\Datasource\ConnectionManager::config('test', [
     'url' => getenv('db_dsn'),
     'timezone' => 'UTC'
 ]);
-
