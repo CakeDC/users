@@ -55,7 +55,7 @@ class SuperuserAuthorizeTest extends TestCase
     }
 
     /**
-     * @covers Users\Auth\SuperuserAuthorize::authorize
+     * @covers CakeDC\Users\Auth\SuperuserAuthorize::authorize
      */
     public function testAuthorizeIsSuperuser()
     {
@@ -68,7 +68,7 @@ class SuperuserAuthorizeTest extends TestCase
     }
 
     /**
-     * @covers Users\Auth\SuperuserAuthorize::authorize
+     * @covers CakeDC\Users\Auth\SuperuserAuthorize::authorize
      */
     public function testAuthorizeIsNotSuperuser()
     {
@@ -81,7 +81,7 @@ class SuperuserAuthorizeTest extends TestCase
     }
 
     /**
-     * @covers Users\Auth\SuperuserAuthorize::authorize
+     * @covers CakeDC\Users\Auth\SuperuserAuthorize::authorize
      */
     public function testAuthorizeWeirdUser()
     {
