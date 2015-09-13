@@ -125,7 +125,7 @@ class UsersTableTest extends TestCase
     }
 
     /**
-     * @expectedException InvalidArgumentException
+     * test
      */
     public function testValidateRegisterTosRequired()
     {
@@ -137,7 +137,9 @@ class UsersTableTest extends TestCase
             'first_name' => 'test',
             'last_name' => 'user',
         ];
-        $this->Users->register($this->Users->newEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1, 'use_tos' => 1]);
+        $userEntity = $this->Users->newEntity();
+        $this->Users->register($userEntity, $user, ['token_expiration' => 3600, 'validate_email' => 1, 'use_tos' => 1]);
+        $this->assertEquals(['tos' => ['_required' => 'This field is required']], $userEntity->errors());
     }
 
     /**

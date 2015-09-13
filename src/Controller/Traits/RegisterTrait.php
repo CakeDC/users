@@ -74,12 +74,8 @@ trait RegisterTrait
             $this->Flash->error(__d('Users', 'The reCaptcha could not be validated'));
             return;
         }
-        try {
-            $userSaved = $usersTable->register($user, $requestData, $options);
-        } catch (InvalidArgumentException $ex) {
-            $this->Flash->error($ex->getMessage());
-            return;
-        }
+
+        $userSaved = $usersTable->register($user, $requestData, $options);
         if (!$userSaved) {
             $this->Flash->error(__d('Users', 'The user could not be saved'));
             return;
