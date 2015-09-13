@@ -9,7 +9,7 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Test\Fixture;
+namespace CakeDC\Users\Test\Fixture;
 
 use Cake\TestSuite\Fixture\TestFixture;
 
@@ -66,7 +66,7 @@ class UsersFixture extends TestFixture
             'password' => '12345',
             'first_name' => 'first1',
             'last_name' => 'last1',
-            'token' => 'xxx',
+            'token' => 'ae93ddbe32664ce7927cf0c5c5a5e59d',
             'token_expires' => '2035-06-24 17:33:54',
             'api_token' => 'yyy',
             'activation_date' => '2015-06-24 17:33:54',
@@ -84,7 +84,7 @@ class UsersFixture extends TestFixture
             'password' => '12345',
             'first_name' => 'user',
             'last_name' => 'second',
-            'token' => 'xxx',
+            'token' => '6614f65816754310a5f0553436dd89e9',
             'token_expires' => '2015-06-24 17:33:54',
             'api_token' => 'xxx',
             'activation_date' => '2015-06-24 17:33:54',
@@ -102,8 +102,8 @@ class UsersFixture extends TestFixture
             'password' => '12345',
             'first_name' => 'user',
             'last_name' => 'third',
-            'token' => 'xxx',
-            'token_expires' => '2015-06-20 17:33:54',
+            'token' => 'token-3',
+            'token_expires' => '2030-06-20 17:33:54',
             'api_token' => 'xxx',
             'activation_date' => '2015-06-24 17:33:54',
             'tos_date' => '2015-06-24 17:33:54',
@@ -120,8 +120,8 @@ class UsersFixture extends TestFixture
             'password' => 'Lorem ipsum dolor sit amet',
             'first_name' => 'FirstName4',
             'last_name' => 'Lorem ipsum dolor sit amet',
-            'token' => 'Lorem ipsum dolor sit amet',
-            'token_expires' => '2015-06-24 17:33:54',
+            'token' => 'token-4',
+            'token_expires' => '2030-06-24 17:33:54',
             'api_token' => 'Lorem ipsum dolor sit amet',
             'activation_date' => '2015-06-24 17:33:54',
             'tos_date' => '2015-06-24 17:33:54',
@@ -135,12 +135,12 @@ class UsersFixture extends TestFixture
             'id' => 5,
             'username' => 'user-5',
             'email' => 'test@example.com',
-            'password' => 'Lorem ipsum dolor sit amet',
+            'password' => '12345',
             'first_name' => 'first-user-5',
-            'last_name' => 'Lorem ipsum dolor sit amet',
-            'token' => 'Lorem ipsum dolor sit amet',
+            'last_name' => 'firts name 5',
+            'token' => 'token-5',
             'token_expires' => '2015-06-24 17:33:54',
-            'api_token' => 'Lorem ipsum dolor sit amet',
+            'api_token' => '',
             'activation_date' => '2015-06-24 17:33:54',
             'tos_date' => '2015-06-24 17:33:54',
             'active' => 0,

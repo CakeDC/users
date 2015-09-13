@@ -9,25 +9,27 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-use Cake\Routing\Router;
 use Cake\Core\Configure;
+use Cake\Routing\Router;
 
-Router::plugin('Users', function ($routes) {
+Router::plugin('CakeDC/Users', ['path' => '/users'], function ($routes) {
     $routes->fallbacks('DashedRoute');
 });
 
-Router::scope('/auth', function ($routes) {
-    $routes->connect(
-        '/*',
-        Configure::read('Opauth.path')
-    );
-});
+$oauthPath = Configure::read('Opauth.path');
+if (is_array($oauthPath)) {
+    Router::scope('/auth', function ($routes) use ($oauthPath) {
+        $routes->connect(
+            '/*',
+            $oauthPath
+        );
+    });
+}
 Router::connect('/accounts/validate/*', [
-    'admin' => false,
-    'plugin' => 'Users',
+    'plugin' => 'CakeDC/Users',
     'controller' => 'SocialAccounts',
     'action' => 'validate'
 ]);
-Router::connect('/profile/*', ['admin' => false, 'plugin' => 'Users', 'controller' => 'Users', 'action' => 'profile']);
-Router::connect('/login', ['admin' => false, 'plugin' => 'Users', 'controller' => 'Users', 'action' => 'login']);
-Router::connect('/logout', ['admin' => false, 'plugin' => 'Users', 'controller' => 'Users', 'action' => 'logout']);
+Router::connect('/profile/*', ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile']);
+Router::connect('/login', ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
+Router::connect('/logout', ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'logout']);

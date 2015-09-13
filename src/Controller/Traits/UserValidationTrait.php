@@ -9,15 +9,15 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Controller\Traits;
+namespace CakeDC\Users\Controller\Traits;
 
 use Cake\Core\Configure;
 use Cake\Network\Response;
 use Exception;
 use InvalidArgumentException;
-use Users\Exception\TokenExpiredException;
-use Users\Exception\UserAlreadyActiveException;
-use Users\Exception\UserNotFoundException;
+use CakeDC\Users\Exception\TokenExpiredException;
+use CakeDC\Users\Exception\UserAlreadyActiveException;
+use CakeDC\Users\Exception\UserNotFoundException;
 
 /**
  * Covers the user validation
@@ -53,21 +53,20 @@ trait UserValidationTrait
                     if (!empty($result)) {
                         $this->Flash->success(__d('Users', 'Reset password token was validated successfully'));
                         $this->request->session()->write(Configure::read('Users.Key.Session.resetPasswordUserId'), $result->id);
-                        $this->redirect(['action' => 'changePassword']);
+                        return $this->redirect(['action' => 'changePassword']);
                     } else {
                         $this->Flash->error(__d('Users', 'Reset password token could not be validated'));
                     }
                     break;
                 default:
-                    throw new InvalidArgumentException();
+                    $this->Flash->error(__d('Users', 'Invalid validation type'));
             }
-        } catch (UserNotFoundException $exception) {
+        } catch (UserNotFoundException $ex) {
             $this->Flash->error(__d('Users', 'Invalid token and/or email'));
-        } catch (TokenExpiredException $exception) {
+        } catch (TokenExpiredException $ex) {
             $this->Flash->error(__d('Users', 'Token already expired'));
-        } catch (InvalidArgumentException $iae) {
-            $this->Flash->error(__d('Users', 'Invalid validation type'));
         }
+
         return $this->redirect(['action' => 'login']);
     }
 
@@ -78,27 +77,30 @@ trait UserValidationTrait
      */
     public function resendTokenValidation()
     {
-        if ($this->request->is('post')) {
-            $reference = $this->request->data('reference');
-            try {
-                if ($this->getUsersTable()->resetToken($reference, [
-                    'expiration' => Configure::read('Users.Token.expiration'),
-                    'checkActive' => true,
-                ])) {
-                    $this->Flash->success(__d('Users', 'Token has been reset successfully'));
-                } else {
-                    $this->Flash->error(__d('Users', 'Token could not be reset'));
-                }
-                return $this->redirect(['action' => 'login']);
-            } catch (UserNotFoundException $exception) {
-                $this->Flash->error(__d('Users', 'User {0} was not found', $reference));
-            } catch (UserAlreadyActiveException $exception) {
-                $this->Flash->error(__d('Users', 'User {0} is already active', $reference));
-            } catch (Exception $exception) {
-                $this->Flash->error(__d('Users', 'Token could not be reset'));
-            }
-        }
         $this->set('user', $this->getUsersTable()->newEntity());
         $this->set('_serialize', ['user']);
+        if (!$this->request->is('post')) {
+            return;
+        }
+        $reference = $this->request->data('reference');
+        try {
+            if ($this->getUsersTable()->resetToken($reference, [
+                'expiration' => Configure::read('Users.Token.expiration'),
+                'checkActive' => true,
+                'sendEmail' => true,
+                'emailTemplate' => 'CakeDC/Users.validation'
+            ])) {
+                $this->Flash->success(__d('Users', 'Token has been reset successfully. Please check your email.'));
+            } else {
+                $this->Flash->error(__d('Users', 'Token could not be reset'));
+            }
+            return $this->redirect(['action' => 'login']);
+        } catch (UserNotFoundException $exception) {
+            $this->Flash->error(__d('Users', 'User {0} was not found', $reference));
+        } catch (UserAlreadyActiveException $exception) {
+            $this->Flash->error(__d('Users', 'User {0} is already active', $reference));
+        } catch (Exception $exception) {
+            $this->Flash->error(__d('Users', 'Token could not be reset'));
+        }
     }
 }

@@ -9,15 +9,15 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Test\TestCase\Model\Table;
+namespace CakeDC\Users\Test\TestCase\Model\Table;
 
 use Cake\Event\Event;
 use Cake\Network\Email\Email;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
-use Users\Model\Table\SocialAccountsTable;
-use Users\Model\Table\UsersTable;
+use CakeDC\Users\Model\Table\SocialAccountsTable;
+use CakeDC\Users\Model\Table\UsersTable;
 
 /**
  * Users\Model\Table\UsersTable Test Case
@@ -31,8 +31,8 @@ class SocialAccountsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.users.social_accounts',
-        'plugin.users.users'
+        'plugin.CakeDC/Users.social_accounts',
+        'plugin.CakeDC/Users.users'
     ];
 
     /**
@@ -44,7 +44,7 @@ class SocialAccountsTableTest extends TestCase
     {
         parent::setUp();
         $config = TableRegistry::exists('SocialAccounts') ? [] : [
-            'className' => 'Users\Model\Table\SocialAccountsTable'
+            'className' => 'CakeDC\Users\Model\Table\SocialAccountsTable'
         ];
         $this->SocialAccounts = TableRegistry::get('SocialAccounts', $config);
         $this->fullBaseBackup = Router::fullBaseUrl();
@@ -134,41 +134,16 @@ class SocialAccountsTableTest extends TestCase
      */
     public function testAfterSaveSocialNotActiveUserActive()
     {
+        $this->markTestIncomplete('fix this test after SocialBehavior done');
         $event = new Event('eventName');
         $entity = $this->SocialAccounts->findById(5)->first();
-        $this->SocialAccounts->Users = $this->getMockForModel('Users.Users', ['getEmailInstance']);
+        $this->SocialAccounts->Users = $this->getMockForModel('CakeDC/Users.Users', ['getEmailInstance']);
         $this->SocialAccounts->Users->expects($this->once())
-                ->method('getEmailInstance')
-                ->will($this->returnValue($this->Email));
+            ->method('getEmailInstance')
+            ->will($this->returnValue($this->Email));
         $result = $this->SocialAccounts->afterSave($event, $entity, []);
         $this->assertTextContains('Subject: FirstName4, Your social account validation link', $result['headers']);
         unset($this->SocialAccounts->Users);
-    }
-
-    /**
-     * testAfterSaveSocialActiveUserNotActive
-     * social account is active, don't send email
-     *
-     * @return void
-     */
-    public function testAfterSaveSocialActiveUserNotActive()
-    {
-        $event = new Event('eventName');
-        $entity = $this->SocialAccounts->findById(2)->first();
-        $this->assertTrue($this->SocialAccounts->afterSave($event, $entity, []));
-    }
-
-    /**
-     * testAfterSaveSocialActiveUserActive
-     * social account is active, don't send email
-     *
-     * @return void
-     */
-    public function testAfterSaveSocialActiveUserActive()
-    {
-        $event = new Event('eventName');
-        $entity = $this->SocialAccounts->findById(3)->first();
-        $this->assertTrue($this->SocialAccounts->afterSave($event, $entity, []));
     }
 
     /**
@@ -178,6 +153,7 @@ class SocialAccountsTableTest extends TestCase
      */
     public function testSendSocialValidationEmail()
     {
+        $this->markTestIncomplete('move to SocialAccountBehaviorTest');
         $user = $this->SocialAccounts->find()->contain('Users')->first();
         $this->Email->emailFormat('both');
         $result = $this->SocialAccounts->sendSocialValidationEmail($user, $user->user, $this->Email);

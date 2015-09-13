@@ -9,29 +9,105 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Test\TestCase\Controller\Traits;
+namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
-use Cake\TestSuite\TestCase;
+use Cake\ORM\TableRegistry;
+use CakeDC\Users\Controller\Traits\ProfileTrait;
+use CakeDC\Users\Test\TestCase\Controller\Traits\BaseTraitTest;
 
-class ProfileTraitTest extends TestCase
+class ProfileTraitTest extends BaseTraitTest
 {
+    /**
+     * Fixtures
+     *
+     * @var array
+     */
+    public $fixtures = [
+        'plugin.CakeDC/Users.users',
+        'plugin.CakeDC/Users.social_accounts',
+    ];
+
+    /**
+     * setUp
+     *
+     * @return void
+     */
     public function setUp()
     {
+        $this->traitClassName = 'CakeDC\Users\Controller\Traits\ProfileTrait';
+        $this->traitMockMethods = ['set', 'getUsersTable', 'redirect', 'validate'];
         parent::setUp();
-        $this->controller = $this->getMock(
-            '\Cake\Controller\Controller',
-            ['header', 'redirect', 'render', '_stop']
-        );
-        $this->controller->Trait = $this->getMockForTrait('Users\Controller\Traits\ProfileTrait');
     }
 
-    public function tearDown()
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testProfileGetNotLoggedInUserNotFound()
     {
-        parent::tearDown();
+        $userId = 'not-found';
+        $this->_mockRequestGet();
+        $this->_mockAuth();
+        $this->_mockFlash();
+        $this->Trait->Flash->expects($this->once())
+            ->method('error')
+            ->with('User was not found');
+        $this->Trait->profile($userId);
     }
 
-    public function testProfile()
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testProfileGetLoggedInUserNotFound()
     {
-        $this->markTestIncomplete();
+        $userId = 'not-found';
+        $this->_mockRequestGet();
+        $this->_mockAuthLoggedIn();
+        $this->_mockFlash();
+        $this->Trait->Flash->expects($this->once())
+            ->method('error')
+            ->with('User was not found');
+        $this->Trait->profile($userId);
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testProfileGetNotLoggedInEmptyId()
+    {
+        $this->_mockRequestGet();
+        $this->_mockAuth();
+        $this->_mockFlash();
+        $this->Trait->Flash->expects($this->once())
+            ->method('error')
+            ->with('Not authorized, please login first');
+        $this->Trait->profile();
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testProfileGetLoggedInMyProfile()
+    {
+        $this->_mockRequestGet();
+        $this->_mockAuthLoggedIn();
+        $this->_mockFlash();
+        $this->Trait->expects($this->any())
+            ->method('set')
+            ->will($this->returnCallback(function ($param1, $param2 = null) {
+                if ($param1 === 'avatarPlaceholder') {
+                    BaseTraitTest::assertEquals('Users.avatar_placeholder.png', $param2);
+                } elseif (is_array($param1)) {
+                    BaseTraitTest::assertEquals('user-1', $param1['user']->username);
+                }
+            }));
+        $this->Trait->profile();
     }
 }

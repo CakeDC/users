@@ -9,13 +9,14 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Controller\Traits;
+namespace CakeDC\Users\Controller\Traits;
 
 use Cake\Core\Configure;
 use Cake\Datasource\Exception\InvalidPrimaryKeyException;
+use Cake\Datasource\Exception\RecordNotFoundException;
 
 /**
- * Covers the login, logout and social login, proxy to UsersAuthComponent methods
+ * Covers the profile action
  *
  */
 trait ProfileTrait
@@ -34,16 +35,20 @@ trait ProfileTrait
             $id = $loggedUserId;
         }
         try {
+            $appContain = (array)Configure::read('Auth.authenticate.' . \Cake\Controller\Component\AuthComponent::ALL . '.contain');
+            $socialContain =  Configure::read('Users.Social.login') ? ['SocialAccounts']: [];
             $user = $this->getUsersTable()->get($id, [
-                'contain' => ['SocialAccounts']
-            ]);
+                    'contain' => array_merge((array)$appContain, (array)$socialContain)
+                ]);
             $this->set('avatarPlaceholder', Configure::read('Users.Avatar.placeholder'));
             if ($user->id === $loggedUserId) {
                 $isCurrentUser = true;
             }
-
-        } catch (InvalidPrimaryKeyException $ipke) {
-            $this->Flash->error(__d('Users', 'User was not found', $id));
+        } catch (RecordNotFoundException $ex) {
+            $this->Flash->error(__d('Users', 'User was not found'));
+            return $this->redirect($this->request->referer());
+        } catch (InvalidPrimaryKeyException $ex) {
+            $this->Flash->error(__d('Users', 'Not authorized, please login first'));
             return $this->redirect($this->request->referer());
         }
         $this->set(compact('user', 'isCurrentUser'));

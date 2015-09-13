@@ -17,6 +17,8 @@ $config = [
         'table' => 'Users.Users',
         //configure Auth component
         'auth' => true,
+        //Password Hasher
+        'passwordHasher' => '\Cake\Auth\DefaultPasswordHasher',
         //token expiration, 1 hour
         'Token' => ['expiration' => 3600],
         'Email' => [
@@ -28,6 +30,8 @@ $config = [
         'Registration' => [
             //determines if the register is enabled
             'active' => true,
+            //determines if the reCaptcha is enabled for registration
+            'reCaptcha' => true,
         ],
         'Tos' => [
             //determines if the user should include tos accepted
@@ -40,6 +44,7 @@ $config = [
         'Profile' => [
             //Allow view other users profiles
             'viewOthers' => true,
+            'route' => ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile'],
         ],
         'Key' => [
             'Session' => [
@@ -78,7 +83,7 @@ $config = [
 //default configuration used to auto-load the Auth Component, override to change the way Auth works
     'Auth' => [
         'loginAction' => [
-            'plugin' => 'Users',
+            'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'login',
         ],
@@ -86,19 +91,19 @@ $config = [
             'all' => [
                 'scope' => ['active' => 1]
             ],
-            'Users.RememberMe',
+            'CakeDC/Users.RememberMe',
             'Form',
         ],
         'authorize' => [
-            'Users.Superuser',
-            'Users.SimpleRbac',
+            'CakeDC/Users.Superuser',
+            'CakeDC/Users.SimpleRbac',
         ],
     ],
 //default Opauth configuration, you'll need to provide the strategy keys
     'Opauth' => [
-        'path' => ['plugin' => 'Users', 'controller' => 'Users', 'action' => 'opauthInit'],
+        'path' => ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'opauthInit'],
         'callback_param' => 'callback',
-        'complete_url' => ['admin' => false, 'plugin' => 'Users', 'controller' => 'Users', 'action' => 'login'],
+        'complete_url' => ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login'],
         'Strategy' => [
             'Facebook' => [
                 'scope' => ['public_profile', 'user_friends', 'email']

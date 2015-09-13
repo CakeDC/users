@@ -9,12 +9,12 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Controller\Traits;
+namespace CakeDC\Users\Controller\Traits;
 
 use Cake\Core\Configure;
 use Exception;
-use Users\Exception\UserNotFoundException;
-use Users\Exception\WrongPasswordException;
+use CakeDC\Users\Exception\UserNotFoundException;
+use CakeDC\Users\Exception\WrongPasswordException;
 
 /**
  * Covers the password management: reset, change
@@ -37,12 +37,12 @@ trait PasswordManagementTrait
             $user->id = $this->Auth->user('id');
             $validatePassword = true;
             //@todo add to the documentation: list of routes used
-            $redirect = ['admin' => false, 'plugin' => 'Users', 'controller' => 'users', 'action' => 'profile'];
+            $redirect = Configure::read('Users.Profile.route');
         } else {
             $user->id = $this->request->session()->read(Configure::read('Users.Key.Session.resetPasswordUserId'));
             $validatePassword = false;
             //@todo add to the documentation: list of routes used
-            $redirect = ['admin' => false, 'plugin' => 'Users', 'controller' => 'users', 'action' => 'login'];
+            $redirect = $this->Auth->config('loginAction');
         }
         $this->set('validatePassword', $validatePassword);
         if ($this->request->is('post')) {
@@ -85,29 +85,31 @@ trait PasswordManagementTrait
      */
     public function requestResetPassword()
     {
-        if ($this->request->is('post')) {
-            $reference = $this->request->data('reference');
-            try {
-                $resetUser = $this->getUsersTable()->resetToken($reference, [
-                    'expiration' => Configure::read('Users.Token.expiration'),
-                    'checkActive' => false,
-                    'sendEmail' => true,
-                ]);
-                if ($resetUser) {
-                    $msg = __d('Users', 'Please check your email to continue with password reset process');
-                    $this->Flash->success($msg);
-                } else {
-                    $msg = __d('Users', 'The password token could not be generated. Please try again');
-                    $this->Flash->error($msg);
-                }
-                return $this->redirect(['action' => 'login']);
-            } catch (UserNotFoundException $exception) {
-                $this->Flash->error(__d('Users', 'User {0} was not found', $reference));
-            } catch (Exception $exception) {
-                $this->Flash->error(__d('Users', 'Token could not be reset'));
-            }
-        }
         $this->set('user', $this->getUsersTable()->newEntity());
         $this->set('_serialize', ['user']);
+        if (!$this->request->is('post')) {
+            return;
+        }
+
+        $reference = $this->request->data('reference');
+        try {
+            $resetUser = $this->getUsersTable()->resetToken($reference, [
+                'expiration' => Configure::read('Users.Token.expiration'),
+                'checkActive' => false,
+                'sendEmail' => true,
+            ]);
+            if ($resetUser) {
+                $msg = __d('Users', 'Please check your email to continue with password reset process');
+                $this->Flash->success($msg);
+            } else {
+                $msg = __d('Users', 'The password token could not be generated. Please try again');
+                $this->Flash->error($msg);
+            }
+            return $this->redirect(['action' => 'login']);
+        } catch (UserNotFoundException $exception) {
+            $this->Flash->error(__d('Users', 'User {0} was not found', $reference));
+        } catch (Exception $exception) {
+            $this->Flash->error(__d('Users', 'Token could not be reset'));
+        }
     }
 }

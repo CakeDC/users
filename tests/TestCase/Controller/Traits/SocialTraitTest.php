@@ -9,7 +9,7 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Test\TestCase\Controller\Traits;
+namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
 use Cake\Core\Configure;
 use Cake\TestSuite\TestCase;
@@ -24,7 +24,7 @@ class SocialTraitTest extends TestCase
             ['header', 'redirect', 'render', '_stop']
         );
         $this->controller->Trait = $this->getMockForTrait(
-            'Users\Controller\Traits\SocialTrait',
+            'CakeDC\Users\Controller\Traits\SocialTrait',
             [],
             '',
             true,

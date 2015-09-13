@@ -9,19 +9,22 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Test\TestCase\Controller\Component;
+namespace CakeDC\Users\Test\TestCase\Controller\Component;
 
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
+use Cake\Core\Plugin;
 use Cake\Database\Exception;
+use Cake\Event\Event;
+use Cake\Network\Request;
 use Cake\Network\Session;
 use Cake\ORM\Entity;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Security;
-use Users\Controller\Component\UsersAuthComponent;
-use Users\Exception\MissingEmailException;
-use Users\Exception\UserNotFoundException;
+use CakeDC\Users\Controller\Component\UsersAuthComponent;
+use CakeDC\Users\Exception\MissingEmailException;
+use CakeDC\Users\Exception\UserNotFoundException;
 
 /**
  * Users\Controller\Component\UsersAuthComponent Test Case
@@ -34,7 +37,7 @@ class UsersAuthComponentTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.users.users',
+        'plugin.CakeDC/Users.users',
     ];
 
     /**
@@ -47,26 +50,7 @@ class UsersAuthComponentTest extends TestCase
         parent::setUp();
         $this->backupUsersConfig = Configure::read('Users');
 
-        Router::scope('/', function ($routes) {
-            $routes->fallbacks('InflectedRoute');
-        });
-
-        Router::plugin('Users', function ($routes) {
-            $routes->fallbacks('InflectedRoute');
-        });
-
-        Router::scope('/auth', function ($routes) {
-            $routes->connect(
-                '/*',
-                ['plugin' => 'Users', 'controller' => 'Users', 'action' => 'opauthInit']
-            );
-        });
-        Router::connect('/a/validate/*', [
-            'admin' => false,
-            'plugin' => 'Users',
-            'controller' => 'SocialAccounts',
-            'action' => 'resendValidation'
-        ]);
+        Plugin::routes('CakeDC/Users');
 
         Security::salt('YJfIxfs2guVoUubWDYhG93b0qyJfIxfs2guwvniR2G0FgaC9mi');
         Configure::write('App.namespace', 'Users');
@@ -100,7 +84,7 @@ class UsersAuthComponentTest extends TestCase
     {
         $this->Registry->unload('Auth');
         $this->Controller->UsersAuth = new UsersAuthComponent($this->Registry);
-        $this->assertInstanceOf('Users\Controller\Component\UsersAuthComponent', $this->Controller->UsersAuth);
+        $this->assertInstanceOf('CakeDC\Users\Controller\Component\UsersAuthComponent', $this->Controller->UsersAuth);
     }
 
     /**
@@ -110,7 +94,7 @@ class UsersAuthComponentTest extends TestCase
     public function testInitializeNoRequiredRememberMe()
     {
         Configure::write('Users.RememberMe.active', false);
-        $class = 'Users\Controller\Component\UsersAuthComponent';
+        $class = 'CakeDC\Users\Controller\Component\UsersAuthComponent';
         $this->Controller->UsersAuth = $this->getMockBuilder($class)
                 ->setMethods(['_loadRememberMe', '_initAuth', '_loadSocialLogin', '_attachPermissionChecker'])
                 ->disableOriginalConstructor()
@@ -122,5 +106,114 @@ class UsersAuthComponentTest extends TestCase
         $this->Controller->UsersAuth->expects($this->never())
                 ->method('_loadRememberMe');
         $this->Controller->UsersAuth->initialize([]);
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testIsUrlAuthorizedUserNotLoggedIn()
+    {
+        $event = new Event('event');
+        $this->Controller->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
+                ->setMethods(['user', 'isAuthorized'])
+                ->disableOriginalConstructor()
+                ->getMock();
+        $this->Controller->Auth->expects($this->once())
+                ->method('user')
+                ->will($this->returnValue(false));
+        $result = $this->Controller->UsersAuth->isUrlAuthorized($event);
+        $this->assertFalse($result);
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testIsUrlAuthorizedNoUrl()
+    {
+        $event = new Event('event');
+        $this->Controller->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
+                ->setMethods(['user', 'isAuthorized'])
+                ->disableOriginalConstructor()
+                ->getMock();
+        $this->Controller->Auth->expects($this->once())
+                ->method('user')
+                ->will($this->returnValue(['id' => 1]));
+        $result = $this->Controller->UsersAuth->isUrlAuthorized($event);
+        $this->assertFalse($result);
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testIsUrlAuthorizedUrlString()
+    {
+        $event = new Event('event');
+        $event->data = [
+            'url' => '/a/validate',
+        ];
+        $this->Controller->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
+                ->setMethods(['user', 'isAuthorized'])
+                ->disableOriginalConstructor()
+                ->getMock();
+        $this->Controller->Auth->expects($this->once())
+                ->method('user')
+                ->will($this->returnValue(['id' => 1]));
+        $request = new Request('/a/validate');
+        $request->params = [
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'SocialAccounts',
+            'action' => 'resendValidation',
+            'pass' => [],
+        ];
+        $this->Controller->Auth->expects($this->once())
+                ->method('isAuthorized')
+                ->with(null, $request)
+                ->will($this->returnValue(true));
+        $result = $this->Controller->UsersAuth->isUrlAuthorized($event);
+        $this->assertTrue($result);
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testIsUrlAuthorizedUrlArray()
+    {
+        $event = new Event('event');
+        $event->data = [
+            'url' => [
+                'plugin' => 'CakeDC/Users',
+                'controller' => 'SocialAccounts',
+                'action' => 'resendValidation',
+                'pass-one'
+            ],
+        ];
+        $this->Controller->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
+                ->setMethods(['user', 'isAuthorized'])
+                ->disableOriginalConstructor()
+                ->getMock();
+        $this->Controller->Auth->expects($this->once())
+                ->method('user')
+                ->will($this->returnValue(['id' => 1]));
+        $request = new Request('/accounts/validate/pass-one');
+        $request->params = [
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'SocialAccounts',
+            'action' => 'resendValidation',
+            'pass' => ['pass-one'],
+        ];
+        $this->Controller->Auth->expects($this->once())
+                ->method('isAuthorized')
+                ->with(null, $request)
+                ->will($this->returnValue(true));
+        $result = $this->Controller->UsersAuth->isUrlAuthorized($event);
+        $this->assertTrue($result);
     }
 }

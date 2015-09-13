@@ -9,7 +9,7 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Controller\Component;
+namespace CakeDC\Users\Controller\Component;
 
 use Cake\Controller\Component;
 use Cake\Core\Configure;
@@ -17,7 +17,7 @@ use Cake\Event\Event;
 use Cake\Network\Request;
 use Cake\Routing\Router;
 use Cake\Utility\Hash;
-use Users\Exception\BadConfigurationException;
+use CakeDC\Users\Exception\BadConfigurationException;
 
 class UsersAuthComponent extends Component
 {
@@ -64,7 +64,7 @@ class UsersAuthComponent extends Component
     protected function _loadSocialLogin()
     {
         $this->_registry->getController()->Auth->config('authenticate', [
-            'Users.Social'
+            'CakeDC/Users.Social'
         ], true);
     }
 
@@ -75,7 +75,7 @@ class UsersAuthComponent extends Component
      */
     protected function _loadRememberMe()
     {
-        $this->_registry->getController()->loadComponent('Users.RememberMe');
+        $this->_registry->getController()->loadComponent('CakeDC/Users.RememberMe');
     }
 
     /**
@@ -125,19 +125,19 @@ class UsersAuthComponent extends Component
         if (empty($this->_registry->getController()->Auth->user())) {
             return false;
         }
-        $url = Hash::get($event->data, 'url');
+        $url = Hash::get((array)$event->data, 'url');
         if (empty($url)) {
             return false;
         }
 
         if (is_array($url)) {
-            $requestParams = $url;
             $requestUrl = Router::reverse($url);
+            $requestParams = Router::parse($requestUrl);
         } else {
             $requestParams = Router::parse($url);
             $requestUrl = $url;
         }
-        $request = new Request($url);
+        $request = new Request($requestUrl);
         $request->params = $requestParams;
 
         $isAuthorized = $this->_registry->getController()->Auth->isAuthorized(null, $request);

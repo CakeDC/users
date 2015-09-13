@@ -9,7 +9,7 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Controller\Traits;
+namespace CakeDC\Users\Controller\Traits;
 
 use Cake\Network\Exception\NotFoundException;
 use Cake\ORM\TableRegistry;
@@ -71,11 +71,12 @@ trait SimpleCrudTrait
             return;
         }
         $entity = $table->patchEntity($entity, $this->request->data);
+        $singular = Inflector::singularize(Inflector::humanize($tableAlias));
         if ($table->save($entity)) {
-            $this->Flash->success(__d('Users', 'The {0} has been saved', Inflector::humanize($tableAlias)));
+            $this->Flash->success(__d('Users', 'The {0} has been saved', $singular));
             return $this->redirect(['action' => 'index']);
         }
-        $this->Flash->error(__d('Users', 'The {0} could not be saved', Inflector::humanize($tableAlias)));
+        $this->Flash->error(__d('Users', 'The {0} could not be saved', $singular));
     }
 
     /**
@@ -99,11 +100,12 @@ trait SimpleCrudTrait
             return;
         }
         $entity = $table->patchEntity($entity, $this->request->data);
+        $singular = Inflector::singularize(Inflector::humanize($tableAlias));
         if ($table->save($entity)) {
-            $this->Flash->success(__d('Users', 'The {0} has been saved', Inflector::humanize($tableAlias)));
+            $this->Flash->success(__d('Users', 'The {0} has been saved', $singular));
             return $this->redirect(['action' => 'index']);
         }
-        $this->Flash->error(__d('Users', 'The {0} could not be saved', Inflector::humanize($tableAlias)));
+        $this->Flash->error(__d('Users', 'The {0} could not be saved', $singular));
     }
 
     /**
@@ -121,10 +123,11 @@ trait SimpleCrudTrait
         $entity = $table->get($id, [
             'contain' => []
         ]);
+        $singular = Inflector::singularize(Inflector::humanize($tableAlias));
         if ($table->delete($entity)) {
-            $this->Flash->success(__d('Users', 'The {0} has been deleted', Inflector::humanize($tableAlias)));
+            $this->Flash->success(__d('Users', 'The {0} has been deleted', $singular));
         } else {
-            $this->Flash->error(__d('Users', 'The {0} could not be deleted', Inflector::humanize($tableAlias)));
+            $this->Flash->error(__d('Users', 'The {0} could not be deleted', $singular));
         }
         return $this->redirect(['action' => 'index']);
     }

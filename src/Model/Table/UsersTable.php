@@ -9,7 +9,7 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Model\Table;
+namespace CakeDC\Users\Model\Table;
 
 use Cake\Datasource\EntityInterface;
 use Cake\Network\Email\Email;
@@ -17,23 +17,14 @@ use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Utility\Hash;
 use Cake\Validation\Validator;
-use Users\Exception\WrongPasswordException;
-use Users\Model\Entity\User;
-use Users\Model\Table\Traits\PasswordManagementTrait;
-use Users\Model\Table\Traits\RegisterTrait;
-use Users\Model\Table\Traits\SocialTrait;
-use Users\Traits\RandomStringTrait;
+use CakeDC\Users\Exception\WrongPasswordException;
+use CakeDC\Users\Model\Entity\User;
 
 /**
  * Users Model
  */
 class UsersTable extends Table
 {
-
-    use PasswordManagementTrait;
-    use RandomStringTrait;
-    use RegisterTrait;
-    use SocialTrait;
 
     /**
      * Flag to set email check in buildRules or not
@@ -56,9 +47,12 @@ class UsersTable extends Table
         $this->displayField('id');
         $this->primaryKey('id');
         $this->addBehavior('Timestamp');
+        $this->addBehavior('CakeDC/Users.Register');
+        $this->addBehavior('CakeDC/Users.Password');
+        $this->addBehavior('CakeDC/Users.Social');
         $this->hasMany('SocialAccounts', [
             'foreignKey' => 'user_id',
-            'className' => 'Users.SocialAccounts'
+            'className' => 'CakeDC/Users.SocialAccounts'
         ]);
     }
 
@@ -136,22 +130,6 @@ class UsersTable extends Table
     }
 
     /**
-     * Default+Email validation rules.
-     *
-     * @param Validator $validator Validator instance.
-     * @return Validator
-     */
-    public function validationEmail(Validator $validator)
-    {
-        $validator = $this->validationRegister($validator);
-        $validator
-                ->add('email', 'valid', ['rule' => 'email'])
-                ->requirePresence('email', 'create')
-                ->notEmpty('email');
-        return $validator;
-    }
-
-    /**
      * Wrapper for all validation rules for register
      * @param Validator $validator Cake validator object.
      *
@@ -186,22 +164,5 @@ class UsersTable extends Table
         }
 
         return $rules;
-    }
-
-    /**
-     * Get or initialize the email instance. Used for mocking.
-     *
-     * @param Email $email if email provided, we'll use the instance instead of creating a new one
-     * @return Email
-     */
-    public function getEmailInstance(Email $email = null)
-    {
-        if ($email === null) {
-            $email = new Email('default');
-            $email->template('Users.validation')
-                    ->emailFormat('both');
-        }
-
-        return $email;
     }
 }
