@@ -11,7 +11,9 @@
 
 namespace CakeDC\Users\Test\TestCase\Model\Behavior;
 
+use Cake\Network\Email\Email;
 use Cake\ORM\TableRegistry;
+use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use InvalidArgumentException;
 use CakeDC\Users\Exception\UserAlreadyActiveException;
@@ -141,4 +143,71 @@ class PasswordBehaviorTest extends TestCase
             'checkActive' => true,
         ]);
     }
+
+    /**
+     * Test method
+     *
+     * @return void
+     */
+    public function testSendResetPasswordEmail()
+    {
+        $behavior = $this->table->behaviors()->Password;
+        $this->fullBaseBackup = Router::fullBaseUrl();
+        Router::fullBaseUrl('http://users.test');
+        Email::configTransport('test', [
+            'className' => 'Debug'
+        ]);
+        $this->Email = new Email([
+            'from' => 'test@example.com',
+            'transport' => 'test',
+            'template' => 'CakeDC/Users.reset_password',
+            'emailFormat' => 'both',
+        ]);
+
+        $user = $this->table->newEntity([
+                'first_name' => 'FirstName',
+                'email' => 'test@example.com',
+                'token' => '12345'
+            ]);
+
+        $result = $behavior->sendResetPasswordEmail($user, $this->Email, 'CakeDC/Users.reset_password');
+        $this->assertTextContains('From: test@example.com', $result['headers']);
+        $this->assertTextContains('To: test@example.com', $result['headers']);
+        $this->assertTextContains('Subject: FirstName, Your reset password link', $result['headers']);
+        $this->assertTextContains('Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Hi FirstName,
+
+Please copy the following address in your web browser http://users.test/users/users/reset-password/12345
+Thank you,
+', $result['message']);
+        $this->assertTextContains('Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+    <title>Email/html</title>
+</head>
+<body>
+    <p>
+Hi FirstName,
+</p>
+<p>
+    <strong><a href="http://users.test/users/users/reset-password/12345">Reset your password here</a></strong>
+</p>
+<p>
+    If the link is not correcly displayed, please copy the following address in your web browser http://users.test/users/users/reset-password/12345</p>
+<p>
+    Thank you,
+</p>
+</body>
+</html>
+', $result['message']);
+
+        Router::fullBaseUrl($this->fullBaseBackup);
+        Email::dropTransport('test');
+    }
+
 }

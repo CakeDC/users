@@ -12,6 +12,7 @@
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
 use Cake\Event\Event;
+use Cake\Network\Email\Email;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use PHPUnit_Framework_MockObject_RuntimeException;
@@ -34,6 +35,7 @@ abstract class BaseTraitTest extends TestCase
      */
     public $traitClassName = '';
     public $traitMockMethods = [];
+    public $mockDefaultEmail = false;
 
     /**
      * SetUp and create Trait
@@ -56,6 +58,17 @@ abstract class BaseTraitTest extends TestCase
             debug($ex);
             $this->fail("Unit tests extending BaseTraitTest should declare the trait class name in the \$traitClassName variable before calling setUp()");
         }
+
+        if ($this->mockDefaultEmail) {
+            Email::configTransport('test', [
+                'className' => 'Debug'
+            ]);
+            $this->configEmail = Email::config('default');
+            Email::config('default', [
+                'transport' => 'test',
+                'from' => 'cakedc@example.com'
+            ]);
+        }
     }
 
     /**
@@ -66,6 +79,11 @@ abstract class BaseTraitTest extends TestCase
     public function tearDown()
     {
         unset($this->table, $this->Trait);
+        if ($this->mockDefaultEmail) {
+            Email::drop('default');
+            Email::dropTransport('test');
+            Email::config('default', $this->configEmail);
+        }
         parent::tearDown();
     }
 

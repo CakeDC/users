@@ -50,8 +50,13 @@ class UsersAuthComponentTest extends TestCase
         parent::setUp();
         $this->backupUsersConfig = Configure::read('Users');
 
+        Router::reload();
         Plugin::routes('CakeDC/Users');
-
+        Router::connect('/route/*', [
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+            'action' => 'requestResetPassword'
+        ]);
         Security::salt('YJfIxfs2guVoUubWDYhG93b0qyJfIxfs2guwvniR2G0FgaC9mi');
         Configure::write('App.namespace', 'Users');
         $this->request = $this->getMock('Cake\Network\Request', ['is', 'method']);
@@ -155,7 +160,7 @@ class UsersAuthComponentTest extends TestCase
     {
         $event = new Event('event');
         $event->data = [
-            'url' => '/a/validate',
+            'url' => '/route',
         ];
         $this->Controller->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
                 ->setMethods(['user', 'isAuthorized'])
@@ -164,11 +169,11 @@ class UsersAuthComponentTest extends TestCase
         $this->Controller->Auth->expects($this->once())
                 ->method('user')
                 ->will($this->returnValue(['id' => 1]));
-        $request = new Request('/a/validate');
+        $request = new Request('/route');
         $request->params = [
             'plugin' => 'CakeDC/Users',
-            'controller' => 'SocialAccounts',
-            'action' => 'resendValidation',
+            'controller' => 'Users',
+            'action' => 'requestResetPassword',
             'pass' => [],
         ];
         $this->Controller->Auth->expects($this->once())
@@ -190,8 +195,8 @@ class UsersAuthComponentTest extends TestCase
         $event->data = [
             'url' => [
                 'plugin' => 'CakeDC/Users',
-                'controller' => 'SocialAccounts',
-                'action' => 'resendValidation',
+                'controller' => 'Users',
+                'action' => 'requestResetPassword',
                 'pass-one'
             ],
         ];
@@ -202,11 +207,11 @@ class UsersAuthComponentTest extends TestCase
         $this->Controller->Auth->expects($this->once())
                 ->method('user')
                 ->will($this->returnValue(['id' => 1]));
-        $request = new Request('/accounts/validate/pass-one');
+        $request = new Request('/route/pass-one');
         $request->params = [
             'plugin' => 'CakeDC/Users',
-            'controller' => 'SocialAccounts',
-            'action' => 'resendValidation',
+            'controller' => 'Users',
+            'action' => 'requestResetPassword',
             'pass' => ['pass-one'],
         ];
         $this->Controller->Auth->expects($this->once())

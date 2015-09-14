@@ -95,11 +95,11 @@ trait UserValidationTrait
                 $this->Flash->error(__d('Users', 'Token could not be reset'));
             }
             return $this->redirect(['action' => 'login']);
-        } catch (UserNotFoundException $exception) {
+        } catch (UserNotFoundException $ex) {
             $this->Flash->error(__d('Users', 'User {0} was not found', $reference));
-        } catch (UserAlreadyActiveException $exception) {
+        } catch (UserAlreadyActiveException $ex) {
             $this->Flash->error(__d('Users', 'User {0} is already active', $reference));
-        } catch (Exception $exception) {
+        } catch (Exception $ex) {
             $this->Flash->error(__d('Users', 'Token could not be reset'));
         }
     }

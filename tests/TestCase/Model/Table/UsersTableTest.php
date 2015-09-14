@@ -53,6 +53,11 @@ class UsersTableTest extends TestCase
         Email::configTransport('test', [
             'className' => 'Debug'
         ]);
+        $this->configEmail = Email::config('default');
+        Email::config('default', [
+            'transport' => 'test',
+            'from' => 'cakedc@example.com'
+        ]);
         $this->Email = new Email(['from' => 'test@example.com', 'transport' => 'test']);
         Plugin::routes('CakeDC/Users');
     }
@@ -66,7 +71,9 @@ class UsersTableTest extends TestCase
     {
         unset($this->Users);
         Router::fullBaseUrl($this->fullBaseBackup);
+        Email::drop('default');
         Email::dropTransport('test');
+        Email::config('default', $this->configEmail);
 
         parent::tearDown();
     }
@@ -88,6 +95,86 @@ class UsersTableTest extends TestCase
             'tos' => 1
         ];
         $result = $this->Users->register($this->Users->newEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 0]);
+        $this->assertTrue($result->active);
+    }
+
+    /**
+     * Test register method
+     *
+     * @return void
+     */
+    public function testValidateRegisterEmptyUser()
+    {
+        $user = [];
+        $result = $this->Users->register($this->Users->newEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1]);
+        $this->assertFalse($result);
+    }
+
+    /**
+     * Test register method
+     *
+     * @return void
+     */
+    public function testValidateRegisterValidateEmail()
+    {
+        $user = [
+            'username' => 'testuser',
+            'email' => 'testuser@test.com',
+            'password' => 'password',
+            'password_confirm' => 'password',
+            'first_name' => 'test',
+            'last_name' => 'user',
+            'tos' => 1
+        ];
+        $result = $this->Users->register($this->Users->newEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1]);
+        $this->assertNotEmpty($result);
+        $this->assertFalse($result->active);
+    }
+
+    /**
+     * test
+     */
+    public function testValidateRegisterTosRequired()
+    {
+        $user = [
+            'username' => 'testuser',
+            'email' => 'testuser@test.com',
+            'password' => 'password',
+            'password_confirm' => 'password',
+            'first_name' => 'test',
+            'last_name' => 'user',
+        ];
+        $userEntity = $this->Users->newEntity();
+        $this->Users->register($userEntity, $user, ['token_expiration' => 3600, 'validate_email' => 1, 'use_tos' => 1]);
+        $this->assertEquals(['tos' => ['_required' => 'This field is required']], $userEntity->errors());
+    }
+
+    /**
+     * Test register method
+    testValidateRegisterValidateEmail     */
+    public function testValidateRegisterNoTosRequired()
+    {
+        $user = [
+            'username' => 'testuser',
+            'email' => 'testuser@test.com',
+            'password' => 'password',
+            'password_confirm' => 'password',
+            'first_name' => 'test',
+            'last_name' => 'user',
+        ];
+        $result = $this->Users->register($this->Users->newEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1, 'use_tos' => 0]);
+        $this->assertNotEmpty($result);
+    }
+
+    /**
+     * Test ActivateUser method
+     *
+     * @return void
+     */
+    public function testActivateUser()
+    {
+        $user = $this->Users->find()->where(['id' => 1])->first();
+        $result = $this->Users->activateUser($user);
         $this->assertTrue($result->active);
     }
 
@@ -202,143 +289,5 @@ class UsersTableTest extends TestCase
         $this->assertEquals('username', $result->username);
         $this->assertEquals('First Name', $result->first_name);
         $this->assertEquals('Last Name', $result->last_name);
-    }
-
-    /**
-     * Test sendValidationEmail method
-     *
-     * @return void
-     */
-    public function testSendValidationEmail()
-    {
-        $this->markTestIncomplete('move this unit test to the BehaviorTest class');
-        $user = $this->Users->newEntity([
-                'first_name' => 'FirstName',
-                'email' => 'test@example.com',
-                'token' => '12345'
-            ]);
-        $this->Email->template('CakeDC/Users.validation')
-            ->emailFormat('both');
-
-        $result = $this->Users->sendValidationEmail($user, $this->Email);
-        $this->assertTextContains('From: test@example.com', $result['headers']);
-        $this->assertTextContains('To: test@example.com', $result['headers']);
-        $this->assertTextContains('Subject: FirstName, Your account validation link', $result['headers']);
-        $this->assertTextContains('Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-Hi FirstName,
-
-Please copy the following address in your web browser http://users.test/users/users/validate-email/12345
-Thank you,
-', $result['message']);
-        $this->assertTextContains('Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
-<html>
-<head>
-    <title>Email/html</title>
-</head>
-<body>
-    <p>
-Hi FirstName,
-</p>
-<p>
-    <strong><a href="http://users.test/users/users/validate-email/12345">Activate your account here</a></strong>
-</p>
-<p>
-    If the link is not correcly displayed, please copy the following address in your web browser http://users.test/users/users/validate-email/12345</p>
-<p>
-    Thank you,
-</p>
-</body>
-</html>
-', $result['message']);
-    }
-
-    /**
-     * Test method
-     *
-     * @return void
-     */
-    public function testSendResetPasswordEmail()
-    {
-        $user = $this->Users->newEntity([
-                'first_name' => 'FirstName',
-                'email' => 'test@example.com',
-                'token' => '12345'
-            ]);
-        $this->Email->template('CakeDC/Users.reset_password')
-            ->emailFormat('both');
-        $result = $this->Users->sendResetPasswordEmail($user, $this->Email, 'CakeDC/Users.reset_password');
-        $this->assertTextContains('From: test@example.com', $result['headers']);
-        $this->assertTextContains('To: test@example.com', $result['headers']);
-        $this->assertTextContains('Subject: FirstName, Your reset password link', $result['headers']);
-        $this->assertTextContains('Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-Hi FirstName,
-
-Please copy the following address in your web browser http://users.test/users/users/reset-password/12345
-Thank you,
-', $result['message']);
-        $this->assertTextContains('Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
-<html>
-<head>
-    <title>Email/html</title>
-</head>
-<body>
-    <p>
-Hi FirstName,
-</p>
-<p>
-    <strong><a href="http://users.test/users/users/reset-password/12345">Reset your password here</a></strong>
-</p>
-<p>
-    If the link is not correcly displayed, please copy the following address in your web browser http://users.test/users/users/reset-password/12345</p>
-<p>
-    Thank you,
-</p>
-</body>
-</html>
-', $result['message']);
-    }
-
-    /**
-     * testGetEmailInstance
-     *
-     * @return void
-     */
-    public function testGetEmailInstance()
-    {
-        $this->markTestIncomplete('move this test to BehaviorTest class');
-        $email = $this->Users->getEmailInstance();
-        $this->assertInstanceOf('Cake\Network\Email\Email', $email);
-        $this->assertEquals([
-            'template' => 'Users.validation',
-            'layout' => 'default'
-        ], $email->template());
-    }
-
-    /**
-     * testGetEmailInstanceOverrideEmail
-     *
-     * @return void
-     */
-    public function testGetEmailInstanceOverrideEmail()
-    {
-        $this->markTestIncomplete('move this test to BehaviorTest class');
-        $email = new Email();
-        $email->template('another_template');
-        $email = $this->Users->getEmailInstance($email);
-        $this->assertInstanceOf('Cake\Network\Email\Email', $email);
-        $this->assertEquals([
-            'template' => 'another_template',
-            'layout' => 'default'
-        ], $email->template());
     }
 }

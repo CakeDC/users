@@ -81,7 +81,7 @@ class SimpleRbacAuthorizeTest extends TestCase
     }
 
     /**
-     * @covers Users\Auth\SimpleRbacAuthorize::__construct
+     * @covers CakeDC\Users\Auth\SimpleRbacAuthorize::__construct
      */
     public function testConstruct()
     {
@@ -108,7 +108,7 @@ class SimpleRbacAuthorizeTest extends TestCase
     }
 
     /**
-     * @covers Users\Auth\SimpleRbacAuthorize::__construct
+     * @covers CakeDC\Users\Auth\SimpleRbacAuthorize::__construct
      */
     public function testConstructMissingPermissionsFile()
     {
@@ -133,7 +133,7 @@ class SimpleRbacAuthorizeTest extends TestCase
     }
 
     /**
-     * @covers Users\Auth\SimpleRbacAuthorize::__construct
+     * @covers CakeDC\Users\Auth\SimpleRbacAuthorize::__construct
      */
     public function testConstructPermissionsFileHappy()
     {
