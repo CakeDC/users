@@ -290,39 +290,4 @@ class UsersTableTest extends TestCase
         $this->assertEquals('First Name', $result->first_name);
         $this->assertEquals('Last Name', $result->last_name);
     }
-
-
-    /**
-     * testGetEmailInstance
-     *
-     * @return void
-     */
-    public function testGetEmailInstance()
-    {
-        $this->markTestIncomplete('move this test to BehaviorTest class');
-        $email = $this->Users->getEmailInstance();
-        $this->assertInstanceOf('Cake\Network\Email\Email', $email);
-        $this->assertEquals([
-            'template' => 'Users.validation',
-            'layout' => 'default'
-        ], $email->template());
-    }
-
-    /**
-     * testGetEmailInstanceOverrideEmail
-     *
-     * @return void
-     */
-    public function testGetEmailInstanceOverrideEmail()
-    {
-        $this->markTestIncomplete('move this test to BehaviorTest class');
-        $email = new Email();
-        $email->template('another_template');
-        $email = $this->Users->getEmailInstance($email);
-        $this->assertInstanceOf('Cake\Network\Email\Email', $email);
-        $this->assertEquals([
-            'template' => 'another_template',
-            'layout' => 'default'
-        ], $email->template());
-    }
 }
