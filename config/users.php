@@ -14,7 +14,7 @@ use Cake\Core\Configure;
 $config = [
     'Users' => [
         //Table used to manage users
-        'table' => 'Users.Users',
+        'table' => 'CakeDC/Users.Users',
         //configure Auth component
         'auth' => true,
         //Password Hasher

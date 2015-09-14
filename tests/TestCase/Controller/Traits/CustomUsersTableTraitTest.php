@@ -34,7 +34,7 @@ class CustomUsersTableTraitTest extends TestCase
     public function testGetUsersTable()
     {
         $table = $this->controller->Trait->getUsersTable();
-        $this->assertEquals('Users.Users', $table->registryAlias());
+        $this->assertEquals('CakeDC/Users.Users', $table->registryAlias());
         $newTable = new Table();
         $this->controller->Trait->setUsersTable($newTable);
         $this->assertSame($newTable, $this->controller->Trait->getUsersTable());
