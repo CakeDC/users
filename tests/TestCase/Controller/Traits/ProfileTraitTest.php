@@ -103,7 +103,7 @@ class ProfileTraitTest extends BaseTraitTest
             ->method('set')
             ->will($this->returnCallback(function ($param1, $param2 = null) {
                 if ($param1 === 'avatarPlaceholder') {
-                    BaseTraitTest::assertEquals('Users.avatar_placeholder.png', $param2);
+                    BaseTraitTest::assertEquals('CakeDC/Users.avatar_placeholder.png', $param2);
                 } elseif (is_array($param1)) {
                     BaseTraitTest::assertEquals('user-1', $param1['user']->username);
                 }

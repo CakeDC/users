@@ -67,7 +67,7 @@ $config = [
             ],
         ],
         //Avatar placeholder
-        'Avatar' => ['placeholder' => 'Users.avatar_placeholder.png'],
+        'Avatar' => ['placeholder' => 'CakeDC/Users.avatar_placeholder.png'],
         'RememberMe' => [
             //configure Remember Me component
             'active' => true,
