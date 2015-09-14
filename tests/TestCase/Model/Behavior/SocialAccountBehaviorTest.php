@@ -42,10 +42,8 @@ class SocialAccountBehaviorTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $table = TableRegistry::get('CakeDC/Users.SocialAccounts');
-        $table->addBehavior('CakeDC/Users.SocialAccount');
-        $this->Table = $table;
-        $this->Behavior = $table->behaviors()->SocialAccount;
+        $this->Table = TableRegistry::get('CakeDC/Users.SocialAccounts');
+        $this->Behavior = $this->Table->behaviors()->SocialAccount;
         $this->fullBaseBackup = Router::fullBaseUrl();
         Router::fullBaseUrl('http://users.test');
         Email::configTransport('test', [
