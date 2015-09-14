@@ -21,11 +21,11 @@ Creating Required Tables
 If you want to use the Users tables to store your users and social accounts:
 
 ```
-bin/cake migrations migrate -p Users
+bin/cake migrations migrate -p CakeDC/Users
 ```
 
 Note you don't need to use the provided tables, you could customize the table names, fields etc in your
-application and then use the plugin configuration to use your own tables instead. Please refer to the [Extending the Plugin](Extending-the-Plugin.md) 
+application and then use the plugin configuration to use your own tables instead. Please refer to the [Extending the Plugin](Extending-the-Plugin.md)
 section to check all the customization options
 
 Load the Plugin
@@ -34,7 +34,7 @@ Load the Plugin
 Ensure the Users Plugin is loaded in your config/bootstrap.php file
 
 ```
-Plugin::load('Users', ['routes' => true, 'bootstrap' => true]);
+Plugin::load('CakeDC/Users', ['routes' => true, 'bootstrap' => true]);
 ```
 
 Customization
@@ -43,7 +43,7 @@ Customization
 config/bootstrap.php
 ```
 Configure::write('Users.config', ['users']);
-Plugin::load('Users', ['routes' => true, 'bootstrap' => true]);
+Plugin::load('CakeDC/Users', ['routes' => true, 'bootstrap' => true]);
 ```
 
 Then in your config/users.php
@@ -67,7 +67,7 @@ Load the Component in your src/Controller/AppController.php, and use the passed 
     {
         parent::initialize();
         $this->loadComponent('Flash');
-        $this->loadComponent('Users.UsersAuth');
+        $this->loadComponent('CakeDC/Users.UsersAuth');
     }
 ```
 
