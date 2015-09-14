@@ -1,4 +1,3 @@
-@todo: callbacks
 SimpleRbacAuthorize
 =============
 
@@ -36,14 +35,14 @@ $config['Auth']['authorize']['Users.SimpleRbac'] = [
 ```
 
 This is the default configuration, based on it the Authorize object will first check your ```config/permissions.php```
-file and load the permissions using the configuration key ```Users.SimpleRbac.permissions```, there is an 
+file and load the permissions using the configuration key ```Users.SimpleRbac.permissions```, there is an
 example file you can copy into your ```config/permissions.php``` under the Plugin's config directory.
 
 If you don't want to use a file for configuring the permissions, you just need to tweak the configuration and set
 ```'autoload_config' => false,``` then define all your rules in AppController (not a good practice as the rules
 tend to grow over time).
 
-The Users Plugin will use the field ```role_field``` in the Users Table to match the role of the user and 
+The Users Plugin will use the field ```role_field``` in the Users Table to match the role of the user and
 check if there is a rule allowing him to access the url.
 
 The ```default_role``` will be used to set the role of the registered users by default.
