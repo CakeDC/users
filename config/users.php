@@ -14,7 +14,7 @@ use Cake\Core\Configure;
 $config = [
     'Users' => [
         //Table used to manage users
-        'table' => 'Users.Users',
+        'table' => 'CakeDC/Users.Users',
         //configure Auth component
         'auth' => true,
         //Password Hasher
@@ -67,7 +67,7 @@ $config = [
             ],
         ],
         //Avatar placeholder
-        'Avatar' => ['placeholder' => 'Users.avatar_placeholder.png'],
+        'Avatar' => ['placeholder' => 'CakeDC/Users.avatar_placeholder.png'],
         'RememberMe' => [
             //configure Remember Me component
             'active' => true,
