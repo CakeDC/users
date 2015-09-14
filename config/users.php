@@ -106,11 +106,15 @@ $config = [
         'complete_url' => ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login'],
         'Strategy' => [
             'Facebook' => [
-                'scope' => ['public_profile', 'user_friends', 'email']
+                'scope' => ['public_profile', 'user_friends', 'email'],
+                //app_id => 'YOUR_APP_ID',
+                //app_secret = 'YOUR_APP_SECRET',
             ],
             'Twitter' => [
                 'curl_cainfo' => false,
-                'curl_capath' => false
+                'curl_capath' => false,
+                //'key' => 'YOUR_APP_KEY',
+                //'secret' => 'YOUR_APP_SECRET',
             ]
         ]
     ]
