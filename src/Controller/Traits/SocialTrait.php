@@ -39,7 +39,7 @@ trait SocialTrait
         }
         $url = $this->_generateOpauthCompleteUrl();
         $this->request->session()->write(Configure::read('Users.Key.Session.social'), $response);
-        $this->redirect($url);
+        return $this->redirect($url);
     }
 
     /**
@@ -54,7 +54,7 @@ trait SocialTrait
             $url = Router::parse($url);
         }
         $url['?'] = ['social' => $this->request->query('code')];
-        return Router::url($url);
+        return Router::url($url, true);
     }
 
     /**

@@ -77,11 +77,14 @@ class SocialAccountBehavior extends Behavior
      */
     public function sendSocialValidationEmail(EntityInterface $socialAccount, EntityInterface $user, Email $email = null)
     {
-        $email = $this->_getEmailInstance($email);
+        $emailInstance = $this->_getEmailInstance($email);
+        if (empty($email)) {
+            $emailInstance->template('CakeDC/Users.social_account_validation');
+        }
         $firstName = isset($user['first_name'])? $user['first_name'] . ', ' : '';
         //note: we control the space after the username in the previous line
         $subject = __d('Users', '{0}Your social account validation link', $firstName);
-        return $email
+        return $emailInstance
             ->to($user['email'])
             ->subject($subject)
             ->viewVars(compact('user', 'socialAccount'))

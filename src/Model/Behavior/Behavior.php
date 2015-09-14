@@ -36,11 +36,14 @@ class Behavior extends BaseBehavior
     protected function _sendEmail(EntityInterface $user, $subject, Email $email = null)
     {
         $firstName = isset($user['first_name'])? $user['first_name'] . ', ' : '';
-        return $this->_getEmailInstance($email)
+        $emailInstance = $this->_getEmailInstance($email)
                 ->to($user['email'])
                 ->subject($firstName . $subject)
-                ->viewVars($user->toArray())
-                ->send();
+                ->viewVars($user->toArray());
+        if (empty($email)) {
+            $emailInstance->template('CakeDC/Users.validation');
+        }
+        return $emailInstance->send();
     }
 
     /**
@@ -53,8 +56,7 @@ class Behavior extends BaseBehavior
     {
         if ($email === null) {
             $email = new Email('default');
-            $email->template('CakeDC/Users.validation')
-                    ->emailFormat('both');
+            $email->emailFormat('both');
         }
 
         return $email;
