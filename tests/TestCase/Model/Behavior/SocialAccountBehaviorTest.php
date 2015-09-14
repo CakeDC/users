@@ -12,7 +12,9 @@
 namespace CakeDC\Users\Test\TestCase\Model\Behavior;
 
 use Cake\Event\Event;
+use Cake\Network\Email\Email;
 use Cake\ORM\TableRegistry;
+use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use InvalidArgumentException;
 use CakeDC\Users\Model\Table\SocialAccountsTable;
@@ -44,6 +46,16 @@ class SocialAccountBehaviorTest extends TestCase
         $table->addBehavior('CakeDC/Users.SocialAccount');
         $this->Table = $table;
         $this->Behavior = $table->behaviors()->SocialAccount;
+        $this->fullBaseBackup = Router::fullBaseUrl();
+        Router::fullBaseUrl('http://users.test');
+        Email::configTransport('test', [
+            'className' => 'Debug'
+        ]);
+        $this->Email = new Email([
+            'from' => 'test@example.com',
+            'transport' => 'test',
+            'template' => 'CakeDC/Users.social_account_validation',
+        ]);
     }
 
     /**
@@ -53,7 +65,9 @@ class SocialAccountBehaviorTest extends TestCase
      */
     public function tearDown()
     {
-        unset($this->table, $this->Behavior);
+        unset($this->Table, $this->Behavior, $this->Email);
+        Router::fullBaseUrl($this->fullBaseBackup);
+        Email::dropTransport('test');
         parent::tearDown();
     }
 
@@ -137,5 +151,23 @@ class SocialAccountBehaviorTest extends TestCase
         $event = new Event('eventName');
         $entity = $this->Table->findById(2)->first();
         $this->assertTrue($this->Behavior->afterSave($event, $entity, []));
+    }
+
+    /**
+     * Test sendSocialValidationEmail method
+     *
+     * @return void
+     */
+    public function testSendSocialValidationEmail()
+    {
+        $user = $this->Table->find()->contain('Users')->first();
+        $this->Email->emailFormat('both');
+        $result = $this->Behavior->sendSocialValidationEmail($user, $user->user, $this->Email);
+        $this->assertTextContains('From: test@example.com', $result['headers']);
+        $this->assertTextContains('To: user-1@test.com', $result['headers']);
+        $this->assertTextContains('Subject: first1, Your social account validation link', $result['headers']);
+        $this->assertTextContains('Hi first1,', $result['message']);
+        $this->assertTextContains('<a href="http://users.test/users/social-accounts/validate-account/Facebook/reference-1-1234/token-1234">Activate your social login here</a>', $result['message']);
+        $this->assertTextContains('If the link is not correcly displayed, please copy the following address in your web browser http://users.test/users/social-accounts/validate-account/Facebook/reference-1-1234/token-1234', $result['message']);
     }
 }
