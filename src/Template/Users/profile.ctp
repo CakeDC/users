@@ -43,7 +43,8 @@
                     <tbody>
                     <?php
                     foreach ($user->social_accounts as $socialAccount):
-                        $linkText = empty(h($socialAccount->username)) ? __d('Users', 'Link to {0}', h($socialAccount->provider)) : h($socialAccount->username)
+                        $escapedUsername = h($socialAccount->username);
+                        $linkText = empty($escapedUsername) ? __d('Users', 'Link to {0}', h($socialAccount->provider)) : h($socialAccount->username)
                         ?>
                         <tr>
                             <td><?=

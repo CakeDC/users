@@ -42,8 +42,9 @@ class PasswordBehavior extends Behavior
             throw new InvalidArgumentException(__d('Users', "Reference cannot be null"));
         }
 
-        if (empty(Hash::get($options, 'expiration'))) {
-            throw new InvalidArgumentException(__d('Users', "Token expiration cannot be null"));
+        $expiration = Hash::get($options, 'expiration');
+        if (empty($expiration)) {
+            throw new InvalidArgumentException(__d('Users', "Token expiration cannot be empty"));
         }
 
         $user = $this->_getUser($reference);
@@ -58,7 +59,7 @@ class PasswordBehavior extends Behavior
             $user->active = false;
             $user->activation_date = null;
         }
-        $user->updateToken(Hash::get($options, 'expiration'));
+        $user->updateToken($expiration);
         $saveResult = $this->_table->save($user);
         $template = !empty($options['emailTemplate']) ? $options['emailTemplate'] : 'CakeDC/Users.reset_password';
         if (Hash::get($options, 'sendEmail')) {

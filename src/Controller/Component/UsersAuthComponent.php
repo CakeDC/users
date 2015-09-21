@@ -43,7 +43,7 @@ class UsersAuthComponent extends Component
         $this->_validateConfig();
         $this->_initAuth();
 
-        if (Configure::read('Users.Social.login') && !empty(Configure::read('Opauth'))) {
+        if (Configure::read('Users.Social.login') && Configure::read('Opauth')) {
             $this->_configOpauthRoutes();
         }
         if (Configure::read('Users.Social.login')) {
@@ -122,7 +122,8 @@ class UsersAuthComponent extends Component
      */
     public function isUrlAuthorized(Event $event)
     {
-        if (empty($this->_registry->getController()->Auth->user())) {
+        $user = $this->_registry->getController()->Auth->user();
+        if (empty($user)) {
             return false;
         }
         $url = Hash::get((array)$event->data, 'url');

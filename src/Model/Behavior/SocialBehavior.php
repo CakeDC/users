@@ -126,14 +126,17 @@ class SocialBehavior extends Behavior
         $accountData['description'] = Hash::get($data->info, 'description');
         $accountData['token'] = Hash::get((array)$data->credentials, 'token');
         $accountData['token_secret'] = Hash::get((array)$data->credentials, 'secret');
-        $accountData['token_expires'] = !empty(Hash::get((array)$data->credentials, 'expires')) ? (new DateTime(Hash::get((array)$data->credentials, 'expires')))->format('Y-m-d H:i:s') : null;
+        $expires = Hash::get((array)$data->credentials, 'expires');
+        $accountData['token_expires'] = !empty($expires) ? (new DateTime($expires))->format('Y-m-d H:i:s') : null;
         $accountData['data'] = serialize($data->raw);
         $accountData['active'] = true;
 
         if (empty($existingUser)) {
-            if (!empty($data->info['first_name']) && !empty($data->info['last_name'])) {
-                $userData['first_name'] = Hash::get($data->info, 'first_name');
-                $userData['last_name'] = Hash::get($data->info, 'last_name');
+            $firstName = Hash::get($data->info, 'first_name');
+            $lastName = Hash::get($data->info, 'last_name');
+            if (!empty($firstName) && !empty($lastName)) {
+                $userData['first_name'] = $firstName;
+                $userData['last_name'] = $lastName;
             } else {
                 $name = explode(' ', $data->name);
                 $userData['first_name'] = Hash::get($name, 0);
@@ -141,7 +144,8 @@ class SocialBehavior extends Behavior
                 $userData['last_name'] = implode(' ', $name);
             }
             $userData['username'] = Hash::get($data->info, 'nickname');
-            if (empty(Hash::get($userData, 'username'))) {
+            $username = Hash::get($userData, 'username');
+            if (empty($username)) {
                 if (!empty($data->email)) {
                     $email = explode('@', $data->email);
                     $userData['username'] = Hash::get($email, 0);
