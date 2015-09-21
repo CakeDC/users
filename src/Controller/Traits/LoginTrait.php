@@ -12,6 +12,7 @@
 namespace CakeDC\Users\Controller\Traits;
 
 use Cake\Core\Configure;
+use Cake\Utility\Hash;
 use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
@@ -80,13 +81,15 @@ trait LoginTrait
             $message = __d('Users', 'Username or password is incorrect');
             if ($socialLogin) {
                 $socialData = $this->request->session()->check($socialKey);
+                $socialDataEmail = Hash::get((array)$socialData->info, Configure::read('data_email_key'));
+                $postedEmail = $this->request->data(Configure::read('Users.Key.Data.email'));
                 if (Configure::read('Users.Email.required') &&
-                    empty($socialData->info[Configure::read('data_email_key')]) &&
-                    empty($this->request->data(Configure::read('Users.Key.Data.email')))) {
-                    return $this->redirect([
-                        'controller' => 'Users',
-                        'action' => 'socialEmail'
-                    ]);
+                    empty($socialDataEmail) &&
+                    empty($postedEmail)) {
+                        return $this->redirect([
+                            'controller' => 'Users',
+                            'action' => 'socialEmail'
+                        ]);
                 } else {
                     $message = __d('Users', 'There was an error associating your social network account');
                 }
