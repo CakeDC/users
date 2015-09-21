@@ -30,6 +30,11 @@ class SocialBehavior extends Behavior
     use RandomStringTrait;
 
     /**
+     * Used to create a default profile link if not available in raw data returned by FB
+     */
+    const FACEBOOK_SCOPED_ID_URL = "https://www.facebook.com/app_scoped_user_id/";
+
+    /**
      * Performs social login
      *
      * @param array $data Array social login.
@@ -80,6 +85,7 @@ class SocialBehavior extends Behavior
         $useEmail = Hash::get($options, 'use_email');
         $validateEmail = Hash::get($options, 'validate_email');
         $tokenExpiration = Hash::get($options, 'token_expiration');
+        $existingUser = null;
         if ($useEmail && empty($data->email)) {
             throw new MissingEmailException(__d('Users', 'Email not present'));
         } else {
@@ -114,7 +120,7 @@ class SocialBehavior extends Behavior
         if ($data->provider == SocialAccountsTable::PROVIDER_TWITTER) {
             $accountData['link'] = Hash::get($data->info, 'urls.twitter');
         } elseif ($data->provider == SocialAccountsTable::PROVIDER_FACEBOOK) {
-            $accountData['link'] = Hash::get($data->raw, 'link');
+            $accountData['link'] = $this->_getFacebookLink($data->raw);
         }
         $accountData['avatar'] = str_replace('square', 'large', $accountData['avatar']);
         $accountData['description'] = Hash::get($data->info, 'description');
@@ -172,6 +178,20 @@ class SocialBehavior extends Behavior
             ], ['associated' => ['SocialAccounts']]);
         }
         return $user;
+    }
+
+    /**
+     * Create a link for facebook profile
+     */
+    protected function _getFacebookLink($raw = [])
+    {
+        $link = Hash::get((array)$raw, 'link');
+        if (!empty($link)) {
+            return $link;
+        }
+
+        $id = Hash::get((array)$raw, 'id');
+        return self::FACEBOOK_SCOPED_ID_URL . $id;
     }
 
     /**
