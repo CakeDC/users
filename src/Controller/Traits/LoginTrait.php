@@ -80,8 +80,11 @@ trait LoginTrait
         } else {
             $message = __d('Users', 'Username or password is incorrect');
             if ($socialLogin) {
-                $socialData = $this->request->session()->check($socialKey);
-                $socialDataEmail = Hash::get((array)$socialData->info, Configure::read('data_email_key'));
+                $socialData = $this->request->session()->read($socialKey);
+                $socialDataEmail = null;
+                if (!empty($socialData->info)) {
+                    $socialDataEmail = Hash::get((array)$socialData->info, Configure::read('data_email_key'));
+                }
                 $postedEmail = $this->request->data(Configure::read('Users.Key.Data.email'));
                 if (Configure::read('Users.Email.required') &&
                     empty($socialDataEmail) &&
@@ -90,9 +93,8 @@ trait LoginTrait
                             'controller' => 'Users',
                             'action' => 'socialEmail'
                         ]);
-                } else {
-                    $message = __d('Users', 'There was an error associating your social network account');
                 }
+                $message = __d('Users', 'There was an error associating your social network account');
             }
             $this->Flash->error($message, 'default', [], 'auth');
         }
