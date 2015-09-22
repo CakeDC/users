@@ -155,7 +155,6 @@ class SocialBehavior extends Behavior
                     $userData['username'] = strtolower($firstName . $lastName);
                     $userData['username'] = preg_replace('/[^A-Za-z0-9]/i', '', Hash::get($userData, 'username'));
                 }
-
             }
             $userData['username'] = $this->generateUniqueUsername(Hash::get($userData, 'username'));
             if ($useEmail) {

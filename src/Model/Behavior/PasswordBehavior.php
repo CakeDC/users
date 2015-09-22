@@ -11,14 +11,14 @@
 
 namespace CakeDC\Users\Model\Behavior;
 
-use Cake\Datasource\EntityInterface;
-use Cake\Network\Email\Email;
-use Cake\Utility\Hash;
-use InvalidArgumentException;
 use CakeDC\Users\Exception\UserAlreadyActiveException;
 use CakeDC\Users\Exception\UserNotFoundException;
 use CakeDC\Users\Exception\WrongPasswordException;
 use CakeDC\Users\Model\Behavior\Behavior;
+use Cake\Datasource\EntityInterface;
+use Cake\Network\Email\Email;
+use Cake\Utility\Hash;
+use InvalidArgumentException;
 
 /**
  * Covers the password management features
@@ -89,7 +89,7 @@ class PasswordBehavior extends Behavior
      * instance
      * @return array email send result
      */
-    public function sendResetPasswordEmail(EntityInterface $user, Email $email = null, $template)
+    public function sendResetPasswordEmail(EntityInterface $user, Email $email = null, $template = 'CakeDC/Users.reset_password')
     {
         $firstName = isset($user['first_name'])? $user['first_name'] . ', ' : '';
         $subject = __d('Users', '{0}Your reset password link', $firstName);

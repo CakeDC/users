@@ -12,6 +12,11 @@
 namespace CakeDC\Users\Model\Behavior;
 
 use ArrayObject;
+use CakeDC\Users\Exception\AccountAlreadyActiveException;
+use CakeDC\Users\Exception\AccountNotActiveException;
+use CakeDC\Users\Exception\MissingEmailException;
+use CakeDC\Users\Model\Behavior\Behavior;
+use CakeDC\Users\Model\Entity\User;
 use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
 use Cake\Datasource\Exception\RecordNotFoundException;
@@ -19,11 +24,6 @@ use Cake\Event\Event;
 use Cake\Network\Email\Email;
 use Cake\ORM\Entity;
 use InvalidArgumentException;
-use CakeDC\Users\Exception\AccountAlreadyActiveException;
-use CakeDC\Users\Exception\AccountNotActiveException;
-use CakeDC\Users\Exception\MissingEmailException;
-use CakeDC\Users\Model\Behavior\Behavior;
-use CakeDC\Users\Model\Entity\User;
 
 /**
  * Covers social account features
