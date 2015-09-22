@@ -101,7 +101,7 @@ class SimpleCrudTraitTest extends BaseTraitTest
      */
     public function testViewNotFound()
     {
-        $this->Trait->view('not-found');
+        $this->Trait->view('00000000-0000-0000-0000-000000000000');
     }
 
     /**
@@ -274,8 +274,6 @@ class SimpleCrudTraitTest extends BaseTraitTest
             ->with(['post', 'delete'])
             ->will($this->returnValue(true));
 
-        $this->Trait->delete('not-found');
-
-        $this->assertNotEmpty($this->table->get('00000000-0000-0000-0000-000000000001'));
+        $this->Trait->delete('00000000-0000-0000-0000-000000000000');
     }
 }

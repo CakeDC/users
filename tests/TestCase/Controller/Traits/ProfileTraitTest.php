@@ -46,7 +46,7 @@ class ProfileTraitTest extends BaseTraitTest
      */
     public function testProfileGetNotLoggedInUserNotFound()
     {
-        $userId = 'not-found';
+        $userId = '00000000-0000-0000-0000-000000000000'; //not found
         $this->_mockRequestGet();
         $this->_mockAuth();
         $this->_mockFlash();
@@ -63,7 +63,7 @@ class ProfileTraitTest extends BaseTraitTest
      */
     public function testProfileGetLoggedInUserNotFound()
     {
-        $userId = 'not-found';
+        $userId = '00000000-0000-0000-0000-000000000000'; //not found
         $this->_mockRequestGet();
         $this->_mockAuthLoggedIn();
         $this->_mockFlash();

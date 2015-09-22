@@ -115,7 +115,8 @@ class RememberMeAuthenticateTest extends TestCase
                 ->method('read')
                 ->with('remember_me')
                 ->will($this->returnValue([
-                    'id' => 'bad-user',
+                    //bad-user
+                    'id' => '00000000-0000-0000-0000-000000000000',
                     'user_agent' => 'user-agent'
                 ]));
         $registry = new ComponentRegistry($this->controller);
@@ -149,7 +150,7 @@ class RememberMeAuthenticateTest extends TestCase
                 ->method('read')
                 ->with('remember_me')
                 ->will($this->returnValue([
-                    'id' => 1,
+                    'id' => '00000000-0000-0000-0000-000000000001',
                     'user_agent' => 'bad-agent'
                 ]));
         $registry = new ComponentRegistry($this->controller);
