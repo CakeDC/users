@@ -13,7 +13,7 @@ namespace CakeDC\Users\Test\TestCase\Model\Behavior;
 
 use CakeDC\Users\Model\Table\SocialAccountsTable;
 use Cake\Event\Event;
-use Cake\Network\Email\Email;
+use Cake\Mailer\Email;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;

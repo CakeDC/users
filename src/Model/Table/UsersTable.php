@@ -14,7 +14,7 @@ namespace CakeDC\Users\Model\Table;
 use CakeDC\Users\Exception\WrongPasswordException;
 use CakeDC\Users\Model\Entity\User;
 use Cake\Datasource\EntityInterface;
-use Cake\Network\Email\Email;
+use Cake\Mailer\Email;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Utility\Hash;

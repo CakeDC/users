@@ -16,7 +16,7 @@ use CakeDC\Users\Exception\UserNotFoundException;
 use CakeDC\Users\Exception\WrongPasswordException;
 use CakeDC\Users\Model\Behavior\Behavior;
 use Cake\Datasource\EntityInterface;
-use Cake\Network\Email\Email;
+use Cake\Mailer\Email;
 use Cake\Utility\Hash;
 use InvalidArgumentException;
 

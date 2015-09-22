@@ -12,7 +12,7 @@
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
 use Cake\Event\Event;
-use Cake\Network\Email\Email;
+use Cake\Mailer\Email;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use PHPUnit_Framework_MockObject_RuntimeException;

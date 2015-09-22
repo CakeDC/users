@@ -16,7 +16,7 @@ use CakeDC\Users\Exception\UserAlreadyActiveException;
 use CakeDC\Users\Exception\UserNotFoundException;
 use CakeDC\Users\Model\Table\SocialAccountsTable;
 use Cake\Core\Plugin;
-use Cake\Network\Email\Email;
+use Cake\Mailer\Email;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;

@@ -13,7 +13,7 @@ namespace CakeDC\Users\Model\Behavior;
 
 use Cake\Datasource\EntityInterface;
 use Cake\I18n\Time;
-use Cake\Network\Email\Email;
+use Cake\Mailer\Email;
 use Cake\ORM\Behavior as BaseBehavior;
 
 /**
