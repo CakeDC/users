@@ -11,10 +11,10 @@
 
 namespace CakeDC\Users\Controller\Traits;
 
+use CakeDC\Users\Auth\Factory\OpauthFactory;
 use Cake\Core\Configure;
 use Cake\Network\Exception\NotFoundException;
 use Cake\Routing\Router;
-use CakeDC\Users\Auth\Factory\OpauthFactory;
 
 /**
  * Covers registration features and email token validation

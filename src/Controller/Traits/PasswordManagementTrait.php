@@ -11,10 +11,10 @@
 
 namespace CakeDC\Users\Controller\Traits;
 
-use Cake\Core\Configure;
-use Exception;
 use CakeDC\Users\Exception\UserNotFoundException;
 use CakeDC\Users\Exception\WrongPasswordException;
+use Cake\Core\Configure;
+use Exception;
 
 /**
  * Covers the password management: reset, change

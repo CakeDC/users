@@ -11,13 +11,13 @@
 
 namespace CakeDC\Users\Controller\Component;
 
+use CakeDC\Users\Exception\BadConfigurationException;
 use Cake\Controller\Component;
 use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Network\Request;
 use Cake\Routing\Router;
 use Cake\Utility\Hash;
-use CakeDC\Users\Exception\BadConfigurationException;
 
 class UsersAuthComponent extends Component
 {

@@ -11,11 +11,11 @@
 
 namespace CakeDC\Users\Controller;
 
-use Cake\Datasource\Exception\RecordNotFoundException;
-use Cake\Network\Response;
 use CakeDC\Users\Controller\AppController;
 use CakeDC\Users\Exception\AccountAlreadyActiveException;
 use CakeDC\Users\Model\Table\SocialAccountsTable;
+use Cake\Datasource\Exception\RecordNotFoundException;
+use Cake\Network\Response;
 
 /**
  * SocialAccounts Controller

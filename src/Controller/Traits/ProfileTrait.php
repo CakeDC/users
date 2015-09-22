@@ -36,7 +36,7 @@ trait ProfileTrait
         }
         try {
             $appContain = (array)Configure::read('Auth.authenticate.' . \Cake\Controller\Component\AuthComponent::ALL . '.contain');
-            $socialContain =  Configure::read('Users.Social.login') ? ['SocialAccounts']: [];
+            $socialContain = Configure::read('Users.Social.login') ? ['SocialAccounts']: [];
             $user = $this->getUsersTable()->get($id, [
                     'contain' => array_merge((array)$appContain, (array)$socialContain)
                 ]);

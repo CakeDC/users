@@ -12,6 +12,7 @@
 namespace CakeDC\Users\Controller\Traits;
 
 use Cake\Network\Exception\NotFoundException;
+use Cake\Network\Response;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Inflector;
 
@@ -112,7 +113,7 @@ trait SimpleCrudTrait
      * Delete method
      *
      * @param string|null $id User id.
-     * @return void Redirects to index.
+     * @return Response Redirects to index.
      * @throws NotFoundException When record not found.
      */
     public function delete($id = null)

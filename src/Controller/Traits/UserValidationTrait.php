@@ -11,13 +11,13 @@
 
 namespace CakeDC\Users\Controller\Traits;
 
+use CakeDC\Users\Exception\TokenExpiredException;
+use CakeDC\Users\Exception\UserAlreadyActiveException;
+use CakeDC\Users\Exception\UserNotFoundException;
 use Cake\Core\Configure;
 use Cake\Network\Response;
 use Exception;
 use InvalidArgumentException;
-use CakeDC\Users\Exception\TokenExpiredException;
-use CakeDC\Users\Exception\UserAlreadyActiveException;
-use CakeDC\Users\Exception\UserNotFoundException;
 
 /**
  * Covers the user validation

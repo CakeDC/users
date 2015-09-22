@@ -19,6 +19,7 @@ use CakeDC\Users\Controller\Traits\SimpleCrudTrait;
 use CakeDC\Users\Controller\Traits\SocialTrait;
 use CakeDC\Users\Model\Table\UsersTable;
 use Cake\Core\Configure;
+use Cake\ORM\Table;
 
 /**
  * Users Controller
@@ -35,9 +36,9 @@ class UsersController extends AppController
 
     /**
      * Override loadModel to load specific users table
-     * @param null $modelClass
-     * @param string $type
-     * @return object
+     * @param string $modelClass model class
+     * @param string $type type
+     * @return Table
      */
     public function loadModel($modelClass = null, $type = 'Table')
     {

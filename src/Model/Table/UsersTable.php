@@ -11,14 +11,14 @@
 
 namespace CakeDC\Users\Model\Table;
 
+use CakeDC\Users\Exception\WrongPasswordException;
+use CakeDC\Users\Model\Entity\User;
 use Cake\Datasource\EntityInterface;
 use Cake\Network\Email\Email;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Utility\Hash;
 use Cake\Validation\Validator;
-use CakeDC\Users\Exception\WrongPasswordException;
-use CakeDC\Users\Model\Entity\User;
 
 /**
  * Users Model

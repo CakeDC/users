@@ -11,15 +11,15 @@
 
 namespace CakeDC\Users\Model\Behavior;
 
-use Cake\Datasource\EntityInterface;
-use Cake\Utility\Hash;
-use DateTime;
-use InvalidArgumentException;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Model\Behavior\Behavior;
 use CakeDC\Users\Model\Table\SocialAccountsTable;
 use CakeDC\Users\Traits\RandomStringTrait;
+use Cake\Datasource\EntityInterface;
+use Cake\Utility\Hash;
+use DateTime;
+use InvalidArgumentException;
 
 /**
  * Covers social features
@@ -185,6 +185,9 @@ class SocialBehavior extends Behavior
 
     /**
      * Create a link for facebook profile
+     *
+     * @param array $raw raw data array returned by Facebook
+     * @return string url to facebook profile
      */
     protected function _getFacebookLink($raw = [])
     {
