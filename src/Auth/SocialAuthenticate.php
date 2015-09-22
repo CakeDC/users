@@ -38,7 +38,7 @@ class SocialAuthenticate extends BaseAuthenticate
         if (empty($data)) {
             return false;
         }
-        $socialMail = Hash::get($data->info, Configure::read('Users.Key.Data.email'));
+        $socialMail = Hash::get((array)$data->info, Configure::read('Users.Key.Data.email'));
 
         if (!empty($socialMail)) {
             $data->email = $socialMail;

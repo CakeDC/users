@@ -113,17 +113,17 @@ class SocialBehavior extends Behavior
     protected function _populateUser($data, $existingUser, $useEmail, $validateEmail, $tokenExpiration)
     {
         $accountData['provider'] = $data->provider;
-        $accountData['username'] = Hash::get($data->info, 'nickname');
+        $accountData['username'] = Hash::get((array)$data->info, 'nickname');
         $accountData['reference'] = $data->uid;
-        $accountData['avatar'] = Hash::get($data->info, 'image');
+        $accountData['avatar'] = Hash::get((array)$data->info, 'image');
         /* @todo make a pull request to Opauth Facebook Strategy because it does not include link on info array */
         if ($data->provider == SocialAccountsTable::PROVIDER_TWITTER) {
-            $accountData['link'] = Hash::get($data->info, 'urls.twitter');
+            $accountData['link'] = Hash::get((array)$data->info, 'urls.twitter');
         } elseif ($data->provider == SocialAccountsTable::PROVIDER_FACEBOOK) {
             $accountData['link'] = $this->_getFacebookLink($data->raw);
         }
         $accountData['avatar'] = str_replace('square', 'large', $accountData['avatar']);
-        $accountData['description'] = Hash::get($data->info, 'description');
+        $accountData['description'] = Hash::get((array)$data->info, 'description');
         $accountData['token'] = Hash::get((array)$data->credentials, 'token');
         $accountData['token_secret'] = Hash::get((array)$data->credentials, 'secret');
         $expires = Hash::get((array)$data->credentials, 'expires');
@@ -132,8 +132,8 @@ class SocialBehavior extends Behavior
         $accountData['active'] = true;
 
         if (empty($existingUser)) {
-            $firstName = Hash::get($data->info, 'first_name');
-            $lastName = Hash::get($data->info, 'last_name');
+            $firstName = Hash::get((array)$data->info, 'first_name');
+            $lastName = Hash::get((array)$data->info, 'last_name');
             if (!empty($firstName) && !empty($lastName)) {
                 $userData['first_name'] = $firstName;
                 $userData['last_name'] = $lastName;
@@ -143,7 +143,7 @@ class SocialBehavior extends Behavior
                 array_shift($name);
                 $userData['last_name'] = implode(' ', $name);
             }
-            $userData['username'] = Hash::get($data->info, 'nickname');
+            $userData['username'] = Hash::get((array)$data->info, 'nickname');
             $username = Hash::get($userData, 'username');
             if (empty($username)) {
                 if (!empty($data->email)) {
@@ -164,7 +164,7 @@ class SocialBehavior extends Behavior
                 }
             }
             $userData['password'] = $this->randomString();
-            $userData['avatar'] = Hash::get($data->info, 'image');
+            $userData['avatar'] = Hash::get((array)$data->info, 'image');
             $userData['validated'] = $data->validated;
             $userData['tos_date'] = date("Y-m-d H:i:s");
             $userData['gender'] = Hash::get($data->raw, 'gender');
