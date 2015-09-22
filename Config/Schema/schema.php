@@ -25,22 +25,6 @@ class usersSchema extends CakeSchema {
 	public function after($event = array()) {
 	}
 
-	public $user_details = array(
-		'id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 36, 'key' => 'primary'),
-		'user_id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 36),
-		'position' => array('type' => 'float', 'null' => false, 'default' => '1'),
-		'field' => array('type' => 'string', 'null' => false, 'default' => null, 'key' => 'index'),
-		'value' => array('type' => 'text', 'null' => true, 'default' => null),
-		'input' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 16),
-		'data_type' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 16),
-		'label' => array('type' => 'string', 'null' => false, 'length' => 128),
-		'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
-		'modified' => array('type' => 'datetime', 'null' => true, 'default' => null),
-		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1),
-			'UNIQUE_PROFILE_PROPERTY' => array('column' => array('field', 'user_id'), 'unique' => 1)
-		)
-	);
-
 	public $users = array(
 		'id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 36, 'key' => 'primary'),
 		'username' => array('type' => 'string', 'null' => false, 'default' => null, 'key' => 'index'),
