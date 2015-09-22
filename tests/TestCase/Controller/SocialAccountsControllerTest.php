@@ -12,8 +12,8 @@
 namespace CakeDC\Users\Test\TestCase\Controller;
 
 use CakeDC\Users\Controller\SocialAccountsController;
-use CakeDC\Users\Model\Table\SocialAccountsTable;
 use CakeDC\Users\Model\Behavior\SocialAccountBehavior;
+use CakeDC\Users\Model\Table\SocialAccountsTable;
 use Cake\Core\Configure;
 use Cake\Event\EventManager;
 use Cake\Network\Email\Email;

@@ -178,7 +178,7 @@ class UsersTableTest extends TestCase
         $this->assertTrue($result->active);
     }
 
-    public function _testSocialLogin()
+    public function testSocialLogin()
     {
         $raw = [
             'id' => 'reference-2-1',
@@ -205,7 +205,7 @@ class UsersTableTest extends TestCase
      *
      * @expectedException CakeDC\Users\Exception\AccountNotActiveException
      */
-    public function _testSocialLoginInactiveAccount()
+    public function testSocialLoginInactiveAccount()
     {
         $raw = [
             'id' => 'reference-2-2',
@@ -231,7 +231,7 @@ class UsersTableTest extends TestCase
      *
      * @expectedException InvalidArgumentException
      */
-    public function _testSocialLoginddCreateNewAccountWithNoCredentials()
+    public function testSocialLoginddCreateNewAccountWithNoCredentials()
     {
         $raw = [
             'id' => 'reference-not-existing',
@@ -254,7 +254,7 @@ class UsersTableTest extends TestCase
      * Test socialLogin
      *
      */
-    public function _testSocialLoginCreateNewAccount()
+    public function testSocialLoginCreateNewAccount()
     {
         $raw = [
             'id' => 'no-existing-reference',

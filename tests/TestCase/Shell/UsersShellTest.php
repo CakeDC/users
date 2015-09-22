@@ -214,7 +214,7 @@ class UsersShellTest extends TestCase
             ->method('_generatedHashedPassword')
             ->will($this->returnValue('hashedPasssword'));
 
-       $this->Shell->Users->expects($this->once())
+        $this->Shell->Users->expects($this->once())
             ->method('updateAll')
             ->with(['password' => 'hashedPasssword'], ['id IS NOT NULL']);
 
