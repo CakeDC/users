@@ -5,7 +5,6 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2013-09-18 23:20+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,186 +13,169 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: Controller/UsersController.php:310
+#: Controller/UsersController.php:332
 msgid "Invalid User."
 msgstr ""
 
-#: Controller/UsersController.php:328
+#: Controller/UsersController.php:350
 msgid "The User has been saved"
 msgstr ""
 
-#: Controller/UsersController.php:345
+#: Controller/UsersController.php:367
 msgid "User saved"
 msgstr ""
 
-#: Controller/UsersController.php:369
+#: Controller/UsersController.php:393
 msgid "User deleted"
 msgstr ""
 
-#: Controller/UsersController.php:371
-#: Model/User.php:829;858
+#: Controller/UsersController.php:395
+#: Model/User.php:893
 msgid "Invalid User"
 msgstr ""
 
-#: Controller/UsersController.php:393
+#: Controller/UsersController.php:417
 msgid "You are already registered and logged in!"
 msgstr ""
 
-#: Controller/UsersController.php:413
-#: Test/Case/Controller/UsersControllerTest.php:342
+#: Controller/UsersController.php:437
 msgid "Your account has been created. You should receive an e-mail shortly to authenticate your account. Once validated you will be able to login."
 msgstr ""
 
-#: Controller/UsersController.php:418
-#: Test/Case/Controller/UsersControllerTest.php:357
+#: Controller/UsersController.php:442
 msgid "Your account could not be created. Please, try again."
 msgstr ""
 
-#: Controller/UsersController.php:462
+#: Controller/UsersController.php:486
 msgid "%s you have successfully logged in"
 msgstr ""
 
-#: Controller/UsersController.php:483
-#: Test/Case/Controller/UsersControllerTest.php:316
-msgid "Invalid e-mail / password combination.  Please try again"
+#: Controller/UsersController.php:507
+msgid "Invalid e-mail / password combination. Please try again"
 msgstr ""
 
-#: Controller/UsersController.php:549
+#: Controller/UsersController.php:575
 msgid "%s you have successfully logged out"
 msgstr ""
 
-#: Controller/UsersController.php:563
+#: Controller/UsersController.php:589
 msgid "The email was resent. Please check your inbox."
 msgstr ""
 
-#: Controller/UsersController.php:566
+#: Controller/UsersController.php:592
 msgid "The email could not be sent. Please check errors."
 msgstr ""
 
-#: Controller/UsersController.php:589
-#: Test/Case/Controller/UsersControllerTest.php:374
+#: Controller/UsersController.php:615
 msgid "Your e-mail has been validated!"
 msgstr ""
 
-#: Controller/UsersController.php:612
+#: Controller/UsersController.php:638
 msgid "The url you accessed is not longer valid"
 msgstr ""
 
-#: Controller/UsersController.php:618
+#: Controller/UsersController.php:644
 msgid "Your password was sent to your registered email account"
 msgstr ""
 
-#: Controller/UsersController.php:622
+#: Controller/UsersController.php:648
 msgid "There was an error verifying your account. Please check the email you were sent, and retry the verification link."
 msgstr ""
 
-#: Controller/UsersController.php:638;748
+#: Controller/UsersController.php:664;774
 msgid "Password Reset"
 msgstr ""
 
-#: Controller/UsersController.php:655;819
+#: Controller/UsersController.php:681;846
 msgid "Password changed."
 msgstr ""
 
-#: Controller/UsersController.php:716
+#: Controller/UsersController.php:742
 msgid "Account verification"
 msgstr ""
 
-#: Controller/UsersController.php:775
+#: Controller/UsersController.php:801
 msgid "%s has been sent an email with instruction to reset their password."
 msgstr ""
 
-#: Controller/UsersController.php:779
+#: Controller/UsersController.php:805
 msgid "You should receive an email with further instructions shortly"
 msgstr ""
 
-#: Controller/UsersController.php:783
+#: Controller/UsersController.php:809
 msgid "No user was found with that email."
 msgstr ""
 
-#: Controller/UsersController.php:813
+#: Controller/UsersController.php:839
 msgid "Invalid password reset token, try again."
 msgstr ""
 
-#: Controller/UsersController.php:822
+#: Controller/UsersController.php:849
 msgid "Password changed, you can now login with your new password."
 msgstr ""
 
-#: Controller/Component/RememberMeComponent.php:230
+#: Controller/Component/RememberMeComponent.php:235
 msgid "Invalid options %s"
 msgstr ""
 
-#: Controller/Component/Auth/TokenAuthenticate.php:67
+#: Controller/Component/Auth/TokenAuthenticate.php:68
 msgid "You need to specify token parameter and/or header"
 msgstr ""
 
-#: Model/User.php:158;339
+#: Model/User.php:173;359
 msgid "The passwords are not equal."
 msgstr ""
 
-#: Model/User.php:160
+#: Model/User.php:175
 msgid "Invalid password."
 msgstr ""
 
-#: Model/User.php:242
-#: Test/Case/Controller/UsersControllerTest.php:382
+#: Model/User.php:261
 msgid "Invalid token, please check the email you were sent, and retry the verification link."
 msgstr ""
 
-#: Model/User.php:247
+#: Model/User.php:266
 msgid "The token has expired."
 msgstr ""
 
-#: Model/User.php:301
+#: Model/User.php:321
 msgid "This Email Address exists but was never validated."
 msgstr ""
 
-#: Model/User.php:303
+#: Model/User.php:323
 msgid "This Email Address does not exist in the system."
 msgstr ""
 
-#: Model/User.php:397
+#: Model/User.php:421
 msgid "$this->data['"
 msgstr ""
 
-#: Model/User.php:443
+#: Model/User.php:467
 msgid "The user does not exist."
 msgstr ""
 
-#: Model/User.php:481
+#: Model/User.php:505
 msgid "Invalid Email address."
 msgstr ""
 
-#: Model/User.php:486
+#: Model/User.php:510
 msgid "This email is already verified."
 msgstr ""
 
-#: Model/User.php:584
+#: Model/User.php:608
 msgid "Please enter your email address."
 msgstr ""
 
-#: Model/User.php:591
+#: Model/User.php:615
 msgid "The email address does not exist in the system"
 msgstr ""
 
-#: Model/User.php:596
+#: Model/User.php:620
 msgid "Your account is already authenticated."
 msgstr ""
 
-#: Model/User.php:601
+#: Model/User.php:625
 msgid "Your account is disabled."
-msgstr ""
-
-#: Test/Case/Controller/UsersControllerTest.php:55
-msgid "Sorry, but you need to login to access this location."
-msgstr ""
-
-#: Test/Case/Controller/UsersControllerTest.php:275
-msgid "adminuser you have successfully logged in"
-msgstr ""
-
-#: Test/Case/Controller/UsersControllerTest.php:401
-msgid "testuser you have successfully logged out"
 msgstr ""
 
 #: View/Elements/pagination.ctp:14
@@ -272,7 +254,7 @@ msgstr ""
 #: View/Users/add.ctp:18
 #: View/Users/admin_add.ctp:18
 #: View/Users/admin_edit.ctp:19
-#: View/Users/admin_index.ctp:18
+#: View/Users/admin_index.ctp:19
 #: View/Users/admin_view.ctp:15
 #: View/Users/search.ctp:18
 #: View/Users/view.ctp:15
@@ -315,7 +297,7 @@ msgstr ""
 
 #: View/Users/add.ctp:32
 #: View/Users/change_password.ctp:26
-#: View/Users/edit.ctp:25
+#: View/Users/edit.ctp:20
 #: View/Users/login.ctp:30
 #: View/Users/request_password_change.ctp:22
 #: View/Users/resend_verification.ctp:22
@@ -344,7 +326,7 @@ msgid "Edit User"
 msgstr ""
 
 #: View/Users/admin_edit.ctp:21
-#: View/Users/admin_index.ctp:19
+#: View/Users/admin_index.ctp:20
 #: View/Users/login.ctp:21
 #: View/Users/search.ctp:20
 msgid "Email"
@@ -356,46 +338,46 @@ msgstr ""
 msgid "Users"
 msgstr ""
 
-#: View/Users/admin_index.ctp:15
+#: View/Users/admin_index.ctp:17
 msgid "Filter"
 msgstr ""
 
-#: View/Users/admin_index.ctp:20
+#: View/Users/admin_index.ctp:21
 #: View/Users/search.ctp:23
 msgid "Search"
 msgstr ""
 
-#: View/Users/admin_index.ctp:32
+#: View/Users/admin_index.ctp:34
 #: View/Users/index.ctp:25
 #: View/Users/search.ctp:35
 msgid "Actions"
 msgstr ""
 
-#: View/Users/admin_index.ctp:50;53
+#: View/Users/admin_index.ctp:52;55
 msgid "Yes"
 msgstr ""
 
-#: View/Users/admin_index.ctp:50;53
+#: View/Users/admin_index.ctp:52;55
 msgid "No"
 msgstr ""
 
-#: View/Users/admin_index.ctp:59
+#: View/Users/admin_index.ctp:61
 #: View/Users/index.ctp:39
 #: View/Users/search.ctp:49
 msgid "View"
 msgstr ""
 
-#: View/Users/admin_index.ctp:60
+#: View/Users/admin_index.ctp:62
 #: View/Users/search.ctp:50
 msgid "Edit"
 msgstr ""
 
-#: View/Users/admin_index.ctp:61
+#: View/Users/admin_index.ctp:63
 #: View/Users/search.ctp:52
 msgid "Delete"
 msgstr ""
 
-#: View/Users/admin_index.ctp:61
+#: View/Users/admin_index.ctp:63
 #: View/Users/search.ctp:55
 msgid "Are you sure you want to delete # %s?"
 msgstr ""
@@ -415,7 +397,7 @@ msgid "Modified"
 msgstr ""
 
 #: View/Users/change_password.ctp:13
-#: View/Users/edit.ctp:22
+#: View/Users/edit.ctp:17
 msgid "Change your password"
 msgstr ""
 
@@ -482,45 +464,5 @@ msgstr ""
 
 #: View/Users/search.ctp:22
 msgid "Name"
-msgstr ""
-
-#: Plugin/Users/Model/User.php:validation for field username
-msgid "Please enter a username."
-msgstr ""
-
-#: Plugin/Users/Model/User.php:validation for field username
-msgid "The username must be alphanumeric."
-msgstr ""
-
-#: Plugin/Users/Model/User.php:validation for field username
-msgid "This username is already in use."
-msgstr ""
-
-#: Plugin/Users/Model/User.php:validation for field username
-msgid "The username must have at least 3 characters."
-msgstr ""
-
-#: Plugin/Users/Model/User.php:validation for field email
-msgid "Please enter a valid email address."
-msgstr ""
-
-#: Plugin/Users/Model/User.php:validation for field email
-msgid "This email is already in use."
-msgstr ""
-
-#: Plugin/Users/Model/User.php:validation for field password
-msgid "The password must have at least 6 characters."
-msgstr ""
-
-#: Plugin/Users/Model/User.php:validation for field password
-msgid "Please enter a password."
-msgstr ""
-
-#: Plugin/Users/Model/User.php:validation for field temppassword
-msgid "The passwords are not equal, please try again."
-msgstr ""
-
-#: Plugin/Users/Model/User.php:validation for field tos
-msgid "You must agree to the terms of use."
 msgstr ""
 
