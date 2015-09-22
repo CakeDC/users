@@ -54,7 +54,7 @@ trait SocialTrait
             $url = Router::parse($url);
         }
         $url['?'] = ['social' => $this->request->query('code')];
-        return Router::url($url);
+        return Router::url($url, true);
     }
 
     /**
