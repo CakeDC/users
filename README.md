@@ -45,15 +45,16 @@ For documentation, as well as tutorials, see the [Docs](Docs/Home.md) directory 
 Roadmap
 ------
 
-* 3.0.2 Add google authentication
+* 3.0.2
+  * Add Google authentication
+  * Add Instagram authentication
   * Improve unit test coverage
-* YOU ARE HERE > 3.0.1 General improvements
+* YOU ARE HERE > 3.0.0 Migration to CakePHP 3.0
   * Unit test coverage improvements
   * Refactor UsersTable to Behavior
   * Add google authentication
   * Add reCaptcha
   * Link social accounts in profile
-* 3.0.0 Migration to CakePHP 3.0
 
 Support
 -------
