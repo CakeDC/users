@@ -207,7 +207,7 @@ class RegisterBehaviorTest extends TestCase
      */
     public function testActivateUser()
     {
-        $user = $this->Table->find()->where(['id' => 1])->first();
+        $user = $this->Table->find()->where(['id' => '00000000-0000-0000-0000-000000000001'])->first();
         $result = $this->Table->activateUser($user);
         $this->assertTrue($result->active);
     }
@@ -253,7 +253,7 @@ class RegisterBehaviorTest extends TestCase
      */
     public function testActiveUserRemoveValidationToken()
     {
-        $user = $this->Table->find()->where(['id' => 1])->first();
+        $user = $this->Table->find()->where(['id' => '00000000-0000-0000-0000-000000000001'])->first();
         $this->Behavior = $this->getMockBuilder('CakeDC\Users\Model\Behavior\RegisterBehavior')
                 ->setMethods(['_removeValidationToken'])
                 ->setConstructorArgs([$this->Table])

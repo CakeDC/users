@@ -173,7 +173,7 @@ class UsersTableTest extends TestCase
      */
     public function testActivateUser()
     {
-        $user = $this->Users->find()->where(['id' => 1])->first();
+        $user = $this->Users->find()->where(['id' => '00000000-0000-0000-0000-000000000001'])->first();
         $result = $this->Users->activateUser($user);
         $this->assertTrue($result->active);
     }

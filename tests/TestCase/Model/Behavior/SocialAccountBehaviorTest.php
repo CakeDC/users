@@ -134,7 +134,7 @@ class SocialAccountBehaviorTest extends TestCase
     public function testAfterSaveSocialActiveUserActive()
     {
         $event = new Event('eventName');
-        $entity = $this->Table->findById(3)->first();
+        $entity = $this->Table->findById('00000000-0000-0000-0000-000000000003')->first();
         $this->assertTrue($this->Behavior->afterSave($event, $entity, []));
     }
 
@@ -147,7 +147,7 @@ class SocialAccountBehaviorTest extends TestCase
     public function testAfterSaveSocialActiveUserNotActive()
     {
         $event = new Event('eventName');
-        $entity = $this->Table->findById(2)->first();
+        $entity = $this->Table->findById('00000000-0000-0000-0000-000000000002')->first();
         $this->assertTrue($this->Behavior->afterSave($event, $entity, []));
     }
 

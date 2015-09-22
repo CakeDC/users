@@ -145,7 +145,7 @@ abstract class BaseTraitTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $user = [
-            'id' => 1,
+            'id' => '00000000-0000-0000-0000-000000000001',
             'password' => '12345',
         ];
         $this->Trait->Auth->expects($this->any())
@@ -154,7 +154,7 @@ abstract class BaseTraitTest extends TestCase
         $this->Trait->Auth->expects($this->any())
             ->method('user')
             ->with('id')
-            ->will($this->returnValue(1));
+            ->will($this->returnValue('00000000-0000-0000-0000-000000000001'));
     }
 
     /**

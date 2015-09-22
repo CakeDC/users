@@ -60,7 +60,7 @@ class UsersFixture extends TestFixture
      */
     public $records = [
         [
-            'id' => 1,
+            'id' => '00000000-0000-0000-0000-000000000001',
             'username' => 'user-1',
             'email' => 'user-1@test.com',
             'password' => '12345',
@@ -78,7 +78,7 @@ class UsersFixture extends TestFixture
             'modified' => '2015-06-24 17:33:54'
         ],
         [
-            'id' => 2,
+            'id' => '00000000-0000-0000-0000-000000000002',
             'username' => 'user-2',
             'email' => 'user-2@test.com',
             'password' => '12345',
@@ -96,7 +96,7 @@ class UsersFixture extends TestFixture
             'modified' => '2015-06-24 17:33:54'
         ],
         [
-            'id' => 3,
+            'id' => '00000000-0000-0000-0000-000000000003',
             'username' => 'user-3',
             'email' => 'user-3@test.com',
             'password' => '12345',
@@ -114,7 +114,7 @@ class UsersFixture extends TestFixture
             'modified' => '2015-06-24 17:33:54'
         ],
         [
-            'id' => 4,
+            'id' => '00000000-0000-0000-0000-000000000004',
             'username' => 'user-4',
             'email' => '4@example.com',
             'password' => 'Lorem ipsum dolor sit amet',
@@ -132,7 +132,7 @@ class UsersFixture extends TestFixture
             'modified' => '2015-06-24 17:33:54'
         ],
         [
-            'id' => 5,
+            'id' => '00000000-0000-0000-0000-000000000005',
             'username' => 'user-5',
             'email' => 'test@example.com',
             'password' => '12345',
@@ -150,7 +150,7 @@ class UsersFixture extends TestFixture
             'modified' => '2015-06-24 17:33:54'
         ],
         [
-            'id' => 6,
+            'id' => '00000000-0000-0000-0000-000000000006',
             'username' => 'Lorem ipsum dolor sit amet',
             'email' => 'Lorem ipsum dolor sit amet',
             'password' => 'Lorem ipsum dolor sit amet',
@@ -168,7 +168,7 @@ class UsersFixture extends TestFixture
             'modified' => '2015-06-24 17:33:54'
         ],
         [
-            'id' => 7,
+            'id' => '00000000-0000-0000-0000-000000000007',
             'username' => 'Lorem ipsum dolor sit amet',
             'email' => 'Lorem ipsum dolor sit amet',
             'password' => 'Lorem ipsum dolor sit amet',
@@ -186,7 +186,7 @@ class UsersFixture extends TestFixture
             'modified' => '2015-06-24 17:33:54'
         ],
         [
-            'id' => 8,
+            'id' => '00000000-0000-0000-0000-000000000008',
             'username' => 'Lorem ipsum dolor sit amet',
             'email' => 'Lorem ipsum dolor sit amet',
             'password' => 'Lorem ipsum dolor sit amet',
@@ -204,7 +204,7 @@ class UsersFixture extends TestFixture
             'modified' => '2015-06-24 17:33:54'
         ],
         [
-            'id' => 9,
+            'id' => '00000000-0000-0000-0000-000000000009',
             'username' => 'Lorem ipsum dolor sit amet',
             'email' => 'Lorem ipsum dolor sit amet',
             'password' => 'Lorem ipsum dolor sit amet',
@@ -222,7 +222,7 @@ class UsersFixture extends TestFixture
             'modified' => '2015-06-24 17:33:54'
         ],
         [
-            'id' => 10,
+            'id' => '00000000-0000-0000-0000-000000000010',
             'username' => 'Lorem ipsum dolor sit amet',
             'email' => 'Lorem ipsum dolor sit amet',
             'password' => 'Lorem ipsum dolor sit amet',

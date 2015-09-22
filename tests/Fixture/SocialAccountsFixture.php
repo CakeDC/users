@@ -48,8 +48,8 @@ class SocialAccountsFixture extends TestFixture
      */
     public $records = [
         [
-            'id' => 1,
-            'user_id' => 1,
+            'id' => '00000000-0000-0000-0000-000000000001',
+            'user_id' => '00000000-0000-0000-0000-000000000001',
             'provider' => 'Facebook',
             'username' => 'user-1-fb',
             'reference' => 'reference-1-1234',
@@ -64,8 +64,8 @@ class SocialAccountsFixture extends TestFixture
             'modified' => '2015-05-22 21:52:44'
         ],
         [
-            'id' => 2,
-            'user_id' => 1,
+            'id' => '00000000-0000-0000-0000-000000000002',
+            'user_id' => '00000000-0000-0000-0000-000000000001',
             'provider' => 'Twitter',
             'username' => 'user-1-tw',
             'reference' => 'reference-1-1234',
@@ -80,8 +80,8 @@ class SocialAccountsFixture extends TestFixture
             'modified' => '2015-05-22 21:52:44'
         ],
         [
-            'id' => 3,
-            'user_id' => 2,
+            'id' => '00000000-0000-0000-0000-000000000003',
+            'user_id' => '00000000-0000-0000-0000-000000000002',
             'provider' => 'Facebook',
             'username' => 'user-2-fb',
             'reference' => 'reference-2-1',
@@ -96,8 +96,8 @@ class SocialAccountsFixture extends TestFixture
             'modified' => '2015-05-22 21:52:44'
         ],
         [
-            'id' => 4,
-            'user_id' => 3,
+            'id' => '00000000-0000-0000-0000-000000000004',
+            'user_id' => '00000000-0000-0000-0000-000000000003',
             'provider' => 'Twitter',
             'username' => 'user-2-tw',
             'reference' => 'reference-2-2',
@@ -112,8 +112,8 @@ class SocialAccountsFixture extends TestFixture
             'modified' => '2015-05-22 21:52:44'
         ],
         [
-            'id' => 5,
-            'user_id' => 4,
+            'id' => '00000000-0000-0000-0000-000000000005',
+            'user_id' => '00000000-0000-0000-0000-000000000004',
             'provider' => 'Twitter',
             'username' => 'user-2-tw',
             'reference' => 'reference-2-2',

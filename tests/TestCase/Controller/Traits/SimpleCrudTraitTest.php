@@ -80,7 +80,7 @@ class SimpleCrudTraitTest extends BaseTraitTest
      */
     public function testView()
     {
-        $id = 1;
+        $id = '00000000-0000-0000-0000-000000000001';
         $this->Trait->view($id);
         $expected = [
             'Users' => $this->table->get($id),
@@ -195,7 +195,7 @@ class SimpleCrudTraitTest extends BaseTraitTest
      */
     public function testEditPostHappy()
     {
-        $this->assertEquals('user-1@test.com', $this->table->get(1)->email);
+        $this->assertEquals('user-1@test.com', $this->table->get('00000000-0000-0000-0000-000000000001')->email);
         $this->_mockRequestPost(['patch', 'post', 'put']);
         $this->_mockFlash();
         $this->Trait->request->data = [
@@ -206,9 +206,9 @@ class SimpleCrudTraitTest extends BaseTraitTest
             ->method('success')
             ->with('The User has been saved');
 
-        $this->Trait->edit(1);
+        $this->Trait->edit('00000000-0000-0000-0000-000000000001');
 
-        $this->assertEquals('newtestuser@test.com', $this->table->get(1)->email);
+        $this->assertEquals('newtestuser@test.com', $this->table->get('00000000-0000-0000-0000-000000000001')->email);
     }
 
     /**
@@ -218,7 +218,7 @@ class SimpleCrudTraitTest extends BaseTraitTest
      */
     public function testEditPostErrors()
     {
-        $this->assertEquals('user-1@test.com', $this->table->get(1)->email);
+        $this->assertEquals('user-1@test.com', $this->table->get('00000000-0000-0000-0000-000000000001')->email);
         $this->_mockRequestPost(['patch', 'post', 'put']);
         $this->_mockFlash();
         $this->Trait->request->data = [
@@ -229,9 +229,9 @@ class SimpleCrudTraitTest extends BaseTraitTest
             ->method('error')
             ->with('The User could not be saved');
 
-        $this->Trait->edit(1);
+        $this->Trait->edit('00000000-0000-0000-0000-000000000001');
 
-        $this->assertEquals('user-1@test.com', $this->table->get(1)->email);
+        $this->assertEquals('user-1@test.com', $this->table->get('00000000-0000-0000-0000-000000000001')->email);
     }
 
     /**
@@ -242,7 +242,7 @@ class SimpleCrudTraitTest extends BaseTraitTest
      */
     public function testDeleteHappy()
     {
-        $this->assertNotEmpty($this->table->get(1));
+        $this->assertNotEmpty($this->table->get('00000000-0000-0000-0000-000000000001'));
         $this->_mockRequestPost();
         $this->Trait->request->expects($this->any())
             ->method('allow')
@@ -254,9 +254,9 @@ class SimpleCrudTraitTest extends BaseTraitTest
             ->method('success')
             ->with('The User has been deleted');
 
-        $this->Trait->delete(1);
+        $this->Trait->delete('00000000-0000-0000-0000-000000000001');
 
-        $this->table->get(1);
+        $this->table->get('00000000-0000-0000-0000-000000000001');
     }
 
     /**
@@ -267,7 +267,7 @@ class SimpleCrudTraitTest extends BaseTraitTest
      */
     public function testDeleteNotFound()
     {
-        $this->assertNotEmpty($this->table->get(1));
+        $this->assertNotEmpty($this->table->get('00000000-0000-0000-0000-000000000001'));
         $this->_mockRequestPost();
         $this->Trait->request->expects($this->any())
             ->method('allow')
@@ -276,6 +276,6 @@ class SimpleCrudTraitTest extends BaseTraitTest
 
         $this->Trait->delete('not-found');
 
-        $this->assertNotEmpty($this->table->get(1));
+        $this->assertNotEmpty($this->table->get('00000000-0000-0000-0000-000000000001'));
     }
 }

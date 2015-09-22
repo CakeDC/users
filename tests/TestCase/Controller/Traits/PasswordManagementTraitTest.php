@@ -47,7 +47,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
      */
     public function testChangePasswordHappy()
     {
-        $this->assertEquals('12345', $this->table->get(1)->password);
+        $this->assertEquals('12345', $this->table->get('00000000-0000-0000-0000-000000000001')->password);
         $this->_mockRequestPost();
         $this->_mockAuthLoggedIn();
         $this->_mockFlash();
@@ -65,7 +65,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
             ->with('Password has been changed successfully');
         $this->Trait->changePassword();
         $hasher = PasswordHasherFactory::build('Default');
-        $this->assertTrue($hasher->check('new', $this->table->get(1)->password));
+        $this->assertTrue($hasher->check('new', $this->table->get('00000000-0000-0000-0000-000000000001')->password));
     }
 
     /**
@@ -127,7 +127,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
      */
     public function testRequestResetPasswordGet()
     {
-        $this->assertEquals('ae93ddbe32664ce7927cf0c5c5a5e59d', $this->table->get(1)->token);
+        $this->assertEquals('ae93ddbe32664ce7927cf0c5c5a5e59d', $this->table->get('00000000-0000-0000-0000-000000000001')->token);
         $this->_mockRequestGet();
         $this->_mockFlash();
         $this->Trait->request->expects($this->never())
@@ -142,7 +142,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
      */
     public function testRequestPasswordHappy()
     {
-        $this->assertEquals('ae93ddbe32664ce7927cf0c5c5a5e59d', $this->table->get(1)->token);
+        $this->assertEquals('ae93ddbe32664ce7927cf0c5c5a5e59d', $this->table->get('00000000-0000-0000-0000-000000000001')->token);
         $this->_mockRequestPost();
         $this->_mockAuthLoggedIn();
         $this->_mockFlash();
@@ -155,6 +155,6 @@ class PasswordManagementTraitTest extends BaseTraitTest
             ->method('success')
             ->with('Password has been changed successfully');
         $this->Trait->requestResetPassword();
-        $this->assertNotEquals('xxx', $this->table->get(1)->token);
+        $this->assertNotEquals('xxx', $this->table->get('00000000-0000-0000-0000-000000000001')->token);
     }
 }
