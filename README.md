@@ -1,7 +1,7 @@
 CakeDC Users Plugin
 ===================
 
-[![Bake Status](https://secure.travis-ci.org/CakeDC/users.png?branch=3.x)](http://travis-ci.org/CakeDC/users)
+[![Bake Status](https://secure.travis-ci.org/CakeDC/users.png?branch=3.0.x)](http://travis-ci.org/CakeDC/users)
 [![Downloads](https://poser.pugx.org/CakeDC/users/d/total.png)](https://packagist.org/packages/CakeDC/users)
 [![Latest Version](https://poser.pugx.org/CakeDC/users/v/stable.png)](https://packagist.org/packages/CakeDC/users)
 
