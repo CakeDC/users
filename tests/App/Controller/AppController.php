@@ -21,5 +21,4 @@ class AppController extends Controller
         // $this->loadComponent('CakeDC/Users.UsersAuth');
         $this->loadComponent('RequestHandler');
     }
-
 }
