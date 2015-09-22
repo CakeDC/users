@@ -1,9 +1,9 @@
 <?php
-namespace Users\Test\TestCase\Model\Entity;
+namespace CakeDC\Users\Test\TestCase\Model\Entity;
 
+use CakeDC\Users\Model\Entity\User;
 use Cake\Auth\DefaultPasswordHasher;
 use Cake\TestSuite\TestCase;
-use Users\Model\Entity\User;
 
 /**
  * Users\Model\Entity\User Test Case

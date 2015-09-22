@@ -9,15 +9,15 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Test\TestCase\Auth;
+namespace CakeDC\Users\Test\TestCase\Auth;
 
+use CakeDC\Users\Auth\SuperuserAuthorize;
 use Cake\Controller\ComponentRegistry;
 use Cake\Controller\Controller;
 use Cake\Event\EventManager;
 use Cake\Network\Request;
 use Cake\Network\Response;
 use Cake\TestSuite\TestCase;
-use Users\Auth\SuperuserAuthorize;
 
 class SuperuserAuthorizeTest extends TestCase
 {
@@ -55,7 +55,7 @@ class SuperuserAuthorizeTest extends TestCase
     }
 
     /**
-     * @covers Users\Auth\SuperuserAuthorize::authorize
+     * @covers CakeDC\Users\Auth\SuperuserAuthorize::authorize
      */
     public function testAuthorizeIsSuperuser()
     {
@@ -68,7 +68,7 @@ class SuperuserAuthorizeTest extends TestCase
     }
 
     /**
-     * @covers Users\Auth\SuperuserAuthorize::authorize
+     * @covers CakeDC\Users\Auth\SuperuserAuthorize::authorize
      */
     public function testAuthorizeIsNotSuperuser()
     {
@@ -81,7 +81,7 @@ class SuperuserAuthorizeTest extends TestCase
     }
 
     /**
-     * @covers Users\Auth\SuperuserAuthorize::authorize
+     * @covers CakeDC\Users\Auth\SuperuserAuthorize::authorize
      */
     public function testAuthorizeWeirdUser()
     {

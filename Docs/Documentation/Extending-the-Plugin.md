@@ -4,9 +4,9 @@ Extending the Plugin
 Extending the Model (Table/Entity)
 -------------------
 
-Create a new Table and Entity in your app, matching the table you want to use for storing the 
+Create a new Table and Entity in your app, matching the table you want to use for storing the
 users data. Check the initial users migration to know the default columns expected in the table.
-If your column names doesn't match the columns in your current table, you could use the Entity to 
+If your column names doesn't match the columns in your current table, you could use the Entity to
 match the colums using accessors & mutators as described here http://book.cakephp.org/3.0/en/orm/entities.html#accessors-mutators
 
 Example: we are going to use a custom table in our application ```my_users```
@@ -15,7 +15,7 @@ Example: we are going to use a custom table in our application ```my_users```
 ```php
 namespace App\Model\Table;
 
-use Users\Model\Table\UsersTable;
+use CakeDC\Users\Model\Table\UsersTable;
 
 /**
  * Users Model
@@ -30,7 +30,7 @@ class MyUsersTable extends UsersTable
 ```php
 namespace App\Model\Entity;
 
-use Users\Model\Entity\User;
+use CakeDC\Users\Model\Entity\User;
 
 class MyUser extends User
 {
@@ -90,9 +90,9 @@ namespace App\Controller;
 use App\Controller\AppController;
 use App\Model\Table\MyUsersTable;
 use Cake\Event\Event;
-use Users\Controller\Component\UsersAuthComponent;
-use Users\Controller\Traits\LoginTrait;
-use Users\Controller\Traits\RegisterTrait;
+use CakeDC\Users\Controller\Component\UsersAuthComponent;
+use CakeDC\Users\Controller\Traits\LoginTrait;
+use CakeDC\Users\Controller\Traits\RegisterTrait;
 
 class MyUsersController extends AppController
 {

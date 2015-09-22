@@ -4,10 +4,13 @@
     "type": "cakephp-plugin",
     "require": {
         "php": ">=5.4.16",
-        "cakephp/cakephp": "~3.0"
+        "cakephp/cakephp": "~3.0.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "*"
+        "phpunit/phpunit": "*",
+        "opauth/opauth": "*",
+        "opauth/facebook": "*",
+        "opauth/twitter": "*"
     },
     "suggest": {
         "opauth/opauth": "Used for Social Login, if you add Opauth, remember adding at least one strategy too",
@@ -17,14 +20,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Users\\": "src",
-            "Users\\Test\\Fixture\\": "tests\\Fixture"
+            "CakeDC\\Users\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Users\\Test\\": "tests",
-            "Cake\\Test\\": "./vendor/cakephp/cakephp/tests"
+            "CakeDC\\Users\\Test\\": "tests"
         }
     }
 }

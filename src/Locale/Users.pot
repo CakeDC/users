@@ -183,7 +183,7 @@ msgid "Invalid validation type"
 msgstr ""
 
 #: Controller/Traits/UserValidationTrait.php:88
-msgid "Token has been reset successfully"
+msgid "Token has been reset successfully. Please check your email."
 msgstr ""
 
 #: Controller/Traits/UserValidationTrait.php:96

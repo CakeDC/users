@@ -9,8 +9,9 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Test\TestCase\Auth;
+namespace CakeDC\Users\Test\TestCase\Auth;
 
+use CakeDC\Users\Auth\SimpleRbacAuthorize;
 use Cake\Controller\ComponentRegistry;
 use Cake\Controller\Controller;
 use Cake\Event\EventManager;
@@ -19,7 +20,6 @@ use Cake\Network\Response;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Hash;
 use ReflectionClass;
-use Users\Auth\SimpleRbacAuthorize;
 
 class SimpleRbacAuthorizeTest extends TestCase
 {
@@ -30,7 +30,7 @@ class SimpleRbacAuthorizeTest extends TestCase
     protected $simpleRbacAuthorize;
 
     protected $defaultPermissions = [
-        //admin role allowed to use Users plugin actions
+        //admin role allowed to use CakeDC\Users plugin actions
         [
             'role' => 'admin',
             'plugin' => '*',
@@ -40,7 +40,7 @@ class SimpleRbacAuthorizeTest extends TestCase
         //specific actions allowed for the user role in Users plugin
         [
             'role' => 'user',
-            'plugin' => 'Users',
+            'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => ['profile', 'logout'],
         ],
@@ -81,7 +81,7 @@ class SimpleRbacAuthorizeTest extends TestCase
     }
 
     /**
-     * @covers Users\Auth\SimpleRbacAuthorize::__construct
+     * @covers CakeDC\Users\Auth\SimpleRbacAuthorize::__construct
      */
     public function testConstruct()
     {
@@ -97,7 +97,7 @@ class SimpleRbacAuthorizeTest extends TestCase
      */
     public function testLoadPermissions()
     {
-        $this->simpleRbacAuthorize = $this->getMockBuilder('Users\Auth\SimpleRbacAuthorize')
+        $this->simpleRbacAuthorize = $this->getMockBuilder('CakeDC\Users\Auth\SimpleRbacAuthorize')
                 ->disableOriginalConstructor()
                 ->getMock();
         $reflectedClass = new ReflectionClass($this->simpleRbacAuthorize);
@@ -108,12 +108,12 @@ class SimpleRbacAuthorizeTest extends TestCase
     }
 
     /**
-     * @covers Users\Auth\SimpleRbacAuthorize::__construct
+     * @covers CakeDC\Users\Auth\SimpleRbacAuthorize::__construct
      */
     public function testConstructMissingPermissionsFile()
     {
         $this->simpleRbacAuthorize = $this->getMock(
-            'Users\Auth\SimpleRbacAuthorize',
+            'CakeDC\Users\Auth\SimpleRbacAuthorize',
             null,
             [$this->registry, ['autoload_config' => 'does-not-exist']]
         );
@@ -133,7 +133,7 @@ class SimpleRbacAuthorizeTest extends TestCase
     }
 
     /**
-     * @covers Users\Auth\SimpleRbacAuthorize::__construct
+     * @covers CakeDC\Users\Auth\SimpleRbacAuthorize::__construct
      */
     public function testConstructPermissionsFileHappy()
     {
@@ -141,7 +141,7 @@ class SimpleRbacAuthorizeTest extends TestCase
             'controller' => 'Test',
             'action' => 'test'
         ]];
-        $className = 'Users\Auth\SimpleRbacAuthorize';
+        $className = 'CakeDC\Users\Auth\SimpleRbacAuthorize';
         $this->simpleRbacAuthorize = $this->getMockBuilder($className)
                 ->setMethods(['_loadPermissions'])
                 ->disableOriginalConstructor()
@@ -156,7 +156,7 @@ class SimpleRbacAuthorizeTest extends TestCase
 
     protected function preparePermissions($permissions)
     {
-        $className = 'Users\Auth\SimpleRbacAuthorize';
+        $className = 'CakeDC\Users\Auth\SimpleRbacAuthorize';
         $simpleRbacAuthorize = $this->getMockBuilder($className)
                 ->setMethods(['_loadPermissions'])
                 ->disableOriginalConstructor()

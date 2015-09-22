@@ -5,12 +5,12 @@ CakeDC Users Plugin
 [![Downloads](https://poser.pugx.org/CakeDC/users/d/total.png)](https://packagist.org/packages/CakeDC/users)
 [![Latest Version](https://poser.pugx.org/CakeDC/users/v/stable.png)](https://packagist.org/packages/CakeDC/users)
 
-IMPORTANT: 3.x version is ALPHA status now, we are improving and testing it now.
+IMPORTANT: 3.x version is BETA status now, we are still improving and testing it.
 
-The **Users** plugin is back! 
+The **Users** plugin is back!
 
 It covers the following features:
-* User registration 
+* User registration
 * Login/logout
 * Social login (Facebook, Twitter)
 * Simple RBAC
@@ -25,7 +25,7 @@ The plugin is here to provide users related features following 2 approaches:
   * Use your own UsersTable
   * Use your own Controller
 
-On the previous versions of the plugin, extensibility was an issue, and one of the main 
+On the previous versions of the plugin, extensibility was an issue, and one of the main
 objectives of the 3.0 rewrite is to guarantee all the pieces could be extended/reused as
 easily.
 
@@ -50,8 +50,10 @@ Roadmap
   * Unit test coverage improvements
   * Refactor UsersTable to Behavior
   * Add google authentication
-  * Add captcha
+  * Add reCaptcha
   * Link social accounts in profile
+* 3.0.2 Add google authentication
+  * Improve unit test coverage
 
 Support
 -------

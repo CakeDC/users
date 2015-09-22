@@ -9,10 +9,13 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Model\Entity;
+namespace CakeDC\Users\Model\Entity;
 
 use Cake\Auth\DefaultPasswordHasher;
+use Cake\Core\Configure;
 use Cake\ORM\Entity;
+use Cake\Utility\Text;
+use DateTime;
 
 /**
  * User Entity.
@@ -50,7 +53,7 @@ class User extends Entity
      */
     protected function _setPassword($password)
     {
-        return (new DefaultPasswordHasher)->hash($password);
+        return $this->hashPassword($password);
     }
 
     /**
@@ -59,18 +62,59 @@ class User extends Entity
      */
     protected function _setConfirmPassword($password)
     {
-        return (new DefaultPasswordHasher)->hash($password);
+        return $this->hashPassword($password);
+    }
+
+    /**
+     * @param string $tos tos option. It will be set the tos_date
+     * @return bool
+     */
+    protected function _setTos($tos)
+    {
+        if ((bool)$tos === true) {
+            $this->set('tos_date', new DateTime());
+        }
+        return $tos;
+    }
+
+    /**
+     * Hash a password using the configured password hasher,
+     * use DefaultPasswordHasher if no one was configured
+     *
+     * @param string $password password to be hashed
+     * @return mixed
+     */
+    public function hashPassword($password)
+    {
+        $PasswordHasher = $this->getPasswordHasher();
+        return $PasswordHasher->hash($password);
+    }
+
+    /**
+     * Return the configured Password Hasher
+     *
+     * @return mixed
+     */
+    public function getPasswordHasher()
+    {
+        $passwordHasher = Configure::read('Users.passwordHasher');
+        if (!class_exists($passwordHasher)) {
+            $passwordHasher = '\Cake\Auth\DefaultPasswordHasher';
+        }
+        return new $passwordHasher;
     }
 
     /**
      * Checks if a password is correctly hashed
+     *
      * @param string $password password that will be check.
      * @param string $hashedPassword hash used to check password.
      * @return bool
      */
     public function checkPassword($password, $hashedPassword)
     {
-        return (new DefaultPasswordHasher)->check($password, $hashedPassword);
+        $PasswordHasher = $this->getPasswordHasher();
+        return $PasswordHasher->check($password, $hashedPassword);
     }
 
     /**
@@ -85,6 +129,7 @@ class User extends Entity
 
     /**
      * Getter for user avatar
+     *
      * @return string|null avatar
      */
     protected function _getAvatar()

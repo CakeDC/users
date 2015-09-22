@@ -9,7 +9,7 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Controller\Component;
+namespace CakeDC\Users\Controller\Component;
 
 use Cake\Controller\Component;
 use Cake\Core\Configure;
@@ -132,7 +132,8 @@ class RememberMeComponent extends Component
      */
     public function beforeFilter(Event $event)
     {
-        if (!empty($this->Auth->user()) || $this->request->is(['post', 'put']) || $this->request->action === 'logout' || $this->request->session()->check(Configure::read('Users.Key.Session.social'))) {
+        $user = $this->Auth->user();
+        if (!empty($user) || $this->request->is(['post', 'put']) || $this->request->action === 'logout' || $this->request->session()->check(Configure::read('Users.Key.Session.social'))) {
             return;
         }
 

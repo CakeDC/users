@@ -9,7 +9,7 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Auth;
+namespace CakeDC\Users\Auth;
 
 use Cake\Auth\BaseAuthenticate;
 use Cake\Core\Configure;
@@ -38,7 +38,7 @@ class SocialAuthenticate extends BaseAuthenticate
         if (empty($data)) {
             return false;
         }
-        $socialMail = Hash::get($data->info, Configure::read('Users.Key.Data.email'));
+        $socialMail = Hash::get((array)$data->info, Configure::read('Users.Key.Data.email'));
 
         if (!empty($socialMail)) {
             $data->email = $socialMail;

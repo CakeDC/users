@@ -3,14 +3,16 @@ Events
 
 The events in this plugin follow these conventions <Plugin>.<MVC>.<Name>.<EventName>:
 
-* 'Users.Component.UsersAuth.isAuthorized';
-* 'Users.Component.UsersAuth.beforeLogin';
-* 'Users.Component.UsersAuth.afterLogin';
+* 'Users.Component.UsersAuth.isAuthorized'
+* 'Users.Component.UsersAuth.beforeLogin'
+* 'Users.Component.UsersAuth.afterLogin'
 * 'Users.Component.UsersAuth.afterCookieLogin'
-* 'Users.Component.UsersAuth.beforeRegister';
-* 'Users.Component.UsersAuth.afterRegister';
+* 'Users.Component.UsersAuth.beforeRegister'
+* 'Users.Component.UsersAuth.afterRegister'
+* 'Users.Component.UsersAuth.beforeLogout'
+* 'Users.Component.UsersAuth.afterLogout'
 
-The events allow you to inject data into the plugin on the before* plugins and use the data for your 
+The events allow you to inject data into the plugin on the before* plugins and use the data for your
 own business login in the after* events, for example
 
 ```

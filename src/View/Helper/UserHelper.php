@@ -9,13 +9,13 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\View\Helper;
+namespace CakeDC\Users\View\Helper;
 
+use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Utility\Hash;
 use Cake\View\Helper;
-use Users\Controller\Component\UsersAuthComponent;
 
 /**
  * User helper
@@ -38,7 +38,8 @@ class UserHelper extends Helper
      * @param Event $event event
      * @return void
      */
-    public function beforeLayout(Event $event) {
+    public function beforeLayout(Event $event)
+    {
         if (Configure::read('Users.Registration.reCaptcha')) {
             $this->addReCaptchaScript();
         }
@@ -82,7 +83,7 @@ class UserHelper extends Helper
     public function logout($message = null, $options = [])
     {
         return $this->Html->link(empty($message) ? __d('Users', 'Logout') : $message, [
-            'plugin' => 'Users', 'controller' => 'Users', 'action' => 'logout'
+            'plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'logout'
             ], $options);
     }
 
@@ -118,7 +119,7 @@ class UserHelper extends Helper
             return;
         }
 
-        $profileUrl = '/profile/' . $userId;
+        $profileUrl = Configure::read('Users.Profile.route');
         $label = __d('Users', 'Welcome, {0}', $this->Html->link($this->request->session()->read('Auth.User.first_name'), $profileUrl));
         return $this->Html->tag('span', $label, ['class' => 'welcome']);
     }

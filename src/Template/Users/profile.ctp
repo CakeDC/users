@@ -20,7 +20,8 @@
         )
         ?>
     </h3>
-    <?= $this->Html->link(__d('Users', 'Change Password'), ['admin' => false, 'plugin' => 'Users', 'controller' => 'Users', 'action' => 'changePassword']); ?>
+    <?php //@todo add to config ?>
+    <?= $this->Html->link(__d('Users', 'Change Password'), ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'changePassword']); ?>
     <div class="row">
         <div class="large-6 columns strings">
             <h6 class="subheader"><?= __d('Users', 'Username') ?></h6>
@@ -42,7 +43,8 @@
                     <tbody>
                     <?php
                     foreach ($user->social_accounts as $socialAccount):
-                        $linkText = empty(h($socialAccount->username)) ? __d('Users', 'Link to {0}', h($socialAccount->provider)) : h($socialAccount->username)
+                        $escapedUsername = h($socialAccount->username);
+                        $linkText = empty($escapedUsername) ? __d('Users', 'Link to {0}', h($socialAccount->provider)) : h($socialAccount->username)
                         ?>
                         <tr>
                             <td><?=

@@ -49,9 +49,9 @@ Configure::write('Users', [
 If email is required and the social network does not return the user email then the user will be required to input the email. Additionally, validation could be enabled, in that case the user will be asked to validate the email before be able to login. There are some cases where the email address already exists onto database, if so, the user will receive an email and will be asked to validate the social account in the app. It is important to take into account that the user account itself will remain active and accessible by other ways (other social network account or username/password).
 ```
 Configure::write('Opauth', [
-    'path' => ['plugin' => 'Users', 'controller' => 'Users', 'action' => 'opauthInit'],
-    'callback_url' => ['plugin' => 'Users', 'controller' => 'Users', 'action' => 'opauthInit', 'callback'],
-    'complete_url' => ['admin' => false, 'plugin' => 'Users', 'controller' => 'Users', 'action' => 'login'],
+    'path' => ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'opauthInit'],
+    'callback_url' => ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'opauthInit', 'callback'],
+    'complete_url' => ['admin' => false, 'plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login'],
     'Strategy' => [
         'Facebook' => [
             'scope' => ['public_profile', 'user_friends', 'email']

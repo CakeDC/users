@@ -9,12 +9,12 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Controller\Traits;
+namespace CakeDC\Users\Controller\Traits;
 
+use CakeDC\Users\Auth\Factory\OpauthFactory;
 use Cake\Core\Configure;
 use Cake\Network\Exception\NotFoundException;
 use Cake\Routing\Router;
-use Users\Auth\Factory\OpauthFactory;
 
 /**
  * Covers registration features and email token validation
@@ -39,7 +39,7 @@ trait SocialTrait
         }
         $url = $this->_generateOpauthCompleteUrl();
         $this->request->session()->write(Configure::read('Users.Key.Session.social'), $response);
-        $this->redirect($url);
+        return $this->redirect($url);
     }
 
     /**

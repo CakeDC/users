@@ -1,6 +1,6 @@
 <?php
 
-namespace Users\Exception;
+namespace CakeDC\Users\Exception;
 
 use Cake\Core\Exception\Exception;
 

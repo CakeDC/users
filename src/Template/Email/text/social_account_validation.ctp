@@ -11,7 +11,7 @@
 
     $activationUrl = [
         '_full' => true,
-        'plugin' => 'Users',
+        'plugin' => 'CakeDC/Users',
         'controller' => 'SocialAccounts',
         'action' => 'validateAccount',
         $socialAccount['provider'],

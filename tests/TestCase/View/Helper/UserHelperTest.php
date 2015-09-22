@@ -9,13 +9,17 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Test\TestCase\View\Helper;
+namespace CakeDC\Users\Test\TestCase\View\Helper;
 
+use CakeDC\Users\View\Helper\UserHelper;
+use Cake\Core\App;
+use Cake\Core\Configure;
+use Cake\Core\Plugin;
 use Cake\Event\Event;
+use Cake\Network\Request;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use Cake\View\View;
-use Users\View\Helper\UserHelper;
 
 /**
  * Users\View\Helper\UserHelper Test Case
@@ -31,10 +35,10 @@ class UserHelperTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        Router::connect(':plugin/:controller/:action');
+        Plugin::routes('CakeDC/Users');
         $this->View = $this->getMock('Cake\View\View', ['append']);
         $this->User = new UserHelper($this->View);
-        $this->request = new \Cake\Network\Request();
+        $this->request = new Request();
     }
 
     /**
@@ -81,7 +85,7 @@ class UserHelperTest extends TestCase
     public function testLogout()
     {
         $result = $this->User->logout();
-        $expected = '<a href="/Users/Users/logout">Logout</a>';
+        $expected = '<a href="/logout">Logout</a>';
         $this->assertEquals($expected, $result);
     }
 
@@ -93,7 +97,7 @@ class UserHelperTest extends TestCase
     public function testLogoutDifferentMessage()
     {
         $result = $this->User->logout('Sign Out');
-        $expected = '<a href="/Users/Users/logout">Sign Out</a>';
+        $expected = '<a href="/logout">Sign Out</a>';
         $this->assertEquals($expected, $result);
     }
 
@@ -105,7 +109,7 @@ class UserHelperTest extends TestCase
     public function testLogoutWithOptions()
     {
         $result = $this->User->logout('Sign Out', ['class' => 'logout']);
-        $expected = '<a href="/Users/Users/logout" class="logout">Sign Out</a>';
+        $expected = '<a href="/logout" class="logout">Sign Out</a>';
         $this->assertEquals($expected, $result);
     }
 
@@ -166,7 +170,7 @@ class UserHelperTest extends TestCase
             ->method('session')
             ->will($this->returnValue($session));
 
-        $expected = '<span class="welcome">Welcome, <a href="/profile/2">david</a></span>';
+        $expected = '<span class="welcome">Welcome, <a href="/profile">david</a></span>';
         $result = $this->User->welcome();
         $this->assertEquals($expected, $result);
     }
@@ -200,8 +204,11 @@ class UserHelperTest extends TestCase
      */
     public function testAddReCaptcha()
     {
+        $siteKey = Configure::read('reCaptcha.key');
+        Configure::write('reCaptcha.key', 'testKey');
         $result = $this->User->addReCaptcha();
-        $this->assertEquals('<div class="g-recaptcha"></div>', $result);
+        $this->assertEquals('<div class="g-recaptcha" data-sitekey="testKey"></div>', $result);
+        Configure::write('reCaptcha.key', $siteKey);
     }
 
 

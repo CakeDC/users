@@ -9,22 +9,22 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Test\TestCase\Auth;
+namespace CakeDC\Users\Test\TestCase\Auth;
 
+use CakeDC\Users\Auth\RememberMeAuthenticate;
+use CakeDC\Users\Auth\SuperuserAuthorize;
 use Cake\Controller\ComponentRegistry;
 use Cake\Controller\Controller;
 use Cake\Event\EventManager;
 use Cake\Network\Request;
 use Cake\Network\Response;
 use Cake\TestSuite\TestCase;
-use Users\Auth\RememberMeAuthenticate;
-use Users\Auth\SuperuserAuthorize;
 
 class RememberMeAuthenticateTest extends TestCase
 {
 
     public $fixtures = [
-        'plugin.users.users',
+        'plugin.CakeDC/Users.users',
     ];
 
     /**
@@ -82,7 +82,7 @@ class RememberMeAuthenticateTest extends TestCase
                 ->method('read')
                 ->with('remember_me')
                 ->will($this->returnValue([
-                    'id' => 1,
+                    'id' => '00000000-0000-0000-0000-000000000001',
                     'user_agent' => 'user-agent'
                 ]));
         $registry = new ComponentRegistry($this->controller);
@@ -115,7 +115,8 @@ class RememberMeAuthenticateTest extends TestCase
                 ->method('read')
                 ->with('remember_me')
                 ->will($this->returnValue([
-                    'id' => 'bad-user',
+                    //bad-user
+                    'id' => '00000000-0000-0000-0000-000000000000',
                     'user_agent' => 'user-agent'
                 ]));
         $registry = new ComponentRegistry($this->controller);
@@ -149,7 +150,7 @@ class RememberMeAuthenticateTest extends TestCase
                 ->method('read')
                 ->with('remember_me')
                 ->will($this->returnValue([
-                    'id' => 1,
+                    'id' => '00000000-0000-0000-0000-000000000001',
                     'user_agent' => 'bad-agent'
                 ]));
         $registry = new ComponentRegistry($this->controller);

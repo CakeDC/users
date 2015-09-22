@@ -9,7 +9,7 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Test\Fixture;
+namespace CakeDC\Users\Test\Fixture;
 
 use Cake\TestSuite\Fixture\TestFixture;
 
@@ -60,13 +60,13 @@ class UsersFixture extends TestFixture
      */
     public $records = [
         [
-            'id' => 1,
+            'id' => '00000000-0000-0000-0000-000000000001',
             'username' => 'user-1',
             'email' => 'user-1@test.com',
             'password' => '12345',
             'first_name' => 'first1',
             'last_name' => 'last1',
-            'token' => 'xxx',
+            'token' => 'ae93ddbe32664ce7927cf0c5c5a5e59d',
             'token_expires' => '2035-06-24 17:33:54',
             'api_token' => 'yyy',
             'activation_date' => '2015-06-24 17:33:54',
@@ -78,13 +78,13 @@ class UsersFixture extends TestFixture
             'modified' => '2015-06-24 17:33:54'
         ],
         [
-            'id' => 2,
+            'id' => '00000000-0000-0000-0000-000000000002',
             'username' => 'user-2',
             'email' => 'user-2@test.com',
             'password' => '12345',
             'first_name' => 'user',
             'last_name' => 'second',
-            'token' => 'xxx',
+            'token' => '6614f65816754310a5f0553436dd89e9',
             'token_expires' => '2015-06-24 17:33:54',
             'api_token' => 'xxx',
             'activation_date' => '2015-06-24 17:33:54',
@@ -96,14 +96,14 @@ class UsersFixture extends TestFixture
             'modified' => '2015-06-24 17:33:54'
         ],
         [
-            'id' => 3,
+            'id' => '00000000-0000-0000-0000-000000000003',
             'username' => 'user-3',
             'email' => 'user-3@test.com',
             'password' => '12345',
             'first_name' => 'user',
             'last_name' => 'third',
-            'token' => 'xxx',
-            'token_expires' => '2015-06-20 17:33:54',
+            'token' => 'token-3',
+            'token_expires' => '2030-06-20 17:33:54',
             'api_token' => 'xxx',
             'activation_date' => '2015-06-24 17:33:54',
             'tos_date' => '2015-06-24 17:33:54',
@@ -114,14 +114,14 @@ class UsersFixture extends TestFixture
             'modified' => '2015-06-24 17:33:54'
         ],
         [
-            'id' => 4,
+            'id' => '00000000-0000-0000-0000-000000000004',
             'username' => 'user-4',
             'email' => '4@example.com',
             'password' => 'Lorem ipsum dolor sit amet',
             'first_name' => 'FirstName4',
             'last_name' => 'Lorem ipsum dolor sit amet',
-            'token' => 'Lorem ipsum dolor sit amet',
-            'token_expires' => '2015-06-24 17:33:54',
+            'token' => 'token-4',
+            'token_expires' => '2030-06-24 17:33:54',
             'api_token' => 'Lorem ipsum dolor sit amet',
             'activation_date' => '2015-06-24 17:33:54',
             'tos_date' => '2015-06-24 17:33:54',
@@ -132,15 +132,15 @@ class UsersFixture extends TestFixture
             'modified' => '2015-06-24 17:33:54'
         ],
         [
-            'id' => 5,
+            'id' => '00000000-0000-0000-0000-000000000005',
             'username' => 'user-5',
             'email' => 'test@example.com',
-            'password' => 'Lorem ipsum dolor sit amet',
+            'password' => '12345',
             'first_name' => 'first-user-5',
-            'last_name' => 'Lorem ipsum dolor sit amet',
-            'token' => 'Lorem ipsum dolor sit amet',
+            'last_name' => 'firts name 5',
+            'token' => 'token-5',
             'token_expires' => '2015-06-24 17:33:54',
-            'api_token' => 'Lorem ipsum dolor sit amet',
+            'api_token' => '',
             'activation_date' => '2015-06-24 17:33:54',
             'tos_date' => '2015-06-24 17:33:54',
             'active' => 0,
@@ -150,7 +150,7 @@ class UsersFixture extends TestFixture
             'modified' => '2015-06-24 17:33:54'
         ],
         [
-            'id' => 6,
+            'id' => '00000000-0000-0000-0000-000000000006',
             'username' => 'Lorem ipsum dolor sit amet',
             'email' => 'Lorem ipsum dolor sit amet',
             'password' => 'Lorem ipsum dolor sit amet',
@@ -168,7 +168,7 @@ class UsersFixture extends TestFixture
             'modified' => '2015-06-24 17:33:54'
         ],
         [
-            'id' => 7,
+            'id' => '00000000-0000-0000-0000-000000000007',
             'username' => 'Lorem ipsum dolor sit amet',
             'email' => 'Lorem ipsum dolor sit amet',
             'password' => 'Lorem ipsum dolor sit amet',
@@ -186,7 +186,7 @@ class UsersFixture extends TestFixture
             'modified' => '2015-06-24 17:33:54'
         ],
         [
-            'id' => 8,
+            'id' => '00000000-0000-0000-0000-000000000008',
             'username' => 'Lorem ipsum dolor sit amet',
             'email' => 'Lorem ipsum dolor sit amet',
             'password' => 'Lorem ipsum dolor sit amet',
@@ -204,7 +204,7 @@ class UsersFixture extends TestFixture
             'modified' => '2015-06-24 17:33:54'
         ],
         [
-            'id' => 9,
+            'id' => '00000000-0000-0000-0000-000000000009',
             'username' => 'Lorem ipsum dolor sit amet',
             'email' => 'Lorem ipsum dolor sit amet',
             'password' => 'Lorem ipsum dolor sit amet',
@@ -222,7 +222,7 @@ class UsersFixture extends TestFixture
             'modified' => '2015-06-24 17:33:54'
         ],
         [
-            'id' => 10,
+            'id' => '00000000-0000-0000-0000-000000000010',
             'username' => 'Lorem ipsum dolor sit amet',
             'email' => 'Lorem ipsum dolor sit amet',
             'password' => 'Lorem ipsum dolor sit amet',

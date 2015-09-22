@@ -9,12 +9,13 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Controller\Traits;
+namespace CakeDC\Users\Controller\Traits;
 
+use CakeDC\Users\Controller\Component\UsersAuthComponent;
+use CakeDC\Users\Exception\AccountNotActiveException;
+use CakeDC\Users\Exception\MissingEmailException;
 use Cake\Core\Configure;
-use Users\Controller\Component\UsersAuthComponent;
-use Users\Exception\AccountNotActiveException;
-use Users\Exception\MissingEmailException;
+use Cake\Utility\Hash;
 
 /**
  * Covers the login, logout and social login
@@ -33,7 +34,6 @@ trait LoginTrait
     {
         $event = $this->dispatchEvent(UsersAuthComponent::EVENT_BEFORE_LOGIN);
         if (is_array($event->result)) {
-            $this->Auth->setUser($event->result);
             return $this->_afterIdentifyUser($event->result);
         }
         if ($event->isStopped()) {
@@ -80,17 +80,21 @@ trait LoginTrait
         } else {
             $message = __d('Users', 'Username or password is incorrect');
             if ($socialLogin) {
-                $socialData = $this->request->session()->check($socialKey);
-                if (Configure::read('Users.Email.required') &&
-                    empty($socialData->info[Configure::read('data_email_key')]) &&
-                    empty($this->request->data(Configure::read('Users.Key.Data.email')))) {
-                    return $this->redirect([
-                        'controller' => 'Users',
-                        'action' => 'socialEmail'
-                    ]);
-                } else {
-                    $message = __d('Users', 'There was an error associating your social network account');
+                $socialData = $this->request->session()->read($socialKey);
+                $socialDataEmail = null;
+                if (!empty($socialData->info)) {
+                    $socialDataEmail = Hash::get((array)$socialData->info, Configure::read('data_email_key'));
                 }
+                $postedEmail = $this->request->data(Configure::read('Users.Key.Data.email'));
+                if (Configure::read('Users.Email.required') &&
+                    empty($socialDataEmail) &&
+                    empty($postedEmail)) {
+                        return $this->redirect([
+                            'controller' => 'Users',
+                            'action' => 'socialEmail'
+                        ]);
+                }
+                $message = __d('Users', 'There was an error associating your social network account');
             }
             $this->Flash->error($message, 'default', [], 'auth');
         }

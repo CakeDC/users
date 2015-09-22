@@ -9,7 +9,7 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Controller;
+namespace CakeDC\Users\Controller;
 
 use App\Controller\AppController as BaseController;
 
@@ -28,6 +28,6 @@ class AppController extends BaseController
         parent::initialize();
         $this->loadComponent('Security');
         $this->loadComponent('Csrf');
-        $this->loadComponent('Users.UsersAuth');
+        $this->loadComponent('CakeDC/Users.UsersAuth');
     }
 }

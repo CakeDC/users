@@ -52,19 +52,19 @@ return [
     'Users.SimpleRbac.permissions' => [
         [
             'role' => '*',
-            'plugin' => 'Users',
+            'plugin' => 'CakeDC/Users',
             'controller' => '*',
             'action' => '*',
         ],
         [
             'role' => 'user',
-            'plugin' => 'Users',
+            'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => ['register', 'edit', 'view'],
         ],
         [
             'role' => 'user',
-            'plugin' => 'Users',
+            'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => '*',
             'allowed' => false,

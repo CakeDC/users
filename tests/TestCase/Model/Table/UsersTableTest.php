@@ -9,18 +9,18 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace Users\Test\TestCase\Model\Table;
+namespace CakeDC\Users\Test\TestCase\Model\Table;
 
+use CakeDC\Users\Exception\AccountNotActiveException;
+use CakeDC\Users\Exception\UserAlreadyActiveException;
+use CakeDC\Users\Exception\UserNotFoundException;
+use CakeDC\Users\Model\Table\SocialAccountsTable;
+use Cake\Core\Plugin;
 use Cake\Network\Email\Email;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use InvalidArgumentException;
-use Opauth\Opauth\Response;
-use Users\Exception\AccountNotActiveException;
-use Users\Exception\UserAlreadyActiveException;
-use Users\Exception\UserNotFoundException;
-use Users\Model\Table\SocialAccountsTable;
 
 /**
  * Users\Model\Table\UsersTable Test Case
@@ -34,8 +34,8 @@ class UsersTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.users.users',
-        'plugin.users.social_accounts'
+        'plugin.CakeDC/Users.users',
+        'plugin.CakeDC/Users.social_accounts'
     ];
 
     /**
@@ -46,13 +46,19 @@ class UsersTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->Users = TableRegistry::get('Users.Users');
+        $this->Users = TableRegistry::get('CakeDC/Users.Users');
         $this->fullBaseBackup = Router::fullBaseUrl();
         Router::fullBaseUrl('http://users.test');
         Email::configTransport('test', [
             'className' => 'Debug'
         ]);
+        $this->configEmail = Email::config('default');
+        Email::config('default', [
+            'transport' => 'test',
+            'from' => 'cakedc@example.com'
+        ]);
         $this->Email = new Email(['from' => 'test@example.com', 'transport' => 'test']);
+        Plugin::routes('CakeDC/Users');
     }
 
     /**
@@ -64,7 +70,9 @@ class UsersTableTest extends TestCase
     {
         unset($this->Users);
         Router::fullBaseUrl($this->fullBaseBackup);
+        Email::drop('default');
         Email::dropTransport('test');
+        Email::config('default', $this->configEmail);
 
         parent::tearDown();
     }
@@ -123,7 +131,7 @@ class UsersTableTest extends TestCase
     }
 
     /**
-     * @expectedException InvalidArgumentException
+     * test
      */
     public function testValidateRegisterTosRequired()
     {
@@ -135,7 +143,9 @@ class UsersTableTest extends TestCase
             'first_name' => 'test',
             'last_name' => 'user',
         ];
-        $this->Users->register($this->Users->newEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1, 'use_tos' => 1]);
+        $userEntity = $this->Users->newEntity();
+        $this->Users->register($userEntity, $user, ['token_expiration' => 3600, 'validate_email' => 1, 'use_tos' => 1]);
+        $this->assertEquals(['tos' => ['_required' => 'This field is required']], $userEntity->errors());
     }
 
     /**
@@ -162,65 +172,12 @@ class UsersTableTest extends TestCase
      */
     public function testActivateUser()
     {
-        $user = $this->Users->find()->where(['id' => 1])->first();
+        $user = $this->Users->find()->where(['id' => '00000000-0000-0000-0000-000000000001'])->first();
         $result = $this->Users->activateUser($user);
         $this->assertTrue($result->active);
     }
 
-    /**
-     * Test resetToken
-     *
-     */
-    public function testResetToken()
-    {
-        $user = $this->Users->findAllByUsername('user-1')->first();
-        $result = $this->Users->resetToken('user-1', [
-            'expiration' => 3600,
-            'checkActive' => true,
-        ]);
-        $this->assertNotEmpty($result->token);
-        $this->assertNotEquals($user->token, $result->token);
-        $this->assertNotEmpty($result->token_expires);
-        $this->assertEmpty($result->activation_date);
-        $this->assertFalse($result->active);
-    }
-
-    /**
-     * Test resetToken
-     *
-     * @expectedException InvalidArgumentException
-     */
-    public function testResetTokenWithNullParams()
-    {
-        $this->Users->resetToken(null);
-    }
-
-    /**
-     * Test resetToken
-     *
-     * @expectedException \Users\Exception\UserNotFoundException
-     */
-    public function testResetTokenNonExistentUser()
-    {
-        $this->Users->resetToken('user-not-found', [
-            'expiration' => 3600
-        ]);
-    }
-
-    /**
-     * Test resetToken
-     *
-     * @expectedException \Users\Exception\UserAlreadyActiveException
-     */
-    public function testResetTokenUserAlreadyActive()
-    {
-        $this->Users->resetToken('user-4', [
-            'expiration' => 3600,
-            'checkActive' => true,
-        ]);
-    }
-
-    public function testSocialLoginExistingAccount()
+    public function testSocialLogin()
     {
         $raw = [
             'id' => 'reference-2-1',
@@ -230,8 +187,11 @@ class UsersTableTest extends TestCase
             'user_email' => 'user-2@test.com',
             'link' => 'link'
         ];
-        $data = new Response(SocialAccountsTable::PROVIDER_FACEBOOK, $raw);
-        $data->setData('uid', 'id');
+        $data = new \Cake\Network\Response();
+        $data->provider = SocialAccountsTable::PROVIDER_FACEBOOK;
+        $data->email = 'user-2@test.com';
+        $data->raw = $raw;
+        $data->uid = 'reference-2-1';
         $options = [
             'use_email' => 1,
             'validate_email' => 1,
@@ -245,7 +205,7 @@ class UsersTableTest extends TestCase
     /**
      * Test socialLogin
      *
-     * @expectedException \Users\Exception\AccountNotActiveException
+     * @expectedException CakeDC\Users\Exception\AccountNotActiveException
      */
     public function testSocialLoginInactiveAccount()
     {
@@ -256,8 +216,14 @@ class UsersTableTest extends TestCase
             'verified' => 1,
             'user_email' => 'hello@test.com',
         ];
-        $data = new Response(SocialAccountsTable::PROVIDER_TWITTER, $raw);
-        $data->setData('uid', 'id');
+        $data = new \Cake\Network\Response();
+        $data->provider = SocialAccountsTable::PROVIDER_TWITTER;
+        $data->email = 'hello@test.com';
+        $data->raw = $raw;
+        $data->uid = 'reference-2-2';
+        $data->info = [
+            'first_name' => 'User 2',
+        ];
         $options = [
             'use_email' => 1,
             'validate_email' => 1,
@@ -273,7 +239,7 @@ class UsersTableTest extends TestCase
      *
      * @expectedException InvalidArgumentException
      */
-    public function testSocialLoginddCreateNewAccountWithNoCredentials()
+    public function testSocialLoginCreateNewAccountWithNoCredentials()
     {
         $raw = [
             'id' => 'reference-not-existing',
@@ -281,8 +247,17 @@ class UsersTableTest extends TestCase
             'gender' => 'male',
             'user_email' => 'user@test.com',
         ];
-        $data = new Response(SocialAccountsTable::PROVIDER_TWITTER, $raw);
-        $data->setData('uid', 'id');
+        $data = new \Cake\Network\Response();
+        $data->provider = SocialAccountsTable::PROVIDER_TWITTER;
+        $data->email = 'user@test.com';
+        $data->raw = $raw;
+        $data->validated = true;
+        $data->uid = 'reference-not-existing';
+        $data->info = [
+            'first_name' => 'Not existing user',
+        ];
+        $data->credentials = [];
+        $data->name = '';
         $options = [
             'use_email' => 0,
             'validate_email' => 1,
@@ -307,11 +282,17 @@ class UsersTableTest extends TestCase
             'twitter' => 'link'
         ];
 
-        $data = new Response(SocialAccountsTable::PROVIDER_TWITTER, $raw);
-        $data->setData('uid', 'id');
-        $data->setData('info.first_name', 'first_name');
-        $data->setData('info.last_name', 'last_name');
-        $data->setData('info.urls.twitter', 'twitter');
+        $data = new \Cake\Network\Response();
+        $data->provider = SocialAccountsTable::PROVIDER_TWITTER;
+        $data->email = 'user-2@test.com';
+        $data->raw = $raw;
+        $data->uid = 'no-existing-reference';
+        $data->info = [
+            'first_name' => 'First Name',
+            'last_name' => 'Last Name',
+            'urls' => ['twitter' => 'twitter'],
+        ];
+        $data->validated = true;
 
         $data->email = 'username@test.com';
         $data->credentials = [
@@ -331,141 +312,5 @@ class UsersTableTest extends TestCase
         $this->assertEquals('username', $result->username);
         $this->assertEquals('First Name', $result->first_name);
         $this->assertEquals('Last Name', $result->last_name);
-    }
-
-    /**
-     * Test sendValidationEmail method
-     *
-     * @return void
-     */
-    public function testSendValidationEmail()
-    {
-        $user = $this->Users->newEntity([
-                'first_name' => 'FirstName',
-                'email' => 'test@example.com',
-                'token' => '12345'
-            ]);
-        $this->Email->template('Users.validation')
-            ->emailFormat('both');
-
-        $result = $this->Users->sendValidationEmail($user, $this->Email);
-        $this->assertTextContains('From: test@example.com', $result['headers']);
-        $this->assertTextContains('To: test@example.com', $result['headers']);
-        $this->assertTextContains('Subject: FirstName, Your account validation link', $result['headers']);
-        $this->assertTextContains('Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-Hi FirstName,
-
-Please copy the following address in your web browser http://users.test/users/users/validate-email/12345
-Thank you,
-', $result['message']);
-        $this->assertTextContains('Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
-<html>
-<head>
-    <title>Email/html</title>
-</head>
-<body>
-    <p>
-Hi FirstName,
-</p>
-<p>
-    <strong><a href="http://users.test/users/users/validate-email/12345">Activate your account here</a></strong>
-</p>
-<p>
-    If the link is not correcly displayed, please copy the following address in your web browser http://users.test/users/users/validate-email/12345</p>
-<p>
-    Thank you,
-</p>
-</body>
-</html>
-', $result['message']);
-    }
-
-    /**
-     * Test method
-     *
-     * @return void
-     */
-    public function testSendResetPasswordEmail()
-    {
-        $user = $this->Users->newEntity([
-                'first_name' => 'FirstName',
-                'email' => 'test@example.com',
-                'token' => '12345'
-            ]);
-        $this->Email->template('Users.reset_password')
-            ->emailFormat('both');
-
-        $result = $this->Users->sendResetPasswordEmail($user, $this->Email);
-        $this->assertTextContains('From: test@example.com', $result['headers']);
-        $this->assertTextContains('To: test@example.com', $result['headers']);
-        $this->assertTextContains('Subject: FirstName, Your reset password link', $result['headers']);
-        $this->assertTextContains('Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-Hi FirstName,
-
-Please copy the following address in your web browser http://users.test/users/users/reset-password/12345
-Thank you,
-', $result['message']);
-        $this->assertTextContains('Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
-<html>
-<head>
-    <title>Email/html</title>
-</head>
-<body>
-    <p>
-Hi FirstName,
-</p>
-<p>
-    <strong><a href="http://users.test/users/users/reset-password/12345">Reset your password here</a></strong>
-</p>
-<p>
-    If the link is not correcly displayed, please copy the following address in your web browser http://users.test/users/users/reset-password/12345</p>
-<p>
-    Thank you,
-</p>
-</body>
-</html>
-', $result['message']);
-    }
-
-    /**
-     * testGetEmailInstance
-     *
-     * @return void
-     */
-    public function testGetEmailInstance()
-    {
-        $email = $this->Users->getEmailInstance();
-        $this->assertInstanceOf('Cake\Network\Email\Email', $email);
-        $this->assertEquals([
-            'template' => 'Users.validation',
-            'layout' => 'default'
-        ], $email->template());
-    }
-
-    /**
-     * testGetEmailInstanceOverrideEmail
-     *
-     * @return void
-     */
-    public function testGetEmailInstanceOverrideEmail()
-    {
-        $email = new Email();
-        $email->template('another_template');
-        $email = $this->Users->getEmailInstance($email);
-        $this->assertInstanceOf('Cake\Network\Email\Email', $email);
-        $this->assertEquals([
-            'template' => 'another_template',
-            'layout' => 'default'
-        ], $email->template());
     }
 }
