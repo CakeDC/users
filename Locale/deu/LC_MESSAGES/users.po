@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CakeDC Users Plugin\n"
 "POT-Creation-Date: 2010-09-15 15:48+0200\n"
-"PO-Revision-Date: 2015-09-22 12:21+0200\n"
+"PO-Revision-Date: 2015-09-22 14:12+0200\n"
 "Last-Translator: Florian Krämer <florian.kraemer@cakedc.com>\n"
 "Language-Team: Cake Development Corporation <contact@cakedc.com>\n"
 "MIME-Version: 1.0\n"
@@ -90,7 +90,7 @@ msgstr "Du bist bereits registriert und angemeldet!"
 #: /controllers/users_controller.php:282
 #: /tests/cases/controllers/users_controller.test.php:194
 msgid "Your account has been created. You should receive an e-mail shortly to authenticate your account. Once validated you will be able to login."
-msgstr "Dein Account wurde angelegt. Du solltest in Kürze eine Email erhalten um Deinen Account zu bestötigen. Einmal bestätigt wirst Du Dich anmelden können."
+msgstr "Dein Account wurde angelegt. Du solltest in Kürze eine Email erhalten um Deinen Account zu bestätigen. Einmal bestätigt wirst Du Dich anmelden können."
 
 #: /controllers/users_controller.php:287
 #: /tests/cases/controllers/users_controller.test.php:205
