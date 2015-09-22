@@ -221,6 +221,9 @@ class UsersTableTest extends TestCase
         $data->email = 'hello@test.com';
         $data->raw = $raw;
         $data->uid = 'reference-2-2';
+        $data->info = [
+            'first_name' => 'User 2',
+        ];
         $options = [
             'use_email' => 1,
             'validate_email' => 1,
@@ -249,6 +252,9 @@ class UsersTableTest extends TestCase
         $data->email = 'user@test.com';
         $data->raw = $raw;
         $data->uid = 'reference-not-existing';
+        $data->info = [
+            'first_name' => 'Not existing user',
+        ];
         $options = [
             'use_email' => 0,
             'validate_email' => 1,
@@ -283,6 +289,7 @@ class UsersTableTest extends TestCase
             'last_name' => 'Last Name',
             'urls' => ['twitter' => 'twitter'],
         ];
+        $data->validated = true;
 
         $data->email = 'username@test.com';
         $data->credentials = [
