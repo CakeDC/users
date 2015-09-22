@@ -21,7 +21,6 @@ use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use InvalidArgumentException;
-use Opauth\Opauth\Response;
 
 /**
  * Users\Model\Table\UsersTable Test Case
@@ -188,8 +187,11 @@ class UsersTableTest extends TestCase
             'user_email' => 'user-2@test.com',
             'link' => 'link'
         ];
-        $data = new Response(SocialAccountsTable::PROVIDER_FACEBOOK, $raw);
-        $data->setData('uid', 'id');
+        $data = new \Cake\Network\Response();
+        $data->provider = SocialAccountsTable::PROVIDER_FACEBOOK;
+        $data->email = 'user-2@test.com';
+        $data->raw = $raw;
+        $data->uid = 'reference-2-1';
         $options = [
             'use_email' => 1,
             'validate_email' => 1,
@@ -214,8 +216,11 @@ class UsersTableTest extends TestCase
             'verified' => 1,
             'user_email' => 'hello@test.com',
         ];
-        $data = new Response(SocialAccountsTable::PROVIDER_TWITTER, $raw);
-        $data->setData('uid', 'id');
+        $data = new \Cake\Network\Response();
+        $data->provider = SocialAccountsTable::PROVIDER_TWITTER;
+        $data->email = 'hello@test.com';
+        $data->raw = $raw;
+        $data->uid = 'reference-2-2';
         $options = [
             'use_email' => 1,
             'validate_email' => 1,
@@ -239,8 +244,11 @@ class UsersTableTest extends TestCase
             'gender' => 'male',
             'user_email' => 'user@test.com',
         ];
-        $data = new Response(SocialAccountsTable::PROVIDER_TWITTER, $raw);
-        $data->setData('uid', 'id');
+        $data = new \Cake\Network\Response();
+        $data->provider = SocialAccountsTable::PROVIDER_TWITTER;
+        $data->email = 'user@test.com';
+        $data->raw = $raw;
+        $data->uid = 'reference-not-existing';
         $options = [
             'use_email' => 0,
             'validate_email' => 1,
@@ -265,11 +273,16 @@ class UsersTableTest extends TestCase
             'twitter' => 'link'
         ];
 
-        $data = new Response(SocialAccountsTable::PROVIDER_TWITTER, $raw);
-        $data->setData('uid', 'id');
-        $data->setData('info.first_name', 'first_name');
-        $data->setData('info.last_name', 'last_name');
-        $data->setData('info.urls.twitter', 'twitter');
+        $data = new \Cake\Network\Response();
+        $data->provider = SocialAccountsTable::PROVIDER_TWITTER;
+        $data->email = 'user-2@test.com';
+        $data->raw = $raw;
+        $data->uid = 'no-existing-reference';
+        $data->info = [
+            'first_name' => 'First Name',
+            'last_name' => 'Last Name',
+            'urls' => ['twitter' => 'twitter'],
+        ];
 
         $data->email = 'username@test.com';
         $data->credentials = [
