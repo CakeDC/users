@@ -11,6 +11,11 @@
 
 namespace CakeDC\Users\Model\Behavior;
 
+use CakeDC\Users\Exception\TokenExpiredException;
+use CakeDC\Users\Exception\UserAlreadyActiveException;
+use CakeDC\Users\Exception\UserNotFoundException;
+use CakeDC\Users\Model\Behavior\Behavior;
+use CakeDC\Users\Model\Entity\User;
 use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\Event;
@@ -18,11 +23,6 @@ use Cake\Utility\Hash;
 use Cake\Validation\Validator;
 use DateTime;
 use InvalidArgumentException;
-use CakeDC\Users\Exception\TokenExpiredException;
-use CakeDC\Users\Exception\UserAlreadyActiveException;
-use CakeDC\Users\Exception\UserNotFoundException;
-use CakeDC\Users\Model\Behavior\Behavior;
-use CakeDC\Users\Model\Entity\User;
 
 
 /**
@@ -125,7 +125,8 @@ class RegisterBehavior extends Behavior
      * @param string $name name
      * @return Validator
      */
-    public function buildValidator(Event $event, Validator $validator, $name){
+    public function buildValidator(Event $event, Validator $validator, $name)
+    {
         if ($name === 'default') {
             return $this->_emailValidator($validator, $this->validateEmail);
         }

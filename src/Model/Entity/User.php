@@ -81,7 +81,7 @@ class User extends Entity
      * Hash a password using the configured password hasher,
      * use DefaultPasswordHasher if no one was configured
      *
-     * @param $password
+     * @param string $password password to be hashed
      * @return mixed
      */
     public function hashPassword($password)

@@ -11,11 +11,11 @@
 
 namespace CakeDC\Users\View\Helper;
 
+use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Utility\Hash;
 use Cake\View\Helper;
-use CakeDC\Users\Controller\Component\UsersAuthComponent;
 
 /**
  * User helper
