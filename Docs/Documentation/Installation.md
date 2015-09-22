@@ -5,7 +5,7 @@ Composer
 ------
 
 ```
-composer require cakedc/users:~3.0
+composer require cakedc/users:3.0.*
 ```
 
 if you want to use social login features...
