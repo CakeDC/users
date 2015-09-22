@@ -1,10 +1,10 @@
 {
     "name": "cakedc/users",
-    "description": "Users plugin for CakePHP 3.x",
+    "description": "Users plugin for CakePHP 3.1",
     "type": "cakephp-plugin",
     "require": {
         "php": ">=5.4.16",
-        "cakephp/cakephp": "~3.0.0"
+        "cakephp/cakephp": "~3.1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "*",
