@@ -256,6 +256,7 @@ class UsersTableTest extends TestCase
             'first_name' => 'Not existing user',
         ];
         $data->credentials = [];
+        $data->name = '';
         $options = [
             'use_email' => 0,
             'validate_email' => 1,
