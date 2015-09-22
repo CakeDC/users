@@ -28,7 +28,6 @@ class RememberMeAuthenticate extends BaseAuthenticate
      *
      * @param Request $request Cake request object.
      * @param Response $response Cake response object.
-     * @param array $cookie Array with value, key cookie.
      * @return mixed
      */
     public function authenticate(Request $request, Response $response)
