@@ -239,7 +239,7 @@ class UsersTableTest extends TestCase
      *
      * @expectedException InvalidArgumentException
      */
-    public function testSocialLoginddCreateNewAccountWithNoCredentials()
+    public function testSocialLoginCreateNewAccountWithNoCredentials()
     {
         $raw = [
             'id' => 'reference-not-existing',
@@ -251,6 +251,7 @@ class UsersTableTest extends TestCase
         $data->provider = SocialAccountsTable::PROVIDER_TWITTER;
         $data->email = 'user@test.com';
         $data->raw = $raw;
+        $data->validated = true;
         $data->uid = 'reference-not-existing';
         $data->info = [
             'first_name' => 'Not existing user',
