@@ -11,8 +11,8 @@
 
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
-use Cake\Network\Request;
 use CakeDC\Users\Test\TestCase\Controller\Traits\BaseTraitTest;
+use Cake\Network\Request;
 
 class SimpleCrudTraitTest extends BaseTraitTest
 {

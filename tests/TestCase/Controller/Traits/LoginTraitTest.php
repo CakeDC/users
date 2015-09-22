@@ -11,16 +11,16 @@
 
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
+use CakeDC\Users\Controller\Component\UsersAuthComponent;
+use CakeDC\Users\Controller\Traits\LoginTrait;
+use CakeDC\Users\Exception\AccountNotActiveException;
+use CakeDC\Users\Exception\MissingEmailException;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Network\Request;
 use Cake\TestSuite\TestCase;
 use Opauth\Opauth\Response;
-use CakeDC\Users\Controller\Component\UsersAuthComponent;
-use CakeDC\Users\Controller\Traits\LoginTrait;
-use CakeDC\Users\Exception\AccountNotActiveException;
-use CakeDC\Users\Exception\MissingEmailException;
 
 class LoginTraitTest extends TestCase
 {

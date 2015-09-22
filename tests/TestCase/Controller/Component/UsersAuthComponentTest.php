@@ -11,6 +11,9 @@
 
 namespace CakeDC\Users\Test\TestCase\Controller\Component;
 
+use CakeDC\Users\Controller\Component\UsersAuthComponent;
+use CakeDC\Users\Exception\MissingEmailException;
+use CakeDC\Users\Exception\UserNotFoundException;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Core\Plugin;
@@ -22,9 +25,6 @@ use Cake\ORM\Entity;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Security;
-use CakeDC\Users\Controller\Component\UsersAuthComponent;
-use CakeDC\Users\Exception\MissingEmailException;
-use CakeDC\Users\Exception\UserNotFoundException;
 
 /**
  * Users\Controller\Component\UsersAuthComponent Test Case

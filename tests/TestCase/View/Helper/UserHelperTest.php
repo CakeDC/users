@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Test\TestCase\View\Helper;
 
+use CakeDC\Users\View\Helper\UserHelper;
 use Cake\Core\App;
 use Cake\Core\Configure;
 use Cake\Core\Plugin;
@@ -19,7 +20,6 @@ use Cake\Network\Request;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use Cake\View\View;
-use CakeDC\Users\View\Helper\UserHelper;
 
 /**
  * Users\View\Helper\UserHelper Test Case

@@ -11,13 +11,13 @@
 
 namespace CakeDC\Users\Test\TestCase\Model\Table;
 
+use CakeDC\Users\Model\Table\SocialAccountsTable;
+use CakeDC\Users\Model\Table\UsersTable;
 use Cake\Event\Event;
 use Cake\Network\Email\Email;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
-use CakeDC\Users\Model\Table\SocialAccountsTable;
-use CakeDC\Users\Model\Table\UsersTable;
 
 /**
  * Users\Model\Table\UsersTable Test Case

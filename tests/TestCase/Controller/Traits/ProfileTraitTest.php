@@ -11,9 +11,9 @@
 
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
-use Cake\ORM\TableRegistry;
 use CakeDC\Users\Controller\Traits\ProfileTrait;
 use CakeDC\Users\Test\TestCase\Controller\Traits\BaseTraitTest;
+use Cake\ORM\TableRegistry;
 
 class ProfileTraitTest extends BaseTraitTest
 {

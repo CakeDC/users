@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Test\TestCase\Controller\Component;
 
+use CakeDC\Users\Controller\Component\RememberMeComponent;
 use Cake\Controller\ComponentRegistry;
 use Cake\Controller\Component\AuthComponent;
 use Cake\Controller\Component\CookieComponent;
@@ -22,7 +23,6 @@ use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Security;
 use InvalidArgumentException;
-use CakeDC\Users\Controller\Component\RememberMeComponent;
 
 /**
  * Users\Controller\Component\RememberMeComponent Test Case

@@ -11,14 +11,14 @@
 
 namespace CakeDC\Users\Test\TestCase\Auth;
 
+use CakeDC\Users\Auth\RememberMeAuthenticate;
+use CakeDC\Users\Auth\SuperuserAuthorize;
 use Cake\Controller\ComponentRegistry;
 use Cake\Controller\Controller;
 use Cake\Event\EventManager;
 use Cake\Network\Request;
 use Cake\Network\Response;
 use Cake\TestSuite\TestCase;
-use CakeDC\Users\Auth\RememberMeAuthenticate;
-use CakeDC\Users\Auth\SuperuserAuthorize;
 
 class RememberMeAuthenticateTest extends TestCase
 {

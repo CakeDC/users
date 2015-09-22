@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Test\TestCase\Auth;
 
+use CakeDC\Users\Auth\SimpleRbacAuthorize;
 use Cake\Controller\ComponentRegistry;
 use Cake\Controller\Controller;
 use Cake\Event\EventManager;
@@ -19,7 +20,6 @@ use Cake\Network\Response;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Hash;
 use ReflectionClass;
-use CakeDC\Users\Auth\SimpleRbacAuthorize;
 
 class SimpleRbacAuthorizeTest extends TestCase
 {
