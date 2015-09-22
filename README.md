@@ -1,11 +1,11 @@
 CakeDC Users Plugin
 ===================
 
-[![Bake Status](https://secure.travis-ci.org/CakeDC/users.png?branch=3.0.x)](http://travis-ci.org/CakeDC/users)
+[![Bake Status](https://secure.travis-ci.org/CakeDC/users.png?branch=3.1.x)](http://travis-ci.org/CakeDC/users)
 [![Downloads](https://poser.pugx.org/CakeDC/users/d/total.png)](https://packagist.org/packages/CakeDC/users)
 [![Latest Version](https://poser.pugx.org/CakeDC/users/v/stable.png)](https://packagist.org/packages/CakeDC/users)
 
-IMPORTANT: 3.0.x version is BETA status now, we are still improving and testing it.
+IMPORTANT: 3.1.x version is BETA status now, we are still improving and testing it.
 
 The **Users** plugin is back!
 
@@ -34,7 +34,7 @@ Another decision made was limiting the plugin dependencies on other packages as 
 Requirements
 ------------
 
-* CakePHP 3.0.*
+* CakePHP 3.1.*
 * PHP 5.4.16+
 
 Documentation
@@ -45,11 +45,11 @@ For documentation, as well as tutorials, see the [Docs](Docs/Home.md) directory 
 Roadmap
 ------
 
-* 3.0.2
+* 3.1.2
   * Add Google authentication
   * Add Instagram authentication
   * Improve unit test coverage
-* YOU ARE HERE > 3.0.0 Migration to CakePHP 3.0
+* YOU ARE HERE > 3.1.0 Migration to CakePHP 3.0
   * Unit test coverage improvements
   * Refactor UsersTable to Behavior
   * Add google authentication
