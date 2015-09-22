@@ -24,7 +24,6 @@ use Cake\Validation\Validator;
 use DateTime;
 use InvalidArgumentException;
 
-
 /**
  * Covers the user registration
  */

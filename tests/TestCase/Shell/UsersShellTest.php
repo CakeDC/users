@@ -111,7 +111,6 @@ class UsersShellTest extends TestCase
         //TODO: Add assertions with 'out'
 
         $this->Shell->runCommand(['addUser', '--username=' . $user['username'], '--password=' . $user['password'], '--email=' . $user['email']]);
-
     }
 
     /**
@@ -160,7 +159,6 @@ class UsersShellTest extends TestCase
         //TODO: Add assertions with 'out'
 
         $this->Shell->runCommand(['addUser']);
-
     }
 
     /**
@@ -203,7 +201,6 @@ class UsersShellTest extends TestCase
             ->will($this->returnValue($userSaved));
 
         $this->Shell->runCommand(['addSuperuser']);
-
     }
 
     /**
@@ -222,7 +219,6 @@ class UsersShellTest extends TestCase
             ->with(['password' => 'hashedPasssword'], ['id IS NOT NULL']);
 
         $this->Shell->runCommand(['resetAllPasswords', '123']);
-
     }
 
     /**
@@ -237,6 +233,5 @@ class UsersShellTest extends TestCase
             ->with('Please enter a password.');
 
         $this->Shell->runCommand(['resetAllPasswords']);
-
     }
 }

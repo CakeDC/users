@@ -270,7 +270,7 @@ class UsersShell extends Shell
     /**
      * Change user active field
      *
-     * @param $active active value
+     * @param bool $active active value
      * @return bool
      */
     protected function _changeUserActive($active)
