@@ -11,11 +11,11 @@
 
 namespace CakeDC\Users\Shell;
 
+use CakeDC\Users\Model\Entity\User;
 use Cake\Auth\DefaultPasswordHasher;
 use Cake\Console\Shell;
 use Cake\Core\Configure;
 use Cake\Utility\Hash;
-use CakeDC\Users\Model\Entity\User;
 
 /**
  * Shell with utilities for the Users Plugin
@@ -64,8 +64,7 @@ class UsersShell extends Shell
                 'username' => ['short' => 'u', 'help' => 'The username for the new user'],
                 'password' => ['short' => 'p', 'help' => 'The password for the new user'],
                 'email' => ['short' => 'e', 'help' => 'The email for the new user']
-            ])
-        ;
+            ]);
         return $parser;
     }
 
@@ -226,7 +225,6 @@ class UsersShell extends Shell
     {
         $user = $this->_changeUserActive(true);
         $this->out(__d('Users', 'User was activated: {0}', $user->username));
-
     }
 
     /**
@@ -272,7 +270,8 @@ class UsersShell extends Shell
     /**
      * Change user active field
      *
-     * @param $active
+     * @param $active active value
+     * @return bool
      */
     protected function _changeUserActive($active)
     {
@@ -289,12 +288,12 @@ class UsersShell extends Shell
     /**
      * Update user by username
      *
-     * @param $username
-     * @param $data
+     * @param string $username username
+     * @param array $data data
+     * @return bool
      */
     protected function _updateUser($username, $data)
     {
-        /** @var \Users\Model\Entity\User */
         $user = $this->Users->find()->where(['Users.username' => $username])->first();
         if (empty($user)) {
             $this->error(__d('Users', 'The user was not found.'));
@@ -333,7 +332,7 @@ class UsersShell extends Shell
     /**
      * Generates a random password.
      *
-     * @return void
+     * @return string
      */
     protected function _generateRandomPassword()
     {
@@ -343,7 +342,7 @@ class UsersShell extends Shell
     /**
      * Generates a random username based on a list of preexisting ones.
      *
-     * @return void
+     * @return string
      */
     protected function _generateRandomUsername()
     {
@@ -353,8 +352,8 @@ class UsersShell extends Shell
     /**
      * Hash a password
      *
-     * @param password
-     * @return void
+     * @param string $password password
+     * @return string
      */
     protected function _generatedHashedPassword($password)
     {
