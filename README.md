@@ -5,6 +5,8 @@ CakeDC Users Plugin
 [![Downloads](https://poser.pugx.org/CakeDC/users/d/total.png)](https://packagist.org/packages/CakeDC/users)
 [![Latest Version](https://poser.pugx.org/CakeDC/users/v/stable.png)](https://packagist.org/packages/CakeDC/users)
 
+**IMPORTANT: 3.x version is ALPHA status now and you can check it out from [CakeDC Users Plugin for CakePHP 3.x](https://github.com/cakedc/users/tree/3.x)!, we are constantly improving and testing it now.**
+
 The **Users** plugin is for allowing users to register and login manage their profile. It also allows admins to manage the users.
 
 The plugin is thought as a base to extend your app specific users controller and model from.

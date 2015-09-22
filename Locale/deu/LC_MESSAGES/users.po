@@ -12,16 +12,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CakeDC Users Plugin\n"
 "POT-Creation-Date: 2010-09-15 15:48+0200\n"
-"PO-Revision-Date: 2011-04-28 23:38+0100\n"
+"PO-Revision-Date: 2015-09-22 14:12+0200\n"
 "Last-Translator: Florian Krämer <florian.kraemer@cakedc.com>\n"
 "Language-Team: Cake Development Corporation <contact@cakedc.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Poedit-Language: German\n"
-"X-Poedit-Country: GERMANY\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"Language: de_DE\n"
+"X-Generator: Poedit 1.8.4\n"
 
 #: /controllers/details_controller.php:57;138
 msgid "Invalid Detail."
@@ -37,23 +37,23 @@ msgstr "%s Details gespeichert"
 
 #: /controllers/details_controller.php:113;196
 msgid "Invalid id for Detail"
-msgstr ""
+msgstr "Ungültige Id für Detail"
 
 #: /controllers/details_controller.php:117;200
 msgid "Detail deleted"
-msgstr ""
+msgstr "Detail gelöscht"
 
 #: /controllers/details_controller.php:152;175
 msgid "The Detail has been saved"
-msgstr ""
+msgstr "Das Detail wurde gespeichert"
 
 #: /controllers/details_controller.php:155;178
 msgid "The Detail could not be saved. Please, try again."
-msgstr ""
+msgstr "Das Detail konnte nicht gespeichert werden. Bitte versuche es erneut."
 
 #: /controllers/details_controller.php:170
 msgid "Invalid Detail"
-msgstr ""
+msgstr "Ungültiges Detail"
 
 #: /controllers/users_controller.php:157
 msgid "Profile saved."
@@ -77,10 +77,9 @@ msgstr "Benutzer gespeichert."
 
 #: /controllers/users_controller.php:247
 msgid "User deleted"
-msgstr ""
+msgstr "Benutzer gelöscht"
 
-#: /controllers/users_controller.php:249
-#: /models/user.php:703
+#: /controllers/users_controller.php:249 /models/user.php:703
 msgid "Invalid User"
 msgstr "Ungültiger Benutzer"
 
@@ -91,7 +90,7 @@ msgstr "Du bist bereits registriert und angemeldet!"
 #: /controllers/users_controller.php:282
 #: /tests/cases/controllers/users_controller.test.php:194
 msgid "Your account has been created. You should receive an e-mail shortly to authenticate your account. Once validated you will be able to login."
-msgstr "Dein Account wurde angelegt. Du solltest in Kürze eine Email erhalten um Deinen Account zu bestötigen. Einmal bestätigt wirst Du Dich anmelden können."
+msgstr "Dein Account wurde angelegt. Du solltest in Kürze eine Email erhalten um Deinen Account zu bestätigen. Einmal bestätigt wirst Du Dich anmelden können."
 
 #: /controllers/users_controller.php:287
 #: /tests/cases/controllers/users_controller.test.php:205
@@ -268,245 +267,181 @@ msgstr ""
 msgid "floriank you have successfully logged out"
 msgstr ""
 
-#: /views/details/add.ctp:4
-#: /views/details/admin_add.ctp:4
+#: /views/details/add.ctp:4 /views/details/admin_add.ctp:4
 msgid "Add Detail"
-msgstr ""
+msgstr "Detail hinzufügen"
 
-#: /views/details/add.ctp:17
-#: /views/details/admin_add.ctp:17
-#: /views/details/admin_edit.ctp:19
-#: /views/details/admin_view.ctp:45
+#: /views/details/add.ctp:17 /views/details/admin_add.ctp:17
+#: /views/details/admin_edit.ctp:19 /views/details/admin_view.ctp:45
 #: /views/details/view.ctp:45
 msgid "List Details"
-msgstr ""
+msgstr "Details anzeigen"
 
-#: /views/details/add.ctp:18
-#: /views/details/admin_add.ctp:18
-#: /views/details/admin_edit.ctp:20
-#: /views/details/admin_index.ctp:67
-#: /views/details/admin_view.ctp:47
-#: /views/details/view.ctp:47
-#: /views/users/add.ctp:15
-#: /views/users/admin_add.ctp:13
-#: /views/users/admin_edit.ctp:15
-#: /views/users/admin_view.ctp:25
+#: /views/details/add.ctp:18 /views/details/admin_add.ctp:18
+#: /views/details/admin_edit.ctp:20 /views/details/admin_index.ctp:67
+#: /views/details/admin_view.ctp:47 /views/details/view.ctp:47
+#: /views/users/add.ctp:15 /views/users/admin_add.ctp:13
+#: /views/users/admin_edit.ctp:15 /views/users/admin_view.ctp:25
 msgid "List Users"
-msgstr ""
+msgstr "Benutzer anzeigen"
 
-#: /views/details/add.ctp:19
-#: /views/details/admin_add.ctp:19
-#: /views/details/admin_edit.ctp:21
-#: /views/details/admin_index.ctp:68
-#: /views/details/admin_view.ctp:48
-#: /views/details/view.ctp:48
-#: /views/users/admin_view.ctp:26
-#: /views/users/index.ctp:46
+#: /views/details/add.ctp:19 /views/details/admin_add.ctp:19
+#: /views/details/admin_edit.ctp:21 /views/details/admin_index.ctp:68
+#: /views/details/admin_view.ctp:48 /views/details/view.ctp:48
+#: /views/users/admin_view.ctp:26 /views/users/index.ctp:46
 msgid "New User"
-msgstr ""
+msgstr "Neuer Benutzer"
 
-#: /views/details/add.ctp:20
-#: /views/details/admin_add.ctp:20
-#: /views/details/admin_edit.ctp:22
-#: /views/details/admin_index.ctp:69
-#: /views/details/admin_view.ctp:49
-#: /views/details/view.ctp:49
+#: /views/details/add.ctp:20 /views/details/admin_add.ctp:20
+#: /views/details/admin_edit.ctp:22 /views/details/admin_index.ctp:69
+#: /views/details/admin_view.ctp:49 /views/details/view.ctp:49
 msgid "List Groups"
-msgstr ""
+msgstr "Gruppen anzeigen"
 
-#: /views/details/add.ctp:21
-#: /views/details/admin_add.ctp:21
-#: /views/details/admin_edit.ctp:23
-#: /views/details/admin_index.ctp:70
-#: /views/details/admin_view.ctp:50;95
-#: /views/details/view.ctp:50;95
+#: /views/details/add.ctp:21 /views/details/admin_add.ctp:21
+#: /views/details/admin_edit.ctp:23 /views/details/admin_index.ctp:70
+#: /views/details/admin_view.ctp:50;95 /views/details/view.ctp:50;95
 msgid "New Group"
-msgstr ""
+msgstr "Neue Gruppe"
 
-#: /views/details/admin_edit.ctp:4
-#: /views/details/admin_view.ctp:43
-#: /views/details/edit.ctp:5
-#: /views/details/view.ctp:43
+#: /views/details/admin_edit.ctp:4 /views/details/admin_view.ctp:43
+#: /views/details/edit.ctp:5 /views/details/view.ctp:43
 msgid "Edit Detail"
-msgstr ""
+msgstr "Detail bearbeiten"
 
-#: /views/details/admin_edit.ctp:18
-#: /views/details/admin_index.ctp:53
-#: /views/details/admin_view.ctp:86
-#: /views/details/view.ctp:86
-#: /views/users/admin_edit.ctp:14
-#: /views/users/admin_index.ctp:47
-#: /views/users/groups.ctp:38
-#: /views/users/index.ctp:33
+#: /views/details/admin_edit.ctp:18 /views/details/admin_index.ctp:53
+#: /views/details/admin_view.ctp:86 /views/details/view.ctp:86
+#: /views/users/admin_edit.ctp:14 /views/users/admin_index.ctp:47
+#: /views/users/groups.ctp:38 /views/users/index.ctp:33
 msgid "Delete"
 msgstr "Löschen"
 
-#: /views/details/admin_edit.ctp:18
-#: /views/details/admin_index.ctp:53
-#: /views/details/admin_view.ctp:44;86
-#: /views/details/view.ctp:44;86
-#: /views/users/admin_edit.ctp:14
-#: /views/users/admin_index.ctp:47
-#: /views/users/admin_view.ctp:24
-#: /views/users/index.ctp:33
+#: /views/details/admin_edit.ctp:18 /views/details/admin_index.ctp:53
+#: /views/details/admin_view.ctp:44;86 /views/details/view.ctp:44;86
+#: /views/users/admin_edit.ctp:14 /views/users/admin_index.ctp:47
+#: /views/users/admin_view.ctp:24 /views/users/index.ctp:33
 msgid "Are you sure you want to delete # %s?"
 msgstr "Bist Du Dir sicher das Du %s löschen möchtest?"
 
-#: /views/details/admin_index.ctp:2
-#: /views/users/register.ctp:4
+#: /views/details/admin_index.ctp:2 /views/users/register.ctp:4
 msgid "Details"
-msgstr ""
+msgstr "Details"
 
-#: /views/details/admin_index.ctp:6
-#: /views/users/index.ctp:6
+#: /views/details/admin_index.ctp:6 /views/users/index.ctp:6
 msgid "Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%"
-msgstr ""
+msgstr "Seite %page% von %pages%, showing %current% records von insgesamt %count%, bei %start% anfangend und bei %end% endend"
 
-#: /views/details/admin_index.ctp:18
-#: /views/details/admin_view.ctp:65
-#: /views/details/view.ctp:65
-#: /views/users/admin_index.ctp:21
-#: /views/users/groups.ctp:15;50
-#: /views/users/index.ctp:13
+#: /views/details/admin_index.ctp:18 /views/details/admin_view.ctp:65
+#: /views/details/view.ctp:65 /views/users/admin_index.ctp:21
+#: /views/users/groups.ctp:15;50 /views/users/index.ctp:13
 msgid "Actions"
-msgstr ""
+msgstr "Aktionen"
 
-#: /views/details/admin_index.ctp:51
-#: /views/details/admin_view.ctp:84
-#: /views/details/view.ctp:84
-#: /views/users/admin_index.ctp:45
+#: /views/details/admin_index.ctp:51 /views/details/admin_view.ctp:84
+#: /views/details/view.ctp:84 /views/users/admin_index.ctp:45
 #: /views/users/index.ctp:31
 msgid "View"
-msgstr ""
+msgstr "Ansicht"
 
-#: /views/details/admin_index.ctp:52
-#: /views/details/admin_view.ctp:85
-#: /views/details/view.ctp:85
-#: /views/users/admin_index.ctp:46
-#: /views/users/groups.ctp:33
-#: /views/users/index.ctp:32
+#: /views/details/admin_index.ctp:52 /views/details/admin_view.ctp:85
+#: /views/details/view.ctp:85 /views/users/admin_index.ctp:46
+#: /views/users/groups.ctp:33 /views/users/index.ctp:32
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: /views/details/admin_index.ctp:60
-#: /views/users/index.ctp:40
+#: /views/details/admin_index.ctp:60 /views/users/index.ctp:40
 msgid "previous"
-msgstr ""
+msgstr "vorherige"
 
-#: /views/details/admin_index.ctp:62
-#: /views/users/index.ctp:42
+#: /views/details/admin_index.ctp:62 /views/users/index.ctp:42
 msgid "next"
-msgstr ""
+msgstr "nächste"
 
-#: /views/details/admin_index.ctp:66
-#: /views/details/admin_view.ctp:46
+#: /views/details/admin_index.ctp:66 /views/details/admin_view.ctp:46
 #: /views/details/view.ctp:46
 msgid "New Detail"
-msgstr ""
+msgstr "Neues Detail"
 
-#: /views/details/admin_view.ctp:2
-#: /views/details/view.ctp:2
+#: /views/details/admin_view.ctp:2 /views/details/view.ctp:2
 msgid "Detail"
-msgstr ""
+msgstr "Detail"
 
-#: /views/details/admin_view.ctp:4;58
-#: /views/details/view.ctp:4;58
+#: /views/details/admin_view.ctp:4;58 /views/details/view.ctp:4;58
 msgid "Id"
-msgstr ""
+msgstr "Id"
 
-#: /views/details/admin_view.ctp:9
-#: /views/details/view.ctp:9
-#: /views/users/admin_view.ctp:2
-#: /views/users/view.ctp:2
+#: /views/details/admin_view.ctp:9 /views/details/view.ctp:9
+#: /views/users/admin_view.ctp:2 /views/users/view.ctp:2
 msgid "User"
 msgstr "Benutzer"
 
-#: /views/details/admin_view.ctp:14
-#: /views/details/view.ctp:14
+#: /views/details/admin_view.ctp:14 /views/details/view.ctp:14
 msgid "Position"
-msgstr ""
+msgstr "Position"
 
-#: /views/details/admin_view.ctp:19
-#: /views/details/view.ctp:19
+#: /views/details/admin_view.ctp:19 /views/details/view.ctp:19
 msgid "Field"
-msgstr ""
+msgstr "Feld"
 
-#: /views/details/admin_view.ctp:24
-#: /views/details/view.ctp:24
+#: /views/details/admin_view.ctp:24 /views/details/view.ctp:24
 msgid "Value"
-msgstr ""
+msgstr "Wert"
 
-#: /views/details/admin_view.ctp:29;63
-#: /views/details/view.ctp:29;63
-#: /views/users/admin_view.ctp:9
-#: /views/users/view.ctp:9
+#: /views/details/admin_view.ctp:29;63 /views/details/view.ctp:29;63
+#: /views/users/admin_view.ctp:9 /views/users/view.ctp:9
 msgid "Created"
-msgstr ""
+msgstr "Erstellt"
 
-#: /views/details/admin_view.ctp:34;64
-#: /views/details/view.ctp:34;64
+#: /views/details/admin_view.ctp:34;64 /views/details/view.ctp:34;64
 #: /views/users/admin_view.ctp:14
 msgid "Modified"
-msgstr ""
+msgstr "Bearbeitet"
 
-#: /views/details/admin_view.ctp:44
-#: /views/details/view.ctp:44
+#: /views/details/admin_view.ctp:44 /views/details/view.ctp:44
 msgid "Delete Detail"
-msgstr ""
+msgstr "Detail löschen"
 
-#: /views/details/admin_view.ctp:54
-#: /views/details/view.ctp:54
+#: /views/details/admin_view.ctp:54 /views/details/view.ctp:54
 msgid "Related Groups"
-msgstr ""
+msgstr "Ähnliche Gruppen"
 
-#: /views/details/admin_view.ctp:59
-#: /views/details/view.ctp:59
+#: /views/details/admin_view.ctp:59 /views/details/view.ctp:59
 msgid "User Id"
-msgstr ""
+msgstr "Benutzer Id"
 
-#: /views/details/admin_view.ctp:60
-#: /views/details/view.ctp:60
+#: /views/details/admin_view.ctp:60 /views/details/view.ctp:60
 msgid "Is Public"
-msgstr ""
+msgstr "Ist öffentlich"
 
-#: /views/details/admin_view.ctp:61
-#: /views/details/view.ctp:61
-#: /views/users/groups.ctp:13;47
-#: /views/users/search.ctp:9
+#: /views/details/admin_view.ctp:61 /views/details/view.ctp:61
+#: /views/users/groups.ctp:13;47 /views/users/search.ctp:9
 msgid "Name"
 msgstr "Name"
 
-#: /views/details/admin_view.ctp:62
-#: /views/details/view.ctp:62
+#: /views/details/admin_view.ctp:62 /views/details/view.ctp:62
 #: /views/users/groups.ctp:48
 msgid "Description"
 msgstr "Beschreibung"
 
-#: /views/details/index.ctp:17
-#: /views/users/change_password.ctp:16
-#: /views/users/login.ctp:13
-#: /views/users/register.ctp:33;89
+#: /views/details/index.ctp:17 /views/users/change_password.ctp:16
+#: /views/users/login.ctp:13 /views/users/register.ctp:33;89
 #: /views/users/request_password_change.ctp:12
 #: /views/users/reset_password.ctp:14
 msgid "Submit"
 msgstr "Absenden"
 
-#: /views/elements/login.ctp:11
-#: /views/users/admin_index.ctp:10
-#: /views/users/login.ctp:8
-#: /views/users/register.ctp:71;78
+#: /views/elements/login.ctp:11 /views/users/admin_index.ctp:10
+#: /views/users/login.ctp:8 /views/users/register.ctp:71;78
 #: /views/users/search.ctp:7
 msgid "Email"
 msgstr "Email"
 
-#: /views/elements/login.ctp:13
-#: /views/users/login.ctp:10
+#: /views/elements/login.ctp:13 /views/users/login.ctp:10
 #: /views/users/register.ctp:19
 msgid "Password"
 msgstr "Passwort"
 
-#: /views/elements/login.ctp:15
-#: /views/users/login.ctp:1;3
+#: /views/elements/login.ctp:15 /views/users/login.ctp:1;3
 msgid "Login"
 msgstr "Anmeldung"
 
@@ -522,36 +457,30 @@ msgstr "um Deinen Account zu aktivieren mußt Du diese URL innerhalb von 24 Stun
 msgid "A request to reset your password was sent. To change your password click the link below."
 msgstr "Eine Anfrage um Dein Passwort zu resetten wurde gesendet. Um Dein Passwort zu ändern klicke auf den unten stehenden Link."
 
-#: /views/users/add.ctp:4
-#: /views/users/admin_add.ctp:4
+#: /views/users/add.ctp:4 /views/users/admin_add.ctp:4
 msgid "Add User"
 msgstr "Benutzer hinzufügen"
 
-#: /views/users/admin_edit.ctp:4
-#: /views/users/admin_view.ctp:23
+#: /views/users/admin_edit.ctp:4 /views/users/admin_view.ctp:23
 #: /views/users/edit.ctp:3
 msgid "Edit User"
 msgstr "Benutzer bearbeiten"
 
-#: /views/users/admin_index.ctp:2
-#: /views/users/index.ctp:2
+#: /views/users/admin_index.ctp:2 /views/users/index.ctp:2
 msgid "Users"
 msgstr "Benutzer"
 
 #: /views/users/admin_index.ctp:4
 msgid "Filter"
-msgstr ""
+msgstr "Filter"
 
-#: /views/users/admin_index.ctp:8
-#: /views/users/admin_view.ctp:4
-#: /views/users/register.ctp:57;63
-#: /views/users/search.ctp:5
+#: /views/users/admin_index.ctp:8 /views/users/admin_view.ctp:4
+#: /views/users/register.ctp:57;63 /views/users/search.ctp:5
 #: /views/users/view.ctp:4
 msgid "Username"
 msgstr "Benutzername"
 
-#: /views/users/admin_index.ctp:11
-#: /views/users/search.ctp:10
+#: /views/users/admin_index.ctp:11 /views/users/search.ctp:10
 msgid "Search"
 msgstr "Suche"
 
@@ -571,13 +500,11 @@ msgstr "Bitte gib Dein altes Passwort aus Sicherheitsgründen ein und dann gib D
 msgid "Old Password"
 msgstr "Altes Passwort"
 
-#: /views/users/change_password.ctp:11
-#: /views/users/reset_password.ctp:9
+#: /views/users/change_password.ctp:11 /views/users/reset_password.ctp:9
 msgid "New Password"
 msgstr "Neues Passwort"
 
-#: /views/users/change_password.ctp:14
-#: /views/users/reset_password.ctp:12
+#: /views/users/change_password.ctp:14 /views/users/reset_password.ctp:12
 msgid "Confirm"
 msgstr "Bestätigen"
 
@@ -587,7 +514,7 @@ msgstr "Willkommen"
 
 #: /views/users/dashboard.ctp:3
 msgid "Recent broadcasts"
-msgstr ""
+msgstr "Kürzliche Broadcast"
 
 #: /views/users/groups.ctp:2
 msgid "My Groups"
@@ -595,7 +522,7 @@ msgstr "Meine Gruppen"
 
 #: /views/users/groups.ctp:5
 msgid "Create a new group"
-msgstr ""
+msgstr "Eine neue Gruppe anlegen"
 
 #: /views/users/groups.ctp:6
 msgid "Invite a user"
@@ -603,11 +530,11 @@ msgstr "Lade einen Benutzer ein"
 
 #: /views/users/groups.ctp:7
 msgid "Requests to join"
-msgstr ""
+msgstr "Beitrittsanfragen"
 
 #: /views/users/groups.ctp:10
 msgid "My own groups"
-msgstr ""
+msgstr "Meine Gruppen"
 
 #: /views/users/groups.ctp:14;49
 msgid "Members"
@@ -619,23 +546,23 @@ msgstr "Benutzer einladen"
 
 #: /views/users/groups.ctp:35
 msgid "Manage Broadcast Scope"
-msgstr ""
+msgstr "Broadcast Score verwalten"
 
 #: /views/users/groups.ctp:36
 msgid "Access"
-msgstr ""
+msgstr "Zugang"
 
 #: /views/users/groups.ctp:37
 msgid "Addons"
-msgstr ""
+msgstr "Addons"
 
 #: /views/users/groups.ctp:44
 msgid "Groups im a member in"
-msgstr ""
+msgstr "Gruppen von denen ich ein Mitglied bin"
 
 #: /views/users/groups.ctp:68
 msgid "Leave group"
-msgstr ""
+msgstr "Gruppe verlassen"
 
 #: /views/users/login.ctp:11
 msgid "Remember Me"
@@ -675,7 +602,7 @@ msgstr "Ein Account mit dieser Email-Adresse existiert bereits"
 
 #: /views/users/register.ctp:21
 msgid "Must be at least 5 characters long"
-msgstr ""
+msgstr "Muss mindestens 5 Zeichen lang sein"
 
 #: /views/users/register.ctp:23
 msgid "Password (confirm)"
@@ -687,7 +614,7 @@ msgstr "Die Passwörter müssen gleich sein"
 
 #: /views/users/register.ctp:29;85
 msgid "I have read and agreed to "
-msgstr ""
+msgstr "Ich habe gelesen und stimme zu "
 
 #: /views/users/register.ctp:29;85
 msgid "Terms of Service"
