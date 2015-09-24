@@ -86,7 +86,7 @@ class User extends UsersAppModel {
 	public $validate = array(
 		'username' => array(
 			'required' => array(
-				'rule' => array('notEmpty'),
+				'rule' => array('notBlank'),
 				'required' => true, 'allowEmpty' => false,
 				'message' => 'Please enter a username.'
 			),
@@ -120,7 +120,7 @@ class User extends UsersAppModel {
 				'message' => 'The password must have at least 6 characters.'
 			),
 			'required' => array(
-				'rule' => 'notEmpty',
+				'rule' => 'notBlank',
 				'message' => 'Please enter a password.'
 			)
 		),
