@@ -10,7 +10,7 @@ Versions and branches
 
 | CakePHP | CakeDC Users Plugin | Tag   | Notes |
 | :-------------: | :------------------------: | :--:  | :---- |
-| 2.x             | [master](https://github.com/cakedc/users/tree/master)                     | 2.1.2 | Note CakePHP 2.7 is currently not supported, we are working on it now |
+| 2.x             | [master](https://github.com/cakedc/users/tree/master)                     | 2.1.3 | Note CakePHP 2.7 is currently not supported, we are working on it now |
 | 3.0             | [3.0.x](https://github.com/cakedc/users/tree/3.0.x)                      | 3.0.0 | stability is beta, but pretty stable now |
 | 3.1             | [3.1.x](https://github.com/cakedc/users/tree/3.1.x)                      | 3.1.0 | stability is beta, but pretty stable now |
 
