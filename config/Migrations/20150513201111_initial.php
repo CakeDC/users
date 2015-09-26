@@ -73,8 +73,7 @@ class Initial extends AbstractMigration
                 'null' => true,
             ])
             ->addColumn('active', 'boolean', [
-                'default' => 1,
-                'limit' => 1,
+                'default' => true,
                 'null' => false,
             ])
             ->addColumn('data', 'text', [
@@ -151,13 +150,11 @@ class Initial extends AbstractMigration
                 'null' => true,
             ])
             ->addColumn('active', 'boolean', [
-                'default' => 0,
-                'limit' => 1,
+                'default' => false,
                 'null' => false,
             ])
-            ->addColumn('is_superuser', 'integer', [
-                'default' => 0,
-                'limit' => 1,
+            ->addColumn('is_superuser', 'boolean', [
+                'default' => false,
                 'null' => false,
             ])
             ->addColumn('role', 'string', [
