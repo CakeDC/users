@@ -27,7 +27,7 @@ class SocialAccountsFixture extends TestFixture
         'token' => ['type' => 'string', 'length' => 500, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'fixed' => null],
         'token_secret' => ['type' => 'string', 'length' => 500, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null, 'fixed' => null],
         'token_expires' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
-        'active' => ['type' => 'boolean', 'length' => null, 'null' => false, 'default' => '1', 'comment' => '', 'precision' => null],
+        'active' => ['type' => 'boolean', 'length' => null, 'null' => false, 'default' => true, 'comment' => '', 'precision' => null],
         'data' => ['type' => 'text', 'length' => null, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
         'created' => ['type' => 'datetime', 'length' => null, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
         'modified' => ['type' => 'datetime', 'length' => null, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
@@ -58,7 +58,7 @@ class SocialAccountsFixture extends TestFixture
             'token' => 'token-1234',
             'token_secret' => 'Lorem ipsum dolor sit amet',
             'token_expires' => '2015-05-22 21:52:44',
-            'active' => 0,
+            'active' => false,
             'data' => '',
             'created' => '2015-05-22 21:52:44',
             'modified' => '2015-05-22 21:52:44'
@@ -74,7 +74,7 @@ class SocialAccountsFixture extends TestFixture
             'token' => 'token-1234',
             'token_secret' => 'Lorem ipsum dolor sit amet',
             'token_expires' => '2015-05-22 21:52:44',
-            'active' => 1,
+            'active' => true,
             'data' => '',
             'created' => '2015-05-22 21:52:44',
             'modified' => '2015-05-22 21:52:44'
@@ -90,7 +90,7 @@ class SocialAccountsFixture extends TestFixture
             'token' => 'token-reference-2-1',
             'token_secret' => 'Lorem ipsum dolor sit amet',
             'token_expires' => '2015-05-22 21:52:44',
-            'active' => 1,
+            'active' => true,
             'data' => '',
             'created' => '2015-05-22 21:52:44',
             'modified' => '2015-05-22 21:52:44'
@@ -106,7 +106,7 @@ class SocialAccountsFixture extends TestFixture
             'token' => 'token-reference-2-2',
             'token_secret' => 'Lorem ipsum dolor sit amet',
             'token_expires' => '2015-05-22 21:52:44',
-            'active' => 0,
+            'active' => false,
             'data' => '',
             'created' => '2015-05-22 21:52:44',
             'modified' => '2015-05-22 21:52:44'
@@ -122,7 +122,7 @@ class SocialAccountsFixture extends TestFixture
             'token' => 'token-reference-2-2',
             'token_secret' => 'Lorem ipsum dolor sit amet',
             'token_expires' => '2015-05-22 21:52:44',
-            'active' => 0,
+            'active' => false,
             'data' => '',
             'created' => '2015-05-22 21:52:44',
             'modified' => '2015-05-22 21:52:44'
