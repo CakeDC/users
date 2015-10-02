@@ -16,6 +16,18 @@ composer require opauth/facebook:1.0.x-dev
 composer require opauth/twitter:1.0.x-dev
 ```
 
+IMPORTANT: We have a fork adding some fixes to the facebook strategy, please add to your composer.json file:
+
+```
+ "repositories":
+    [
+            {
+                "type": "vcs",
+                "url": "https://github.com/CakeDC/facebook.git"
+            }
+    ],
+```
+
 Creating Required Tables
 ------------------------
 If you want to use the Users tables to store your users and social accounts:
