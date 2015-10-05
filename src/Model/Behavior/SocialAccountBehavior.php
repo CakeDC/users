@@ -12,6 +12,7 @@
 namespace CakeDC\Users\Model\Behavior;
 
 use ArrayObject;
+use CakeDC\Users\Email\EmailSender;
 use CakeDC\Users\Exception\AccountAlreadyActiveException;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
@@ -45,6 +46,8 @@ class SocialAccountBehavior extends Behavior
             'joinType' => 'INNER',
             'className' => Configure::read('Users.table')
         ]);
+        $this->Email = new EmailSender();
+
     }
 
     /**
@@ -77,18 +80,8 @@ class SocialAccountBehavior extends Behavior
      */
     public function sendSocialValidationEmail(EntityInterface $socialAccount, EntityInterface $user, Email $email = null)
     {
-        $emailInstance = $this->_getEmailInstance($email);
-        if (empty($email)) {
-            $emailInstance->template('CakeDC/Users.social_account_validation');
-        }
-        $firstName = isset($user['first_name'])? $user['first_name'] . ', ' : '';
-        //note: we control the space after the username in the previous line
-        $subject = __d('Users', '{0}Your social account validation link', $firstName);
-        return $emailInstance
-            ->to($user['email'])
-            ->subject($subject)
-            ->viewVars(compact('user', 'socialAccount'))
-            ->send();
+        $this->Email = new EmailSender();
+        $this->Email->sendSocialValidationEmail($socialAccount, $user, $email);
     }
 
     /**

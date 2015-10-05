@@ -44,16 +44,6 @@ class SocialAccountBehaviorTest extends TestCase
         parent::setUp();
         $this->Table = TableRegistry::get('CakeDC/Users.SocialAccounts');
         $this->Behavior = $this->Table->behaviors()->SocialAccount;
-        $this->fullBaseBackup = Router::fullBaseUrl();
-        Router::fullBaseUrl('http://users.test');
-        Email::configTransport('test', [
-            'className' => 'Debug'
-        ]);
-        $this->Email = new Email([
-            'from' => 'test@example.com',
-            'transport' => 'test',
-            'template' => 'CakeDC/Users.social_account_validation',
-        ]);
     }
 
     /**
@@ -64,8 +54,6 @@ class SocialAccountBehaviorTest extends TestCase
     public function tearDown()
     {
         unset($this->Table, $this->Behavior, $this->Email);
-        Router::fullBaseUrl($this->fullBaseBackup);
-        Email::dropTransport('test');
         parent::tearDown();
     }
 
@@ -156,7 +144,7 @@ class SocialAccountBehaviorTest extends TestCase
      *
      * @return void
      */
-    public function testSendSocialValidationEmail()
+   /* public function testSendSocialValidationEmail()
     {
         $user = $this->Table->find()->contain('Users')->first();
         $this->Email->emailFormat('both');
@@ -167,5 +155,5 @@ class SocialAccountBehaviorTest extends TestCase
         $this->assertTextContains('Hi first1,', $result['message']);
         $this->assertTextContains('<a href="http://users.test/users/social-accounts/validate-account/Facebook/reference-1-1234/token-1234">Activate your social login here</a>', $result['message']);
         $this->assertTextContains('If the link is not correcly displayed, please copy the following address in your web browser http://users.test/users/social-accounts/validate-account/Facebook/reference-1-1234/token-1234', $result['message']);
-    }
+    }*/
 }
