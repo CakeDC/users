@@ -175,6 +175,10 @@ class SimpleRbacAuthorizeTest extends TestCase
         $request->plugin = Hash::get($requestParams, 'plugin');
         $request->controller = $requestParams['controller'];
         $request->action = $requestParams['action'];
+        $prefix = Hash::get($requestParams, 'prefix');
+        if ($prefix) {
+            $request->params = ['prefix' => $prefix];
+        }
 
         $result = $this->simpleRbacAuthorize->authorize($user, $request);
         $this->assertSame($expected, $result, $msg);
@@ -559,6 +563,97 @@ class SimpleRbacAuthorizeTest extends TestCase
                 ],
                 //expected
                 false
+            ],
+            'happy-prefix' => [
+                //permissions
+                [[
+                    'role' => ['test'],
+                    'prefix' => ['admin'],
+                    'controller' => ['Tests'],
+                    'action' => ['one', 'two'],
+                ]],
+                //user
+                [
+                    'id' => 1,
+                    'username' => 'luke',
+                    'role' => 'test',
+                ],
+                //request
+                [
+                    'prefix' => 'admin',
+                    'controller' => 'Tests',
+                    'action' => 'one'
+                ],
+                //expected
+                true
+            ],
+            'deny-prefix' => [
+                //permissions
+                [[
+                    'role' => ['test'],
+                    'prefix' => ['admin'],
+                    'controller' => ['Tests'],
+                    'action' => ['one', 'two'],
+                ]],
+                //user
+                [
+                    'id' => 1,
+                    'username' => 'luke',
+                    'role' => 'test',
+                ],
+                //request
+                [
+                    'controller' => 'Tests',
+                    'action' => 'one'
+                ],
+                //expected
+                false
+            ],
+            'star-prefix' => [
+                //permissions
+                [[
+                    'role' => ['test'],
+                    'prefix' => '*',
+                    'controller' => ['Tests'],
+                    'action' => ['one', 'two'],
+                ]],
+                //user
+                [
+                    'id' => 1,
+                    'username' => 'luke',
+                    'role' => 'test',
+                ],
+                //request
+                [
+                    'prefix' => 'admin',
+                    'controller' => 'Tests',
+                    'action' => 'one'
+                ],
+                //expected
+                true
+            ],
+            'array-prefix' => [
+                //permissions
+                [[
+                    'role' => ['test'],
+                    'prefix' => ['one', 'admin'],
+                    'controller' => '*',
+                    'action' => '*',
+                ]],
+                //user
+                [
+                    'id' => 1,
+                    'username' => 'luke',
+                    'role' => 'test',
+                ],
+                //request
+                [
+                    'prefix' => 'admin',
+                    'controller' => 'Tests',
+                    'action' => 'one'
+                ],
+                //expected
+                true
             ],
         ];
     }

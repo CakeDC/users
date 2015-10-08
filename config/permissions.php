@@ -17,12 +17,13 @@
  * This is a quick roles-permissions implementation
  * Rules are evaluated top-down, first matching rule will apply
  * Each line define
- * 'role-name' =>
  *      [
- *          'plugin', (default = null)
- *          'controller',
- *          'action',
- *          'allowed' (default = true)
+ *          'role' => 'role' | ['roles'] | '*'
+ *          'prefix' => 'Prefix' | , (default = null)
+ *          'plugin' => 'Plugin' | , (default = null)
+ *          'controller' => 'Controller' | ['Controllers'] | '*',
+ *          'action' => 'action' | ['actions'] | '*',
+ *          'allowed' => true | false | callback (default = true)
  *      ]
  * You could use '*' to match anything
  * 'allowed' will be considered true if not defined. It allows a callable to manage complex
