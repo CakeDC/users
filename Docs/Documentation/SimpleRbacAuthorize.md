@@ -54,11 +54,12 @@ Permission rules syntax
 * Each rule is defined:
 ```php
 [
-    'role' => 'REQUIRED_NAME_OF_THE_ROLE_OR_*',
-    'plugin' => 'OPTIONAL_NAME_OF_THE_PLUGIN_OR_*_DEFAULT_NULL',
-    'controller' => 'REQUIRED_NAME_OF_THE_CONTROLLER_OR_*'
-    'action' => 'REQUIRED_NAME_OF_ACTION_OR_*',
-    'allowed' => 'OPTIONAL_BOOLEAN_DEFAULT_TRUE_OR_CALLABLE'
+    'role' => 'REQUIRED_NAME_OF_THE_ROLE_OR_[]_OR_*',
+    'prefix' => 'OPTIONAL_PREFIX_USED_OR_[]_OR_*_DEFAULT_NULL',
+    'plugin' => 'OPTIONAL_NAME_OF_THE_PLUGIN_OR_[]_OR_*_DEFAULT_NULL',
+    'controller' => 'REQUIRED_NAME_OF_THE_CONTROLLER_OR_[]_OR_*'
+    'action' => 'REQUIRED_NAME_OF_ACTION_OR_[]_OR_*',
+    'allowed' => 'OPTIONAL_BOOLEAN_OR_CALLABLE_DEFAULT_TRUE'
 ]
 ```
 * If no rule allowed = true is matched for a given user role and url, default return value will be false
