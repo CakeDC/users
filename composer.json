@@ -4,7 +4,7 @@
     "type": "cakephp-plugin",
     "require": {
         "php": ">=5.4.16",
-        "cakephp/cakephp": "~3.0.0"
+        "cakephp/cakephp": "3.0.*"
     },
     "require-dev": {
         "phpunit/phpunit": "*",
