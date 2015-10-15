@@ -655,6 +655,38 @@ class SimpleRbacAuthorizeTest extends TestCase
                 //expected
                 true
             ],
+            'array-prefix' => [
+                //permissions
+                [
+                    [
+                        'role' => ['test'],
+                        'prefix' => ['one', 'admin'],
+                        'controller' => '*',
+                        'action' => 'one',
+                        'allowed' => false,
+                    ],
+                    [
+                        'role' => ['test'],
+                        'prefix' => ['one', 'admin'],
+                        'controller' => '*',
+                        'action' => '*',
+                    ],
+                ],
+                //user
+                [
+                    'id' => 1,
+                    'username' => 'luke',
+                    'role' => 'test',
+                ],
+                //request
+                [
+                    'prefix' => 'admin',
+                    'controller' => 'Tests',
+                    'action' => 'one'
+                ],
+                //expected
+                false
+            ],
         ];
     }
 }
