@@ -174,7 +174,8 @@ class SimpleRbacAuthorize extends BaseAuthorize
     {
         $permissions = $this->config('permissions');
         foreach ($permissions as $permission) {
-            if ($allowed = $this->_matchRule($permission, $user, $role, $request)) {
+            $allowed = $this->_matchRule($permission, $user, $role, $request);
+            if ($allowed !== null) {
                 return $allowed;
             }
         }
@@ -189,7 +190,7 @@ class SimpleRbacAuthorize extends BaseAuthorize
      * @param array $user current user
      * @param string $role effective user role
      * @param Request $request request
-     * @return bool
+     * @return bool if rule matched, null if rule not matched
      */
     protected function _matchRule($permission, $user, $role, $request)
     {
@@ -216,7 +217,7 @@ class SimpleRbacAuthorize extends BaseAuthorize
             }
         }
 
-        return false;
+        return null;
     }
 
     /**
