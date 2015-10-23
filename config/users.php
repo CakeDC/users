@@ -99,24 +99,28 @@ $config = [
             'CakeDC/Users.SimpleRbac',
         ],
     ],
-//default Opauth configuration, you'll need to provide the strategy keys
-    'Opauth' => [
-        'path' => ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'opauthInit'],
-        'callback_param' => 'callback',
-        'complete_url' => ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login'],
-        'Strategy' => [
-            'Facebook' => [
-                'scope' => ['public_profile', 'user_friends', 'email'],
-                //app_id => 'YOUR_APP_ID',
-                //app_secret = 'YOUR_APP_SECRET',
+    'OAuth' => [
+        'path' => ['controller' => 'Users', 'action' => 'socialLogin'],
+        'providers' => [
+            'facebook' => [
+                'className' => 'League\OAuth2\Client\Provider\Facebook',
+                'options' => [
+                    'graphApiVersion' => 'v2.5'
+                ],
+                'mapFields' => [
+                    'username' => 'login',
+                ],
             ],
-            'Twitter' => [
-                'curl_cainfo' => false,
-                'curl_capath' => false,
-                //'key' => 'YOUR_APP_KEY',
-                //'secret' => 'YOUR_APP_SECRET',
+            'instagram' => [
+                'className' => 'League\OAuth2\Client\Provider\Instagram',
+                'options' => [
+                    'graphApiVersion' => 'v2.5'
+                ],
+                'mapFields' => [
+                    'username' => 'login', // maps the app's username to github's login
+                ],
             ]
-        ]
+        ],
     ]
 ];
 

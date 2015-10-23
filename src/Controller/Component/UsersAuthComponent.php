@@ -43,9 +43,6 @@ class UsersAuthComponent extends Component
         $this->_validateConfig();
         $this->_initAuth();
 
-        if (Configure::read('Users.Social.login') && Configure::read('Opauth')) {
-            $this->_configOpauthRoutes();
-        }
         if (Configure::read('Users.Social.login')) {
             $this->_loadSocialLogin();
         }
@@ -106,10 +103,11 @@ class UsersAuthComponent extends Component
             'resendTokenValidation',
             'login',
             'socialEmail',
-            'opauthInit',
             'resetPassword',
             'requestResetPassword',
             'changePassword',
+            'endpoint',
+            'authenticated'
         ]);
     }
 
@@ -157,23 +155,5 @@ class UsersAuthComponent extends Component
             $message = __d('Users', 'You can\'t enable email validation workflow if use_email is false');
             throw new BadConfigurationException($message);
         }
-    }
-
-    /**
-     * Config Opauth urls
-     *
-     * @return void
-     */
-    protected function _configOpauthRoutes()
-    {
-        $path = Configure::read('Opauth.path');
-        Configure::write('Opauth.path', Router::url($path) . '/');
-        //Generate callback url
-        if (is_array($path)) {
-            $path[] = Configure::read('Opauth.callback_param');
-        } else {
-            $path = $path . Configure::read('Opauth.callback_param');
-        }
-        Configure::write('Opauth.callback_url', Router::url($path));
     }
 }

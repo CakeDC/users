@@ -25,6 +25,10 @@ trait LoginTrait
 {
     use CustomUsersTableTrait;
 
+    public function socialLogin()
+    {
+
+    }
     /**
      * Login user
      *
@@ -49,8 +53,6 @@ trait LoginTrait
             $user = $this->Auth->identify();
             return $this->_afterIdentifyUser($user, $socialLogin);
         } catch (AccountNotActiveException $ex) {
-            $socialKey = Configure::read('Users.Key.Session.social');
-            $this->request->session()->delete($socialKey);
             $msg = __d('Users', 'Your social account has not been validated yet. Please check your inbox for instructions');
             $this->Flash->success($msg);
         } catch (MissingEmailException $ex) {

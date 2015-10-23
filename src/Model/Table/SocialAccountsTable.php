@@ -35,6 +35,8 @@ class SocialAccountsTable extends Table
      */
     const PROVIDER_TWITTER = 'Twitter';
     const PROVIDER_FACEBOOK = 'Facebook';
+    const PROVIDER_INSTAGRAM = 'Instagram';
+    const PROVIDER_LINKEDIN = 'LinkedIn';
 
     /**
      * Initialize method

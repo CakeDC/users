@@ -16,12 +16,13 @@ Router::plugin('CakeDC/Users', ['path' => '/users'], function ($routes) {
     $routes->fallbacks('DashedRoute');
 });
 
-$oauthPath = Configure::read('Opauth.path');
+$oauthPath = Configure::read('OAuth.path');
 if (is_array($oauthPath)) {
     Router::scope('/auth', function ($routes) use ($oauthPath) {
         $routes->connect(
-            '/*',
-            $oauthPath
+            '/:provider',
+            $oauthPath,
+            ['provider' => implode('|', array_keys(Configure::read('OAuth.providers')))]
         );
     });
 }

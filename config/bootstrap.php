@@ -10,6 +10,9 @@
  */
 
 use Cake\Core\Configure;
+use Cake\Core\Plugin;
+use Cake\Event\EventManager;
+use Cake\ORM\TableRegistry;
 
 Configure::load('CakeDC/Users.users');
 collection((array)Configure::read('Users.config'))->each(function ($file) {
@@ -18,4 +21,8 @@ collection((array)Configure::read('Users.config'))->each(function ($file) {
 
 if (Configure::check('Users.auth')) {
     Configure::write('Auth.authenticate.all.userModel', Configure::read('Users.table'));
+}
+
+if (Configure::read('Users.Social.login')) {
+    Plugin::load('Muffin/OAuth2');
 }

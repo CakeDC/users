@@ -7,15 +7,12 @@
         "cakephp/cakephp": "3.1.*"
     },
     "require-dev": {
-        "phpunit/phpunit": "*",
-        "opauth/opauth": "*",
-        "opauth/facebook": "*",
-        "opauth/twitter": "*"
+        "phpunit/phpunit": "*"
     },
     "suggest": {
-        "opauth/opauth": "Used for Social Login, if you add Opauth, remember adding at least one strategy too",
-        "opauth/facebook": "Provide Social Login: Facebook Strategy, requires Opauth",
-        "opauth/twitter": "Provide Social Login: Twitter Strategy, requires Opauth",
+        "muffin/oauth2": "Provide Social Authentication",
+        "league/oauth2-facebook": "Provide Social Authentication with Facebook",
+        "league/oauth2-instagram": "Provide Social Authentication with Instagram",
         "google/recaptcha": "Provide reCAPTCHA validation for registration form"
     },
     "autoload": {
