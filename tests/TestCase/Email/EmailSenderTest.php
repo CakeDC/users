@@ -86,7 +86,7 @@ class EmailSenderTest extends TestCase
 
         $this->EmailSender->expects($this->once())
             ->method('getMailer')
-            ->with('CakeDC/Users.User')
+            ->with('CakeDC/Users.Users')
             ->will($this->returnValue($this->UserMailer));
 
         $this->UserMailer->expects($this->once())
@@ -119,7 +119,7 @@ class EmailSenderTest extends TestCase
 
         $this->EmailSender->expects($this->once())
             ->method('getMailer')
-            ->with('CakeDC/Users.User')
+            ->with('CakeDC/Users.Users')
             ->will($this->returnValue($this->UserMailer));
 
         $this->UserMailer->expects($this->once())
@@ -147,7 +147,7 @@ class EmailSenderTest extends TestCase
 
         $this->EmailSender->expects($this->once())
             ->method('getMailer')
-            ->with('CakeDC/Users.User')
+            ->with('CakeDC/Users.Users')
             ->will($this->returnValue($this->UserMailer));
 
         $this->UserMailer->expects($this->once())

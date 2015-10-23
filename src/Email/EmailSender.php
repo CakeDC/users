@@ -24,7 +24,7 @@ class EmailSender
 
     public function sendValidationEmail(EntityInterface $user, Email $email = null)
     {
-        $this->getMailer('CakeDC/Users.User',
+        $this->getMailer('CakeDC/Users.Users',
             $this->_getEmailInstance($email))->send('validation', [$user, __d('Users', 'Your account validation link')]
             );
     }
@@ -41,7 +41,7 @@ class EmailSender
      */
     public function sendResetPasswordEmail(EntityInterface $user, Email $email = null, $template = 'CakeDC/Users.reset_password')
     {
-        $this->getMailer('CakeDC/Users.User',
+        $this->getMailer('CakeDC/Users.Users',
             $this->_getEmailInstance($email))->send('resetPassword', [$user, $template]
             );
     }
@@ -61,7 +61,7 @@ class EmailSender
         } else {
             $template = $email->template()['template'];
         }
-        $this->getMailer('CakeDC/Users.User',
+        $this->getMailer('CakeDC/Users.Users',
             $this->_getEmailInstance($email))->send('socialAccountValidation', [$user, $socialAccount, $template]
             );
     }

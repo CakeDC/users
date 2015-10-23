@@ -18,7 +18,7 @@ use Cake\Mailer\Mailer;
  * User Mailer
  *
  */
-class UserMailer extends Mailer
+class UsersMailer extends Mailer
 {
 
     /**
