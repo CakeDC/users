@@ -11,11 +11,13 @@
 namespace CakeDC\Users\Test\TestCase\Email;
 
 use Cake\Mailer\Email;
-use Cake\TestSuite\TestCase;
 use Cake\ORM\TableRegistry;
-use CakeDC\Users\Mailer\UserMailer;
 use Cake\Routing\Router;
+use Cake\TestSuite\TestCase;
 
+/**
+ * Test Case
+ */
 class EmailSenderTest extends TestCase
 {
     /**

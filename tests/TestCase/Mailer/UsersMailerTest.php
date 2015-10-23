@@ -11,11 +11,13 @@
 namespace CakeDC\Users\Test\TestCase\Email;
 
 use Cake\Mailer\Email;
-use Cake\TestSuite\TestCase;
 use Cake\ORM\TableRegistry;
-use CakeDC\Users\Mailer\UserMailer;
 use Cake\Routing\Router;
+use Cake\TestSuite\TestCase;
 
+/**
+ * Test Case
+ */
 class UsersMailerTest extends TestCase
 {
     /**
@@ -41,7 +43,7 @@ class UsersMailerTest extends TestCase
             ->getMock();
 
         $this->UsersMailer = $this->getMockBuilder('CakeDC\Users\Mailer\UsersMailer')
-            ->setConstructorArgs(array($this->Email))
+            ->setConstructorArgs([$this->Email])
             ->setMethods(['to', 'subject', 'viewVars', 'template'])
             ->getMock();
     }
@@ -92,7 +94,7 @@ class UsersMailerTest extends TestCase
             ->with('CakeDC/Users.validation')
             ->will($this->returnValue($this->Email));
 
-        $this->invokeMethod($this->UsersMailer, 'validation', array($user, 'Validate your Account'));
+        $this->invokeMethod($this->UsersMailer, 'validation', [$user, 'Validate your Account']);
     }
 
     /**
@@ -129,7 +131,7 @@ class UsersMailerTest extends TestCase
             ->with('myTemplate')
             ->will($this->returnValue($this->Email));
 
-        $this->invokeMethod($this->UsersMailer, 'validation', array($user, 'Validate your Account', 'myTemplate'));
+        $this->invokeMethod($this->UsersMailer, 'validation', [$user, 'Validate your Account', 'myTemplate']);
     }
 
     /**
@@ -139,7 +141,8 @@ class UsersMailerTest extends TestCase
      */
     public function testSocialAccountValidation()
     {
-        $social = TableRegistry::get('CakeDC/Users.SocialAccounts')->get('00000000-0000-0000-0000-000000000001', ['contain' => 'Users']);
+        $social = TableRegistry::get('CakeDC/Users.SocialAccounts')
+            ->get('00000000-0000-0000-0000-000000000001', ['contain' => 'Users']);
 
         $this->UsersMailer->expects($this->once())
             ->method('to')
@@ -157,7 +160,7 @@ class UsersMailerTest extends TestCase
             ->with(['user' => $social->user, 'socialAccount' => $social])
             ->will($this->returnValue($this->Email));
 
-        $this->invokeMethod($this->UsersMailer, 'socialAccountValidation', array($social->user, $social));
+        $this->invokeMethod($this->UsersMailer, 'socialAccountValidation', [$social->user, $social]);
     }
 
     /**
@@ -195,7 +198,7 @@ class UsersMailerTest extends TestCase
             ->will($this->returnValue($this->Email));
 
 
-        $this->invokeMethod($this->UsersMailer, 'resetPassword', array($user, 'myTemplate'));
+        $this->invokeMethod($this->UsersMailer, 'resetPassword', [$user, 'myTemplate']);
     }
 
     /**
@@ -207,7 +210,7 @@ class UsersMailerTest extends TestCase
      *
      * @return mixed Method return.
      */
-    public function invokeMethod(&$object, $methodName, array $parameters = array())
+    public function invokeMethod(&$object, $methodName, $parameters = [])
     {
         $reflection = new \ReflectionClass(get_class($object));
         $method = $reflection->getMethod($methodName);

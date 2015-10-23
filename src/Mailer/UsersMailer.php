@@ -20,7 +20,6 @@ use Cake\Mailer\Mailer;
  */
 class UsersMailer extends Mailer
 {
-
     /**
      * Send the templated email to the user
      *
@@ -79,4 +78,3 @@ class UsersMailer extends Mailer
             ->viewVars(compact('user', 'socialAccount'));
     }
 }
-

@@ -10,9 +10,9 @@
  */
 namespace CakeDC\Users\Email;
 
+use Cake\Datasource\EntityInterface;
 use Cake\Mailer\Email;
 use Cake\Mailer\MailerAwareTrait;
-use Cake\Datasource\EntityInterface;
 
 /**
  * Email sender class
@@ -22,11 +22,21 @@ class EmailSender
 {
     use MailerAwareTrait;
 
+    /**
+     * Send validation email
+     *
+     * @param EntityInterface $user User entity
+     * @param Email $email instance, if null the default email configuration with the
+     * @return void
+     */
     public function sendValidationEmail(EntityInterface $user, Email $email = null)
     {
-        $this->getMailer('CakeDC/Users.Users',
-            $this->_getEmailInstance($email))->send('validation', [$user, __d('Users', 'Your account validation link')]
-            );
+        $this
+            ->getMailer(
+                'CakeDC/Users.Users',
+                $this->_getEmailInstance($email)
+            )
+            ->send('validation', [$user, __d('Users', 'Your account validation link')]);
     }
 
     /**
@@ -41,9 +51,12 @@ class EmailSender
      */
     public function sendResetPasswordEmail(EntityInterface $user, Email $email = null, $template = 'CakeDC/Users.reset_password')
     {
-        $this->getMailer('CakeDC/Users.Users',
-            $this->_getEmailInstance($email))->send('resetPassword', [$user, $template]
-            );
+        $this
+            ->getMailer(
+                'CakeDC/Users.Users',
+                $this->_getEmailInstance($email)
+            )
+            ->send('resetPassword', [$user, $template]);
     }
 
     /**
@@ -61,9 +74,12 @@ class EmailSender
         } else {
             $template = $email->template()['template'];
         }
-        $this->getMailer('CakeDC/Users.Users',
-            $this->_getEmailInstance($email))->send('socialAccountValidation', [$user, $socialAccount, $template]
-            );
+        $this
+            ->getMailer(
+                'CakeDC/Users.Users',
+                $this->_getEmailInstance($email)
+            )
+            ->send('socialAccountValidation', [$user, $socialAccount, $template]);
     }
 
     /**

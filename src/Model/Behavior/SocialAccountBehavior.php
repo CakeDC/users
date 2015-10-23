@@ -47,7 +47,6 @@ class SocialAccountBehavior extends Behavior
             'className' => Configure::read('Users.table')
         ]);
         $this->Email = new EmailSender();
-
     }
 
     /**
