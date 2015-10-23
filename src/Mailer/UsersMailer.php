@@ -30,20 +30,14 @@ class UsersMailer extends Mailer
      *
      * @return array email send result
      */
-    protected function validation(EntityInterface $user, $subject, $template = null)
+    protected function validation(EntityInterface $user, $subject, $template = 'CakeDC/Users.validation')
     {
         $firstName = isset($user['first_name'])? $user['first_name'] . ', ' : '';
-
         $this
             ->to($user['email'])
             ->subject($firstName . $subject)
             ->viewVars($user->toArray())
-            ->template('CakeDC/Users.validation');
-
-        if (!empty($template)) {
-            $this->template($template);
-        }
-
+            ->template($template);
     }
 
     /**
@@ -61,9 +55,9 @@ class UsersMailer extends Mailer
 
         $this
             ->to($user['email'])
-            ->template($template)
             ->subject($subject)
-            ->viewVars($user->toArray());
+            ->viewVars($user->toArray())
+            ->template($template);
     }
 
     /**
