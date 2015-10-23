@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Model\Behavior;
 
+use CakeDC\Users\Email\EmailSender;
 use CakeDC\Users\Exception\UserAlreadyActiveException;
 use CakeDC\Users\Exception\UserNotFoundException;
 use CakeDC\Users\Exception\WrongPasswordException;
@@ -25,6 +26,17 @@ use InvalidArgumentException;
  */
 class PasswordBehavior extends Behavior
 {
+    /**
+     * Constructor hook method.
+     *
+     * @param array $config The configuration settings provided to this behavior.
+     * @return void
+     */
+    public function initialize(array $config)
+    {
+        parent::initialize($config);
+        $this->Email = new EmailSender();
+    }
     /**
      * Resets user token
      *
@@ -63,7 +75,7 @@ class PasswordBehavior extends Behavior
         $saveResult = $this->_table->save($user);
         $template = !empty($options['emailTemplate']) ? $options['emailTemplate'] : 'CakeDC/Users.reset_password';
         if (Hash::get($options, 'sendEmail')) {
-            $this->sendResetPasswordEmail($saveResult, null, $template);
+            $this->Email->sendResetPasswordEmail($saveResult, null, $template);
         }
         return $saveResult;
     }
@@ -77,28 +89,6 @@ class PasswordBehavior extends Behavior
     protected function _getUser($reference)
     {
         return $this->_table->findAllByUsernameOrEmail($reference, $reference)->first();
-    }
-
-    /**
-     * Send the reset password email
-     *
-     * @param EntityInterface $user User entity
-     * @param Email $email instance, if null the default email configuration with the
-     * @param string $template email template
-     * Users.validation template will be used, so set a ->template() if you pass an Email
-     * instance
-     * @return array email send result
-     */
-    public function sendResetPasswordEmail(EntityInterface $user, Email $email = null, $template = 'CakeDC/Users.reset_password')
-    {
-        $firstName = isset($user['first_name'])? $user['first_name'] . ', ' : '';
-        $subject = __d('Users', '{0}Your reset password link', $firstName);
-        return $this->_getEmailInstance($email)
-                ->template($template)
-                ->to($user['email'])
-                ->subject($subject)
-                ->viewVars($user->toArray())
-                ->send();
     }
 
     /**
