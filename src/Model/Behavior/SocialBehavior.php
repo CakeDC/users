@@ -125,12 +125,17 @@ class SocialBehavior extends Behavior
         $accountData['avatar'] = Hash::get($data, 'avatar');
         $accountData['link'] = Hash::get($data, 'link');
 
-        $accountData['avatar'] = str_replace('square', 'large', $accountData['avatar']);
+        $accountData['avatar'] = str_replace('normal', 'square', $accountData['avatar']);
         $accountData['description'] = Hash::get($data, 'bio');
         $accountData['token'] = Hash::get($data, 'credentials.token');
         $accountData['token_secret'] = Hash::get($data, 'credentials.secret');
         $expires = Hash::get($data, 'credentials.expires');
-        $accountData['token_expires'] = !empty($expires) ? (new DateTime($expires))->format('Y-m-d H:i:s') : null;
+        if (!empty($expires)) {
+            $expiresTime = new DateTime();
+            $accountData['token_expires'] = $expiresTime->setTimestamp($expires)->format('Y-m-d H:i:s');
+        } else {
+            $accountData['token_expires'] = null;
+        }
         $accountData['data'] = serialize(Hash::get($data, 'raw'));
         $accountData['active'] = true;
 
@@ -174,8 +179,6 @@ class SocialBehavior extends Behavior
             $userData['gender'] = Hash::get($data, 'gender');
             //$userData['timezone'] = Hash::get($data, 'timezone');
             $userData['social_accounts'][] = $accountData;
-            debug($userData);
-            die();
             $user = $this->_table->newEntity($userData, ['associated' => ['SocialAccounts']]);
             $user = $this->_updateActive($user, false, $tokenExpiration);
         } else {

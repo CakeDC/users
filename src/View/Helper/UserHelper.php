@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\View\Helper;
 
+use Cake\Utility\Inflector;
 use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use Cake\Core\Configure;
 use Cake\Event\Event;
@@ -46,31 +47,19 @@ class UserHelper extends Helper
     }
 
     /**
-     * Facebook login link
+     * Social login link
      *
+     * @param string $name
+     * @param array $options
      * @return string
      */
-    public function facebookLogin()
+    public function socialLogin($name, $options)
     {
         return $this->Html->link($this->Html->tag('i', '', [
-                'class' => 'fa fa-facebook'
-            ]) . __d('Users', 'Sign in with Facebook'), '/auth/facebook', [
-            'escape' => false, 'class' => 'btn btn-social btn-facebook'
-            ]);
-    }
-
-    /**
-     * Twitter login link
-     *
-     * @return string
-     */
-    public function twitterLogin()
-    {
-        return $this->Html->link($this->Html->tag('i', '', [
-                'class' => 'fa fa-twitter'
-            ]) . __d('Users', 'Sign in with Twitter'), '/auth/twitter', [
-            'escape' => false, 'class' => 'btn btn-social btn-twitter'
-            ]);
+                'class' => __d('Users', 'fa fa-{0}', strtolower($name)),
+            ]) . __d('Users', 'Sign in with {0}', Inflector::camelize($name)), "/auth/$name", [
+            'escape' => false, 'class' =>  __d('Users', 'btn btn-social btn-{0} ' . $options['class'] ? :'', strtolower($name))
+        ]);
     }
 
     /**

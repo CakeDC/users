@@ -100,25 +100,19 @@ $config = [
         ],
     ],
     'OAuth' => [
-        'path' => ['controller' => 'Users', 'action' => 'socialLogin'],
+        'path' => ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'socialLogin'],
         'providers' => [
             'facebook' => [
                 'className' => 'League\OAuth2\Client\Provider\Facebook',
                 'options' => [
                     'graphApiVersion' => 'v2.5'
-                ],
-                'mapFields' => [
-                    'username' => 'login',
-                ],
+                ]
             ],
-            'instagram' => [
-                'className' => 'League\OAuth2\Client\Provider\Instagram',
+            'linkedIn' => [
+                'className' => 'League\OAuth2\Client\Provider\LinkedIn',
                 'options' => [
                     'graphApiVersion' => 'v2.5'
-                ],
-                'mapFields' => [
-                    'username' => 'login', // maps the app's username to github's login
-                ],
+                ]
             ]
         ],
     ]
