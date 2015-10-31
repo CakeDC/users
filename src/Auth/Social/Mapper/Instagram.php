@@ -8,7 +8,6 @@
 
 namespace CakeDC\Users\Auth\Social\Mapper;
 
-
 use Cake\Utility\Hash;
 
 class Instagram extends AbstractMapper

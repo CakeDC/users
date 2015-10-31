@@ -108,6 +108,7 @@ class SocialAuthenticate extends OAuthAuthenticate
             $providerMapperClass = "\\CakeDC\\Users\\Auth\\Social\\Mapper\\$provider";
             $providerMapper = new $providerMapperClass($rawData);
             $user = $providerMapper();
+            $user['provider'] = $provider;
 
         }
         if (!$user || !$this->config('userModel')) {

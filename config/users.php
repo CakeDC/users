@@ -116,6 +116,9 @@ $config = [
             ],
             'google' => [
                 'className' => 'League\OAuth2\Client\Provider\Google',
+                'options' => [
+                    'userFields' => ['url', 'aboutMe'],
+                ]
             ]
         ],
     ]

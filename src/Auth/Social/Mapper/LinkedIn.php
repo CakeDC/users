@@ -8,7 +8,6 @@
 
 namespace CakeDC\Users\Auth\Social\Mapper;
 
-
 class LinkedIn extends AbstractMapper
 {
     /**
