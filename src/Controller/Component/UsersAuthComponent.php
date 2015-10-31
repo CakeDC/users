@@ -24,6 +24,7 @@ class UsersAuthComponent extends Component
     const EVENT_IS_AUTHORIZED = 'Users.Component.UsersAuth.isAuthorized';
     const EVENT_BEFORE_LOGIN = 'Users.Component.UsersAuth.beforeLogin';
     const EVENT_AFTER_LOGIN = 'Users.Component.UsersAuth.afterLogin';
+    const EVENT_FAILED_SOCIAL_LOGIN = 'Users.Component.UsersAuth.failedSocialLogin';
     const EVENT_AFTER_COOKIE_LOGIN = 'Users.Component.UsersAuth.afterCookieLogin';
     const EVENT_BEFORE_REGISTER = 'Users.Component.UsersAuth.beforeRegister';
     const EVENT_AFTER_REGISTER = 'Users.Component.UsersAuth.afterRegister';

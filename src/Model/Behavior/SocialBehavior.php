@@ -11,21 +11,15 @@
 
 namespace CakeDC\Users\Model\Behavior;
 
-use Cake\Event\Event;
 use Cake\Event\EventDispatcherTrait;
-use CakeDC\Users\Auth\Social\Util\SocialUtils;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
-use CakeDC\Users\Model\Behavior\Behavior;
-use CakeDC\Users\Model\Table\SocialAccountsTable;
+use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Traits\RandomStringTrait;
 use Cake\Datasource\EntityInterface;
 use Cake\Utility\Hash;
 use DateTime;
 use InvalidArgumentException;
-use League\OAuth2\Client\Provider\AbstractProvider;
-use League\OAuth2\Client\Provider\Facebook;
-use ReflectionClass;
 
 /**
  * Covers social features
@@ -41,21 +35,16 @@ class SocialBehavior extends Behavior
      *
      * @param array $data Array social login.
      * @param array $options Array option data.
-     * @param AbstractProvider $provider Provider
      * @return bool|EntityInterface|mixed
      */
-    public function socialLogin(array $data, array $options, AbstractProvider $provider)
+    public function socialLogin(array $data, array $options)
     {
-        $data['provider'] = SocialUtils::getProvider($provider);
         $reference = Hash::get($data, 'id');
         $existingAccount = $this->_table->SocialAccounts->find()
                 ->where(['SocialAccounts.reference' => $reference, 'SocialAccounts.provider' => $data['provider']])
                 ->contain(['Users'])
                 ->first();
         if (empty($existingAccount->user)) {
-            $event = 'Muffin/OAuth2.newUser';
-            $args = [$provider, $data];
-            $this->dispatchEvent($event, $args);
             $user = $this->_createSocialUser($data, $options);
             if (!empty($user->social_accounts[0])) {
                 $existingAccount = $user->social_accounts[0];
@@ -68,7 +57,15 @@ class SocialBehavior extends Behavior
         }
         if (!empty($existingAccount)) {
             if ($existingAccount->active) {
-                return $user;
+                if ($user->active) {
+                    return $user;
+                } else {
+                    throw new UserNotActiveException([
+                        $existingAccount->provider,
+                        $existingAccount->$user
+                    ]);
+                }
+
             } else {
                 throw new AccountNotActiveException([
                     $existingAccount->provider,

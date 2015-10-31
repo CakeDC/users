@@ -133,7 +133,7 @@ class RememberMeComponent extends Component
     public function beforeFilter(Event $event)
     {
         $user = $this->Auth->user();
-        if (!empty($user) || $this->request->is(['post', 'put']) || $this->request->action === 'logout' || $this->request->session()->check(Configure::read('Users.Key.Session.social'))) {
+        if (!empty($user) || $this->request->is(['post', 'put']) || $this->request->action === 'logout' || $this->request->session()->check(Configure::read('Users.Key.Session.social')) || $this->request->param('provider')) {
             return;
         }
 

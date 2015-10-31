@@ -11,5 +11,16 @@ namespace CakeDC\Users\Auth\Social\Mapper;
 
 class LinkedIn extends AbstractMapper
 {
-
+    /**
+     * Map for provider fields
+     * @var
+     */
+    protected $_mapFields = [
+        'avatar' => 'pictureUrl',
+        'first_name' => 'firstName',
+        'last_name' => 'lastName',
+        'email' => 'emailAddress',
+        'bio' => 'headline',
+        'link' => 'publicProfileUrl'
+    ];
 }

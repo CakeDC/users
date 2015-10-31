@@ -31,5 +31,15 @@ trait SocialTrait
         if (!$this->request->session()->check(Configure::read('Users.Key.Session.social'))) {
             throw new NotFoundException();
         }
+
+        if ($this->request->is('post')) {
+            $validPost = $this->_validateRegisterPost();
+            if (!$validPost) {
+                $this->Flash->error(__d('Users', 'The reCaptcha could not be validated'));
+                return;
+            }
+            $user = $this->Auth->identify();
+            return $this->_afterIdentifyUser($user, true);
+        }
     }
 }

@@ -110,9 +110,9 @@ $config = [
             ],
             'linkedIn' => [
                 'className' => 'League\OAuth2\Client\Provider\LinkedIn',
-                'options' => [
-                    'graphApiVersion' => 'v2.5'
-                ]
+            ],
+            'instagram' => [
+                'className' => 'League\OAuth2\Client\Provider\Instagram',
             ]
         ],
     ]

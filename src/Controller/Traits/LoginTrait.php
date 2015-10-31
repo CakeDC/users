@@ -11,11 +11,14 @@
 
 namespace CakeDC\Users\Controller\Traits;
 
+use Cake\Event\Event;
+use Cake\Network\Exception\NotFoundException;
 use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
 use Cake\Core\Configure;
 use Cake\Utility\Hash;
+use CakeDC\Users\Exception\UserNotActiveException;
 
 /**
  * Covers the login, logout and social login
@@ -25,8 +28,37 @@ trait LoginTrait
 {
     use CustomUsersTableTrait;
 
+    /**
+     * @param $event
+     */
+    public function failedSocialLogin($event) {
+        if ($event->data['exception'] instanceof MissingEmailException) {
+            $this->Flash->success(__d('Users', 'Please enter your email'));
+            $this->request->session()->write(Configure::read('Users.Key.Session.social'), $event->data['rawData']);
+            return $this->redirect(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'socialEmail']);
+        }
+        if ($event->data['exception'] instanceof UserNotActiveException) {
+            $msg = __d('Users', 'Your user has not been validated yet. Please check your inbox for instructions');
+        } elseif ($event->data['exception'] instanceof AccountNotActiveException) {
+            $msg = __d('Users', 'Your social account has not been validated yet. Please check your inbox for instructions');
+        }
+        $this->Flash->success($msg);
+        return $this->redirect(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
+    }
+
+    /**
+     * @return array
+     */
     public function socialLogin()
     {
+        $socialProvider = $this->request->param('provider');
+        $socialUser = $this->request->session()->read(Configure::read('Users.Key.Session.social'));
+
+        if (empty($socialProvider) && empty($socialUser)) {
+            throw new NotFoundException();
+        }
+        $user = $this->Auth->user();
+        return $this->_afterIdentifyUser($user, true);
 
     }
     /**
@@ -43,21 +75,14 @@ trait LoginTrait
         if ($event->isStopped()) {
             return $this->redirect($event->result);
         }
-        $socialLogin = $this->_isSocialLogin();
 
-        if (!$this->request->is('post') && !$socialLogin) {
-            return;
+        $socialLogin = $this->request->session()->check(Configure::read('Users.Key.Session.social'));
+        if (!empty($socialLogin)) {
+            $this->redirect(['action' => 'social-email']);
         }
-
-        try {
+        if ($this->request->is('post')) {
             $user = $this->Auth->identify();
-            return $this->_afterIdentifyUser($user, $socialLogin);
-        } catch (AccountNotActiveException $ex) {
-            $msg = __d('Users', 'Your social account has not been validated yet. Please check your inbox for instructions');
-            $this->Flash->success($msg);
-        } catch (MissingEmailException $ex) {
-            $this->Flash->success(__d('Users', 'Please enter your email'));
-            return $this->redirect(['controller' => 'Users', 'action' => 'socialEmail']);
+            return $this->_afterIdentifyUser($user, false);
         }
     }
 
@@ -69,36 +94,22 @@ trait LoginTrait
      */
     protected function _afterIdentifyUser($user, $socialLogin = false)
     {
-        $socialKey = Configure::read('Users.Key.Session.social');
         if (!empty($user)) {
-            $this->request->session()->delete($socialKey);
             $this->Auth->setUser($user);
-            $event = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_LOGIN);
+
+            $event = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_LOGIN, ['user' => $user]);
             if (is_array($event->result)) {
                 return $this->redirect($event->result);
             }
             $url = $this->Auth->redirectUrl();
             return $this->redirect($url);
         } else {
-            $message = __d('Users', 'Username or password is incorrect');
-            if ($socialLogin) {
-                $socialData = $this->request->session()->read($socialKey);
-                $socialDataEmail = null;
-                if (!empty($socialData->info)) {
-                    $socialDataEmail = Hash::get((array)$socialData->info, Configure::read('data_email_key'));
-                }
-                $postedEmail = $this->request->data(Configure::read('Users.Key.Data.email'));
-                if (Configure::read('Users.Email.required') &&
-                    empty($socialDataEmail) &&
-                    empty($postedEmail)) {
-                        return $this->redirect([
-                            'controller' => 'Users',
-                            'action' => 'socialEmail'
-                        ]);
-                }
-                $message = __d('Users', 'There was an error associating your social network account');
+            if (!$socialLogin) {
+                $message = __d('Users', 'Username or password is incorrect');
+                $this->Flash->error($message, 'default', [], 'auth');
             }
-            $this->Flash->error($message, 'default', [], 'auth');
+
+            $this->redirect($this->Auth->redirectUrl());
         }
     }
 

@@ -25,4 +25,5 @@ if (Configure::check('Users.auth')) {
 
 if (Configure::read('Users.Social.login')) {
     Plugin::load('Muffin/OAuth2');
+    EventManager::instance()->on(\CakeDC\Users\Controller\Component\UsersAuthComponent::EVENT_FAILED_SOCIAL_LOGIN, [new \CakeDC\Users\Controller\UsersController(), 'failedSocialLogin']);
 }

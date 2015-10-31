@@ -12,6 +12,7 @@
 namespace CakeDC\Users\Controller;
 
 use CakeDC\Users\Controller\AppController;
+use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Controller\Traits\LoginTrait;
 use CakeDC\Users\Controller\Traits\ProfileTrait;
 use CakeDC\Users\Controller\Traits\RegisterTrait;

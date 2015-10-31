@@ -27,6 +27,12 @@ class UsersTable extends Table
 {
 
     /**
+     * Role Constants
+     */
+    const ROLE_USER = 'user';
+    const ROLE_ADMIN = 'admin';
+
+    /**
      * Flag to set email check in buildRules or not
      *
      * @var bool
