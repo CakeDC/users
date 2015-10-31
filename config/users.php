@@ -113,6 +113,9 @@ $config = [
             ],
             'instagram' => [
                 'className' => 'League\OAuth2\Client\Provider\Instagram',
+            ],
+            'google' => [
+                'className' => 'League\OAuth2\Client\Provider\Google',
             ]
         ],
     ]
