@@ -147,6 +147,32 @@ class UserHelperTest extends TestCase
         $this->assertSame('before_<a href="/" class="link-class">title</a>_after', $link);
     }
 
+
+    /**
+     * Test isAuthorized
+     *
+     * @return void
+     */
+    public function testIsAuthorizedHH()
+    {
+        $view = new View();
+        $eventManagerMock = $this->getMockBuilder('Cake\Event\EventManager')
+            ->setMethods(['dispatch'])
+            ->getMock();
+        $view->eventManager($eventManagerMock);
+        $this->User = new UserHelper($view);
+        $result = new Event('dispatch-result');
+        $result->result = true;
+        $eventManagerMock->expects($this->once())
+            ->method('dispatch')
+            ->will($this->returnValue($result));
+
+        $link = $this->User->isAuthorized(['controller' => 'MyController', 'action' => 'myAction']);
+        $this->assertTrue($link);
+    }
+
+
+
     /**
      * Test link
      *
