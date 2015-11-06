@@ -32,15 +32,18 @@ trait LoginTrait
      * @param $event
      */
     public function failedSocialLogin($event) {
-        if ($event->data['exception'] instanceof MissingEmailException) {
-            $this->Flash->success(__d('Users', 'Please enter your email'));
-            $this->request->session()->write(Configure::read('Users.Key.Session.social'), $event->data['rawData']);
-            return $this->redirect(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'socialEmail']);
-        }
-        if ($event->data['exception'] instanceof UserNotActiveException) {
-            $msg = __d('Users', 'Your user has not been validated yet. Please check your inbox for instructions');
-        } elseif ($event->data['exception'] instanceof AccountNotActiveException) {
-            $msg = __d('Users', 'Your social account has not been validated yet. Please check your inbox for instructions');
+        $msg = __d('Users', 'Issues trying to log in with your social account');
+        if (isset($event->data['exception']) ) {
+            if ($event->data['exception'] instanceof MissingEmailException) {
+                $this->Flash->success(__d('Users', 'Please enter your email'));
+                $this->request->session()->write(Configure::read('Users.Key.Session.social'), $event->data['rawData']);
+                return $this->redirect(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'socialEmail']);
+            }
+            if ($event->data['exception'] instanceof UserNotActiveException) {
+                $msg = __d('Users', 'Your user has not been validated yet. Please check your inbox for instructions');
+            } elseif ($event->data['exception'] instanceof AccountNotActiveException) {
+                $msg = __d('Users', 'Your social account has not been validated yet. Please check your inbox for instructions');
+            }
         }
         $this->Flash->success($msg);
         return $this->redirect(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
@@ -76,13 +79,14 @@ trait LoginTrait
             return $this->redirect($event->result);
         }
 
-        $socialLogin = $this->request->session()->check(Configure::read('Users.Key.Session.social'));
+        $socialLogin =  $this->_isSocialLogin();
+
         if (!empty($socialLogin)) {
-            $this->redirect(['action' => 'social-email']);
+            return $this->redirect(['action' => 'social-email']);
         }
         if ($this->request->is('post')) {
             $user = $this->Auth->identify();
-            return $this->_afterIdentifyUser($user, false);
+            return $this->_afterIdentifyUser($user, $socialLogin);
         }
     }
 
@@ -109,7 +113,7 @@ trait LoginTrait
                 $this->Flash->error($message, 'default', [], 'auth');
             }
 
-            $this->redirect(Configure::read('Auth.loginAction'));
+            return $this->redirect(Configure::read('Auth.loginAction'));
         }
     }
 

@@ -54,30 +54,6 @@ class UserHelperTest extends TestCase
     }
 
     /**
-     * Test facebookLogin
-     *
-     * @return void
-     */
-    public function testFacebookLogin()
-    {
-        $result = $this->User->facebookLogin();
-        $expected = '<a href="/auth/facebook" class="btn btn-social btn-facebook"><i class="fa fa-facebook"></i>Sign in with Facebook</a>';
-        $this->assertEquals($expected, $result);
-    }
-
-    /**
-     * Test twitterLogin
-     *
-     * @return void
-     */
-    public function testTwitterLoginEnabled()
-    {
-        $result = $this->User->twitterLogin();
-        $expected = '<a href="/auth/twitter" class="btn btn-social btn-twitter"><i class="fa fa-twitter"></i>Sign in with Twitter</a>';
-        $this->assertEquals($expected, $result);
-    }
-
-    /**
      * Test twitterLogin
      *
      * @return void

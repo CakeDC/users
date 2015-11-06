@@ -40,52 +40,6 @@ class SocialTraitTest extends TestCase
     }
 
     /**
-     * Test opauthInit with no callback
-     *
-     */
-    public function testOpauthInitTest()
-    {
-        $Opauth = $this->getMock('Opauth\Opauth\Opauth', ['run'], [], '', false);
-        $Opauth->expects($this->once())
-            ->method('run')
-            ->will($this->returnValue('response'));
-        $this->controller->Trait->expects($this->once())
-            ->method('_getOpauthInstance')
-            ->will($this->returnValue($Opauth));
-        $this->controller->Trait->opauthInit();
-    }
-
-    /**
-     * Test opauthInit with callback
-     *
-     */
-    public function testOpauthInitTestCallback()
-    {
-        $Opauth = $this->getMock('Opauth\Opauth\Opauth', ['run'], [], '', false);
-        $Opauth->expects($this->once())
-            ->method('run')
-            ->will($this->returnValue('response'));
-        $session = $this->getMock('Cake\Network\Session', ['write', 'check']);
-        $session->expects($this->once())
-            ->method('write')
-            ->with(Configure::read('Users.Key.Session.social'), 'response');
-        $this->controller->Trait->request = $this->getMock('Cake\Network\Request', ['session']);
-        $this->controller->Trait->request->expects($this->once())
-            ->method('session')
-            ->will($this->returnValue($session));
-        $this->controller->Trait->expects($this->once())
-            ->method('_getOpauthInstance')
-            ->will($this->returnValue($Opauth));
-        $this->controller->Trait->expects($this->once())
-            ->method('_generateOpauthCompleteUrl')
-            ->will($this->returnValue('url'));
-        $this->controller->Trait->expects($this->once())
-            ->method('redirect')
-            ->with('url');
-        $this->controller->Trait->opauthInit('callback');
-    }
-
-    /**
      * Test socialEmail
      *
      */

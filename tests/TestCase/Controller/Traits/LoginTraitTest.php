@@ -15,14 +15,15 @@ use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Controller\Traits\LoginTrait;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
+use CakeDC\Users\Exception\UserNotActiveException;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Network\Request;
+use Cake\ORM\Entity;
 use Cake\TestSuite\TestCase;
-use Opauth\Opauth\Response;
 
-class LoginTraitTest extends TestCase
+class LoginTraitTest extends BaseTraitTest
 {
     /**
      * setup
@@ -31,6 +32,9 @@ class LoginTraitTest extends TestCase
      */
     public function setUp()
     {
+        $this->traitClassName = 'CakeDC\Users\Controller\Traits\LoginTrait';
+        $this->traitMockMethods = ['dispatchEvent', 'isStopped', 'redirect', 'getUsersTable', 'set'];
+
         parent::setUp();
         $request = new Request();
         $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\Traits\LoginTrait')
@@ -47,18 +51,6 @@ class LoginTraitTest extends TestCase
     public function tearDown()
     {
         parent::tearDown();
-    }
-
-    /**
-     * mock utility
-     *
-     * @return void
-     */
-    protected function _mockDispatchEvent(Event $event)
-    {
-        $this->Trait->expects($this->any())
-                ->method('dispatchEvent')
-                ->will($this->returnValue($event));
     }
 
     /**
@@ -119,7 +111,6 @@ class LoginTraitTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $user = [];
-        $redirectLoginOK = '/';
         $this->Trait->Auth->expects($this->once())
             ->method('identify')
             ->will($this->returnValue($user));
@@ -150,112 +141,25 @@ class LoginTraitTest extends TestCase
         $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
                 ->setMethods(['is'])
                 ->getMock();
-        $this->Trait->request->expects($this->once())
+        /*$this->Trait->request->expects($this->once())
                 ->method('is')
                 ->with('post')
-                ->will($this->returnValue(true));
+                ->will($this->returnValue(true));*/
         $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
             ->setMethods(['user', 'identify', 'setUser', 'redirectUrl'])
             ->disableOriginalConstructor()
             ->getMock();
         $user = [];
-        $redirectLoginOK = '/';
-        $this->Trait->Auth->expects($this->once())
+       /* $this->Trait->Auth->expects($this->once())
             ->method('identify')
-            ->will($this->returnValue($user));
-        $this->Trait->expects($this->once())
-                ->method('redirect')
-                ->with([
-                        'controller' => 'Users',
-                        'action' => 'socialEmail'
-                    ]);
-        $this->Trait->login();
-    }
+            ->will($this->returnValue($user));*/
 
-    /**
-     * test
-     *
-     * @return void
-     */
-    public function testLoginAfterIdentifyAccountNotActive()
-    {
-        $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\Traits\LoginTrait')
-            ->setMethods(['dispatchEvent', 'redirect', '_afterIdentifyUser'])
-            ->getMockForTrait();
-        $this->_mockDispatchEvent(new Event('event'));
-        $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
-                ->setMethods(['is'])
-                ->getMock();
-        $this->Trait->request->expects($this->once())
-                ->method('is')
-                ->with('post')
-                ->will($this->returnValue(true));
-        $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
-            ->setMethods(['user', 'identify'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->Trait->Flash = $this->getMockBuilder('Cake\Controller\Component\FlashComponent')
-            ->setMethods(['success'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $user = [
-            'id' => 1,
-        ];
-        $this->Trait->Auth->expects($this->once())
-            ->method('identify')
-            ->will($this->returnValue($user));
         $this->Trait->expects($this->once())
-                ->method('_afterIdentifyUser')
-                ->with($user, false)
-                ->will($this->throwException(new AccountNotActiveException('')));
-        $this->Trait->Flash->expects($this->once())
-                ->method('success')
-                ->with('Your social account has not been validated yet. Please check your inbox for instructions');
-        $this->Trait->login();
-    }
+            ->method('redirect')
+            ->with([
+                'action' => 'social-email'
+            ]);
 
-    /**
-     * test
-     *
-     * @return void
-     */
-    public function testLoginAfterIdentifyMissingEmailException()
-    {
-        $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\Traits\LoginTrait')
-            ->setMethods(['dispatchEvent', 'redirect', '_afterIdentifyUser'])
-            ->getMockForTrait();
-        $this->_mockDispatchEvent(new Event('event'));
-        $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
-                ->setMethods(['is'])
-                ->getMock();
-        $this->Trait->request->expects($this->once())
-                ->method('is')
-                ->with('post')
-                ->will($this->returnValue(true));
-        $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
-            ->setMethods(['user', 'identify'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->Trait->Flash = $this->getMockBuilder('Cake\Controller\Component\FlashComponent')
-            ->setMethods(['success'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $user = [
-            'id' => 1,
-        ];
-        $this->Trait->Auth->expects($this->once())
-            ->method('identify')
-            ->will($this->returnValue($user));
-        $this->Trait->expects($this->once())
-                ->method('_afterIdentifyUser')
-                ->with($user, false)
-                ->will($this->throwException(new MissingEmailException('')));
-        $this->Trait->Flash->expects($this->once())
-                ->method('success')
-                ->with('Please enter your email');
-        $this->Trait->expects($this->once())
-                ->method('redirect')
-                ->with(['controller' => 'Users', 'action' => 'socialEmail']);
         $this->Trait->login();
     }
 
@@ -365,5 +269,117 @@ class LoginTraitTest extends TestCase
                 ->method('success')
                 ->with('You\'ve successfully logged out');
         $this->Trait->logout();
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testFailedSocialLoginMissingEmail()
+    {
+        $event = new Entity();
+        $event->data = [
+            'exception' => new MissingEmailException('Email not present'),
+            'rawData' => [
+                'id' => 11111,
+                'username' => 'user-1'
+            ]
+        ];
+        $this->_mockFlash();
+        $this->_mockRequestGet();
+        $this->Trait->Flash->expects($this->once())
+            ->method('success')
+            ->with('Please enter your email');
+
+        $this->Trait->expects($this->once())
+            ->method('redirect')
+            ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'socialEmail']);
+
+        $this->Trait->failedSocialLogin($event);
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testFailedSocialUserNotActive()
+    {
+        $event = new Entity();
+        $event->data = [
+            'exception' => new UserNotActiveException('Facebook user-1'),
+            'rawData' => [
+                'id' => 111111,
+                'username' => 'user-1'
+            ]
+        ];
+        $this->_mockFlash();
+        $this->_mockRequestGet();
+        $this->Trait->Flash->expects($this->once())
+            ->method('success')
+            ->with('Your user has not been validated yet. Please check your inbox for instructions');
+
+        $this->Trait->expects($this->once())
+            ->method('redirect')
+            ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
+
+        $this->Trait->failedSocialLogin($event);
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testFailedSocialUserAccountNotActive()
+    {
+        $event = new Entity();
+        $event->data = [
+            'exception' => new AccountNotActiveException('Facebook user-1'),
+            'rawData' => [
+                'id' => 111111,
+                'username' => 'user-1'
+            ]
+        ];
+        $this->_mockFlash();
+        $this->_mockRequestGet();
+        $this->Trait->Flash->expects($this->once())
+            ->method('success')
+            ->with('Your social account has not been validated yet. Please check your inbox for instructions');
+
+        $this->Trait->expects($this->once())
+            ->method('redirect')
+            ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
+
+        $this->Trait->failedSocialLogin($event);
+    }
+
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testFailedSocialUserAccount()
+    {
+        $event = new Entity();
+        $event->data = [
+            'rawData' => [
+                'id' => 111111,
+                'username' => 'user-1'
+            ]
+        ];
+        $this->_mockFlash();
+        $this->_mockRequestGet();
+        $this->Trait->Flash->expects($this->once())
+            ->method('success')
+            ->with('Issues trying to log in with your social account');
+
+        $this->Trait->expects($this->once())
+            ->method('redirect')
+            ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
+
+        $this->Trait->failedSocialLogin($event);
     }
 }

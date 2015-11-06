@@ -179,19 +179,21 @@ class UsersTableTest extends TestCase
 
     public function testSocialLogin()
     {
-        $raw = [
+        $data = [
+            'provider' => SocialAccountsTable::PROVIDER_FACEBOOK,
+            'email' => 'user-2@test.com',
             'id' => 'reference-2-1',
-            'first_name' => 'User 2',
-            'gender' => 'female',
-            'verified' => 1,
-            'user_email' => 'user-2@test.com',
-            'link' => 'link'
+            'link' => 'link',
+            'raw' =>  [
+                'id' => 'reference-2-1',
+                'token' => 'token',
+                'first_name' => 'User 2',
+                'gender' => 'female',
+                'verified' => 1,
+                'user_email' => 'user-2@test.com',
+                'link' => 'link'
+            ]
         ];
-        $data = new \Cake\Network\Response();
-        $data->provider = SocialAccountsTable::PROVIDER_FACEBOOK;
-        $data->email = 'user-2@test.com';
-        $data->raw = $raw;
-        $data->uid = 'reference-2-1';
         $options = [
             'use_email' => 1,
             'validate_email' => 1,
@@ -209,20 +211,18 @@ class UsersTableTest extends TestCase
      */
     public function testSocialLoginInactiveAccount()
     {
-        $raw = [
+        $data = [
+            'provider' => SocialAccountsTable::PROVIDER_TWITTER,
+            'email' => 'hello@test.com',
             'id' => 'reference-2-2',
-            'first_name' => 'User 2',
-            'gender' => 'female',
-            'verified' => 1,
-            'user_email' => 'hello@test.com',
-        ];
-        $data = new \Cake\Network\Response();
-        $data->provider = SocialAccountsTable::PROVIDER_TWITTER;
-        $data->email = 'hello@test.com';
-        $data->raw = $raw;
-        $data->uid = 'reference-2-2';
-        $data->info = [
-            'first_name' => 'User 2',
+            'link' => 'link',
+            'raw' =>  [
+                'id' => 'reference-2-2',
+                'first_name' => 'User 2',
+                'gender' => 'female',
+                'verified' => 1,
+                'user_email' => 'hello@test.com',
+            ]
         ];
         $options = [
             'use_email' => 1,
@@ -241,23 +241,21 @@ class UsersTableTest extends TestCase
      */
     public function testSocialLoginCreateNewAccountWithNoCredentials()
     {
-        $raw = [
+        $data = [
+            'provider' => SocialAccountsTable::PROVIDER_TWITTER,
+            'email' => 'user@test.com',
             'id' => 'reference-not-existing',
-            'first_name' => 'Not existing user',
-            'gender' => 'male',
-            'user_email' => 'user@test.com',
+            'link' => 'link',
+            'raw' =>  [
+                'id' => 'reference-not-existing',
+                'first_name' => 'Not existing user',
+                'gender' => 'male',
+                'user_email' => 'user@test.com',
+            ],
+            'credentials' => [],
+            'name' => '',
         ];
-        $data = new \Cake\Network\Response();
-        $data->provider = SocialAccountsTable::PROVIDER_TWITTER;
-        $data->email = 'user@test.com';
-        $data->raw = $raw;
-        $data->validated = true;
-        $data->uid = 'reference-not-existing';
-        $data->info = [
-            'first_name' => 'Not existing user',
-        ];
-        $data->credentials = [];
-        $data->name = '';
+
         $options = [
             'use_email' => 0,
             'validate_email' => 1,
@@ -273,33 +271,34 @@ class UsersTableTest extends TestCase
      */
     public function testSocialLoginCreateNewAccount()
     {
-        $raw = [
+        $data = [
+            'provider' => SocialAccountsTable::PROVIDER_TWITTER,
+            'email' => 'username@test.com',
             'id' => 'no-existing-reference',
+            'link' => 'link',
             'first_name' => 'First Name',
             'last_name' => 'Last Name',
-            'gender' => 'male',
-            'user_email' => 'user@test.com',
-            'twitter' => 'link'
+            'raw' =>  [
+                'id' => 'no-existing-reference',
+                'first_name' => 'First Name',
+                'last_name' => 'Last Name',
+                'gender' => 'male',
+                'user_email' => 'user@test.com',
+                'twitter' => 'link'
+            ],
+            'info' => [
+                'first_name' => 'First Name',
+                'last_name' => 'Last Name',
+                'urls' => ['twitter' => 'twitter']
+            ],
+            'validated' => true,
+            'credentials' => [
+                'token' => 'token',
+                'token_secret' => 'secret',
+                'token_expires' => ''
+            ],
         ];
 
-        $data = new \Cake\Network\Response();
-        $data->provider = SocialAccountsTable::PROVIDER_TWITTER;
-        $data->email = 'user-2@test.com';
-        $data->raw = $raw;
-        $data->uid = 'no-existing-reference';
-        $data->info = [
-            'first_name' => 'First Name',
-            'last_name' => 'Last Name',
-            'urls' => ['twitter' => 'twitter'],
-        ];
-        $data->validated = true;
-
-        $data->email = 'username@test.com';
-        $data->credentials = [
-            'token' => 'token',
-            'token_secret' => 'secret',
-            'token_expires' => ''
-        ];
         $options = [
             'use_email' => 0,
             'validate_email' => 0,
