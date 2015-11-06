@@ -62,7 +62,7 @@ trait UserValidationTrait
                     $this->Flash->error(__d('Users', 'Invalid validation type'));
             }
         } catch (UserNotFoundException $ex) {
-            $this->Flash->error(__d('Users', 'Invalid token and/or email'));
+            $this->Flash->error(__d('Users', 'Invalid token or user account already validated'));
         } catch (TokenExpiredException $ex) {
             $this->Flash->error(__d('Users', 'Token already expired'));
         }

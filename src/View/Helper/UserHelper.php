@@ -55,9 +55,12 @@ class UserHelper extends Helper
      */
     public function socialLogin($name, $options)
     {
+        if (empty($options['label'])) {
+            $options['label'] = 'Sign in with';
+        }
         return $this->Html->link($this->Html->tag('i', '', [
                 'class' => __d('Users', 'fa fa-{0}', strtolower($name)),
-            ]) . __d('Users', 'Sign in with {0}', Inflector::camelize($name)), "/auth/$name", [
+            ]) . __d('Users', '{0} {1}', $options['label'], Inflector::camelize($name)), "/auth/$name", [
             'escape' => false, 'class' =>  __d('Users', 'btn btn-social btn-{0} ' . $options['class'] ? :'', strtolower($name))
         ]);
     }

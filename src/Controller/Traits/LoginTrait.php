@@ -109,7 +109,7 @@ trait LoginTrait
                 $this->Flash->error($message, 'default', [], 'auth');
             }
 
-            $this->redirect($this->Auth->redirectUrl());
+            $this->redirect(Configure::read('Auth.loginAction'));
         }
     }
 
