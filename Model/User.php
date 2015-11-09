@@ -574,7 +574,7 @@ class User extends UsersAppModel {
 
 		$this->set($postData);
 		if ($this->validates()) {
-			$postData[$this->alias]['password'] = $this->hash($postData[$this->alias]['password'], 'sha1', true);
+			$postData[$this->alias]['password'] = $this->hash($postData[$this->alias]['password'], null, true);
 			$this->create();
 			$this->data = $this->save($postData, false);
 			$this->data[$this->alias]['id'] = $this->id;
@@ -830,7 +830,7 @@ class User extends UsersAppModel {
 						$postData[$this->alias]['role'] = 'admin';
 					}
 				}
-				$postData[$this->alias]['password'] = $this->hash($postData[$this->alias]['password'], 'sha1', true);
+				$postData[$this->alias]['password'] = $this->hash($postData[$this->alias]['password'], null, true);
 				$this->create();
 				$result = $this->save($postData, false);
 				if ($result) {
@@ -860,7 +860,7 @@ class User extends UsersAppModel {
 			$this->set($postData);
 			if ($this->validates()) {
 				if(isset($postData[$this->alias]['password'])) {
-					$this->data[$this->alias]['password'] = $this->hash($postData[$this->alias]['password'], 'sha1', true);
+					$this->data[$this->alias]['password'] = $this->hash($postData[$this->alias]['password'], null, true);
 				}
 				$result = $this->save(null, false);
 				if ($result) {
