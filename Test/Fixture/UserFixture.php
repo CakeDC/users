@@ -188,7 +188,7 @@ class UserFixture extends CakeTestFixture {
 		parent::__construct();
 		$this->User = ClassRegistry::init('Users.User');
 		foreach ($this->records as &$record) {
-			$record['password'] = $this->User->hash($record['password'], null, true);
+			$record['password'] = $this->User->hash($record['password']);
 		}
 	}
 

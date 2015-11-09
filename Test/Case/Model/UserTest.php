@@ -196,7 +196,7 @@ class UserTestCase extends CakeTestCase {
  * @return void
  */
 	public function testValidateOldPassword() {
-		$password = $this->User->hash('password', null, true);
+		$password = $this->User->hash('password');
 		$this->User->id = '1';
 		$this->User->saveField('password', $password);
 		$this->User->data = array(
@@ -289,7 +289,7 @@ class UserTestCase extends CakeTestCase {
 		$result = $this->User->data;
 
 		$this->assertEquals($result['User']['active'], 1);
-		$this->assertEquals($result['User']['password'], $this->User->hash('password', 'sha1', true));
+		$this->assertEquals($result['User']['password'], $this->User->hash('password'));
 		$this->assertTrue(is_string($result['User']['email_token']));
 
 		$result = $this->User->findById($this->User->id);
@@ -329,7 +329,7 @@ class UserTestCase extends CakeTestCase {
 			'recursive' => -1,
 			'conditions' => array(
 				'User.id' => 1)));
-		$this->assertEquals($ressult['User']['password'], $this->User->hash('testtest', null, true));
+		$this->assertEquals($ressult['User']['password'], $this->User->hash('testtest'));
 	}
 
 /**
@@ -464,7 +464,7 @@ class UserTestCase extends CakeTestCase {
 
 		$result = $this->User->edit($userId, $data1);
 
-		$hashPassword = $this->User->hash($data1['User']['password'], 'sha1', true);
+		$hashPassword = $this->User->hash($data1['User']['password']);
 		$this->assertTrue($result);
 		$this->assertEquals($this->User->data['User']['password'], $hashPassword);
 

@@ -194,7 +194,7 @@ class User extends UsersAppModel {
  *	 value to $string (Security.salt)
  * @return string Hash
  */
-	public function hash($string, $type = null, $salt = false) {
+	public function hash($string, $type = null, $salt = true) {
 		return Security::hash($string, $type, $salt);
 	}
 
@@ -381,7 +381,7 @@ class User extends UsersAppModel {
 
 		$this->set($postData);
 		if ($this->validates()) {
-			$this->data[$this->alias]['password'] = $this->hash($this->data[$this->alias]['new_password'], null, true);
+			$this->data[$this->alias]['password'] = $this->hash($this->data[$this->alias]['new_password']);
 			$this->data[$this->alias]['password_token'] = null;
 			$result = $this->save($this->data, array(
 				'validate' => false,
@@ -404,7 +404,7 @@ class User extends UsersAppModel {
 
 		$this->set($postData);
 		if ($this->validates()) {
-			$this->data[$this->alias]['password'] = $this->hash($this->data[$this->alias]['new_password'], null, true);
+			$this->data[$this->alias]['password'] = $this->hash($this->data[$this->alias]['new_password']);
 			$this->save($postData, array(
 				'validate' => false,
 				'callbacks' => $this->enableCallbacks));
@@ -428,7 +428,7 @@ class User extends UsersAppModel {
 		}
 
 		$currentPassword = $this->field('password', array($this->alias . '.id' => $this->data[$this->alias]['id']));
-		return $currentPassword === $this->hash($password['old_password'], null, true);
+		return $currentPassword === $this->hash($password['old_password']);
 	}
 
 /**
@@ -574,7 +574,7 @@ class User extends UsersAppModel {
 
 		$this->set($postData);
 		if ($this->validates()) {
-			$postData[$this->alias]['password'] = $this->hash($postData[$this->alias]['password'], null, true);
+			$postData[$this->alias]['password'] = $this->hash($postData[$this->alias]['password']);
 			$this->create();
 			$this->data = $this->save($postData, false);
 			$this->data[$this->alias]['id'] = $this->id;
@@ -830,7 +830,7 @@ class User extends UsersAppModel {
 						$postData[$this->alias]['role'] = 'admin';
 					}
 				}
-				$postData[$this->alias]['password'] = $this->hash($postData[$this->alias]['password'], null, true);
+				$postData[$this->alias]['password'] = $this->hash($postData[$this->alias]['password']);
 				$this->create();
 				$result = $this->save($postData, false);
 				if ($result) {
@@ -860,7 +860,7 @@ class User extends UsersAppModel {
 			$this->set($postData);
 			if ($this->validates()) {
 				if(isset($postData[$this->alias]['password'])) {
-					$this->data[$this->alias]['password'] = $this->hash($postData[$this->alias]['password'], null, true);
+					$this->data[$this->alias]['password'] = $this->hash($postData[$this->alias]['password']);
 				}
 				$result = $this->save(null, false);
 				if ($result) {
