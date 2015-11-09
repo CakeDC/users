@@ -97,9 +97,7 @@ class UserHelper extends Helper
      */
     public function link($title, $url = null, array $options = [])
     {
-        $event = new Event(UsersAuthComponent::EVENT_IS_AUTHORIZED, $this, ['url' => $url]);
-        $result = $this->_View->eventManager()->dispatch($event);
-        if ($result->result) {
+        if ($this->isAuthorized($url)) {
             $linkOptions = $options;
             unset($linkOptions['before'], $linkOptions['after']);
             return Hash::get($options, 'before') . $this->Html->link($title, $url, $linkOptions) . Hash::get($options, 'after');
