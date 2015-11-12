@@ -21,7 +21,7 @@
         echo $this->Form->input('first_name');
         echo $this->Form->input('last_name');
         if (Configure::read('Users.Tos.required')) {
-          echo $this->Form->input('tos', ['type' => 'checkbox', 'label' => __d('Users', 'Accept TOS conditions?'), 'required' => true]);
+            echo $this->Form->input('tos', ['type' => 'checkbox', 'label' => __d('Users', 'Accept TOS conditions?'), 'required' => true]);
         }
         echo $this->User->addReCaptcha();
         ?>
