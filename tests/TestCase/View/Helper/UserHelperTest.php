@@ -153,7 +153,7 @@ class UserHelperTest extends TestCase
      *
      * @return void
      */
-    public function testIsAuthorizedHH()
+    public function testIsAuthorized()
     {
         $view = new View();
         $eventManagerMock = $this->getMockBuilder('Cake\Event\EventManager')
@@ -167,8 +167,8 @@ class UserHelperTest extends TestCase
             ->method('dispatch')
             ->will($this->returnValue($result));
 
-        $link = $this->User->isAuthorized(['controller' => 'MyController', 'action' => 'myAction']);
-        $this->assertTrue($link);
+        $result = $this->User->isAuthorized(['controller' => 'MyController', 'action' => 'myAction']);
+        $this->assertTrue($result);
     }
 
 
