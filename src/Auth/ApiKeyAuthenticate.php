@@ -59,13 +59,13 @@ class ApiKeyAuthenticate extends BaseAuthenticate
             throw new OutOfBoundsException(__d('Users', 'Type {0} has no associated callable', $type));
         }
 
-        if ($this->config('require_ssl') && !$request->is('ssl')) {
-            throw new ForbiddenException(__d('Users', 'SSL is required for ApiKey Authentication', $type));
-        }
-
         $apiKey = $this->$type($request);
         if (empty($apiKey)) {
             return false;
+        }
+
+        if ($this->config('require_ssl') && !$request->is('ssl')) {
+            throw new ForbiddenException(__d('Users', 'SSL is required for ApiKey Authentication', $type));
         }
 
         $this->_config['fields']['username'] = $this->config('field');
