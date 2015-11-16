@@ -84,7 +84,7 @@ class ApiKeyAuthenticate extends BaseAuthenticate
     /**
      * Get the api key from the querystring
      *
-     * @param Request $request
+     * @param Request $request request
      * @return string api key
      */
     public function querystring(Request $request)
@@ -96,7 +96,7 @@ class ApiKeyAuthenticate extends BaseAuthenticate
     /**
      * Get the api key from the header
      *
-     * @param Request $request
+     * @param Request $request request
      * @return string api key
      */
     public function header(Request $request)
