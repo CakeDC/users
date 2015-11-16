@@ -91,6 +91,7 @@ $config = [
             'all' => [
                 'scope' => ['active' => 1]
             ],
+            'CakeDC/Users.ApiKey',
             'CakeDC/Users.RememberMe',
             'Form',
         ],
