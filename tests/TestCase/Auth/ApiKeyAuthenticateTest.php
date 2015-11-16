@@ -112,9 +112,21 @@ class ApiKeyAuthenticateTest extends TestCase
     public function testAuthenticateRequireSSL()
     {
         $this->apiKey->config('require_ssl', true);
-        $request = new Request('/');
+        $request = new Request('/?api_key=test');
         $this->apiKey->authenticate($request, new Response());
     }
+
+    /**
+     * test
+     *
+     */
+    public function testAuthenticateRequireSSLNoKey()
+    {
+        $this->apiKey->config('require_ssl', true);
+        $request = new Request('/');
+        $this->assertFalse($this->apiKey->authenticate($request, new Response()));
+    }
+
 
     /**
      * test
