@@ -19,6 +19,7 @@ App::uses('UsersAppController', 'Users.Controller');
  * @subpackage    Users.Controller
  * @property	  AuthComponent $Auth
  * @property	  CookieComponent $Cookie
+ * @property      FlashComponent $Flash
  * @property	  PaginatorComponent $Paginator
  * @property	  SecurityComponent $Security
  * @property	  SessionComponent $Session
@@ -49,6 +50,7 @@ class UsersController extends UsersAppController {
 	public $helpers = array(
 		'Html',
 		'Form',
+        'Flash',
 		'Session',
 		'Time',
 		'Text'
@@ -61,6 +63,7 @@ class UsersController extends UsersAppController {
  */
 	public $components = array(
 		'Auth',
+        'Flash',
 		'Session',
 		'Cookie',
 		'Paginator',
@@ -277,7 +280,7 @@ class UsersController extends UsersAppController {
 		try {
 			$this->set('user', $this->{$this->modelClass}->view($slug));
 		} catch (Exception $e) {
-			$this->Session->setFlash($e->getMessage());
+			$this->Flash->set($e->getMessage());
 			$this->redirect('/');
 		}
 	}
@@ -329,7 +332,7 @@ class UsersController extends UsersAppController {
 		try {
 			$user = $this->{$this->modelClass}->view($id, 'id');
 		} catch (NotFoundException $e) {
-			$this->Session->setFlash(__d('users', 'Invalid User.'));
+			$this->Flash->set(__d('users', 'Invalid User.'));
 			$this->redirect(array('action' => 'index'));
 		}
 
@@ -347,7 +350,7 @@ class UsersController extends UsersAppController {
 			$this->request->data[$this->modelClass]['email_verified'] = true;
 
 			if ($this->{$this->modelClass}->add($this->request->data)) {
-				$this->Session->setFlash(__d('users', 'The User has been saved'));
+				$this->Flash->set(__d('users', 'The User has been saved'));
 				$this->redirect(array('action' => 'index'));
 			}
 		}
@@ -364,14 +367,14 @@ class UsersController extends UsersAppController {
 		try {
 			$result = $this->{$this->modelClass}->edit($userId, $this->request->data);
 			if ($result === true) {
-				$this->Session->setFlash(__d('users', 'User saved'));
+				$this->Flash->set(__d('users', 'User saved'));
 				$this->redirect(array('action' => 'index'));
 			} else {
 				unset($result[$this->modelClass]['password']);
 				$this->request->data = $result;
 			}
 		} catch (OutOfBoundsException $e) {
-			$this->Session->setFlash($e->getMessage());
+			$this->Flash->set($e->getMessage());
 			$this->redirect(array('action' => 'index'));
 		}
 
@@ -390,9 +393,9 @@ class UsersController extends UsersAppController {
  */
 	public function admin_delete($userId = null) {
 		if ($this->{$this->modelClass}->delete($userId)) {
-			$this->Session->setFlash(__d('users', 'User deleted'));
+			$this->Flash->set(__d('users', 'User deleted'));
 		} else {
-			$this->Session->setFlash(__d('users', 'Invalid User'));
+			$this->Flash->set(__d('users', 'Invalid User'));
 		}
 
 		$this->redirect(array('action' => 'index'));
@@ -414,7 +417,7 @@ class UsersController extends UsersAppController {
  */
 	public function add() {
 		if ($this->Auth->user()) {
-			$this->Session->setFlash(__d('users', 'You are already registered and logged in!'));
+			$this->Flash->set(__d('users', 'You are already registered and logged in!'));
 			$this->redirect('/');
 		}
 
@@ -434,12 +437,12 @@ class UsersController extends UsersAppController {
 				}
 
 				$this->_sendVerificationEmail($this->{$this->modelClass}->data);
-				$this->Session->setFlash(__d('users', 'Your account has been created. You should receive an e-mail shortly to authenticate your account. Once validated you will be able to login.'));
+                $this->Flash->set(__d('users', 'Your account has been created. You should receive an e-mail shortly to authenticate your account. Once validated you will be able to login.'));
 				$this->redirect(array('action' => 'login'));
 			} else {
 				unset($this->request->data[$this->modelClass]['password']);
 				unset($this->request->data[$this->modelClass]['temppassword']);
-				$this->Session->setFlash(__d('users', 'Your account could not be created. Please, try again.'), 'default', array('class' => 'message warning'));
+				$this->Flash->set(__d('users', 'Your account could not be created. Please, try again.'), 'default', array('class' => 'message warning'));
 			}
 		}
 	}
@@ -483,7 +486,7 @@ class UsersController extends UsersAppController {
 				if ($this->here == $this->Auth->loginRedirect) {
 					$this->Auth->loginRedirect = '/';
 				}
-				$this->Session->setFlash(sprintf(__d('users', '%s you have successfully logged in'), $this->Auth->user($this->{$this->modelClass}->displayField)));
+				$this->Flash->set(sprintf(__d('users', '%s you have successfully logged in'), $this->Auth->user($this->{$this->modelClass}->displayField)));
 				if (!empty($this->request->data)) {
 					$data = $this->request->data[$this->modelClass];
 					if (empty($this->request->data[$this->modelClass]['remember_me'])) {
@@ -572,7 +575,7 @@ class UsersController extends UsersAppController {
 		$user = $this->Auth->user();
 		$this->Session->destroy();
 		$this->RememberMe->destroyCookie();
-		$this->Session->setFlash(sprintf(__d('users', '%s you have successfully logged out'), $user[$this->{$this->modelClass}->displayField]));
+		$this->Flash->set(sprintf(__d('users', '%s you have successfully logged out'), $user[$this->{$this->modelClass}->displayField]));
 		$this->redirect($this->Auth->logout());
 	}
 
@@ -586,13 +589,13 @@ class UsersController extends UsersAppController {
 			try {
 				if ($this->{$this->modelClass}->checkEmailVerification($this->request->data)) {
 					$this->_sendVerificationEmail($this->{$this->modelClass}->data);
-					$this->Session->setFlash(__d('users', 'The email was resent. Please check your inbox.'));
+					$this->Flash->set(__d('users', 'The email was resent. Please check your inbox.'));
 					$this->redirect('login');
 				} else {
-					$this->Session->setFlash(__d('users', 'The email could not be sent. Please check errors.'));
+					$this->Flash->set(__d('users', 'The email could not be sent. Please check errors.'));
 				}
 			} catch (Exception $e) {
-				$this->Session->setFlash($e->getMessage());
+				$this->Flash->set($e->getMessage());
 			}
 		}
 	}
@@ -612,10 +615,10 @@ class UsersController extends UsersAppController {
 
 		try {
 			$this->{$this->modelClass}->verifyEmail($token);
-			$this->Session->setFlash(__d('users', 'Your e-mail has been validated!'));
+			$this->Flash->set(__d('users', 'Your e-mail has been validated!'));
 			return $this->redirect(array('action' => 'login'));
 		} catch (RuntimeException $e) {
-			$this->Session->setFlash($e->getMessage());
+			$this->Flash->set($e->getMessage());
 			return $this->redirect('/');
 		}
 	}
@@ -635,17 +638,17 @@ class UsersController extends UsersAppController {
 		$data = $this->{$this->modelClass}->verifyEmail($token);
 
 		if (!$data) {
-			$this->Session->setFlash(__d('users', 'The url you accessed is not longer valid'));
+			$this->Flash->set(__d('users', 'The url you accessed is not longer valid'));
 			return $this->redirect('/');
 		}
 
 		if ($this->{$this->modelClass}->save($data, array('validate' => false))) {
 			$this->_sendNewPassword($data);
-			$this->Session->setFlash(__d('users', 'Your password was sent to your registered email account'));
+			$this->Flash->set(__d('users', 'Your password was sent to your registered email account'));
 			$this->redirect(array('action' => 'login'));
 		}
 
-		$this->Session->setFlash(__d('users', 'There was an error verifying your account. Please check the email you were sent, and retry the verification link.'));
+		$this->Flash->set(__d('users', 'There was an error verifying your account. Please check the email you were sent, and retry the verification link.'));
 		$this->redirect('/');
 	}
 
@@ -678,7 +681,7 @@ class UsersController extends UsersAppController {
 		if ($this->request->is('post')) {
 			$this->request->data[$this->modelClass]['id'] = $this->Auth->user('id');
 			if ($this->{$this->modelClass}->changePassword($this->request->data)) {
-				$this->Session->setFlash(__d('users', 'Password changed.'));
+				$this->Flash->set(__d('users', 'Password changed.'));
 				// we don't want to keep the cookie with the old password around
 				$this->RememberMe->destroyCookie();
 				$this->redirect('/');
@@ -797,16 +800,16 @@ class UsersController extends UsersAppController {
 					->send();
 
 				if ($admin) {
-					$this->Session->setFlash(sprintf(
+					$this->Flash->set(sprintf(
 						__d('users', '%s has been sent an email with instruction to reset their password.'),
 						$user[$this->modelClass]['email']));
 					$this->redirect(array('action' => 'index', 'admin' => true));
 				} else {
-					$this->Session->setFlash(__d('users', 'You should receive an email with further instructions shortly'));
+					$this->Flash->set(__d('users', 'You should receive an email with further instructions shortly'));
 					$this->redirect(array('action' => 'login'));
 				}
 			} else {
-				$this->Session->setFlash(__d('users', 'No user was found with that email.'));
+				$this->Flash->set(__d('users', 'No user was found with that email.'));
 				$this->redirect($this->referer('/'));
 			}
 		}
@@ -836,17 +839,17 @@ class UsersController extends UsersAppController {
 	protected function _resetPassword($token) {
 		$user = $this->{$this->modelClass}->checkPasswordToken($token);
 		if (empty($user)) {
-			$this->Session->setFlash(__d('users', 'Invalid password reset token, try again.'));
+			$this->Flash->set(__d('users', 'Invalid password reset token, try again.'));
 			$this->redirect(array('action' => 'reset_password'));
 			return;
 		}
 
 		if (!empty($this->request->data) && $this->{$this->modelClass}->resetPassword(Hash::merge($user, $this->request->data))) {
 			if ($this->RememberMe->cookieIsSet()) {
-				$this->Session->setFlash(__d('users', 'Password changed.'));
+				$this->Flash->set(__d('users', 'Password changed.'));
 				$this->_setCookie();
 			} else {
-				$this->Session->setFlash(__d('users', 'Password changed, you can now login with your new password.'));
+				$this->Flash->set(__d('users', 'Password changed, you can now login with your new password.'));
 				$this->redirect($this->Auth->loginAction);
 			}
 		}
