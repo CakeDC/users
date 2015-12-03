@@ -54,10 +54,8 @@ Then in your config/users.php
 return [
     'OAuth.providers.facebook.options.clientId' => 'YOUR APP ID',
     'OAuth.providers.facebook.options.clientSecret' => 'YOUR APP SECRET',
-    'OAuth.providers.facebook.options.redirectUri' => 'REDIRECT URL',
     'OAuth.providers.instagram.options.clientId' => 'YOUR APP ID',
     'OAuth.providers.instagram.options.clientSecret' => 'YOUR APP SECRET',
-    'OAuth.providers.instagram.options.redirectUri' => 'REDIRECT URL',
     //etc
 ];
 
