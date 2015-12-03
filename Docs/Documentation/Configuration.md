@@ -20,18 +20,22 @@ Then in your config/users.php
             'options' => [
                 'graphApiVersion' => 'v2.5'
             ]
+            'redirectUri' => Router::url('/auth/facebook', true)
         ],
         'linkedIn' => [
             'className' => 'League\OAuth2\Client\Provider\LinkedIn',
+            'redirectUri' => Router::url('/auth/linkedIn', true)
         ],
         'instagram' => [
             'className' => 'League\OAuth2\Client\Provider\Instagram',
+            'redirectUri' => Router::url('/auth/instagram', true)
         ],
         'google' => [
             'className' => 'League\OAuth2\Client\Provider\Google',
             'options' => [
                 'userFields' => ['url', 'aboutMe'],
             ]
+            'redirectUri' => Router::url('/auth/google', true)
         ]
         //etc
     ],
@@ -47,11 +51,9 @@ config/bootstrap.php
 ```
 Configure::write('OAuth.providers.facebook.options.clientId', 'YOUR APP ID');
 Configure::write('OAuth.providers.facebook.options.clientSecret', 'YOUR APP SECRET');
-Configure::write('OAuth.providers.facebook.options.redirectUri', 'REDIRECT URL');
 
 Configure::write('OAuth.providers.instagram.options.clientId', 'YOUR APP ID');
 Configure::write('OAuth.providers.instagram.options.clientSecret', 'YOUR APP SECRET');
-Configure::write('OAuth.providers.instagram.options.redirectUri','REDIRECT URL')
 
 ```
 
