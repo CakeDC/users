@@ -11,16 +11,35 @@ config/bootstrap.php
 Configure::write('Users.config', ['users']);
 Plugin::load('CakeDC/Users', ['routes' => true, 'bootstrap' => true]);
 ```
-
+    
 Then in your config/users.php
 ```
-return [
-    'Opauth.Strategy.Facebook.app_id' => 'YOUR APP ID',
-    'Opauth.Strategy.Facebook.app_secret' => 'YOUR APP SECRET',
-    'Opauth.Strategy.Twitter.key' => 'YOUR APP KEY',
-    'Opauth.Strategy.Twitter.secret' => 'YOUR APP SECRET',
-    //etc
-];
+'Opauth.providers' => [
+        'facebook' => [
+            'className' => 'League\OAuth2\Client\Provider\Facebook',
+            'options' => [
+                'graphApiVersion' => 'v2.5'
+            ]
+            'redirectUri' => Router::url('/auth/facebook', true)
+        ],
+        'linkedIn' => [
+            'className' => 'League\OAuth2\Client\Provider\LinkedIn',
+            'redirectUri' => Router::url('/auth/linkedIn', true)
+        ],
+        'instagram' => [
+            'className' => 'League\OAuth2\Client\Provider\Instagram',
+            'redirectUri' => Router::url('/auth/instagram', true)
+        ],
+        'google' => [
+            'className' => 'League\OAuth2\Client\Provider\Google',
+            'options' => [
+                'userFields' => ['url', 'aboutMe'],
+            ]
+            'redirectUri' => Router::url('/auth/google', true)
+        ]
+        //etc
+    ],
+        
 ```
 
 Configuration for social login
@@ -30,11 +49,12 @@ Create the facebook/twitter applications you want to use and setup the configura
 
 config/bootstrap.php
 ```
-Configure::write('Opauth.Strategy.Facebook.app_id', 'YOUR APP ID');
-Configure::write('Opauth.Strategy.Facebook.app_secret', 'YOUR APP SECRET');
+Configure::write('OAuth.providers.facebook.options.clientId', 'YOUR APP ID');
+Configure::write('OAuth.providers.facebook.options.clientSecret', 'YOUR APP SECRET');
 
-Configure::write('Opauth.Strategy.Twitter.key', 'YOUR APP KEY');
-Configure::write('Opauth.Strategy.Twitter.secret', 'YOUR APP SECRET');
+Configure::write('OAuth.providers.instagram.options.clientId', 'YOUR APP ID');
+Configure::write('OAuth.providers.instagram.options.clientSecret', 'YOUR APP SECRET');
+
 ```
 
 Or use the config override option when loading the plugin (see above)
