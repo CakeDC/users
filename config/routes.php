@@ -27,6 +27,13 @@ if (is_array($oauthPath)) {
     });
 }
 
+Router::connect('/auth/twitter', [
+    'plugin' => 'CakeDC/Users',
+    'controller' => 'Users',
+    'action' => 'twitterLogin',
+    'provider' => 'twitter'
+]);
+
 Router::connect('/accounts/validate/*', [
     'plugin' => 'CakeDC/Users',
     'controller' => 'SocialAccounts',

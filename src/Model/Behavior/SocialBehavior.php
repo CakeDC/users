@@ -45,7 +45,11 @@ class SocialBehavior extends Behavior
                 ->contain(['Users'])
                 ->first();
         if (empty($existingAccount->user)) {
+            debug($data);
+            debug($options);
             $user = $this->_createSocialUser($data, $options);
+            debug($user);
+            die();
             if (!empty($user->social_accounts[0])) {
                 $existingAccount = $user->social_accounts[0];
             } else {

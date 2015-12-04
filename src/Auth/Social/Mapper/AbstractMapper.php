@@ -90,12 +90,11 @@ abstract class AbstractMapper
             }
             $result[$field] = $value;
         });
-        /** @var \League\OAuth2\Client\Token\AccessToken $token **/
-        $token = Hash::get($this->_rawData, 'token');
+        $token = (array)Hash::get($this->_rawData, 'token');
         $result['credentials'] = [
-            'token' => $token->getToken(),
-            'secret' => null, //todo check when twitter is available
-            'expires' => $token->getExpires(),
+            'token' => Hash::get($token, 'accessToken'),
+            'secret' => Hash::get($token, 'tokenSecret'),
+            'expires' => Hash::get($token, 'expires'),
         ];
         $result['raw'] = $this->_rawData;
         return $result;

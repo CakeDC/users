@@ -119,7 +119,7 @@ $config = [
                 'options' => [
                     'userFields' => ['url', 'aboutMe'],
                 ]
-            ]
+            ],
         ],
     ]
 ];

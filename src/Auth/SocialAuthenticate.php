@@ -22,6 +22,7 @@ use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\UserNotActiveException;
+use CakeDC\Users\Model\Table\SocialAccountsTable;
 use Muffin\OAuth2\Auth\OAuthAuthenticate;
 
 /**
@@ -39,16 +40,16 @@ class SocialAuthenticate extends OAuthAuthenticate
      */
     public function __construct(ComponentRegistry $registry, array $config = [])
     {
-        Configure::write('Muffin/OAuth2', Configure::read('OAuth'));
-        parent::__construct($registry, array_merge($config, Configure::read('OAuth')));
+        $oauthConfig = Configure::read('OAuth');
+        unset($oauthConfig['providers']['twitter']);
+        Configure::write('Muffin/OAuth2', $oauthConfig);
+        parent::__construct($registry, array_merge($config, $oauthConfig));
     }
 
     /**
-     * Finds or creates a local user.
-     *
-     * @param array $data Mapped user data.
-     * @return array
-     * @throws \Muffin\OAuth2\Auth\Exception\MissingEventListenerException
+     * Find or create local user
+     * @param array $data
+     * @return array|bool|mixed
      */
     protected function _touch(array $data)
     {
@@ -63,7 +64,7 @@ class SocialAuthenticate extends OAuthAuthenticate
             if (empty($data['provider']) && !empty($this->_provider)) {
                 $data['provider'] = SocialUtils::getProvider($this->_provider);
             }
-            $user = $User->socialLogin($data, $options);
+             $user = $User->socialLogin($data, $options);
         } catch (UserNotActiveException $ex) {
             $exception = $ex;
         } catch (AccountNotActiveException $ex) {
@@ -71,10 +72,14 @@ class SocialAuthenticate extends OAuthAuthenticate
         } catch (MissingEmailException $ex) {
             $exception = $ex;
         }
+
         if (!empty($exception)) {
             $event = UsersAuthComponent::EVENT_FAILED_SOCIAL_LOGIN;
             $args = ['exception' => $exception, 'rawData' => $data];
             $event = $this->dispatchEvent($event, $args);
+            if ($data['provider'] == SocialAccountsTable::PROVIDER_TWITTER) {
+                throw $exception;
+            }
             return $event->result;
         }
 
@@ -101,16 +106,24 @@ class SocialAuthenticate extends OAuthAuthenticate
             $user = $data;
             $request->session()->delete(Configure::read('Users.Key.Session.social'));
         } else {
-            if (!$rawData = $this->_authenticate($request)) {
+            if (empty($data) && !$rawData = $this->_authenticate($request)) {
                 return false;
             }
-            $provider = SocialUtils::getProvider($this->_provider);
+            if (empty($rawData)) {
+                $rawData = $data;
+            }
+            if (!is_null($this->_provider)) {
+                $provider = SocialUtils::getProvider($this->_provider);
+            } else {
+                $provider = ucfirst($request->param('provider'));
+            }
             $providerMapperClass = "\\CakeDC\\Users\\Auth\\Social\\Mapper\\$provider";
             $providerMapper = new $providerMapperClass($rawData);
             $user = $providerMapper();
             $user['provider'] = $provider;
 
         }
+
         if (!$user || !$this->config('userModel')) {
             return false;
         }
