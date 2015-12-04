@@ -31,66 +31,66 @@ trait LoginTrait
 
     public function twitterLogin() {
         $this->autoRender = false;
-        $server = new Twitter(array(
-            'identifier'              => 'ZqU9nNUsyuRkDJRLvPYPQ9YXI',
-            'secret'                  => 'vZrxSe5c7DKEUROMpTUDjPu2Mepvvzucsk1ZSSYluRiNB4H5qN',
-            'callbackUri'             => 'http://local.woozk.xyz/auth/twitter',
-        ));
-//        $oauthToken = $this->request->query('oauth_token');
-//        $oauthVerifier = $this->request->query('oauth_verifier');
-//        if (!empty($oauthToken) && !empty($oauthVerifier)) {
+
+        $server = new Twitter([
+            'identifier' => Configure::read('OAuth.providers.twitter.options.identifier'),
+            'secret' => Configure::read('OAuth.providers.twitter.options.secret'),
+            'callbackUri' => Configure::read('OAuth.providers.twitter.options.redirectUri'),
+        ]);
+        $oauthToken = $this->request->query('oauth_token');
+        $oauthVerifier = $this->request->query('oauth_verifier');
+        if (!empty($oauthToken) && !empty($oauthVerifier)) {
             $temporaryCredentials = $this->request->session()->read('temporary_credentials');
-            //$tokenCredentials = $server->getTokenCredentials($temporaryCredentials, $oauthToken, $oauthVerifier);
-                $tokenCredentials = new \League\OAuth1\Client\Credentials\TokenCredentials();
-                $tokenCredentials->setIdentifier('2165382168-o3THZG14a5t21k4CdkCmGhecu2MrZpPNx6rpflm');
-                $tokenCredentials->setSecret('sX0CMhCzoaUPxlachfdAItdrkZAgltk5xy0Djbl1hfXaP');
-                $user = (array)$server->getUserDetails($tokenCredentials);
-                $user['token'] = [
-                    'accessToken' => $tokenCredentials->getIdentifier(),
-                    'tokenSecret' => $tokenCredentials->getSecret(),
-                ];
-                $this->request->session()->write(Configure::read('Users.Key.Session.social'), $user);
-                try {
-                    $user = $this->Auth->identify();
-                    $this->_afterIdentifyUser($user, true);
-                } catch (UserNotActiveException $ex) {
-                    $exception = $ex;
-                } catch (AccountNotActiveException $ex) {
-                    $exception = $ex;
-                } catch (MissingEmailException $ex) {
-                    $exception = $ex;
-                }
-                if (!empty($exception)) {
-                    return $this->failedSocialLogin($exception, $this->request->session()->read(Configure::read('Users.Key.Session.social')));
-                }
-//        } else {
-//            $temporaryCredentials = $server->getTemporaryCredentials();
-//            $this->request->session()->write('temporary_credentials', $temporaryCredentials);
-//            $server->authorize($temporaryCredentials);
-//        }
+            $tokenCredentials = $server->getTokenCredentials($temporaryCredentials, $oauthToken, $oauthVerifier);
+            $user = (array)$server->getUserDetails($tokenCredentials);
+            $user['token'] = [
+                'accessToken' => $tokenCredentials->getIdentifier(),
+                'tokenSecret' => $tokenCredentials->getSecret(),
+            ];
+            $this->request->session()->write(Configure::read('Users.Key.Session.social'), $user);
+            try {
+                $user = $this->Auth->identify();
+                $this->_afterIdentifyUser($user, true);
+            } catch (UserNotActiveException $ex) {
+                $exception = $ex;
+            } catch (AccountNotActiveException $ex) {
+                $exception = $ex;
+            } catch (MissingEmailException $ex) {
+                $exception = $ex;
+            }
+            if (!empty($exception)) {
+                return $this->failedSocialLogin($exception, $this->request->session()->read(Configure::read('Users.Key.Session.social')));
+            }
+        } else {
+            $temporaryCredentials = $server->getTemporaryCredentials();
+            $this->request->session()->write('temporary_credentials', $temporaryCredentials);
+            $server->authorize($temporaryCredentials);
+        }
         return;
     }
     /**
      * @param $event
      */
     public function failedSocialLoginListener(Event $event) {
-        $this->failedSocialLogin($event->data['exception'], $event->data['rawData']);
+        $this->failedSocialLogin($event->data['exception'], $event->data['rawData'], true);
     }
 
     /**
      * @param $exception
      * @param $data
+     * @param bool|false $flash
      * @return mixed
      */
-    public function failedSocialLogin($exception, $data)
+    public function failedSocialLogin($exception, $data, $flash = false)
     {
         $msg = __d('Users', 'Issues trying to log in with your social account');
         if (isset($exception) ) {
             if ($exception instanceof MissingEmailException) {
-                $this->Flash->success(__d('Users', 'Please enter your email'));
+                if ($flash) {
+                    $this->Flash->success(__d('Users', 'Please enter your email'));
+                }
                 $this->request->session()->write(Configure::read('Users.Key.Session.social'), $data);
                 return $this->redirect(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'socialEmail']);
-
             }
             if ($exception instanceof UserNotActiveException) {
                 $msg = __d('Users', 'Your user has not been validated yet. Please check your inbox for instructions');
@@ -98,7 +98,10 @@ trait LoginTrait
                 $msg = __d('Users', 'Your social account has not been validated yet. Please check your inbox for instructions');
             }
         }
-        $this->Flash->success($msg);
+        if ($flash) {
+            $this->request->session()->delete(Configure::read('Users.Key.Session.social'));
+            $this->Flash->success($msg);
+        }
         return $this->redirect(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
     }
 

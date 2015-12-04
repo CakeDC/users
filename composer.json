@@ -22,7 +22,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "CakeDC\\Users\\Test\\": "tests"
+            "CakeDC\\Users\\Test\\": "tests",
+            "CakeDC\\Users\\Test\\Fixture": "tests"
         }
     }
 }

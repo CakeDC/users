@@ -90,11 +90,11 @@ abstract class AbstractMapper
             }
             $result[$field] = $value;
         });
-        $token = (array)Hash::get($this->_rawData, 'token');
+        $token = Hash::get($this->_rawData, 'token');
         $result['credentials'] = [
-            'token' => Hash::get($token, 'accessToken'),
-            'secret' => Hash::get($token, 'tokenSecret'),
-            'expires' => Hash::get($token, 'expires'),
+            'token' => is_array($token) ? Hash::get($token, 'accessToken') : $token->getToken(),
+            'secret' => is_array($token) ? Hash::get($token, 'tokenSecret') : null,
+            'expires' => is_array($token) ? Hash::get($token, 'expires') : $token->getExpires(),
         ];
         $result['raw'] = $this->_rawData;
         return $result;

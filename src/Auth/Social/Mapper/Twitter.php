@@ -9,8 +9,16 @@
 namespace CakeDC\Users\Auth\Social\Mapper;
 
 
+use Cake\Utility\Hash;
+
 class Twitter extends AbstractMapper
 {
+
+    /**
+     * Url constants
+     */
+    const TWITTER_BASE_URL = 'https://twitter.com/';
+
     /**
      * Map for provider fields
      * @var null
@@ -26,4 +34,12 @@ class Twitter extends AbstractMapper
         'bio' => 'description',
         'validated' => 'validated'
     ];
+
+    /**
+     * @return string
+     */
+    protected function _link()
+    {
+        return self::TWITTER_BASE_URL . Hash::get($this->_rawData, $this->_mapFields['username']);
+    }
 }

@@ -64,7 +64,8 @@ class SocialAuthenticate extends OAuthAuthenticate
             if (empty($data['provider']) && !empty($this->_provider)) {
                 $data['provider'] = SocialUtils::getProvider($this->_provider);
             }
-             $user = $User->socialLogin($data, $options);
+
+            $user = $User->socialLogin($data, $options);
         } catch (UserNotActiveException $ex) {
             $exception = $ex;
         } catch (AccountNotActiveException $ex) {
@@ -77,7 +78,7 @@ class SocialAuthenticate extends OAuthAuthenticate
             $event = UsersAuthComponent::EVENT_FAILED_SOCIAL_LOGIN;
             $args = ['exception' => $exception, 'rawData' => $data];
             $event = $this->dispatchEvent($event, $args);
-            if ($data['provider'] == SocialAccountsTable::PROVIDER_TWITTER) {
+            if ($exception instanceof MissingEmailException && $data['provider'] == SocialAccountsTable::PROVIDER_TWITTER) {
                 throw $exception;
             }
             return $event->result;

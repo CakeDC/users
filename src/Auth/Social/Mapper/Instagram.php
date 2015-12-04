@@ -22,10 +22,8 @@ class Instagram extends AbstractMapper
      * @var
      */
     protected $_mapFields = [
-        'avatar' => 'data.profile_picture',
-        'id' => 'data.id',
-        'full_name' => 'data.full_name',
-        'username' => 'data.username'
+        'full_name' => 'full_name',
+        'avatar' => 'profile_picture',
     ];
 
     /**

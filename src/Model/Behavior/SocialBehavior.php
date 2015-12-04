@@ -45,11 +45,7 @@ class SocialBehavior extends Behavior
                 ->contain(['Users'])
                 ->first();
         if (empty($existingAccount->user)) {
-            debug($data);
-            debug($options);
             $user = $this->_createSocialUser($data, $options);
-            debug($user);
-            die();
             if (!empty($user->social_accounts[0])) {
                 $existingAccount = $user->social_accounts[0];
             } else {
@@ -101,6 +97,7 @@ class SocialBehavior extends Behavior
                     ->where([$this->_table->alias() . '.email' => $email])
                     ->first();
         }
+
         $user = $this->_populateUser($data, $existingUser, $useEmail, $validateEmail, $tokenExpiration);
         $this->_table->isValidateEmail = $validateEmail;
         $result = $this->_table->save($user);
