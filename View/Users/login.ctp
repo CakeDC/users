@@ -11,7 +11,13 @@
 ?>
 <div class="users index">
 	<h2><?php echo __d('users', 'Login'); ?></h2>
-	<?php echo $this->Session->flash('auth');?>
+        <?php
+            if ($component === 'Session') {
+                echo $this->Session->flash('auth');
+            } else {
+                echo $this->Flash->render('flash');
+            }
+        ?>
 	<fieldset>
 		<?php
 			echo $this->Form->create($model, array(

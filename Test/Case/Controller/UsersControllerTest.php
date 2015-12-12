@@ -13,6 +13,7 @@ App::uses('UsersController', 'Users.Controller');
 App::uses('User', 'Users.Model');
 App::uses('AuthComponent', 'Controller/Component');
 App::uses('CookieComponent', 'Controller/Component');
+App::uses('FlashMessageComponent', 'Users.Controller/Component');
 App::uses('SessionComponent', 'Controller/Component');
 App::uses('RememberMeComponent', 'Users.Controller/Component');
 App::uses('Security', 'Utility');
@@ -257,10 +258,10 @@ class UsersControllerTestCase extends CakeTestCase {
 		$this->Users->request->url = '/users/users/login';
 
 		$this->Collection = $this->getMock('ComponentCollection');
-		$session = $this->getMock('SessionComponent', array('setFlash'), array($this->Collection));
+		$session = $this->getMock('FlashMessageComponent', array('getComponentByVersion'), array($this->Collection));
 		$this->Users->Session = $session;
 		$this->Users->Session->expects($this->any())
-			->method('setFlash')
+			->method('getComponentByVersion')
 			->with(__d('users', 'adminuser you have successfully logged in'));
 		$this->Users->Auth = $this->getMock('AuthComponent', array('login', 'user', 'redirectUrl'), array($this->Collection));
 		$this->Users->Auth->Session = $session;
@@ -305,9 +306,9 @@ class UsersControllerTestCase extends CakeTestCase {
 		$this->__setGet();
 		$this->Users->login();
 		$this->Collection = $this->getMock('ComponentCollection');
-		$this->Users->Session = $this->getMock('SessionComponent', array('setFlash'), array($this->Collection));
-		$this->Users->Session->expects($this->never())
-			->method('setFlash');
+		$this->Users->FlashMessage = $this->getMock('FlashMessageComponent', array('getComponentByVersion'), array($this->Collection));
+		$this->Users->FlashMessage->expects($this->never())
+			->method('getComponentByVersion');
 	}
 
 /**
@@ -348,9 +349,9 @@ class UsersControllerTestCase extends CakeTestCase {
 				'tos' => 1)));
 		$this->Users->beforeFilter();
 		$this->Collection = $this->getMock('ComponentCollection');
-		$this->Users->Session = $this->getMock('SessionComponent', array('setFlash'), array($this->Collection));
-		$this->Users->Session->expects($this->once())
-			->method('setFlash')
+		$this->Users->FlashMessage = $this->getMock('FlashMessageComponent', array('getComponentByVersion'), array($this->Collection));
+		$this->Users->FlashMessage->expects($this->once())
+			->method('getComponentByVersion')
 			->with(__d('users', 'Your account has been created. You should receive an e-mail shortly to authenticate your account. Once validated you will be able to login.'));
 		$this->Users->add();
 		$this->__setPost(array(
@@ -361,9 +362,9 @@ class UsersControllerTestCase extends CakeTestCase {
 				'temppassword' => '',
 				'tos' => 0)));
 		$this->Users->beforeFilter();
-		$this->Users->Session = $this->getMock('SessionComponent', array('setFlash'), array($this->Collection));
-		$this->Users->Session->expects($this->once())
-			->method('setFlash')
+		$this->Users->FlashMessage = $this->getMock('FlashMessageComponent', array('getComponentByVersion'), array($this->Collection));
+		$this->Users->FlashMessage->expects($this->once())
+			->method('getComponentByVersion')
 			->with(__d('users', 'Your account could not be created. Please, try again.'));
 		$this->Users->add();
 	}
@@ -378,17 +379,17 @@ class UsersControllerTestCase extends CakeTestCase {
 		$this->Users->User->id = '37ea303a-3bdc-4251-b315-1316c0b300fa';
 		$this->Users->User->saveField('email_token_expires', date('Y-m-d H:i:s', strtotime('+1 year')));
 		$this->Collection = $this->getMock('ComponentCollection');
-		$this->Users->Session = $this->getMock('SessionComponent', array('setFlash'), array($this->Collection));
-		$this->Users->Session->expects($this->once())
-			->method('setFlash')
+		$this->Users->FlashMessage = $this->getMock('FlashMessageComponent', array('getComponentByVersion'), array($this->Collection));
+		$this->Users->FlashMessage->expects($this->once())
+			->method('getComponentByVersion')
 			->with(__d('users', 'Your e-mail has been validated!'));
 
 		$this->Users->verify('email', 'testtoken2');
 
 		$this->Users->beforeFilter();
-		$this->Users->Session = $this->getMock('SessionComponent', array('setFlash'), array($this->Collection));
-		$this->Users->Session->expects($this->once())
-			->method('setFlash')
+		$this->Users->FlashMessage = $this->getMock('FlashMessageComponent', array('getComponentByVersion'), array($this->Collection));
+		$this->Users->FlashMessage->expects($this->once())
+			->method('getComponentByVersion')
 			->with(__d('users', 'Invalid token, please check the email you were sent, and retry the verification link.'));
 
 		$this->Users->verify('email', 'invalid-token');
@@ -403,9 +404,10 @@ class UsersControllerTestCase extends CakeTestCase {
 		$this->Users->beforeFilter();
 		$this->Collection = $this->getMock('ComponentCollection');
 		$this->Users->Cookie = $this->getMock('CookieComponent', array(), array($this->Collection));
-		$this->Users->Session = $this->getMock('SessionComponent', array('setFlash', 'destroy'), array($this->Collection));
-		$this->Users->Session->expects($this->once())
-			->method('setFlash')
+		$this->Users->Session = $this->getMock('SessionComponent', array('destroy'), array($this->Collection));
+        $this->Users->FlashMessage = $this->getMock('FlashMessageComponent', array('getComponentByVersion'), array($this->Collection));
+		$this->Users->FlashMessage->expects($this->once())
+			->method('getComponentByVersion')
 			->with(__d('users', 'testuser you have successfully logged out'));
 		$this->Users->Session->expects($this->once())
 			->method('destroy');
