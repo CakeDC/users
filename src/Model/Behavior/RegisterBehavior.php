@@ -109,6 +109,7 @@ class RegisterBehavior extends Behavior
             throw new UserAlreadyActiveException(__d('Users', "User account already validated"));
         }
         $user->activation_date = new DateTime();
+        $user->token_expires = null;
         $user->active = true;
         $result = $this->_table->save($user);
 

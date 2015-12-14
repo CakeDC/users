@@ -10,6 +10,8 @@
  */
 
 use Cake\Core\Configure;
+use Cake\Log\Log;
+use Cake\Core\Exception\MissingPluginException;
 use Cake\Core\Plugin;
 use Cake\Event\EventManager;
 use Cake\ORM\TableRegistry;
@@ -23,7 +25,11 @@ if (Configure::check('Users.auth')) {
     Configure::write('Auth.authenticate.all.userModel', Configure::read('Users.table'));
 }
 
-if (Configure::read('Users.Social.login')) {
-    Plugin::load('Muffin/OAuth2');
-    EventManager::instance()->on(\CakeDC\Users\Controller\Component\UsersAuthComponent::EVENT_FAILED_SOCIAL_LOGIN, [new \CakeDC\Users\Controller\UsersController(), 'failedSocialLoginListener']);
+if (Configure::read('Users.Social.login') && php_sapi_name() != 'cli') {
+    try {
+        Plugin::load('Muffin/OAuth2');
+        EventManager::instance()->on(\CakeDC\Users\Controller\Component\UsersAuthComponent::EVENT_FAILED_SOCIAL_LOGIN, [new \CakeDC\Users\Controller\UsersController(), 'failedSocialLoginListener']);
+    } catch (MissingPluginException $e) {
+       Log::error($e->getMessage());
+    }
 }

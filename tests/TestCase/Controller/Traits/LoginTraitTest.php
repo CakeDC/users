@@ -62,12 +62,12 @@ class LoginTraitTest extends BaseTraitTest
     {
         $this->_mockDispatchEvent(new Event('event'));
         $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
-                ->setMethods(['is'])
-                ->getMock();
+            ->setMethods(['is'])
+            ->getMock();
         $this->Trait->request->expects($this->once())
-                ->method('is')
-                ->with('post')
-                ->will($this->returnValue(true));
+            ->method('is')
+            ->with('post')
+            ->will($this->returnValue(true));
         $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
             ->setMethods(['user', 'identify', 'setUser', 'redirectUrl'])
             ->disableOriginalConstructor()
@@ -80,14 +80,14 @@ class LoginTraitTest extends BaseTraitTest
             ->method('identify')
             ->will($this->returnValue($user));
         $this->Trait->Auth->expects($this->at(1))
-                ->method('setUser')
-                ->with($user);
+            ->method('setUser')
+            ->with($user);
         $this->Trait->Auth->expects($this->at(2))
             ->method('redirectUrl')
             ->will($this->returnValue($redirectLoginOK));
         $this->Trait->expects($this->once())
-                ->method('redirect')
-                ->with($redirectLoginOK);
+            ->method('redirect')
+            ->with($redirectLoginOK);
         $this->Trait->login();
     }
 
@@ -100,12 +100,12 @@ class LoginTraitTest extends BaseTraitTest
     {
         $this->_mockDispatchEvent(new Event('event'));
         $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
-                ->setMethods(['is'])
-                ->getMock();
+            ->setMethods(['is'])
+            ->getMock();
         $this->Trait->request->expects($this->once())
-                ->method('is')
-                ->with('post')
-                ->will($this->returnValue(true));
+            ->method('is')
+            ->with('post')
+            ->will($this->returnValue(true));
         $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
             ->setMethods(['user', 'identify', 'setUser', 'redirectUrl'])
             ->disableOriginalConstructor()
@@ -119,8 +119,8 @@ class LoginTraitTest extends BaseTraitTest
             ->disableOriginalConstructor()
             ->getMock();
         $this->Trait->Flash->expects($this->once())
-                ->method('error')
-                ->with('Username or password is incorrect', 'default', [], 'auth');
+            ->method('error')
+            ->with('Username or password is incorrect', 'default', [], 'auth');
         $this->Trait->login();
     }
 
@@ -135,12 +135,12 @@ class LoginTraitTest extends BaseTraitTest
             ->setMethods(['dispatchEvent', 'redirect', '_isSocialLogin'])
             ->getMockForTrait();
         $this->Trait->expects($this->any())
-                ->method('_isSocialLogin')
-                ->will($this->returnValue(true));
+            ->method('_isSocialLogin')
+            ->will($this->returnValue(true));
         $this->_mockDispatchEvent(new Event('event'));
         $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
-                ->setMethods(['is'])
-                ->getMock();
+            ->setMethods(['is'])
+            ->getMock();
         /*$this->Trait->request->expects($this->once())
                 ->method('is')
                 ->with('post')
@@ -150,9 +150,9 @@ class LoginTraitTest extends BaseTraitTest
             ->disableOriginalConstructor()
             ->getMock();
         $user = [];
-       /* $this->Trait->Auth->expects($this->once())
-            ->method('identify')
-            ->will($this->returnValue($user));*/
+        /* $this->Trait->Auth->expects($this->once())
+             ->method('identify')
+             ->will($this->returnValue($user));*/
 
         $this->Trait->expects($this->once())
             ->method('redirect')
@@ -176,27 +176,27 @@ class LoginTraitTest extends BaseTraitTest
         $event = new Event('event');
         $event->result = $user;
         $this->Trait->expects($this->at(0))
-                ->method('dispatchEvent')
-                ->with(UsersAuthComponent::EVENT_BEFORE_LOGIN)
-                ->will($this->returnValue($event));
+            ->method('dispatchEvent')
+            ->with(UsersAuthComponent::EVENT_BEFORE_LOGIN)
+            ->will($this->returnValue($event));
         $this->Trait->expects($this->at(1))
-                ->method('dispatchEvent')
-                ->with(UsersAuthComponent::EVENT_AFTER_LOGIN)
-                ->will($this->returnValue(new Event('name')));
+            ->method('dispatchEvent')
+            ->with(UsersAuthComponent::EVENT_AFTER_LOGIN)
+            ->will($this->returnValue(new Event('name')));
         $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
             ->setMethods(['setUser', 'redirectUrl'])
             ->disableOriginalConstructor()
             ->getMock();
         $redirectLoginOK = '/';
         $this->Trait->Auth->expects($this->once())
-                ->method('setUser')
-                ->with($user);
+            ->method('setUser')
+            ->with($user);
         $this->Trait->Auth->expects($this->once())
             ->method('redirectUrl')
             ->will($this->returnValue($redirectLoginOK));
         $this->Trait->expects($this->once())
-                ->method('redirect')
-                ->with($redirectLoginOK);
+            ->method('redirect')
+            ->with($redirectLoginOK);
         $this->Trait->login();
     }
 
@@ -211,12 +211,12 @@ class LoginTraitTest extends BaseTraitTest
         $event->result = '/';
         $event->stopPropagation();
         $this->Trait->expects($this->at(0))
-                ->method('dispatchEvent')
-                ->with(UsersAuthComponent::EVENT_BEFORE_LOGIN)
-                ->will($this->returnValue($event));
+            ->method('dispatchEvent')
+            ->with(UsersAuthComponent::EVENT_BEFORE_LOGIN)
+            ->will($this->returnValue($event));
         $this->Trait->expects($this->once())
-                ->method('redirect')
-                ->with('/');
+            ->method('redirect')
+            ->with('/');
         $this->Trait->login();
     }
 
@@ -235,9 +235,9 @@ class LoginTraitTest extends BaseTraitTest
             ->disableOriginalConstructor()
             ->getMock();
         $this->Trait->request->expects($this->once())
-                ->method('is')
-                ->with('post')
-                ->will($this->returnValue(false));
+            ->method('is')
+            ->with('post')
+            ->will($this->returnValue(false));
         $this->Trait->login();
         Configure::write('Users.Social.login', $socialLogin);
     }
@@ -259,15 +259,15 @@ class LoginTraitTest extends BaseTraitTest
             ->method('logout')
             ->will($this->returnValue($redirectLogoutOK));
         $this->Trait->expects($this->once())
-                ->method('redirect')
-                ->with($redirectLogoutOK);
+            ->method('redirect')
+            ->with($redirectLogoutOK);
         $this->Trait->Flash = $this->getMockBuilder('Cake\Controller\Component\FlashComponent')
             ->setMethods(['success'])
             ->disableOriginalConstructor()
             ->getMock();
         $this->Trait->Flash->expects($this->once())
-                ->method('success')
-                ->with('You\'ve successfully logged out');
+            ->method('success')
+            ->with('You\'ve successfully logged out');
         $this->Trait->logout();
     }
 
@@ -296,7 +296,7 @@ class LoginTraitTest extends BaseTraitTest
             ->method('redirect')
             ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'socialEmail']);
 
-        $this->Trait->failedSocialLogin($event);
+        $this->Trait->failedSocialLogin($event->data['exception'], $event->data['rawData'], true);
     }
 
     /**
@@ -324,7 +324,7 @@ class LoginTraitTest extends BaseTraitTest
             ->method('redirect')
             ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
 
-        $this->Trait->failedSocialLogin($event);
+        $this->Trait->failedSocialLogin($event->data['exception'], $event->data['rawData'], true);
     }
 
     /**
@@ -352,7 +352,7 @@ class LoginTraitTest extends BaseTraitTest
             ->method('redirect')
             ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
 
-        $this->Trait->failedSocialLogin($event);
+        $this->Trait->failedSocialLogin($event->data['exception'], $event->data['rawData'], true);
     }
 
 
@@ -380,6 +380,6 @@ class LoginTraitTest extends BaseTraitTest
             ->method('redirect')
             ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
 
-        $this->Trait->failedSocialLogin($event);
+        $this->Trait->failedSocialLogin(null, $event->data['rawData'], true);
     }
 }
