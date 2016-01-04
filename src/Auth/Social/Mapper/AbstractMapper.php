@@ -71,7 +71,7 @@ abstract class AbstractMapper
      */
     protected function _validated()
     {
-        return !empty($this->_rawData[$this->_mapFields['email']]);
+        return !empty(Hash::get($this->_rawData, $this->_mapFields['email']));
     }
 
     /**
