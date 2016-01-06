@@ -129,8 +129,12 @@ class User extends Entity
             return true;
         }
 
-        $tokenExpiresTime = strtotime($this->token_expires->format("Y-m-d H:i"));
-        return $tokenExpiresTime < strtotime("now");
+        $tokenExpiresTime = $this->token_expires;
+        if (is_object($this->token_expires)) {
+            $tokenExpiresTime = $this->token_expires->format("Y-m-d H:i");
+        }
+
+        return strtotime($tokenExpiresTime) < strtotime("now");
     }
 
     /**
