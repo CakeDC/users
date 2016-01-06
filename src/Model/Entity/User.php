@@ -125,7 +125,12 @@ class User extends Entity
      */
     public function tokenExpired()
     {
-        return empty($this->token_expires) || strtotime($this->token_expires) < strtotime("now");
+        if (empty($this->token_expires)) {
+            return true;
+        }
+
+        $tokenExpiresTime = strtotime($this->token_expires->format("Y-m-d H:i"));
+        return $tokenExpiresTime < strtotime("now");
     }
 
     /**
