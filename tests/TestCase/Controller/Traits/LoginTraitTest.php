@@ -326,6 +326,10 @@ class LoginTraitTest extends TestCase
         $this->_mockDispatchEvent(new Event('event'));
         $socialLogin = Configure::read('Users.Social.login');
         Configure::write('Users.Social.login', false);
+        $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
+            ->setMethods(['user'])
+            ->disableOriginalConstructor()
+            ->getMock();
         $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
             ->setMethods(['is'])
             ->disableOriginalConstructor()
