@@ -11,11 +11,11 @@
 
 namespace CakeDC\Users\View\Helper;
 
-use Cake\Utility\Inflector;
 use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Utility\Hash;
+use Cake\Utility\Inflector;
 use Cake\View\Helper;
 
 /**
@@ -133,9 +133,10 @@ class UserHelper extends Helper
      */
     public function addReCaptcha()
     {
-        if (!Configure::check('Users.Registration.reCaptcha')) {
+        if (!Configure::read('Users.Registration.reCaptcha')) {
             return false;
         }
+
         $this->Form->unlockField('g-recaptcha-response');
         return $this->Html->tag('div', '', [
             'class' => 'g-recaptcha',

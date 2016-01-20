@@ -187,6 +187,17 @@ class UserHelperTest extends TestCase
         Configure::write('reCaptcha.key', $siteKey);
     }
 
+    /**
+     * Test add ReCaptcha field
+     *
+     * @return void
+     */
+    public function testAddReCaptchaEmpty()
+    {
+        Configure::write('Users.Registration.reCaptcha', false);
+        $result = $this->User->addReCaptcha();
+        $this->assertFalse($result);
+    }
 
     /**
      * Test add ReCaptcha field
@@ -199,5 +210,19 @@ class UserHelperTest extends TestCase
             ->method('append')
             ->with('script', $this->stringContains('https://www.google.com/recaptcha/api.js'));
         $this->User->addReCaptchaScript();
+    }
+
+    /**
+     * Test social login link
+     *
+     * @return void
+     */
+    public function testSocialLoginLink()
+    {
+        $result = $this->User->socialLogin('facebook');
+        $this->assertEquals('<a href="/auth/facebook" class="btn btn-social btn-facebook "><i class="fa fa-facebook"></i>Sign in with Facebook</a>', $result);
+
+        $result = $this->User->socialLogin('twitter', ['label' => 'Register with']);
+        $this->assertEquals('<a href="/auth/twitter" class="btn btn-social btn-twitter "><i class="fa fa-twitter"></i>Register with Twitter</a>', $result);
     }
 }

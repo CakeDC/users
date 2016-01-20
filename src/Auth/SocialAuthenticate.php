@@ -21,6 +21,7 @@ use CakeDC\Users\Auth\Social\Util\SocialUtils;
 use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
+use CakeDC\Users\Exception\MissingProviderException;
 use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Model\Table\SocialAccountsTable;
 use Muffin\OAuth2\Auth\OAuthAuthenticate;
@@ -50,22 +51,15 @@ class SocialAuthenticate extends OAuthAuthenticate
      * Find or create local user
      * @param array $data
      * @return array|bool|mixed
+     * @throws MissingEmailException
      */
     protected function _touch(array $data)
     {
-        $userModel = Configure::read('Users.table');
-        $User = TableRegistry::get($userModel);
-        $options = [
-            'use_email' => Configure::read('Users.Email.required'),
-            'validate_email' => Configure::read('Users.Email.validate'),
-            'token_expiration' => Configure::read('Users.Token.expiration')
-        ];
         try {
             if (empty($data['provider']) && !empty($this->_provider)) {
                 $data['provider'] = SocialUtils::getProvider($this->_provider);
             }
-
-            $user = $User->socialLogin($data, $options);
+            $user = $this->_socialLogin($data);
         } catch (UserNotActiveException $ex) {
             $exception = $ex;
         } catch (AccountNotActiveException $ex) {
@@ -113,16 +107,9 @@ class SocialAuthenticate extends OAuthAuthenticate
             if (empty($rawData)) {
                 $rawData = $data;
             }
-            if (!is_null($this->_provider)) {
-                $provider = SocialUtils::getProvider($this->_provider);
-            } else {
-                $provider = ucfirst($request->param('provider'));
-            }
-            $providerMapperClass = "\\CakeDC\\Users\\Auth\\Social\\Mapper\\$provider";
-            $providerMapper = new $providerMapperClass($rawData);
-            $user = $providerMapper();
-            $user['provider'] = $provider;
 
+            $provider = $this->_getProviderName($request);
+            $user = $this->_mapUser($provider, $rawData);
         }
 
         if (!$user || !$this->config('userModel')) {
@@ -132,7 +119,57 @@ class SocialAuthenticate extends OAuthAuthenticate
         if (!$result = $this->_touch($user)) {
             return false;
         }
-
         return $result;
+    }
+
+    /**
+     * Get the provider name based on the request or on the provider set.
+     *
+     * @param \Cake\Network\Request $request Request object.
+     * @return mixed Either false or an array of user information
+     */
+    protected function _getProviderName($request = null)
+    {
+        $provider = false;
+        if (!is_null($this->_provider)) {
+            $provider = SocialUtils::getProvider($this->_provider);
+        } else if (!empty($request)){
+            $provider = ucfirst($request->param('provider'));
+        }
+        return $provider;
+    }
+
+    /**
+     * Get the provider name based on the request or on the provider set.
+     *
+     * @param string $provider Provider name.
+     * @param array $data User data
+     * @throws MissingProviderException
+     * @return mixed Either false or an array of user information
+     */
+    protected function _mapUser($provider, $data)
+    {
+        if (empty($provider)) {
+            throw new MissingProviderException(__d('Users', "Provider cannot be empty"));
+        }
+        $providerMapperClass = "\\CakeDC\\Users\\Auth\\Social\\Mapper\\$provider";
+        $providerMapper = new $providerMapperClass($data);
+        $user = $providerMapper();
+        $user['provider'] = $provider;
+        return $user;
+    }
+
+    protected function _socialLogin($data)
+    {
+        $options = [
+            'use_email' => Configure::read('Users.Email.required'),
+            'validate_email' => Configure::read('Users.Email.validate'),
+            'token_expiration' => Configure::read('Users.Token.expiration')
+        ];
+
+        $userModel = Configure::read('Users.table');
+        $User = TableRegistry::get($userModel);
+        $user = $User->socialLogin($data, $options);
+        return $user;
     }
 }

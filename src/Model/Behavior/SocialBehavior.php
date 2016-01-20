@@ -81,6 +81,7 @@ class SocialBehavior extends Behavior
      *
      * @param array $data Array social user.
      * @param array $options Array option data.
+     * @throws MissingEmailException
      * @return bool|EntityInterface|mixed result of the save operation
      */
     protected function _createSocialUser($data, $options = [])
@@ -138,6 +139,7 @@ class SocialBehavior extends Behavior
         $accountData['active'] = true;
 
         if (empty($existingUser)) {
+
             $firstName = Hash::get($data, 'first_name');
             $lastName = Hash::get($data, 'last_name');
             if (!empty($firstName) && !empty($lastName)) {
@@ -163,17 +165,17 @@ class SocialBehavior extends Behavior
                 }
             }
             $userData['username'] = $this->generateUniqueUsername(Hash::get($userData, 'username'));
-
             if ($useEmail) {
                 $userData['email'] = Hash::get($data, 'email');
                 if (empty(Hash::get($data, 'validated'))) {
                     $accountData['active'] = false;
                 }
             }
+
             $userData['password'] = $this->randomString();
             $userData['avatar'] = Hash::get($data, 'avatar');
             $userData['validated'] = !empty(Hash::get($data, 'validated'));
-            $userData['tos_date'] = date("Y-m-d H:i:s");
+            $userData['tos_date'] =  date("Y-m-d H:i:s");
             $userData['gender'] = Hash::get($data, 'gender');
             //$userData['timezone'] = Hash::get($data, 'timezone');
             $userData['social_accounts'][] = $accountData;
