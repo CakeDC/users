@@ -207,11 +207,14 @@ class SimpleRbacAuthorize extends BaseAuthorize
                 $this->_matchOrAsterisk($permission, 'controller', $controller) &&
                 $this->_matchOrAsterisk($permission, 'action', $action)) {
             $allowed = Hash::get($permission, 'allowed');
+
             if ($allowed === null) {
                 //allowed will be true by default
                 return true;
             } elseif (is_callable($allowed)) {
                 return (bool)call_user_func($allowed, $user, $role, $request);
+            } elseif ($allowed instanceof \CakeDC\Users\Auth\Rules\AbstractRule) {
+                return $allowed->allowed($user, $role, $request);
             } else {
                 return (bool)$allowed;
             }
