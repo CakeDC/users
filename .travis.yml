@@ -20,10 +20,10 @@ matrix:
   fast_finish: true
 
   include:
-    - php: 5.4
+    - php: 5.5
       env: PHPCS=1 DEFAULT=0
 
-    - php: 5.4
+    - php: 5.5
       env: COVERALLS=1 DEFAULT=0 DB=mysql db_dsn='mysql://travis@0.0.0.0/cakephp_test'
 
 before_script:
