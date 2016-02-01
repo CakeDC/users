@@ -137,6 +137,7 @@ class SocialBehavior extends Behavior
         }
         $accountData['data'] = serialize(Hash::get($data, 'raw'));
         $accountData['active'] = true;
+        $dataValidated = Hash::get($data, 'validated');
 
         if (empty($existingUser)) {
 
@@ -154,8 +155,9 @@ class SocialBehavior extends Behavior
             $userData['username'] = Hash::get($data, 'username');
             $username = Hash::get($userData, 'username');
             if (empty($username)) {
-                if (!empty(Hash::get($data, 'email'))) {
-                    $email = explode('@', Hash::get($data, 'email'));
+                $dataEmail = Hash::get($data, 'email');
+                if (!empty($dataEmail)) {
+                    $email = explode('@', $dataEmail);
                     $userData['username'] = Hash::get($email, 0);
                 } else {
                     $firstName = Hash::get($userData, 'first_name');
@@ -167,14 +169,14 @@ class SocialBehavior extends Behavior
             $userData['username'] = $this->generateUniqueUsername(Hash::get($userData, 'username'));
             if ($useEmail) {
                 $userData['email'] = Hash::get($data, 'email');
-                if (empty(Hash::get($data, 'validated'))) {
+                if (empty($dataValidated)) {
                     $accountData['active'] = false;
                 }
             }
 
             $userData['password'] = $this->randomString();
             $userData['avatar'] = Hash::get($data, 'avatar');
-            $userData['validated'] = !empty(Hash::get($data, 'validated'));
+            $userData['validated'] = !empty($dataValidated);
             $userData['tos_date'] =  date("Y-m-d H:i:s");
             $userData['gender'] = Hash::get($data, 'gender');
             //$userData['timezone'] = Hash::get($data, 'timezone');
@@ -182,7 +184,7 @@ class SocialBehavior extends Behavior
             $user = $this->_table->newEntity($userData, ['associated' => ['SocialAccounts']]);
             $user = $this->_updateActive($user, false, $tokenExpiration);
         } else {
-            if ($useEmail && empty(Hash::get($data, 'validated'))) {
+            if ($useEmail && empty($dataValidated)) {
                 $accountData['active'] = false;
             }
             $user = $this->_table->patchEntity($existingUser, [
