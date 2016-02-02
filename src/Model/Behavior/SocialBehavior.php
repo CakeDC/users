@@ -35,6 +35,9 @@ class SocialBehavior extends Behavior
      *
      * @param array $data Array social login.
      * @param array $options Array option data.
+     * @throws InvalidArgumentException
+     * @throws UserNotActiveException
+     * @throws AccountNotActiveException
      * @return bool|EntityInterface|mixed
      */
     public function socialLogin(array $data, array $options)

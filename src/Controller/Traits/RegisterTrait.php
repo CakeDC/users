@@ -30,6 +30,7 @@ trait RegisterTrait
     /**
      * Register a new user
      *
+     * @throws NotFoundException
      * @return type
      */
     public function register()

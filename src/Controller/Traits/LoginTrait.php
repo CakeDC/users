@@ -106,6 +106,9 @@ trait LoginTrait
     }
 
     /**
+     * Social login
+     *
+     * @throws NotFoundException
      * @return array
      */
     public function socialLogin()
