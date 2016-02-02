@@ -87,7 +87,7 @@ class Behavior extends BaseBehavior
     /**
      * Remove user token for validation
      *
-     * @param User $user user object.
+     * @param EntityInterface $user user object.
      * @return EntityInterface
      */
     protected function _removeValidationToken(EntityInterface $user)
