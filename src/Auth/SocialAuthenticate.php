@@ -13,8 +13,6 @@ namespace CakeDC\Users\Auth;
 
 use Cake\Controller\ComponentRegistry;
 use Cake\Core\Configure;
-use Cake\Error\Debugger;
-use Cake\Log\Log;
 use Cake\Network\Request;
 use Cake\ORM\TableRegistry;
 use CakeDC\Users\Auth\Social\Util\SocialUtils;

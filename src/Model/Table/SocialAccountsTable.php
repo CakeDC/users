@@ -11,15 +11,7 @@
 
 namespace CakeDC\Users\Model\Table;
 
-use ArrayObject;
-use CakeDC\Users\Exception\AccountAlreadyActiveException;
-use CakeDC\Users\Model\Entity\User;
 use Cake\Core\Configure;
-use Cake\Datasource\EntityInterface;
-use Cake\Datasource\Exception\RecordNotFoundException;
-use Cake\Event\Event;
-use Cake\Mailer\Email;
-use Cake\ORM\Entity;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;

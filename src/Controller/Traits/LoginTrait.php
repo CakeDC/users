@@ -17,7 +17,6 @@ use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
 use Cake\Core\Configure;
-use Cake\Utility\Hash;
 use CakeDC\Users\Exception\UserNotActiveException;
 use League\OAuth1\Client\Server\Twitter;
 
