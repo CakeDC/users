@@ -66,7 +66,7 @@ class Behavior extends BaseBehavior
      * DRY for update active and token based on validateEmail flag
      *
      * @param EntityInterface $user User to be updated.
-     * @param type $validateEmail email user to validate.
+     * @param bool $validateEmail email user to validate.
      * @param type $tokenExpiration token to be updated.
      * @return EntityInterface
      */
