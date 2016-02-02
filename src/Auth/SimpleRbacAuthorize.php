@@ -168,7 +168,7 @@ class SimpleRbacAuthorize extends BaseAuthorize
      * @param array $user current user array
      * @param string $role effective role for the current user
      * @param Request $request request
-     * @return bool true if there is a match in permissisons
+     * @return bool true if there is a match in permissions
      */
     protected function _checkRules(array $user, $role, Request $request)
     {

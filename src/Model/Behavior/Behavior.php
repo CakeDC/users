@@ -23,7 +23,7 @@ class Behavior extends BaseBehavior
 {
 
     /**
-     * Send the templated email to the user
+     * Send the template email to the user
      *
      * @param EntityInterface $user User entity
      * @param string $subject Subject, note the first_name of the user will be prepended if exists
