@@ -298,7 +298,7 @@ class SocialBehaviorTest extends TestCase
      */
     public function testSocialLoginNoEmail($data, $options)
     {
-        $result = $this->Behavior->socialLogin($data, $options);
+        $this->Behavior->socialLogin($data, $options);
     }
 
 
