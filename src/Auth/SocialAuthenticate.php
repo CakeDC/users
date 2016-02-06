@@ -94,9 +94,10 @@ class SocialAuthenticate extends OAuthAuthenticate
     public function getUser(Request $request)
     {
         $data = $request->session()->read(Configure::read('Users.Key.Session.social'));
-        if (!empty($data) && (!empty($data['email'] || !empty($request->data('email'))))) {
-            if (!empty($request->data('email'))) {
-                $data['email'] = $request->data('email');
+        $requestDataEmail = $request->data('email');
+        if (!empty($data) && (!empty($data['email']) || !empty($requestDataEmail))) {
+            if (!empty($requestDataEmail)) {
+                $data['email'] = $requestDataEmail;
             }
             $user = $data;
             $request->session()->delete(Configure::read('Users.Key.Session.social'));
