@@ -13,7 +13,6 @@ namespace CakeDC\Users\Controller\Traits;
 
 use Cake\Network\Exception\NotFoundException;
 use Cake\Network\Response;
-use Cake\ORM\TableRegistry;
 use Cake\Utility\Inflector;
 
 /**

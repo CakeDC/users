@@ -5,7 +5,7 @@ Composer
 ------
 
 ```
-composer require cakedc/users:3.1.*
+composer require cakedc/users
 ```
 
 if you want to use social login features...
@@ -16,7 +16,13 @@ composer require league/oauth2-facebook:*
 composer require league/oauth2-instagram:*
 composer require league/oauth2-google:*
 composer require league/oauth2-linkedin:*
+```
 
+NOTE: you'll need to enable social login in your bootstrap.php file if you want to use it, social
+login is disabled by default. Check the [Configuration](Configuration.md) page for more details.
+
+```
+Configure::write('Users.Social.login', true); //to enable social login
 ```
 
 Creating Required Tables
@@ -47,6 +53,7 @@ config/bootstrap.php
 ```
 Configure::write('Users.config', ['users']);
 Plugin::load('CakeDC/Users', ['routes' => true, 'bootstrap' => true]);
+Configure::write('Users.Social.login', true); //to enable social login
 ```
 
 Then in your config/users.php

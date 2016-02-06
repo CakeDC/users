@@ -44,8 +44,8 @@ Another decision made was limiting the plugin dependencies on other packages as 
 Requirements
 ------------
 
-* CakePHP 3.1.*
-* PHP 5.4.16+
+* CakePHP 3.1+
+* PHP 5.4.16+ Note CakePHP 3.2 requires PHP 5.5 so 5.4 compatibility would be dropped sooner than later...
 
 Documentation
 -------------
@@ -55,11 +55,14 @@ For documentation, as well as tutorials, see the [Docs](Docs/Home.md) directory 
 Roadmap
 ------
 
+
+* 3.1.4 << you are here
+  * SocialAuthenticate refactored to drop Opauth in favor of Muffin/OAuth2 and league/oauth2
+* 3.1.3
+  * UserHelper improvements
 * 3.1.2
-  * Add Google authentication
-  * Add Instagram authentication
-  * Improve unit test coverage
-* YOU ARE HERE > 3.1.0 Migration to CakePHP 3.0
+  * Fixes in RBAC permission matchers
+* 3.1.0 Migration to CakePHP 3.0
   * Unit test coverage improvements
   * Refactor UsersTable to Behavior
   * Add google authentication

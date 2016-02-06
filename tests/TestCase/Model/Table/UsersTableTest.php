@@ -27,7 +27,6 @@ use InvalidArgumentException;
  */
 class UsersTableTest extends TestCase
 {
-
     /**
      * Fixtures
      *
@@ -184,7 +183,7 @@ class UsersTableTest extends TestCase
             'email' => 'user-2@test.com',
             'id' => 'reference-2-1',
             'link' => 'link',
-            'raw' =>  [
+            'raw' => [
                 'id' => 'reference-2-1',
                 'token' => 'token',
                 'first_name' => 'User 2',
@@ -216,7 +215,7 @@ class UsersTableTest extends TestCase
             'email' => 'hello@test.com',
             'id' => 'reference-2-2',
             'link' => 'link',
-            'raw' =>  [
+            'raw' => [
                 'id' => 'reference-2-2',
                 'first_name' => 'User 2',
                 'gender' => 'female',
@@ -246,7 +245,7 @@ class UsersTableTest extends TestCase
             'email' => 'user@test.com',
             'id' => 'reference-not-existing',
             'link' => 'link',
-            'raw' =>  [
+            'raw' => [
                 'id' => 'reference-not-existing',
                 'first_name' => 'Not existing user',
                 'gender' => 'male',
@@ -278,7 +277,7 @@ class UsersTableTest extends TestCase
             'link' => 'link',
             'first_name' => 'First Name',
             'last_name' => 'Last Name',
-            'raw' =>  [
+            'raw' => [
                 'id' => 'no-existing-reference',
                 'first_name' => 'First Name',
                 'last_name' => 'Last Name',

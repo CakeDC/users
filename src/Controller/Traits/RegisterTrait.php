@@ -16,7 +16,6 @@ use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
 use Cake\Network\Exception\NotFoundException;
 use Cake\Network\Response;
-use InvalidArgumentException;
 
 /**
  * Covers registration features and email token validation
@@ -30,6 +29,7 @@ trait RegisterTrait
     /**
      * Register a new user
      *
+     * @throws NotFoundException
      * @return type
      */
     public function register()

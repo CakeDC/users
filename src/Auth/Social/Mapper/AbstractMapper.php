@@ -1,15 +1,22 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: ajibarra
- * Date: 10/16/15
- * Time: 7:02 AM
+ * Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ *
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 namespace CakeDC\Users\Auth\Social\Mapper;
 
 use Cake\Utility\Hash;
 
+/**
+ * AbstractMapper
+ *
+ */
 abstract class AbstractMapper
 {
     /**
@@ -46,8 +53,8 @@ abstract class AbstractMapper
     /**
      * Constructor
      *
-     * @param $rawData
-     * @param null $mapFields
+     * @param mixed $rawData raw data
+     * @param mixed $mapFields map fields
      */
     public function __construct($rawData, $mapFields = null)
     {
@@ -59,6 +66,8 @@ abstract class AbstractMapper
     }
     /**
      * Invoke method
+     *
+     * @return mixed
      */
     public function __invoke()
     {
@@ -67,6 +76,7 @@ abstract class AbstractMapper
 
     /**
      * If email is present the user is validated
+     *
      * @return bool
      */
     protected function _validated()

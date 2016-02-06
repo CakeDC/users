@@ -16,6 +16,7 @@ use Cake\Auth\DefaultPasswordHasher;
 use Cake\Console\Shell;
 use Cake\Core\Configure;
 use Cake\Utility\Hash;
+use Cake\Utility\Text;
 
 /**
  * Shell with utilities for the Users Plugin
@@ -336,7 +337,7 @@ class UsersShell extends Shell
      */
     protected function _generateRandomPassword()
     {
-        return str_replace('-', '', \Cake\Utility\Text::uuid());
+        return str_replace('-', '', Text::uuid());
     }
 
     /**

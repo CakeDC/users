@@ -34,7 +34,7 @@ class UserHelper extends Helper
     protected $_defaultConfig = [];
 
     /**
-     * beforeLayou callback loads reCaptcha if enabled
+     * beforeLayout callback loads reCaptcha if enabled
      *
      * @param Event $event event
      * @return void
@@ -49,8 +49,8 @@ class UserHelper extends Helper
     /**
      * Social login link
      *
-     * @param string $name
-     * @param array $options
+     * @param string $name name
+     * @param array $options options
      * @return string
      */
     public function socialLogin($name, $options = [])
@@ -60,9 +60,9 @@ class UserHelper extends Helper
         }
         return $this->Html->link($this->Html->tag('i', '', [
                 'class' => __d('Users', 'fa fa-{0}', strtolower($name)),
-            ]) . __d('Users', '{0} {1}', Hash::get($options, 'label') , Inflector::camelize($name)), "/auth/$name", [
-            'escape' => false, 'class' =>  __d('Users', 'btn btn-social btn-{0} ' . Hash::get($options, 'class') ? :'', strtolower($name))
-        ]);
+            ]) . __d('Users', '{0} {1}', Hash::get($options, 'label'), Inflector::camelize($name)), "/auth/$name", [
+            'escape' => false, 'class' => __d('Users', 'btn btn-social btn-{0} ' . Hash::get($options, 'class') ? :'', strtolower($name))
+            ]);
     }
 
     /**

@@ -23,7 +23,7 @@ class Behavior extends BaseBehavior
 {
 
     /**
-     * Send the templated email to the user
+     * Send the template email to the user
      *
      * @param EntityInterface $user User entity
      * @param string $subject Subject, note the first_name of the user will be prepended if exists
@@ -66,7 +66,7 @@ class Behavior extends BaseBehavior
      * DRY for update active and token based on validateEmail flag
      *
      * @param EntityInterface $user User to be updated.
-     * @param type $validateEmail email user to validate.
+     * @param bool $validateEmail email user to validate.
      * @param type $tokenExpiration token to be updated.
      * @return EntityInterface
      */
@@ -87,7 +87,7 @@ class Behavior extends BaseBehavior
     /**
      * Remove user token for validation
      *
-     * @param User $user user object.
+     * @param EntityInterface $user user object.
      * @return EntityInterface
      */
     protected function _removeValidationToken(EntityInterface $user)

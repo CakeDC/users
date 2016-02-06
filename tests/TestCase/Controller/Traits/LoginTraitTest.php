@@ -141,18 +141,10 @@ class LoginTraitTest extends BaseTraitTest
         $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
             ->setMethods(['is'])
             ->getMock();
-        /*$this->Trait->request->expects($this->once())
-                ->method('is')
-                ->with('post')
-                ->will($this->returnValue(true));*/
         $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
             ->setMethods(['user', 'identify', 'setUser', 'redirectUrl'])
             ->disableOriginalConstructor()
             ->getMock();
-        $user = [];
-        /* $this->Trait->Auth->expects($this->once())
-             ->method('identify')
-             ->will($this->returnValue($user));*/
 
         $this->Trait->expects($this->once())
             ->method('redirect')
