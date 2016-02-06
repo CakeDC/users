@@ -1,14 +1,22 @@
 <?php
+/**
+ * Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ *
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
+ */
+
 namespace CakeDC\Users\Auth\Social\Util;
 
 use League\OAuth2\Client\Provider\AbstractProvider;
 use ReflectionClass;
 
 /**
- * Created by PhpStorm.
- * User: ajibarra
- * Date: 10/17/15
- * Time: 3:45 PM
+ * Social Utils
+ *
  */
 class SocialUtils
 {

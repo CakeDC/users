@@ -34,7 +34,7 @@ class UserHelper extends Helper
     protected $_defaultConfig = [];
 
     /**
-     * beforeLayou callback loads reCaptcha if enabled
+     * beforeLayout callback loads reCaptcha if enabled
      *
      * @param Event $event event
      * @return void

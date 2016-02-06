@@ -105,6 +105,7 @@ class PasswordBehavior extends Behavior
      * Change password method
      *
      * @param EntityInterface $user user data.
+     * @throws WrongPasswordException
      * @return mixed
      */
     public function changePassword(EntityInterface $user)

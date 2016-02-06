@@ -17,7 +17,6 @@ use CakeDC\Users\Exception\UserNotFoundException;
 use Cake\Core\Configure;
 use Cake\Network\Response;
 use Exception;
-use InvalidArgumentException;
 
 /**
  * Covers the user validation
