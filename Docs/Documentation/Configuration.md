@@ -10,9 +10,11 @@ config/bootstrap.php
 ```
 Configure::write('Users.config', ['users']);
 Plugin::load('CakeDC/Users', ['routes' => true, 'bootstrap' => true]);
+Configure::write('Users.Social.login', true); //to enable social login
 ```
     
 Then in your config/users.php
+
 ```
 'Opauth.providers' => [
         'facebook' => [
@@ -102,7 +104,7 @@ NOTE: SOME keys were hidden in this doc page, please refer to `vendor/cakedc/use
         ],
         'Social' => [
             //enable social login
-            'login' => true,
+            'login' => false,
         ],
         //Avatar placeholder
         'Avatar' => ['placeholder' => 'CakeDC/Users.avatar_placeholder.png'],
