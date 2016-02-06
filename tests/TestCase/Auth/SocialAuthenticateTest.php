@@ -11,17 +11,15 @@
 
 namespace CakeDC\Users\Test\TestCase\Auth;
 
-use Cake\ORM\TableRegistry;
-use Cake\Controller\ComponentRegistry;
-use Cake\Controller\Controller;
-use Cake\Event\EventManager;
-use Cake\Event\Event;
-use Cake\Network\Request;
-use Cake\Network\Response;
-use Cake\TestSuite\TestCase;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\UserNotActiveException;
+use Cake\Controller\ComponentRegistry;
+use Cake\Event\Event;
+use Cake\Network\Request;
+use Cake\Network\Response;
+use Cake\ORM\TableRegistry;
+use Cake\TestSuite\TestCase;
 use ReflectionClass;
 
 class SocialAuthenticateTest extends TestCase
@@ -95,7 +93,7 @@ class SocialAuthenticateTest extends TestCase
             ->method('_mapUser')
             ->will($this->returnValue($mapper));
 
-        $user =  $this->Table->get('00000000-0000-0000-0000-000000000002');
+        $user = $this->Table->get('00000000-0000-0000-0000-000000000002');
         $this->SocialAuthenticate->expects($this->once())
             ->method('_socialLogin')
             ->will($this->returnValue($user));
@@ -128,7 +126,7 @@ class SocialAuthenticateTest extends TestCase
                     'locale' => 'en_US',
                     'link' => 'link',
                 ],
-                'mappedData' =>  [
+                'mappedData' => [
                     'id' => 'reference-2-1',
                     'username' => null,
                     'full_name' => 'User S',
@@ -343,7 +341,7 @@ class SocialAuthenticateTest extends TestCase
                     'locale' => 'en_US',
                     'link' => 'link',
                 ],
-                'mappedData' =>  [
+                'mappedData' => [
                     'id' => 'reference-2-1',
                     'username' => null,
                     'full_name' => 'User S',
@@ -428,7 +426,7 @@ class SocialAuthenticateTest extends TestCase
     {
         return [
                 [
-                'rawData' =>  [
+                'rawData' => [
                     'id' => 'my-facebook-id',
                     'name' => 'My name.',
                     'first_name' => 'My first name',
@@ -438,7 +436,7 @@ class SocialAuthenticateTest extends TestCase
                     'locale' => 'en_US',
                     'link' => 'https://www.facebook.com/app_scoped_user_id/my-facebook-id/',
                 ],
-                'mappedData' =>  [
+                'mappedData' => [
                     'id' => 'my-facebook-id',
                     'username' => null,
                     'full_name' => 'My name.',
@@ -454,11 +452,11 @@ class SocialAuthenticateTest extends TestCase
                     'credentials' => [
                         'token' => 'token',
                         'secret' => null,
-                        'expires' => (int) 1458510952
+                        'expires' => (int)1458510952
                     ],
                     'provider' => 'Facebook'
                 ],
-            ]
+                ]
 
         ];
     }
@@ -480,5 +478,4 @@ class SocialAuthenticateTest extends TestCase
         $mapUser->setAccessible(true);
         $mapUser->invoke($this->SocialAuthenticate, null, $data);
     }
-
 }

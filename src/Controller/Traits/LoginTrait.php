@@ -11,13 +11,13 @@
 
 namespace CakeDC\Users\Controller\Traits;
 
-use Cake\Event\Event;
-use Cake\Network\Exception\NotFoundException;
 use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
-use Cake\Core\Configure;
 use CakeDC\Users\Exception\UserNotActiveException;
+use Cake\Core\Configure;
+use Cake\Event\Event;
+use Cake\Network\Exception\NotFoundException;
 use League\OAuth1\Client\Server\Twitter;
 
 /**
@@ -28,7 +28,13 @@ trait LoginTrait
 {
     use CustomUsersTableTrait;
 
-    public function twitterLogin() {
+    /**
+     * Do twitter login
+     *
+     * @return mixed|void
+     */
+    public function twitterLogin()
+    {
         $this->autoRender = false;
 
         $server = new Twitter([
@@ -65,25 +71,26 @@ trait LoginTrait
             $this->request->session()->write('temporary_credentials', $temporaryCredentials);
             $server->authorize($temporaryCredentials);
         }
-        return;
     }
     /**
-     * @param $event
+     * @param Event $event event
+     * @return void
      */
-    public function failedSocialLoginListener(Event $event) {
+    public function failedSocialLoginListener(Event $event)
+    {
         $this->failedSocialLogin($event->data['exception'], $event->data['rawData'], true);
     }
 
     /**
-     * @param $exception
-     * @param $data
-     * @param bool|false $flash
+     * @param mixed $exception exception
+     * @param mixed $data data
+     * @param bool|false $flash flash
      * @return mixed
      */
     public function failedSocialLogin($exception, $data, $flash = false)
     {
         $msg = __d('Users', 'Issues trying to log in with your social account');
-        if (isset($exception) ) {
+        if (isset($exception)) {
             if ($exception instanceof MissingEmailException) {
                 if ($flash) {
                     $this->Flash->success(__d('Users', 'Please enter your email'));
@@ -120,8 +127,8 @@ trait LoginTrait
         }
         $user = $this->Auth->user();
         return $this->_afterIdentifyUser($user, true);
-
     }
+
     /**
      * Login user
      *
@@ -137,7 +144,7 @@ trait LoginTrait
             return $this->redirect($event->result);
         }
 
-        $socialLogin =  $this->_isSocialLogin();
+        $socialLogin = $this->_isSocialLogin();
 
         if (!empty($socialLogin)) {
             return $this->redirect(['action' => 'social-email']);

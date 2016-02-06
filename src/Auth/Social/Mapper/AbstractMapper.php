@@ -53,8 +53,8 @@ abstract class AbstractMapper
     /**
      * Constructor
      *
-     * @param $rawData
-     * @param null $mapFields
+     * @param mixed $rawData raw data
+     * @param mixed $mapFields map fields
      */
     public function __construct($rawData, $mapFields = null)
     {

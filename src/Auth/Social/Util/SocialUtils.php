@@ -22,7 +22,8 @@ class SocialUtils
 {
     /**
      * Get provider from classname
-     * @param AbstractProvider $provider
+     *
+     * @param AbstractProvider $provider provider
      * @return string
      */
     public static function getProvider(AbstractProvider $provider)

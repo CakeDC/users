@@ -61,7 +61,7 @@ class SocialBehaviorTest extends TestCase
      */
     public function testSocialLoginFacebookProvider($data, $options, $dataUser)
     {
-        $user =  $this->Table->newEntity($dataUser, ['associated' => ['SocialAccounts']]);
+        $user = $this->Table->newEntity($dataUser, ['associated' => ['SocialAccounts']]);
         $user->password = '$2y$10$0QzszaIEpW1pYpoKJVf4DeqEAHtg9whiLTX/l3TcHAoOLF1bC9U.6';
 
         $this->Behavior->expects($this->once())
@@ -122,7 +122,7 @@ class SocialBehaviorTest extends TestCase
                     'link' => 'facebook-link',
                     'provider' => 'Facebook'
                 ],
-                'options' =>  [
+                'options' => [
                     'use_email' => true,
                     'validate_email' => true,
                     'token_expiration' => 3600
@@ -154,10 +154,9 @@ class SocialBehaviorTest extends TestCase
                     'activation_date' => '2016-01-20 15:45:09',
                     'active' => true,
                 ]
-            ]
+                ]
 
         ];
-
     }
 
     /**
@@ -179,7 +178,6 @@ class SocialBehaviorTest extends TestCase
         $result = $this->Behavior->socialLogin($data, $options);
         $this->assertEquals($result->id, '00000000-0000-0000-0000-000000000002');
         $this->assertTrue($result->active);
-
     }
 
     /**
@@ -194,7 +192,7 @@ class SocialBehaviorTest extends TestCase
                     'id' => 'reference-2-1',
                     'provider' => 'Facebook'
                 ],
-                'options' =>  [
+                'options' => [
                     'use_email' => true,
                     'validate_email' => true,
                     'token_expiration' => 3600
@@ -212,7 +210,6 @@ class SocialBehaviorTest extends TestCase
      */
     public function testSocialLoginExistingNotActiveReference($data, $options)
     {
-
         $this->Behavior->expects($this->never())
             ->method('generateUniqueUsername');
 
@@ -222,7 +219,6 @@ class SocialBehaviorTest extends TestCase
         $this->Behavior->expects($this->never())
             ->method('_updateActive');
         $this->Behavior->socialLogin($data, $options);
-
     }
 
     /**
@@ -237,7 +233,7 @@ class SocialBehaviorTest extends TestCase
                     'id' => 'reference-1-1234',
                     'provider' => 'Facebook'
                 ],
-                'options' =>  [
+                'options' => [
                     'use_email' => true,
                     'validate_email' => true,
                     'token_expiration' => 3600
@@ -255,7 +251,6 @@ class SocialBehaviorTest extends TestCase
      */
     public function testSocialLoginExistingReferenceNotActiveUser($data, $options)
     {
-
         $this->Behavior->expects($this->never())
             ->method('generateUniqueUsername');
 
@@ -265,7 +260,6 @@ class SocialBehaviorTest extends TestCase
         $this->Behavior->expects($this->never())
             ->method('_updateActive');
         $this->Behavior->socialLogin($data, $options);
-
     }
 
     /**
@@ -280,7 +274,7 @@ class SocialBehaviorTest extends TestCase
                     'id' => 'reference-1-1234',
                     'provider' => 'Twitter'
                 ],
-                'options' =>  [
+                'options' => [
                     'use_email' => true,
                     'validate_email' => true,
                     'token_expiration' => 3600
@@ -320,7 +314,7 @@ class SocialBehaviorTest extends TestCase
                     'link' => 'facebook-link',
                     'provider' => 'Facebook'
                 ],
-                'options' =>  [
+                'options' => [
                     'use_email' => true,
                     'validate_email' => true,
                     'token_expiration' => 3600
@@ -359,5 +353,4 @@ class SocialBehaviorTest extends TestCase
 
         ];
     }
-
 }

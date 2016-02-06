@@ -11,10 +11,6 @@
 
 namespace CakeDC\Users\Auth;
 
-use Cake\Controller\ComponentRegistry;
-use Cake\Core\Configure;
-use Cake\Network\Request;
-use Cake\ORM\TableRegistry;
 use CakeDC\Users\Auth\Social\Util\SocialUtils;
 use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Exception\AccountNotActiveException;
@@ -22,6 +18,10 @@ use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\MissingProviderException;
 use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Model\Table\SocialAccountsTable;
+use Cake\Controller\ComponentRegistry;
+use Cake\Core\Configure;
+use Cake\Network\Request;
+use Cake\ORM\TableRegistry;
 use Muffin\OAuth2\Auth\OAuthAuthenticate;
 
 /**
@@ -47,7 +47,8 @@ class SocialAuthenticate extends OAuthAuthenticate
 
     /**
      * Find or create local user
-     * @param array $data
+     *
+     * @param array $data data
      * @return array|bool|mixed
      * @throws MissingEmailException
      */
@@ -132,7 +133,7 @@ class SocialAuthenticate extends OAuthAuthenticate
         $provider = false;
         if (!is_null($this->_provider)) {
             $provider = SocialUtils::getProvider($this->_provider);
-        } else if (!empty($request)){
+        } elseif (!empty($request)) {
             $provider = ucfirst($request->param('provider'));
         }
         return $provider;
@@ -158,6 +159,10 @@ class SocialAuthenticate extends OAuthAuthenticate
         return $user;
     }
 
+    /**
+     * @param mixed $data data
+     * @return mixed
+     */
     protected function _socialLogin($data)
     {
         $options = [

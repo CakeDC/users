@@ -5,10 +5,12 @@
     "require": {
         "php": ">=5.4.16",
         "cakephp/cakephp": "~3.1",
-	"muffin/oauth2": "dev-master"
+        "muffin/oauth2": "dev-master",
+        "league/oauth1-client": "@stable"
     },
     "require-dev": {
-        "phpunit/phpunit": "*"
+        "phpunit/phpunit": "*",
+        "cakephp/cakephp-codesniffer": "^2.0"
     },
     "suggest": {
         "league/oauth2-facebook": "Provide Social Authentication with Facebook",

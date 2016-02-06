@@ -11,12 +11,12 @@
 
 namespace CakeDC\Users\Model\Behavior;
 
-use Cake\Event\EventDispatcherTrait;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Traits\RandomStringTrait;
 use Cake\Datasource\EntityInterface;
+use Cake\Event\EventDispatcherTrait;
 use Cake\Utility\Hash;
 use DateTime;
 use InvalidArgumentException;
@@ -27,8 +27,8 @@ use InvalidArgumentException;
  */
 class SocialBehavior extends Behavior
 {
-    use RandomStringTrait;
     use EventDispatcherTrait;
+    use RandomStringTrait;
 
     /**
      * Performs social login
@@ -143,7 +143,6 @@ class SocialBehavior extends Behavior
         $dataValidated = Hash::get($data, 'validated');
 
         if (empty($existingUser)) {
-
             $firstName = Hash::get($data, 'first_name');
             $lastName = Hash::get($data, 'last_name');
             if (!empty($firstName) && !empty($lastName)) {
@@ -180,7 +179,7 @@ class SocialBehavior extends Behavior
             $userData['password'] = $this->randomString();
             $userData['avatar'] = Hash::get($data, 'avatar');
             $userData['validated'] = !empty($dataValidated);
-            $userData['tos_date'] =  date("Y-m-d H:i:s");
+            $userData['tos_date'] = date("Y-m-d H:i:s");
             $userData['gender'] = Hash::get($data, 'gender');
             //$userData['timezone'] = Hash::get($data, 'timezone');
             $userData['social_accounts'][] = $accountData;
