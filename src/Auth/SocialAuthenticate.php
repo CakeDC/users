@@ -40,7 +40,7 @@ class SocialAuthenticate extends OAuthAuthenticate
     public function __construct(ComponentRegistry $registry, array $config = [])
     {
         $oauthConfig = Configure::read('OAuth');
-        unset($oauthConfig['providers']['twitter']);
+        //unset($oauthConfig['providers']['twitter']);
         Configure::write('Muffin/OAuth2', $oauthConfig);
         parent::__construct($registry, array_merge($config, $oauthConfig));
     }
