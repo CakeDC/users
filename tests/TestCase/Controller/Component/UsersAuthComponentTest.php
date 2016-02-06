@@ -106,8 +106,6 @@ class UsersAuthComponentTest extends TestCase
                 ->getMock();
         $this->Controller->UsersAuth->expects($this->once())
                 ->method('_initAuth');
-        $this->Controller->UsersAuth->expects($this->once())
-                ->method('_loadSocialLogin');
         $this->Controller->UsersAuth->expects($this->never())
                 ->method('_loadRememberMe');
         $this->Controller->UsersAuth->initialize([]);
