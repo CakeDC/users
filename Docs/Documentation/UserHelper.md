@@ -6,7 +6,17 @@ The User Helper has some methods that may be needed if you want to improve your 
 Setup
 ---------------
 
-The User Helper just need some Configure variables to function properly.
+Enable the Helper in `src/view/AppView.php`:
+```php
+class AppView extends View
+{
+    public function initialize()
+    {
+        parent::initialize();
+        $this->loadHelper('CakeDC/Users.User');
+    }
+}
+```
 
 Social Login
 -----------------
