@@ -306,9 +306,6 @@ class SocialAuthenticate extends BaseAuthenticate
             $args = ['exception' => $exception, 'rawData' => $data];
             $event = new Event(UsersAuthComponent::EVENT_FAILED_SOCIAL_LOGIN, $args);
             $event = EventManager::instance()->dispatch($event);
-//            if ($data['provider'] === SocialAccountsTable::PROVIDER_TWITTER) {
-//                throw $exception;
-//            }
             if (method_exists($this->_registry->getController(), 'failedSocialLogin')) {
                 $this->_registry->getController()->failedSocialLogin($exception, $data, true);
             }
