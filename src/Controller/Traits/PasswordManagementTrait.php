@@ -48,12 +48,16 @@ trait PasswordManagementTrait
         if ($this->request->is('post')) {
             try {
                 $user = $this->getUsersTable()->patchEntity($user, $this->request->data(), ['validate' => 'passwordConfirm']);
-                $user = $this->getUsersTable()->changePassword($user);
-                if ($user) {
-                    $this->Flash->success(__d('Users', 'Password has been changed successfully'));
-                    return $this->redirect($redirect);
-                } else {
+                if ($user->errors()) {
                     $this->Flash->error(__d('Users', 'Password could not be changed'));
+                } else {
+                    $user = $this->getUsersTable()->changePassword($user);
+                    if ($user) {
+                        $this->Flash->success(__d('Users', 'Password has been changed successfully'));
+                        return $this->redirect($redirect);
+                    } else {
+                        $this->Flash->error(__d('Users', 'Password could not be changed'));
+                    }
                 }
             } catch (UserNotFoundException $exception) {
                 $this->Flash->error(__d('Users', 'User was not found'));
