@@ -60,7 +60,7 @@ class Owner extends AbstractRule
                 throw new OutOfBoundsException(__d('Users', 'Missing column {0} in table {1} while checking ownership permissions for user {2}', $this->config('ownerForeignKey'), $table->alias(), $userId));
             }
         } catch (Exception $ex) {
-            throw new OutOfBoundsException(__d('Users', 'Table {0} has no columns, please check the table exists. {1}', $table->alias(), $ex->getMessage()));
+            throw new OutOfBoundsException(__d('Users', 'Missing column {0} in table {1} while checking ownership permissions for user {2}', $this->config('ownerForeignKey'), $table->alias(), $userId));
         }
         $conditions = array_merge([
             $table->primaryKey() => $id,

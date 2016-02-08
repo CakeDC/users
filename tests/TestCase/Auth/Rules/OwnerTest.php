@@ -174,7 +174,7 @@ class OwnerTest extends TestCase
             'pass' => ['00000000-0000-0000-0000-000000000002']
         ];
         $user = [
-            'id' => 'not-found',
+            'id' => '99999999-0000-0000-0000-000000000000',
         ];
         $this->assertFalse($this->Owner->allowed($user, 'user', $this->request));
     }
@@ -189,7 +189,7 @@ class OwnerTest extends TestCase
         $this->request->params = [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Posts',
-            'pass' => ['not-found']
+            'pass' => ['99999999-0000-0000-0000-000000000000'] //not found
         ];
         $user = [
             'id' => '00000000-0000-0000-0000-000000000001',
@@ -202,7 +202,7 @@ class OwnerTest extends TestCase
      *
      * @return void
      * @expectedException \OutOfBoundsException
-     * @expectedExceptionMessage Table NoDefaultTable has no columns, please check the table exists. Cannot describe no_default_table. It has 0 columns.
+     * @expectedExceptionMessage Missing column user_id in table NoDefaultTable while checking ownership permissions for user 00000000-0000-0000-0000-000000000001
      */
     public function testNotAllowedBecauseNoDefaultTable()
     {
