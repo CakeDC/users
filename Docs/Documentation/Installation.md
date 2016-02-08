@@ -5,27 +5,24 @@ Composer
 ------
 
 ```
-composer require cakedc/users:3.1.*
+composer require cakedc/users
 ```
 
 if you want to use social login features...
 
 ```
-composer require opauth/opauth:1.0.x-dev
-composer require opauth/facebook:1.0.x-dev
-composer require opauth/twitter:1.0.x-dev
+composer require Muffin/OAuth2:*
+composer require league/oauth2-facebook:*
+composer require league/oauth2-instagram:*
+composer require league/oauth2-google:*
+composer require league/oauth2-linkedin:*
 ```
 
-IMPORTANT: We have a fork adding some fixes to the facebook strategy, please add to your composer.json file:
+NOTE: you'll need to enable social login in your bootstrap.php file if you want to use it, social
+login is disabled by default. Check the [Configuration](Configuration.md) page for more details.
 
 ```
- "repositories":
-    [
-            {
-                "type": "vcs",
-                "url": "https://github.com/CakeDC/facebook.git"
-            }
-    ],
+Configure::write('Users.Social.login', true); //to enable social login
 ```
 
 Creating Required Tables
@@ -56,17 +53,19 @@ config/bootstrap.php
 ```
 Configure::write('Users.config', ['users']);
 Plugin::load('CakeDC/Users', ['routes' => true, 'bootstrap' => true]);
+Configure::write('Users.Social.login', true); //to enable social login
 ```
 
 Then in your config/users.php
 ```
 return [
-    'Opauth.Strategy.Facebook.app_id' => 'YOUR APP ID',
-    'Opauth.Strategy.Facebook.app_secret' => 'YOUR APP SECRET',
-    'Opauth.Strategy.Twitter.key' => 'YOUR APP KEY',
-    'Opauth.Strategy.Twitter.secret' => 'YOUR APP SECRET',
+    'OAuth.providers.facebook.options.clientId' => 'YOUR APP ID',
+    'OAuth.providers.facebook.options.clientSecret' => 'YOUR APP SECRET',
+    'OAuth.providers.instagram.options.clientId' => 'YOUR APP ID',
+    'OAuth.providers.instagram.options.clientSecret' => 'YOUR APP SECRET',
     //etc
 ];
+
 ```
 
 For more details, check the Configuration doc page

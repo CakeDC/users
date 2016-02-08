@@ -15,6 +15,7 @@ use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Utility\Hash;
+use Cake\Utility\Inflector;
 use Cake\View\Helper;
 
 /**
@@ -33,7 +34,7 @@ class UserHelper extends Helper
     protected $_defaultConfig = [];
 
     /**
-     * beforeLayou callback loads reCaptcha if enabled
+     * beforeLayout callback loads reCaptcha if enabled
      *
      * @param Event $event event
      * @return void
@@ -46,30 +47,21 @@ class UserHelper extends Helper
     }
 
     /**
-     * Facebook login link
+     * Social login link
      *
+     * @param string $name name
+     * @param array $options options
      * @return string
      */
-    public function facebookLogin()
+    public function socialLogin($name, $options = [])
     {
+        if (empty($options['label'])) {
+            $options['label'] = 'Sign in with';
+        }
         return $this->Html->link($this->Html->tag('i', '', [
-                'class' => 'fa fa-facebook'
-            ]) . __d('Users', 'Sign in with Facebook'), '/auth/facebook', [
-            'escape' => false, 'class' => 'btn btn-social btn-facebook'
-            ]);
-    }
-
-    /**
-     * Twitter login link
-     *
-     * @return string
-     */
-    public function twitterLogin()
-    {
-        return $this->Html->link($this->Html->tag('i', '', [
-                'class' => 'fa fa-twitter'
-            ]) . __d('Users', 'Sign in with Twitter'), '/auth/twitter', [
-            'escape' => false, 'class' => 'btn btn-social btn-twitter'
+                'class' => __d('Users', 'fa fa-{0}', strtolower($name)),
+            ]) . __d('Users', '{0} {1}', Hash::get($options, 'label'), Inflector::camelize($name)), "/auth/$name", [
+            'escape' => false, 'class' => __d('Users', 'btn btn-social btn-{0} ' . Hash::get($options, 'class') ? :'', strtolower($name))
             ]);
     }
 
@@ -152,9 +144,10 @@ class UserHelper extends Helper
      */
     public function addReCaptcha()
     {
-        if (!Configure::check('Users.Registration.reCaptcha')) {
+        if (!Configure::read('Users.Registration.reCaptcha')) {
             return false;
         }
+
         $this->Form->unlockField('g-recaptcha-response');
         return $this->Html->tag('div', '', [
             'class' => 'g-recaptcha',

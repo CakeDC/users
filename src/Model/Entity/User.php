@@ -11,7 +11,6 @@
 
 namespace CakeDC\Users\Model\Entity;
 
-use Cake\Auth\DefaultPasswordHasher;
 use Cake\Core\Configure;
 use Cake\ORM\Entity;
 use Cake\Utility\Text;
@@ -35,6 +34,7 @@ class User extends Entity
         'confirm_password' => true,
         'first_name' => true,
         'last_name' => true,
+        'avatar' => true,
         'token' => true,
         'token_expires' => true,
         'api_token' => true,
@@ -124,7 +124,16 @@ class User extends Entity
      */
     public function tokenExpired()
     {
-        return empty($this->token_expires) || strtotime($this->token_expires) < strtotime("now");
+        if (empty($this->token_expires)) {
+            return true;
+        }
+
+        $tokenExpiresTime = $this->token_expires;
+        if (is_object($this->token_expires)) {
+            $tokenExpiresTime = $this->token_expires->format("Y-m-d H:i");
+        }
+
+        return strtotime($tokenExpiresTime) < strtotime("now");
     }
 
     /**

@@ -15,7 +15,6 @@ use CakeDC\Users\Email\EmailSender;
 use CakeDC\Users\Exception\TokenExpiredException;
 use CakeDC\Users\Exception\UserAlreadyActiveException;
 use CakeDC\Users\Exception\UserNotFoundException;
-use CakeDC\Users\Model\Behavior\Behavior;
 use CakeDC\Users\Model\Entity\User;
 use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
@@ -110,8 +109,8 @@ class RegisterBehavior extends Behavior
         if ($user->active) {
             throw new UserAlreadyActiveException(__d('Users', "User account already validated"));
         }
-        $user = $this->_removeValidationToken($user);
         $user->activation_date = new DateTime();
+        $user->token_expires = null;
         $user->active = true;
         $result = $this->_table->save($user);
 

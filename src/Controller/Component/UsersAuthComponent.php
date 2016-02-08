@@ -24,6 +24,7 @@ class UsersAuthComponent extends Component
     const EVENT_IS_AUTHORIZED = 'Users.Component.UsersAuth.isAuthorized';
     const EVENT_BEFORE_LOGIN = 'Users.Component.UsersAuth.beforeLogin';
     const EVENT_AFTER_LOGIN = 'Users.Component.UsersAuth.afterLogin';
+    const EVENT_FAILED_SOCIAL_LOGIN = 'Users.Component.UsersAuth.failedSocialLogin';
     const EVENT_AFTER_COOKIE_LOGIN = 'Users.Component.UsersAuth.afterCookieLogin';
     const EVENT_BEFORE_REGISTER = 'Users.Component.UsersAuth.beforeRegister';
     const EVENT_AFTER_REGISTER = 'Users.Component.UsersAuth.afterRegister';
@@ -43,9 +44,6 @@ class UsersAuthComponent extends Component
         $this->_validateConfig();
         $this->_initAuth();
 
-        if (Configure::read('Users.Social.login') && Configure::read('Opauth')) {
-            $this->_configOpauthRoutes();
-        }
         if (Configure::read('Users.Social.login')) {
             $this->_loadSocialLogin();
         }
@@ -105,11 +103,13 @@ class UsersAuthComponent extends Component
             'validateEmail',
             'resendTokenValidation',
             'login',
+            'twitterLogin',
             'socialEmail',
-            'opauthInit',
             'resetPassword',
             'requestResetPassword',
             'changePassword',
+            'endpoint',
+            'authenticated'
         ]);
     }
 
@@ -157,23 +157,5 @@ class UsersAuthComponent extends Component
             $message = __d('Users', 'You can\'t enable email validation workflow if use_email is false');
             throw new BadConfigurationException($message);
         }
-    }
-
-    /**
-     * Config Opauth urls
-     *
-     * @return void
-     */
-    protected function _configOpauthRoutes()
-    {
-        $path = Configure::read('Opauth.path');
-        Configure::write('Opauth.path', Router::url($path) . '/');
-        //Generate callback url
-        if (is_array($path)) {
-            $path[] = Configure::read('Opauth.callback_param');
-        } else {
-            $path = $path . Configure::read('Opauth.callback_param');
-        }
-        Configure::write('Opauth.callback_url', Router::url($path));
     }
 }

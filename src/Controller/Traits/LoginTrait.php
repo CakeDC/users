@@ -14,8 +14,11 @@ namespace CakeDC\Users\Controller\Traits;
 use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
+use CakeDC\Users\Exception\UserNotActiveException;
 use Cake\Core\Configure;
-use Cake\Utility\Hash;
+use Cake\Event\Event;
+use Cake\Network\Exception\NotFoundException;
+use League\OAuth1\Client\Server\Twitter;
 
 /**
  * Covers the login, logout and social login
@@ -24,6 +27,107 @@ use Cake\Utility\Hash;
 trait LoginTrait
 {
     use CustomUsersTableTrait;
+
+    /**
+     * Do twitter login
+     *
+     * @return mixed|void
+     */
+    public function twitterLogin()
+    {
+        $this->autoRender = false;
+
+        $server = new Twitter([
+            'identifier' => Configure::read('OAuth.providers.twitter.options.identifier'),
+            'secret' => Configure::read('OAuth.providers.twitter.options.secret'),
+            'callbackUri' => Configure::read('OAuth.providers.twitter.options.redirectUri'),
+        ]);
+        $oauthToken = $this->request->query('oauth_token');
+        $oauthVerifier = $this->request->query('oauth_verifier');
+        if (!empty($oauthToken) && !empty($oauthVerifier)) {
+            $temporaryCredentials = $this->request->session()->read('temporary_credentials');
+            $tokenCredentials = $server->getTokenCredentials($temporaryCredentials, $oauthToken, $oauthVerifier);
+            $user = (array)$server->getUserDetails($tokenCredentials);
+            $user['token'] = [
+                'accessToken' => $tokenCredentials->getIdentifier(),
+                'tokenSecret' => $tokenCredentials->getSecret(),
+            ];
+            $this->request->session()->write(Configure::read('Users.Key.Session.social'), $user);
+            try {
+                $user = $this->Auth->identify();
+                $this->_afterIdentifyUser($user, true);
+            } catch (UserNotActiveException $ex) {
+                $exception = $ex;
+            } catch (AccountNotActiveException $ex) {
+                $exception = $ex;
+            } catch (MissingEmailException $ex) {
+                $exception = $ex;
+            }
+            if (!empty($exception)) {
+                return $this->failedSocialLogin($exception, $this->request->session()->read(Configure::read('Users.Key.Session.social')));
+            }
+        } else {
+            $temporaryCredentials = $server->getTemporaryCredentials();
+            $this->request->session()->write('temporary_credentials', $temporaryCredentials);
+            $server->authorize($temporaryCredentials);
+        }
+    }
+    /**
+     * @param Event $event event
+     * @return void
+     */
+    public function failedSocialLoginListener(Event $event)
+    {
+        $this->failedSocialLogin($event->data['exception'], $event->data['rawData'], true);
+    }
+
+    /**
+     * @param mixed $exception exception
+     * @param mixed $data data
+     * @param bool|false $flash flash
+     * @return mixed
+     */
+    public function failedSocialLogin($exception, $data, $flash = false)
+    {
+        $msg = __d('Users', 'Issues trying to log in with your social account');
+        if (isset($exception)) {
+            if ($exception instanceof MissingEmailException) {
+                if ($flash) {
+                    $this->Flash->success(__d('Users', 'Please enter your email'));
+                }
+                $this->request->session()->write(Configure::read('Users.Key.Session.social'), $data);
+                return $this->redirect(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'socialEmail']);
+            }
+            if ($exception instanceof UserNotActiveException) {
+                $msg = __d('Users', 'Your user has not been validated yet. Please check your inbox for instructions');
+            } elseif ($exception instanceof AccountNotActiveException) {
+                $msg = __d('Users', 'Your social account has not been validated yet. Please check your inbox for instructions');
+            }
+        }
+        if ($flash) {
+            $this->request->session()->delete(Configure::read('Users.Key.Session.social'));
+            $this->Flash->success($msg);
+        }
+        return $this->redirect(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
+    }
+
+    /**
+     * Social login
+     *
+     * @throws NotFoundException
+     * @return array
+     */
+    public function socialLogin()
+    {
+        $socialProvider = $this->request->param('provider');
+        $socialUser = $this->request->session()->read(Configure::read('Users.Key.Session.social'));
+
+        if (empty($socialProvider) && empty($socialUser)) {
+            throw new NotFoundException();
+        }
+        $user = $this->Auth->user();
+        return $this->_afterIdentifyUser($user, true);
+    }
 
     /**
      * Login user
@@ -39,28 +143,15 @@ trait LoginTrait
         if ($event->isStopped()) {
             return $this->redirect($event->result);
         }
+
         $socialLogin = $this->_isSocialLogin();
 
-        if (!$this->request->is('post') && !$socialLogin) {
-            if ($this->Auth->user()) {
-                $msg = __d('Users', 'Your are already logged in');
-                $this->Flash->error($msg);
-                return $this->redirect($this->referer());
-            }
-            return;
+        if (!empty($socialLogin)) {
+            return $this->redirect(['action' => 'social-email']);
         }
-
-        try {
+        if ($this->request->is('post')) {
             $user = $this->Auth->identify();
             return $this->_afterIdentifyUser($user, $socialLogin);
-        } catch (AccountNotActiveException $ex) {
-            $socialKey = Configure::read('Users.Key.Session.social');
-            $this->request->session()->delete($socialKey);
-            $msg = __d('Users', 'Your social account has not been validated yet. Please check your inbox for instructions');
-            $this->Flash->success($msg);
-        } catch (MissingEmailException $ex) {
-            $this->Flash->success(__d('Users', 'Please enter your email'));
-            return $this->redirect(['controller' => 'Users', 'action' => 'socialEmail']);
         }
     }
 
@@ -72,36 +163,22 @@ trait LoginTrait
      */
     protected function _afterIdentifyUser($user, $socialLogin = false)
     {
-        $socialKey = Configure::read('Users.Key.Session.social');
         if (!empty($user)) {
-            $this->request->session()->delete($socialKey);
             $this->Auth->setUser($user);
-            $event = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_LOGIN);
+
+            $event = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_LOGIN, ['user' => $user]);
             if (is_array($event->result)) {
                 return $this->redirect($event->result);
             }
             $url = $this->Auth->redirectUrl();
             return $this->redirect($url);
         } else {
-            $message = __d('Users', 'Username or password is incorrect');
-            if ($socialLogin) {
-                $socialData = $this->request->session()->read($socialKey);
-                $socialDataEmail = null;
-                if (!empty($socialData->info)) {
-                    $socialDataEmail = Hash::get((array)$socialData->info, Configure::read('data_email_key'));
-                }
-                $postedEmail = $this->request->data(Configure::read('Users.Key.Data.email'));
-                if (Configure::read('Users.Email.required') &&
-                    empty($socialDataEmail) &&
-                    empty($postedEmail)) {
-                        return $this->redirect([
-                            'controller' => 'Users',
-                            'action' => 'socialEmail'
-                        ]);
-                }
-                $message = __d('Users', 'There was an error associating your social network account');
+            if (!$socialLogin) {
+                $message = __d('Users', 'Username or password is incorrect');
+                $this->Flash->error($message, 'default', [], 'auth');
             }
-            $this->Flash->error($message, 'default', [], 'auth');
+
+            return $this->redirect(Configure::read('Auth.loginAction'));
         }
     }
 

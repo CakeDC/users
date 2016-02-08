@@ -60,7 +60,7 @@ class UserValidationTraitTest extends BaseTraitTest
         $this->_mockFlash();
         $this->Trait->Flash->expects($this->once())
                 ->method('error')
-                ->with('Invalid token and/or email');
+                ->with('Invalid token or user account already validated');
         $this->Trait->expects($this->once())
                 ->method('redirect')
                 ->with(['action' => 'login']);

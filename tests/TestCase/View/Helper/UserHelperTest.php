@@ -54,30 +54,6 @@ class UserHelperTest extends TestCase
     }
 
     /**
-     * Test facebookLogin
-     *
-     * @return void
-     */
-    public function testFacebookLogin()
-    {
-        $result = $this->User->facebookLogin();
-        $expected = '<a href="/auth/facebook" class="btn btn-social btn-facebook"><i class="fa fa-facebook"></i>Sign in with Facebook</a>';
-        $this->assertEquals($expected, $result);
-    }
-
-    /**
-     * Test twitterLogin
-     *
-     * @return void
-     */
-    public function testTwitterLoginEnabled()
-    {
-        $result = $this->User->twitterLogin();
-        $expected = '<a href="/auth/twitter" class="btn btn-social btn-twitter"><i class="fa fa-twitter"></i>Sign in with Twitter</a>';
-        $this->assertEquals($expected, $result);
-    }
-
-    /**
      * Test twitterLogin
      *
      * @return void
@@ -237,6 +213,17 @@ class UserHelperTest extends TestCase
         Configure::write('reCaptcha.key', $siteKey);
     }
 
+    /**
+     * Test add ReCaptcha field
+     *
+     * @return void
+     */
+    public function testAddReCaptchaEmpty()
+    {
+        Configure::write('Users.Registration.reCaptcha', false);
+        $result = $this->User->addReCaptcha();
+        $this->assertFalse($result);
+    }
 
     /**
      * Test add ReCaptcha field
@@ -249,5 +236,19 @@ class UserHelperTest extends TestCase
             ->method('append')
             ->with('script', $this->stringContains('https://www.google.com/recaptcha/api.js'));
         $this->User->addReCaptchaScript();
+    }
+
+    /**
+     * Test social login link
+     *
+     * @return void
+     */
+    public function testSocialLoginLink()
+    {
+        $result = $this->User->socialLogin('facebook');
+        $this->assertEquals('<a href="/auth/facebook" class="btn btn-social btn-facebook "><i class="fa fa-facebook"></i>Sign in with Facebook</a>', $result);
+
+        $result = $this->User->socialLogin('twitter', ['label' => 'Register with']);
+        $this->assertEquals('<a href="/auth/twitter" class="btn btn-social btn-twitter "><i class="fa fa-twitter"></i>Register with Twitter</a>', $result);
     }
 }

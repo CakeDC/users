@@ -17,7 +17,6 @@ use CakeDC\Users\Exception\UserNotFoundException;
 use Cake\Core\Configure;
 use Cake\Network\Response;
 use Exception;
-use InvalidArgumentException;
 
 /**
  * Covers the user validation
@@ -62,7 +61,7 @@ trait UserValidationTrait
                     $this->Flash->error(__d('Users', 'Invalid validation type'));
             }
         } catch (UserNotFoundException $ex) {
-            $this->Flash->error(__d('Users', 'Invalid token and/or email'));
+            $this->Flash->error(__d('Users', 'Invalid token or user account already validated'));
         } catch (TokenExpiredException $ex) {
             $this->Flash->error(__d('Users', 'Token already expired'));
         }

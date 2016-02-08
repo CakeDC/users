@@ -27,7 +27,7 @@ Configure::write('Users', [
     ],
     'Social' => [
         //enable social login
-        'login' => true,
+        'login' => false,
     ],
     'Key' => [
         'Session' => [

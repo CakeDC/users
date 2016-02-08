@@ -11,10 +11,6 @@
 
 namespace CakeDC\Users\Model\Table;
 
-use CakeDC\Users\Exception\WrongPasswordException;
-use CakeDC\Users\Model\Entity\User;
-use Cake\Datasource\EntityInterface;
-use Cake\Mailer\Email;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Utility\Hash;
@@ -25,6 +21,12 @@ use Cake\Validation\Validator;
  */
 class UsersTable extends Table
 {
+
+    /**
+     * Role Constants
+     */
+    const ROLE_USER = 'user';
+    const ROLE_ADMIN = 'admin';
 
     /**
      * Flag to set email check in buildRules or not
@@ -44,7 +46,7 @@ class UsersTable extends Table
         parent::initialize($config);
 
         $this->table('users');
-        $this->displayField('id');
+        $this->displayField('username');
         $this->primaryKey('id');
         $this->addBehavior('Timestamp');
         $this->addBehavior('CakeDC/Users.Register');

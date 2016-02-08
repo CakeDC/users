@@ -30,20 +30,26 @@ use Cake\Core\Configure;
         ?>
         <p>
             <?php
-            if (Configure::check('Users.Registration.active')) {
+            $registrationActive = Configure::read('Users.Registration.active');
+            if ($registrationActive) {
                 echo $this->Html->link(__d('users', 'Register'), ['action' => 'register']);
             }
-            if (Configure::check('Users.Email.required')) {
-                echo ' | ';
+            if (Configure::read('Users.Email.required')) {
+                if ($registrationActive) {
+                    echo ' | ';
+                }
                 echo $this->Html->link(__d('users', 'Reset Password'), ['action' => 'requestResetPassword']);
             }
             ?>
         </p>
     </fieldset>
-    <?php
-    if (Configure::read('Users.Social.login')) : ?>
-        <?= $this->User->facebookLogin(); ?>
-        <?= $this->User->twitterLogin(); ?>
+    <?php if (Configure::read('Users.Social.login')) : ?>
+        <?php $providers = Configure::read('OAuth.providers'); ?>
+        <?php foreach ($providers as $provider => $options) : ?>
+            <?php if (!empty($options['options']['redirectUri'])) : ?>
+                <?= $this->User->socialLogin($provider); ?>
+            <?php endif; ?>
+        <?php endforeach; ?>
     <?php
     endif; ?>
     <?= $this->Form->button(__d('Users', 'Login')); ?>

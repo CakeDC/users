@@ -36,12 +36,12 @@ class UsersShellTest extends TestCase
     {
         parent::setUp();
         $this->out = new ConsoleOutput();
-        $this->io = new ConsoleIo($this->out);
+        $this->io = $this->getMock('Cake\Console\ConsoleIo');
         $this->Users = TableRegistry::get('CakeDC/Users.Users');
 
         $this->Shell = $this->getMockBuilder('CakeDC\Users\Shell\UsersShell')
             ->setMethods(['in', 'out', '_stop', 'clear', '_usernameSeed', '_generateRandomPassword',
-                '_generateRandomUsername', '_generatedHashedPassword', 'error'])
+                '_generateRandomUsername', '_generatedHashedPassword', 'error', '_updateUser'])
             ->setConstructorArgs([$this->io])
             ->getMock();
 
@@ -107,8 +107,6 @@ class UsersShellTest extends TestCase
             ->method('save')
             ->with($entityUser)
             ->will($this->returnValue($userSaved));
-
-        //TODO: Add assertions with 'out'
 
         $this->Shell->runCommand(['addUser', '--username=' . $user['username'], '--password=' . $user['password'], '--email=' . $user['email']]);
     }
@@ -233,5 +231,23 @@ class UsersShellTest extends TestCase
             ->with('Please enter a password.');
 
         $this->Shell->runCommand(['resetAllPasswords']);
+    }
+
+    /**
+     * Reset password
+     *
+     * @return void
+     */
+    public function testResetPassword()
+    {
+        $user = $this->Users->newEntity();
+        $user->username = 'user-1';
+        $user->password = 'password';
+
+        $this->Shell->expects($this->once())
+            ->method('_updateUser')
+            ->will($this->returnValue($user));
+
+        $this->Shell->runCommand(['resetPassword', 'user-1', 'password']);
     }
 }

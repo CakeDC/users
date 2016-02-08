@@ -39,7 +39,7 @@ $config = [
         ],
         'Social' => [
             //enable social login
-            'login' => true,
+            'login' => false,
         ],
         'Profile' => [
             //Allow view other users profiles
@@ -86,6 +86,7 @@ $config = [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'login',
+            'prefix' => false
         ],
         'authenticate' => [
             'all' => [
@@ -100,24 +101,28 @@ $config = [
             'CakeDC/Users.SimpleRbac',
         ],
     ],
-//default Opauth configuration, you'll need to provide the strategy keys
-    'Opauth' => [
-        'path' => ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'opauthInit'],
-        'callback_param' => 'callback',
-        'complete_url' => ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login'],
-        'Strategy' => [
-            'Facebook' => [
-                'scope' => ['public_profile', 'user_friends', 'email'],
-                //app_id => 'YOUR_APP_ID',
-                //app_secret = 'YOUR_APP_SECRET',
+    'OAuth' => [
+        'path' => ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'socialLogin', 'prefix' => false],
+        'providers' => [
+            'facebook' => [
+                'className' => 'League\OAuth2\Client\Provider\Facebook',
+                'options' => [
+                    'graphApiVersion' => 'v2.5'
+                ]
             ],
-            'Twitter' => [
-                'curl_cainfo' => false,
-                'curl_capath' => false,
-                //'key' => 'YOUR_APP_KEY',
-                //'secret' => 'YOUR_APP_SECRET',
-            ]
-        ]
+            'linkedIn' => [
+                'className' => 'League\OAuth2\Client\Provider\LinkedIn',
+            ],
+            'instagram' => [
+                'className' => 'League\OAuth2\Client\Provider\Instagram',
+            ],
+            'google' => [
+                'className' => 'League\OAuth2\Client\Provider\Google',
+                'options' => [
+                    'userFields' => ['url', 'aboutMe'],
+                ]
+            ],
+        ],
     ]
 ];
 

@@ -13,10 +13,10 @@ namespace CakeDC\Users\Model\Behavior;
 
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
-use CakeDC\Users\Model\Behavior\Behavior;
-use CakeDC\Users\Model\Table\SocialAccountsTable;
+use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Traits\RandomStringTrait;
 use Cake\Datasource\EntityInterface;
+use Cake\Event\EventDispatcherTrait;
 use Cake\Utility\Hash;
 use DateTime;
 use InvalidArgumentException;
@@ -27,26 +27,24 @@ use InvalidArgumentException;
  */
 class SocialBehavior extends Behavior
 {
+    use EventDispatcherTrait;
     use RandomStringTrait;
-
-    /**
-     * Used to create a default profile link if not available in raw data returned by FB
-     */
-    const FACEBOOK_SCOPED_ID_URL = "https://www.facebook.com/app_scoped_user_id/";
 
     /**
      * Performs social login
      *
      * @param array $data Array social login.
      * @param array $options Array option data.
+     * @throws InvalidArgumentException
+     * @throws UserNotActiveException
+     * @throws AccountNotActiveException
      * @return bool|EntityInterface|mixed
      */
-    public function socialLogin($data, $options = [])
+    public function socialLogin(array $data, array $options)
     {
-        $provider = $data->provider;
-        $reference = $data->uid;
+        $reference = Hash::get($data, 'id');
         $existingAccount = $this->_table->SocialAccounts->find()
-                ->where(['SocialAccounts.reference' => $reference, 'SocialAccounts.provider' => $provider])
+                ->where(['SocialAccounts.reference' => $reference, 'SocialAccounts.provider' => $data['provider']])
                 ->contain(['Users'])
                 ->first();
         if (empty($existingAccount->user)) {
@@ -62,7 +60,15 @@ class SocialBehavior extends Behavior
         }
         if (!empty($existingAccount)) {
             if ($existingAccount->active) {
-                return $user;
+                if ($user->active) {
+                    return $user;
+                } else {
+                    throw new UserNotActiveException([
+                        $existingAccount->provider,
+                        $existingAccount->$user
+                    ]);
+                }
+
             } else {
                 throw new AccountNotActiveException([
                     $existingAccount->provider,
@@ -78,6 +84,7 @@ class SocialBehavior extends Behavior
      *
      * @param array $data Array social user.
      * @param array $options Array option data.
+     * @throws MissingEmailException
      * @return bool|EntityInterface|mixed result of the save operation
      */
     protected function _createSocialUser($data, $options = [])
@@ -86,13 +93,15 @@ class SocialBehavior extends Behavior
         $validateEmail = Hash::get($options, 'validate_email');
         $tokenExpiration = Hash::get($options, 'token_expiration');
         $existingUser = null;
-        if ($useEmail && empty($data->email)) {
+        $email = Hash::get($data, 'email');
+        if ($useEmail && empty($email)) {
             throw new MissingEmailException(__d('Users', 'Email not present'));
         } else {
             $existingUser = $this->_table->find()
-                    ->where([$this->_table->alias() . '.email' => $data->email])
+                    ->where([$this->_table->alias() . '.email' => $email])
                     ->first();
         }
+
         $user = $this->_populateUser($data, $existingUser, $useEmail, $validateEmail, $tokenExpiration);
         $this->_table->isValidateEmail = $validateEmail;
         $result = $this->_table->save($user);
@@ -112,42 +121,45 @@ class SocialBehavior extends Behavior
      */
     protected function _populateUser($data, $existingUser, $useEmail, $validateEmail, $tokenExpiration)
     {
-        $accountData['provider'] = $data->provider;
-        $accountData['username'] = Hash::get((array)$data->info, 'nickname');
-        $accountData['reference'] = $data->uid;
-        $accountData['avatar'] = Hash::get((array)$data->info, 'image');
-        /* @todo make a pull request to Opauth Facebook Strategy because it does not include link on info array */
-        if ($data->provider == SocialAccountsTable::PROVIDER_TWITTER) {
-            $accountData['link'] = Hash::get((array)$data->info, 'urls.twitter');
-        } elseif ($data->provider == SocialAccountsTable::PROVIDER_FACEBOOK) {
-            $accountData['link'] = $this->_getFacebookLink($data->raw);
+        $accountData['provider'] = Hash::get($data, 'provider');
+        $accountData['username'] = Hash::get($data, 'username');
+        $accountData['reference'] = Hash::get($data, 'id');
+        $accountData['avatar'] = Hash::get($data, 'avatar');
+        $accountData['link'] = Hash::get($data, 'link');
+
+        $accountData['avatar'] = str_replace('normal', 'square', $accountData['avatar']);
+        $accountData['description'] = Hash::get($data, 'bio');
+        $accountData['token'] = Hash::get($data, 'credentials.token');
+        $accountData['token_secret'] = Hash::get($data, 'credentials.secret');
+        $expires = Hash::get($data, 'credentials.expires');
+        if (!empty($expires)) {
+            $expiresTime = new DateTime();
+            $accountData['token_expires'] = $expiresTime->setTimestamp($expires)->format('Y-m-d H:i:s');
+        } else {
+            $accountData['token_expires'] = null;
         }
-        $accountData['avatar'] = str_replace('square', 'large', $accountData['avatar']);
-        $accountData['description'] = Hash::get((array)$data->info, 'description');
-        $accountData['token'] = Hash::get((array)$data->credentials, 'token');
-        $accountData['token_secret'] = Hash::get((array)$data->credentials, 'secret');
-        $expires = Hash::get((array)$data->credentials, 'expires');
-        $accountData['token_expires'] = !empty($expires) ? (new DateTime($expires))->format('Y-m-d H:i:s') : null;
-        $accountData['data'] = serialize($data->raw);
+        $accountData['data'] = serialize(Hash::get($data, 'raw'));
         $accountData['active'] = true;
+        $dataValidated = Hash::get($data, 'validated');
 
         if (empty($existingUser)) {
-            $firstName = Hash::get((array)$data->info, 'first_name');
-            $lastName = Hash::get((array)$data->info, 'last_name');
+            $firstName = Hash::get($data, 'first_name');
+            $lastName = Hash::get($data, 'last_name');
             if (!empty($firstName) && !empty($lastName)) {
                 $userData['first_name'] = $firstName;
                 $userData['last_name'] = $lastName;
             } else {
-                $name = explode(' ', $data->name);
+                $name = explode(' ', Hash::get($data, 'full_name'));
                 $userData['first_name'] = Hash::get($name, 0);
                 array_shift($name);
                 $userData['last_name'] = implode(' ', $name);
             }
-            $userData['username'] = Hash::get((array)$data->info, 'nickname');
+            $userData['username'] = Hash::get($data, 'username');
             $username = Hash::get($userData, 'username');
             if (empty($username)) {
-                if (!empty($data->email)) {
-                    $email = explode('@', $data->email);
+                $dataEmail = Hash::get($data, 'email');
+                if (!empty($dataEmail)) {
+                    $email = explode('@', $dataEmail);
                     $userData['username'] = Hash::get($email, 0);
                 } else {
                     $firstName = Hash::get($userData, 'first_name');
@@ -158,22 +170,23 @@ class SocialBehavior extends Behavior
             }
             $userData['username'] = $this->generateUniqueUsername(Hash::get($userData, 'username'));
             if ($useEmail) {
-                $userData['email'] = $data->email;
-                if (!$data->validated) {
+                $userData['email'] = Hash::get($data, 'email');
+                if (empty($dataValidated)) {
                     $accountData['active'] = false;
                 }
             }
+
             $userData['password'] = $this->randomString();
-            $userData['avatar'] = Hash::get((array)$data->info, 'image');
-            $userData['validated'] = $data->validated;
+            $userData['avatar'] = Hash::get($data, 'avatar');
+            $userData['validated'] = !empty($dataValidated);
             $userData['tos_date'] = date("Y-m-d H:i:s");
-            $userData['gender'] = Hash::get($data->raw, 'gender');
-            $userData['timezone'] = Hash::get($data->raw, 'timezone');
+            $userData['gender'] = Hash::get($data, 'gender');
+            //$userData['timezone'] = Hash::get($data, 'timezone');
             $userData['social_accounts'][] = $accountData;
             $user = $this->_table->newEntity($userData, ['associated' => ['SocialAccounts']]);
             $user = $this->_updateActive($user, false, $tokenExpiration);
         } else {
-            if ($useEmail && !$data->validated) {
+            if ($useEmail && empty($dataValidated)) {
                 $accountData['active'] = false;
             }
             $user = $this->_table->patchEntity($existingUser, [
@@ -181,23 +194,6 @@ class SocialBehavior extends Behavior
             ], ['associated' => ['SocialAccounts']]);
         }
         return $user;
-    }
-
-    /**
-     * Create a link for facebook profile
-     *
-     * @param array $raw raw data array returned by Facebook
-     * @return string url to facebook profile
-     */
-    protected function _getFacebookLink($raw = [])
-    {
-        $link = Hash::get((array)$raw, 'link');
-        if (!empty($link)) {
-            return $link;
-        }
-
-        $id = Hash::get((array)$raw, 'id');
-        return self::FACEBOOK_SCOPED_ID_URL . $id;
     }
 
     /**
