@@ -10,6 +10,7 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 use Cake\Core\Configure;
+use Cake\Routing\Router;
 
 $config = [
     'Users' => [
@@ -107,19 +108,27 @@ $config = [
             'facebook' => [
                 'className' => 'League\OAuth2\Client\Provider\Facebook',
                 'options' => [
-                    'graphApiVersion' => 'v2.5'
+                    'graphApiVersion' => 'v2.5',
+                    'redirectUri' =>  Router::url('/auth/facebook', true)
                 ]
             ],
             'linkedIn' => [
                 'className' => 'League\OAuth2\Client\Provider\LinkedIn',
+                'options' => [
+                    'redirectUri' => Router::url('/auth/linkedIn', true)
+                ]
             ],
             'instagram' => [
                 'className' => 'League\OAuth2\Client\Provider\Instagram',
+                'options' => [
+                    'redirectUri' => Router::url('/auth/instagram', true)
+                ]
             ],
             'google' => [
                 'className' => 'League\OAuth2\Client\Provider\Google',
                 'options' => [
                     'userFields' => ['url', 'aboutMe'],
+                    'redirectUri' => Router::url('/auth/google', true)
                 ]
             ],
         ],
