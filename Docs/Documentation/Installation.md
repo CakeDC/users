@@ -11,7 +11,6 @@ composer require cakedc/users
 if you want to use social login features...
 
 ```
-composer require Muffin/OAuth2:*
 composer require league/oauth2-facebook:*
 composer require league/oauth2-instagram:*
 composer require league/oauth2-google:*
