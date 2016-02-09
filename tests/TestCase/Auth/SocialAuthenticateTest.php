@@ -60,7 +60,7 @@ class SocialAuthenticateTest extends TestCase
 
         $this->SocialAuthenticate = $this->getMockBuilder('CakeDC\Users\Auth\SocialAuthenticate')
             ->setMethods(['_authenticate', '_getProviderName', '_mapUser', '_socialLogin', 'dispatchEvent'])
-            ->disableOriginalConstructor()
+            ->setConstructorArgs([$this->Registry])
             ->getMock();
     }
 
@@ -161,7 +161,7 @@ class SocialAuthenticateTest extends TestCase
         $user = ['username' => 'username', 'email' => 'myemail@test.com'];
         $this->SocialAuthenticate = $this->getMockBuilder('CakeDC\Users\Auth\SocialAuthenticate')
             ->setMethods(['_authenticate', '_getProviderName', '_mapUser', '_touch'])
-            ->disableOriginalConstructor()
+            ->setConstructorArgs([$this->Registry])
             ->getMock();
 
         $session = $this->getMock('Cake\Network\Session', ['read', 'delete']);
@@ -375,8 +375,9 @@ class SocialAuthenticateTest extends TestCase
     public function testSocialLogin()
     {
         $this->SocialAuthenticate = $this->getMockBuilder('CakeDC\Users\Auth\SocialAuthenticate')
-            ->disableOriginalConstructor()
+            ->setConstructorArgs([$this->Registry])
             ->getMock();
+
         $reflectedClass = new ReflectionClass($this->SocialAuthenticate);
         $socialLogin = $reflectedClass->getMethod('_socialLogin');
         $socialLogin->setAccessible(true);
@@ -398,7 +399,7 @@ class SocialAuthenticateTest extends TestCase
     {
         $data['token'] = $this->Token;
         $this->SocialAuthenticate = $this->getMockBuilder('CakeDC\Users\Auth\SocialAuthenticate')
-            ->disableOriginalConstructor()
+            ->setConstructorArgs([$this->Registry])
             ->getMock();
 
         $reflectedClass = new ReflectionClass($this->SocialAuthenticate);
@@ -470,7 +471,7 @@ class SocialAuthenticateTest extends TestCase
     {
         $data = [];
         $this->SocialAuthenticate = $this->getMockBuilder('CakeDC\Users\Auth\SocialAuthenticate')
-            ->disableOriginalConstructor()
+            ->setConstructorArgs([$this->Registry])
             ->getMock();
 
         $reflectedClass = new ReflectionClass($this->SocialAuthenticate);
