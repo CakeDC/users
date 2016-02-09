@@ -19,6 +19,7 @@ use Cake\Log\LogTrait;
 use Cake\Network\Request;
 use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
+use CakeDC\Users\Auth\Rules\Rule;
 use Psr\Log\LogLevel;
 
 /**
@@ -213,8 +214,8 @@ class SimpleRbacAuthorize extends BaseAuthorize
                 return true;
             } elseif (is_callable($allowed)) {
                 return (bool)call_user_func($allowed, $user, $role, $request);
-            } elseif ($allowed instanceof \CakeDC\Users\Auth\Rules\AbstractRule) {
-                return $allowed->allowed($user, $role, $request);
+            } elseif ($allowed instanceof Rule) {
+                return (bool)$allowed->allowed($user, $role, $request);
             } else {
                 return (bool)$allowed;
             }
