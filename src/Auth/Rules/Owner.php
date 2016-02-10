@@ -36,12 +36,19 @@ class Owner extends AbstractRule
         'tableKeyType' => 'params',
         // request->params key path to retrieve the owned table id
         'tableIdParamsKey' => 'pass.0',
-        /* define table to use or pick it from controller name defaults if null
+        /*
+         * define table to use or pick it from controller name defaults if null
          * if null, table used will be based on current controller's default table
          * if string, TableRegistry::get will be used
          * if Table, the table object will be used
          */
         'table' => null,
+        /*
+         * define the table id to be used to match the row id, this is useful when checking belongsToMany associations
+         * Example: If checking ownership in a PostsUsers table, we should use 'id' => 'post_id'
+         * If value is null, we'll use the $table->primaryKey()
+         */
+        'id' => null,
         'conditions' => [],
     ];
 
@@ -62,8 +69,12 @@ class Owner extends AbstractRule
         } catch (Exception $ex) {
             throw new OutOfBoundsException(__d('Users', 'Missing column {0} in table {1} while checking ownership permissions for user {2}', $this->config('ownerForeignKey'), $table->alias(), $userId));
         }
+        $idColumn = $this->config('id');
+        if (empty($idColumn)) {
+            $idColumn = $table->primaryKey();
+        }
         $conditions = array_merge([
-            $table->primaryKey() => $id,
+            $idColumn => $id,
             $this->config('ownerForeignKey') => $userId
         ], $this->config('conditions'));
 

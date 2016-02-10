@@ -225,7 +225,8 @@ class OwnerTest extends TestCase
     public function testAllowedBelongsToMany()
     {
         $this->Owner = new Owner([
-            'table' => 'PostsUsers'
+            'table' => 'PostsUsers',
+            'id' => 'post_id',
         ]);
         $this->request->params = [
             'plugin' => 'CakeDC/Users',
@@ -246,7 +247,8 @@ class OwnerTest extends TestCase
     public function testNotAllowedBelongsToMany()
     {
         $this->Owner = new Owner([
-            'table' => 'PostsUsers'
+            'table' => 'PostsUsers',
+            'id' => 'post_id',
         ]);
         $this->request->params = [
             'plugin' => 'CakeDC/Users',

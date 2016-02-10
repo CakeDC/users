@@ -59,7 +59,7 @@ Permission rules syntax
     'plugin' => 'OPTIONAL_NAME_OF_THE_PLUGIN_OR_[]_OR_*_DEFAULT_NULL',
     'controller' => 'REQUIRED_NAME_OF_THE_CONTROLLER_OR_[]_OR_*'
     'action' => 'REQUIRED_NAME_OF_ACTION_OR_[]_OR_*',
-    'allowed' => 'OPTIONAL_BOOLEAN_OR_CALLABLE_DEFAULT_TRUE'
+    'allowed' => 'OPTIONAL_BOOLEAN_OR_CALLABLE_OR_INSTANCE_OF_RULE_DEFAULT_TRUE'
 ]
 ```
 * If no rule allowed = true is matched for a given user role and url, default return value will be false
@@ -85,3 +85,13 @@ Example *ownership* callback, to allow users to edit their own Posts:
         return false;
     }
 ```
+
+Permission Rules
+----------------
+You could use an instance of the \CakeDC\Users\Auth\Rules\Rule interface to reuse your custom rules
+Examples:
+```php
+'allowed' => new Owner() //will pick by default the post id from the first pass param
+```
+Check the [Owner Rule](OwnerRule.md) documentation for more details
+
