@@ -73,6 +73,8 @@ Cake\Core\Configure::write('Session', [
     'defaults' => 'php'
 ]);
 
+//init router
+\Cake\Routing\Router::reload();
 
 \Cake\Core\Plugin::load('CakeDC/Users', [
     'path' => dirname(dirname(__FILE__)) . DS,
