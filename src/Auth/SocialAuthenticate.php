@@ -122,8 +122,8 @@ class SocialAuthenticate extends BaseAuthenticate
      * @param mixed $value Value.
      * @param string $key Key.
      * @return void
-     * @throws \Muffin\OAuth2\Auth\Exception\InvalidProviderException
-     * @throws \Muffin\OAuth2\Auth\Exception\InvalidSettingsException
+     * @throws CakeDC\Users\Auth\Exception\InvalidProviderException
+     * @throws CakeDC\Users\Auth\Exception\InvalidSettingsException
      */
     protected function _validateConfig(&$value, $key)
     {
@@ -132,6 +132,16 @@ class SocialAuthenticate extends BaseAuthenticate
         } elseif (!is_array($value) && in_array($key, ['options', 'collaborators'])) {
             throw new InvalidSettingsException([$key]);
         }
+    }
+
+    /**
+     * Get the controller associated with the collection.
+     *
+     * @return Controller instance
+     */
+    protected function _getController()
+    {
+        $this->_registry->getController();
     }
 
     /**
@@ -306,10 +316,9 @@ class SocialAuthenticate extends BaseAuthenticate
             $args = ['exception' => $exception, 'rawData' => $data];
             $event = new Event(UsersAuthComponent::EVENT_FAILED_SOCIAL_LOGIN, $args);
             $event = EventManager::instance()->dispatch($event);
-            if (method_exists($this->_registry->getController(), 'failedSocialLogin')) {
-                $this->_registry->getController()->failedSocialLogin($exception, $data, true);
+            if (method_exists($this->_getController(), 'failedSocialLogin')) {
+                $this->_getController()->failedSocialLogin($exception, $data, true);
             }
-
             return $event->result;
         }
 
@@ -358,7 +367,10 @@ class SocialAuthenticate extends BaseAuthenticate
         if (!$result = $this->_touch($user)) {
             return false;
         }
-        $request->session()->delete(Configure::read('Users.Key.Session.social'));
+
+        if ($request->session()->check(Configure::read('Users.Key.Session.social'))) {
+            $request->session()->delete(Configure::read('Users.Key.Session.social'));
+        }
         return $result;
     }
 

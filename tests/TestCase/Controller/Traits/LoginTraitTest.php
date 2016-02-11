@@ -40,6 +40,12 @@ class LoginTraitTest extends BaseTraitTest
         $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\Traits\LoginTrait')
             ->setMethods(['dispatchEvent', 'redirect'])
             ->getMockForTrait();
+
+        $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
+            ->setMethods(['config'])
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->Trait->request = $request;
     }
 
@@ -64,7 +70,7 @@ class LoginTraitTest extends BaseTraitTest
         $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
             ->setMethods(['is'])
             ->getMock();
-        $this->Trait->request->expects($this->once())
+        $this->Trait->request->expects($this->any())
             ->method('is')
             ->with('post')
             ->will($this->returnValue(true));
@@ -102,7 +108,7 @@ class LoginTraitTest extends BaseTraitTest
         $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
             ->setMethods(['is'])
             ->getMock();
-        $this->Trait->request->expects($this->once())
+        $this->Trait->request->expects($this->any())
             ->method('is')
             ->with('post')
             ->will($this->returnValue(true));
@@ -145,12 +151,6 @@ class LoginTraitTest extends BaseTraitTest
             ->setMethods(['user', 'identify', 'setUser', 'redirectUrl'])
             ->disableOriginalConstructor()
             ->getMock();
-
-        $this->Trait->expects($this->once())
-            ->method('redirect')
-            ->with([
-                'action' => 'social-email'
-            ]);
 
         $this->Trait->login();
     }
@@ -319,6 +319,14 @@ class LoginTraitTest extends BaseTraitTest
         $this->Trait->expects($this->once())
             ->method('redirect')
             ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
+
+        $this->Trait->Auth->expects($this->at(0))
+            ->method('config')
+            ->with('authError', 'Your user has not been validated yet. Please check your inbox for instructions');
+
+        $this->Trait->Auth->expects($this->at(1))
+            ->method('config')
+            ->with('flash.params', ['class' => 'success']);
 
         $this->Trait->failedSocialLogin($event->data['exception'], $event->data['rawData'], true);
     }
