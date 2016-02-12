@@ -20,6 +20,9 @@ $root = $findRoot(__FILE__);
 unset($findRoot);
 chdir($root);
 
+if (!defined('DS')) {
+    define('DS', DIRECTORY_SEPARATOR);
+}
 define('ROOT', $root);
 define('APP_DIR', 'App');
 define('WEBROOT_DIR', 'webroot');
