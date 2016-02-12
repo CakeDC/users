@@ -56,7 +56,7 @@ Plugin::load('CakeDC/Users', ['routes' => true, 'bootstrap' => true]);
 Configure::write('Users.Social.login', true); //to enable social login
 ```
 
-Then in your config/users.php
+Then in your config/users.php if you are using social login features
 ```
 return [
     'OAuth.providers.facebook.options.clientId' => 'YOUR APP ID',
@@ -67,7 +67,6 @@ return [
 ];
 
 ```
-
 For more details, check the Configuration doc page
 
 Load the UsersAuth Component
