@@ -1,6 +1,21 @@
 Changelog
 =========
 
+Release 2.1.3
+-------------
+
+https://github.com/CakeDC/users/tree/2.1.3
+
+* Fixed unit tests for compatibility with CakePHP 2.7
+
+Release 2.1.2
+-------------
+
+https://github.com/CakeDC/users/tree/2.1.2
+
+* Minor improvements
+* New translations (german and portuguese)
+
 Release 2.1.1
 -------------
 

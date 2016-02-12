@@ -1,52 +1,85 @@
 Installation
 ============
 
-To install the plugin, place the files in a directory labelled "Users/" in your "app/Plugin/" directory.
-
-Then, include the following line in your `app/Config/bootstrap.php` to load the plugin in your application.
-
-```
-CakePlugin::load('Users');
-```
-
-Git Submodule
--------------
-
-If you're using git for version control, you may want to add the **Users** plugin as a submodule on your repository. To do so, run the following command from the base of your repository:
-
-```
-git submodule add git@github.com:CakeDC/users.git app/Plugin/Users
-```
-
-After doing so, you will see the submodule in your changes pending, plus the file ".gitmodules". Simply commit and push to your repository.
-
-To initialize the submodule(s) run the following command:
-
-```
-git submodule update --init --recursive
-```
-
-To retreive the latest updates to the plugin, assuming you're using the "master" branch, go to "app/Plugin/Users" and run the following command:
-
-```
-git pull origin master
-```
-
-If you're using another branch, just change "master" for the branch you are currently using.
-
-If any updates are added, go back to the base of your own repository, commit and push your changes. This will update your repository to point to the latest updates to the plugin.
-
 Composer
---------
+------
 
-The plugin also provides a "composer.json" file, to easily use the plugin through the Composer dependency manager.
+```
+composer require cakedc/users
+```
+
+if you want to use social login features...
+
+```
+composer require Muffin/OAuth2:*
+composer require league/oauth2-facebook:*
+composer require league/oauth2-instagram:*
+composer require league/oauth2-google:*
+composer require league/oauth2-linkedin:*
+```
+
+NOTE: you'll need to enable social login in your bootstrap.php file if you want to use it, social
+login is disabled by default. Check the [Configuration](Configuration.md) page for more details.
+
+```
+Configure::write('Users.Social.login', true); //to enable social login
+```
 
 Creating Required Tables
 ------------------------
-You can create database tables using either the schema shell or the [CakeDC Migrations plugin](http://github.com/CakeDC/migrations):
+If you want to use the Users tables to store your users and social accounts:
 
-	./Console/cake schema create users --plugin Users
+```
+bin/cake migrations migrate -p CakeDC/Users
+```
 
-or
+Note you don't need to use the provided tables, you could customize the table names, fields etc in your
+application and then use the plugin configuration to use your own tables instead. Please refer to the [Extending the Plugin](Extending-the-Plugin.md)
+section to check all the customization options
 
-	./Console/cake Migrations.migration run all --plugin Users
+Load the Plugin
+-----------
+
+Ensure the Users Plugin is loaded in your config/bootstrap.php file
+
+```
+Plugin::load('CakeDC/Users', ['routes' => true, 'bootstrap' => true]);
+```
+
+Customization
+----------
+
+config/bootstrap.php
+```
+Configure::write('Users.config', ['users']);
+Plugin::load('CakeDC/Users', ['routes' => true, 'bootstrap' => true]);
+Configure::write('Users.Social.login', true); //to enable social login
+```
+
+Then in your config/users.php
+```
+return [
+    'OAuth.providers.facebook.options.clientId' => 'YOUR APP ID',
+    'OAuth.providers.facebook.options.clientSecret' => 'YOUR APP SECRET',
+    'OAuth.providers.instagram.options.clientId' => 'YOUR APP ID',
+    'OAuth.providers.instagram.options.clientSecret' => 'YOUR APP SECRET',
+    //etc
+];
+
+```
+
+For more details, check the Configuration doc page
+
+Load the UsersAuth Component
+---------------------
+
+Load the Component in your src/Controller/AppController.php, and use the passed Component configuration to customize the Users Plugin:
+
+```
+    public function initialize()
+    {
+        parent::initialize();
+        $this->loadComponent('Flash');
+        $this->loadComponent('CakeDC/Users.UsersAuth');
+    }
+```

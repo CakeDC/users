@@ -1,65 +1,148 @@
 Extending the Plugin
 ====================
 
-Extending the controller
-------------------------
-
-Declare the controller class. It is important to set the ```$name``` property here to make sure the controller initializes everything correct. If not setting the name the name setting is inherited and won't match the new controllers name.
-
-```php
-App::uses('UsersController', 'Users.Controller');
-class AppUsersController extends UsersController {
-	public $name = 'AppUsers';
-}
-```
-
-In the case you want to extend also the user model it's required to set the right user class in the beforeFilter() because the controller will use the inherited model which would be Users.User.
-
-```php
-public function beforeFilter() {
-	parent::beforeFilter();
-	$this->User = ClassRegistry::init('AppUser');
-	$this->set('model', 'AppUser');
-}
-```
-
-You can overwrite the ```Controller::render()``` method to fall back to the plugin views in the case you want to use some of them
-
-```php
-public function render($view = null, $layout = null) {
-	if (is_null($view)) {
-		$view = $this->action;
-	}
-	$viewPath = substr(get_class($this), 0, strlen(get_class($this)) - 10);
-	if (!file_exists(APP . 'View' . DS . $viewPath . DS . $view . '.ctp')) {
-		$this->plugin = 'Users';
-	} else {
-		$this->viewPath = $viewPath;
-	}
-	return parent::render($view, $layout);
-}
-```
-
-Note: Depending on the CakePHP version you are using, you might need to bring a copy of the Views used in the plugin to your AppUsers view directory
-
-Extending the model
+Extending the Model (Table/Entity)
 -------------------
 
-Declare the model. Same as in the controller, set the ```$name``` property and set the ```$useTable``` property to ```users```.
+Create a new Table and Entity in your app, matching the table you want to use for storing the
+users data. Check the initial users migration to know the default columns expected in the table.
+If your column names doesn't match the columns in your current table, you could use the Entity to
+match the colums using accessors & mutators as described here http://book.cakephp.org/3.0/en/orm/entities.html#accessors-mutators
+
+Example: we are going to use a custom table in our application ```my_users```
+* Create a new Table under src/Model/Table/MyUsersTable.php
 
 ```php
-App::uses('User', 'Users.Model');
-class AppUser extends User {
-	public $name = 'AppUser';
-	public $useTable = 'users';
+namespace App\Model\Table;
+
+use CakeDC\Users\Model\Table\UsersTable;
+
+/**
+ * Users Model
+ */
+class MyUsersTable extends UsersTable
+{
 }
 ```
 
-It's important to override the ```AppUser::$useTable``` property with the ```users``` table. It won't use the correct table otherwise.
+* Create a new Entity under src/Model/Entity/MyUser.php
 
-You can override / extend all methods or properties like validation rules to suit your needs.
+```php
+namespace App\Model\Entity;
 
-Routing to preserve the /users URL when extending the plugin
-------------------------------------------------------------
+use CakeDC\Users\Model\Entity\User;
 
-See the [Routing](Routing.md) documentation.
+class MyUser extends User
+{
+}
+```
+
+* Pass the new table configuration to Users Plugin Configuration
+
+config/bootstrap.php
+```
+Configure::write('Users.config', ['users']);
+Plugin::load('Users', ['routes' => true, 'bootstrap' => true]);
+```
+
+Then in your config/users.php
+```
+return [
+    'Users.table' => 'MyUsers',
+];
+```
+
+Now the Users Plugin will use MyUsers Table and Entity to register and login user in. Use the
+Entity to match your own columns in case they don't match the default column names:
+
+```sql
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` char(36) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `password` varchar(255) NOT NULL,
+  `first_name` varchar(50) DEFAULT NULL,
+  `last_name` varchar(50) DEFAULT NULL,
+  `token` varchar(255) DEFAULT NULL,
+  `token_expires` datetime DEFAULT NULL,
+  `api_token` varchar(255) DEFAULT NULL,
+  `activation_date` datetime DEFAULT NULL,
+  `tos_date` datetime DEFAULT NULL,
+  `active` int(1) NOT NULL DEFAULT '0',
+  `is_superuser` int(1) NOT NULL DEFAULT '0',
+  `role` varchar(255) DEFAULT 'user',
+  `created` datetime NOT NULL,
+  `modified` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+```
+
+Extending the Controller
+-------------------
+
+You want to use one of your controllers to handle all the users features in your app, and keep the
+login/register/etc actions from Users Plugin,
+
+```php
+<?php
+namespace App\Controller;
+
+use App\Controller\AppController;
+use App\Model\Table\MyUsersTable;
+use Cake\Event\Event;
+use CakeDC\Users\Controller\Component\UsersAuthComponent;
+use CakeDC\Users\Controller\Traits\LoginTrait;
+use CakeDC\Users\Controller\Traits\RegisterTrait;
+
+class MyUsersController extends AppController
+{
+    use LoginTrait;
+    use RegisterTrait;
+
+//add your new actions, override, etc here
+}
+```
+
+Note you'll need to **copy the Plugin templates** you need into your project src/Template/MyUsers/[action].ctp
+
+Extending the Features in your controller
+-----------------------------
+
+You could use a new Trait. For example, you want to add an 'impersonate' feature
+
+```php
+<?php
+namespace App\Controller\Traits;
+
+use Cake\Datasource\Exception\RecordNotFoundException;
+use Cake\Network\Exception\NotFoundException;
+
+/**
+ * Impersonate Trait
+ */
+trait ImpersonateTrait
+{
+    /**
+     * Adding a new feature as an example: Impersonate another user
+     *
+     * @param type $userId
+     */
+    public function impersonate($userId)
+    {
+        $user = $this->getUsersTable()->find()
+                ->where(['id' => $userId])
+                ->hydrate(false)
+                ->first();
+        $this->Auth->setUser($user);
+        return $this->redirect('/');
+    }
+}
+```
+Updating the Templates
+-------------------
+
+Use the standard CakePHP conventions to override Plugin views using your application views
+http://book.cakephp.org/3.0/en/plugins.html#overriding-plugin-templates-from-inside-your-application
+
+
+
