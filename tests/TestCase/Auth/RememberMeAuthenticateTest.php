@@ -74,11 +74,6 @@ class RememberMeAuthenticateTest extends TestCase
                 ->getMock();
         $mockCookie
                 ->expects($this->once())
-                ->method('check')
-                ->with('remember_me')
-                ->will($this->returnValue(true));
-        $mockCookie
-                ->expects($this->once())
                 ->method('read')
                 ->with('remember_me')
                 ->will($this->returnValue([
@@ -105,11 +100,6 @@ class RememberMeAuthenticateTest extends TestCase
                 ->disableOriginalConstructor()
                 ->setMethods(['check', 'read'])
                 ->getMock();
-        $mockCookie
-                ->expects($this->once())
-                ->method('check')
-                ->with('remember_me')
-                ->will($this->returnValue(true));
         $mockCookie
                 ->expects($this->once())
                 ->method('read')
@@ -142,11 +132,6 @@ class RememberMeAuthenticateTest extends TestCase
                 ->getMock();
         $mockCookie
                 ->expects($this->once())
-                ->method('check')
-                ->with('remember_me')
-                ->will($this->returnValue(true));
-        $mockCookie
-                ->expects($this->once())
                 ->method('read')
                 ->with('remember_me')
                 ->will($this->returnValue([
@@ -175,12 +160,9 @@ class RememberMeAuthenticateTest extends TestCase
                 ->getMock();
         $mockCookie
                 ->expects($this->once())
-                ->method('check')
+                ->method('read')
                 ->with('remember_me')
-                ->will($this->returnValue(false));
-        $mockCookie
-                ->expects($this->never())
-                ->method('read');
+                ->will($this->returnValue(null));
 
         $registry = new ComponentRegistry($this->controller);
         $registry->set('Cookie', $mockCookie);
