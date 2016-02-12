@@ -64,10 +64,11 @@ class UsersMailer extends Mailer
      *
      * @param EntityInterface $user User entity
      * @param EntityInterface $socialAccount SocialAccount entity
+     * @param string $template string, note the first_name of the user will be prepended if exists
      *
      * @return array email send result
      */
-    protected function socialAccountValidation(EntityInterface $user, EntityInterface $socialAccount)
+    protected function socialAccountValidation(EntityInterface $user, EntityInterface $socialAccount, $template = 'CakeDC/Users.social_account_validation')
     {
         $firstName = isset($user['first_name'])? $user['first_name'] . ', ' : '';
         //note: we control the space after the username in the previous line
@@ -75,6 +76,7 @@ class UsersMailer extends Mailer
         $this
             ->to($user['email'])
             ->subject($subject)
-            ->viewVars(compact('user', 'socialAccount'));
+            ->viewVars(compact('user', 'socialAccount'))
+            ->template($template);
     }
 }

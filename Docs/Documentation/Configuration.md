@@ -21,23 +21,28 @@ Then in your config/users.php
             'className' => 'League\OAuth2\Client\Provider\Facebook',
             'options' => [
                 'graphApiVersion' => 'v2.5'
+                'redirectUri' => Router::url('/auth/facebook', true)
             ]
-            'redirectUri' => Router::url('/auth/facebook', true)
         ],
         'linkedIn' => [
             'className' => 'League\OAuth2\Client\Provider\LinkedIn',
-            'redirectUri' => Router::url('/auth/linkedIn', true)
+            'options' => [
+                'redirectUri' => Router::url('/auth/linkedIn', true)
+            ]
         ],
         'instagram' => [
             'className' => 'League\OAuth2\Client\Provider\Instagram',
-            'redirectUri' => Router::url('/auth/instagram', true)
+            'options' => [
+                'redirectUri' => Router::url('/auth/instagram', true)
+            ]
         ],
         'google' => [
             'className' => 'League\OAuth2\Client\Provider\Google',
             'options' => [
                 'userFields' => ['url', 'aboutMe'],
+                'redirectUri' => Router::url('/auth/google', true)
             ]
-            'redirectUri' => Router::url('/auth/google', true)
+
         ]
         //etc
     ],
