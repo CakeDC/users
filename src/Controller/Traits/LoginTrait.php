@@ -99,7 +99,6 @@ trait LoginTrait
                     $this->Flash->success(__d('Users', 'Please enter your email'));
                 }
                 $this->request->session()->write(Configure::read('Users.Key.Session.social'), $data);
-                //$flash = false;
                 return $this->redirect(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'socialEmail']);
             }
             if ($exception instanceof UserNotActiveException) {
@@ -108,13 +107,12 @@ trait LoginTrait
                 $msg = __d('Users', 'Your social account has not been validated yet. Please check your inbox for instructions');
             }
         }
-        /*if ($flash) {
+        if ($flash) {
             $this->Auth->config('authError', $msg);
             $this->Auth->config('flash.params', ['class' => 'success']);
             $this->request->session()->delete(Configure::read('Users.Key.Session.social'));
-            debug('delete 1'); die;
             $this->Flash->success(__d('Users', $msg));
-        }*/
+        }
         return $this->redirect(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
     }
 
