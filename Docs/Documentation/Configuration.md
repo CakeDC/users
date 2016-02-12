@@ -16,13 +16,14 @@ Configure::write('Users.Social.login', true); //to enable social login
 Then in your config/users.php
 
 ```
-'Opauth.providers' => [
+'OAuth.providers' => [
         'facebook' => [
             'className' => 'League\OAuth2\Client\Provider\Facebook',
             'options' => [
-                'graphApiVersion' => 'v2.5'
-            ]
-            'redirectUri' => Router::url('/auth/facebook', true)
+                'graphApiVersion' => 'v2.5',
+                'redirectUri' => Router::url('/auth/facebook', true)
+            ],
+           
         ],
         'linkedIn' => [
             'className' => 'League\OAuth2\Client\Provider\LinkedIn',
@@ -36,8 +37,8 @@ Then in your config/users.php
             'className' => 'League\OAuth2\Client\Provider\Google',
             'options' => [
                 'userFields' => ['url', 'aboutMe'],
+                'redirectUri' => Router::url('/auth/google', true)
             ]
-            'redirectUri' => Router::url('/auth/google', true)
         ]
         //etc
     ],
