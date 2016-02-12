@@ -1,19 +1,20 @@
 Home
 ====
 
-The **Users** plugin is for allowing users to register and login manage their profile. It also allows admins to manage the users.
+IMPORANT: Current status is **BETA**. We are still working on improving the unit test coverage and docs
+Plugin is usable now if you want to download and take a look. PRs and Issues welcome!
+
+The **Users** Plugin allow users to register and login, manage their profile, etc. It also allows admins to manage the users.
 
 The plugin is thought as a base to extend your app specific users controller and model from.
 
-That it works out of the box doesn't mean it is thought to be used exactly like it is but to provide you a kick start. You will have to extend the plugin on app level to customize it. Read the instructions carefully.
+That it works out of the box doesn't mean it is thought to be used exactly like it is but to provide you a kick start.
 
 Requirements
 ------------
 
-* CakePHP 2.5+
-* PHP 5.2.8+
-* [CakeDC Utils plugin](http://github.com/CakeDC/utils) (Optional but recommended)
-* [CakeDC Search plugin](http://github.com/CakeDC/search) (Optional but recommended)
+* CakePHP 3.1.*
+* PHP 5.4.16+
 
 Documentation
 -------------
@@ -21,9 +22,9 @@ Documentation
 * [Overview](Documentation/Overview.md)
 * [Installation](Documentation/Installation.md)
 * [Configuration](Documentation/Configuration.md)
-* [Routing](Documentation/Routing.md)
-* [Auth in the Users Plugin](Documentation/Auth-in-the-Users-Plugin.md)
-* [User Details (Legacy)](Documentation/User-Details.md)
+* [SimpleRbacAuthorize](Documentation/SimpleRbacAuthorize.md)
+* [SuperuserAuthorize](Documentation/SuperuserAuthorize.md)
+* [SocialAuthenticate](Documentation/SocialAuthenticate.md)
+* [UserHelper](Documentation/UserHelper.md)
 * [Events](Documentation/Events.md)
-* [Remember Me Component](Documentation/Remember-Me-Component.md)
 * [Extending the Plugin](Documentation/Extending-the-Plugin.md)
