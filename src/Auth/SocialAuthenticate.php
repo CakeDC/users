@@ -141,7 +141,7 @@ class SocialAuthenticate extends BaseAuthenticate
      */
     protected function _getController()
     {
-        $this->_registry->getController();
+        return $this->_registry->getController();
     }
 
     /**
