@@ -21,7 +21,7 @@ Then in your config/users.php
             'className' => 'League\OAuth2\Client\Provider\Facebook',
             'options' => [
                 'graphApiVersion' => 'v2.5'
-            ]
+            ],
             'redirectUri' => Router::url('/auth/facebook', true)
         ],
         'linkedIn' => [
@@ -36,7 +36,7 @@ Then in your config/users.php
             'className' => 'League\OAuth2\Client\Provider\Google',
             'options' => [
                 'userFields' => ['url', 'aboutMe'],
-            ]
+            ],
             'redirectUri' => Router::url('/auth/google', true)
         ]
         //etc
