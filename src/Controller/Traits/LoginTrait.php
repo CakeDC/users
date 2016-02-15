@@ -153,7 +153,7 @@ trait LoginTrait
 
         if (!$this->request->is('post') && !$socialLogin) {
             if ($this->Auth->user()) {
-                $msg = __d('Users', 'Your are already logged in');
+                $msg = __d('Users', 'You are already logged in');
                 $this->Flash->error($msg);
                 return $this->redirect($this->referer());
             }
