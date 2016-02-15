@@ -108,6 +108,7 @@ abstract class AbstractMapper
             'expires' => is_array($token) ? Hash::get($token, 'expires') : $token->getExpires(),
         ];
         $result['raw'] = $this->_rawData;
+
         return $result;
     }
 }

@@ -8,6 +8,7 @@
  * @copyright Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
+use Cake\Core\Configure;
 ?>
 <div class="users form large-10 medium-9 columns">
     <?= $this->Form->create($user); ?>
@@ -20,7 +21,9 @@
         echo $this->Form->input('password_confirm', ['type' => 'password']);
         echo $this->Form->input('first_name');
         echo $this->Form->input('last_name');
-        echo $this->Form->input('tos', ['type' => 'checkbox', 'label' => __d('Users', 'Accept TOS conditions?'), 'required' => true]);
+        if (Configure::read('Users.Tos.required')) {
+            echo $this->Form->input('tos', ['type' => 'checkbox', 'label' => __d('Users', 'Accept TOS conditions?'), 'required' => true]);
+        }
         echo $this->User->addReCaptcha();
         ?>
     </fieldset>

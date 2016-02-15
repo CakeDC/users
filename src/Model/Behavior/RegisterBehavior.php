@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Model\Behavior;
 
+use CakeDC\Users\Email\EmailSender;
 use CakeDC\Users\Exception\TokenExpiredException;
 use CakeDC\Users\Exception\UserAlreadyActiveException;
 use CakeDC\Users\Exception\UserNotFoundException;
@@ -39,6 +40,7 @@ class RegisterBehavior extends Behavior
         parent::initialize($config);
         $this->validateEmail = (bool)Configure::read('Users.Email.validate');
         $this->useTos = (bool)Configure::read('Users.Tos.required');
+        $this->Email = new EmailSender();
     }
 
     /**
@@ -62,7 +64,7 @@ class RegisterBehavior extends Behavior
         $this->_table->isValidateEmail = $validateEmail;
         $userSaved = $this->_table->save($user);
         if ($userSaved && $validateEmail) {
-            $this->_sendEmail($user, __d('Users', 'Your account validation link'), $emailClass);
+            $this->Email->sendValidationEmail($user, $emailClass);
         }
         return $userSaved;
     }

@@ -89,15 +89,26 @@ class UserHelper extends Helper
      */
     public function link($title, $url = null, array $options = [])
     {
-        $event = new Event(UsersAuthComponent::EVENT_IS_AUTHORIZED, $this, ['url' => $url]);
-        $result = $this->_View->eventManager()->dispatch($event);
-        if ($result->result) {
+        if ($this->isAuthorized($url)) {
             $linkOptions = $options;
             unset($linkOptions['before'], $linkOptions['after']);
             return Hash::get($options, 'before') . $this->Html->link($title, $url, $linkOptions) . Hash::get($options, 'after');
         }
 
         return false;
+    }
+
+    /**
+     * Retunrs true if the target url is authorized for the logged in user
+     *
+     * @param type $url url that the user is making request.
+     * @return bool
+     */
+    public function isAuthorized($url = null)
+    {
+        $event = new Event(UsersAuthComponent::EVENT_IS_AUTHORIZED, $this, ['url' => $url]);
+        $result = $this->_View->eventManager()->dispatch($event);
+        return $result->result;
     }
 
     /**
@@ -136,7 +147,9 @@ class UserHelper extends Helper
         if (!Configure::read('Users.Registration.reCaptcha')) {
             return false;
         }
-
+        if (!Configure::read('reCaptcha.key')) {
+            return $this->Html->tag('p', __d('Users', 'reCaptcha is not configured! Please configure reCaptcha.key or set Users.Registration.reCaptcha to false'));
+        }
         $this->Form->unlockField('g-recaptcha-response');
         return $this->Html->tag('div', '', [
             'class' => 'g-recaptcha',

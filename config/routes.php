@@ -10,19 +10,14 @@
  */
 use Cake\Core\Configure;
 use Cake\Routing\Router;
+
 Router::plugin('CakeDC/Users', ['path' => '/users'], function ($routes) {
         $routes->fallbacks('DashedRoute');
     });
-$oauthPath = Configure::read('OAuth.path');
-if (is_array($oauthPath)) {
-    Router::scope('/auth', function ($routes) use ($oauthPath) {
-            $routes->connect(
-                '/:provider',
-                $oauthPath,
-                ['provider' => implode('|', array_keys(Configure::read('OAuth.providers')))]
-            );
-        });
-}
+
+//if (!Configure::check('OAuth.path')) {
+//    Configure::load('CakeDC/Users.users');
+//}
 Router::connect('/auth/twitter', [
         'plugin' => 'CakeDC/Users',
         'controller' => 'Users',
