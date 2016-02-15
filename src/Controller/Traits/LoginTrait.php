@@ -37,7 +37,6 @@ trait LoginTrait
     public function twitterLogin()
     {
         $this->autoRender = false;
-
         $server = new Twitter([
             'identifier' => Configure::read('OAuth.providers.twitter.options.clientId'),
             'secret' => Configure::read('OAuth.providers.twitter.options.clientSecret'),
@@ -72,6 +71,7 @@ trait LoginTrait
             $temporaryCredentials = $server->getTemporaryCredentials();
             $this->request->session()->write('temporary_credentials', $temporaryCredentials);
             $server->authorize($temporaryCredentials);
+            return $this->response;
         }
     }
     /**
