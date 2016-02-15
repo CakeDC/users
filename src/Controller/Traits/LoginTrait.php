@@ -15,10 +15,10 @@ use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\UserNotActiveException;
+use CakeDC\Users\Model\Table\SocialAccountsTable;
 use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Network\Exception\NotFoundException;
-use CakeDC\Users\Model\Table\SocialAccountsTable;
 use League\OAuth1\Client\Server\Twitter;
 
 /**
