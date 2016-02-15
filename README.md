@@ -13,7 +13,8 @@ Versions and branches
 | CakePHP | CakeDC Users Plugin | Tag   | Notes |
 | :-------------: | :------------------------: | :--:  | :---- |
 | 2.x             | [2.x](https://github.com/cakedc/users/tree/2.x)                     | 2.1.2 | Note CakePHP 2.7 is currently not supported, we are working on it now |
-| 3.x             | [master](https://github.com/cakedc/users/tree/master)                      | 3.0.0 | stability is beta, but pretty stable now |
+| 3.x             | [master](https://github.com/cakedc/users/tree/master)                      | 3.x | stability is beta, but pretty stable now |
+| 3.x             | [develop](https://github.com/cakedc/users/tree/develop)                      | 3.x | stability is beta, unstable |
 | 3.0             | [3.0.x](https://github.com/cakedc/users/tree/3.0.x)                      | 3.0.0 | stability is beta, but pretty stable now |
 | 3.1             | [3.1.x](https://github.com/cakedc/users/tree/3.1.x)                      | 3.1.0 | stability is beta, but pretty stable now |
 
@@ -22,7 +23,7 @@ The **Users** plugin is back!
 It covers the following features:
 * User registration
 * Login/logout
-* Social login (Facebook, Twitter)
+* Social login (Facebook, Twitter, Instagram, Google, Linkedin, etc)
 * Simple RBAC
 * Remember me (Cookie)
 * Manage user's profile
@@ -51,23 +52,6 @@ Documentation
 -------------
 
 For documentation, as well as tutorials, see the [Docs](Docs/Home.md) directory of this repository.
-
-Roadmap
-------
-
-
-* 3.1.4 << you are here
-  * SocialAuthenticate refactored to drop Opauth in favor of Muffin/OAuth2 and league/oauth2
-* 3.1.3
-  * UserHelper improvements
-* 3.1.2
-  * Fixes in RBAC permission matchers
-* 3.1.0 Migration to CakePHP 3.0
-  * Unit test coverage improvements
-  * Refactor UsersTable to Behavior
-  * Add google authentication
-  * Add reCaptcha
-  * Link social accounts in profile
 
 Support
 -------
