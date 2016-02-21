@@ -295,7 +295,7 @@ class UsersShell extends Shell
      */
     protected function _updateUser($username, $data)
     {
-        $user = $this->Users->find()->where(['Users.username' => $username])->first();
+        $user = $this->Users->find()->where(['username' => $username])->first();
         if (empty($user)) {
             $this->error(__d('Users', 'The user was not found.'));
         }
@@ -320,14 +320,15 @@ class UsersShell extends Shell
         if (empty($username)) {
             $this->error(__d('Users', 'Please enter a username.'));
         }
-        $user = $this->Users->find()->where(['Users.username' => $username])->first();
-        $deleteAccounts = $this->Users->SocialAccounts->deleteAll(['user_id' => $user->id]);
+        $user = $this->Users->find()->where(['username' => $username])->first();
+        if (isset($this->Users->SocialAccounts)) {
+            $this->Users->SocialAccounts->deleteAll(['user_id' => $user->id]);
+        }
         $deleteUser = $this->Users->delete($user);
-        if ($deleteAccounts && $deleteUser) {
-            $this->out(__d('Users', 'The user {0} was deleted successfully', $username));
-        } else {
+        if (!$deleteUser) {
             $this->error(__d('Users', 'The user {0} was not deleted. Please try again', $username));
         }
+        $this->out(__d('Users', 'The user {0} was deleted successfully', $username));
     }
 
     /**
