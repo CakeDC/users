@@ -20,8 +20,8 @@ use Cake\Mailer\Email;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
-use InvalidArgumentException;
 use Cake\Utility\Hash;
+use InvalidArgumentException;
 
 /**
  * Users\Model\Table\UsersTable Test Case
