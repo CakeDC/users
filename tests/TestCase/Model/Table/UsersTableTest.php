@@ -323,6 +323,5 @@ class UsersTableTest extends TestCase
         $this->assertCount(8, $actual);
         $this->assertCount(8, Hash::extract($actual, '{n}[active=1]'));
         $this->assertCount(0, Hash::extract($actual, '{n}[active=0]'));
-
     }
 }
