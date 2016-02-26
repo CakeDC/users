@@ -94,7 +94,7 @@ NOTE: SOME keys were hidden in this doc page, please refer to `vendor/cakedc/use
     'Auth' => [
         'authenticate' => [
             'all' => [
-                'scope' => ['active' => 1]
+                'finder' => 'auth',
             ],
             'CakeDC/Users.RememberMe',
             'Form',
@@ -139,7 +139,7 @@ Configure::write('Auth.authenticate.Form.fields.username', 'email');
 ```
 
 
-  
+
 
 Email Templates
 ---------------

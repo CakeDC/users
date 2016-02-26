@@ -21,6 +21,7 @@ use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use InvalidArgumentException;
+use Cake\Utility\Hash;
 
 /**
  * Users\Model\Table\UsersTable Test Case
@@ -310,5 +311,18 @@ class UsersTableTest extends TestCase
         $this->assertEquals('username', $result->username);
         $this->assertEquals('First Name', $result->first_name);
         $this->assertEquals('Last Name', $result->last_name);
+    }
+
+    /**
+     * Test findAuth method.
+     *
+     */
+    public function testFindAuth()
+    {
+        $actual = $this->Users->find('auth')->toArray();
+        $this->assertCount(8, $actual);
+        $this->assertCount(8, Hash::extract($actual, '{n}[active=1]'));
+        $this->assertCount(0, Hash::extract($actual, '{n}[active=0]'));
+
     }
 }
