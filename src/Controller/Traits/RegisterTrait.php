@@ -51,6 +51,7 @@ trait RegisterTrait
         $event = $this->dispatchEvent(UsersAuthComponent::EVENT_BEFORE_REGISTER, [
             'usersTable' => $usersTable,
             'options' => $options,
+            'userEntity' => $user,
         ]);
 
         if ($event->result instanceof EntityInterface) {
