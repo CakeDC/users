@@ -314,12 +314,12 @@ class UsersTableTest extends TestCase
     }
 
     /**
-     * Test findAuth method.
+     * Test findActive method.
      *
      */
-    public function testFindAuth()
+    public function testFindActive()
     {
-        $actual = $this->Users->find('auth')->toArray();
+        $actual = $this->Users->find('active')->toArray();
         $this->assertCount(8, $actual);
         $this->assertCount(8, Hash::extract($actual, '{n}[active=1]'));
         $this->assertCount(0, Hash::extract($actual, '{n}[active=0]'));

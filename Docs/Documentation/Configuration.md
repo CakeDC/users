@@ -94,7 +94,7 @@ NOTE: SOME keys were hidden in this doc page, please refer to `vendor/cakedc/use
     'Auth' => [
         'authenticate' => [
             'all' => [
-                'finder' => 'auth',
+                'finder' => 'active',
             ],
             'CakeDC/Users.RememberMe',
             'Form',

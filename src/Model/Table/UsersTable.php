@@ -170,13 +170,13 @@ class UsersTable extends Table
     }
 
     /**
-     * Custom finder for Auth.authenticate
+     * Custom finder to filter active users
      *
      * @param Query $query Query object to modify
      * @param array $options Query options
      * @return Query
      */
-    public function findAuth(Query $query, array $options = [])
+    public function findActive(Query $query, array $options = [])
     {
         $query->where(["{$this->_alias}.active" => 1]);
         return $query;
