@@ -157,7 +157,7 @@ trait LoginTrait
                 $this->Flash->error($msg);
                 return $this->redirect($this->referer());
             }
-            return;
+            // return;
         }
         if ($this->request->is('post')) {
             $user = $this->Auth->identify();
