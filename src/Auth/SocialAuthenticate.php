@@ -295,6 +295,7 @@ class SocialAuthenticate extends BaseAuthenticate
      * Find or create local user
      *
      * @param array $data data
+     * @param Request $request
      * @return array|bool|mixed
      * @throws MissingEmailException
      */
@@ -337,6 +338,7 @@ class SocialAuthenticate extends BaseAuthenticate
      */
     public function getUser(Request $request)
     {
+        $event = EventManager::instance()->dispatch(new Event(UsersAuthComponent::EVENT_BEFORE_LOGIN, $this, ['request' => $request]));
         $data = $request->session()->read(Configure::read('Users.Key.Session.social'));
         $requestDataEmail = $request->data('email');
         if (!empty($data) && (!empty($data['email']) || !empty($requestDataEmail))) {
@@ -368,8 +370,14 @@ class SocialAuthenticate extends BaseAuthenticate
             return false;
         }
 
+        $event = EventManager::instance()->dispatch(new Event(UsersAuthComponent::EVENT_AFTER_LOGIN, $this, ['user' => $user, 'request' => $request]));
+
         if ($request->session()->check(Configure::read('Users.Key.Session.social'))) {
             $request->session()->delete(Configure::read('Users.Key.Session.social'));
+        }
+
+        if (!empty($event->result)) {
+            $this->_getController()->redirect($event->result);
         }
         return $result;
     }

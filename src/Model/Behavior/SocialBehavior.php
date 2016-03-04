@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Model\Behavior;
 
+use Cake\Error\Debugger;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\UserNotActiveException;

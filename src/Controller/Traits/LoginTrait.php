@@ -176,7 +176,7 @@ trait LoginTrait
         if (!empty($user)) {
             $this->Auth->setUser($user);
 
-            $event = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_LOGIN, ['user' => $user]);
+            $event = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_LOGIN, $this, ['user' => $user, 'request' => $this->request]);
             if (is_array($event->result)) {
                 return $this->redirect($event->result);
             }

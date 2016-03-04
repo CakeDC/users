@@ -46,7 +46,7 @@ use Cake\Core\Configure;
     <?php if (Configure::read('Users.Social.login')) : ?>
         <?php $providers = Configure::read('OAuth.providers'); ?>
         <?php foreach ($providers as $provider => $options) : ?>
-            <?php if (!empty($options['options']['redirectUri'])) : ?>
+            <?php if (!empty($options['options']['clientId'])) : ?>
                 <?= $this->User->socialLogin($provider); ?>
             <?php endif; ?>
         <?php endforeach; ?>
