@@ -32,6 +32,8 @@ class UsersMailer extends Mailer
     protected function validation(EntityInterface $user, $subject, $template = 'CakeDC/Users.validation')
     {
         $firstName = isset($user['first_name'])? $user['first_name'] . ', ' : '';
+        $user->hiddenProperties(['password', 'token_expires', 'api_token']);
+
         $this
             ->to($user['email'])
             ->subject($firstName . $subject)
@@ -51,6 +53,7 @@ class UsersMailer extends Mailer
     {
         $firstName = isset($user['first_name'])? $user['first_name'] . ', ' : '';
         $subject = __d('Users', '{0}Your reset password link', $firstName);
+        $user->hiddenProperties(['password', 'token_expires', 'api_token']);
 
         $this
             ->to($user['email'])

@@ -18,25 +18,24 @@ use Cake\ORM\Entity;
  */
 class SocialAccount extends Entity
 {
-
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
      * @var array
      */
     protected $_accessible = [
-        'user_id' => true,
-        'provider' => true,
-        'username' => true,
-        'reference' => true,
-        'avatar' => true,
-        'description' => true,
-        'link' => true,
-        'token' => true,
-        'token_secret' => true,
-        'token_expires' => true,
-        'active' => true,
-        'data' => true,
-        'user' => true,
+        '*' => true,
+        'id' => false,
+    ];
+
+    /**
+     * Fields that are excluded from JSON an array versions of the entity.
+     *
+     * @var array
+     */
+    protected $_hidden = [
+        'token',
+        'token_secret',
+        'token_expires',
     ];
 }
