@@ -20,6 +20,8 @@ class UserTest extends TestCase
     public function setUp()
     {
         parent::setUp();
+        $this->now = Time::now();
+        Time::setTestNow($this->now);
         $this->User = new User();
     }
 
@@ -31,6 +33,7 @@ class UserTest extends TestCase
     public function tearDown()
     {
         unset($this->User);
+        Time::setTestNow();
 
         parent::tearDown();
     }
@@ -141,12 +144,10 @@ class UserTest extends TestCase
      */
     public function testUpdateToken()
     {
-        $now = Time::now();
-        Time::setTestNow($now);
         $this->assertNull($this->User['token']);
         $this->assertNull($this->User['token_expires']);
         $this->User->updateToken();
-        $this->assertEquals($now, $this->User['token_expires']);
+        $this->assertEquals($this->now, $this->User['token_expires']);
         $this->assertNotNull($this->User['token']);
     }
 
@@ -157,12 +158,10 @@ class UserTest extends TestCase
      */
     public function testUpdateTokenExisting()
     {
-        $now = Time::now();
-        Time::setTestNow($now);
         $this->User['token'] = 'aaa';
-        $this->User['token_expires'] = $now;
+        $this->User['token_expires'] = $this->now;
         $this->User->updateToken();
-        $this->assertEquals($now, $this->User['token_expires']);
+        $this->assertEquals($this->now, $this->User['token_expires']);
         $this->assertNotEquals('aaa', $this->User['token']);
     }
 
@@ -173,12 +172,12 @@ class UserTest extends TestCase
      */
     public function testUpdateTokenAdd()
     {
-        $now = Time::now();
-        Time::setTestNow($now);
         $this->assertNull($this->User['token']);
         $this->assertNull($this->User['token_expires']);
         $this->User->updateToken(20);
-        $this->assertEquals($now->addSeconds(20), $this->User['token_expires']);
+        $nowModified = new Time('now');
+        $nowModified->addSecond(20);
+        $this->assertEquals($nowModified, $this->User['token_expires']);
         $this->assertNotNull($this->User['token']);
     }
 
@@ -189,12 +188,12 @@ class UserTest extends TestCase
      */
     public function testUpdateTokenExistingAdd()
     {
-        $now = Time::now();
-        Time::setTestNow($now);
         $this->User['token'] = 'aaa';
-        $this->User['token_expires'] = $now;
+        $this->User['token_expires'] = $this->now;
         $this->User->updateToken(20);
-        $this->assertEquals($now->addSecond(20), $this->User['token_expires']);
+        $nowModified = new Time('now');
+        $nowModified->addSecond(20);
+        $this->assertEquals($nowModified, $this->User['token_expires']);
         $this->assertNotEquals('aaa', $this->User['token']);
     }
 }
