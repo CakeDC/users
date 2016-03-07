@@ -153,7 +153,7 @@ class User extends Entity
      */
     public function updateToken($tokenExpiration = 0)
     {
-        $expiration = new Time();
+        $expiration = new Time('now');
         $this->token_expires = $expiration->addSeconds($tokenExpiration);
 
         $this->token = str_replace('-', '', Text::uuid());
