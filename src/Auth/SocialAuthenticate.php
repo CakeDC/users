@@ -11,12 +11,6 @@
 
 namespace CakeDC\Users\Auth;
 
-use Cake\Auth\BaseAuthenticate;
-use Cake\Event\Event;
-use Cake\Event\EventDispatcherTrait;
-use Cake\Event\EventManager;
-use Cake\Network\Response;
-use Cake\Utility\Hash;
 use CakeDC\Users\Auth\Exception\InvalidProviderException;
 use CakeDC\Users\Auth\Exception\InvalidSettingsException;
 use CakeDC\Users\Auth\Exception\MissingProviderConfigurationException;
@@ -27,10 +21,16 @@ use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\MissingProviderException;
 use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Model\Table\SocialAccountsTable;
+use Cake\Auth\BaseAuthenticate;
 use Cake\Controller\ComponentRegistry;
 use Cake\Core\Configure;
+use Cake\Event\Event;
+use Cake\Event\EventDispatcherTrait;
+use Cake\Event\EventManager;
 use Cake\Network\Request;
+use Cake\Network\Response;
 use Cake\ORM\TableRegistry;
+use Cake\Utility\Hash;
 
 /**
  * Class SocialAuthenticate

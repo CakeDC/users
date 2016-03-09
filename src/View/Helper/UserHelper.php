@@ -147,7 +147,9 @@ class UserHelper extends Helper
         if (!Configure::read('Users.Registration.reCaptcha')) {
             return false;
         }
-
+        if (!Configure::read('reCaptcha.key')) {
+            return $this->Html->tag('p', __d('Users', 'reCaptcha is not configured! Please configure reCaptcha.key or set Users.Registration.reCaptcha to false'));
+        }
         $this->Form->unlockField('g-recaptcha-response');
         return $this->Html->tag('div', '', [
             'class' => 'g-recaptcha',

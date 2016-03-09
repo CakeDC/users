@@ -20,6 +20,7 @@ use Cake\Mailer\Email;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
+use Cake\Utility\Hash;
 use InvalidArgumentException;
 
 /**
@@ -310,5 +311,17 @@ class UsersTableTest extends TestCase
         $this->assertEquals('username', $result->username);
         $this->assertEquals('First Name', $result->first_name);
         $this->assertEquals('Last Name', $result->last_name);
+    }
+
+    /**
+     * Test findActive method.
+     *
+     */
+    public function testFindActive()
+    {
+        $actual = $this->Users->find('active')->toArray();
+        $this->assertCount(8, $actual);
+        $this->assertCount(8, Hash::extract($actual, '{n}[active=1]'));
+        $this->assertCount(0, Hash::extract($actual, '{n}[active=0]'));
     }
 }

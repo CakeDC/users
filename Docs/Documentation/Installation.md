@@ -11,10 +11,11 @@ composer require cakedc/users
 if you want to use social login features...
 
 ```
-composer require league/oauth2-facebook:*
-composer require league/oauth2-instagram:*
-composer require league/oauth2-google:*
-composer require league/oauth2-linkedin:*
+composer require league/oauth2-facebook:@stable
+composer require league/oauth2-instagram::@stable
+composer require league/oauth2-google::@stable
+composer require league/oauth2-linkedin::@stable
+composer require league/oauth1-client:@stable
 ```
 
 NOTE: you'll need to enable social login in your bootstrap.php file if you want to use it, social
@@ -55,17 +56,19 @@ Plugin::load('CakeDC/Users', ['routes' => true, 'bootstrap' => true]);
 Configure::write('Users.Social.login', true); //to enable social login
 ```
 
-Then in your config/users.php
+If you want to use social login, then in your config/users.php
 ```
 return [
     'OAuth.providers.facebook.options.clientId' => 'YOUR APP ID',
     'OAuth.providers.facebook.options.clientSecret' => 'YOUR APP SECRET',
-    'OAuth.providers.instagram.options.clientId' => 'YOUR APP ID',
-    'OAuth.providers.instagram.options.clientSecret' => 'YOUR APP SECRET',
+    'OAuth.providers.twitter.options.clientId' => 'YOUR APP ID',
+    'OAuth.providers.titter.options.clientSecret' => 'YOUR APP SECRET',
     //etc
 ];
 
 ```
+
+Note: using social authentication is not required.
 
 For more details, check the Configuration doc page
 

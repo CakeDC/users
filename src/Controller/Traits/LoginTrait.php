@@ -15,10 +15,10 @@ use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\UserNotActiveException;
+use CakeDC\Users\Model\Table\SocialAccountsTable;
 use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Network\Exception\NotFoundException;
-use CakeDC\Users\Model\Table\SocialAccountsTable;
 use League\OAuth1\Client\Server\Twitter;
 
 /**
@@ -37,7 +37,6 @@ trait LoginTrait
     public function twitterLogin()
     {
         $this->autoRender = false;
-
         $server = new Twitter([
             'identifier' => Configure::read('OAuth.providers.twitter.options.clientId'),
             'secret' => Configure::read('OAuth.providers.twitter.options.clientSecret'),
@@ -72,6 +71,7 @@ trait LoginTrait
             $temporaryCredentials = $server->getTemporaryCredentials();
             $this->request->session()->write('temporary_credentials', $temporaryCredentials);
             $server->authorize($temporaryCredentials);
+            return $this->response;
         }
     }
     /**
@@ -153,7 +153,7 @@ trait LoginTrait
 
         if (!$this->request->is('post') && !$socialLogin) {
             if ($this->Auth->user()) {
-                $msg = __d('Users', 'Your are already logged in');
+                $msg = __d('Users', 'You are already logged in');
                 $this->Flash->error($msg);
                 return $this->redirect($this->referer());
             }

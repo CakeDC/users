@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Auth;
 
+use CakeDC\Users\Auth\Rules\Rule;
 use Cake\Auth\BaseAuthorize;
 use Cake\Controller\ComponentRegistry;
 use Cake\Core\Configure;
@@ -55,19 +56,26 @@ class SimpleRbacAuthorize extends BaseAuthorize
          *   - ownership
          *   - permissions stored in your database
          *   - permission based on an external service API call
-         * Example ownership callback, to allow users to edit their own Posts:
+         * You could use an instance of the \CakeDC\Users\Auth\Rules\Rule interface to reuse your custom rules
+         *
+         * Examples:
+         * 1. Callback to allow users editing their own Posts:
          *
          * 'allowed' => function (array $user, $role, Request $request) {
-                $postId = Hash::get($request->params, 'pass.0');
-                $post = TableRegistry::get('Posts')->get($postId);
-                $userId = Hash::get($user, 'id');
-                if (!empty($post->user_id) && !empty($userId)) {
-                    return $post->user_id === $userId;
-                }
-                return false;
-            }
+         *       $postId = Hash::get($request->params, 'pass.0');
+         *       $post = TableRegistry::get('Posts')->get($postId);
+         *       $userId = Hash::get($user, 'id');
+         *       if (!empty($post->user_id) && !empty($userId)) {
+         *           return $post->user_id === $userId;
+         *       }
+         *       return false;
+         *   }
+         * 2. Using the Owner Rule
+         * 'allowed' => new Owner() //will pick by default the post id from the first pass param
          *
-         * Suggestion: put your rules into a specific config file
+         * Check the Owner Rule docs for more details
+         *
+         *
          */
         'permissions' => [],
     ];
@@ -207,11 +215,14 @@ class SimpleRbacAuthorize extends BaseAuthorize
                 $this->_matchOrAsterisk($permission, 'controller', $controller) &&
                 $this->_matchOrAsterisk($permission, 'action', $action)) {
             $allowed = Hash::get($permission, 'allowed');
+
             if ($allowed === null) {
                 //allowed will be true by default
                 return true;
             } elseif (is_callable($allowed)) {
                 return (bool)call_user_func($allowed, $user, $role, $request);
+            } elseif ($allowed instanceof Rule) {
+                return (bool)$allowed->allowed($user, $role, $request);
             } else {
                 return (bool)$allowed;
             }
