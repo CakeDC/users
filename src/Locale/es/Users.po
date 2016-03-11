@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CakeDC Users\n"
 "POT-Creation-Date: 2016-03-07 20:35+0000\n"
-"PO-Revision-Date: 2016-03-09 10:53+0000\n"
+"PO-Revision-Date: 2016-03-09 21:06+0000\n"
 "Language-Team: CakeDC <contact@cakedc.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -78,7 +78,7 @@ msgid ""
 "The social account is not active. Please check your email for instructions. "
 "{0}"
 msgstr ""
-"La cuenta social está inactiva. Por favor, compruebe las instrucciones en tu "
+"La cuenta social está inactiva. Por favor, compruebe las instrucciones en su "
 "correo. {0}"
 
 #: Controller/Traits/LoginTrait.php:58 Template/Users/social_email.ctp:16
@@ -255,7 +255,7 @@ msgstr "No se puede iniciar sesión con el usuario con referencia {0}"
 
 #: Model/Table/UsersTable.php:453
 msgid "Email not present"
-msgstr "Email no presente"
+msgstr "No se encuentra el email"
 
 #: Model/Table/UsersTable.php:541
 msgid "{0}Your account validation link"
