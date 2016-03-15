@@ -14,6 +14,7 @@ namespace CakeDC\Users\Model\Behavior;
 use CakeDC\Users\Email\EmailSender;
 use CakeDC\Users\Exception\UserAlreadyActiveException;
 use CakeDC\Users\Exception\UserNotFoundException;
+use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Exception\WrongPasswordException;
 use CakeDC\Users\Model\Behavior\Behavior;
 use Cake\Datasource\EntityInterface;
@@ -70,6 +71,11 @@ class PasswordBehavior extends Behavior
             }
             $user->active = false;
             $user->activation_date = null;
+        }
+        if (Hash::Get($options, 'ensureActive')) {
+            if (!$user->active) {
+                throw new UserNotActiveException("User not active");
+            }
         }
         $user->updateToken($expiration);
         $saveResult = $this->_table->save($user);

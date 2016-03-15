@@ -157,4 +157,26 @@ class PasswordManagementTraitTest extends BaseTraitTest
         $this->Trait->requestResetPassword();
         $this->assertNotEquals('xxx', $this->table->get('00000000-0000-0000-0000-000000000001')->token);
     }
+
+    /**
+     * test requestResetPassword
+     *
+     * @return void
+     */
+    public function testRequestResetPasswordUserNotActive()
+    {
+        $this->assertEquals('ae93ddbe32664ce7927cf0c5c5a5e59d', $this->table->get('00000000-0000-0000-0000-000000000001')->token);
+        $this->_mockRequestPost();
+        $this->_mockFlash();
+        $reference = 'user-1';
+        $this->Trait->request->expects($this->once())
+                ->method('data')
+                ->with('reference')
+                ->will($this->returnValue($reference));
+        $this->Trait->Flash->expects($this->any())
+            ->method('error')
+            ->with('The user is not active');
+        $this->Trait->requestResetPassword();
+        $this->assertNotEquals('xxx', $this->table->get('00000000-0000-0000-0000-000000000001')->token);
+    }
 }

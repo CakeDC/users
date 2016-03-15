@@ -146,4 +146,18 @@ class PasswordBehaviorTest extends TestCase
             'checkActive' => true,
         ]);
     }
+
+    /**
+     * Test resetToken
+     *
+     * @expectedException CakeDC\Users\Exception\UserNotActiveException
+     */
+    public function testResetTokenUserNotActive()
+    {
+        $user = TableRegistry::get('CakeDC/Users.Users')->findAllByUsername('user-1')->first();
+        $this->Behavior->resetToken('user-1', [
+            'ensureActive' => true,
+            'expiration' => 3600
+        ]);
+    }
 }
