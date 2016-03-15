@@ -67,14 +67,14 @@ class PasswordBehavior extends Behavior
         }
         if (Hash::get($options, 'checkActive')) {
             if ($user->active) {
-                throw new UserAlreadyActiveException("User account already validated");
+                throw new UserAlreadyActiveException(__d('Users', "User account already validated"));
             }
             $user->active = false;
             $user->activation_date = null;
         }
-        if (Hash::Get($options, 'ensureActive')) {
+        if (Hash::get($options, 'ensureActive')) {
             if (!$user->active) {
-                throw new UserNotActiveException("User not active");
+                throw new UserNotActiveException(__d('Users', "User not active"));
             }
         }
         $user->updateToken($expiration);
