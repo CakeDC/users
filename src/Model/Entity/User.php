@@ -28,23 +28,22 @@ class User extends Entity
      * @var array
      */
     protected $_accessible = [
-        'username' => true,
-        'email' => true,
-        'password' => true,
-        'confirm_password' => true,
-        'first_name' => true,
-        'last_name' => true,
-        'avatar' => true,
-        'token' => true,
-        'token_expires' => true,
-        'api_token' => true,
-        'activation_date' => true,
-        //tos is a boolean, coming from the "accept the terms of service" checkbox but it is not stored onto database
-        'tos' => true,
-        'tos_date' => true,
-        'active' => true,
-        'social_accounts' => true,
-        'current_password' => true
+        '*' => true,
+        'id' => false,
+        'is_superuser' => false,
+        'role' => false,
+    ];
+
+    /**
+     * Fields that are excluded from JSON an array versions of the entity.
+     *
+     * @var array
+     */
+    protected $_hidden = [
+        'password',
+        'token',
+        'token_expires',
+        'api_token',
     ];
 
     /**
