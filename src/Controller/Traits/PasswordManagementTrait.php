@@ -11,8 +11,8 @@
 
 namespace CakeDC\Users\Controller\Traits;
 
-use CakeDC\Users\Exception\UserNotFoundException;
 use CakeDC\Users\Exception\UserNotActiveException;
+use CakeDC\Users\Exception\UserNotFoundException;
 use CakeDC\Users\Exception\WrongPasswordException;
 use Cake\Core\Configure;
 use Exception;
