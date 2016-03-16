@@ -370,7 +370,7 @@ class SocialAuthenticate extends BaseAuthenticate
             return false;
         }
 
-        $event = EventManager::instance()->dispatch(new Event(UsersAuthComponent::EVENT_AFTER_LOGIN, $this, ['user' => $user, 'request' => $request]));
+        $event = EventManager::instance()->dispatch(new Event(UsersAuthComponent::EVENT_AFTER_LOGIN, $this->_getController(), ['user' => $user, 'request' => $request]));
 
         if ($request->session()->check(Configure::read('Users.Key.Session.social'))) {
             $request->session()->delete(Configure::read('Users.Key.Session.social'));

@@ -131,6 +131,12 @@ $config = [
                     'redirectUri' => Router::url('/auth/google', true)
                 ]
             ],
+            'cakephp' => [
+                'className' => 'CakeDC\OAuth2\Client\Provider\CakePHP',
+                'options' => [
+                    'redirectUri' => Router::url('/auth/cakephp', true)
+                ]
+            ],
         ],
     ]
 ];

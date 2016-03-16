@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Controller\Traits;
 
+use Cake\Event\EventManager;
 use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
@@ -141,7 +142,7 @@ trait LoginTrait
      */
     public function login()
     {
-        $event = $this->dispatchEvent(UsersAuthComponent::EVENT_BEFORE_LOGIN);
+        $event = EventManager::instance()->dispatch(new Event(UsersAuthComponent::EVENT_BEFORE_LOGIN, $this, ['request' => $this->request]));
         if (is_array($event->result)) {
             return $this->_afterIdentifyUser($event->result);
         }
@@ -175,8 +176,7 @@ trait LoginTrait
     {
         if (!empty($user)) {
             $this->Auth->setUser($user);
-
-            $event = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_LOGIN, $this, ['user' => $user, 'request' => $this->request]);
+            $event = EventManager::instance()->dispatch(new Event(UsersAuthComponent::EVENT_AFTER_LOGIN, $this, ['user' => $user, 'request' => $this->request]));
             if (is_array($event->result)) {
                 return $this->redirect($event->result);
             }
