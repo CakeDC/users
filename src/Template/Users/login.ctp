@@ -43,15 +43,7 @@ use Cake\Core\Configure;
             ?>
         </p>
     </fieldset>
-    <?php if (Configure::read('Users.Social.login')) : ?>
-        <?php $providers = Configure::read('OAuth.providers'); ?>
-        <?php foreach ($providers as $provider => $options) : ?>
-            <?php if (!empty($options['options']['redirectUri'])) : ?>
-                <?= $this->User->socialLogin($provider); ?>
-            <?php endif; ?>
-        <?php endforeach; ?>
-    <?php
-    endif; ?>
+    <?= implode(' ', $this->User->socialLoginList()); ?>
     <?= $this->Form->button(__d('Users', 'Login')); ?>
     <?= $this->Form->end() ?>
 </div>

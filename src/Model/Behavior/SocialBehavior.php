@@ -118,10 +118,10 @@ class SocialBehavior extends Behavior
      * @param string $validateEmail email to validate.
      * @param string $tokenExpiration token_expires data.
      * @return EntityInterface
+     * @todo refactor
      */
     protected function _populateUser($data, $existingUser, $useEmail, $validateEmail, $tokenExpiration)
     {
-        $accountData['provider'] = Hash::get($data, 'provider');
         $accountData['username'] = Hash::get($data, 'username');
         $accountData['reference'] = Hash::get($data, 'id');
         $accountData['avatar'] = Hash::get($data, 'avatar');
@@ -140,6 +140,7 @@ class SocialBehavior extends Behavior
         }
         $accountData['data'] = serialize(Hash::get($data, 'raw'));
         $accountData['active'] = true;
+
         $dataValidated = Hash::get($data, 'validated');
 
         if (empty($existingUser)) {
@@ -181,18 +182,20 @@ class SocialBehavior extends Behavior
             $userData['validated'] = !empty($dataValidated);
             $userData['tos_date'] = date("Y-m-d H:i:s");
             $userData['gender'] = Hash::get($data, 'gender');
-            //$userData['timezone'] = Hash::get($data, 'timezone');
             $userData['social_accounts'][] = $accountData;
-            $user = $this->_table->newEntity($userData, ['associated' => ['SocialAccounts']]);
+
+            $user = $this->_table->newEntity($userData);
             $user = $this->_updateActive($user, false, $tokenExpiration);
         } else {
             if ($useEmail && empty($dataValidated)) {
                 $accountData['active'] = false;
             }
-            $user = $this->_table->patchEntity($existingUser, [
-                'social_accounts' => [$accountData]
-            ], ['associated' => ['SocialAccounts']]);
+            $user = $existingUser;
         }
+        $socialAccount = $this->_table->SocialAccounts->newEntity($accountData);
+        //ensure provider is present in Entity
+        $socialAccount['provider'] = Hash::get($data, 'provider');
+        $user['social_accounts'] = [$socialAccount];
         return $user;
     }
 
