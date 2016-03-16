@@ -73,7 +73,7 @@ class PasswordBehavior extends Behavior
             $user->activation_date = null;
         }
         if (Hash::get($options, 'ensureActive')) {
-            if (!$user->active) {
+            if (!$user['active']) {
                 throw new UserNotActiveException(__d('Users', "User not active"));
             }
         }
