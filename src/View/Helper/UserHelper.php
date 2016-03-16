@@ -58,11 +58,37 @@ class UserHelper extends Helper
         if (empty($options['label'])) {
             $options['label'] = 'Sign in with';
         }
-        return $this->Html->link($this->Html->tag('i', '', [
-                'class' => __d('Users', 'fa fa-{0}', strtolower($name)),
-            ]) . __d('Users', '{0} {1}', Hash::get($options, 'label'), Inflector::camelize($name)), "/auth/$name", [
-            'escape' => false, 'class' => __d('Users', 'btn btn-social btn-{0} ' . Hash::get($options, 'class') ? :'', strtolower($name))
-            ]);
+        $icon = $this->Html->tag('i', '', [
+            'class' => __d('Users', 'fa fa-{0}', strtolower($name)),
+        ]);
+        $providerTitle = __d('Users', '{0} {1}', Hash::get($options, 'label'), Inflector::camelize($name));
+        $providerClass = __d('Users', 'btn btn-social btn-{0} ' . Hash::get($options, 'class') ?: '', strtolower($name));
+        return $this->Html->link($icon . $providerTitle, "/auth/$name", [
+            'escape' => false, 'class' => $providerClass
+        ]);
+    }
+
+    /**
+     * All available Social Login Icons
+     *
+     * @return array Links to Social Login Urls
+     */
+    public function socialLoginList()
+    {
+        if (!Configure::read('Users.Social.login')) {
+            return [];
+        }
+        $outProviders = [];
+        $providers = Configure::read('OAuth.providers');
+        foreach ($providers as $provider => $options) {
+            if (!empty($options['options']['redirectUri']) &&
+                !empty($options['options']['clientId']) &&
+                !empty($options['options']['clientSecret'])) {
+                $outProviders[] = $this->socialLogin($provider);
+            }
+        }
+
+        return $outProviders;
     }
 
     /**

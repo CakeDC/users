@@ -109,7 +109,12 @@ $config = [
                 'className' => 'League\OAuth2\Client\Provider\Facebook',
                 'options' => [
                     'graphApiVersion' => 'v2.5',
-                    'redirectUri' =>  Router::url('/auth/facebook', true)
+                    'redirectUri' => Router::url('/auth/facebook', true)
+                ]
+            ],
+            'twitter' => [
+                'options' => [
+                    'redirectUri' => Router::url('/auth/twitter', true)
                 ]
             ],
             'linkedIn' => [
