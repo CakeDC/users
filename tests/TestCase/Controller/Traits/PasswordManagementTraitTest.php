@@ -142,20 +142,21 @@ class PasswordManagementTraitTest extends BaseTraitTest
      */
     public function testRequestPasswordHappy()
     {
-        $this->assertEquals('ae93ddbe32664ce7927cf0c5c5a5e59d', $this->table->get('00000000-0000-0000-0000-000000000001')->token);
+        $this->assertEquals('6614f65816754310a5f0553436dd89e9', $this->table->get('00000000-0000-0000-0000-000000000002')->token);
         $this->_mockRequestPost();
         $this->_mockAuthLoggedIn();
         $this->_mockFlash();
-        $reference = 'user-1';
+        $this->_configEmail();
+        $reference = 'user-2';
         $this->Trait->request->expects($this->once())
                 ->method('data')
                 ->with('reference')
                 ->will($this->returnValue($reference));
         $this->Trait->Flash->expects($this->any())
             ->method('success')
-            ->with('Password has been changed successfully');
+            ->with('Please check your email to continue with password reset process');
         $this->Trait->requestResetPassword();
-        $this->assertNotEquals('xxx', $this->table->get('00000000-0000-0000-0000-000000000001')->token);
+        $this->assertNotEquals('xxx', $this->table->get('00000000-0000-0000-0000-000000000002')->token);
     }
 
     /**
