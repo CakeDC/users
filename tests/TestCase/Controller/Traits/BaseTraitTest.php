@@ -138,13 +138,13 @@ abstract class BaseTraitTest extends TestCase
      *
      * @return void
      */
-    protected function _mockAuthLoggedIn()
+    protected function _mockAuthLoggedIn($user = array())
     {
         $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
             ->setMethods(['user', 'identify', 'setUser', 'redirectUrl'])
             ->disableOriginalConstructor()
             ->getMock();
-        $user = [
+        $user += [
             'id' => '00000000-0000-0000-0000-000000000001',
             'password' => '12345',
         ];
@@ -154,7 +154,7 @@ abstract class BaseTraitTest extends TestCase
         $this->Trait->Auth->expects($this->any())
             ->method('user')
             ->with('id')
-            ->will($this->returnValue('00000000-0000-0000-0000-000000000001'));
+            ->will($this->returnValue($user['id']));
     }
 
     /**

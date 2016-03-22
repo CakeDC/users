@@ -18,6 +18,7 @@ use CakeDC\Users\Exception\UserNotFoundException;
 use CakeDC\Users\Exception\WrongPasswordException;
 use CakeDC\Users\Model\Behavior\Behavior;
 use Cake\Datasource\EntityInterface;
+use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Mailer\Email;
 use Cake\Utility\Hash;
 use InvalidArgumentException;
@@ -106,9 +107,13 @@ class PasswordBehavior extends Behavior
      */
     public function changePassword(EntityInterface $user)
     {
-        $currentUser = $this->_table->get($user->id, [
-            'contain' => []
-        ]);
+        try {
+            $currentUser = $this->_table->get($user->id, [
+                'contain' => []
+            ]);
+        } catch (RecordNotFoundException $e) {
+            throw new UserNotFoundException(__d('Users', "User not found"));
+        }
 
         if (!empty($user->current_password)) {
             if (!$user->checkPassword($user->current_password, $currentUser->password)) {

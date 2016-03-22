@@ -74,6 +74,51 @@ class PasswordManagementTraitTest extends BaseTraitTest
      *
      * @return void
      */
+    public function testChangePasswordWithError()
+    {
+        $this->assertEquals('12345', $this->table->get('00000000-0000-0000-0000-000000000001')->password);
+        $this->_mockRequestPost();
+        $this->_mockAuthLoggedIn();
+        $this->_mockFlash();
+        $this->Trait->request->expects($this->once())
+                ->method('data')
+                ->will($this->returnValue([
+                    'password' => 'new',
+                    'password_confirm' => 'wrong_new',
+                ]));
+        $this->Trait->Flash->expects($this->once())
+            ->method('error')
+            ->with('Password could not be changed');
+        $this->Trait->changePassword();
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testChangePasswordWithInvalidUser()
+    {
+        $this->_mockRequestPost();
+        $this->_mockAuthLoggedIn(['id' => 'invalid-id', 'password' => 'invalid-pass']);
+        $this->_mockFlash();
+        $this->Trait->request->expects($this->once())
+                ->method('data')
+                ->will($this->returnValue([
+                    'password' => 'new',
+                    'password_confirm' => 'new',
+                ]));
+        $this->Trait->Flash->expects($this->once())
+            ->method('error')
+            ->with('User was not found');
+        $this->Trait->changePassword();
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
     public function testChangePasswordGetLoggedIn()
     {
         $this->_mockRequestGet();
@@ -157,6 +202,48 @@ class PasswordManagementTraitTest extends BaseTraitTest
             ->with('Please check your email to continue with password reset process');
         $this->Trait->requestResetPassword();
         $this->assertNotEquals('xxx', $this->table->get('00000000-0000-0000-0000-000000000002')->token);
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testRequestPasswordInvalidUser()
+    {
+        $this->_mockRequestPost();
+        $this->_mockAuthLoggedIn(['id' => 'invalid-id', 'password' => 'invalid-pass']);
+        $this->_mockFlash();
+        $reference = 'invalid-id';
+        $this->Trait->request->expects($this->once())
+                ->method('data')
+                ->with('reference')
+                ->will($this->returnValue($reference));
+        $this->Trait->Flash->expects($this->any())
+            ->method('error')
+            ->with('User invalid-id was not found');
+        $this->Trait->requestResetPassword();
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testRequestPasswordEmptyReference()
+    {
+        $this->_mockRequestPost();
+        $this->_mockAuthLoggedIn(['id' => 'invalid-id', 'password' => 'invalid-pass']);
+        $this->_mockFlash();
+        $reference = '';
+        $this->Trait->request->expects($this->once())
+                ->method('data')
+                ->with('reference')
+                ->will($this->returnValue($reference));
+        $this->Trait->Flash->expects($this->any())
+            ->method('error')
+            ->with('Token could not be reset');
+        $this->Trait->requestResetPassword();
     }
 
     /**
