@@ -185,4 +185,21 @@ abstract class BaseTraitTest extends TestCase
                 ->method('dispatchEvent')
                 ->will($this->returnValue($event));
     }
+
+    /**
+     * Config email
+     *
+     * @return void
+     */
+    protected function _configEmail()
+    {
+        \Cake\Mailer\Email::configTransport('default', [
+            'className' => 'Debug'
+        ]);
+        \Cake\Mailer\Email::config('default', [
+            'transport' => 'default',
+            'from' => 'test@test.com',
+            'log' => true
+        ]);
+    }
 }
