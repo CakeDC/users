@@ -159,6 +159,14 @@ class RegisterBehavior extends Behavior
     protected function _tosValidator(Validator $validator)
     {
         $validator
+            ->add('tos', 'valid', [
+            'rule' => function ($data, $provider) {
+                if ($data == 1) {
+                    return true;
+                }
+                return __d('Users', 'Please agree with TOS.');
+            }
+            ])
             ->requirePresence('tos', 'create')
             ->notEmpty('tos');
         return $validator;
