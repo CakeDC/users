@@ -138,7 +138,7 @@ abstract class BaseTraitTest extends TestCase
      *
      * @return void
      */
-    protected function _mockAuthLoggedIn($user = array())
+    protected function _mockAuthLoggedIn($user = [])
     {
         $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
             ->setMethods(['user', 'identify', 'setUser', 'redirectUrl'])
