@@ -52,6 +52,10 @@ class UsersAuthComponent extends Component
         }
 
         $this->_attachPermissionChecker();
+        
+        if (Configure::read('Users.publicAcl')) {
+            $this->isPublicAuthorized();
+        }
     }
 
     /**
@@ -111,6 +115,38 @@ class UsersAuthComponent extends Component
             'endpoint',
             'authenticated'
         ]);
+    }
+
+    /**
+     * Check Public Access
+     *
+     * ### Usage
+     *
+     * Your permssions config should return '*' or 'public' for role(s) allowed.
+     *
+     * Ex. In permissions.php for SimpleRbacAuthorize
+     * ```php
+     * 'Users.SimpleRbac.permissions' => [
+     *     [
+     *         'role' => '*',
+     *         'controller' => ['Pages'],
+     *         'action' => ['other', 'display'],
+     *         'allowed' => true,
+     *     ]];
+     *
+     * @return bool
+     */
+    public function isPublicAuthorized()
+    {
+        $isAuthorized = null;
+        if (empty($this->_registry->getController()->Auth->user())) {
+            $controller = $this->_registry->getController();
+            $isAuthorized = $controller->Auth->isAuthorized(['role' => 'public'], $controller->request);
+            if ($isAuthorized === true) {
+                $this->_registry->getController()->Auth->allow();
+            }
+        }
+        return $isAuthorized;
     }
 
     /**
