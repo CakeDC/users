@@ -20,6 +20,8 @@ $config = [
         'auth' => true,
         //Password Hasher
         'passwordHasher' => '\Cake\Auth\DefaultPasswordHasher',
+        //Manage public permissions
+        'publicControl' => false,
         //token expiration, 1 hour
         'Token' => ['expiration' => 3600],
         'Email' => [
