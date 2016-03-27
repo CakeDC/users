@@ -152,17 +152,17 @@ trait LoginTrait
 
         $socialLogin = $this->_isSocialLogin();
 
+        if ($this->request->is('post')) {
+            $user = $this->Auth->identify();
+            return $this->_afterIdentifyUser($user, $socialLogin);
+        }
         if (!$this->request->is('post') && !$socialLogin) {
             if ($this->Auth->user()) {
                 $msg = __d('Users', 'You are already logged in');
                 $this->Flash->error($msg);
-                return $this->redirect($this->referer());
+                $url = $this->Auth->redirectUrl();
+                return $this->redirect($url);
             }
-            return;
-        }
-        if ($this->request->is('post')) {
-            $user = $this->Auth->identify();
-            return $this->_afterIdentifyUser($user, $socialLogin);
         }
     }
 
