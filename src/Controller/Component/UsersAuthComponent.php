@@ -139,11 +139,11 @@ class UsersAuthComponent extends Component
     public function isPublicAuthorized()
     {
         $isAuthorized = null;
-        if (empty($this->_registry->getController()->Auth->user())) {
-            $controller = $this->_registry->getController();
+        $controller = $this->_registry->getController();
+        if (empty($controller->Auth->user())) {
             $isAuthorized = $controller->Auth->isAuthorized(['role' => 'public'], $controller->request);
             if ($isAuthorized === true) {
-                $this->_registry->getController()->Auth->allow();
+                $controller->Auth->allow();
             }
         }
         return $isAuthorized;
