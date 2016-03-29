@@ -70,10 +70,11 @@ trait LoginTrait
         } else {
             $temporaryCredentials = $server->getTemporaryCredentials();
             $this->request->session()->write('temporary_credentials', $temporaryCredentials);
-            $server->authorize($temporaryCredentials);
-            return $this->response;
+            $url = $server->getAuthorizationUrl($temporaryCredentials);
+            return $this->redirect($url);
         }
     }
+    
     /**
      * @param Event $event event
      * @return void

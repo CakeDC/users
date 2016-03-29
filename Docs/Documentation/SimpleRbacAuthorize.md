@@ -6,7 +6,7 @@ Setup
 
 SimpleRbacAuthorize is configured by default, but you can customize the way it works easily
 
-Example, in you AppController, you can configure the way the SimpleRbac works by setting the options:
+Example, in your AppController, you can configure the way the SimpleRbac works by setting the options:
 
 ```php
 $config['Auth']['authorize']['Users.SimpleRbac'] = [
