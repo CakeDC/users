@@ -100,7 +100,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
     public function testChangePasswordWithInvalidUser()
     {
         $this->_mockRequestPost();
-        $this->_mockAuthLoggedIn(['id' => 'invalid-id', 'password' => 'invalid-pass']);
+        $this->_mockAuthLoggedIn(['id' => '12312312-0000-0000-0000-000000000002', 'password' => 'invalid-pass']);
         $this->_mockFlash();
         $this->Trait->request->expects($this->once())
                 ->method('data')
@@ -214,14 +214,14 @@ class PasswordManagementTraitTest extends BaseTraitTest
         $this->_mockRequestPost();
         $this->_mockAuthLoggedIn(['id' => 'invalid-id', 'password' => 'invalid-pass']);
         $this->_mockFlash();
-        $reference = 'invalid-id';
+        $reference = '12312312-0000-0000-0000-000000000002';
         $this->Trait->request->expects($this->once())
                 ->method('data')
                 ->with('reference')
                 ->will($this->returnValue($reference));
         $this->Trait->Flash->expects($this->any())
             ->method('error')
-            ->with('User invalid-id was not found');
+            ->with('User 12312312-0000-0000-0000-000000000002 was not found');
         $this->Trait->requestResetPassword();
     }
 
