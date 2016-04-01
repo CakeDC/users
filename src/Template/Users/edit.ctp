@@ -14,8 +14,8 @@
     <ul class="side-nav">
         <li><?= $this->Form->postLink(
                 __d('Users', 'Delete'),
-                ['action' => 'delete', $Users->id],
-                ['confirm' => __d('Users', 'Are you sure you want to delete # {0}?', $Users->id)]
+                ['action' => 'delete', ${$tableAlias}->id],
+                ['confirm' => __d('Users', 'Are you sure you want to delete # {0}?', ${$tableAlias}->id)]
             )
         ?></li>
         <li><?= $this->Html->link(__d('Users', 'List Users'), ['action' => 'index']) ?></li>
@@ -23,7 +23,7 @@
     </ul>
 </div>
 <div class="users form large-10 medium-9 columns">
-    <?= $this->Form->create($Users); ?>
+    <?= $this->Form->create(${$tableAlias}); ?>
     <fieldset>
         <legend><?= __d('Users', 'Edit User') ?></legend>
         <?php

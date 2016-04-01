@@ -34,15 +34,4 @@ class UsersController extends AppController
     use RegisterTrait;
     use SimpleCrudTrait;
     use SocialTrait;
-
-    /**
-     * Override loadModel to load specific users table
-     * @param string $modelClass model class
-     * @param string $type type
-     * @return Table
-     */
-    public function loadModel($modelClass = null, $type = 'Table')
-    {
-        return parent::loadModel(Configure::read('Users.table'));
-    }
 }
