@@ -25,7 +25,7 @@ You can use the helper included with the plugin to create Facebook/Twitter butto
 
 In templates
 ```php
-$this->User->socialLogin($provider); //provider is 'facebook', 'twitter', etc
+echo $this->User->socialLogin($provider); //provider is 'facebook', 'twitter', etc
 ```
 
 We recommend the use of [Bootstrap Social](http://lipis.github.io/bootstrap-social/) in order to automatically apply styles to buttons. Anyway you can always add your own style to the buttons.
