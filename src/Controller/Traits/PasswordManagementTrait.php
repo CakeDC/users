@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Controller\Traits;
 
+use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Exception\UserNotFoundException;
 use CakeDC\Users\Exception\WrongPasswordException;
 use Cake\Core\Configure;
@@ -101,6 +102,7 @@ trait PasswordManagementTrait
                 'expiration' => Configure::read('Users.Token.expiration'),
                 'checkActive' => false,
                 'sendEmail' => true,
+                'ensureActive' => true
             ]);
             if ($resetUser) {
                 $msg = __d('Users', 'Please check your email to continue with password reset process');
@@ -112,6 +114,8 @@ trait PasswordManagementTrait
             return $this->redirect(['action' => 'login']);
         } catch (UserNotFoundException $exception) {
             $this->Flash->error(__d('Users', 'User {0} was not found', $reference));
+        } catch (UserNotActiveException $exception) {
+            $this->Flash->error(__d('Users', 'The user is not active'));
         } catch (Exception $exception) {
             $this->Flash->error(__d('Users', 'Token could not be reset'));
         }
