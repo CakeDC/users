@@ -12,9 +12,9 @@ if you want to use social login features...
 
 ```
 composer require league/oauth2-facebook:@stable
-composer require league/oauth2-instagram::@stable
-composer require league/oauth2-google::@stable
-composer require league/oauth2-linkedin::@stable
+composer require league/oauth2-instagram:@stable
+composer require league/oauth2-google:@stable
+composer require league/oauth2-linkedin:@stable
 composer require league/oauth1-client:@stable
 ```
 
@@ -62,7 +62,7 @@ return [
     'OAuth.providers.facebook.options.clientId' => 'YOUR APP ID',
     'OAuth.providers.facebook.options.clientSecret' => 'YOUR APP SECRET',
     'OAuth.providers.twitter.options.clientId' => 'YOUR APP ID',
-    'OAuth.providers.titter.options.clientSecret' => 'YOUR APP SECRET',
+    'OAuth.providers.twitter.options.clientSecret' => 'YOUR APP SECRET',
     //etc
 ];
 
