@@ -123,7 +123,7 @@ Using the UsersAuthComponent default initialization, the component will load the
 ## Using the user's email to login
 
 You need to configure 2 things:
-* Change the Auth.authenticate.Form.fields configuration to let AuthComponent use the email instead of the username for user identify. Add this line to your bootstrap.ctp file, after CakeDC/Users Plugin is loaded
+* Change the Auth.authenticate.Form.fields configuration to let AuthComponent use the email instead of the username for user identify. Add this line to your bootstrap.php file, after CakeDC/Users Plugin is loaded
 
 ```php
 Configure::write('Auth.authenticate.Form.fields.username', 'email');
