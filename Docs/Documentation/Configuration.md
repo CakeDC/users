@@ -38,6 +38,16 @@ Configure::write('OAuth.providers.twitter.options.clientSecret', 'YOUR APP SECRE
 
 Or use the config override option when loading the plugin (see above)
 
+Configuration for reCaptcha
+---------------------
+```
+Configure::write('Users.reCaptcha.key', 'YOUR RECAPTCHA KEY');
+Configure::write('Users.reCaptcha.secret', 'YOUR RECAPTCHA SECRET');
+Configure::write('Users.reCaptcha.registration', true); //enable on registration
+Configure::write('Users.reCaptcha.login', true); //enable on login
+```
+
+
 Configuration options
 ---------------------
 
