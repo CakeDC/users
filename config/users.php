@@ -109,31 +109,31 @@ $config = [
                 'className' => 'League\OAuth2\Client\Provider\Facebook',
                 'options' => [
                     'graphApiVersion' => 'v2.5',
-                    'redirectUri' => Router::url('/auth/facebook', true)
+                    'redirectUri' => Router::fullBaseUrl() . '/auth/facebook',
                 ]
             ],
             'twitter' => [
                 'options' => [
-                    'redirectUri' => Router::url('/auth/twitter', true)
+                    'redirectUri' => Router::fullBaseUrl() . '/auth/twitter',
                 ]
             ],
             'linkedIn' => [
                 'className' => 'League\OAuth2\Client\Provider\LinkedIn',
                 'options' => [
-                    'redirectUri' => Router::url('/auth/linkedIn', true)
+                    'redirectUri' => Router::fullBaseUrl() . '/auth/linkedIn',
                 ]
             ],
             'instagram' => [
                 'className' => 'League\OAuth2\Client\Provider\Instagram',
                 'options' => [
-                    'redirectUri' => Router::url('/auth/instagram', true)
+                    'redirectUri' => Router::fullBaseUrl() . '/auth/instagram',
                 ]
             ],
             'google' => [
                 'className' => 'League\OAuth2\Client\Provider\Google',
                 'options' => [
                     'userFields' => ['url', 'aboutMe'],
-                    'redirectUri' => Router::url('/auth/google', true)
+                    'redirectUri' => Router::fullBaseUrl() . '/auth/google',
                 ]
             ],
         ],
