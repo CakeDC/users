@@ -153,6 +153,10 @@ trait LoginTrait
         $socialLogin = $this->_isSocialLogin();
 
         if ($this->request->is('post')) {
+            if (!$this->_checkReCaptcha()) {
+                $this->Flash->error(__d('Users', 'Invalid reCaptcha'));
+                return;
+            }
             $user = $this->Auth->identify();
             return $this->_afterIdentifyUser($user, $socialLogin);
         }
@@ -164,6 +168,23 @@ trait LoginTrait
                 return $this->redirect($url);
             }
         }
+    }
+
+    /**
+     * Check reCaptcha if enabled for login
+     *
+     * @return bool
+     */
+    protected function _checkReCaptcha()
+    {
+        if (!Configure::read('Users.reCaptcha.login')) {
+            return true;
+        }
+
+        return $this->validateReCaptcha(
+            $this->request->data('g-recaptcha-response'),
+            $this->request->clientIp()
+        );
     }
 
     /**

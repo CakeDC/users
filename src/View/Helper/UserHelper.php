@@ -34,19 +34,6 @@ class UserHelper extends Helper
     protected $_defaultConfig = [];
 
     /**
-     * beforeLayout callback loads reCaptcha if enabled
-     *
-     * @param Event $event event
-     * @return void
-     */
-    public function beforeLayout(Event $event)
-    {
-        if (Configure::read('Users.Registration.reCaptcha')) {
-            $this->addReCaptchaScript();
-        }
-    }
-
-    /**
      * Social login link
      *
      * @param string $name name
@@ -170,16 +157,14 @@ class UserHelper extends Helper
      */
     public function addReCaptcha()
     {
-        if (!Configure::read('Users.Registration.reCaptcha')) {
-            return false;
+        if (!Configure::read('Users.reCaptcha.key')) {
+            return $this->Html->tag('p', __d('Users', 'reCaptcha is not configured! Please configure Users.reCaptcha.key'));
         }
-        if (!Configure::read('reCaptcha.key')) {
-            return $this->Html->tag('p', __d('Users', 'reCaptcha is not configured! Please configure reCaptcha.key or set Users.Registration.reCaptcha to false'));
-        }
+        $this->addReCaptchaScript();
         $this->Form->unlockField('g-recaptcha-response');
         return $this->Html->tag('div', '', [
             'class' => 'g-recaptcha',
-            'data-sitekey' => Configure::read('reCaptcha.key')
+            'data-sitekey' => Configure::read('Users.reCaptcha.key')
         ]);
     }
 }

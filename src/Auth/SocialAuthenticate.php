@@ -354,7 +354,12 @@ class SocialAuthenticate extends BaseAuthenticate
             }
 
             $provider = $this->_getProviderName($request);
-            $user = $this->_mapUser($provider, $rawData);
+            try {
+                $user = $this->_mapUser($provider, $rawData);
+            } catch (MissingProviderException $ex) {
+                $request->session()->delete(Configure::read('Users.Key.Session.social'));
+                throw $ex;
+            }
             if ($user['provider'] === SocialAccountsTable::PROVIDER_TWITTER) {
                 $request->session()->write(Configure::read('Users.Key.Session.social'), $user);
             }

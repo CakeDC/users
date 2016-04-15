@@ -24,7 +24,9 @@ use Cake\Core\Configure;
         if (Configure::read('Users.Tos.required')) {
             echo $this->Form->input('tos', ['type' => 'checkbox', 'label' => __d('Users', 'Accept TOS conditions?'), 'required' => true]);
         }
-        echo $this->User->addReCaptcha();
+        if (Configure::read('Users.reCaptcha.registration')) {
+            echo $this->User->addReCaptcha();
+        }
         ?>
     </fieldset>
     <?= $this->Form->button(__d('Users', 'Submit')) ?>

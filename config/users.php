@@ -34,6 +34,16 @@ $config = [
             //determines if the reCaptcha is enabled for registration
             'reCaptcha' => true,
         ],
+        'reCaptcha' => [
+            //reCaptcha key goes here
+            'key' => null,
+            //reCaptcha secret
+            'secret' => null,
+            //use reCaptcha in registration
+            'registration' => false,
+            //use reCaptcha in login, valid values are false, true
+            'login' => false,
+        ],
         'Tos' => [
             //determines if the user should include tos accepted
             'required' => true,
