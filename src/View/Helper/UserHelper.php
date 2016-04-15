@@ -136,7 +136,7 @@ class UserHelper extends Helper
         }
 
         $profileUrl = Configure::read('Users.Profile.route');
-        $label = __d('Users', 'Welcome, {0}', $this->Html->link($this->request->session()->read('Auth.User.first_name'), $profileUrl));
+        $label = __d('Users', 'Welcome, {0}', $this->Html->link($this->request->session()->read('Auth.User.first_name') ?: $this->request->session()->read('Auth.User.username'), $profileUrl));
         return $this->Html->tag('span', $label, ['class' => 'welcome']);
     }
 
