@@ -243,7 +243,7 @@ msgid "Email not present"
 msgstr ""
 
 #: Model/Table/UsersTable.php:541
-msgid "{0}Your account validation link"
+msgid "Your account validation link"
 msgstr ""
 
 #: Model/Table/UsersTable.php:561
