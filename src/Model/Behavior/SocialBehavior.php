@@ -68,7 +68,6 @@ class SocialBehavior extends Behavior
                         $existingAccount->$user
                     ]);
                 }
-
             } else {
                 throw new AccountNotActiveException([
                     $existingAccount->provider,
