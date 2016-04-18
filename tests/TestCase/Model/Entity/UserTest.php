@@ -175,9 +175,7 @@ class UserTest extends TestCase
         $this->assertNull($this->User['token']);
         $this->assertNull($this->User['token_expires']);
         $this->User->updateToken(20);
-        $nowModified = new Time('now');
-        $nowModified->addSecond(20);
-        $this->assertEquals($nowModified, $this->User['token_expires']);
+        $this->assertEquals('20 seconds after', $this->User['token_expires']->diffForHumans($this->now));
         $this->assertNotNull($this->User['token']);
     }
 
@@ -191,9 +189,7 @@ class UserTest extends TestCase
         $this->User['token'] = 'aaa';
         $this->User['token_expires'] = $this->now;
         $this->User->updateToken(20);
-        $nowModified = new Time('now');
-        $nowModified->addSecond(20);
-        $this->assertEquals($nowModified, $this->User['token_expires']);
+        $this->assertEquals('20 seconds after', $this->User['token_expires']->diffForHumans($this->now));
         $this->assertNotEquals('aaa', $this->User['token']);
     }
 }

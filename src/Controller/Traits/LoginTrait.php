@@ -70,10 +70,11 @@ trait LoginTrait
         } else {
             $temporaryCredentials = $server->getTemporaryCredentials();
             $this->request->session()->write('temporary_credentials', $temporaryCredentials);
-            $server->authorize($temporaryCredentials);
-            return $this->response;
+            $url = $server->getAuthorizationUrl($temporaryCredentials);
+            return $this->redirect($url);
         }
     }
+    
     /**
      * @param Event $event event
      * @return void
@@ -151,18 +152,39 @@ trait LoginTrait
 
         $socialLogin = $this->_isSocialLogin();
 
+        if ($this->request->is('post')) {
+            if (!$this->_checkReCaptcha()) {
+                $this->Flash->error(__d('Users', 'Invalid reCaptcha'));
+                return;
+            }
+            $user = $this->Auth->identify();
+            return $this->_afterIdentifyUser($user, $socialLogin);
+        }
         if (!$this->request->is('post') && !$socialLogin) {
             if ($this->Auth->user()) {
                 $msg = __d('Users', 'You are already logged in');
                 $this->Flash->error($msg);
-                return $this->redirect($this->referer());
+                $url = $this->Auth->redirectUrl();
+                return $this->redirect($url);
             }
-            return;
         }
-        if ($this->request->is('post')) {
-            $user = $this->Auth->identify();
-            return $this->_afterIdentifyUser($user, $socialLogin);
+    }
+
+    /**
+     * Check reCaptcha if enabled for login
+     *
+     * @return bool
+     */
+    protected function _checkReCaptcha()
+    {
+        if (!Configure::read('Users.reCaptcha.login')) {
+            return true;
         }
+
+        return $this->validateReCaptcha(
+            $this->request->data('g-recaptcha-response'),
+            $this->request->clientIp()
+        );
     }
 
     /**

@@ -8,7 +8,7 @@ Composer
 composer require cakedc/users
 ```
 
-if you want to use social login features...
+If you want to use social login features...
 
 ```
 composer require league/oauth2-facebook:@stable
@@ -24,6 +24,15 @@ login is disabled by default. Check the [Configuration](Configuration.md) page f
 ```
 Configure::write('Users.Social.login', true); //to enable social login
 ```
+
+If you want to use reCaptcha features...
+
+```
+composer require google/recaptcha:@stable
+```
+
+NOTE: you'll need to configure the reCaptcha key and secret, check the [Configuration](Configuration.md)
+page for more details.
 
 Creating Required Tables
 ------------------------

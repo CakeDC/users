@@ -13,10 +13,12 @@ namespace CakeDC\Users\Model\Behavior;
 
 use CakeDC\Users\Email\EmailSender;
 use CakeDC\Users\Exception\UserAlreadyActiveException;
+use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Exception\UserNotFoundException;
 use CakeDC\Users\Exception\WrongPasswordException;
 use CakeDC\Users\Model\Behavior\Behavior;
 use Cake\Datasource\EntityInterface;
+use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Mailer\Email;
 use Cake\Utility\Hash;
 use InvalidArgumentException;
@@ -66,10 +68,15 @@ class PasswordBehavior extends Behavior
         }
         if (Hash::get($options, 'checkActive')) {
             if ($user->active) {
-                throw new UserAlreadyActiveException("User account already validated");
+                throw new UserAlreadyActiveException(__d('Users', "User account already validated"));
             }
             $user->active = false;
             $user->activation_date = null;
+        }
+        if (Hash::get($options, 'ensureActive')) {
+            if (!$user['active']) {
+                throw new UserNotActiveException(__d('Users', "User not active"));
+            }
         }
         $user->updateToken($expiration);
         $saveResult = $this->_table->save($user);
@@ -100,9 +107,13 @@ class PasswordBehavior extends Behavior
      */
     public function changePassword(EntityInterface $user)
     {
-        $currentUser = $this->_table->get($user->id, [
-            'contain' => []
-        ]);
+        try {
+            $currentUser = $this->_table->get($user->id, [
+                'contain' => []
+            ]);
+        } catch (RecordNotFoundException $e) {
+            throw new UserNotFoundException(__d('Users', "User not found"));
+        }
 
         if (!empty($user->current_password)) {
             if (!$user->checkPassword($user->current_password, $currentUser->password)) {
