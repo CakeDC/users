@@ -15,6 +15,7 @@ use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\UserNotActiveException;
+use CakeDC\Users\Model\Table\SocialAccountsTable;
 use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Network\Exception\NotFoundException;
@@ -36,10 +37,9 @@ trait LoginTrait
     public function twitterLogin()
     {
         $this->autoRender = false;
-
         $server = new Twitter([
-            'identifier' => Configure::read('OAuth.providers.twitter.options.identifier'),
-            'secret' => Configure::read('OAuth.providers.twitter.options.secret'),
+            'identifier' => Configure::read('OAuth.providers.twitter.options.clientId'),
+            'secret' => Configure::read('OAuth.providers.twitter.options.clientSecret'),
             'callbackUri' => Configure::read('OAuth.providers.twitter.options.redirectUri'),
         ]);
         $oauthToken = $this->request->query('oauth_token');
@@ -63,13 +63,15 @@ trait LoginTrait
             } catch (MissingEmailException $ex) {
                 $exception = $ex;
             }
+
             if (!empty($exception)) {
-                return $this->failedSocialLogin($exception, $this->request->session()->read(Configure::read('Users.Key.Session.social')));
+                return $this->failedSocialLogin($exception, $this->request->session()->read(Configure::read('Users.Key.Session.social')), true);
             }
         } else {
             $temporaryCredentials = $server->getTemporaryCredentials();
             $this->request->session()->write('temporary_credentials', $temporaryCredentials);
             $server->authorize($temporaryCredentials);
+            return $this->response;
         }
     }
     /**
@@ -78,7 +80,7 @@ trait LoginTrait
      */
     public function failedSocialLoginListener(Event $event)
     {
-        $this->failedSocialLogin($event->data['exception'], $event->data['rawData'], true);
+        return $this->failedSocialLogin($event->data['exception'], $event->data['rawData'], true);
     }
 
     /**
@@ -90,6 +92,7 @@ trait LoginTrait
     public function failedSocialLogin($exception, $data, $flash = false)
     {
         $msg = __d('Users', 'Issues trying to log in with your social account');
+
         if (isset($exception)) {
             if ($exception instanceof MissingEmailException) {
                 if ($flash) {
@@ -105,8 +108,10 @@ trait LoginTrait
             }
         }
         if ($flash) {
+            $this->Auth->config('authError', $msg);
+            $this->Auth->config('flash.params', ['class' => 'success']);
             $this->request->session()->delete(Configure::read('Users.Key.Session.social'));
-            $this->Flash->success($msg);
+            $this->Flash->success(__d('Users', $msg));
         }
         return $this->redirect(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
     }
@@ -146,8 +151,13 @@ trait LoginTrait
 
         $socialLogin = $this->_isSocialLogin();
 
-        if (!empty($socialLogin)) {
-            return $this->redirect(['action' => 'social-email']);
+        if (!$this->request->is('post') && !$socialLogin) {
+            if ($this->Auth->user()) {
+                $msg = __d('Users', 'You are already logged in');
+                $this->Flash->error($msg);
+                return $this->redirect($this->referer());
+            }
+            return;
         }
         if ($this->request->is('post')) {
             $user = $this->Auth->identify();

@@ -11,6 +11,9 @@
 
 namespace CakeDC\Users\Auth;
 
+use CakeDC\Users\Auth\Exception\InvalidProviderException;
+use CakeDC\Users\Auth\Exception\InvalidSettingsException;
+use CakeDC\Users\Auth\Exception\MissingProviderConfigurationException;
 use CakeDC\Users\Auth\Social\Util\SocialUtils;
 use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Exception\AccountNotActiveException;
@@ -18,17 +21,31 @@ use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\MissingProviderException;
 use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Model\Table\SocialAccountsTable;
+use Cake\Auth\BaseAuthenticate;
 use Cake\Controller\ComponentRegistry;
 use Cake\Core\Configure;
+use Cake\Event\Event;
+use Cake\Event\EventDispatcherTrait;
+use Cake\Event\EventManager;
 use Cake\Network\Request;
+use Cake\Network\Response;
 use Cake\ORM\TableRegistry;
-use Muffin\OAuth2\Auth\OAuthAuthenticate;
+use Cake\Utility\Hash;
 
 /**
  * Class SocialAuthenticate
  */
-class SocialAuthenticate extends OAuthAuthenticate
+class SocialAuthenticate extends BaseAuthenticate
 {
+
+    use EventDispatcherTrait;
+
+    /**
+     * Instance of OAuth2 provider.
+     *
+     * @var \League\OAuth2\Client\Provider\AbstractProvider
+     */
+    protected $_provider;
 
     /**
      * Constructor
@@ -40,9 +57,238 @@ class SocialAuthenticate extends OAuthAuthenticate
     public function __construct(ComponentRegistry $registry, array $config = [])
     {
         $oauthConfig = Configure::read('OAuth');
+        //We unset twitter from providers to exclude from OAuth2 config
         unset($oauthConfig['providers']['twitter']);
-        Configure::write('Muffin/OAuth2', $oauthConfig);
-        parent::__construct($registry, array_merge($config, $oauthConfig));
+        Configure::write('OAuth2', $oauthConfig);
+        $config = $this->normalizeConfig(array_merge($config, $oauthConfig));
+        parent::__construct($registry, $config);
+    }
+
+    /**
+     * Normalizes providers' configuration.
+     *
+     * @param array $config Array of config to normalize.
+     * @return array
+     * @throws \Exception
+     */
+    public function normalizeConfig(array $config)
+    {
+        $config = Hash::merge((array)Configure::read('OAuth2'), $config);
+
+        if (empty($config['providers'])) {
+            throw new MissingProviderConfigurationException();
+        }
+
+        array_walk($config['providers'], [$this, '_normalizeConfig'], $config);
+        return $config;
+    }
+
+    /**
+     * Callback to loop through config values.
+     *
+     * @param array $config Configuration.
+     * @param string $alias Provider's alias (key) in configuration.
+     * @param array $parent Parent configuration.
+     * @return void
+     */
+    protected function _normalizeConfig(&$config, $alias, $parent)
+    {
+        unset($parent['providers']);
+
+        $defaults = [
+                'className' => null,
+                'options' => [],
+                'collaborators' => [],
+                'mapFields' => [],
+            ] + $parent + $this->_defaultConfig;
+
+        $config = array_intersect_key($config, $defaults);
+        $config += $defaults;
+
+        array_walk($config, [$this, '_validateConfig']);
+
+        foreach (['options', 'collaborators'] as $key) {
+            if (empty($parent[$key]) || empty($config[$key])) {
+                continue;
+            }
+
+            $config[$key] = array_merge($parent[$key], $config[$key]);
+        }
+    }
+
+    /**
+     * Validates the configuration.
+     *
+     * @param mixed $value Value.
+     * @param string $key Key.
+     * @return void
+     * @throws CakeDC\Users\Auth\Exception\InvalidProviderException
+     * @throws CakeDC\Users\Auth\Exception\InvalidSettingsException
+     */
+    protected function _validateConfig(&$value, $key)
+    {
+        if ($key === 'className' && !class_exists($value)) {
+            throw new InvalidProviderException([$value]);
+        } elseif (!is_array($value) && in_array($key, ['options', 'collaborators'])) {
+            throw new InvalidSettingsException([$key]);
+        }
+    }
+
+    /**
+     * Get the controller associated with the collection.
+     *
+     * @return Controller instance
+     */
+    protected function _getController()
+    {
+        return $this->_registry->getController();
+    }
+
+    /**
+     * Get a user based on information in the request.
+     *
+     * @param \Cake\Network\Request $request Request object.
+     * @param \Cake\Network\Response $response Response object.
+     * @return bool
+     * @throws \RuntimeException If the `CakeDC/Users/OAuth2.newUser` event is missing or returns empty.
+     */
+    public function authenticate(Request $request, Response $response)
+    {
+        return $this->getUser($request);
+    }
+
+    /**
+     * Authenticates with OAuth2 provider by getting an access token and
+     * retrieving the authorized user's profile data.
+     *
+     * @param \Cake\Network\Request $request Request object.
+     * @return array|bool
+     */
+    protected function _authenticate(Request $request)
+    {
+        if (!$this->_validate($request)) {
+            return false;
+        }
+
+        $provider = $this->provider($request);
+        $code = $request->query('code');
+
+        try {
+            $token = $provider->getAccessToken('authorization_code', compact('code'));
+            return compact('token') + $provider->getResourceOwner($token)->toArray();
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Validates OAuth2 request.
+     *
+     * @param \Cake\Network\Request $request Request object.
+     * @return bool
+     */
+    protected function _validate(Request $request)
+    {
+        if (!array_key_exists('code', $request->query) || !$this->provider($request)) {
+            return false;
+        }
+
+        $session = $request->session();
+        $sessionKey = 'oauth2state';
+        $state = $request->query('state');
+
+        if ($this->config('options.state') &&
+            (!$state || $state !== $session->read($sessionKey))) {
+            $session->delete($sessionKey);
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Maps raw provider's user profile data to local user's data schema.
+     *
+     * @param array $data Raw user data.
+     * @return array
+     */
+    protected function _map($data)
+    {
+        if (!$map = $this->config('mapFields')) {
+            return $data;
+        }
+
+        foreach ($map as $dst => $src) {
+            $data[$dst] = $data[$src];
+            unset($data[$src]);
+        }
+
+        return $data;
+    }
+
+    /**
+     * Handles unauthenticated access attempts. Will automatically forward to the
+     * requested provider's authorization URL to let the user grant access to the
+     * application.
+     *
+     * @param \Cake\Network\Request $request Request object.
+     * @param \Cake\Network\Response $response Response object.
+     * @return \Cake\Network\Response|null
+     */
+    public function unauthenticated(Request $request, Response $response)
+    {
+        $provider = $this->provider($request);
+        if (empty($provider) || !empty($request->query['code'])) {
+            return null;
+        }
+
+        if ($this->config('options.state')) {
+            $request->session()->write('oauth2state', $provider->getState());
+        }
+
+        $response->location($provider->getAuthorizationUrl());
+        return $response;
+    }
+
+    /**
+     * Returns the `$request`-ed provider.
+     *
+     * @param \Cake\Network\Request $request Current HTTP request.
+     * @return \League\Oauth2\Client\Provider\GenericProvider|false
+     */
+    public function provider(Request $request)
+    {
+        if (!$alias = $request->param('provider')) {
+            return false;
+        }
+
+        if (empty($this->_provider)) {
+            $this->_provider = $this->_getProvider($alias);
+        }
+
+        return $this->_provider;
+    }
+
+    /**
+     * Instantiates provider object.
+     *
+     * @param string $alias of the provider.
+     * @return \League\Oauth2\Client\Provider\GenericProvider
+     */
+    protected function _getProvider($alias)
+    {
+        if (!$config = $this->config('providers.' . $alias)) {
+            return false;
+        }
+
+        $this->config($config);
+
+        if (is_object($config) && $config instanceof AbstractProvider) {
+            return $config;
+        }
+
+        $class = $config['className'];
+        return new $class($config['options'], $config['collaborators']);
     }
 
     /**
@@ -66,13 +312,12 @@ class SocialAuthenticate extends OAuthAuthenticate
         } catch (MissingEmailException $ex) {
             $exception = $ex;
         }
-
         if (!empty($exception)) {
-            $event = UsersAuthComponent::EVENT_FAILED_SOCIAL_LOGIN;
             $args = ['exception' => $exception, 'rawData' => $data];
-            $event = $this->dispatchEvent($event, $args);
-            if ($exception instanceof MissingEmailException && $data['provider'] == SocialAccountsTable::PROVIDER_TWITTER) {
-                throw $exception;
+            $event = new Event(UsersAuthComponent::EVENT_FAILED_SOCIAL_LOGIN, $args);
+            $event = EventManager::instance()->dispatch($event);
+            if (method_exists($this->_getController(), 'failedSocialLogin')) {
+                $this->_getController()->failedSocialLogin($exception, $data, true);
             }
             return $event->result;
         }
@@ -88,7 +333,7 @@ class SocialAuthenticate extends OAuthAuthenticate
      *
      * @param \Cake\Network\Request $request Request object.
      * @return mixed Either false or an array of user information
-     * @throws \RuntimeException If the `Muffin/OAuth2.newUser` event is missing or returns empty.
+     * @throws \RuntimeException If the `CakeDC/Users/OAuth2.newUser` event is missing or returns empty.
      */
     public function getUser(Request $request)
     {
@@ -110,6 +355,9 @@ class SocialAuthenticate extends OAuthAuthenticate
 
             $provider = $this->_getProviderName($request);
             $user = $this->_mapUser($provider, $rawData);
+            if ($user['provider'] === SocialAccountsTable::PROVIDER_TWITTER) {
+                $request->session()->write(Configure::read('Users.Key.Session.social'), $user);
+            }
         }
 
         if (!$user || !$this->config('userModel')) {
@@ -118,6 +366,10 @@ class SocialAuthenticate extends OAuthAuthenticate
 
         if (!$result = $this->_touch($user)) {
             return false;
+        }
+
+        if ($request->session()->check(Configure::read('Users.Key.Session.social'))) {
+            $request->session()->delete(Configure::read('Users.Key.Session.social'));
         }
         return $result;
     }

@@ -11,6 +11,8 @@
 
 namespace CakeDC\Users\Auth\Social\Mapper;
 
+use Cake\Utility\Hash;
+
 /**
  * Google Mapper
  *
@@ -30,4 +32,12 @@ class Google extends AbstractMapper
         'bio' => 'aboutMe',
         'link' => 'url'
     ];
+
+    /**
+     * @return string
+     */
+    protected function _link()
+    {
+        return Hash::get($this->_rawData, $this->_mapFields['link']) ?: '#';
+    }
 }

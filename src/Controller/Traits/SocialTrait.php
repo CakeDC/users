@@ -31,6 +31,7 @@ trait SocialTrait
         if (!$this->request->session()->check(Configure::read('Users.Key.Session.social'))) {
             throw new NotFoundException();
         }
+        $this->request->session()->delete('Flash.auth');
 
         if ($this->request->is('post')) {
             $validPost = $this->_validateRegisterPost();

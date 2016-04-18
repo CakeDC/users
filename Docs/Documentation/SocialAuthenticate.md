@@ -8,11 +8,11 @@ Create the Facebook/Twitter applications you want to use and setup the configura
 
 Config/bootstrap.php
 ```
-Configure::write('Opauth.Strategy.Facebook.app_id', 'YOUR APP ID');
-Configure::write('Opauth.Strategy.Facebook.app_secret', 'YOUR APP SECRET');
+Configure::write('OAuth.providers.facebook.options.clientId', 'YOUR APP ID');
+Configure::write('OAuth.providers.facebook.options.clientSecret', 'YOUR APP SECRET');
 
-Configure::write('Opauth.Strategy.Twitter.key', 'YOUR APP KEY');
-Configure::write('Opauth.Strategy.Twitter.secret', 'YOUR APP SECRET');
+Configure::write('OAuth.providers.twitter.options.clientId', 'YOUR APP ID');
+Configure::write('OAuth.providers.twitter.options.clientSecret', 'YOUR APP SECRET');
 ```
 
 You can also change the default settings for social authenticate:
@@ -47,24 +47,8 @@ Configure::write('Users', [
 ```
 
 If email is required and the social network does not return the user email then the user will be required to input the email. Additionally, validation could be enabled, in that case the user will be asked to validate the email before be able to login. There are some cases where the email address already exists onto database, if so, the user will receive an email and will be asked to validate the social account in the app. It is important to take into account that the user account itself will remain active and accessible by other ways (other social network account or username/password).
-```
-Configure::write('Opauth', [
-    'path' => ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'opauthInit'],
-    'callback_url' => ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'opauthInit', 'callback'],
-    'complete_url' => ['admin' => false, 'plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login'],
-    'Strategy' => [
-        'Facebook' => [
-            'scope' => ['public_profile', 'user_friends', 'email']
-        ],
-        'Twitter' => [
-            'curl_cainfo' => false,
-            'curl_capath' => false
-        ]
-    ]
-]);
-```
 
-In most situations you would not need to change any Opauth setting besides applications details.
+In most situations you would not need to change any Oauth setting besides applications details.
 
 User Helper
 ---------------------
@@ -79,4 +63,6 @@ $this->User->twitterLogin();
 ```
 
 We recommend the use of [Bootstrap Social](http://lipis.github.io/bootstrap-social/) in order to automatically apply styles to buttons. Anyway you can always add your own style to the buttons.
+
+Social Authentication was inspired by [UseMuffin/OAuth2](https://github.com/UseMuffin/OAuth2) library.
 

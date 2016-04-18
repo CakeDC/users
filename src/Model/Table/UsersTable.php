@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Model\Table;
 
+use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Utility\Hash;
@@ -153,18 +154,31 @@ class UsersTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->isUnique(['username']), [
+        $rules->add($rules->isUnique(['username']), '_isUnique', [
             'errorField' => 'username',
             'message' => __d('Users', 'Username already exists')
         ]);
 
         if ($this->isValidateEmail) {
-            $rules->add($rules->isUnique(['email']), [
+            $rules->add($rules->isUnique(['email']), '_isUnique', [
                 'errorField' => 'email',
                 'message' => __d('Users', 'Email already exists')
             ]);
         }
 
         return $rules;
+    }
+
+    /**
+     * Custom finder to filter active users
+     *
+     * @param Query $query Query object to modify
+     * @param array $options Query options
+     * @return Query
+     */
+    public function findActive(Query $query, array $options = [])
+    {
+        $query->where(["{$this->_alias}.active" => 1]);
+        return $query;
     }
 }

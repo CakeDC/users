@@ -13,7 +13,6 @@ namespace CakeDC\Users\Model\Behavior;
 
 use Cake\Datasource\EntityInterface;
 use Cake\I18n\Time;
-use Cake\Mailer\Email;
 use Cake\ORM\Behavior as BaseBehavior;
 
 /**
@@ -21,53 +20,12 @@ use Cake\ORM\Behavior as BaseBehavior;
  */
 class Behavior extends BaseBehavior
 {
-
-    /**
-     * Send the template email to the user
-     *
-     * @param EntityInterface $user User entity
-     * @param string $subject Subject, note the first_name of the user will be prepended if exists
-     * @param Email $email instance, if null the default email configuration with the
-     * Users.validation template will be used, so set a ->template() if you pass an Email
-     * instance
-     *
-     * @return array email send result
-     */
-    protected function _sendEmail(EntityInterface $user, $subject, Email $email = null)
-    {
-        $firstName = isset($user['first_name'])? $user['first_name'] . ', ' : '';
-        $emailInstance = $this->_getEmailInstance($email)
-                ->to($user['email'])
-                ->subject($firstName . $subject)
-                ->viewVars($user->toArray());
-        if (empty($email)) {
-            $emailInstance->template('CakeDC/Users.validation');
-        }
-        return $emailInstance->send();
-    }
-
-    /**
-     * Get or initialize the email instance. Used for mocking.
-     *
-     * @param Email $email if email provided, we'll use the instance instead of creating a new one
-     * @return Email
-     */
-    protected function _getEmailInstance(Email $email = null)
-    {
-        if ($email === null) {
-            $email = new Email('default');
-            $email->emailFormat('both');
-        }
-
-        return $email;
-    }
-
     /**
      * DRY for update active and token based on validateEmail flag
      *
      * @param EntityInterface $user User to be updated.
      * @param bool $validateEmail email user to validate.
-     * @param type $tokenExpiration token to be updated.
+     * @param int $tokenExpiration seconds to expire from now
      * @return EntityInterface
      */
     protected function _updateActive(EntityInterface $user, $validateEmail, $tokenExpiration)

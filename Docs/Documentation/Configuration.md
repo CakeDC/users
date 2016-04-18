@@ -12,51 +12,28 @@ Configure::write('Users.config', ['users']);
 Plugin::load('CakeDC/Users', ['routes' => true, 'bootstrap' => true]);
 Configure::write('Users.Social.login', true); //to enable social login
 ```
-    
-Then in your config/users.php
-
-```
-'Opauth.providers' => [
-        'facebook' => [
-            'className' => 'League\OAuth2\Client\Provider\Facebook',
-            'options' => [
-                'graphApiVersion' => 'v2.5'
-            ]
-            'redirectUri' => Router::url('/auth/facebook', true)
-        ],
-        'linkedIn' => [
-            'className' => 'League\OAuth2\Client\Provider\LinkedIn',
-            'redirectUri' => Router::url('/auth/linkedIn', true)
-        ],
-        'instagram' => [
-            'className' => 'League\OAuth2\Client\Provider\Instagram',
-            'redirectUri' => Router::url('/auth/instagram', true)
-        ],
-        'google' => [
-            'className' => 'League\OAuth2\Client\Provider\Google',
-            'options' => [
-                'userFields' => ['url', 'aboutMe'],
-            ]
-            'redirectUri' => Router::url('/auth/google', true)
-        ]
-        //etc
-    ],
-        
-```
 
 Configuration for social login
 ---------------------
 
-Create the facebook/twitter applications you want to use and setup the configuration like this:
+Create the facebook, twitter, etc applications you want to use and setup the configuration like this:
+In this example, we are using 2 providers: facebook and twitter. Note you'll need to add the providers to
+your composer.json file.
+
+```
+$ composer require league/oauth2-facebook:@stable
+$ composer require league/oauth1-client:@stable
+```
+
+NOTE: twitter uses league/oauth1-client package
 
 config/bootstrap.php
 ```
 Configure::write('OAuth.providers.facebook.options.clientId', 'YOUR APP ID');
 Configure::write('OAuth.providers.facebook.options.clientSecret', 'YOUR APP SECRET');
 
-Configure::write('OAuth.providers.instagram.options.clientId', 'YOUR APP ID');
-Configure::write('OAuth.providers.instagram.options.clientSecret', 'YOUR APP SECRET');
-
+Configure::write('OAuth.providers.twitter.options.clientId', 'YOUR APP ID');
+Configure::write('OAuth.providers.twitter.options.clientSecret', 'YOUR APP SECRET');
 ```
 
 Or use the config override option when loading the plugin (see above)
@@ -68,7 +45,7 @@ The plugin is configured via the Configure class. Check the `vendor/cakedc/users
 for a complete list of all the configuration keys.
 
 Loading the UsersAuthComponent and using the right configuration values will setup the Users plugin,
-the AuthComponent and the Opauth component for your application.
+the AuthComponent and the OAuth component for your application.
 
 If you prefer to setup AuthComponent by yourself, you'll need to load AuthComponent before UsersAuthComponent
 and set
@@ -117,7 +94,7 @@ NOTE: SOME keys were hidden in this doc page, please refer to `vendor/cakedc/use
     'Auth' => [
         'authenticate' => [
             'all' => [
-                'scope' => ['active' => 1]
+                'finder' => 'active',
             ],
             'CakeDC/Users.RememberMe',
             'Form',
@@ -142,6 +119,27 @@ Using the UsersAuthComponent default initialization, the component will load the
 * Authorize
   * 'Users.Superuser' check [SuperuserAuthorize](SuperuserAuthorize.md) for configuration options
   * 'Users.SimpleRbac' check [SimpleRbacAuthorize](SimpleRbacAuthorize.md) for configuration options
+
+## Using the user's email to login
+
+You need to configure 2 things:
+* Change the Auth.authenticate.Form.fields configuration to let AuthComponent use the email instead of the username for user identify. Add this line to your bootstrap.php file, after CakeDC/Users Plugin is loaded
+
+```php
+Configure::write('Auth.authenticate.Form.fields.username', 'email');
+```
+
+* Override the login.ctp template to change the Form->input to "email". Add (or copy from the https://github.com/CakeDC/users/blob/master/src/Template/Users/login.ctp) the file login.ctp to path /src/Template/Plugin/CakeDC/Users/Users/login.ctp and ensure it has the following content
+
+```php
+        // ... inside the Form
+        <?= $this->Form->input('email', ['required' => true]) ?>
+        <?= $this->Form->input('password', ['required' => true]) ?>
+        // ... rest of your login.ctp code
+```
+
+
+
 
 Email Templates
 ---------------

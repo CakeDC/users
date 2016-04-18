@@ -33,10 +33,10 @@ class RememberMeAuthenticate extends BaseAuthenticate
     public function authenticate(Request $request, Response $response)
     {
         $cookieName = Configure::read('Users.RememberMe.Cookie.name');
-        if (!$this->_registry->Cookie->check($cookieName)) {
+        $cookie = $this->_registry->Cookie->read($cookieName);
+        if (empty($cookie)) {
             return false;
         }
-        $cookie = $this->_registry->Cookie->read($cookieName);
         $this->config('fields.username', 'id');
         $user = $this->_findUser($cookie['id']);
         if ($user &&
