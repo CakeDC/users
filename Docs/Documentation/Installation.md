@@ -74,8 +74,12 @@ return [
     'OAuth.providers.twitter.options.clientSecret' => 'YOUR APP SECRET',
     //etc
 ];
-
 ```
+IMPORTANT: Remember you'll need to configure your social login application **callback url** to use the provider specific endpoint, for example: 
+* Facebook App Callback URL --> `http://yourdomain.com/auth/facebook`
+* Twitter App Callback URL --> `http://yourdomain.com/auth/twitter`
+* Google App Callback URL --> `http://yourdomain.com/auth/google`
+* etc.
 
 Note: using social authentication is not required.
 
