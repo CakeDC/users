@@ -206,7 +206,7 @@ trait LoginTrait
             return $this->redirect($url);
         } else {
             if (!$socialLogin) {
-                $message = __d('Users', 'Username or password is incorrect');
+                $message = __d('Users', 'Username and/or password is incorrect');
                 $this->Flash->error($message, 'default', [], 'auth');
             }
 
