@@ -28,3 +28,4 @@ Documentation
 * [UserHelper](Documentation/UserHelper.md)
 * [Events](Documentation/Events.md)
 * [Extending the Plugin](Documentation/Extending-the-Plugin.md)
+* [Translations](Documentation/Translations.md)
