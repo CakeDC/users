@@ -24,7 +24,6 @@ use Cake\Network\Response;
 trait RegisterTrait
 {
     use PasswordManagementTrait;
-    use ReCaptchaTrait;
 
     /**
      * Register a new user
@@ -70,9 +69,8 @@ trait RegisterTrait
             return;
         }
 
-        $validPost = $this->_validateRegisterPost();
-        if (!$validPost) {
-            $this->Flash->error(__d('Users', 'The reCaptcha could not be validated'));
+        if (!$this->_validateRegisterPost()) {
+            $this->Flash->error(__d('Users', 'Invalid reCaptcha'));
             return;
         }
 
@@ -92,14 +90,13 @@ trait RegisterTrait
      */
     protected function _validateRegisterPost()
     {
-        if (!Configure::read('Users.Registration.reCaptcha')) {
+        if (!Configure::read('Users.reCaptcha.registration')) {
             return true;
         }
-        $validReCaptcha = $this->validateReCaptcha(
+        return $this->validateReCaptcha(
             $this->request->data('g-recaptcha-response'),
             $this->request->clientIp()
         );
-        return $validReCaptcha;
     }
 
     /**

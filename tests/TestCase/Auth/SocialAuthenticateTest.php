@@ -404,7 +404,7 @@ class SocialAuthenticateTest extends TestCase
 
         $result = $mapUser->invoke($this->SocialAuthenticate, 'Facebook', $data);
         unset($result['raw']);
-        $this->assertEquals($result, $mappedData);
+        $this->assertEquals($mappedData, $result);
     }
 
     /**
@@ -432,7 +432,7 @@ class SocialAuthenticateTest extends TestCase
                     'first_name' => 'My first name',
                     'last_name' => 'My lastname.',
                     'email' => 'myemail@example.com',
-                    'avatar' => 'https://graph.facebook.com/my-facebook-id/picture?type=normal',
+                    'avatar' => 'https://graph.facebook.com/my-facebook-id/picture?type=large',
                     'gender' => 'female',
                     'link' => 'https://www.facebook.com/app_scoped_user_id/my-facebook-id/',
                     'bio' => null,

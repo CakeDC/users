@@ -12,7 +12,6 @@
 namespace CakeDC\Users\Controller\Traits;
 
 use Cake\Core\Configure;
-use ReCaptcha\ReCaptcha;
 
 /**
  * Covers registration features and email token validation
@@ -30,13 +29,12 @@ trait ReCaptchaTrait
      */
     public function validateReCaptcha($recaptchaResponse, $clientIp)
     {
-        $validReCaptcha = true;
         $recaptcha = $this->_getReCaptchaInstance();
         if (!empty($recaptcha)) {
             $response = $recaptcha->verify($recaptchaResponse, $clientIp);
-            $validReCaptcha = $response->isSuccess();
+            return $response->isSuccess();
         }
-        return $validReCaptcha;
+        return false;
     }
 
     /**
@@ -46,10 +44,9 @@ trait ReCaptchaTrait
      */
     protected function _getReCaptchaInstance()
     {
-        $useReCaptcha = (bool)Configure::read('Users.Registration.reCaptcha');
-        $reCaptchaSecret = Configure::read('reCaptcha.secret');
-        if ($useReCaptcha && !empty($reCaptchaSecret)) {
-            return new ReCaptcha($reCaptchaSecret);
+        $reCaptchaSecret = Configure::read('Users.reCaptcha.secret');
+        if (!empty($reCaptchaSecret)) {
+            return new \ReCaptcha\ReCaptcha($reCaptchaSecret);
         }
         return null;
     }

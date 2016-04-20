@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CakeDC Users\n"
 "POT-Creation-Date: 2016-03-07 20:35+0000\n"
-"PO-Revision-Date: 2016-03-09 21:06+0000\n"
+"PO-Revision-Date: 2016-04-15 17:47+0100\n"
 "Language-Team: CakeDC <contact@cakedc.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -258,8 +258,8 @@ msgid "Email not present"
 msgstr "No se encuentra el email"
 
 #: Model/Table/UsersTable.php:541
-msgid "{0}Your account validation link"
-msgstr "{0} Enlace para validar su cuenta"
+msgid "Your account validation link"
+msgstr "Enlace para validar su cuenta"
 
 #: Model/Table/UsersTable.php:561
 msgid "{0}Your reset password link"
