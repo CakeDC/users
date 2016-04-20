@@ -4,9 +4,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Users\n"
-"POT-Creation-Date: 2016-02-18 14:10+0100\n"
-"PO-Revision-Date: 2016-02-18 14:24+0100\n"
-"Last-Translator: Ulrik Södergren <ulrik@digitalfotografen.se>\n"
+"POT-Creation-Date: 2016-04-20 09:50-0300\n"
+"PO-Revision-Date: 2016-04-20 09:50-0300\n"
+"Last-Translator: André Teixeira <hello@andtxr.com>\n"
 "Language-Team: CakeDC <contact@cakedc.com>\n"
 "Language: sv\n"
 "MIME-Version: 1.0\n"
@@ -15,16 +15,40 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.8.7\n"
 
-#: Auth/SimpleRbacAuthorize.php:133
+#: Auth/ApiKeyAuthenticate.php:55
+msgid "Type {0} is not valid"
+msgstr ""
+
+#: Auth/ApiKeyAuthenticate.php:59
+msgid "Type {0} has no associated callable"
+msgstr ""
+
+#: Auth/ApiKeyAuthenticate.php:68
+msgid "SSL is required for ApiKey Authentication"
+msgstr ""
+
+#: Auth/SimpleRbacAuthorize.php:141
 msgid ""
 "Missing configuration file: \"config/{0}.php\". Using default permissions"
 msgstr ""
 "Saknad konfigurationsfil: \"config / {0} .php\". Använder "
 "standardbehörigheter"
 
-#: Auth/SocialAuthenticate.php:153
+#: Auth/SocialAuthenticate.php:410
 msgid "Provider cannot be empty"
 msgstr "Leverantör kan inte vara tomt"
+
+#: Auth/Rules/AbstractRule.php:77
+msgid ""
+"Table alias is empty, please define a table alias, we could not extract a "
+"default table from the request"
+msgstr ""
+
+#: Auth/Rules/Owner.php:67;70
+msgid ""
+"Missing column {0} in table {1} while checking ownership permissions for "
+"user {2}"
+msgstr ""
 
 #: Controller/SocialAccountsController.php:52
 msgid "Account validated successfully"
@@ -38,8 +62,8 @@ msgstr "Konto kunde inte valideras"
 msgid "Invalid token and/or social account"
 msgstr "Ogiltig token och / eller social konto"
 
-#: Controller/SocialAccountsController.php:59
-msgid "SocialAccount already active"
+#: Controller/SocialAccountsController.php:59;86
+msgid "Social Account already active"
 msgstr "SocialAccount redan aktivt"
 
 #: Controller/SocialAccountsController.php:61
@@ -58,10 +82,6 @@ msgstr "Epsot kunde inte skickas"
 msgid "Invalid account"
 msgstr "Ogiltigt konto"
 
-#: Controller/SocialAccountsController.php:86
-msgid "Social Account already active"
-msgstr "SocialAccount redan aktivt"
-
 #: Controller/SocialAccountsController.php:88
 msgid "Email could not be resent"
 msgstr "E-post kan inte skickas om"
@@ -76,15 +96,15 @@ msgid "You can't enable email validation workflow if use_email is false"
 msgstr ""
 "Du kan inte aktivera epost-validering arbetsflöde om use_email är falskt"
 
-#: Controller/Traits/LoginTrait.php:92
+#: Controller/Traits/LoginTrait.php:95
 msgid "Issues trying to log in with your social account"
 msgstr "Problem vid inloggning med ditt sociala konto"
 
-#: Controller/Traits/LoginTrait.php:96 Template/Users/social_email.ctp:16
+#: Controller/Traits/LoginTrait.php:100 Template/Users/social_email.ctp:16
 msgid "Please enter your email"
 msgstr "Lägg till din epost"
 
-#: Controller/Traits/LoginTrait.php:102
+#: Controller/Traits/LoginTrait.php:106
 msgid ""
 "Your user has not been validated yet. Please check your inbox for "
 "instructions"
@@ -92,7 +112,7 @@ msgstr ""
 "Ditt konto har inte verifierats ännu. Vänligen kontrollera din inbox för "
 "instruktioner"
 
-#: Controller/Traits/LoginTrait.php:104
+#: Controller/Traits/LoginTrait.php:108
 msgid ""
 "Your social account has not been validated yet. Please check your inbox for "
 "instructions"
@@ -100,45 +120,57 @@ msgstr ""
 "Din sociala hänsyn har inte validerats ännu. Vänligen kontrollera din inbox "
 "för instruktioner"
 
-#: Controller/Traits/LoginTrait.php:177
+#: Controller/Traits/LoginTrait.php:157 Controller/Traits/RegisterTrait.php:73
+msgid "Invalid reCaptcha"
+msgstr ""
+
+#: Controller/Traits/LoginTrait.php:165
+msgid "You are already logged in"
+msgstr ""
+
+#: Controller/Traits/LoginTrait.php:209
 msgid "Username or password is incorrect"
 msgstr "Användarnamn eller lösenord är felaktigt"
 
-#: Controller/Traits/LoginTrait.php:198
+#: Controller/Traits/LoginTrait.php:230
 msgid "You've successfully logged out"
 msgstr "Du har loggats ut"
 
-#: Controller/Traits/PasswordManagementTrait.php:53
-msgid "Password has been changed successfully"
-msgstr "Lösenordsbytet lyckades!"
-
-#: Controller/Traits/PasswordManagementTrait.php:56;63
+#: Controller/Traits/PasswordManagementTrait.php:53;60;68
 msgid "Password could not be changed"
 msgstr "Lösenordet kunde inte ändras"
 
-#: Controller/Traits/PasswordManagementTrait.php:59
+#: Controller/Traits/PasswordManagementTrait.php:57
+msgid "Password has been changed successfully"
+msgstr "Lösenordsbytet lyckades!"
+
+#: Controller/Traits/PasswordManagementTrait.php:64
 #: Controller/Traits/ProfileTrait.php:49
 msgid "User was not found"
 msgstr "Användaren hittades inte."
 
-#: Controller/Traits/PasswordManagementTrait.php:61
+#: Controller/Traits/PasswordManagementTrait.php:66
 msgid "The current password does not match"
 msgstr "Den nuvarande lösenord matchar inte"
 
-#: Controller/Traits/PasswordManagementTrait.php:102
+#: Controller/Traits/PasswordManagementTrait.php:108
 msgid "Please check your email to continue with password reset process"
 msgstr "Kontrollera din epost för att fortsätta lösenordsåterställningen"
 
-#: Controller/Traits/PasswordManagementTrait.php:105 Shell/UsersShell.php:266
+#: Controller/Traits/PasswordManagementTrait.php:111 Shell/UsersShell.php:266
 msgid "The password token could not be generated. Please try again"
 msgstr "Lösenordstoken kunde inte skapas. Var god försök igen"
 
-#: Controller/Traits/PasswordManagementTrait.php:110
+#: Controller/Traits/PasswordManagementTrait.php:116
 #: Controller/Traits/UserValidationTrait.php:98
 msgid "User {0} was not found"
 msgstr "Användaren {0} hittades inte"
 
-#: Controller/Traits/PasswordManagementTrait.php:112
+#: Controller/Traits/PasswordManagementTrait.php:118
+msgid "The user is not active"
+msgstr ""
+
+#: Controller/Traits/PasswordManagementTrait.php:120
 #: Controller/Traits/UserValidationTrait.php:94;102
 msgid "Token could not be reset"
 msgstr "Token kunde inte återställas"
@@ -147,19 +179,15 @@ msgstr "Token kunde inte återställas"
 msgid "Not authorized, please login first"
 msgstr "Inte auktoriserad, vänligen logga in först"
 
-#: Controller/Traits/RegisterTrait.php:74 Controller/Traits/SocialTrait.php:38
-msgid "The reCaptcha could not be validated"
-msgstr "reCAPTCHA angavs inte korrekt"
-
-#: Controller/Traits/RegisterTrait.php:80
+#: Controller/Traits/RegisterTrait.php:79
 msgid "The user could not be saved"
 msgstr "Användaren kunde inte sparas"
 
-#: Controller/Traits/RegisterTrait.php:113
+#: Controller/Traits/RegisterTrait.php:111
 msgid "You have registered successfully, please log in"
 msgstr "Din registrering är klar, vänligen logga in"
 
-#: Controller/Traits/RegisterTrait.php:115
+#: Controller/Traits/RegisterTrait.php:113
 msgid "Please validate your account before log in"
 msgstr "Vänligen validera ditt konto innan inloggning"
 
@@ -178,6 +206,10 @@ msgstr "{0} har tagits bort"
 #: Controller/Traits/SimpleCrudTrait.php:130
 msgid "The {0} could not be deleted"
 msgstr "{0} kunde inte tas bort"
+
+#: Controller/Traits/SocialTrait.php:39
+msgid "The reCaptcha could not be validated"
+msgstr "reCAPTCHA angavs inte korrekt"
 
 #: Controller/Traits/UserValidationTrait.php:42
 msgid "User account validated successfully"
@@ -219,51 +251,56 @@ msgstr "Token har återställts. Kontrollera din e-post."
 msgid "User {0} is already active"
 msgstr "Användaren {0} är redan aktiv"
 
-#: Model/Behavior/PasswordBehavior.php:42
-msgid "Reference cannot be null"
-msgstr "Referens får inte vara null"
-
-#: Model/Behavior/PasswordBehavior.php:47
-msgid "Token expiration cannot be empty"
-msgstr "Giltighet för token kan inte vara tom"
-
-#: Model/Behavior/PasswordBehavior.php:53
-msgid "User not found"
-msgstr "Användaren hittades inte"
-
-#: Model/Behavior/PasswordBehavior.php:95
-msgid "{0}Your reset password link"
-msgstr "{0} Din länk för att återställa lösenord"
-
-#: Model/Behavior/PasswordBehavior.php:119
-msgid "The old password does not match"
-msgstr "Det gamla lösenordet stämmer inte"
-
-#: Model/Behavior/RegisterBehavior.php:65
+#: Email/EmailSender.php:39
 msgid "Your account validation link"
 msgstr "Din länk för att validera kontot"
 
-#: Model/Behavior/RegisterBehavior.php:86
-msgid "User not found for the given token and email."
-msgstr "Hittade ingen användare som matchar angivet token eller epost"
+#: Mailer/UsersMailer.php:55
+msgid "{0}Your reset password link"
+msgstr "{0} Din länk för att återställa lösenord"
 
-#: Model/Behavior/RegisterBehavior.php:89
-msgid "Token has already expired user with no token"
-msgstr "Token har redan gått ut eller användare utan token"
-
-#: Model/Behavior/RegisterBehavior.php:108
-msgid "User account already validated"
-msgstr "Kontot är redan aktiverat!"
-
-#: Model/Behavior/SocialAccountBehavior.php:82
+#: Mailer/UsersMailer.php:78
 msgid "{0}Your social account validation link"
 msgstr "{0} Din sociala konto svalideringslänk"
 
-#: Model/Behavior/SocialAccountBehavior.php:109;136
+#: Model/Behavior/PasswordBehavior.php:56
+msgid "Reference cannot be null"
+msgstr "Referens får inte vara null"
+
+#: Model/Behavior/PasswordBehavior.php:61
+msgid "Token expiration cannot be empty"
+msgstr "Giltighet för token kan inte vara tom"
+
+#: Model/Behavior/PasswordBehavior.php:67;115
+msgid "User not found"
+msgstr "Användaren hittades inte"
+
+#: Model/Behavior/PasswordBehavior.php:71
+#: Model/Behavior/RegisterBehavior.php:110
+msgid "User account already validated"
+msgstr "Kontot är redan aktiverat!"
+
+#: Model/Behavior/PasswordBehavior.php:78
+msgid "User not active"
+msgstr ""
+
+#: Model/Behavior/PasswordBehavior.php:120
+msgid "The old password does not match"
+msgstr "Det gamla lösenordet stämmer inte"
+
+#: Model/Behavior/RegisterBehavior.php:88
+msgid "User not found for the given token and email."
+msgstr "Hittade ingen användare som matchar angivet token eller epost"
+
+#: Model/Behavior/RegisterBehavior.php:91
+msgid "Token has already expired user with no token"
+msgstr "Token har redan gått ut eller användare utan token"
+
+#: Model/Behavior/SocialAccountBehavior.php:101;128
 msgid "Account already validated"
 msgstr "Kontot är redan aktiverat!"
 
-#: Model/Behavior/SocialAccountBehavior.php:112;139
+#: Model/Behavior/SocialAccountBehavior.php:104;131
 msgid "Account not found for the given token and email."
 msgstr "Kontot hittades inte för givet token och e-post."
 
@@ -271,19 +308,19 @@ msgstr "Kontot hittades inte för givet token och e-post."
 msgid "Unable to login user with reference {0}"
 msgstr "Det går inte att logga in användaren med refrens {0}"
 
-#: Model/Behavior/SocialBehavior.php:98
+#: Model/Behavior/SocialBehavior.php:97
 msgid "Email not present"
 msgstr "Epost saknas"
 
-#: Model/Table/UsersTable.php:80
+#: Model/Table/UsersTable.php:81
 msgid "Your password does not match your confirm password. Please try again"
 msgstr "Dina lösenord matchar inte. Vänligen försök igen."
 
-#: Model/Table/UsersTable.php:158
+#: Model/Table/UsersTable.php:159
 msgid "Username already exists"
 msgstr "Användarnamnet är upptaget"
 
-#: Model/Table/UsersTable.php:164
+#: Model/Table/UsersTable.php:165
 msgid "Email already exists"
 msgstr "E-postadressen finns redan"
 
@@ -415,13 +452,13 @@ msgstr ""
 msgid "The user was not found."
 msgstr "Användaren hittades inte."
 
-#: Shell/UsersShell.php:327
-msgid "The user {0} was deleted successfully"
-msgstr "Användaren {0} har tagits bort"
-
 #: Shell/UsersShell.php:329
 msgid "The user {0} was not deleted. Please try again"
 msgstr "Användaren {0} raderades ej. Var god försök igen"
+
+#: Shell/UsersShell.php:331
+msgid "The user {0} was deleted successfully"
+msgstr "Användaren {0} har tagits bort"
 
 #: Template/Email/html/reset_password.ctp:21
 #: Template/Email/html/social_account_validation.ctp:14
@@ -498,15 +535,15 @@ msgstr "Lista användare"
 msgid "List Accounts"
 msgstr "Lista konton"
 
-#: Template/Users/add.ctp:22 Template/Users/register.ctp:15
+#: Template/Users/add.ctp:22 Template/Users/register.ctp:16
 msgid "Add User"
 msgstr "Ny användare"
 
 #: Template/Users/add.ctp:32 Template/Users/change_password.ctp:17
-#: Template/Users/edit.ctp:42 Template/Users/register.ctp:27
+#: Template/Users/edit.ctp:42 Template/Users/register.ctp:32
 #: Template/Users/request_reset_password.ctp:8
 #: Template/Users/resend_token_validation.ctp:20
-#: Template/Users/social_email.ctp:20
+#: Template/Users/social_email.ctp:19
 msgid "Submit"
 msgstr "Skicka"
 
@@ -560,15 +597,15 @@ msgstr "nästa"
 msgid "Please enter your username and password"
 msgstr "Ange ditt användarnamn och lösenord"
 
-#: Template/Users/login.ctp:26
+#: Template/Users/login.ctp:29
 msgid "Remember me"
 msgstr "Kom ihåg mig"
 
-#: Template/Users/login.ctp:55
+#: Template/Users/login.ctp:48
 msgid "Login"
 msgstr "Loggin"
 
-#: Template/Users/profile.ctp:18 View/Helper/UserHelper.php:63
+#: Template/Users/profile.ctp:18 View/Helper/UserHelper.php:51
 msgid "{0} {1}"
 msgstr "{0} {1}"
 
@@ -604,7 +641,7 @@ msgstr "Länk"
 msgid "Link to {0}"
 msgstr "Länk till {0}"
 
-#: Template/Users/register.ctp:23
+#: Template/Users/register.ctp:25
 msgid "Accept TOS conditions?"
 msgstr "Jag accepterar villkoren"
 
@@ -688,21 +725,28 @@ msgstr "Referens"
 msgid "Data"
 msgstr "Data"
 
-#: View/Helper/UserHelper.php:62
+#: View/Helper/UserHelper.php:49
 msgid "fa fa-{0}"
 msgstr "fa fa-{0}"
 
-#: View/Helper/UserHelper.php:64
+#: View/Helper/UserHelper.php:52
 msgid "btn btn-social btn-{0} "
 msgstr "btn btn-social btn-{0} "
 
-#: View/Helper/UserHelper.php:77
+#: View/Helper/UserHelper.php:90
 msgid "Logout"
 msgstr "Logga ut"
 
-#: View/Helper/UserHelper.php:115
+#: View/Helper/UserHelper.php:139
 msgid "Welcome, {0}"
 msgstr "Välkommen, {0}"
+
+#: View/Helper/UserHelper.php:161
+msgid "reCaptcha is not configured! Please configure Users.reCaptcha.key"
+msgstr ""
+
+#~ msgid "SocialAccount already active"
+#~ msgstr "SocialAccount redan aktivt"
 
 #~ msgid "There was an error associating your social network account"
 #~ msgstr "Det gick inte att associera ditt sociala nätverkskonto"

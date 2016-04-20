@@ -56,7 +56,7 @@ class SocialAccountsController extends AppController
         } catch (RecordNotFoundException $exception) {
             $this->Flash->error(__d('Users', 'Invalid token and/or social account'));
         } catch (AccountAlreadyActiveException $exception) {
-            $this->Flash->error(__d('Users', 'SocialAccount already active'));
+            $this->Flash->error(__d('Users', 'Social Account already active'));
         } catch (Exception $exception) {
             $this->Flash->error(__d('Users', 'Social Account could not be validated'));
         }

@@ -6,7 +6,7 @@ CakeDC Users Plugin
 [![Latest Version](https://poser.pugx.org/CakeDC/users/v/stable.png)](https://packagist.org/packages/CakeDC/users)
 [![License](https://poser.pugx.org/CakeDC/users/license.svg)](https://packagist.org/packages/CakeDC/users)
 
-IMPORTANT: 3.1.x version is BETA status now, we are still improving and testing it.
+IMPORTANT: 3.2.x version is BETA status now.
 
 Versions and branches
 ---------------------
@@ -46,8 +46,8 @@ Another decision made was limiting the plugin dependencies on other packages as 
 Requirements
 ------------
 
-* CakePHP 3.1+
-* PHP 5.4.16+ Note CakePHP 3.2 requires PHP 5.5 so 5.4 compatibility would be dropped sooner than later...
+* CakePHP 3.2+
+* PHP 5.5.9+
 
 Documentation
 -------------
