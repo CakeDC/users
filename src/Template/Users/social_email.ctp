@@ -16,7 +16,6 @@
         <legend><?= __d('Users', 'Please enter your email') ?></legend>
         <?= $this->Form->input('email') ?>
     </fieldset>
-    <?= $this->User->addReCaptcha(); ?>
     <?= $this->Form->button(__d('Users', 'Submit')); ?>
     <?= $this->Form->end() ?>
 </div>

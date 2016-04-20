@@ -34,19 +34,6 @@ class UserHelper extends Helper
     protected $_defaultConfig = [];
 
     /**
-     * beforeLayout callback loads reCaptcha if enabled
-     *
-     * @param Event $event event
-     * @return void
-     */
-    public function beforeLayout(Event $event)
-    {
-        if (Configure::read('Users.Registration.reCaptcha')) {
-            $this->addReCaptchaScript();
-        }
-    }
-
-    /**
      * Social login link
      *
      * @param string $name name
@@ -58,11 +45,37 @@ class UserHelper extends Helper
         if (empty($options['label'])) {
             $options['label'] = 'Sign in with';
         }
-        return $this->Html->link($this->Html->tag('i', '', [
-                'class' => __d('Users', 'fa fa-{0}', strtolower($name)),
-            ]) . __d('Users', '{0} {1}', Hash::get($options, 'label'), Inflector::camelize($name)), "/auth/$name", [
-            'escape' => false, 'class' => __d('Users', 'btn btn-social btn-{0} ' . Hash::get($options, 'class') ? :'', strtolower($name))
-            ]);
+        $icon = $this->Html->tag('i', '', [
+            'class' => __d('Users', 'fa fa-{0}', strtolower($name)),
+        ]);
+        $providerTitle = __d('Users', '{0} {1}', Hash::get($options, 'label'), Inflector::camelize($name));
+        $providerClass = __d('Users', 'btn btn-social btn-{0} ' . Hash::get($options, 'class') ?: '', strtolower($name));
+        return $this->Html->link($icon . $providerTitle, "/auth/$name", [
+            'escape' => false, 'class' => $providerClass
+        ]);
+    }
+
+    /**
+     * All available Social Login Icons
+     *
+     * @return array Links to Social Login Urls
+     */
+    public function socialLoginList()
+    {
+        if (!Configure::read('Users.Social.login')) {
+            return [];
+        }
+        $outProviders = [];
+        $providers = Configure::read('OAuth.providers');
+        foreach ($providers as $provider => $options) {
+            if (!empty($options['options']['redirectUri']) &&
+                !empty($options['options']['clientId']) &&
+                !empty($options['options']['clientSecret'])) {
+                $outProviders[] = $this->socialLogin($provider);
+            }
+        }
+
+        return $outProviders;
     }
 
     /**
@@ -123,7 +136,7 @@ class UserHelper extends Helper
         }
 
         $profileUrl = Configure::read('Users.Profile.route');
-        $label = __d('Users', 'Welcome, {0}', $this->Html->link($this->request->session()->read('Auth.User.first_name'), $profileUrl));
+        $label = __d('Users', 'Welcome, {0}', $this->Html->link($this->request->session()->read('Auth.User.first_name') ?: $this->request->session()->read('Auth.User.username'), $profileUrl));
         return $this->Html->tag('span', $label, ['class' => 'welcome']);
     }
 
@@ -144,16 +157,14 @@ class UserHelper extends Helper
      */
     public function addReCaptcha()
     {
-        if (!Configure::read('Users.Registration.reCaptcha')) {
-            return false;
+        if (!Configure::read('Users.reCaptcha.key')) {
+            return $this->Html->tag('p', __d('Users', 'reCaptcha is not configured! Please configure Users.reCaptcha.key'));
         }
-        if (!Configure::read('reCaptcha.key')) {
-            return $this->Html->tag('p', __d('Users', 'reCaptcha is not configured! Please configure reCaptcha.key or set Users.Registration.reCaptcha to false'));
-        }
+        $this->addReCaptchaScript();
         $this->Form->unlockField('g-recaptcha-response');
         return $this->Html->tag('div', '', [
             'class' => 'g-recaptcha',
-            'data-sitekey' => Configure::read('reCaptcha.key')
+            'data-sitekey' => Configure::read('Users.reCaptcha.key')
         ]);
     }
 }

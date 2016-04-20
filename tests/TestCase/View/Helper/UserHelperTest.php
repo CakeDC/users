@@ -206,11 +206,9 @@ class UserHelperTest extends TestCase
      */
     public function testAddReCaptcha()
     {
-        $siteKey = Configure::read('reCaptcha.key');
-        Configure::write('reCaptcha.key', 'testKey');
+        Configure::write('Users.reCaptcha.key', 'testKey');
         $result = $this->User->addReCaptcha();
         $this->assertEquals('<div class="g-recaptcha" data-sitekey="testKey"></div>', $result);
-        Configure::write('reCaptcha.key', $siteKey);
     }
 
     /**
@@ -220,11 +218,11 @@ class UserHelperTest extends TestCase
      */
     public function testAddReCaptchaEmpty()
     {
-        Configure::write('Users.Registration.reCaptcha', false);
         $result = $this->User->addReCaptcha();
-        $this->assertFalse($result);
+        $expected = '<p>reCaptcha is not configured! Please configure Users.reCaptcha.key</p>';
+        $this->assertEquals($expected, $result);
     }
-
+    
     /**
      * Test add ReCaptcha field
      *

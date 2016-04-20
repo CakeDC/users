@@ -38,6 +38,16 @@ Configure::write('OAuth.providers.twitter.options.clientSecret', 'YOUR APP SECRE
 
 Or use the config override option when loading the plugin (see above)
 
+Configuration for reCaptcha
+---------------------
+```
+Configure::write('Users.reCaptcha.key', 'YOUR RECAPTCHA KEY');
+Configure::write('Users.reCaptcha.secret', 'YOUR RECAPTCHA SECRET');
+Configure::write('Users.reCaptcha.registration', true); //enable on registration
+Configure::write('Users.reCaptcha.login', true); //enable on login
+```
+
+
 Configuration options
 ---------------------
 
@@ -123,7 +133,7 @@ Using the UsersAuthComponent default initialization, the component will load the
 ## Using the user's email to login
 
 You need to configure 2 things:
-* Change the Auth.authenticate.Form.fields configuration to let AuthComponent use the email instead of the username for user identify. Add this line to your bootstrap.ctp file, after CakeDC/Users Plugin is loaded
+* Change the Auth.authenticate.Form.fields configuration to let AuthComponent use the email instead of the username for user identify. Add this line to your bootstrap.php file, after CakeDC/Users Plugin is loaded
 
 ```php
 Configure::write('Auth.authenticate.Form.fields.username', 'email');

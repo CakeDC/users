@@ -15,9 +15,6 @@ Router::plugin('CakeDC/Users', ['path' => '/users'], function ($routes) {
         $routes->fallbacks('DashedRoute');
     });
 
-//if (!Configure::check('OAuth.path')) {
-//    Configure::load('CakeDC/Users.users');
-//}
 Router::connect('/auth/twitter', [
         'plugin' => 'CakeDC/Users',
         'controller' => 'Users',
