@@ -63,7 +63,7 @@ trait PasswordManagementTrait
             } catch (UserNotFoundException $exception) {
                 $this->Flash->error(__d('Users', 'User was not found'));
             } catch (WrongPasswordException $wpe) {
-                $this->Flash->error(__d('Users', 'The current password does not match'));
+                $this->Flash->error(__d('Users', '{0}', $wpe->getMessage()));
             } catch (Exception $exception) {
                 $this->Flash->error(__d('Users', 'Password could not be changed'));
             }

@@ -117,7 +117,10 @@ class PasswordBehavior extends Behavior
 
         if (!empty($user->current_password)) {
             if (!$user->checkPassword($user->current_password, $currentUser->password)) {
-                throw new WrongPasswordException(__d('Users', 'The old password does not match'));
+                throw new WrongPasswordException(__d('Users', 'The current password does not match'));
+            }
+            if ($user->current_password === $user->password_confirm) {
+                throw new WrongPasswordException(__d('Users', 'You cannot use the current password as the new one'));
             }
         }
         $user = $this->_table->save($user);
