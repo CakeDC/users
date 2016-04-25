@@ -532,3 +532,6 @@ msgstr ""
 msgid "Welcome, {0}"
 msgstr ""
 
+#: Model/Behavior/RegisterBehavior.php:147
+msgid "This field is required"
+msgstr ""

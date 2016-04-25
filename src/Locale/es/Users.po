@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CakeDC Users\n"
 "POT-Creation-Date: 2016-03-07 20:35+0000\n"
-"PO-Revision-Date: 2016-04-15 17:47+0100\n"
+"PO-Revision-Date: 2016-04-25 16:30+0100\n"
 "Language-Team: CakeDC <contact@cakedc.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -538,3 +538,7 @@ msgstr "Salir"
 #: View/Helper/UserHelper.php:109
 msgid "Welcome, {0}"
 msgstr "Bienvenido, {0}"
+
+#: Model/Behavior/RegisterBehavior.php:147
+msgid "This field is required"
+msgstr "Este campo es requerido"
