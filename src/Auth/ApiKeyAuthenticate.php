@@ -50,6 +50,24 @@ class ApiKeyAuthenticate extends BaseAuthenticate
      */
     public function authenticate(Request $request, Response $response)
     {
+        return $this->getUser($request);
+    }
+
+    /**
+     * Stateless Authentication System
+     * http://book.cakephp.org/3.0/en/controllers/components/authentication.html#creating-stateless-authentication-systems
+     *
+     * Config:
+     *   $this->Auth->config('storage', 'Memory');
+     *   $this->Auth->config('unauthorizedRedirect', 'false');
+     *   $this->Auth->config('checkAuthIn', 'Controller.initialize');
+     *   $this->Auth->config('loginAction', false);
+     *
+     * @param Request $request Cake request object.
+     * @return mixed
+     */
+    public function getUser(Request $request)
+    {
         $type = $this->config('type');
         if (!in_array($type, $this->types)) {
             throw new OutOfBoundsException(__d('Users', 'Type {0} is not valid', $type));
