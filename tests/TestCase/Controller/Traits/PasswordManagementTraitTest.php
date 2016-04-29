@@ -99,8 +99,10 @@ class PasswordManagementTraitTest extends BaseTraitTest
      */
     public function testChangePasswordWithSamePassword()
     {
-        $this->assertEquals('$2y$10$IPPgJNSfvATsMBLbv/2r8OtpyTBibyM1g5GDxD4PivW9qBRwRkRbC', 
-            $this->table->get('00000000-0000-0000-0000-000000000006')->password);
+        $this->assertEquals(
+            '$2y$10$IPPgJNSfvATsMBLbv/2r8OtpyTBibyM1g5GDxD4PivW9qBRwRkRbC',
+            $this->table->get('00000000-0000-0000-0000-000000000006')->password
+        );
         $this->_mockRequestPost();
         $this->_mockAuthLoggedIn(['id' => '00000000-0000-0000-0000-000000000006', 'password' => '$2y$10$IPPgJNSfvATsMBLbv/2r8OtpyTBibyM1g5GDxD4PivW9qBRwRkRbC']);
         $this->_mockFlash();
@@ -124,8 +126,10 @@ class PasswordManagementTraitTest extends BaseTraitTest
      */
     public function testChangePasswordWithWrongCurrentPassword()
     {
-        $this->assertEquals('$2y$10$IPPgJNSfvATsMBLbv/2r8OtpyTBibyM1g5GDxD4PivW9qBRwRkRbC',
-            $this->table->get('00000000-0000-0000-0000-000000000006')->password);
+        $this->assertEquals(
+            '$2y$10$IPPgJNSfvATsMBLbv/2r8OtpyTBibyM1g5GDxD4PivW9qBRwRkRbC',
+            $this->table->get('00000000-0000-0000-0000-000000000006')->password
+        );
         $this->_mockRequestPost();
         $this->_mockAuthLoggedIn(['id' => '00000000-0000-0000-0000-000000000006', 'password' => '$2y$10$IPPgJNSfvATsMBLbv/2r8OtpyTBibyM1g5GDxD4PivW9qBRwRkRbC']);
         $this->_mockFlash();
