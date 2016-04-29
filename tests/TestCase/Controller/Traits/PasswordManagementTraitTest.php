@@ -97,6 +97,60 @@ class PasswordManagementTraitTest extends BaseTraitTest
      *
      * @return void
      */
+    public function testChangePasswordWithSamePassword()
+    {
+        $this->assertEquals(
+            '$2y$10$IPPgJNSfvATsMBLbv/2r8OtpyTBibyM1g5GDxD4PivW9qBRwRkRbC',
+            $this->table->get('00000000-0000-0000-0000-000000000006')->password
+        );
+        $this->_mockRequestPost();
+        $this->_mockAuthLoggedIn(['id' => '00000000-0000-0000-0000-000000000006', 'password' => '$2y$10$IPPgJNSfvATsMBLbv/2r8OtpyTBibyM1g5GDxD4PivW9qBRwRkRbC']);
+        $this->_mockFlash();
+        $this->Trait->request->expects($this->once())
+            ->method('data')
+            ->will($this->returnValue([
+                'current_password' => '12345',
+                'password' => '12345',
+                'password_confirm' => '12345',
+            ]));
+        $this->Trait->Flash->expects($this->once())
+            ->method('error')
+            ->with('You cannot use the current password as the new one');
+        $this->Trait->changePassword();
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testChangePasswordWithWrongCurrentPassword()
+    {
+        $this->assertEquals(
+            '$2y$10$IPPgJNSfvATsMBLbv/2r8OtpyTBibyM1g5GDxD4PivW9qBRwRkRbC',
+            $this->table->get('00000000-0000-0000-0000-000000000006')->password
+        );
+        $this->_mockRequestPost();
+        $this->_mockAuthLoggedIn(['id' => '00000000-0000-0000-0000-000000000006', 'password' => '$2y$10$IPPgJNSfvATsMBLbv/2r8OtpyTBibyM1g5GDxD4PivW9qBRwRkRbC']);
+        $this->_mockFlash();
+        $this->Trait->request->expects($this->once())
+            ->method('data')
+            ->will($this->returnValue([
+                'current_password' => 'wrong-password',
+                'password' => '12345',
+                'password_confirm' => '12345',
+            ]));
+        $this->Trait->Flash->expects($this->once())
+            ->method('error')
+            ->with('The current password does not match');
+        $this->Trait->changePassword();
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
     public function testChangePasswordWithInvalidUser()
     {
         $this->_mockRequestPost();
