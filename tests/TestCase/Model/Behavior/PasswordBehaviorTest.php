@@ -69,7 +69,7 @@ class PasswordBehaviorTest extends TestCase
      */
     public function testResetToken()
     {
-        $user = $this->table->findAllByUsername('user-1')->first();
+        $user = $this->table->findByUsername('user-1')->first();
         $token = $user->token;
         $this->Behavior->Email->expects($this->never())
                 ->method('sendResetPasswordEmail')
@@ -89,7 +89,7 @@ class PasswordBehaviorTest extends TestCase
      */
     public function testResetTokenSendEmail()
     {
-        $user = $this->table->findAllByUsername('user-1')->first();
+        $user = $this->table->findByUsername('user-1')->first();
         $token = $user->token;
         $tokenExpires = $user->token_expires;
         $this->Behavior->Email->expects($this->once())
@@ -134,7 +134,7 @@ class PasswordBehaviorTest extends TestCase
      */
     public function testResetTokenUserAlreadyActive()
     {
-        $activeUser = TableRegistry::get('CakeDC/Users.Users')->findAllByUsername('user-4')->first();
+        $activeUser = TableRegistry::get('CakeDC/Users.Users')->findByUsername('user-4')->first();
         $this->assertTrue($activeUser->active);
         $this->table = $this->getMockForModel('CakeDC/Users.Users', ['save']);
         $this->table->expects($this->never())
@@ -154,7 +154,7 @@ class PasswordBehaviorTest extends TestCase
      */
     public function testResetTokenUserNotActive()
     {
-        $user = TableRegistry::get('CakeDC/Users.Users')->findAllByUsername('user-1')->first();
+        $user = TableRegistry::get('CakeDC/Users.Users')->findByUsername('user-1')->first();
         $this->Behavior->resetToken('user-1', [
             'ensureActive' => true,
             'expiration' => 3600
