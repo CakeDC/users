@@ -116,6 +116,17 @@ class PasswordBehaviorTest extends TestCase
     }
 
     /**
+     * Test resetTokenNoExpiration
+     *
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Token expiration cannot be empty
+     */
+    public function testResetTokenNoExpiration()
+    {
+        $this->Behavior->resetToken('ref');
+    }
+
+    /**
      * Test resetToken
      *
      * @expectedException CakeDC\Users\Exception\UserNotFoundException
