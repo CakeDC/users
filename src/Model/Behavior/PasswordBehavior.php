@@ -95,7 +95,7 @@ class PasswordBehavior extends Behavior
      */
     protected function _getUser($reference)
     {
-        return $this->_table->findAllByUsernameOrEmail($reference, $reference)->first();
+        return $this->_table->findByUsernameOrEmail($reference, $reference)->first();
     }
 
     /**
