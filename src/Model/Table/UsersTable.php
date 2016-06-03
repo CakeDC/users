@@ -178,7 +178,29 @@ class UsersTable extends Table
      */
     public function findActive(Query $query, array $options = [])
     {
-        $query->where(["{$this->_alias}.active" => 1]);
+        $query->where([$this->aliasField('active') => 1]);
+        return $query;
+    }
+
+    /**
+     * Custom finder to log in users
+     *
+     * @param Query $query Query object to modify
+     * @param array $options Query options
+     * @return Query
+     * @throws \BadMethodCallException
+     */
+    public function findAuth(Query $query, array $options = [])
+    {
+        $identifier = Hash::get($options, 'username');
+        if (empty($identifier)) {
+            throw new \BadMethodCallException(__d('Users', 'Missing \'username\' in options data'));
+        }
+
+        $query
+            ->orWhere([$this->aliasField('email') => $identifier])
+            ->find('active', $options);
+
         return $query;
     }
 }
