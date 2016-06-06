@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CakeDC Users\n"
 "POT-Creation-Date: 2016-04-20 09:48-0300\n"
-"PO-Revision-Date: 2016-04-20 09:49-0300\n"
+"PO-Revision-Date: 2016-06-06 09:50+0100\n"
 "Last-Translator: André Teixeira <hello@andtxr.com>\n"
 "Language-Team: CakeDC <contact@cakedc.com>\n"
 "Language: es_ES\n"
@@ -325,6 +325,10 @@ msgstr "Nombre de usuario ya existente"
 #: Model/Table/UsersTable.php:165
 msgid "Email already exists"
 msgstr "Email ya existente"
+
+#: Model/Table/UsersTable.php:197
+msgid "Missing 'username' in options data"
+msgstr "Falta 'username' en los datos de opciones"
 
 #: Shell/UsersShell.php:54
 msgid "Utilities for CakeDC Users Plugin"

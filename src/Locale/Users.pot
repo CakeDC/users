@@ -309,6 +309,10 @@ msgstr ""
 msgid "Email already exists"
 msgstr ""
 
+#: Model/Table/UsersTable.php:197
+msgid "Missing \'username\' in options data"
+msgstr ""
+
 #: Shell/UsersShell.php:54
 msgid "Utilities for CakeDC Users Plugin"
 msgstr ""
