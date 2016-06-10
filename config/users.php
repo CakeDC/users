@@ -91,7 +91,7 @@ $config = [
             ]
         ],
     ],
-//default configuration used to auto-load the Auth Component, override to change the way Auth works
+    //default configuration used to auto-load the Auth Component, override to change the way Auth works
     'Auth' => [
         'loginAction' => [
             'plugin' => 'CakeDC/Users',
@@ -101,7 +101,7 @@ $config = [
         ],
         'authenticate' => [
             'all' => [
-                'finder' => 'active',
+                'finder' => 'auth',
             ],
             'CakeDC/Users.ApiKey',
             'CakeDC/Users.RememberMe',

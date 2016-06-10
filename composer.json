@@ -27,7 +27,7 @@
         "source": "https://github.com/CakeDC/users"
     },
     "require": {
-        "cakephp/cakephp": "~3.2"
+        "cakephp/cakephp": ">=3.2.9 <4.0.0"
     },
     "require-dev": {
         "phpunit/phpunit": "*",
