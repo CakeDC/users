@@ -87,6 +87,20 @@ class UsersTable extends Table
     }
 
     /**
+     * Adds rules for current password
+     *
+     * @param Validator $validator Cake validator object.
+     * @return Validator
+     */
+    public function validationCurrentPassword(Validator $validator)
+    {
+        $validator
+            ->notEmpty('current_password');
+
+        return $validator;
+    }
+
+    /**
      * Default validation rules.
      *
      * @param Validator $validator Validator instance.
