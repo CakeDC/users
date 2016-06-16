@@ -258,7 +258,6 @@ class UserHelperTest extends TestCase
      */
     public function testSocialLoginTranslation()
     {
-        $defaultLocale = I18n::locale();
         I18n::locale('es_ES');
         $result = $this->User->socialLogin('facebook');
         $this->assertEquals('<a href="/auth/facebook" class="btn btn-social btn-facebook "><i class="fa fa-facebook"></i>Iniciar sesión con Facebook</a>', $result);
