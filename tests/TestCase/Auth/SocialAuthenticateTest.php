@@ -50,11 +50,10 @@ class SocialAuthenticateTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->controller = $this->getMock(
-            'Cake\Controller\Controller',
-            ['failedSocialLogin'],
-            [$request, $response]
-        );
+        $this->controller = $this->getMockBuilder('Cake\Controller\Controller')
+            ->setMethods(['failedSocialLogin'])
+            ->setConstructorArgs([$request, $response])
+            ->getMock();
 
         $this->Request = $request;
         $this->SocialAuthenticate = $this->_getSocialAuthenticateMockMethods(['_authenticate', '_getProviderName',
@@ -178,7 +177,9 @@ class SocialAuthenticateTest extends TestCase
         $this->SocialAuthenticate = $this->_getSocialAuthenticateMockMethods(['_authenticate',
                 '_getProviderName', '_mapUser', '_touch', '_validateConfig' ]);
 
-        $session = $this->getMock('Cake\Network\Session', ['read', 'delete']);
+        $session = $this->getMockBuilder('Cake\Network\Session')
+                ->setMethods(['read', 'delete'])
+                ->getMock();
         $session->expects($this->once())
             ->method('read')
             ->with('Users.social')
@@ -188,7 +189,9 @@ class SocialAuthenticateTest extends TestCase
             ->method('delete')
             ->with('Users.social');
 
-        $this->Request = $this->getMock('Cake\Network\Request', ['session']);
+        $this->Request = $this->getMockBuilder('Cake\Network\Request')
+                ->setMethods(['session'])
+                ->getMock();
         $this->Request->expects($this->any())
             ->method('session')
             ->will($this->returnValue($session));

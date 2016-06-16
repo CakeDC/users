@@ -63,11 +63,10 @@ class SimpleRbacAuthorizeTest extends TestCase
         $request = new Request();
         $response = new Response();
 
-        $this->controller = $this->getMock(
-            'Cake\Controller\Controller',
-            null,
-            [$request, $response]
-        );
+        $this->controller = $this->getMockBuilder('Cake\Controller\Controller')
+            ->setMethods(null)
+            ->setConstructorArgs([$request, $response])
+            ->getMock();
         $this->registry = new ComponentRegistry($this->controller);
     }
 
@@ -112,11 +111,10 @@ class SimpleRbacAuthorizeTest extends TestCase
      */
     public function testConstructMissingPermissionsFile()
     {
-        $this->simpleRbacAuthorize = $this->getMock(
-            'CakeDC\Users\Auth\SimpleRbacAuthorize',
-            null,
-            [$this->registry, ['autoload_config' => 'does-not-exist']]
-        );
+        $this->simpleRbacAuthorize = $this->getMockBuilder('CakeDC\Users\Auth\SimpleRbacAuthorize')
+            ->setMethods(null)
+            ->setConstructorArgs([$this->registry, ['autoload_config' => 'does-not-exist']])
+            ->getMock();
         //we should have the default permissions
         $this->assertEquals($this->defaultPermissions, $this->simpleRbacAuthorize->config('permissions'));
     }

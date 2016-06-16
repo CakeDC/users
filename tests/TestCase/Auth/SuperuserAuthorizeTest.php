@@ -36,11 +36,10 @@ class SuperuserAuthorizeTest extends TestCase
         $request = new Request();
         $response = new Response();
 
-        $this->controller = $this->getMock(
-            'Cake\Controller\Controller',
-            null,
-            [$request, $response]
-        );
+        $this->controller = $this->getMockBuilder('Cake\Controller\Controller')
+            ->setMethods(null)
+            ->setConstructorArgs([$request, $response])
+            ->getMock();
         $registry = new ComponentRegistry($this->controller);
         $this->superuserAuthorize = new SuperuserAuthorize($registry);
     }

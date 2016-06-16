@@ -36,7 +36,9 @@ class UserHelperTest extends TestCase
     {
         parent::setUp();
         Plugin::routes('CakeDC/Users');
-        $this->View = $this->getMock('Cake\View\View', ['append']);
+        $this->View = $this->getMockBuilder('Cake\View\View')
+                ->setMethods(['append'])
+                ->getMock();
         $this->User = new UserHelper($this->View);
         $this->request = new Request();
     }
@@ -156,7 +158,9 @@ class UserHelperTest extends TestCase
      */
     public function testWelcome()
     {
-        $session = $this->getMock('Cake\Network\Session', ['read']);
+        $session = $this->getMockBuilder('Cake\Network\Session')
+                ->setMethods(['read'])
+                ->getMock();
         $session->expects($this->at(0))
             ->method('read')
             ->with('Auth.User.id')
@@ -167,7 +171,9 @@ class UserHelperTest extends TestCase
             ->with('Auth.User.first_name')
             ->will($this->returnValue('david'));
 
-        $this->User->request = $this->getMock('Cake\Network\Request', ['session']);
+        $this->User->request = $this->getMockBuilder('Cake\Network\Request')
+                ->setMethods(['session'])
+                ->getMock();
         $this->User->request->expects($this->any())
             ->method('session')
             ->will($this->returnValue($session));
@@ -184,13 +190,17 @@ class UserHelperTest extends TestCase
      */
     public function testWelcomeNotLoggedInUser()
     {
-        $session = $this->getMock('Cake\Network\Session', ['read']);
+        $session = $this->getMockBuilder('Cake\Network\Session')
+                ->setMethods(['read'])
+                ->getMock();
         $session->expects($this->at(0))
             ->method('read')
             ->with('Auth.User.id')
             ->will($this->returnValue(null));
 
-        $this->User->request = $this->getMock('Cake\Network\Request', ['session']);
+        $this->User->request = $this->getMockBuilder('Cake\Network\Request')
+                ->setMethods(['session'])
+                ->getMock();
         $this->User->request->expects($this->any())
             ->method('session')
             ->will($this->returnValue($session));
@@ -222,7 +232,7 @@ class UserHelperTest extends TestCase
         $expected = '<p>reCaptcha is not configured! Please configure Users.reCaptcha.key</p>';
         $this->assertEquals($expected, $result);
     }
-    
+
     /**
      * Test add ReCaptcha field
      *
