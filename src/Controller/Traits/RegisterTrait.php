@@ -70,13 +70,13 @@ trait RegisterTrait
         }
 
         if (!$this->_validateRegisterPost()) {
-            $this->Flash->error(__d('Users', 'Invalid reCaptcha'));
+            $this->Flash->error(__d('CakeDC/Users', 'Invalid reCaptcha'));
             return;
         }
 
         $userSaved = $usersTable->register($user, $requestData, $options);
         if (!$userSaved) {
-            $this->Flash->error(__d('Users', 'The user could not be saved'));
+            $this->Flash->error(__d('CakeDC/Users', 'The user could not be saved'));
             return;
         }
 
@@ -108,9 +108,9 @@ trait RegisterTrait
     protected function _afterRegister(EntityInterface $userSaved)
     {
         $validateEmail = (bool)Configure::read('Users.Email.validate');
-        $message = __d('Users', 'You have registered successfully, please log in');
+        $message = __d('CakeDC/Users', 'You have registered successfully, please log in');
         if ($validateEmail) {
-            $message = __d('Users', 'Please validate your account before log in');
+            $message = __d('CakeDC/Users', 'Please validate your account before log in');
         }
         $event = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_REGISTER, [
             'user' => $userSaved

@@ -73,10 +73,10 @@ trait SimpleCrudTrait
         $entity = $table->patchEntity($entity, $this->request->data);
         $singular = Inflector::singularize(Inflector::humanize($tableAlias));
         if ($table->save($entity)) {
-            $this->Flash->success(__d('Users', 'The {0} has been saved', $singular));
+            $this->Flash->success(__d('CakeDC/Users', 'The {0} has been saved', $singular));
             return $this->redirect(['action' => 'index']);
         }
-        $this->Flash->error(__d('Users', 'The {0} could not be saved', $singular));
+        $this->Flash->error(__d('CakeDC/Users', 'The {0} could not be saved', $singular));
     }
 
     /**
@@ -102,10 +102,10 @@ trait SimpleCrudTrait
         $entity = $table->patchEntity($entity, $this->request->data);
         $singular = Inflector::singularize(Inflector::humanize($tableAlias));
         if ($table->save($entity)) {
-            $this->Flash->success(__d('Users', 'The {0} has been saved', $singular));
+            $this->Flash->success(__d('CakeDC/Users', 'The {0} has been saved', $singular));
             return $this->redirect(['action' => 'index']);
         }
-        $this->Flash->error(__d('Users', 'The {0} could not be saved', $singular));
+        $this->Flash->error(__d('CakeDC/Users', 'The {0} could not be saved', $singular));
     }
 
     /**
@@ -125,9 +125,9 @@ trait SimpleCrudTrait
         ]);
         $singular = Inflector::singularize(Inflector::humanize($tableAlias));
         if ($table->delete($entity)) {
-            $this->Flash->success(__d('Users', 'The {0} has been deleted', $singular));
+            $this->Flash->success(__d('CakeDC/Users', 'The {0} has been deleted', $singular));
         } else {
-            $this->Flash->error(__d('Users', 'The {0} could not be deleted', $singular));
+            $this->Flash->error(__d('CakeDC/Users', 'The {0} could not be deleted', $singular));
         }
         return $this->redirect(['action' => 'index']);
     }

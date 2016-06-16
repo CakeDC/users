@@ -53,29 +53,29 @@ class PasswordBehavior extends Behavior
     public function resetToken($reference, array $options = [])
     {
         if (empty($reference)) {
-            throw new InvalidArgumentException(__d('Users', "Reference cannot be null"));
+            throw new InvalidArgumentException(__d('CakeDC/Users', "Reference cannot be null"));
         }
 
         $expiration = Hash::get($options, 'expiration');
         if (empty($expiration)) {
-            throw new InvalidArgumentException(__d('Users', "Token expiration cannot be empty"));
+            throw new InvalidArgumentException(__d('CakeDC/Users', "Token expiration cannot be empty"));
         }
 
         $user = $this->_getUser($reference);
 
         if (empty($user)) {
-            throw new UserNotFoundException(__d('Users', "User not found"));
+            throw new UserNotFoundException(__d('CakeDC/Users', "User not found"));
         }
         if (Hash::get($options, 'checkActive')) {
             if ($user->active) {
-                throw new UserAlreadyActiveException(__d('Users', "User account already validated"));
+                throw new UserAlreadyActiveException(__d('CakeDC/Users', "User account already validated"));
             }
             $user->active = false;
             $user->activation_date = null;
         }
         if (Hash::get($options, 'ensureActive')) {
             if (!$user['active']) {
-                throw new UserNotActiveException(__d('Users', "User not active"));
+                throw new UserNotActiveException(__d('CakeDC/Users', "User not active"));
             }
         }
         $user->updateToken($expiration);
@@ -112,15 +112,15 @@ class PasswordBehavior extends Behavior
                 'contain' => []
             ]);
         } catch (RecordNotFoundException $e) {
-            throw new UserNotFoundException(__d('Users', "User not found"));
+            throw new UserNotFoundException(__d('CakeDC/Users', "User not found"));
         }
 
         if (!empty($user->current_password)) {
             if (!$user->checkPassword($user->current_password, $currentUser->password)) {
-                throw new WrongPasswordException(__d('Users', 'The current password does not match'));
+                throw new WrongPasswordException(__d('CakeDC/Users', 'The current password does not match'));
             }
             if ($user->current_password === $user->password_confirm) {
-                throw new WrongPasswordException(__d('Users', 'You cannot use the current password as the new one'));
+                throw new WrongPasswordException(__d('CakeDC/Users', 'You cannot use the current password as the new one'));
             }
         }
         $user = $this->_table->save($user);

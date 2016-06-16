@@ -13,7 +13,7 @@ use Cake\Core\Configure;
 <div class="users form large-10 medium-9 columns">
     <?= $this->Form->create($user); ?>
     <fieldset>
-        <legend><?= __d('Users', 'Add User') ?></legend>
+        <legend><?= __d('CakeDC/Users', 'Add User') ?></legend>
         <?php
         echo $this->Form->input('username');
         echo $this->Form->input('email');
@@ -22,13 +22,13 @@ use Cake\Core\Configure;
         echo $this->Form->input('first_name');
         echo $this->Form->input('last_name');
         if (Configure::read('Users.Tos.required')) {
-            echo $this->Form->input('tos', ['type' => 'checkbox', 'label' => __d('Users', 'Accept TOS conditions?'), 'required' => true]);
+            echo $this->Form->input('tos', ['type' => 'checkbox', 'label' => __d('CakeDC/Users', 'Accept TOS conditions?'), 'required' => true]);
         }
         if (Configure::read('Users.reCaptcha.registration')) {
             echo $this->User->addReCaptcha();
         }
         ?>
     </fieldset>
-    <?= $this->Form->button(__d('Users', 'Submit')) ?>
+    <?= $this->Form->button(__d('CakeDC/Users', 'Submit')) ?>
     <?= $this->Form->end() ?>
 </div>
