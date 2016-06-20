@@ -407,7 +407,7 @@ class SocialAuthenticate extends BaseAuthenticate
     protected function _mapUser($provider, $data)
     {
         if (empty($provider)) {
-            throw new MissingProviderException(__d('Users', "Provider cannot be empty"));
+            throw new MissingProviderException(__d('CakeDC/Users', "Provider cannot be empty"));
         }
         $providerMapperClass = "\\CakeDC\\Users\\Auth\\Social\\Mapper\\$provider";
         $providerMapper = new $providerMapperClass($data);

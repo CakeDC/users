@@ -715,6 +715,10 @@ msgstr ""
 msgid "Data"
 msgstr ""
 
+#: View/Helper/UserHelper.php:46
+msgid "Sign in with"
+msgstr ""
+
 #: View/Helper/UserHelper.php:49
 msgid "fa fa-{0}"
 msgstr ""

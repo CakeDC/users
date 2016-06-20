@@ -64,10 +64,10 @@ class Owner extends AbstractRule
 
         try {
             if (!$table->hasField($this->config('ownerForeignKey'))) {
-                throw new OutOfBoundsException(__d('Users', 'Missing column {0} in table {1} while checking ownership permissions for user {2}', $this->config('ownerForeignKey'), $table->alias(), $userId));
+                throw new OutOfBoundsException(__d('CakeDC/Users', 'Missing column {0} in table {1} while checking ownership permissions for user {2}', $this->config('ownerForeignKey'), $table->alias(), $userId));
             }
         } catch (Exception $ex) {
-            throw new OutOfBoundsException(__d('Users', 'Missing column {0} in table {1} while checking ownership permissions for user {2}', $this->config('ownerForeignKey'), $table->alias(), $userId));
+            throw new OutOfBoundsException(__d('CakeDC/Users', 'Missing column {0} in table {1} while checking ownership permissions for user {2}', $this->config('ownerForeignKey'), $table->alias(), $userId));
         }
         $idColumn = $this->config('id');
         if (empty($idColumn)) {

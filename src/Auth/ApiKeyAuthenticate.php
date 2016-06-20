@@ -70,11 +70,11 @@ class ApiKeyAuthenticate extends BaseAuthenticate
     {
         $type = $this->config('type');
         if (!in_array($type, $this->types)) {
-            throw new OutOfBoundsException(__d('Users', 'Type {0} is not valid', $type));
+            throw new OutOfBoundsException(__d('CakeDC/Users', 'Type {0} is not valid', $type));
         }
 
         if (!is_callable([$this, $type])) {
-            throw new OutOfBoundsException(__d('Users', 'Type {0} has no associated callable', $type));
+            throw new OutOfBoundsException(__d('CakeDC/Users', 'Type {0} has no associated callable', $type));
         }
 
         $apiKey = $this->$type($request);
@@ -83,7 +83,7 @@ class ApiKeyAuthenticate extends BaseAuthenticate
         }
 
         if ($this->config('require_ssl') && !$request->is('ssl')) {
-            throw new ForbiddenException(__d('Users', 'SSL is required for ApiKey Authentication', $type));
+            throw new ForbiddenException(__d('CakeDC/Users', 'SSL is required for ApiKey Authentication', $type));
         }
 
         $this->_config['fields']['username'] = $this->config('field');

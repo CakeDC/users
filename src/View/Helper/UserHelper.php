@@ -43,13 +43,13 @@ class UserHelper extends Helper
     public function socialLogin($name, $options = [])
     {
         if (empty($options['label'])) {
-            $options['label'] = 'Sign in with';
+            $options['label'] = __d('CakeDC/Users', 'Sign in with');
         }
         $icon = $this->Html->tag('i', '', [
-            'class' => __d('Users', 'fa fa-{0}', strtolower($name)),
+            'class' => __d('CakeDC/Users', 'fa fa-{0}', strtolower($name)),
         ]);
-        $providerTitle = __d('Users', '{0} {1}', Hash::get($options, 'label'), Inflector::camelize($name));
-        $providerClass = __d('Users', 'btn btn-social btn-{0} ' . Hash::get($options, 'class') ?: '', strtolower($name));
+        $providerTitle = __d('CakeDC/Users', '{0} {1}', Hash::get($options, 'label'), Inflector::camelize($name));
+        $providerClass = __d('CakeDC/Users', 'btn btn-social btn-{0} ' . Hash::get($options, 'class') ?: '', strtolower($name));
         return $this->Html->link($icon . $providerTitle, "/auth/$name", [
             'escape' => false, 'class' => $providerClass
         ]);
@@ -87,7 +87,7 @@ class UserHelper extends Helper
      */
     public function logout($message = null, $options = [])
     {
-        return $this->Html->link(empty($message) ? __d('Users', 'Logout') : $message, [
+        return $this->Html->link(empty($message) ? __d('CakeDC/Users', 'Logout') : $message, [
             'plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'logout'
             ], $options);
     }
@@ -136,7 +136,7 @@ class UserHelper extends Helper
         }
 
         $profileUrl = Configure::read('Users.Profile.route');
-        $label = __d('Users', 'Welcome, {0}', $this->Html->link($this->request->session()->read('Auth.User.first_name') ?: $this->request->session()->read('Auth.User.username'), $profileUrl));
+        $label = __d('CakeDC/Users', 'Welcome, {0}', $this->Html->link($this->request->session()->read('Auth.User.first_name') ?: $this->request->session()->read('Auth.User.username'), $profileUrl));
         return $this->Html->tag('span', $label, ['class' => 'welcome']);
     }
 
@@ -158,7 +158,7 @@ class UserHelper extends Helper
     public function addReCaptcha()
     {
         if (!Configure::read('Users.reCaptcha.key')) {
-            return $this->Html->tag('p', __d('Users', 'reCaptcha is not configured! Please configure Users.reCaptcha.key'));
+            return $this->Html->tag('p', __d('CakeDC/Users', 'reCaptcha is not configured! Please configure Users.reCaptcha.key'));
         }
         $this->addReCaptchaScript();
         $this->Form->unlockField('g-recaptcha-response');

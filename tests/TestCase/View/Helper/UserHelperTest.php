@@ -16,6 +16,7 @@ use Cake\Core\App;
 use Cake\Core\Configure;
 use Cake\Core\Plugin;
 use Cake\Event\Event;
+use Cake\I18n\I18n;
 use Cake\Network\Request;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
@@ -222,7 +223,7 @@ class UserHelperTest extends TestCase
         $expected = '<p>reCaptcha is not configured! Please configure Users.reCaptcha.key</p>';
         $this->assertEquals($expected, $result);
     }
-    
+
     /**
      * Test add ReCaptcha field
      *
@@ -248,5 +249,18 @@ class UserHelperTest extends TestCase
 
         $result = $this->User->socialLogin('twitter', ['label' => 'Register with']);
         $this->assertEquals('<a href="/auth/twitter" class="btn btn-social btn-twitter "><i class="fa fa-twitter"></i>Register with Twitter</a>', $result);
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testSocialLoginTranslation()
+    {
+        I18n::locale('es_ES');
+        $result = $this->User->socialLogin('facebook');
+        $this->assertEquals('<a href="/auth/facebook" class="btn btn-social btn-facebook "><i class="fa fa-facebook"></i>Iniciar sesión con Facebook</a>', $result);
+        I18n::locale('en_US');
     }
 }

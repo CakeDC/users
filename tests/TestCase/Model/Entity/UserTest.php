@@ -88,6 +88,7 @@ class UserTest extends TestCase
         $this->User->token_expires = '-1 day';
         $isExpired = $this->User->tokenExpired();
         $this->assertTrue($isExpired);
+        I18n::locale('en_US');
     }
 
     /**

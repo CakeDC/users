@@ -50,22 +50,22 @@ trait PasswordManagementTrait
             try {
                 $user = $this->getUsersTable()->patchEntity($user, $this->request->data(), ['validate' => 'passwordConfirm']);
                 if ($user->errors()) {
-                    $this->Flash->error(__d('Users', 'Password could not be changed'));
+                    $this->Flash->error(__d('CakeDC/Users', 'Password could not be changed'));
                 } else {
                     $user = $this->getUsersTable()->changePassword($user);
                     if ($user) {
-                        $this->Flash->success(__d('Users', 'Password has been changed successfully'));
+                        $this->Flash->success(__d('CakeDC/Users', 'Password has been changed successfully'));
                         return $this->redirect($redirect);
                     } else {
-                        $this->Flash->error(__d('Users', 'Password could not be changed'));
+                        $this->Flash->error(__d('CakeDC/Users', 'Password could not be changed'));
                     }
                 }
             } catch (UserNotFoundException $exception) {
-                $this->Flash->error(__d('Users', 'User was not found'));
+                $this->Flash->error(__d('CakeDC/Users', 'User was not found'));
             } catch (WrongPasswordException $wpe) {
-                $this->Flash->error(__d('Users', '{0}', $wpe->getMessage()));
+                $this->Flash->error(__d('CakeDC/Users', '{0}', $wpe->getMessage()));
             } catch (Exception $exception) {
-                $this->Flash->error(__d('Users', 'Password could not be changed'));
+                $this->Flash->error(__d('CakeDC/Users', 'Password could not be changed'));
             }
         }
         $this->set(compact('user'));
@@ -105,19 +105,19 @@ trait PasswordManagementTrait
                 'ensureActive' => true
             ]);
             if ($resetUser) {
-                $msg = __d('Users', 'Please check your email to continue with password reset process');
+                $msg = __d('CakeDC/Users', 'Please check your email to continue with password reset process');
                 $this->Flash->success($msg);
             } else {
-                $msg = __d('Users', 'The password token could not be generated. Please try again');
+                $msg = __d('CakeDC/Users', 'The password token could not be generated. Please try again');
                 $this->Flash->error($msg);
             }
             return $this->redirect(['action' => 'login']);
         } catch (UserNotFoundException $exception) {
-            $this->Flash->error(__d('Users', 'User {0} was not found', $reference));
+            $this->Flash->error(__d('CakeDC/Users', 'User {0} was not found', $reference));
         } catch (UserNotActiveException $exception) {
-            $this->Flash->error(__d('Users', 'The user is not active'));
+            $this->Flash->error(__d('CakeDC/Users', 'The user is not active'));
         } catch (Exception $exception) {
-            $this->Flash->error(__d('Users', 'Token could not be reset'));
+            $this->Flash->error(__d('CakeDC/Users', 'Token could not be reset'));
         }
     }
 }

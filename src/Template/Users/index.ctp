@@ -10,9 +10,9 @@
  */
 ?>
 <div class="actions columns large-2 medium-3">
-    <h3><?= __d('Users', 'Actions') ?></h3>
+    <h3><?= __d('CakeDC/Users', 'Actions') ?></h3>
     <ul class="side-nav">
-        <li><?= $this->Html->link(__d('Users', 'New {0}', $tableAlias), ['action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__d('CakeDC/Users', 'New {0}', $tableAlias), ['action' => 'add']) ?></li>
     </ul>
 </div>
 <div class="users index large-10 medium-9 columns">
@@ -23,7 +23,7 @@
             <th><?= $this->Paginator->sort('email') ?></th>
             <th><?= $this->Paginator->sort('first_name') ?></th>
             <th><?= $this->Paginator->sort('last_name') ?></th>
-            <th class="actions"><?= __d('Users', 'Actions') ?></th>
+            <th class="actions"><?= __d('CakeDC/Users', 'Actions') ?></th>
         </tr>
     </thead>
     <tbody>
@@ -34,10 +34,10 @@
             <td><?= h($user->first_name) ?></td>
             <td><?= h($user->last_name) ?></td>
             <td class="actions">
-                <?= $this->Html->link(__d('Users', 'View'), ['action' => 'view', $user->id]) ?>
-                <?= $this->Html->link(__d('Users', 'Change password'), ['action' => 'changePassword', $user->id]) ?>
-                <?= $this->Html->link(__d('Users', 'Edit'), ['action' => 'edit', $user->id]) ?>
-                <?= $this->Form->postLink(__d('Users', 'Delete'), ['action' => 'delete', $user->id], ['confirm' => __d('Users', 'Are you sure you want to delete # {0}?', $user->id)]) ?>
+                <?= $this->Html->link(__d('CakeDC/Users', 'View'), ['action' => 'view', $user->id]) ?>
+                <?= $this->Html->link(__d('CakeDC/Users', 'Change password'), ['action' => 'changePassword', $user->id]) ?>
+                <?= $this->Html->link(__d('CakeDC/Users', 'Edit'), ['action' => 'edit', $user->id]) ?>
+                <?= $this->Form->postLink(__d('CakeDC/Users', 'Delete'), ['action' => 'delete', $user->id], ['confirm' => __d('CakeDC/Users', 'Are you sure you want to delete # {0}?', $user->id)]) ?>
             </td>
         </tr>
 
@@ -46,9 +46,9 @@
     </table>
     <div class="paginator">
         <ul class="pagination">
-            <?= $this->Paginator->prev('< ' . __d('Users', 'previous')) ?>
+            <?= $this->Paginator->prev('< ' . __d('CakeDC/Users', 'previous')) ?>
             <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__d('Users', 'next') . ' >') ?>
+            <?= $this->Paginator->next(__d('CakeDC/Users', 'next') . ' >') ?>
         </ul>
         <p><?= $this->Paginator->counter() ?></p>
     </div>

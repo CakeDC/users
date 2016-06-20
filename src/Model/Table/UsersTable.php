@@ -78,7 +78,7 @@ class UsersTable extends Table
                 }
                 return true;
             },
-            'message' => __d('Users', 'Your password does not match your confirm password. Please try again'),
+            'message' => __d('CakeDC/Users', 'Your password does not match your confirm password. Please try again'),
             'on' => ['create', 'update'],
             'allowEmpty' => false
         ]);
@@ -156,13 +156,13 @@ class UsersTable extends Table
     {
         $rules->add($rules->isUnique(['username']), '_isUnique', [
             'errorField' => 'username',
-            'message' => __d('Users', 'Username already exists')
+            'message' => __d('CakeDC/Users', 'Username already exists')
         ]);
 
         if ($this->isValidateEmail) {
             $rules->add($rules->isUnique(['email']), '_isUnique', [
                 'errorField' => 'email',
-                'message' => __d('Users', 'Email already exists')
+                'message' => __d('CakeDC/Users', 'Email already exists')
             ]);
         }
 
@@ -194,7 +194,7 @@ class UsersTable extends Table
     {
         $identifier = Hash::get($options, 'username');
         if (empty($identifier)) {
-            throw new \BadMethodCallException(__d('Users', 'Missing \'username\' in options data'));
+            throw new \BadMethodCallException(__d('CakeDC/Users', 'Missing \'username\' in options data'));
         }
 
         $query

@@ -10,16 +10,16 @@
  */
 ?>
 <div class="actions columns large-2 medium-3">
-    <h3><?= __d('Users', 'Actions') ?></h3>
+    <h3><?= __d('CakeDC/Users', 'Actions') ?></h3>
     <ul class="side-nav">
-        <li><?= $this->Html->link(__d('Users', 'List Users'), ['action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__d('Users', 'List Accounts'), ['controller' => 'Accounts', 'action' => 'index']) ?> </li>
+        <li><?= $this->Html->link(__d('CakeDC/Users', 'List Users'), ['action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__d('CakeDC/Users', 'List Accounts'), ['controller' => 'Accounts', 'action' => 'index']) ?> </li>
     </ul>
 </div>
 <div class="users form large-10 medium-9 columns">
     <?= $this->Form->create($Users); ?>
     <fieldset>
-        <legend><?= __d('Users', 'Add User') ?></legend>
+        <legend><?= __d('CakeDC/Users', 'Add User') ?></legend>
         <?php
             echo $this->Form->input('username');
             echo $this->Form->input('email');
@@ -29,6 +29,6 @@
             echo $this->Form->input('active', ['type' => 'checkbox']);
         ?>
     </fieldset>
-    <?= $this->Form->button(__d('Users', 'Submit')) ?>
+    <?= $this->Form->button(__d('CakeDC/Users', 'Submit')) ?>
     <?= $this->Form->end() ?>
 </div>

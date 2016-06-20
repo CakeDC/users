@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CakeDC Users\n"
 "POT-Creation-Date: 2016-04-20 09:48-0300\n"
-"PO-Revision-Date: 2016-06-06 09:50+0100\n"
+"PO-Revision-Date: 2016-06-16 16:43+0100\n"
 "Last-Translator: André Teixeira <hello@andtxr.com>\n"
 "Language-Team: CakeDC <contact@cakedc.com>\n"
 "Language: es_ES\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.8.7\n"
+"X-Generator: Poedit 1.8.8\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
 #: Auth/ApiKeyAuthenticate.php:55
@@ -726,6 +726,10 @@ msgstr "Referencia"
 #: Template/Users/view.ctp:74
 msgid "Data"
 msgstr "Datos"
+
+#: View/Helper/UserHelper.php:46
+msgid "Sign in with"
+msgstr "Iniciar sesión con"
 
 #: View/Helper/UserHelper.php:49
 msgid "fa fa-{0}"
