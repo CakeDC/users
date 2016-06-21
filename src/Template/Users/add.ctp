@@ -17,7 +17,7 @@
     </ul>
 </div>
 <div class="users form large-10 medium-9 columns">
-    <?= $this->Form->create($Users); ?>
+    <?= $this->Form->create(${$tableAlias}); ?>
     <fieldset>
         <legend><?= __d('CakeDC/Users', 'Add User') ?></legend>
         <?php

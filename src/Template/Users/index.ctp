@@ -27,7 +27,7 @@
         </tr>
     </thead>
     <tbody>
-    <?php foreach ($Users as $user): ?>
+    <?php foreach (${$tableAlias} as $user) : ?>
         <tr>
             <td><?= h($user->username) ?></td>
             <td><?= h($user->email) ?></td>
