@@ -59,9 +59,13 @@ class UsersAuthComponentTest extends TestCase
         ]);
         Security::salt('YJfIxfs2guVoUubWDYhG93b0qyJfIxfs2guwvniR2G0FgaC9mi');
         Configure::write('App.namespace', 'Users');
-        $this->request = $this->getMock('Cake\Network\Request', ['is', 'method']);
+        $this->request = $this->getMockBuilder('Cake\Network\Request')
+                ->setMethods(['is', 'method'])
+                ->getMock();
         $this->request->expects($this->any())->method('is')->will($this->returnValue(true));
-        $this->response = $this->getMock('Cake\Network\Response', ['stop']);
+        $this->response = $this->getMockBuilder('Cake\Network\Response')
+                ->setMethods(['stop'])
+                ->getMock();
         $this->Controller = new Controller($this->request, $this->response);
         $this->Registry = $this->Controller->components();
         $this->Controller->UsersAuth = new UsersAuthComponent($this->Registry);
@@ -173,6 +177,7 @@ class UsersAuthComponentTest extends TestCase
             'controller' => 'Users',
             'action' => 'requestResetPassword',
             'pass' => [],
+            '_matchedRoute' => '/route/*',
         ];
         $this->Controller->Auth->expects($this->once())
                 ->method('isAuthorized')
@@ -211,6 +216,7 @@ class UsersAuthComponentTest extends TestCase
             'controller' => 'Users',
             'action' => 'requestResetPassword',
             'pass' => ['pass-one'],
+            '_matchedRoute' => '/route/*',
         ];
         $this->Controller->Auth->expects($this->once())
                 ->method('isAuthorized')
