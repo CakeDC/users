@@ -177,6 +177,7 @@ class UsersAuthComponentTest extends TestCase
             'controller' => 'Users',
             'action' => 'requestResetPassword',
             'pass' => [],
+            '_matchedRoute' => '/route/*',
         ];
         $this->Controller->Auth->expects($this->once())
                 ->method('isAuthorized')
@@ -215,6 +216,7 @@ class UsersAuthComponentTest extends TestCase
             'controller' => 'Users',
             'action' => 'requestResetPassword',
             'pass' => ['pass-one'],
+            '_matchedRoute' => '/route/*',
         ];
         $this->Controller->Auth->expects($this->once())
                 ->method('isAuthorized')
