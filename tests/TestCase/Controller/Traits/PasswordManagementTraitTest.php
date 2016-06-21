@@ -124,6 +124,29 @@ class PasswordManagementTraitTest extends BaseTraitTest
      *
      * @return void
      */
+    public function testChangePasswordWithEmptyCurrentPassword()
+    {
+        $this->_mockRequestPost();
+        $this->_mockAuthLoggedIn(['id' => '00000000-0000-0000-0000-000000000006', 'password' => '$2y$10$IPPgJNSfvATsMBLbv/2r8OtpyTBibyM1g5GDxD4PivW9qBRwRkRbC']);
+        $this->_mockFlash();
+        $this->Trait->request->expects($this->once())
+            ->method('data')
+            ->will($this->returnValue([
+                'current_password' => '',
+                'password' => '54321',
+                'password_confirm' => '54321',
+            ]));
+        $this->Trait->Flash->expects($this->once())
+            ->method('error')
+            ->with('Password could not be changed');
+        $this->Trait->changePassword();
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
     public function testChangePasswordWithWrongCurrentPassword()
     {
         $this->assertEquals(

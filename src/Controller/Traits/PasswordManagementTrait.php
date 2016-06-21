@@ -15,6 +15,7 @@ use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Exception\UserNotFoundException;
 use CakeDC\Users\Exception\WrongPasswordException;
 use Cake\Core\Configure;
+use Cake\Validation\Validator;
 use Exception;
 
 /**
@@ -48,7 +49,11 @@ trait PasswordManagementTrait
         $this->set('validatePassword', $validatePassword);
         if ($this->request->is('post')) {
             try {
-                $user = $this->getUsersTable()->patchEntity($user, $this->request->data(), ['validate' => 'passwordConfirm']);
+                $validator = $this->getUsersTable()->validationPasswordConfirm(new Validator());
+                if (!empty($id)) {
+                    $validator = $this->getUsersTable()->validationCurrentPassword($validator);
+                }
+                $user = $this->getUsersTable()->patchEntity($user, $this->request->data(), ['validate' => $validator]);
                 if ($user->errors()) {
                     $this->Flash->error(__d('CakeDC/Users', 'Password could not be changed'));
                 } else {
