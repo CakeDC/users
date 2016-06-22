@@ -36,6 +36,13 @@ trait RegisterTrait
         if (!Configure::read('Users.Registration.active')) {
             throw new NotFoundException();
         }
+
+        $userId = $this->Auth->user('id');
+        if (!empty($userId) && !Configure::read('Users.Registration.allowLoggedIn')) {
+            $this->Flash->error(__d('CakeDC/Users', 'You must log out to register a new user account'));
+            return $this->redirect(Configure::read('Users.Profile.route'));
+        }
+
         $usersTable = $this->getUsersTable();
         $user = $usersTable->newEntity();
         $validateEmail = (bool)Configure::read('Users.Email.validate');
