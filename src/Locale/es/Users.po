@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CakeDC Users\n"
 "POT-Creation-Date: 2016-04-20 09:48-0300\n"
-"PO-Revision-Date: 2016-06-16 16:43+0100\n"
+"PO-Revision-Date: 2016-06-22 12:48+0100\n"
 "Last-Translator: André Teixeira <hello@andtxr.com>\n"
 "Language-Team: CakeDC <contact@cakedc.com>\n"
 "Language: es_ES\n"
@@ -178,6 +178,10 @@ msgstr "No se puede restablecer el token"
 #: Controller/Traits/ProfileTrait.php:52
 msgid "Not authorized, please login first"
 msgstr ""
+
+#: Controller/Traits/RegisterTrait.php:42
+msgid "You must log out to register a new user account"
+msgstr "Debe cerrar sesión para registrar una nueva cuenta de usuario"
 
 #: Controller/Traits/RegisterTrait.php:79
 msgid "The user could not be saved"

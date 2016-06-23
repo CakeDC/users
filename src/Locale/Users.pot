@@ -164,6 +164,10 @@ msgstr ""
 msgid "Not authorized, please login first"
 msgstr ""
 
+#: Controller/Traits/RegisterTrait.php:42
+msgid "You must log out to register a new user account"
+msgstr ""
+
 #: Controller/Traits/RegisterTrait.php:79
 msgid "The user could not be saved"
 msgstr ""
