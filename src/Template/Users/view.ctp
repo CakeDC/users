@@ -8,6 +8,8 @@
  * @copyright Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
+
+$Users = ${$tableAlias};
 ?>
 <div class="actions columns large-2 medium-3">
     <h3><?= __d('CakeDC/Users', 'Actions') ?></h3>
@@ -59,7 +61,7 @@
 <div class="related row">
     <div class="column large-12">
         <h4 class="subheader"><?= __d('CakeDC/Users', 'Related Accounts') ?></h4>
-        <?php if (!empty($Users->social_accounts)): ?>
+        <?php if (!empty($Users->social_accounts)) : ?>
             <table cellpadding="0" cellspacing="0">
                 <tr>
                     <th><?= __d('CakeDC/Users', 'Id') ?></th>
@@ -76,7 +78,7 @@
                     <th><?= __d('CakeDC/Users', 'Modified') ?></th>
                     <th class="actions"><?= __d('CakeDC/Users', 'Actions') ?></th>
                 </tr>
-                <?php foreach ($Users->social_accounts as $socialAccount): ?>
+                <?php foreach ($Users->social_accounts as $socialAccount) : ?>
                     <tr>
                         <td><?= h($socialAccount->id) ?></td>
                         <td><?= h($socialAccount->user_id) ?></td>

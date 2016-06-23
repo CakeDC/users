@@ -8,16 +8,21 @@
  * @copyright Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
+
+$Users = ${$tableAlias};
 ?>
 <div class="actions columns large-2 medium-3">
     <h3><?= __d('CakeDC/Users', 'Actions') ?></h3>
     <ul class="side-nav">
-        <li><?= $this->Form->postLink(
+        <li>
+            <?php
+            echo $this->Form->postLink(
                 __d('CakeDC/Users', 'Delete'),
                 ['action' => 'delete', $Users->id],
                 ['confirm' => __d('CakeDC/Users', 'Are you sure you want to delete # {0}?', $Users->id)]
-            )
-        ?></li>
+            );
+            ?>
+        </li>
         <li><?= $this->Html->link(__d('CakeDC/Users', 'List Users'), ['action' => 'index']) ?></li>
         <li><?= $this->Html->link(__d('CakeDC/Users', 'List Accounts'), ['controller' => 'Accounts', 'action' => 'index']) ?> </li>
     </ul>
