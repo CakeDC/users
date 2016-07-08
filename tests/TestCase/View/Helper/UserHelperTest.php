@@ -20,6 +20,7 @@ use Cake\I18n\I18n;
 use Cake\Network\Request;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
+use Cake\View\Helper\HtmlHelper;
 use Cake\View\View;
 
 /**
@@ -40,7 +41,16 @@ class UserHelperTest extends TestCase
         $this->View = $this->getMockBuilder('Cake\View\View')
                 ->setMethods(['append'])
                 ->getMock();
+        //Assuming all these url's are authorized
+        $this->AuthLink = $this->getMockBuilder('CakeDC\Users\View\Helper\AuthLinkHelper')
+                ->setMethods(['isAuthorized'])
+                ->setConstructorArgs([$this->View])
+                ->getMock();
+        $this->AuthLink->expects($this->any())
+            ->method('isAuthorized')
+            ->will($this->returnValue(true));
         $this->User = new UserHelper($this->View);
+        $this->User->AuthLink = $this->AuthLink;
         $this->request = new Request();
     }
 
@@ -91,66 +101,6 @@ class UserHelperTest extends TestCase
         $expected = '<a href="/logout" class="logout">Sign Out</a>';
         $this->assertEquals($expected, $result);
     }
-
-    /**
-     * Test link
-     *
-     * @return void
-     */
-    public function testLinkFalse()
-    {
-        $link = $this->User->link('title', ['controller' => 'noaccess']);
-        $this->assertSame(false, $link);
-    }
-
-    /**
-     * Test link
-     *
-     * @return void
-     */
-    public function testLinkAuthorized()
-    {
-        $view = new View();
-        $eventManagerMock = $this->getMockBuilder('Cake\Event\EventManager')
-                ->setMethods(['dispatch'])
-                ->getMock();
-        $view->eventManager($eventManagerMock);
-        $this->User = new UserHelper($view);
-        $result = new Event('dispatch-result');
-        $result->result = true;
-        $eventManagerMock->expects($this->once())
-                ->method('dispatch')
-                ->will($this->returnValue($result));
-
-        $link = $this->User->link('title', '/', ['before' => 'before_', 'after' => '_after', 'class' => 'link-class']);
-        $this->assertSame('before_<a href="/" class="link-class">title</a>_after', $link);
-    }
-
-
-    /**
-     * Test isAuthorized
-     *
-     * @return void
-     */
-    public function testIsAuthorized()
-    {
-        $view = new View();
-        $eventManagerMock = $this->getMockBuilder('Cake\Event\EventManager')
-            ->setMethods(['dispatch'])
-            ->getMock();
-        $view->eventManager($eventManagerMock);
-        $this->User = new UserHelper($view);
-        $result = new Event('dispatch-result');
-        $result->result = true;
-        $eventManagerMock->expects($this->once())
-            ->method('dispatch')
-            ->will($this->returnValue($result));
-
-        $result = $this->User->isAuthorized(['controller' => 'MyController', 'action' => 'myAction']);
-        $this->assertTrue($result);
-    }
-
-
 
     /**
      * Test link

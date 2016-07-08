@@ -24,7 +24,7 @@ use Cake\View\Helper;
 class UserHelper extends Helper
 {
 
-    public $helpers = ['Html', 'Form'];
+    public $helpers = ['Html', 'Form', 'CakeDC/Users.AuthLink'];
 
     /**
      * Default configuration.
@@ -50,7 +50,7 @@ class UserHelper extends Helper
         ]);
         $providerTitle = __d('CakeDC/Users', '{0} {1}', Hash::get($options, 'label'), Inflector::camelize($name));
         $providerClass = __d('CakeDC/Users', 'btn btn-social btn-{0} ' . Hash::get($options, 'class') ?: '', strtolower($name));
-        return $this->Html->link($icon . $providerTitle, "/auth/$name", [
+        return $this->AuthLink->link($icon . $providerTitle, "/auth/$name", [
             'escape' => false, 'class' => $providerClass
         ]);
     }
@@ -87,43 +87,11 @@ class UserHelper extends Helper
      */
     public function logout($message = null, $options = [])
     {
-        return $this->Html->link(empty($message) ? __d('CakeDC/Users', 'Logout') : $message, [
+        return $this->AuthLink->link(empty($message) ? __d('CakeDC/Users', 'Logout') : $message, [
             'plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'logout'
             ], $options);
     }
-
-    /**
-     * Generate a link if the target url is authorized for the logged in user
-     *
-     * @param type $title link's title.
-     * @param type $url url that the user is making request.
-     * @param array $options Array with option data.
-     * @return string
-     */
-    public function link($title, $url = null, array $options = [])
-    {
-        if ($this->isAuthorized($url)) {
-            $linkOptions = $options;
-            unset($linkOptions['before'], $linkOptions['after']);
-            return Hash::get($options, 'before') . $this->Html->link($title, $url, $linkOptions) . Hash::get($options, 'after');
-        }
-
-        return false;
-    }
-
-    /**
-     * Retunrs true if the target url is authorized for the logged in user
-     *
-     * @param type $url url that the user is making request.
-     * @return bool
-     */
-    public function isAuthorized($url = null)
-    {
-        $event = new Event(UsersAuthComponent::EVENT_IS_AUTHORIZED, $this, ['url' => $url]);
-        $result = $this->_View->eventManager()->dispatch($event);
-        return $result->result;
-    }
-
+    
     /**
      * Welcome display
      * @return mixed
@@ -136,7 +104,7 @@ class UserHelper extends Helper
         }
 
         $profileUrl = Configure::read('Users.Profile.route');
-        $label = __d('CakeDC/Users', 'Welcome, {0}', $this->Html->link($this->request->session()->read('Auth.User.first_name') ?: $this->request->session()->read('Auth.User.username'), $profileUrl));
+        $label = __d('CakeDC/Users', 'Welcome, {0}', $this->AuthLink->link($this->request->session()->read('Auth.User.first_name') ?: $this->request->session()->read('Auth.User.username'), $profileUrl));
         return $this->Html->tag('span', $label, ['class' => 'welcome']);
     }
 
