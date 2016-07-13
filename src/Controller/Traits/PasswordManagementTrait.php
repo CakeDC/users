@@ -43,6 +43,11 @@ trait PasswordManagementTrait
         } else {
             $user->id = $this->request->session()->read(Configure::read('Users.Key.Session.resetPasswordUserId'));
             $validatePassword = false;
+            if (!$user->id) {
+                $this->Flash->error(__d('CakeDC/Users', 'User was not found'));
+                $this->redirect($this->Auth->config('loginAction'));
+                return;
+            }
             //@todo add to the documentation: list of routes used
             $redirect = $this->Auth->config('loginAction');
         }

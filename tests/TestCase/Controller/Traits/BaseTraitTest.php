@@ -88,14 +88,39 @@ abstract class BaseTraitTest extends TestCase
     }
 
     /**
+     * Mock session and mock session attributes
+     *
+     * @return void
+     */
+    protected function _mockSession($attributes)
+    {
+        $session = new \Cake\Network\Session();
+
+        foreach ($attributes as $field => $value) {
+            $session->write($field, $value);
+        }
+
+        $this->Trait->request
+            ->expects($this->any())
+            ->method('session')
+            ->willReturn($session);
+    }
+
+    /**
      * mock request for GET
      *
      * @return void
      */
-    protected function _mockRequestGet()
+    protected function _mockRequestGet($withSession = false)
     {
+        $methods = ['is', 'referer', 'data'];
+
+        if ($withSession) {
+            $methods[] = 'session';
+        }
+
         $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
-                ->setMethods(['is', 'referer', 'data'])
+                ->setMethods($methods)
                 ->getMock();
         $this->Trait->request->expects($this->any())
                 ->method('is')
