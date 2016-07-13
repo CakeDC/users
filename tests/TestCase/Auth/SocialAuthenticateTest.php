@@ -56,6 +56,10 @@ class SocialAuthenticateTest extends TestCase
             ->setConstructorArgs([$request, $response])
             ->getMock();
 
+        $this->controller->expects($this->any())
+            ->method('dispatchEvent')
+            ->will($this->returnValue(new Event('test')));
+
         $this->Request = $request;
         $this->SocialAuthenticate = $this->_getSocialAuthenticateMockMethods(['_authenticate', '_getProviderName',
                 '_mapUser', '_socialLogin', 'dispatchEvent', '_validateConfig', '_getController']);
