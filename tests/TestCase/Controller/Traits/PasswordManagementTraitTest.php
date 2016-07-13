@@ -11,10 +11,11 @@
 
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
-use CakeDC\Users\Test\TestCase\Controller\Traits\BaseTraitTest;
 use Cake\Auth\PasswordHasherFactory;
+use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use CakeDC\Users\Test\TestCase\Controller\Traits\BaseTraitTest;
 
 class PasswordManagementTraitTest extends BaseTraitTest
 {
@@ -324,12 +325,19 @@ class PasswordManagementTraitTest extends BaseTraitTest
     }
 
     /**
-     * test requestResetPassword
+     * @dataProvider ensureUserActiveForResetPasswordFeature
      *
      * @return void
      */
-    public function testRequestResetPasswordUserNotActive()
+    public function testEnsureUserActiveForResetPasswordFeature($ensureActive)
     {
+        $expectError = $this->never();
+
+        if ($ensureActive) {
+            Configure::write('Users.Registration.ensureActive', true);
+            $expectError = $this->once();
+        }
+
         $this->assertEquals('ae93ddbe32664ce7927cf0c5c5a5e59d', $this->table->get('00000000-0000-0000-0000-000000000001')->token);
         $this->_mockRequestPost();
         $this->_mockFlash();
@@ -338,10 +346,21 @@ class PasswordManagementTraitTest extends BaseTraitTest
                 ->method('data')
                 ->with('reference')
                 ->will($this->returnValue($reference));
-        $this->Trait->Flash->expects($this->any())
+        $this->Trait->Flash->expects($expectError)
             ->method('error')
             ->with('The user is not active');
         $this->Trait->requestResetPassword();
         $this->assertNotEquals('xxx', $this->table->get('00000000-0000-0000-0000-000000000001')->token);
+    }
+
+    public function ensureUserActiveForResetPasswordFeature()
+    {
+        $ensureActive = true;
+        $defaultBehavior = false;
+
+        return [
+            [$ensureActive],
+            [$defaultBehavior]
+        ];
     }
 }

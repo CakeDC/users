@@ -107,7 +107,7 @@ trait PasswordManagementTrait
                 'expiration' => Configure::read('Users.Token.expiration'),
                 'checkActive' => false,
                 'sendEmail' => true,
-                'ensureActive' => true
+                'ensureActive' => Configure::read('Users.Registration.ensureActive')
             ]);
             if ($resetUser) {
                 $msg = __d('CakeDC/Users', 'Please check your email to continue with password reset process');
