@@ -137,7 +137,7 @@ class SocialAuthenticate extends BaseAuthenticate
     /**
      * Get the controller associated with the collection.
      *
-     * @return Controller instance
+     * @return \Cake\Controller\Controller Controller instance
      */
     protected function _getController()
     {
@@ -314,12 +314,16 @@ class SocialAuthenticate extends BaseAuthenticate
         }
         if (!empty($exception)) {
             $args = ['exception' => $exception, 'rawData' => $data];
-            $event = new Event(UsersAuthComponent::EVENT_FAILED_SOCIAL_LOGIN, $args);
-            $event = EventManager::instance()->dispatch($event);
+            $event = $this->_getController()->dispatchEvent(UsersAuthComponent::EVENT_FAILED_SOCIAL_LOGIN, $args);
             if (method_exists($this->_getController(), 'failedSocialLogin')) {
                 $this->_getController()->failedSocialLogin($exception, $data, true);
             }
             return $event->result;
+        }
+
+        // If new SocialAccount was created $user is returned containing it
+        if ($user->get('social_accounts')) {
+            $this->_getController()->dispatchEvent(UsersAuthComponent::EVENT_AFTER_REGISTER, compact('user'));
         }
 
         if (!empty($user->username)) {
