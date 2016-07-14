@@ -184,4 +184,17 @@ class PasswordBehaviorTest extends TestCase
         ]);
         $this->assertEquals($user->id, $result->id);
     }
+
+    /**
+     * Test changePassword
+     */
+    public function testChangePassword()
+    {
+        $user = TableRegistry::get('CakeDC/Users.Users')->findByUsername('user-6')->first();
+        $user->current_password = '12345';
+        $user->password = 'new';
+        $user->password_confirmation = 'new';
+
+        $result = $this->Behavior->changePassword($user);
+    }
 }
