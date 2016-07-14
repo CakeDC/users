@@ -32,8 +32,10 @@ trait ReCaptchaTrait
         $recaptcha = $this->_getReCaptchaInstance();
         if (!empty($recaptcha)) {
             $response = $recaptcha->verify($recaptchaResponse, $clientIp);
+
             return $response->isSuccess();
         }
+
         return false;
     }
 
@@ -48,6 +50,7 @@ trait ReCaptchaTrait
         if (!empty($reCaptchaSecret)) {
             return new \ReCaptcha\ReCaptcha($reCaptchaSecret);
         }
+
         return null;
     }
 }

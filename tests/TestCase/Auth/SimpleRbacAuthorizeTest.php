@@ -160,6 +160,7 @@ class SimpleRbacAuthorizeTest extends TestCase
                 ->disableOriginalConstructor()
                 ->getMock();
         $simpleRbacAuthorize->config('permissions', $permissions);
+
         return $simpleRbacAuthorize;
     }
 

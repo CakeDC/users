@@ -26,6 +26,7 @@ class AuthLinkHelper extends HtmlHelper
         if ($this->isAuthorized($url)) {
             $linkOptions = $options;
             unset($linkOptions['before'], $linkOptions['after']);
+
             return Hash::get($options, 'before') . parent::link($title, $url, $linkOptions) . Hash::get($options, 'after');
         }
 
@@ -42,6 +43,7 @@ class AuthLinkHelper extends HtmlHelper
     {
         $event = new Event(UsersAuthComponent::EVENT_IS_AUTHORIZED, $this, ['url' => $url]);
         $result = $this->_View->eventManager()->dispatch($event);
+
         return $result->result;
     }
 }

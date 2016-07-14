@@ -50,6 +50,7 @@ class UserHelper extends Helper
         ]);
         $providerTitle = __d('CakeDC/Users', '{0} {1}', Hash::get($options, 'label'), Inflector::camelize($name));
         $providerClass = __d('CakeDC/Users', 'btn btn-social btn-{0} ' . Hash::get($options, 'class') ?: '', strtolower($name));
+
         return $this->AuthLink->link($icon . $providerTitle, "/auth/$name", [
             'escape' => false, 'class' => $providerClass
         ]);
@@ -105,6 +106,7 @@ class UserHelper extends Helper
 
         $profileUrl = Configure::read('Users.Profile.route');
         $label = __d('CakeDC/Users', 'Welcome, {0}', $this->AuthLink->link($this->request->session()->read('Auth.User.first_name') ?: $this->request->session()->read('Auth.User.username'), $profileUrl));
+
         return $this->Html->tag('span', $label, ['class' => 'welcome']);
     }
 
@@ -130,6 +132,7 @@ class UserHelper extends Helper
         }
         $this->addReCaptchaScript();
         $this->Form->unlockField('g-recaptcha-response');
+
         return $this->Html->tag('div', '', [
             'class' => 'g-recaptcha',
             'data-sitekey' => Configure::read('Users.reCaptcha.key')

@@ -46,6 +46,7 @@ trait PasswordManagementTrait
             if (!$user->id) {
                 $this->Flash->error(__d('CakeDC/Users', 'User was not found'));
                 $this->redirect($this->Auth->config('loginAction'));
+
                 return;
             }
             //@todo add to the documentation: list of routes used
@@ -65,6 +66,7 @@ trait PasswordManagementTrait
                     $user = $this->getUsersTable()->changePassword($user);
                     if ($user) {
                         $this->Flash->success(__d('CakeDC/Users', 'Password has been changed successfully'));
+
                         return $this->redirect($redirect);
                     } else {
                         $this->Flash->error(__d('CakeDC/Users', 'Password could not be changed'));
@@ -121,6 +123,7 @@ trait PasswordManagementTrait
                 $msg = __d('CakeDC/Users', 'The password token could not be generated. Please try again');
                 $this->Flash->error($msg);
             }
+
             return $this->redirect(['action' => 'login']);
         } catch (UserNotFoundException $exception) {
             $this->Flash->error(__d('CakeDC/Users', 'User {0} was not found', $reference));

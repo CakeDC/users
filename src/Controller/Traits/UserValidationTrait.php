@@ -52,6 +52,7 @@ trait UserValidationTrait
                     if (!empty($result)) {
                         $this->Flash->success(__d('CakeDC/Users', 'Reset password token was validated successfully'));
                         $this->request->session()->write(Configure::read('Users.Key.Session.resetPasswordUserId'), $result->id);
+
                         return $this->redirect(['action' => 'changePassword']);
                     } else {
                         $this->Flash->error(__d('CakeDC/Users', 'Reset password token could not be validated'));
@@ -93,6 +94,7 @@ trait UserValidationTrait
             } else {
                 $this->Flash->error(__d('CakeDC/Users', 'Token could not be reset'));
             }
+
             return $this->redirect(['action' => 'login']);
         } catch (UserNotFoundException $ex) {
             $this->Flash->error(__d('CakeDC/Users', 'User {0} was not found', $reference));

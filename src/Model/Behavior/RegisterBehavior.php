@@ -66,6 +66,7 @@ class RegisterBehavior extends Behavior
         if ($userSaved && $validateEmail) {
             $this->Email->sendValidationEmail($user, $emailClass);
         }
+
         return $userSaved;
     }
 
@@ -147,6 +148,7 @@ class RegisterBehavior extends Behavior
             ->notEmpty('email', 'This field is required', function ($context) {
                 return $this->validateEmail;
             });
+
         return $validator;
     }
 
@@ -161,6 +163,7 @@ class RegisterBehavior extends Behavior
         $validator
             ->requirePresence('tos', 'create')
             ->notEmpty('tos');
+
         return $validator;
     }
 
@@ -184,6 +187,7 @@ class RegisterBehavior extends Behavior
         if ($validateEmail) {
             $validator = $this->_emailValidator($validator, $validateEmail);
         }
+
         return $validator;
     }
 }

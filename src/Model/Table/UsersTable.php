@@ -76,6 +76,7 @@ class UsersTable extends Table
                 if (!is_null($confirm) && $value != $confirm) {
                     return false;
                 }
+
                 return true;
             },
             'message' => __d('CakeDC/Users', 'Your password does not match your confirm password. Please try again'),
@@ -156,6 +157,7 @@ class UsersTable extends Table
     {
         $validator = $this->validationDefault($validator);
         $validator = $this->validationPasswordConfirm($validator);
+
         return $validator;
     }
 
@@ -193,6 +195,7 @@ class UsersTable extends Table
     public function findActive(Query $query, array $options = [])
     {
         $query->where([$this->aliasField('active') => 1]);
+
         return $query;
     }
 

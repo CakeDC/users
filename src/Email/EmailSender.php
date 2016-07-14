@@ -94,6 +94,7 @@ class EmailSender
             $email = new Email('default');
             $email->emailFormat('both');
         }
+
         return $email;
     }
 }

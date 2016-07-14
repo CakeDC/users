@@ -80,6 +80,7 @@ class SocialAuthenticate extends BaseAuthenticate
         }
 
         array_walk($config['providers'], [$this, '_normalizeConfig'], $config);
+
         return $config;
     }
 
@@ -175,6 +176,7 @@ class SocialAuthenticate extends BaseAuthenticate
 
         try {
             $token = $provider->getAccessToken('authorization_code', compact('code'));
+
             return compact('token') + $provider->getResourceOwner($token)->toArray();
         } catch (\Exception $e) {
             return false;
@@ -200,6 +202,7 @@ class SocialAuthenticate extends BaseAuthenticate
         if ($this->config('options.state') &&
             (!$state || $state !== $session->read($sessionKey))) {
             $session->delete($sessionKey);
+
             return false;
         }
 
@@ -247,6 +250,7 @@ class SocialAuthenticate extends BaseAuthenticate
         }
 
         $response->location($provider->getAuthorizationUrl());
+
         return $response;
     }
 
@@ -288,6 +292,7 @@ class SocialAuthenticate extends BaseAuthenticate
         }
 
         $class = $config['className'];
+
         return new $class($config['options'], $config['collaborators']);
     }
 
@@ -319,12 +324,14 @@ class SocialAuthenticate extends BaseAuthenticate
             if (method_exists($this->_getController(), 'failedSocialLogin')) {
                 $this->_getController()->failedSocialLogin($exception, $data, true);
             }
+
             return $event->result;
         }
 
         if (!empty($user->username)) {
             $user = $this->_findUser($user->username);
         }
+
         return $user;
     }
 
@@ -376,6 +383,7 @@ class SocialAuthenticate extends BaseAuthenticate
         if ($request->session()->check(Configure::read('Users.Key.Session.social'))) {
             $request->session()->delete(Configure::read('Users.Key.Session.social'));
         }
+
         return $result;
     }
 
@@ -393,6 +401,7 @@ class SocialAuthenticate extends BaseAuthenticate
         } elseif (!empty($request)) {
             $provider = ucfirst($request->param('provider'));
         }
+
         return $provider;
     }
 
@@ -413,6 +422,7 @@ class SocialAuthenticate extends BaseAuthenticate
         $providerMapper = new $providerMapperClass($data);
         $user = $providerMapper();
         $user['provider'] = $provider;
+
         return $user;
     }
 
@@ -431,6 +441,7 @@ class SocialAuthenticate extends BaseAuthenticate
         $userModel = Configure::read('Users.table');
         $User = TableRegistry::get($userModel);
         $user = $User->socialLogin($data, $options);
+
         return $user;
     }
 }

@@ -84,6 +84,7 @@ class PasswordBehavior extends Behavior
         if (Hash::get($options, 'sendEmail')) {
             $this->Email->sendResetPasswordEmail($saveResult, null, $template);
         }
+
         return $saveResult;
     }
 
@@ -127,6 +128,7 @@ class PasswordBehavior extends Behavior
         if (!empty($user)) {
             $user = $this->_removeValidationToken($user);
         }
+
         return $user;
     }
 }

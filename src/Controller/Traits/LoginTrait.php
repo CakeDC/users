@@ -71,6 +71,7 @@ trait LoginTrait
             $temporaryCredentials = $server->getTemporaryCredentials();
             $this->request->session()->write('temporary_credentials', $temporaryCredentials);
             $url = $server->getAuthorizationUrl($temporaryCredentials);
+
             return $this->redirect($url);
         }
     }
@@ -100,6 +101,7 @@ trait LoginTrait
                     $this->Flash->success(__d('CakeDC/Users', 'Please enter your email'));
                 }
                 $this->request->session()->write(Configure::read('Users.Key.Session.social'), $data);
+
                 return $this->redirect(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'socialEmail']);
             }
             if ($exception instanceof UserNotActiveException) {
@@ -114,6 +116,7 @@ trait LoginTrait
             $this->request->session()->delete(Configure::read('Users.Key.Session.social'));
             $this->Flash->success(__d('CakeDC/Users', $msg));
         }
+
         return $this->redirect(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
     }
 
@@ -132,6 +135,7 @@ trait LoginTrait
             throw new NotFoundException();
         }
         $user = $this->Auth->user();
+
         return $this->_afterIdentifyUser($user, true);
     }
 
@@ -155,9 +159,11 @@ trait LoginTrait
         if ($this->request->is('post')) {
             if (!$this->_checkReCaptcha()) {
                 $this->Flash->error(__d('CakeDC/Users', 'Invalid reCaptcha'));
+
                 return;
             }
             $user = $this->Auth->identify();
+
             return $this->_afterIdentifyUser($user, $socialLogin);
         }
         if (!$this->request->is('post') && !$socialLogin) {
@@ -165,6 +171,7 @@ trait LoginTrait
                 $msg = __d('CakeDC/Users', 'You are already logged in');
                 $this->Flash->error($msg);
                 $url = $this->Auth->redirectUrl();
+
                 return $this->redirect($url);
             }
         }
@@ -203,6 +210,7 @@ trait LoginTrait
                 return $this->redirect($event->result);
             }
             $url = $this->Auth->redirectUrl();
+
             return $this->redirect($url);
         } else {
             if (!$socialLogin) {
