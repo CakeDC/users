@@ -62,6 +62,7 @@ class SocialAccountBehavior extends Behavior
         if (empty($user)) {
             return true;
         }
+
         return $this->sendSocialValidationEmail($entity, $user);
     }
 
@@ -144,6 +145,7 @@ class SocialAccountBehavior extends Behavior
     {
         $socialAccount->active = true;
         $result = $this->_table->save($socialAccount);
+
         return $result;
     }
 }

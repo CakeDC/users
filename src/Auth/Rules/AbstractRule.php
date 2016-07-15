@@ -56,6 +56,7 @@ abstract class AbstractRule implements Rule
         if ($table instanceof Table) {
             return $table;
         }
+
         return TableRegistry::get($table);
     }
 
@@ -76,6 +77,7 @@ abstract class AbstractRule implements Rule
         if (empty($modelClass)) {
             throw new OutOfBoundsException(__d('CakeDC/Users', 'Table alias is empty, please define a table alias, we could not extract a default table from the request'));
         }
+
         return $this->loadModel($modelClass);
     }
 

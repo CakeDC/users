@@ -141,6 +141,7 @@ class UsersAuthComponent extends Component
                 if (substr($normalizedUrl, 0, 1) === '/') {
                     throw $ex;
                 }
+
                 return true;
             }
             $requestUrl = $url;
@@ -160,6 +161,7 @@ class UsersAuthComponent extends Component
         $request->params = $requestParams;
 
         $isAuthorized = $this->_registry->getController()->Auth->isAuthorized(null, $request);
+
         return $isAuthorized;
     }
 

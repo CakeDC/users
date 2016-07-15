@@ -75,6 +75,7 @@ class SocialBehavior extends Behavior
                 ]);
             }
         }
+
         return false;
     }
 
@@ -104,6 +105,7 @@ class SocialBehavior extends Behavior
         $user = $this->_populateUser($data, $existingUser, $useEmail, $validateEmail, $tokenExpiration);
         $this->_table->isValidateEmail = $validateEmail;
         $result = $this->_table->save($user);
+
         return $result;
     }
 
@@ -195,6 +197,7 @@ class SocialBehavior extends Behavior
         //ensure provider is present in Entity
         $socialAccount['provider'] = Hash::get($data, 'provider');
         $user['social_accounts'] = [$socialAccount];
+
         return $user;
     }
 
@@ -216,6 +219,7 @@ class SocialBehavior extends Behavior
             }
             break;
         }
+
         return $username;
     }
 }

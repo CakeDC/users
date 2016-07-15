@@ -147,6 +147,7 @@ class RememberMeComponent extends Component
             return $this->_registry->getController()->redirect($event->result);
         }
         $url = $this->Auth->redirectUrl();
+
         return $this->_registry->getController()->redirect($url);
     }
 }

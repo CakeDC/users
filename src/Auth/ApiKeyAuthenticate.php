@@ -108,6 +108,7 @@ class ApiKeyAuthenticate extends BaseAuthenticate
     public function querystring(Request $request)
     {
         $name = $this->config('name');
+
         return $request->query($name);
     }
 
@@ -120,6 +121,7 @@ class ApiKeyAuthenticate extends BaseAuthenticate
     public function header(Request $request)
     {
         $name = $this->config('name');
+
         return $request->header($name);
     }
 }

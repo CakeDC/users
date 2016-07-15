@@ -13,6 +13,7 @@ namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
 use CakeDC\Users\Test\TestCase\Controller\Traits\BaseTraitTest;
 use Cake\Auth\PasswordHasherFactory;
+use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
@@ -215,17 +216,37 @@ class PasswordManagementTraitTest extends BaseTraitTest
      *
      * @return void
      */
-    public function testChangePasswordGetNotLoggedIn()
+    public function testChangePasswordGetNotLoggedInInsideResetPasswordFlow()
+    {
+        $this->_mockRequestGet(true);
+        $this->_mockAuth();
+        $this->_mockFlash();
+        $this->_mockSession([
+            Configure::read('Users.Key.Session.resetPasswordUserId') => '00000000-0000-0000-0000-000000000001'
+        ]);
+        $this->Trait->expects($this->any())
+            ->method('set')
+            ->will($this->returnCallback(function ($param1, $param2 = null) {
+                if ($param1 === 'validatePassword') {
+                    TestCase::assertEquals($param2, false);
+                }
+            }));
+        $this->Trait->changePassword();
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testChangePasswordGetNotLoggedInOutsideResetPasswordFlow()
     {
         $this->_mockRequestGet();
         $this->_mockAuth();
-        $this->Trait->expects($this->any())
-                ->method('set')
-                ->will($this->returnCallback(function ($param1, $param2 = null) {
-                    if ($param1 === 'validatePassword') {
-                        TestCase::assertEquals($param2, false);
-                    }
-                }));
+        $this->_mockFlash();
+        $this->Trait->Flash->expects($this->once())
+            ->method('error')
+            ->with('User was not found');
         $this->Trait->changePassword();
     }
 

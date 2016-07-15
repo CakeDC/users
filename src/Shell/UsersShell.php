@@ -66,6 +66,7 @@ class UsersShell extends Shell
                 'password' => ['short' => 'p', 'help' => 'The password for the new user'],
                 'email' => ['short' => 'e', 'help' => 'The email for the new user']
             ]);
+
         return $parser;
     }
 
@@ -283,6 +284,7 @@ class UsersShell extends Shell
         $data = [
             'active' => $active
         ];
+
         return $this->_updateUser($username, $data);
     }
 
@@ -306,6 +308,7 @@ class UsersShell extends Shell
             $user->{$field} = $value;
         });
         $savedUser = $this->Users->save($user);
+
         return $savedUser;
     }
 

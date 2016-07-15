@@ -166,6 +166,7 @@ class SimpleRbacAuthorize extends BaseAuthorize
         }
 
         $allowed = $this->_checkRules($user, $role, $request);
+
         return $allowed;
     }
 
