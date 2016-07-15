@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Test\TestCase\Auth;
 
+use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\UserNotActiveException;
@@ -51,9 +52,13 @@ class SocialAuthenticateTest extends TestCase
             ->getMock();
 
         $this->controller = $this->getMockBuilder('Cake\Controller\Controller')
-            ->setMethods(['failedSocialLogin'])
+            ->setMethods(['failedSocialLogin', 'dispatchEvent'])
             ->setConstructorArgs([$request, $response])
             ->getMock();
+
+        $this->controller->expects($this->any())
+            ->method('dispatchEvent')
+            ->will($this->returnValue(new Event('test')));
 
         $this->Request = $request;
         $this->SocialAuthenticate = $this->_getSocialAuthenticateMockMethods(['_authenticate', '_getProviderName',
@@ -95,7 +100,13 @@ class SocialAuthenticateTest extends TestCase
      */
     public function testGetUserAuth($rawData, $mapper)
     {
-         $this->SocialAuthenticate->expects($this->once())
+        $user = $this->Table->get('00000000-0000-0000-0000-000000000002', ['contain' => ['SocialAccounts']]);
+
+        $this->controller->expects($this->once())
+            ->method('dispatchEvent')
+            ->with(UsersAuthComponent::EVENT_AFTER_REGISTER, compact('user'));
+
+        $this->SocialAuthenticate->expects($this->once())
          ->method('_authenticate')
          ->with($this->Request)
          ->will($this->returnValue($rawData));
@@ -108,7 +119,6 @@ class SocialAuthenticateTest extends TestCase
             ->method('_mapUser')
             ->will($this->returnValue($mapper));
 
-        $user = $this->Table->get('00000000-0000-0000-0000-000000000002');
         $this->SocialAuthenticate->expects($this->once())
             ->method('_socialLogin')
             ->will($this->returnValue($user));
@@ -226,6 +236,10 @@ class SocialAuthenticateTest extends TestCase
         $this->SocialAuthenticate->expects($this->once())
             ->method('_socialLogin')
             ->will($this->throwException(new MissingEmailException('missing email')));
+
+        $this->controller->expects($this->once())
+            ->method('dispatchEvent')
+            ->with(UsersAuthComponent::EVENT_FAILED_SOCIAL_LOGIN);
 
         $this->controller->expects($this->once())
             ->method('failedSocialLogin');
