@@ -84,6 +84,8 @@ NOTE: SOME keys were hidden in this doc page, please refer to `vendor/cakedc/use
             'active' => true,
             //determines if the reCaptcha is enabled for registration
             'reCaptcha' => true,
+            //ensure user is active (confirmed email) to reset his password
+            'ensureActive' => false
         ],
         'Tos' => [
             //determines if the user should include tos accepted

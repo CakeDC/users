@@ -171,4 +171,30 @@ class PasswordBehaviorTest extends TestCase
             'expiration' => 3600
         ]);
     }
+
+    /**
+     * Test resetToken
+     */
+    public function testResetTokenUserActive()
+    {
+        $user = TableRegistry::get('CakeDC/Users.Users')->findByUsername('user-2')->first();
+        $result = $this->Behavior->resetToken('user-2', [
+            'ensureActive' => true,
+            'expiration' => 3600
+        ]);
+        $this->assertEquals($user->id, $result->id);
+    }
+
+    /**
+     * Test changePassword
+     */
+    public function testChangePassword()
+    {
+        $user = TableRegistry::get('CakeDC/Users.Users')->findByUsername('user-6')->first();
+        $user->current_password = '12345';
+        $user->password = 'new';
+        $user->password_confirmation = 'new';
+
+        $result = $this->Behavior->changePassword($user);
+    }
 }

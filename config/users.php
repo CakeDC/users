@@ -35,6 +35,8 @@ $config = [
             'reCaptcha' => true,
             //allow a logged in user to access the registration form
             'allowLoggedIn' => false,
+            //ensure user is active (confirmed email) to reset his password
+            'ensureActive' => false
         ],
         'reCaptcha' => [
             //reCaptcha key goes here
