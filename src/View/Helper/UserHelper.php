@@ -102,9 +102,16 @@ class UserHelper extends Helper
      */
     public function link($title, $url = null, array $options = [])
     {
+        $_defaultOptions = [
+            'hash' => null
+        ];
+        $options = array_merge($_defaultOptions, $options);
         if ($this->isAuthorized($url)) {
+            if(isset($options['hash'])) {
+                $url = $options['hash'];
+            }
             $linkOptions = $options;
-            unset($linkOptions['before'], $linkOptions['after']);
+            unset($linkOptions['before'], $linkOptions['after'], $linkOptions['hash']);
             return Hash::get($options, 'before') . $this->Html->link($title, $url, $linkOptions) . Hash::get($options, 'after');
         }
 
