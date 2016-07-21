@@ -107,7 +107,7 @@ class UserHelper extends Helper
         ];
         $options = array_merge($_defaultOptions, $options);
         if ($this->isAuthorized($url)) {
-            if(isset($options['hash'])) {
+            if(!is_null($options['hash'])) {
                 $url = $options['hash'];
             }
             $linkOptions = $options;
