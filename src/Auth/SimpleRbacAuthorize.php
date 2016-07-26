@@ -46,6 +46,7 @@ class SimpleRbacAuthorize extends BaseAuthorize
          *          'role' => 'admin',
          *          'plugin', (optional, default = null)
          *          'prefix', (optional, default = null)
+         *          'extension', (optional, default = null)
          *          'controller',
          *          'action',
          *          'allowed' (optional, default = true)
@@ -207,12 +208,17 @@ class SimpleRbacAuthorize extends BaseAuthorize
         $controller = $request->controller;
         $action = $request->action;
         $prefix = null;
+        $extension = null;
         if (!empty($request->params['prefix'])) {
             $prefix = $request->params['prefix'];
+        }
+        if (!empty($request->params['_ext'])) {
+            $extension = $request->params['_ext'];
         }
         if ($this->_matchOrAsterisk($permission, 'role', $role) &&
                 $this->_matchOrAsterisk($permission, 'prefix', $prefix, true) &&
                 $this->_matchOrAsterisk($permission, 'plugin', $plugin, true) &&
+                $this->_matchOrAsterisk($permission, 'extension', $extension, true) &&
                 $this->_matchOrAsterisk($permission, 'controller', $controller) &&
                 $this->_matchOrAsterisk($permission, 'action', $action)) {
             $allowed = Hash::get($permission, 'allowed');
