@@ -23,6 +23,8 @@ $config['Auth']['authorize']['CakeDC/Users.SimpleRbac'] = [
          *      [
          *          'role' => 'admin',
          *          'plugin', (optional, default = null)
+         *          'prefix', (optional, default = null)
+         *          'extension', (optional, default = null)
          *          'controller',
          *          'action',
          *          'allowed' (optional, default = true)
@@ -56,6 +58,7 @@ Permission rules syntax
 [
     'role' => 'REQUIRED_NAME_OF_THE_ROLE_OR_[]_OR_*',
     'prefix' => 'OPTIONAL_PREFIX_USED_OR_[]_OR_*_DEFAULT_NULL',
+    'extension' => 'OPTIONAL_PREFIX_USED_OR_[]_OR_*_DEFAULT_NULL',
     'plugin' => 'OPTIONAL_NAME_OF_THE_PLUGIN_OR_[]_OR_*_DEFAULT_NULL',
     'controller' => 'REQUIRED_NAME_OF_THE_CONTROLLER_OR_[]_OR_*'
     'action' => 'REQUIRED_NAME_OF_ACTION_OR_[]_OR_*',
