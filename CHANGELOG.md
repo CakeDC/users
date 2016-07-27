@@ -3,7 +3,14 @@ Changelog
 
 Releases for CakePHP 3
 -------------
-
+* 3.2.1
+  * New Translations (see https://github.com/CakeDC/users/blob/master/Docs/Documentation/Translations.md)
+  * Stateless API Authenticate support
+  * Prefix and extension support in permission rules (RBAC)
+  * Improved registration and reset password user already logged in logic
+  * Several bugfixes
+  * AuthLinkHelper added to render links if user is allowed only
+  
 * 3.1.5
   * SocialAuthenticate improvements
   * Authorize Rules. Owner rule
