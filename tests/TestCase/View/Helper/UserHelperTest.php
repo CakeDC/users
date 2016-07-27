@@ -220,7 +220,7 @@ class UserHelperTest extends TestCase
     {
         I18n::locale('es_ES');
         $result = $this->User->socialLogin('facebook');
-        $this->assertEquals('<a href="/auth/facebook" class="btn btn-social btn-facebook "><i class="fa fa-facebook"></i>Iniciar sesión con Facebook</a>', $result);
+        $this->assertEquals('<a href="/auth/facebook" class="btn btn-social btn-facebook"><i class="fa fa-facebook"></i>Iniciar sesión con Facebook</a>', $result);
         I18n::locale('en_US');
     }
 }
