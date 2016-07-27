@@ -29,6 +29,7 @@ class SocialUtils
     public static function getProvider(AbstractProvider $provider)
     {
         $reflect = new ReflectionClass($provider);
+
         return $reflect->getShortName();
     }
 }

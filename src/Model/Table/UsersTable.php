@@ -76,12 +76,27 @@ class UsersTable extends Table
                 if (!is_null($confirm) && $value != $confirm) {
                     return false;
                 }
+
                 return true;
             },
-            'message' => __d('Users', 'Your password does not match your confirm password. Please try again'),
+            'message' => __d('CakeDC/Users', 'Your password does not match your confirm password. Please try again'),
             'on' => ['create', 'update'],
             'allowEmpty' => false
         ]);
+
+        return $validator;
+    }
+
+    /**
+     * Adds rules for current password
+     *
+     * @param Validator $validator Cake validator object.
+     * @return Validator
+     */
+    public function validationCurrentPassword(Validator $validator)
+    {
+        $validator
+            ->notEmpty('current_password');
 
         return $validator;
     }
@@ -142,6 +157,7 @@ class UsersTable extends Table
     {
         $validator = $this->validationDefault($validator);
         $validator = $this->validationPasswordConfirm($validator);
+
         return $validator;
     }
 
@@ -156,13 +172,13 @@ class UsersTable extends Table
     {
         $rules->add($rules->isUnique(['username']), '_isUnique', [
             'errorField' => 'username',
-            'message' => __d('Users', 'Username already exists')
+            'message' => __d('CakeDC/Users', 'Username already exists')
         ]);
 
         if ($this->isValidateEmail) {
             $rules->add($rules->isUnique(['email']), '_isUnique', [
                 'errorField' => 'email',
-                'message' => __d('Users', 'Email already exists')
+                'message' => __d('CakeDC/Users', 'Email already exists')
             ]);
         }
 
@@ -178,7 +194,30 @@ class UsersTable extends Table
      */
     public function findActive(Query $query, array $options = [])
     {
-        $query->where(["{$this->_alias}.active" => 1]);
+        $query->where([$this->aliasField('active') => 1]);
+
+        return $query;
+    }
+
+    /**
+     * Custom finder to log in users
+     *
+     * @param Query $query Query object to modify
+     * @param array $options Query options
+     * @return Query
+     * @throws \BadMethodCallException
+     */
+    public function findAuth(Query $query, array $options = [])
+    {
+        $identifier = Hash::get($options, 'username');
+        if (empty($identifier)) {
+            throw new \BadMethodCallException(__d('CakeDC/Users', 'Missing \'username\' in options data'));
+        }
+
+        $query
+            ->orWhere([$this->aliasField('email') => $identifier])
+            ->find('active', $options);
+
         return $query;
     }
 }

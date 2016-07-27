@@ -36,7 +36,7 @@ class EmailSender
                 'CakeDC/Users.Users',
                 $this->_getEmailInstance($email)
             )
-            ->send('validation', [$user, __d('Users', 'Your account validation link')]);
+            ->send('validation', [$user, __d('CakeDC/Users', 'Your account validation link')]);
     }
 
     /**
@@ -94,6 +94,7 @@ class EmailSender
             $email = new Email('default');
             $email->emailFormat('both');
         }
+
         return $email;
     }
 }

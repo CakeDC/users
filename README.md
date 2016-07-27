@@ -46,7 +46,7 @@ Another decision made was limiting the plugin dependencies on other packages as 
 Requirements
 ------------
 
-* CakePHP 3.2+
+* CakePHP 3.2.9+
 * PHP 5.5.9+
 
 Documentation

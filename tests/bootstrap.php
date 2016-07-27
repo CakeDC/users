@@ -45,6 +45,8 @@ Cake\Core\Configure::write('App', ['namespace' => 'Users\Test\App']);
 Cake\Core\Configure::write('debug', true);
 Cake\Core\Configure::write('App.encoding', 'UTF-8');
 
+ini_set('intl.default_locale', 'en_US');
+
 $TMP = new \Cake\Filesystem\Folder(TMP);
 $TMP->create(TMP . 'cache/models', 0777);
 $TMP->create(TMP . 'cache/persistent', 0777);

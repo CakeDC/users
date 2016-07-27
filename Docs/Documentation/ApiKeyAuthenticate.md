@@ -27,3 +27,11 @@ $config['Auth']['authenticate']['CakeDC/Users.ApiKey'] = [
     ];
 ```
 
+In order to allow stateless authentication, enable these configuration:
+
+```php
+    $this->Auth->config('storage', 'Memory');
+    $this->Auth->config('unauthorizedRedirect', 'false');
+    $this->Auth->config('checkAuthIn', 'Controller.initialize');
+    $this->Auth->config('loginAction', false);
+```

@@ -66,6 +66,7 @@ class RegisterBehavior extends Behavior
         if ($userSaved && $validateEmail) {
             $this->Email->sendValidationEmail($user, $emailClass);
         }
+
         return $userSaved;
     }
 
@@ -85,10 +86,10 @@ class RegisterBehavior extends Behavior
             ->where(['token' => $token])
             ->first();
         if (empty($user)) {
-            throw new UserNotFoundException(__d('Users', "User not found for the given token and email."));
+            throw new UserNotFoundException(__d('CakeDC/Users', "User not found for the given token and email."));
         }
         if ($user->tokenExpired()) {
-            throw new TokenExpiredException(__d('Users', "Token has already expired user with no token"));
+            throw new TokenExpiredException(__d('CakeDC/Users', "Token has already expired user with no token"));
         }
         if (!method_exists($this, $callback)) {
             return $user;
@@ -107,7 +108,7 @@ class RegisterBehavior extends Behavior
     public function activateUser(EntityInterface $user)
     {
         if ($user->active) {
-            throw new UserAlreadyActiveException(__d('Users', "User account already validated"));
+            throw new UserAlreadyActiveException(__d('CakeDC/Users', "User account already validated"));
         }
         $user->activation_date = new DateTime();
         $user->token_expires = null;
@@ -147,6 +148,7 @@ class RegisterBehavior extends Behavior
             ->notEmpty('email', __d('Users', 'This field is required'), function ($context) {
                 return $this->validateEmail;
             });
+
         return $validator;
     }
 
@@ -161,6 +163,7 @@ class RegisterBehavior extends Behavior
         $validator
             ->requirePresence('tos', 'create')
             ->notEmpty('tos');
+
         return $validator;
     }
 
@@ -184,6 +187,7 @@ class RegisterBehavior extends Behavior
         if ($validateEmail) {
             $validator = $this->_emailValidator($validator, $validateEmail);
         }
+
         return $validator;
     }
 }

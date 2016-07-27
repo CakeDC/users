@@ -80,6 +80,7 @@ class SocialAuthenticate extends BaseAuthenticate
         }
 
         array_walk($config['providers'], [$this, '_normalizeConfig'], $config);
+
         return $config;
     }
 
@@ -137,7 +138,7 @@ class SocialAuthenticate extends BaseAuthenticate
     /**
      * Get the controller associated with the collection.
      *
-     * @return Controller instance
+     * @return \Cake\Controller\Controller Controller instance
      */
     protected function _getController()
     {
@@ -175,6 +176,7 @@ class SocialAuthenticate extends BaseAuthenticate
 
         try {
             $token = $provider->getAccessToken('authorization_code', compact('code'));
+
             return compact('token') + $provider->getResourceOwner($token)->toArray();
         } catch (\Exception $e) {
             return false;
@@ -200,6 +202,7 @@ class SocialAuthenticate extends BaseAuthenticate
         if ($this->config('options.state') &&
             (!$state || $state !== $session->read($sessionKey))) {
             $session->delete($sessionKey);
+
             return false;
         }
 
@@ -247,6 +250,7 @@ class SocialAuthenticate extends BaseAuthenticate
         }
 
         $response->location($provider->getAuthorizationUrl());
+
         return $response;
     }
 
@@ -288,6 +292,7 @@ class SocialAuthenticate extends BaseAuthenticate
         }
 
         $class = $config['className'];
+
         return new $class($config['options'], $config['collaborators']);
     }
 
@@ -314,17 +319,23 @@ class SocialAuthenticate extends BaseAuthenticate
         }
         if (!empty($exception)) {
             $args = ['exception' => $exception, 'rawData' => $data];
-            $event = new Event(UsersAuthComponent::EVENT_FAILED_SOCIAL_LOGIN, $args);
-            $event = EventManager::instance()->dispatch($event);
+            $event = $this->_getController()->dispatchEvent(UsersAuthComponent::EVENT_FAILED_SOCIAL_LOGIN, $args);
             if (method_exists($this->_getController(), 'failedSocialLogin')) {
                 $this->_getController()->failedSocialLogin($exception, $data, true);
             }
+
             return $event->result;
+        }
+
+        // If new SocialAccount was created $user is returned containing it
+        if ($user->get('social_accounts')) {
+            $this->_getController()->dispatchEvent(UsersAuthComponent::EVENT_AFTER_REGISTER, compact('user'));
         }
 
         if (!empty($user->username)) {
             $user = $this->_findUser($user->username);
         }
+
         return $user;
     }
 
@@ -376,6 +387,7 @@ class SocialAuthenticate extends BaseAuthenticate
         if ($request->session()->check(Configure::read('Users.Key.Session.social'))) {
             $request->session()->delete(Configure::read('Users.Key.Session.social'));
         }
+
         return $result;
     }
 
@@ -393,6 +405,7 @@ class SocialAuthenticate extends BaseAuthenticate
         } elseif (!empty($request)) {
             $provider = ucfirst($request->param('provider'));
         }
+
         return $provider;
     }
 
@@ -407,12 +420,13 @@ class SocialAuthenticate extends BaseAuthenticate
     protected function _mapUser($provider, $data)
     {
         if (empty($provider)) {
-            throw new MissingProviderException(__d('Users', "Provider cannot be empty"));
+            throw new MissingProviderException(__d('CakeDC/Users', "Provider cannot be empty"));
         }
         $providerMapperClass = "\\CakeDC\\Users\\Auth\\Social\\Mapper\\$provider";
         $providerMapper = new $providerMapperClass($data);
         $user = $providerMapper();
         $user['provider'] = $provider;
+
         return $user;
     }
 
@@ -431,6 +445,7 @@ class SocialAuthenticate extends BaseAuthenticate
         $userModel = Configure::read('Users.table');
         $User = TableRegistry::get($userModel);
         $user = $User->socialLogin($data, $options);
+
         return $user;
     }
 }

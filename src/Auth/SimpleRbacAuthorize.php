@@ -46,6 +46,7 @@ class SimpleRbacAuthorize extends BaseAuthorize
          *          'role' => 'admin',
          *          'plugin', (optional, default = null)
          *          'prefix', (optional, default = null)
+         *          'extension', (optional, default = null)
          *          'controller',
          *          'action',
          *          'allowed' (optional, default = true)
@@ -138,7 +139,7 @@ class SimpleRbacAuthorize extends BaseAuthorize
             Configure::load($key, 'default');
             $permissions = Configure::read('Users.SimpleRbac.permissions');
         } catch (Exception $ex) {
-            $msg = __d('Users', 'Missing configuration file: "config/{0}.php". Using default permissions', $key);
+            $msg = __d('CakeDC/Users', 'Missing configuration file: "config/{0}.php". Using default permissions', $key);
             $this->log($msg, LogLevel::WARNING);
         }
 
@@ -166,6 +167,7 @@ class SimpleRbacAuthorize extends BaseAuthorize
         }
 
         $allowed = $this->_checkRules($user, $role, $request);
+
         return $allowed;
     }
 
@@ -206,12 +208,17 @@ class SimpleRbacAuthorize extends BaseAuthorize
         $controller = $request->controller;
         $action = $request->action;
         $prefix = null;
+        $extension = null;
         if (!empty($request->params['prefix'])) {
             $prefix = $request->params['prefix'];
+        }
+        if (!empty($request->params['_ext'])) {
+            $extension = $request->params['_ext'];
         }
         if ($this->_matchOrAsterisk($permission, 'role', $role) &&
                 $this->_matchOrAsterisk($permission, 'prefix', $prefix, true) &&
                 $this->_matchOrAsterisk($permission, 'plugin', $plugin, true) &&
+                $this->_matchOrAsterisk($permission, 'extension', $extension, true) &&
                 $this->_matchOrAsterisk($permission, 'controller', $controller) &&
                 $this->_matchOrAsterisk($permission, 'action', $action)) {
             $allowed = Hash::get($permission, 'allowed');

@@ -13,6 +13,7 @@ namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
 use CakeDC\Users\Test\TestCase\Controller\Traits\BaseTraitTest;
 use Cake\Auth\PasswordHasherFactory;
+use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
@@ -97,6 +98,83 @@ class PasswordManagementTraitTest extends BaseTraitTest
      *
      * @return void
      */
+    public function testChangePasswordWithSamePassword()
+    {
+        $this->assertEquals(
+            '$2y$10$IPPgJNSfvATsMBLbv/2r8OtpyTBibyM1g5GDxD4PivW9qBRwRkRbC',
+            $this->table->get('00000000-0000-0000-0000-000000000006')->password
+        );
+        $this->_mockRequestPost();
+        $this->_mockAuthLoggedIn(['id' => '00000000-0000-0000-0000-000000000006', 'password' => '$2y$10$IPPgJNSfvATsMBLbv/2r8OtpyTBibyM1g5GDxD4PivW9qBRwRkRbC']);
+        $this->_mockFlash();
+        $this->Trait->request->expects($this->once())
+            ->method('data')
+            ->will($this->returnValue([
+                'current_password' => '12345',
+                'password' => '12345',
+                'password_confirm' => '12345',
+            ]));
+        $this->Trait->Flash->expects($this->once())
+            ->method('error')
+            ->with('You cannot use the current password as the new one');
+        $this->Trait->changePassword();
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testChangePasswordWithEmptyCurrentPassword()
+    {
+        $this->_mockRequestPost();
+        $this->_mockAuthLoggedIn(['id' => '00000000-0000-0000-0000-000000000006', 'password' => '$2y$10$IPPgJNSfvATsMBLbv/2r8OtpyTBibyM1g5GDxD4PivW9qBRwRkRbC']);
+        $this->_mockFlash();
+        $this->Trait->request->expects($this->once())
+            ->method('data')
+            ->will($this->returnValue([
+                'current_password' => '',
+                'password' => '54321',
+                'password_confirm' => '54321',
+            ]));
+        $this->Trait->Flash->expects($this->once())
+            ->method('error')
+            ->with('Password could not be changed');
+        $this->Trait->changePassword();
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testChangePasswordWithWrongCurrentPassword()
+    {
+        $this->assertEquals(
+            '$2y$10$IPPgJNSfvATsMBLbv/2r8OtpyTBibyM1g5GDxD4PivW9qBRwRkRbC',
+            $this->table->get('00000000-0000-0000-0000-000000000006')->password
+        );
+        $this->_mockRequestPost();
+        $this->_mockAuthLoggedIn(['id' => '00000000-0000-0000-0000-000000000006', 'password' => '$2y$10$IPPgJNSfvATsMBLbv/2r8OtpyTBibyM1g5GDxD4PivW9qBRwRkRbC']);
+        $this->_mockFlash();
+        $this->Trait->request->expects($this->once())
+            ->method('data')
+            ->will($this->returnValue([
+                'current_password' => 'wrong-password',
+                'password' => '12345',
+                'password_confirm' => '12345',
+            ]));
+        $this->Trait->Flash->expects($this->once())
+            ->method('error')
+            ->with('The current password does not match');
+        $this->Trait->changePassword();
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
     public function testChangePasswordWithInvalidUser()
     {
         $this->_mockRequestPost();
@@ -138,17 +216,37 @@ class PasswordManagementTraitTest extends BaseTraitTest
      *
      * @return void
      */
-    public function testChangePasswordGetNotLoggedIn()
+    public function testChangePasswordGetNotLoggedInInsideResetPasswordFlow()
+    {
+        $this->_mockRequestGet(true);
+        $this->_mockAuth();
+        $this->_mockFlash();
+        $this->_mockSession([
+            Configure::read('Users.Key.Session.resetPasswordUserId') => '00000000-0000-0000-0000-000000000001'
+        ]);
+        $this->Trait->expects($this->any())
+            ->method('set')
+            ->will($this->returnCallback(function ($param1, $param2 = null) {
+                if ($param1 === 'validatePassword') {
+                    TestCase::assertEquals($param2, false);
+                }
+            }));
+        $this->Trait->changePassword();
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testChangePasswordGetNotLoggedInOutsideResetPasswordFlow()
     {
         $this->_mockRequestGet();
         $this->_mockAuth();
-        $this->Trait->expects($this->any())
-                ->method('set')
-                ->will($this->returnCallback(function ($param1, $param2 = null) {
-                    if ($param1 === 'validatePassword') {
-                        TestCase::assertEquals($param2, false);
-                    }
-                }));
+        $this->_mockFlash();
+        $this->Trait->Flash->expects($this->once())
+            ->method('error')
+            ->with('User was not found');
         $this->Trait->changePassword();
     }
 
@@ -247,12 +345,19 @@ class PasswordManagementTraitTest extends BaseTraitTest
     }
 
     /**
-     * test requestResetPassword
+     * @dataProvider ensureUserActiveForResetPasswordFeature
      *
      * @return void
      */
-    public function testRequestResetPasswordUserNotActive()
+    public function testEnsureUserActiveForResetPasswordFeature($ensureActive)
     {
+        $expectError = $this->never();
+
+        if ($ensureActive) {
+            Configure::write('Users.Registration.ensureActive', true);
+            $expectError = $this->once();
+        }
+
         $this->assertEquals('ae93ddbe32664ce7927cf0c5c5a5e59d', $this->table->get('00000000-0000-0000-0000-000000000001')->token);
         $this->_mockRequestPost();
         $this->_mockFlash();
@@ -261,10 +366,21 @@ class PasswordManagementTraitTest extends BaseTraitTest
                 ->method('data')
                 ->with('reference')
                 ->will($this->returnValue($reference));
-        $this->Trait->Flash->expects($this->any())
+        $this->Trait->Flash->expects($expectError)
             ->method('error')
             ->with('The user is not active');
         $this->Trait->requestResetPassword();
         $this->assertNotEquals('xxx', $this->table->get('00000000-0000-0000-0000-000000000001')->token);
+    }
+
+    public function ensureUserActiveForResetPasswordFeature()
+    {
+        $ensureActive = true;
+        $defaultBehavior = false;
+
+        return [
+            [$ensureActive],
+            [$defaultBehavior]
+        ];
     }
 }

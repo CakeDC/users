@@ -22,6 +22,7 @@ use Cake\Event\Event;
 use Cake\Network\Request;
 use Cake\Network\Session;
 use Cake\ORM\Entity;
+use Cake\Routing\Exception\MissingRouteException;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Security;
@@ -57,11 +58,20 @@ class UsersAuthComponentTest extends TestCase
             'controller' => 'Users',
             'action' => 'requestResetPassword'
         ]);
+        Router::connect('/notAllowed/*', [
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+            'action' => 'edit'
+        ]);
         Security::salt('YJfIxfs2guVoUubWDYhG93b0qyJfIxfs2guwvniR2G0FgaC9mi');
         Configure::write('App.namespace', 'Users');
-        $this->request = $this->getMock('Cake\Network\Request', ['is', 'method']);
+        $this->request = $this->getMockBuilder('Cake\Network\Request')
+                ->setMethods(['is', 'method'])
+                ->getMock();
         $this->request->expects($this->any())->method('is')->will($this->returnValue(true));
-        $this->response = $this->getMock('Cake\Network\Response', ['stop']);
+        $this->response = $this->getMockBuilder('Cake\Network\Response')
+                ->setMethods(['stop'])
+                ->getMock();
         $this->Controller = new Controller($this->request, $this->response);
         $this->Registry = $this->Controller->components();
         $this->Controller->UsersAuth = new UsersAuthComponent($this->Registry);
@@ -119,6 +129,9 @@ class UsersAuthComponentTest extends TestCase
     public function testIsUrlAuthorizedUserNotLoggedIn()
     {
         $event = new Event('event');
+        $event->data = [
+            'url' => '/route',
+        ];
         $this->Controller->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
                 ->setMethods(['user', 'isAuthorized'])
                 ->disableOriginalConstructor()
@@ -128,6 +141,74 @@ class UsersAuthComponentTest extends TestCase
                 ->will($this->returnValue(false));
         $result = $this->Controller->UsersAuth->isUrlAuthorized($event);
         $this->assertFalse($result);
+    }
+
+    /**
+     * test The user is not logged in, but the controller action is public $this->Auth->allow()
+     *
+     * @return void
+     */
+    public function testIsUrlAuthorizedUserNotLoggedInActionAllowed()
+    {
+        $event = new Event('event');
+        $event->data = [
+            'url' => '/route',
+        ];
+        $this->Controller->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
+            ->setMethods(['user', 'isAuthorized'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->Controller->Auth->allowedActions = ['requestResetPassword'];
+        $this->Controller->Auth->expects($this->never())
+            ->method('user');
+        $result = $this->Controller->UsersAuth->isUrlAuthorized($event);
+        $this->assertTrue($result);
+    }
+
+    /**
+     * test The user is logged in and not allowed by rules to access this action,
+     * but the controller action is public $this->Auth->allow()
+     *
+     * @return void
+     */
+    public function testIsUrlAuthorizedUserLoggedInNotAllowedActionAllowed()
+    {
+        $event = new Event('event');
+        $event->data = [
+            'url' => '/notAllowed',
+        ];
+        $this->Controller->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
+            ->setMethods(['user', 'isAuthorized'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->Controller->Auth->allowedActions = ['edit'];
+        $this->Controller->Auth->expects($this->never())
+            ->method('user');
+        $result = $this->Controller->UsersAuth->isUrlAuthorized($event);
+        $this->assertTrue($result);
+    }
+
+    /**
+     * test The user is logged in and allowed by rules to access this action,
+     * and the controller action is public $this->Auth->allow()
+     *
+     * @return void
+     */
+    public function testIsUrlAuthorizedUserLoggedInAllowedActionAllowed()
+    {
+        $event = new Event('event');
+        $event->data = [
+            'url' => '/route',
+        ];
+        $this->Controller->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
+            ->setMethods(['user', 'isAuthorized'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->Controller->Auth->allowedActions = ['requestResetPassword'];
+        $this->Controller->Auth->expects($this->never())
+            ->method('user');
+        $result = $this->Controller->UsersAuth->isUrlAuthorized($event);
+        $this->assertTrue($result);
     }
 
     /**
@@ -142,9 +223,6 @@ class UsersAuthComponentTest extends TestCase
                 ->setMethods(['user', 'isAuthorized'])
                 ->disableOriginalConstructor()
                 ->getMock();
-        $this->Controller->Auth->expects($this->once())
-                ->method('user')
-                ->will($this->returnValue(['id' => 1]));
         $result = $this->Controller->UsersAuth->isUrlAuthorized($event);
         $this->assertFalse($result);
     }
@@ -154,7 +232,7 @@ class UsersAuthComponentTest extends TestCase
      *
      * @return void
      */
-    public function testIsUrlAuthorizedUrlString()
+    public function testIsUrlAuthorizedUrlRelativeString()
     {
         $event = new Event('event');
         $event->data = [
@@ -173,11 +251,146 @@ class UsersAuthComponentTest extends TestCase
             'controller' => 'Users',
             'action' => 'requestResetPassword',
             'pass' => [],
+            '_matchedRoute' => '/route/*',
         ];
         $this->Controller->Auth->expects($this->once())
                 ->method('isAuthorized')
                 ->with(null, $request)
                 ->will($this->returnValue(true));
+        $result = $this->Controller->UsersAuth->isUrlAuthorized($event);
+        $this->assertTrue($result);
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     * @expectedException Cake\Routing\Exception\MissingRouteException
+     */
+    public function testIsUrlAuthorizedMissingRouteString()
+    {
+        $event = new Event('event');
+        $event->data = [
+            'url' => '/missingRoute',
+        ];
+        $this->Controller->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
+                ->setMethods(['user', 'isAuthorized'])
+                ->disableOriginalConstructor()
+                ->getMock();
+        $this->Controller->Auth->expects($this->never())
+                ->method('user');
+        $result = $this->Controller->UsersAuth->isUrlAuthorized($event);
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     * @expectedException Cake\Routing\Exception\MissingRouteException
+     */
+    public function testIsUrlAuthorizedMissingRouteArray()
+    {
+        $event = new Event('event');
+        $event->data = [
+            'url' => [
+                'controller' => 'missing',
+                'action' => 'missing',
+            ],
+        ];
+        $this->Controller->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
+                ->setMethods(['user', 'isAuthorized'])
+                ->disableOriginalConstructor()
+                ->getMock();
+        $this->Controller->Auth->expects($this->never())
+                ->method('user');
+        $result = $this->Controller->UsersAuth->isUrlAuthorized($event);
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testIsUrlAuthorizedUrlAbsoluteForCurrentAppString()
+    {
+        $event = new Event('event');
+        $event->data = [
+            'url' => Router::fullBaseUrl() . '/route',
+        ];
+        $this->Controller->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
+                ->setMethods(['user', 'isAuthorized'])
+                ->disableOriginalConstructor()
+                ->getMock();
+        $this->Controller->Auth->expects($this->once())
+                ->method('user')
+                ->will($this->returnValue(['id' => 1]));
+        $request = new Request('/route');
+        $request->params = [
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+            'action' => 'requestResetPassword',
+            'pass' => [],
+            '_matchedRoute' => '/route/*',
+        ];
+        $this->Controller->Auth->expects($this->once())
+                ->method('isAuthorized')
+                ->with(null, $request)
+                ->will($this->returnValue(true));
+        $result = $this->Controller->UsersAuth->isUrlAuthorized($event);
+        $this->assertTrue($result);
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testIsUrlAuthorizedUrlRelativeForCurrentAppString()
+    {
+        $event = new Event('event');
+        $event->data = [
+            'url' => 'route',
+        ];
+        $this->Controller->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
+                ->setMethods(['user', 'isAuthorized'])
+                ->disableOriginalConstructor()
+                ->getMock();
+        $this->Controller->Auth->expects($this->once())
+                ->method('user')
+                ->will($this->returnValue(['id' => 1]));
+        $request = new Request('/route');
+        $request->params = [
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+            'action' => 'requestResetPassword',
+            'pass' => [],
+            '_matchedRoute' => '/route/*',
+        ];
+        $this->Controller->Auth->expects($this->once())
+                ->method('isAuthorized')
+                ->with(null, $request)
+                ->will($this->returnValue(true));
+        $result = $this->Controller->UsersAuth->isUrlAuthorized($event);
+        $this->assertTrue($result);
+    }
+
+    /**
+     *
+     *
+     * @return void
+     */
+    public function testIsUrlAuthorizedUrlAbsoluteForOtherAppString()
+    {
+        $event = new Event('event');
+        $event->data = [
+            'url' => 'http://example.com',
+        ];
+        $this->Controller->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
+                ->setMethods(['user', 'isAuthorized'])
+                ->disableOriginalConstructor()
+                ->getMock();
+        $this->Controller->Auth->expects($this->never())
+                ->method('user');
         $result = $this->Controller->UsersAuth->isUrlAuthorized($event);
         $this->assertTrue($result);
     }
@@ -211,6 +424,7 @@ class UsersAuthComponentTest extends TestCase
             'controller' => 'Users',
             'action' => 'requestResetPassword',
             'pass' => ['pass-one'],
+            '_matchedRoute' => '/route/*',
         ];
         $this->Controller->Auth->expects($this->once())
                 ->method('isAuthorized')
