@@ -742,3 +742,7 @@ msgstr ""
 #: View/Helper/UserHelper.php:161
 msgid "reCaptcha is not configured! Please configure Users.reCaptcha.key"
 msgstr ""
+
+#: Model/Behavior/RegisterBehavior.php:147
+msgid "This field is required"
+msgstr ""

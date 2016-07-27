@@ -145,7 +145,7 @@ class RegisterBehavior extends Behavior
         $this->validateEmail = $validateEmail;
         $validator
             ->add('email', 'valid', ['rule' => 'email'])
-            ->notEmpty('email', 'This field is required', function ($context) {
+            ->notEmpty('email', __d('Users', 'This field is required'), function ($context) {
                 return $this->validateEmail;
             });
 
