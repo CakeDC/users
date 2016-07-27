@@ -5,28 +5,28 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CakeDC Users\n"
 "POT-Creation-Date: 2016-04-20 09:48-0300\n"
-"Last-Translator: André Teixeira <hello@andtxr.com>\n"
-"PO-Revision-Date: 2016-04-25 16:30+0100\n"
+"Last-Translator: Jorge González <steinkel@gmail.com>\n"
+"PO-Revision-Date: 2016-07-27 11:04+0100\n"
 "Language-Team: CakeDC <contact@cakedc.com>\n"
 "Language: es_ES\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.8.8\n"
+"X-Generator: Poedit 1.8.4\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
 #: Auth/ApiKeyAuthenticate.php:55
 msgid "Type {0} is not valid"
-msgstr ""
+msgstr "El tipo {0} no es válido"
 
 #: Auth/ApiKeyAuthenticate.php:59
 msgid "Type {0} has no associated callable"
-msgstr ""
+msgstr "El tipo {0} no tiene un callable asociado"
 
 #: Auth/ApiKeyAuthenticate.php:68
 msgid "SSL is required for ApiKey Authentication"
-msgstr ""
+msgstr "SSL requerido para autenticación ApiKey"
 
 #: Auth/SimpleRbacAuthorize.php:141
 msgid ""
@@ -37,19 +37,23 @@ msgstr ""
 
 #: Auth/SocialAuthenticate.php:410
 msgid "Provider cannot be empty"
-msgstr ""
+msgstr "El proveedor no puede ser vacío"
 
 #: Auth/Rules/AbstractRule.php:77
 msgid ""
 "Table alias is empty, please define a table alias, we could not extract a "
 "default table from the request"
 msgstr ""
+"El alias de la tabla es vacío, por favor defina un alias para la tabla ya "
+"que no podemos extraer el nombre de la tabla del request"
 
 #: Auth/Rules/Owner.php:67;70
 msgid ""
 "Missing column {0} in table {1} while checking ownership permissions for "
 "user {2}"
 msgstr ""
+"La columna {0} de la tabla {1} no existe, estábamos comprobando el permiso "
+"de propietario para el usuario {2}"
 
 #: Controller/SocialAccountsController.php:52
 msgid "Account validated successfully"
@@ -99,7 +103,7 @@ msgstr ""
 
 #: Controller/Traits/LoginTrait.php:95
 msgid "Issues trying to log in with your social account"
-msgstr ""
+msgstr "Hubo un problema al hacer login con su cuenta"
 
 #: Controller/Traits/LoginTrait.php:100 Template/Users/social_email.ctp:16
 msgid "Please enter your email"
@@ -110,20 +114,24 @@ msgid ""
 "Your user has not been validated yet. Please check your inbox for "
 "instructions"
 msgstr ""
+"El usuario no se ha validado todavía, Comprueba tu bandeja de entrada para "
+"recuperar el enlace de validación"
 
 #: Controller/Traits/LoginTrait.php:108
 msgid ""
 "Your social account has not been validated yet. Please check your inbox for "
 "instructions"
 msgstr ""
+"La cuenta no se ha validado todavía, comprueba tu bandeja de entrada para "
+"recuperar el enlace de validación"
 
 #: Controller/Traits/LoginTrait.php:157 Controller/Traits/RegisterTrait.php:73
 msgid "Invalid reCaptcha"
-msgstr ""
+msgstr "El código reCaptcha no es válido"
 
 #: Controller/Traits/LoginTrait.php:165
 msgid "You are already logged in"
-msgstr ""
+msgstr "Ya te has logueado en la aplicación"
 
 #: Controller/Traits/LoginTrait.php:209
 msgid "Username or password is incorrect"
@@ -168,7 +176,7 @@ msgstr "Usuario {0} no encontrado"
 
 #: Controller/Traits/PasswordManagementTrait.php:118
 msgid "The user is not active"
-msgstr ""
+msgstr "El usuario no está activo"
 
 #: Controller/Traits/PasswordManagementTrait.php:120
 #: Controller/Traits/UserValidationTrait.php:94;102
@@ -178,6 +186,7 @@ msgstr "No se puede restablecer el token"
 #: Controller/Traits/ProfileTrait.php:52
 msgid "Not authorized, please login first"
 msgstr ""
+"No estás autorizado para realizar esta acción, por favor haz login primero"
 
 #: Controller/Traits/RegisterTrait.php:42
 msgid "You must log out to register a new user account"
@@ -213,7 +222,7 @@ msgstr "El {0} no ha podido eliminarse"
 
 #: Controller/Traits/SocialTrait.php:39
 msgid "The reCaptcha could not be validated"
-msgstr ""
+msgstr "El código reCaptcha no se pudo validar"
 
 #: Controller/Traits/UserValidationTrait.php:42
 msgid "User account validated successfully"
@@ -241,7 +250,7 @@ msgstr "Tipo de validación inválido"
 
 #: Controller/Traits/UserValidationTrait.php:64
 msgid "Invalid token or user account already validated"
-msgstr ""
+msgstr "Token inválido, or tu cuenta ya se había validado anteriormente"
 
 #: Controller/Traits/UserValidationTrait.php:66
 msgid "Token already expired"
@@ -270,11 +279,11 @@ msgstr "{0} Enlace de validación de su cuenta social"
 
 #: Model/Behavior/PasswordBehavior.php:56
 msgid "Reference cannot be null"
-msgstr ""
+msgstr "La referencia no puede ser vacía"
 
 #: Model/Behavior/PasswordBehavior.php:61
 msgid "Token expiration cannot be empty"
-msgstr ""
+msgstr "La fecha de expiración del Token no puede ser vacía"
 
 #: Model/Behavior/PasswordBehavior.php:67;115
 msgid "User not found"
@@ -283,11 +292,11 @@ msgstr "Usuario no encontrado"
 #: Model/Behavior/PasswordBehavior.php:71
 #: Model/Behavior/RegisterBehavior.php:110
 msgid "User account already validated"
-msgstr ""
+msgstr "Tu usuario ya se había validado antes"
 
 #: Model/Behavior/PasswordBehavior.php:78
 msgid "User not active"
-msgstr ""
+msgstr "El usuario no está activo"
 
 #: Model/Behavior/PasswordBehavior.php:120
 msgid "The old password does not match"
@@ -336,137 +345,139 @@ msgstr "Falta 'username' en los datos de opciones"
 
 #: Shell/UsersShell.php:54
 msgid "Utilities for CakeDC Users Plugin"
-msgstr ""
+msgstr "Utilidades para CakeDC Users Plugin"
 
 #: Shell/UsersShell.php:55
 msgid "Activate an specific user"
-msgstr ""
+msgstr "Activar un usuario específico"
 
 #: Shell/UsersShell.php:56
 msgid "Add a new superadmin user for testing purposes"
-msgstr ""
+msgstr "Añadir un nuevo superadmin"
 
 #: Shell/UsersShell.php:57
 msgid "Add a new user"
-msgstr ""
+msgstr "Añadir un nuevo usuario"
 
 #: Shell/UsersShell.php:58
 msgid "Change the role for an specific user"
-msgstr ""
+msgstr "Cambiar el rol de un usuario específico"
 
 #: Shell/UsersShell.php:59
 msgid "Deactivate an specific user"
-msgstr ""
+msgstr "Desactivar un usuario"
 
 #: Shell/UsersShell.php:60
 msgid "Delete an specific user"
-msgstr ""
+msgstr "Borrar un usuario"
 
 #: Shell/UsersShell.php:61
 msgid "Reset the password via email"
-msgstr ""
+msgstr "Resetear la contraseña via email"
 
 #: Shell/UsersShell.php:62
 msgid "Reset the password for all users"
-msgstr ""
+msgstr "Resetear la contraseña de todos los usuarios"
 
 #: Shell/UsersShell.php:63
 msgid "Reset the password for an specific user"
-msgstr ""
+msgstr "Resetear la contraseña de un usuario concreto"
 
 #: Shell/UsersShell.php:97
 msgid "User added:"
-msgstr ""
+msgstr "Usuario añadido:"
 
 #: Shell/UsersShell.php:98;126
 msgid "Id: {0}"
-msgstr ""
+msgstr "Id: {0}"
 
 #: Shell/UsersShell.php:99;127
 msgid "Username: {0}"
-msgstr ""
+msgstr "Nombre de usuario: {0}"
 
 #: Shell/UsersShell.php:100;128
 msgid "Email: {0}"
-msgstr ""
+msgstr "Email: {0}"
 
 #: Shell/UsersShell.php:101;129
 msgid "Password: {0}"
-msgstr ""
+msgstr "Contraseña: {0}"
 
 #: Shell/UsersShell.php:125
 msgid "Superuser added:"
-msgstr ""
+msgstr "Superusuario añadido:"
 
 #: Shell/UsersShell.php:131
 msgid "Superuser could not be added:"
-msgstr ""
+msgstr "No se pudo añadir un superusuario:"
 
 #: Shell/UsersShell.php:134
 msgid "Field: {0} Error: {1}"
-msgstr ""
+msgstr "Campo: {0} Error: {1}"
 
 #: Shell/UsersShell.php:152;178
 msgid "Please enter a password."
-msgstr ""
+msgstr "Por favor, introduzca una contraseña."
 
 #: Shell/UsersShell.php:156
 msgid "Password changed for all users"
-msgstr ""
+msgstr "Contraseña cambiada para todos los usuarios"
 
 #: Shell/UsersShell.php:157;185
 msgid "New password: {0}"
-msgstr ""
+msgstr "Nueva contraseña: {0}"
 
 #: Shell/UsersShell.php:175;203;281;321
 msgid "Please enter a username."
-msgstr ""
+msgstr "Por favor introduzca nombre de usuario."
 
 #: Shell/UsersShell.php:184
 msgid "Password changed for user: {0}"
-msgstr ""
+msgstr "Contraseña cambiada para el usuario: {0}"
 
 #: Shell/UsersShell.php:206
 msgid "Please enter a role."
-msgstr ""
+msgstr "Por favor introduzca rol."
 
 #: Shell/UsersShell.php:212
 msgid "Role changed for user: {0}"
-msgstr ""
+msgstr "Rol cambiado para el usuario: {0}"
 
 #: Shell/UsersShell.php:213
 msgid "New role: {0}"
-msgstr ""
+msgstr "Nuevo rol: {0}"
 
 #: Shell/UsersShell.php:228
 msgid "User was activated: {0}"
-msgstr ""
+msgstr "Usuario activado: {0}"
 
 #: Shell/UsersShell.php:243
 msgid "User was de-activated: {0}"
-msgstr ""
+msgstr "Usuario desactivado: {0}"
 
 #: Shell/UsersShell.php:255
 msgid "Please enter a username or email."
-msgstr ""
+msgstr "Por favor introduzca nombre de usuario o email."
 
 #: Shell/UsersShell.php:263
 msgid ""
 "Please ask the user to check the email to continue with password reset "
 "process"
 msgstr ""
+"Avise al usuario para que compruebe su bandeja de entrada, hemos enviado un "
+"email con instrucciones para resetear la contraseña"
 
 #: Shell/UsersShell.php:300
 msgid "The user was not found."
-msgstr ""
+msgstr "Usuario no encontrado."
 
 #: Shell/UsersShell.php:329
 msgid "The user {0} was not deleted. Please try again"
-msgstr ""
+msgstr "El usuario {0} NO se ha borrado, por favor inténtelo de nuevo"
 
 #: Shell/UsersShell.php:331
 msgid "The user {0} was deleted successfully"
-msgstr ""
+msgstr "El usuario {0} se borró correctamente"
 
 #: Template/Email/html/reset_password.ctp:21
 #: Template/Email/html/social_account_validation.ctp:14
@@ -487,6 +498,8 @@ msgid ""
 "If the link is not correcly displayed, please copy the following address in "
 "your web browser {0}"
 msgstr ""
+"Si el enlace no se ve correctamente, por favor copie la siguente URL en su "
+"navegador: {0}"
 
 #: Template/Email/html/reset_password.ctp:30
 #: Template/Email/html/social_account_validation.ctp:35
@@ -645,7 +658,7 @@ msgstr "Enlace"
 
 #: Template/Users/profile.ctp:47
 msgid "Link to {0}"
-msgstr ""
+msgstr "Enlace a {0}"
 
 #: Template/Users/register.ctp:25
 msgid "Accept TOS conditions?"
@@ -737,11 +750,11 @@ msgstr "Iniciar sesión con"
 
 #: View/Helper/UserHelper.php:49
 msgid "fa fa-{0}"
-msgstr ""
+msgstr "fa fa-{0}"
 
 #: View/Helper/UserHelper.php:52
 msgid "btn btn-social btn-{0} "
-msgstr ""
+msgstr "btn btn-social btn-{0}"
 
 #: View/Helper/UserHelper.php:90
 msgid "Logout"
@@ -754,16 +767,17 @@ msgstr "Bienvenido, {0}"
 #: View/Helper/UserHelper.php:161
 msgid "reCaptcha is not configured! Please configure Users.reCaptcha.key"
 msgstr ""
+"reCaptcha no se ha configurado, por favor configure Users.reCaptcha.key"
 
 msgid "SocialAccount already active"
 msgstr "Cuenta social ya activa"
 
 msgid ""
-"The social account is not active. Please check your email for "
-"instructions. {0}"
+"The social account is not active. Please check your email for instructions. "
+"{0}"
 msgstr ""
-"La cuenta social está inactiva. Por favor, compruebe las instrucciones en "
-"su correo. {0}"
+"La cuenta social está inactiva. Por favor, compruebe las instrucciones en su "
+"correo. {0}"
 
 msgid "There was an error associating your social network account"
 msgstr "Hubo un error al asociar su cuenta de la red social"
@@ -782,6 +796,7 @@ msgstr "Login con Facebook"
 
 msgid "Sign in with Twitter"
 msgstr "Login con Twitter"
+
 #: Model/Behavior/RegisterBehavior.php:147
 msgid "This field is required"
 msgstr "Este campo es requerido"
