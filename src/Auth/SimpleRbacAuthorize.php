@@ -217,9 +217,9 @@ class SimpleRbacAuthorize extends BaseAuthorize
         $permission += ['allowed' => true];
         $user_arr = ['user' => $user];
         $reserved = [
-            'prefix' => $request->params['prefix'],
+            'prefix' => isset($request->params['prefix']) ? $request->params['prefix'] : null,
             'plugin' => $request->plugin,
-            'extension' => $request->params['_ext'],
+            'extension' => isset($request->params['_ext']) ? $request->params['_ext'] : null,
             'controller' => $request->controller,
             'action' => $request->action,
         ];
