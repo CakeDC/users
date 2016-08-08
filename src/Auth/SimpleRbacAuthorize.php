@@ -196,69 +196,106 @@ class SimpleRbacAuthorize extends BaseAuthorize
     /**
      * Match the rule for current permission
      *
-     * @param array $permission configuration
-     * @param array $user current user
-     * @param string $role effective user role
-     * @param Request $request request
-     * @return bool if rule matched, null if rule not matched
+     * @param array                 $permission The permission configuration
+     * @param array                 $user       Current user data
+     * @param string                $role       Effective user's role
+     * @param \Cake\Network\Request $request    Current request
+     *
+     * @return bool
      */
-    protected function _matchRule($permission, $user, $role, $request)
+    protected function _matchRule (array $permission, array $user, $role, Request $request)
     {
-        $plugin = $request->plugin;
-        $controller = $request->controller;
-        $action = $request->action;
-        $prefix = null;
-        $extension = null;
-        if (!empty($request->params['prefix'])) {
-            $prefix = $request->params['prefix'];
-        }
-        if (!empty($request->params['_ext'])) {
-            $extension = $request->params['_ext'];
-        }
-        if ($this->_matchOrAsterisk($permission, 'role', $role) &&
-                $this->_matchOrAsterisk($permission, 'prefix', $prefix, true) &&
-                $this->_matchOrAsterisk($permission, 'plugin', $plugin, true) &&
-                $this->_matchOrAsterisk($permission, 'extension', $extension, true) &&
-                $this->_matchOrAsterisk($permission, 'controller', $controller) &&
-                $this->_matchOrAsterisk($permission, 'action', $action)) {
-            $allowed = Hash::get($permission, 'allowed');
+        if (!isset($permission['controller'], $permission['action'])) {
+            $this->log(
+                __d('CakeDC/Users', "Cannot evaluate permission when 'controller' and/or 'action' keys are absent"),
+                LogLevel::DEBUG
+            );
 
-            if ($allowed === null) {
-                //allowed will be true by default
-                return true;
-            } elseif (is_callable($allowed)) {
-                return (bool)call_user_func($allowed, $user, $role, $request);
-            } elseif ($allowed instanceof Rule) {
-                return (bool)$allowed->allowed($user, $role, $request);
+            return false;
+        }
+
+        $permission += ['allowed' => true];
+        $user_arr = ['user' => $user];
+        $reserved = [
+            'prefix' => $request->params['prefix'],
+            'plugin' => $request->plugin,
+            'extension' => $request->params['_ext'],
+            'controller' => $request->controller,
+            'action' => $request->action,
+        ];
+
+        foreach ($permission as $key => $value) {
+            $inverse = $this->_startsWith($key, '*');
+            if ($inverse) {
+                $key = ltrim($key, '*');
+            }
+
+            if (is_callable($value)) {
+                $return = (bool) call_user_func($value, $user, $role, $request);
+            } elseif ($value instanceof Rule) {
+                $return = (bool) $value->allowed($user, $role, $request);
+            } elseif ($key === 'allowed') {
+                $return = (bool) $value;
+            } elseif (array_key_exists($key, $reserved)) {
+                $return = $this->_matchOrAsterisk($value, $reserved[$key], true);
             } else {
-                return (bool)$allowed;
+                if (!$this->_startsWith($key, 'user')) {
+                    $key = 'user.' . $key;
+                }
+
+                $return = $this->_matchOrAsterisk($value, Hash::get($user_arr, $key));
+            }
+
+            if ($inverse) {
+                $return = !$return;
+            }
+            if (!$return) {
+                return false;
             }
         }
 
-        return null;
+        return true;
     }
 
     /**
      * Check if rule matched or '*' present in rule matching anything
      *
-     * @param string $permission permission configuration
-     * @param string $key key to retrieve and check in permissions configuration
-     * @param string $value value to check with (coming from the request) We'll check the DASHERIZED value too
-     * @param bool $allowEmpty true if we allow
+     * @param string|array      $possibleValues Values that are accepted (from permission config)
+     * @param string|mixed|null $value          Value to check with (coming from the request) We'll check the
+     *                                          DASHERIZED value too
+     * @param bool              $allowEmpty     If true and $value is null, the rule will pass
+     *
      * @return bool
      */
-    protected function _matchOrAsterisk($permission, $key, $value, $allowEmpty = false)
+    protected function _matchOrAsterisk ($possibleValues, $value, $allowEmpty = false)
     {
-        $possibleValues = (array)Hash::get($permission, $key);
-        if ($allowEmpty && empty($possibleValues) && $value === null) {
+        $possibleArray = (array) $possibleValues;
+
+        if ($allowEmpty && empty($possibleArray) && $value === null) {
             return true;
         }
-        if (Hash::get($permission, $key) === '*' ||
-                in_array($value, $possibleValues) ||
-                in_array(Inflector::camelize($value, '-'), $possibleValues)) {
+
+        if (
+            $possibleValues === '*' ||
+            in_array($value, $possibleArray) ||
+            in_array(Inflector::camelize($value, '-'), $possibleArray)
+        ) {
             return true;
         }
 
         return false;
+    }
+
+    /**
+     * Checks if $heystack begins with $needle
+     * @see http://stackoverflow.com/a/7168986/2588539
+     *
+     * @param string $haystack The whole string
+     * @param string $needle The beginning to check
+     *
+     * @return bool
+     */
+    protected function _startsWith($haystack, $needle) {
+        return substr($haystack, 0, strlen($needle)) === $needle;
     }
 }
