@@ -196,14 +196,14 @@ class SimpleRbacAuthorize extends BaseAuthorize
     /**
      * Match the rule for current permission
      *
-     * @param array                 $permission The permission configuration
-     * @param array                 $user       Current user data
-     * @param string                $role       Effective user's role
-     * @param \Cake\Network\Request $request    Current request
+     * @param array $permission The permission configuration
+     * @param array $user Current user data
+     * @param string $role Effective user's role
+     * @param \Cake\Network\Request $request Current request
      *
      * @return bool
      */
-    protected function _matchRule (array $permission, array $user, $role, Request $request)
+    protected function _matchRule(array $permission, array $user, $role, Request $request)
     {
         if (!isset($permission['controller'], $permission['action'])) {
             $this->log(
@@ -215,13 +215,14 @@ class SimpleRbacAuthorize extends BaseAuthorize
         }
 
         $permission += ['allowed' => true];
-        $user_arr = ['user' => $user];
+        $userArr = ['user' => $user];
         $reserved = [
-            'prefix' => isset($request->params['prefix']) ? $request->params['prefix'] : null,
+            'prefix' => Hash::get($request->params, 'prefix'),
             'plugin' => $request->plugin,
-            'extension' => isset($request->params['_ext']) ? $request->params['_ext'] : null,
+            'extension' => Hash::get($request->params, '_ext'),
             'controller' => $request->controller,
             'action' => $request->action,
+            'role' => $role
         ];
 
         foreach ($permission as $key => $value) {
@@ -231,11 +232,11 @@ class SimpleRbacAuthorize extends BaseAuthorize
             }
 
             if (is_callable($value)) {
-                $return = (bool) call_user_func($value, $user, $role, $request);
+                $return = (bool)call_user_func($value, $user, $role, $request);
             } elseif ($value instanceof Rule) {
-                $return = (bool) $value->allowed($user, $role, $request);
+                $return = (bool)$value->allowed($user, $role, $request);
             } elseif ($key === 'allowed') {
-                $return = (bool) $value;
+                $return = (bool)$value;
             } elseif (array_key_exists($key, $reserved)) {
                 $return = $this->_matchOrAsterisk($value, $reserved[$key], true);
             } else {
@@ -243,7 +244,7 @@ class SimpleRbacAuthorize extends BaseAuthorize
                     $key = 'user.' . $key;
                 }
 
-                $return = $this->_matchOrAsterisk($value, Hash::get($user_arr, $key));
+                $return = $this->_matchOrAsterisk($value, Hash::get($userArr, $key));
             }
 
             if ($inverse) {
@@ -260,16 +261,15 @@ class SimpleRbacAuthorize extends BaseAuthorize
     /**
      * Check if rule matched or '*' present in rule matching anything
      *
-     * @param string|array      $possibleValues Values that are accepted (from permission config)
-     * @param string|mixed|null $value          Value to check with (coming from the request) We'll check the
-     *                                          DASHERIZED value too
-     * @param bool              $allowEmpty     If true and $value is null, the rule will pass
+     * @param string|array $possibleValues Values that are accepted (from permission config)
+     * @param string|mixed|null $value Value to check with. We'll check the DASHERIZED value too
+     * @param bool $allowEmpty If true and $value is null, the rule will pass
      *
      * @return bool
      */
-    protected function _matchOrAsterisk ($possibleValues, $value, $allowEmpty = false)
+    protected function _matchOrAsterisk($possibleValues, $value, $allowEmpty = false)
     {
-        $possibleArray = (array) $possibleValues;
+        $possibleArray = (array)$possibleValues;
 
         if ($allowEmpty && empty($possibleArray) && $value === null) {
             return true;
@@ -288,6 +288,7 @@ class SimpleRbacAuthorize extends BaseAuthorize
 
     /**
      * Checks if $heystack begins with $needle
+     *
      * @see http://stackoverflow.com/a/7168986/2588539
      *
      * @param string $haystack The whole string
@@ -295,7 +296,8 @@ class SimpleRbacAuthorize extends BaseAuthorize
      *
      * @return bool
      */
-    protected function _startsWith($haystack, $needle) {
+    protected function _startsWith($haystack, $needle)
+    {
         return substr($haystack, 0, strlen($needle)) === $needle;
     }
 }
