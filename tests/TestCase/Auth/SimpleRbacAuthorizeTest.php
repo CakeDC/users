@@ -14,12 +14,11 @@ namespace CakeDC\Users\Test\TestCase\Auth;
 use CakeDC\Users\Auth\Rules\Rule;
 use CakeDC\Users\Auth\SimpleRbacAuthorize;
 use Cake\Controller\ComponentRegistry;
-use Cake\Controller\Controller;
-use Cake\Event\EventManager;
 use Cake\Network\Request;
 use Cake\Network\Response;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Hash;
+use Psr\Log\LogLevel;
 use ReflectionClass;
 
 class SimpleRbacAuthorizeTest extends TestCase
@@ -171,19 +170,7 @@ class SimpleRbacAuthorizeTest extends TestCase
     public function testAuthorize($permissions, $user, $requestParams, $expected, $msg = null)
     {
         $this->simpleRbacAuthorize = $this->preparePermissions($permissions);
-        $request = new Request();
-        $request->plugin = Hash::get($requestParams, 'plugin');
-        $request->controller = $requestParams['controller'];
-        $request->action = $requestParams['action'];
-        $prefix = Hash::get($requestParams, 'prefix');
-        $request->params = [];
-        if ($prefix) {
-            $request->params['prefix'] = $prefix;
-        }
-        $extension = Hash::get($requestParams, '_ext');
-        if ($extension) {
-            $request->params['_ext'] = $extension;
-        }
+        $request = $this->_requestFromArray($requestParams);
 
         $result = $this->simpleRbacAuthorize->authorize($user, $request);
         $this->assertSame($expected, $result, $msg);
@@ -199,6 +186,139 @@ class SimpleRbacAuthorizeTest extends TestCase
             ->willReturn(true);
 
         return [
+            'star-invert' => [
+                //permissions
+                [[
+                    '*plugin' => 'Tests',
+                    '*role' => 'test',
+                    '*controller' => 'Tests',
+                    '*action' => 'test',
+                ]],
+                //user
+                [
+                    'id' => 1,
+                    'username' => 'luke',
+                    'role' => 'something',
+                ],
+                //request
+                [
+                    'plugin' => 'something',
+                    'controller' => 'something',
+                    'action' => 'something'
+                ],
+                //expected
+                true
+            ],
+            'star-invert-deny' => [
+                //permissions
+                [[
+                    '*plugin' => 'Tests',
+                    '*role' => 'test',
+                    '*controller' => 'Tests',
+                    '*action' => 'test',
+                ]],
+                //user
+                [
+                    'id' => 1,
+                    'username' => 'luke',
+                    'role' => 'something',
+                ],
+                //request
+                [
+                    'plugin' => 'something',
+                    'controller' => 'something',
+                    'action' => 'test'
+                ],
+                //expected
+                false
+            ],
+            'user-arr' => [
+                //permissions
+                [
+                    [
+                        'username' => 'luke',
+                        'user.id' => 1,
+                        'profile.id' => 256,
+                        'user.profile.signature' => "Hi I'm luke",
+                        'user.allowed' => false,
+                        'controller' => 'Tests',
+                        'action' => 'one'
+                    ],
+                ],
+                //user
+                [
+                    'id' => 1,
+                    'username' => 'luke',
+                    'role' => 'test',
+                    'profile' => [
+                        'id' => 256,
+                        'signature' => "Hi I'm luke"
+                    ],
+                    'allowed' => false
+                ],
+                //request
+                [
+                    'controller' => 'Tests',
+                    'action' => 'one'
+                ],
+                //expected
+                true
+            ],
+            'evaluate-order' => [
+                //permissions
+                [
+                    [
+                        'allowed' => false,
+                        function () {
+                            throw new \Exception();
+                        },
+                        'controller' => 'Tests',
+                        'action' => 'one'
+                    ],
+                ],
+                //user
+                [
+                    'id' => 1,
+                    'username' => 'luke',
+                    'role' => 'test',
+                ],
+                //request
+                [
+                    'controller' => 'Tests',
+                    'action' => 'one'
+                ],
+                //expected
+                false
+            ],
+            'multiple-callables' => [
+                //permissions
+                [
+                    [
+                        function () {
+                            return true;
+                        },
+                        clone $trueRuleMock,
+                        function () {
+                            return true;
+                        },
+                        'controller' => 'Tests',
+                        'action' => 'one'
+                    ],
+                ],
+                //user
+                [
+                    'id' => 1,
+                    'username' => 'luke',
+                    'role' => 'test',
+                ],
+                //request
+                [
+                    'controller' => 'Tests',
+                    'action' => 'one'
+                ],
+                //expected
+                true
+            ],
             'happy-strict-all' => [
                 //permissions
                 [[
@@ -501,7 +621,7 @@ class SimpleRbacAuthorizeTest extends TestCase
                 //expected
                 true
             ],
-            'happy-array' => [
+            'happy-array-deny' => [
                 //permissions
                 [[
                     'plugin' => ['Tests'],
@@ -667,23 +787,15 @@ class SimpleRbacAuthorizeTest extends TestCase
                 //expected
                 true
             ],
-            'array-prefix' => [
+            'array-prefix-deny' => [
                 //permissions
-                [
-                    [
-                        'role' => ['test'],
-                        'prefix' => ['one', 'admin'],
-                        'controller' => '*',
-                        'action' => 'one',
-                        'allowed' => false,
-                    ],
-                    [
-                        'role' => ['test'],
-                        'prefix' => ['one', 'admin'],
-                        'controller' => '*',
-                        'action' => '*',
-                    ],
-                ],
+                [[
+                    'role' => ['test'],
+                    'prefix' => ['one', 'admin'],
+                    'controller' => '*',
+                    'action' => 'one',
+                    'allowed' => false,
+                ],],
                 //user
                 [
                     'id' => 1,
@@ -796,23 +908,15 @@ class SimpleRbacAuthorizeTest extends TestCase
                 //expected
                 true
             ],
-            'array-ext' => [
+            'array-ext-deny' => [
                 //permissions
-                [
-                    [
-                        'role' => ['test'],
-                        'extension' => ['csv', 'docx'],
-                        'controller' => '*',
-                        'action' => 'one',
-                        'allowed' => false,
-                    ],
-                    [
-                        'role' => ['test'],
-                        'extension' => ['csv', 'docx'],
-                        'controller' => '*',
-                        'action' => '*',
-                    ],
-                ],
+                [[
+                    'role' => ['test'],
+                    'extension' => ['csv', 'docx'],
+                    'controller' => '*',
+                    'action' => 'one',
+                    'allowed' => false,
+                ]],
                 //user
                 [
                     'id' => 1,
@@ -853,5 +957,182 @@ class SimpleRbacAuthorizeTest extends TestCase
                 true
             ],
         ];
+    }
+
+    /**
+     * @dataProvider badPermissionProvider
+     *
+     * @param array $permissions
+     * @param array $user
+     * @param array $requestParams
+     * @param string $expectedMsg
+     */
+    public function testBadPermission($permissions, $user, $requestParams, $expectedMsg)
+    {
+        /** @var \PHPUnit_Framework_MockObject_MockObject|SimpleRbacAuthorize $simpleRbacAuthorize */
+        $simpleRbacAuthorize = $this->getMockBuilder(SimpleRbacAuthorize::class)
+            ->setMethods(['_loadPermissions', 'log'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $simpleRbacAuthorize
+            ->expects($this->once())
+            ->method('log')
+            ->with($expectedMsg, LogLevel::DEBUG);
+
+        $simpleRbacAuthorize->config('permissions', $permissions);
+        $request = $this->_requestFromArray($requestParams);
+
+        $simpleRbacAuthorize->authorize($user, $request);
+    }
+
+    public function badPermissionProvider()
+    {
+        return [
+            'no-controller' => [
+                //permissions
+                [[
+                    'plugin' => 'Tests',
+                    'role' => 'test',
+                    //'controller' => 'Tests',
+                    'action' => 'test',
+                    'allowed' => true,
+                ]],
+                //user
+                [
+                    'id' => 1,
+                    'username' => 'luke',
+                    'role' => 'test',
+                ],
+                //request
+                [
+                    'plugin' => 'Tests',
+                    'controller' => 'Tests',
+                    'action' => 'test'
+                ],
+                //expected
+                __d('CakeDC/Users', "Cannot evaluate permission when 'controller' and/or 'action' keys are absent"),
+            ],
+            'no-action' => [
+                //permissions
+                [[
+                    'plugin' => 'Tests',
+                    'role' => 'test',
+                    'controller' => 'Tests',
+                    //'action' => 'test',
+                    'allowed' => true,
+                ]],
+                //user
+                [
+                    'id' => 1,
+                    'username' => 'luke',
+                    'role' => 'test',
+                ],
+                //request
+                [
+                    'plugin' => 'Tests',
+                    'controller' => 'Tests',
+                    'action' => 'test'
+                ],
+                //expected
+                __d('CakeDC/Users', "Cannot evaluate permission when 'controller' and/or 'action' keys are absent"),
+            ],
+            'no-controller-and-action' => [
+                //permissions
+                [[
+                    'plugin' => 'Tests',
+                    'role' => 'test',
+                    //'controller' => 'Tests',
+                    //'action' => 'test',
+                    'allowed' => true,
+                ]],
+                //user
+                [
+                    'id' => 1,
+                    'username' => 'luke',
+                    'role' => 'test',
+                ],
+                //request
+                [
+                    'plugin' => 'Tests',
+                    'controller' => 'Tests',
+                    'action' => 'test'
+                ],
+                //expected
+                __d('CakeDC/Users', "Cannot evaluate permission when 'controller' and/or 'action' keys are absent"),
+            ],
+            'no-controller and user-key' => [
+                //permissions
+                [[
+                    'plugin' => 'Tests',
+                    'role' => 'test',
+                    //'controller' => 'Tests',
+                    'action' => 'test',
+                    'allowed' => true,
+                    'user' => 'something',
+                ]],
+                //user
+                [
+                    'id' => 1,
+                    'username' => 'luke',
+                    'role' => 'test',
+                ],
+                //request
+                [
+                    'plugin' => 'Tests',
+                    'controller' => 'Tests',
+                    'action' => 'test'
+                ],
+                //expected
+                __d('CakeDC/Users', "Cannot evaluate permission when 'controller' and/or 'action' keys are absent"),
+            ],
+            'user-key' => [
+                //permissions
+                [[
+                    'plugin' => 'Tests',
+                    'role' => 'test',
+                    'controller' => 'Tests',
+                    'action' => 'test',
+                    'allowed' => true,
+                    'user' => 'something',
+                ]],
+                //user
+                [
+                    'id' => 1,
+                    'username' => 'luke',
+                    'role' => 'test',
+                ],
+                //request
+                [
+                    'plugin' => 'Tests',
+                    'controller' => 'Tests',
+                    'action' => 'test'
+                ],
+                //expected
+                __d('CakeDC/Users', "Permission key 'user' is illegal, cannot evaluate the permission"),
+            ],
+        ];
+    }
+
+    /**
+     * @param array $params
+     * @return \Cake\Network\Request
+     */
+    protected function _requestFromArray ($params)
+    {
+        $request = new Request();
+        $request->plugin = Hash::get($params, 'plugin');
+        $request->controller = $params['controller'];
+        $request->action = $params['action'];
+        $prefix = Hash::get($params, 'prefix');
+        $request->params = [];
+        if ($prefix) {
+            $request->params['prefix'] = $prefix;
+        }
+        $extension = Hash::get($params, '_ext');
+        if ($extension) {
+            $request->params['_ext'] = $extension;
+        }
+
+        return $request;
     }
 }
