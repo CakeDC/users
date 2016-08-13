@@ -205,9 +205,21 @@ class SimpleRbacAuthorize extends BaseAuthorize
      */
     protected function _matchRule(array $permission, array $user, $role, Request $request)
     {
-        if (!isset($permission['controller'], $permission['action'])) {
+        $issetController = isset($permission['controller']) || isset($permission['*controller']);
+        $issetAction = isset($permission['action']) || isset($permission['*action']);
+        $issetUser = isset($permission['user']) || isset($permission['*user']);
+
+        if (!$issetController || !$issetAction) {
             $this->log(
                 __d('CakeDC/Users', "Cannot evaluate permission when 'controller' and/or 'action' keys are absent"),
+                LogLevel::DEBUG
+            );
+
+            return false;
+        }
+        if ($issetUser) {
+            $this->log(
+                __d('CakeDC/Users', "Permission key 'user' is illegal, cannot evaluate the permission"),
                 LogLevel::DEBUG
             );
 
@@ -240,7 +252,7 @@ class SimpleRbacAuthorize extends BaseAuthorize
             } elseif (array_key_exists($key, $reserved)) {
                 $return = $this->_matchOrAsterisk($value, $reserved[$key], true);
             } else {
-                if (!$this->_startsWith($key, 'user')) {
+                if (!$this->_startsWith($key, 'user.')) {
                     $key = 'user.' . $key;
                 }
 
