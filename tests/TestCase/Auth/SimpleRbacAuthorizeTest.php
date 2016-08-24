@@ -795,7 +795,7 @@ class SimpleRbacAuthorizeTest extends TestCase
                     'controller' => '*',
                     'action' => 'one',
                     'allowed' => false,
-                ],],
+                ]],
                 //user
                 [
                     'id' => 1,
@@ -969,7 +969,6 @@ class SimpleRbacAuthorizeTest extends TestCase
      */
     public function testBadPermission($permissions, $user, $requestParams, $expectedMsg)
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|SimpleRbacAuthorize $simpleRbacAuthorize */
         $simpleRbacAuthorize = $this->getMockBuilder(SimpleRbacAuthorize::class)
             ->setMethods(['_loadPermissions', 'log'])
             ->disableOriginalConstructor()
@@ -1117,7 +1116,7 @@ class SimpleRbacAuthorizeTest extends TestCase
      * @param array $params
      * @return \Cake\Network\Request
      */
-    protected function _requestFromArray ($params)
+    protected function _requestFromArray($params)
     {
         $request = new Request();
         $request->plugin = Hash::get($params, 'plugin');

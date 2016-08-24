@@ -287,8 +287,7 @@ class SimpleRbacAuthorize extends BaseAuthorize
             return true;
         }
 
-        if (
-            $possibleValues === '*' ||
+        if ($possibleValues === '*' ||
             in_array($value, $possibleArray) ||
             in_array(Inflector::camelize($value, '-'), $possibleArray)
         ) {
