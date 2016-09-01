@@ -38,13 +38,13 @@ class UsersController extends AppController
     use SocialTrait;
 
     /**
-     * Override loadModel to load specific users table
-     * @param string $modelClass model class
-     * @param string $type type
-     * @return Table
+     * Initialize and set defaults for model class
+     *
+     * @return void
      */
-    public function loadModel($modelClass = null, $type = 'Table')
+    public function initialize()
     {
-        return parent::loadModel(Configure::read('Users.table'));
+        parent::initialize();
+        $this->_setModelClass(Configure::read('Users.table'));
     }
 }

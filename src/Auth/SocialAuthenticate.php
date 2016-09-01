@@ -59,6 +59,15 @@ class SocialAuthenticate extends BaseAuthenticate
         $oauthConfig = Configure::read('OAuth');
         //We unset twitter from providers to exclude from OAuth2 config
         unset($oauthConfig['providers']['twitter']);
+        $providers = [];
+        foreach ($oauthConfig['providers'] as $provider => $options) {
+            if (!empty($options['options']['redirectUri']) &&
+                !empty($options['options']['clientId']) &&
+                !empty($options['options']['clientSecret'])) {
+                $providers[$provider] = $options;
+            }
+        }
+        $oauthConfig['providers'] = $providers;
         Configure::write('OAuth2', $oauthConfig);
         $config = $this->normalizeConfig(array_merge($config, $oauthConfig));
         parent::__construct($registry, $config);

@@ -47,7 +47,7 @@ class UsersShellTest extends TestCase
             ->setConstructorArgs([$this->io])
             ->getMock();
 
-        $this->Shell->Users = $this->getMockBuilder('CakeDC\Users\Model\UsersTable')
+        $this->Shell->Users = $this->getMockBuilder('CakeDC\Users\Model\Table\UsersTable')
             ->setMethods(['generateUniqueUsername', 'newEntity', 'save', 'updateAll'])
             ->getMock();
 
