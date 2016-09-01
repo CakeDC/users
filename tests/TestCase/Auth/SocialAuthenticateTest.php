@@ -46,7 +46,7 @@ class SocialAuthenticateTest extends TestCase
 
         $this->Table = TableRegistry::get('CakeDC/Users.Users');
 
-        $this->Token = $this->getMockBuilder('AccessToken')
+        $this->Token = $this->getMockBuilder('League\OAuth2\Client\Token\AccessToken')
             ->setMethods(['getToken', 'getExpires'])
             ->disableOriginalConstructor()
             ->getMock();

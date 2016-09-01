@@ -66,7 +66,6 @@ class SocialAuthenticate extends BaseAuthenticate
                 !empty($options['options']['clientSecret'])) {
                 $providers[$provider] = $options;
             }
-
         }
         $oauthConfig['providers'] = $providers;
         Configure::write('OAuth2', $oauthConfig);
