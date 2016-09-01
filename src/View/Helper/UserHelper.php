@@ -51,7 +51,7 @@ class UserHelper extends Helper
         $providerTitle = __d('CakeDC/Users', '{0} {1}', Hash::get($options, 'label'), Inflector::camelize($name));
         $providerClass = __d('CakeDC/Users', 'btn btn-social btn-{0} ' . Hash::get($options, 'class') ?: '', strtolower($name));
 
-        return $this->AuthLink->link($icon . $providerTitle, "/auth/$name", [
+        return $this->Html->link($icon . $providerTitle, "/auth/$name", [
             'escape' => false, 'class' => $providerClass
         ]);
     }
@@ -92,7 +92,7 @@ class UserHelper extends Helper
             'plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'logout'
             ], $options);
     }
-    
+
     /**
      * Welcome display
      * @return mixed

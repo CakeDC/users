@@ -110,8 +110,7 @@ class UsersAuthComponent extends Component
             'requestResetPassword',
             'changePassword',
             'endpoint',
-            'authenticated',
-            'socialLogin'
+            'authenticated'
         ]);
     }
 
