@@ -75,7 +75,7 @@ trait LoginTrait
             return $this->redirect($url);
         }
     }
-    
+
     /**
      * @param Event $event event
      * @return void
