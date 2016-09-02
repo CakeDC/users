@@ -3,6 +3,13 @@ Changelog
 
 Releases for CakePHP 3
 -------------
+* 3.2.3
+  * Added compatibility with CakePHP 3.3+ 
+  * Fixed several bugs, including regression issue with Facebook login & improvements
+
+* 3.2.2
+  * Fix bug with socialLogin links not being displayed for unauthenticated users
+
 * 3.2.1
   * New Translations (see https://github.com/CakeDC/users/blob/master/Docs/Documentation/Translations.md)
   * Stateless API Authenticate support
