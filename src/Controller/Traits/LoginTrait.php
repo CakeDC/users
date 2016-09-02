@@ -257,3 +257,4 @@ trait LoginTrait
                 $this->request->session()->check(Configure::read('Users.Key.Session.social'));
     }
 }
+
