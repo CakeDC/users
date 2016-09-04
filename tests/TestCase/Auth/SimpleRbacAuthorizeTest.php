@@ -11,13 +11,13 @@
 
 namespace CakeDC\Users\Test\TestCase\Auth;
 
-use CakeDC\Users\Auth\Rules\Rule;
-use CakeDC\Users\Auth\SimpleRbacAuthorize;
 use Cake\Controller\ComponentRegistry;
 use Cake\Network\Request;
 use Cake\Network\Response;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Hash;
+use CakeDC\Users\Auth\Rules\Rule;
+use CakeDC\Users\Auth\SimpleRbacAuthorize;
 use Psr\Log\LogLevel;
 use ReflectionClass;
 
@@ -97,8 +97,8 @@ class SimpleRbacAuthorizeTest extends TestCase
     public function testLoadPermissions()
     {
         $this->simpleRbacAuthorize = $this->getMockBuilder('CakeDC\Users\Auth\SimpleRbacAuthorize')
-                ->disableOriginalConstructor()
-                ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
         $reflectedClass = new ReflectionClass($this->simpleRbacAuthorize);
         $loadPermissions = $reflectedClass->getMethod('_loadPermissions');
         $loadPermissions->setAccessible(true);
@@ -135,20 +135,22 @@ class SimpleRbacAuthorizeTest extends TestCase
      */
     public function testConstructPermissionsFileHappy()
     {
-        $permissions = [[
-            'controller' => 'Test',
-            'action' => 'test'
-        ]];
+        $permissions = [
+            [
+                'controller' => 'Test',
+                'action' => 'test'
+            ]
+        ];
         $className = 'CakeDC\Users\Auth\SimpleRbacAuthorize';
         $this->simpleRbacAuthorize = $this->getMockBuilder($className)
-                ->setMethods(['_loadPermissions'])
-                ->disableOriginalConstructor()
-                ->getMock();
+            ->setMethods(['_loadPermissions'])
+            ->disableOriginalConstructor()
+            ->getMock();
         $this->simpleRbacAuthorize
-                ->expects($this->once())
-                ->method('_loadPermissions')
-                ->with('permissions-happy')
-                ->will($this->returnValue($permissions));
+            ->expects($this->once())
+            ->method('_loadPermissions')
+            ->with('permissions-happy')
+            ->will($this->returnValue($permissions));
         $this->assertConstructorPermissions($className, ['autoload_config' => 'permissions-happy'], $permissions);
     }
 
@@ -156,9 +158,9 @@ class SimpleRbacAuthorizeTest extends TestCase
     {
         $className = 'CakeDC\Users\Auth\SimpleRbacAuthorize';
         $simpleRbacAuthorize = $this->getMockBuilder($className)
-                ->setMethods(['_loadPermissions'])
-                ->disableOriginalConstructor()
-                ->getMock();
+            ->setMethods(['_loadPermissions'])
+            ->disableOriginalConstructor()
+            ->getMock();
         $simpleRbacAuthorize->config('permissions', $permissions);
 
         return $simpleRbacAuthorize;
@@ -186,6 +188,76 @@ class SimpleRbacAuthorizeTest extends TestCase
             ->willReturn(true);
 
         return [
+            'discard-first' => [
+                //permissions
+                [
+                    [
+                        'role' => 'test',
+                        'controller' => 'Tests',
+                        'action' => 'three', // Discard here
+                        function () {
+                            throw new \Exception();
+                        }
+                    ],
+                    [
+                        'plugin' => ['Tests'],
+                        'role' => ['test'],
+                        'controller' => ['Tests'],
+                        'action' => ['one', 'two'],
+                    ],
+                ],
+                //user
+                [
+                    'id' => 1,
+                    'username' => 'luke',
+                    'role' => 'test',
+                ],
+                //request
+                [
+                    'plugin' => 'Tests',
+                    'controller' => 'Tests',
+                    'action' => 'one'
+                ],
+                //expected
+                true
+            ],
+            'deny-first-discard-after' => [
+                //permissions
+                [
+                    [
+                        'role' => 'test',
+                        'controller' => 'Tests',
+                        'action' => 'one',
+                        'allowed' => function () {
+                            return false; // Deny here since under 'allowed' key
+                        }
+                    ],
+                    [
+                        // This permission isn't evaluated
+                        function () {
+                            throw new \Exception();
+                        },
+                        'plugin' => ['Tests'],
+                        'role' => ['test'],
+                        'controller' => ['Tests'],
+                        'action' => ['one', 'two'],
+                    ],
+                ],
+                //user
+                [
+                    'id' => 1,
+                    'username' => 'luke',
+                    'role' => 'test',
+                ],
+                //request
+                [
+                    'plugin' => 'Tests',
+                    'controller' => 'Tests',
+                    'action' => 'one'
+                ],
+                //expected
+                false
+            ],
             'star-invert' => [
                 //permissions
                 [[

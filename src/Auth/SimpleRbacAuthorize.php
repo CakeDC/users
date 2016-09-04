@@ -120,7 +120,7 @@ class SimpleRbacAuthorize extends BaseAuthorize
         parent::__construct($registry, $config);
         $autoload = $this->config('autoload_config');
         if ($autoload) {
-            $loadedPermissions = $this->_loadPermissions($autoload, 'default');
+            $loadedPermissions = $this->_loadPermissions($autoload);
             $this->config('permissions', $loadedPermissions);
         }
     }
@@ -166,7 +166,7 @@ class SimpleRbacAuthorize extends BaseAuthorize
             $role = Hash::get($user, $roleField);
         }
 
-        $allowed = $this->_checkRules($user, $role, $request);
+        $allowed = $this->_checkPermissions($user, $role, $request);
 
         return $allowed;
     }
@@ -180,11 +180,11 @@ class SimpleRbacAuthorize extends BaseAuthorize
      * @param Request $request request
      * @return bool true if there is a match in permissions
      */
-    protected function _checkRules(array $user, $role, Request $request)
+    protected function _checkPermissions(array $user, $role, Request $request)
     {
         $permissions = $this->config('permissions');
         foreach ($permissions as $permission) {
-            $allowed = $this->_matchRule($permission, $user, $role, $request);
+            $allowed = $this->_matchPermission($permission, $user, $role, $request);
             if ($allowed !== null) {
                 return $allowed;
             }
@@ -201,9 +201,9 @@ class SimpleRbacAuthorize extends BaseAuthorize
      * @param string $role Effective user's role
      * @param \Cake\Network\Request $request Current request
      *
-     * @return bool
+     * @return null|bool Null if permission is discarded, boolean if a final result is produced
      */
-    protected function _matchRule(array $permission, array $user, $role, Request $request)
+    protected function _matchPermission(array $permission, array $user, $role, Request $request)
     {
         $issetController = isset($permission['controller']) || isset($permission['*controller']);
         $issetAction = isset($permission['action']) || isset($permission['*action']);
@@ -262,12 +262,15 @@ class SimpleRbacAuthorize extends BaseAuthorize
             if ($inverse) {
                 $return = !$return;
             }
+            if ($key === 'allowed') {
+                return $return;
+            }
             if (!$return) {
-                return false;
+                break;
             }
         }
 
-        return true;
+        return null;
     }
 
     /**

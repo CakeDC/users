@@ -10,7 +10,10 @@
  */
 namespace CakeDC\Users\Auth\Rules;
 
+use Cake\Core\InstanceConfigTrait;
+use Cake\Datasource\ModelAwareTrait;
 use Cake\Network\Request;
+use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
@@ -22,9 +25,9 @@ use OutOfBoundsException;
  */
 abstract class AbstractRule implements Rule
 {
-    use \Cake\Core\InstanceConfigTrait;
-    use \Cake\Datasource\ModelAwareTrait;
-    use \Cake\ORM\Locator\LocatorAwareTrait;
+    use InstanceConfigTrait;
+    use ModelAwareTrait;
+    use LocatorAwareTrait;
 
     /**
      * @var array default config
