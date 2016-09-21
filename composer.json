@@ -1,6 +1,6 @@
 {
     "name": "cakedc/users",
-    "description": "Users Plugin for CakePHP 3",
+    "description": "Users Plugin for CakePHP",
     "type": "cakephp-plugin",
     "keywords": [
         "cakephp",
