@@ -78,6 +78,47 @@ class AuthLinkHelperTest extends TestCase
         $this->assertSame('before_<a href="/" class="link-class">title</a>_after', $link);
     }
 
+    /**
+     * Test link
+     *
+     * @return void
+     */
+    public function testLinkAuthorizedAllowedTrue()
+    {
+        $view = new View();
+        $eventManagerMock = $this->getMockBuilder('Cake\Event\EventManager')
+            ->setMethods(['dispatch'])
+            ->getMock();
+        $view->eventManager($eventManagerMock);
+        $this->AuthLink = new AuthLinkHelper($view);
+        $result = new Event('dispatch-result');
+        $result->result = true;
+        $eventManagerMock->expects($this->never())
+            ->method('dispatch');
+
+        $link = $this->AuthLink->link('title', '/', ['allowed' => true, 'before' => 'before_', 'after' => '_after', 'class' => 'link-class']);
+        $this->assertSame('before_<a href="/" class="link-class">title</a>_after', $link);
+    }
+
+    /**
+     * Test link
+     *
+     * @return void
+     */
+    public function testLinkAuthorizedAllowedFalse()
+    {
+        $view = new View();
+        $eventManagerMock = $this->getMockBuilder('Cake\Event\EventManager')
+            ->setMethods(['dispatch'])
+            ->getMock();
+        $view->eventManager($eventManagerMock);
+        $this->AuthLink = new AuthLinkHelper($view);
+        $result = new Event('dispatch-result');
+        $eventManagerMock->expects($this->never())
+            ->method('dispatch');
+        $link = $this->AuthLink->link('title', '/', ['allowed' => false, 'before' => 'before_', 'after' => '_after', 'class' => 'link-class']);
+        $this->assertFalse($link);
+    }
 
     /**
      * Test isAuthorized
