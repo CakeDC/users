@@ -123,7 +123,7 @@ class SocialAccountsControllerTest extends TestCase
                 ->method('redirect')
                 ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
         $this->Controller->validateAccount('Twitter', 'reference-1-1234', 'token-1234');
-        $this->assertEquals('SocialAccount already active', $this->Controller->request->session()->read('Flash.flash.0.message'));
+        $this->assertEquals('Social Account already active', $this->Controller->request->session()->read('Flash.flash.0.message'));
     }
 
     /**
@@ -197,6 +197,6 @@ class SocialAccountsControllerTest extends TestCase
                 ->method('redirect')
                 ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
         $this->Controller->validateAccount('Twitter', 'reference-1-1234', 'token-1234');
-        $this->assertEquals('SocialAccount already active', $this->Controller->request->session()->read('Flash.flash.0.message'));
+        $this->assertEquals('Social Account already active', $this->Controller->request->session()->read('Flash.flash.0.message'));
     }
 }

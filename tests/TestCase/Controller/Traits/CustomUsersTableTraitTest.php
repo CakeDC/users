@@ -19,10 +19,9 @@ class CustomUsersTableTraitTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->controller = $this->getMock(
-            'Cake\Controller\Controller',
-            ['header', 'redirect', 'render', '_stop']
-        );
+        $this->controller = $this->getMockBuilder('Cake\Controller\Controller')
+                ->setMethods(['header', 'redirect', 'render', '_stop'])
+                ->getMock();
         $this->controller->Trait = $this->getMockForTrait('CakeDC\Users\Controller\Traits\CustomUsersTableTrait');
     }
 

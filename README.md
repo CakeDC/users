@@ -4,8 +4,7 @@ CakeDC Users Plugin
 [![Bake Status](https://secure.travis-ci.org/CakeDC/users.png?branch=master)](http://travis-ci.org/CakeDC/users)
 [![Downloads](https://poser.pugx.org/CakeDC/users/d/total.png)](https://packagist.org/packages/CakeDC/users)
 [![Latest Version](https://poser.pugx.org/CakeDC/users/v/stable.png)](https://packagist.org/packages/CakeDC/users)
-
-IMPORTANT: 3.1.x version is BETA status now, we are still improving and testing it.
+[![License](https://poser.pugx.org/CakeDC/users/license.svg)](https://packagist.org/packages/CakeDC/users)
 
 Versions and branches
 ---------------------
@@ -13,8 +12,8 @@ Versions and branches
 | CakePHP | CakeDC Users Plugin | Tag   | Notes |
 | :-------------: | :------------------------: | :--:  | :---- |
 | 2.x             | [2.x](https://github.com/cakedc/users/tree/2.x)                     | 2.1.2 | Note CakePHP 2.7 is currently not supported, we are working on it now |
-| 3.x             | [master](https://github.com/cakedc/users/tree/master)                      | 3.x | stability is beta, but pretty stable now |
-| 3.x             | [develop](https://github.com/cakedc/users/tree/develop)                      | 3.x | stability is beta, unstable |
+| 3.2+             | [master](https://github.com/cakedc/users/tree/master)                      | 3.x | stable |
+| 3.2+             | [develop](https://github.com/cakedc/users/tree/develop)                      | 3.x | unstable |
 | 3.0             | [3.0.x](https://github.com/cakedc/users/tree/3.0.x)                      | 3.0.0 | stability is beta, but pretty stable now |
 | 3.1             | [3.1.x](https://github.com/cakedc/users/tree/3.1.x)                      | 3.1.0 | stability is beta, but pretty stable now |
 
@@ -45,8 +44,8 @@ Another decision made was limiting the plugin dependencies on other packages as 
 Requirements
 ------------
 
-* CakePHP 3.1+
-* PHP 5.4.16+ Note CakePHP 3.2 requires PHP 5.5 so 5.4 compatibility would be dropped sooner than later...
+* CakePHP 3.2.9+
+* PHP 5.5.9+
 
 Documentation
 -------------

@@ -24,7 +24,6 @@ use Cake\Network\Response;
 trait RegisterTrait
 {
     use PasswordManagementTrait;
-    use ReCaptchaTrait;
 
     /**
      * Register a new user
@@ -37,6 +36,14 @@ trait RegisterTrait
         if (!Configure::read('Users.Registration.active')) {
             throw new NotFoundException();
         }
+
+        $userId = $this->Auth->user('id');
+        if (!empty($userId) && !Configure::read('Users.Registration.allowLoggedIn')) {
+            $this->Flash->error(__d('CakeDC/Users', 'You must log out to register a new user account'));
+
+            return $this->redirect(Configure::read('Users.Profile.route'));
+        }
+
         $usersTable = $this->getUsersTable();
         $user = $usersTable->newEntity();
         $validateEmail = (bool)Configure::read('Users.Email.validate');
@@ -51,6 +58,7 @@ trait RegisterTrait
         $event = $this->dispatchEvent(UsersAuthComponent::EVENT_BEFORE_REGISTER, [
             'usersTable' => $usersTable,
             'options' => $options,
+            'userEntity' => $user,
         ]);
 
         if ($event->result instanceof EntityInterface) {
@@ -69,15 +77,16 @@ trait RegisterTrait
             return;
         }
 
-        $validPost = $this->_validateRegisterPost();
-        if (!$validPost) {
-            $this->Flash->error(__d('Users', 'The reCaptcha could not be validated'));
+        if (!$this->_validateRegisterPost()) {
+            $this->Flash->error(__d('CakeDC/Users', 'Invalid reCaptcha'));
+
             return;
         }
 
         $userSaved = $usersTable->register($user, $requestData, $options);
         if (!$userSaved) {
-            $this->Flash->error(__d('Users', 'The user could not be saved'));
+            $this->Flash->error(__d('CakeDC/Users', 'The user could not be saved'));
+
             return;
         }
 
@@ -91,14 +100,14 @@ trait RegisterTrait
      */
     protected function _validateRegisterPost()
     {
-        if (!Configure::read('Users.Registration.reCaptcha')) {
+        if (!Configure::read('Users.reCaptcha.registration')) {
             return true;
         }
-        $validReCaptcha = $this->validateReCaptcha(
+
+        return $this->validateReCaptcha(
             $this->request->data('g-recaptcha-response'),
             $this->request->clientIp()
         );
-        return $validReCaptcha;
     }
 
     /**
@@ -110,9 +119,9 @@ trait RegisterTrait
     protected function _afterRegister(EntityInterface $userSaved)
     {
         $validateEmail = (bool)Configure::read('Users.Email.validate');
-        $message = __d('Users', 'You have registered successfully, please log in');
+        $message = __d('CakeDC/Users', 'You have registered successfully, please log in');
         if ($validateEmail) {
-            $message = __d('Users', 'Please validate your account before log in');
+            $message = __d('CakeDC/Users', 'Please validate your account before log in');
         }
         $event = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_REGISTER, [
             'user' => $userSaved
@@ -121,6 +130,7 @@ trait RegisterTrait
             return $event->result;
         }
         $this->Flash->success($message);
+
         return $this->redirect(['action' => 'login']);
     }
 

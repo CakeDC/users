@@ -230,7 +230,11 @@ class LoginTraitTest extends BaseTraitTest
             ->setMethods(['is'])
             ->disableOriginalConstructor()
             ->getMock();
-        $this->Trait->request->expects($this->once())
+        $this->Trait->request->expects($this->at(0))
+            ->method('is')
+            ->with('post')
+            ->will($this->returnValue(false));
+        $this->Trait->request->expects($this->at(1))
             ->method('is')
             ->with('post')
             ->will($this->returnValue(false));

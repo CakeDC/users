@@ -16,6 +16,7 @@ use Cake\Controller\Component;
 use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Network\Request;
+use Cake\Routing\Exception\MissingRouteException;
 use Cake\Routing\Router;
 use Cake\Utility\Hash;
 
@@ -122,10 +123,6 @@ class UsersAuthComponent extends Component
      */
     public function isUrlAuthorized(Event $event)
     {
-        $user = $this->_registry->getController()->Auth->user();
-        if (empty($user)) {
-            return false;
-        }
         $url = Hash::get((array)$event->data, 'url');
         if (empty($url)) {
             return false;
@@ -135,13 +132,36 @@ class UsersAuthComponent extends Component
             $requestUrl = Router::reverse($url);
             $requestParams = Router::parse($requestUrl);
         } else {
-            $requestParams = Router::parse($url);
+            try {
+                //remove base from $url if exists
+                $normalizedUrl = Router::normalize($url);
+                $requestParams = Router::parse($normalizedUrl);
+            } catch (MissingRouteException $ex) {
+                //if it's a url pointing to our own app
+                if (substr($normalizedUrl, 0, 1) === '/') {
+                    throw $ex;
+                }
+
+                return true;
+            }
             $requestUrl = $url;
         }
+        // check if controller action is allowed
+        if ($this->_isActionAllowed($requestParams)) {
+            return true;
+        }
+
+        // check we are logged in
+        $user = $this->_registry->getController()->Auth->user();
+        if (empty($user)) {
+            return false;
+        }
+
         $request = new Request($requestUrl);
         $request->params = $requestParams;
 
         $isAuthorized = $this->_registry->getController()->Auth->isAuthorized(null, $request);
+
         return $isAuthorized;
     }
 
@@ -154,8 +174,26 @@ class UsersAuthComponent extends Component
     protected function _validateConfig()
     {
         if (!Configure::read('Users.Email.required') && Configure::read('Users.Email.validate')) {
-            $message = __d('Users', 'You can\'t enable email validation workflow if use_email is false');
+            $message = __d('CakeDC/Users', 'You can\'t enable email validation workflow if use_email is false');
             throw new BadConfigurationException($message);
         }
+    }
+
+    /**
+     * Check if the action is in allowedActions array for the controller
+     * @param array $requestParams request parameters
+     * @return bool
+     */
+    protected function _isActionAllowed($requestParams = [])
+    {
+        if (empty($requestParams['action'])) {
+            return false;
+        }
+        $action = strtolower($requestParams['action']);
+        if (in_array($action, array_map('strtolower', $this->_registry->getController()->Auth->allowedActions))) {
+            return true;
+        }
+
+        return false;
     }
 }

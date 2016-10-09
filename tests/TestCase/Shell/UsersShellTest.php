@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Test\TestCase\Shell;
 
+use CakeDC\Users\Shell\UsersShell;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOutput;
 use Cake\ORM\TableRegistry;
@@ -25,6 +26,7 @@ class UsersShellTest extends TestCase
      */
     public $fixtures = [
         'plugin.CakeDC/Users.users',
+        'plugin.CakeDC/Users.social_accounts',
     ];
 
     /**
@@ -36,7 +38,7 @@ class UsersShellTest extends TestCase
     {
         parent::setUp();
         $this->out = new ConsoleOutput();
-        $this->io = $this->getMock('Cake\Console\ConsoleIo');
+        $this->io = $this->getMockBuilder('Cake\Console\ConsoleIo')->getMock();
         $this->Users = TableRegistry::get('CakeDC/Users.Users');
 
         $this->Shell = $this->getMockBuilder('CakeDC\Users\Shell\UsersShell')
@@ -45,15 +47,14 @@ class UsersShellTest extends TestCase
             ->setConstructorArgs([$this->io])
             ->getMock();
 
-        $this->Shell->Users = $this->getMockBuilder('CakeDC\Users\Model\UsersTable')
+        $this->Shell->Users = $this->getMockBuilder('CakeDC\Users\Model\Table\UsersTable')
             ->setMethods(['generateUniqueUsername', 'newEntity', 'save', 'updateAll'])
             ->getMock();
 
-        $this->Shell->Command = $this->getMock(
-            'Cake\Shell\Task\CommandTask',
-            ['in', '_stop', 'clear', 'out'],
-            [$this->io]
-        );
+        $this->Shell->Command = $this->getMockBuilder('Cake\Shell\Task\CommandTask')
+            ->setMethods(['in', '_stop', 'clear', 'out'])
+            ->setConstructorArgs([$this->io])
+            ->getMock();
     }
 
     /**
@@ -249,5 +250,59 @@ class UsersShellTest extends TestCase
             ->will($this->returnValue($user));
 
         $this->Shell->runCommand(['resetPassword', 'user-1', 'password']);
+    }
+
+    /**
+     * Change role
+     *
+     * @return void
+     */
+    public function testChangeRole()
+    {
+        $this->Shell = new UsersShell($this->io);
+        $this->Shell->Users = $this->Users;
+        $user = $this->Users->get('00000000-0000-0000-0000-000000000001');
+        $this->assertSame('admin', $user['role']);
+        $this->Shell->runCommand(['changeRole', 'user-1', 'another-role']);
+        $user = $this->Users->get('00000000-0000-0000-0000-000000000001');
+        $this->assertSame('another-role', $user['role']);
+    }
+
+    /**
+     * Activate user
+     *
+     * @return void
+     */
+    public function testActivateUser()
+    {
+        $this->Shell = new UsersShell($this->io);
+        $this->Shell->Users = $this->Users;
+        $user = $this->Users->get('00000000-0000-0000-0000-000000000001');
+        $this->assertFalse($user['active']);
+        $this->Shell->runCommand(['activateUser', 'user-1']);
+        $user = $this->Users->get('00000000-0000-0000-0000-000000000001');
+        $this->assertTrue($user['active']);
+    }
+
+    /**
+     * Delete user
+     *
+     * @return void
+     * @expected
+     */
+    public function testDeleteUser()
+    {
+        $this->Shell = new UsersShell($this->io);
+        $this->Shell->Users = $this->Users;
+
+        $this->assertNotEmpty($this->Users->findById('00000000-0000-0000-0000-000000000001')->first());
+        $this->assertNotEmpty($this->Users->SocialAccounts->findByUserId('00000000-0000-0000-0000-000000000001')->toArray());
+        $this->Shell->runCommand(['deleteUser', 'user-1']);
+        $this->assertEmpty($this->Users->findById('00000000-0000-0000-0000-000000000001')->first());
+        $this->assertEmpty($this->Users->SocialAccounts->findByUserId('00000000-0000-0000-0000-000000000001')->toArray());
+
+        $this->assertNotEmpty($this->Users->findById('00000000-0000-0000-0000-000000000005')->first());
+        $this->Shell->runCommand(['deleteUser', 'user-5']);
+        $this->assertEmpty($this->Users->findById('00000000-0000-0000-0000-000000000005')->first());
     }
 }

@@ -42,7 +42,7 @@ class EmailSenderTest extends TestCase
             ->setMethods(['_getEmailInstance', 'getMailer'])
             ->getMock();
 
-        $this->UserMailer = $this->getMockBuilder('CakeDC\Users\Mailer\UserMailer')
+        $this->UserMailer = $this->getMockBuilder('CakeDC\Users\Mailer\UsersMailer')
             ->setMethods(['send'])
             ->getMock();
 

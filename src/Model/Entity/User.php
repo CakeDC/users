@@ -12,6 +12,7 @@
 namespace CakeDC\Users\Model\Entity;
 
 use Cake\Core\Configure;
+use Cake\I18n\Time;
 use Cake\ORM\Entity;
 use Cake\Utility\Text;
 use DateTime;
@@ -28,23 +29,22 @@ class User extends Entity
      * @var array
      */
     protected $_accessible = [
-        'username' => true,
-        'email' => true,
-        'password' => true,
-        'confirm_password' => true,
-        'first_name' => true,
-        'last_name' => true,
-        'avatar' => true,
-        'token' => true,
-        'token_expires' => true,
-        'api_token' => true,
-        'activation_date' => true,
-        //tos is a boolean, coming from the "accept the terms of service" checkbox but it is not stored onto database
-        'tos' => true,
-        'tos_date' => true,
-        'active' => true,
-        'social_accounts' => true,
-        'current_password' => true
+        '*' => true,
+        'id' => false,
+        'is_superuser' => false,
+        'role' => false,
+    ];
+
+    /**
+     * Fields that are excluded from JSON an array versions of the entity.
+     *
+     * @var array
+     */
+    protected $_hidden = [
+        'password',
+        'token',
+        'token_expires',
+        'api_token',
     ];
 
     /**
@@ -72,8 +72,9 @@ class User extends Entity
     protected function _setTos($tos)
     {
         if ((bool)$tos === true) {
-            $this->set('tos_date', new DateTime());
+            $this->set('tos_date', Time::now());
         }
+
         return $tos;
     }
 
@@ -87,6 +88,7 @@ class User extends Entity
     public function hashPassword($password)
     {
         $PasswordHasher = $this->getPasswordHasher();
+
         return $PasswordHasher->hash($password);
     }
 
@@ -101,6 +103,7 @@ class User extends Entity
         if (!class_exists($passwordHasher)) {
             $passwordHasher = '\Cake\Auth\DefaultPasswordHasher';
         }
+
         return new $passwordHasher;
     }
 
@@ -114,6 +117,7 @@ class User extends Entity
     public function checkPassword($password, $hashedPassword)
     {
         $PasswordHasher = $this->getPasswordHasher();
+
         return $PasswordHasher->check($password, $hashedPassword);
     }
 
@@ -128,12 +132,7 @@ class User extends Entity
             return true;
         }
 
-        $tokenExpiresTime = $this->token_expires;
-        if (is_object($this->token_expires)) {
-            $tokenExpiresTime = $this->token_expires->format("Y-m-d H:i");
-        }
-
-        return strtotime($tokenExpiresTime) < strtotime("now");
+        return new Time($this->token_expires) < Time::now();
     }
 
     /**
@@ -147,20 +146,20 @@ class User extends Entity
         if (!empty($this->_properties['social_accounts'][0])) {
             $avatar = $this->_properties['social_accounts'][0]['avatar'];
         }
+
         return $avatar;
     }
 
     /**
      * Generate token_expires and token in a user
-     * @param string $tokenExpiration new token_expires user.
-     *
+     * @param int $tokenExpiration seconds to expire the token from Now
      * @return void
      */
-    public function updateToken($tokenExpiration)
+    public function updateToken($tokenExpiration = 0)
     {
-        $expires = new DateTime();
-        $expires->modify("+ $tokenExpiration secs");
-        $this->token_expires = $expires;
+        $expiration = new Time('now');
+        $this->token_expires = $expiration->addSeconds($tokenExpiration);
+
         $this->token = str_replace('-', '', Text::uuid());
     }
 }

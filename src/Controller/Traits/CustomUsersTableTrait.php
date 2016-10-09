@@ -34,6 +34,7 @@ trait CustomUsersTableTrait
             return $this->_usersTable;
         }
         $this->_usersTable = TableRegistry::get(Configure::read('Users.table'));
+
         return $this->_usersTable;
     }
 

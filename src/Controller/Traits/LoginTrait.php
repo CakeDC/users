@@ -70,10 +70,12 @@ trait LoginTrait
         } else {
             $temporaryCredentials = $server->getTemporaryCredentials();
             $this->request->session()->write('temporary_credentials', $temporaryCredentials);
-            $server->authorize($temporaryCredentials);
-            return $this->response;
+            $url = $server->getAuthorizationUrl($temporaryCredentials);
+
+            return $this->redirect($url);
         }
     }
+
     /**
      * @param Event $event event
      * @return void
@@ -91,28 +93,30 @@ trait LoginTrait
      */
     public function failedSocialLogin($exception, $data, $flash = false)
     {
-        $msg = __d('Users', 'Issues trying to log in with your social account');
+        $msg = __d('CakeDC/Users', 'Issues trying to log in with your social account');
 
         if (isset($exception)) {
             if ($exception instanceof MissingEmailException) {
                 if ($flash) {
-                    $this->Flash->success(__d('Users', 'Please enter your email'));
+                    $this->Flash->success(__d('CakeDC/Users', 'Please enter your email'));
                 }
                 $this->request->session()->write(Configure::read('Users.Key.Session.social'), $data);
+
                 return $this->redirect(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'socialEmail']);
             }
             if ($exception instanceof UserNotActiveException) {
-                $msg = __d('Users', 'Your user has not been validated yet. Please check your inbox for instructions');
+                $msg = __d('CakeDC/Users', 'Your user has not been validated yet. Please check your inbox for instructions');
             } elseif ($exception instanceof AccountNotActiveException) {
-                $msg = __d('Users', 'Your social account has not been validated yet. Please check your inbox for instructions');
+                $msg = __d('CakeDC/Users', 'Your social account has not been validated yet. Please check your inbox for instructions');
             }
         }
         if ($flash) {
             $this->Auth->config('authError', $msg);
             $this->Auth->config('flash.params', ['class' => 'success']);
             $this->request->session()->delete(Configure::read('Users.Key.Session.social'));
-            $this->Flash->success(__d('Users', $msg));
+            $this->Flash->success(__d('CakeDC/Users', $msg));
         }
+
         return $this->redirect(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
     }
 
@@ -131,6 +135,7 @@ trait LoginTrait
             throw new NotFoundException();
         }
         $user = $this->Auth->user();
+
         return $this->_afterIdentifyUser($user, true);
     }
 
@@ -151,18 +156,42 @@ trait LoginTrait
 
         $socialLogin = $this->_isSocialLogin();
 
-        if (!$this->request->is('post') && !$socialLogin) {
-            if ($this->Auth->user()) {
-                $msg = __d('Users', 'You are already logged in');
-                $this->Flash->error($msg);
-                return $this->redirect($this->referer());
-            }
-            return;
-        }
         if ($this->request->is('post')) {
+            if (!$this->_checkReCaptcha()) {
+                $this->Flash->error(__d('CakeDC/Users', 'Invalid reCaptcha'));
+
+                return;
+            }
             $user = $this->Auth->identify();
+
             return $this->_afterIdentifyUser($user, $socialLogin);
         }
+        if (!$this->request->is('post') && !$socialLogin) {
+            if ($this->Auth->user()) {
+                $msg = __d('CakeDC/Users', 'You are already logged in');
+                $this->Flash->error($msg);
+                $url = $this->Auth->redirectUrl();
+
+                return $this->redirect($url);
+            }
+        }
+    }
+
+    /**
+     * Check reCaptcha if enabled for login
+     *
+     * @return bool
+     */
+    protected function _checkReCaptcha()
+    {
+        if (!Configure::read('Users.reCaptcha.login')) {
+            return true;
+        }
+
+        return $this->validateReCaptcha(
+            $this->request->data('g-recaptcha-response'),
+            $this->request->clientIp()
+        );
     }
 
     /**
@@ -181,10 +210,11 @@ trait LoginTrait
                 return $this->redirect($event->result);
             }
             $url = $this->Auth->redirectUrl();
+
             return $this->redirect($url);
         } else {
             if (!$socialLogin) {
-                $message = __d('Users', 'Username or password is incorrect');
+                $message = __d('CakeDC/Users', 'Username or password is incorrect');
                 $this->Flash->error($message, 'default', [], 'auth');
             }
 
@@ -205,7 +235,7 @@ trait LoginTrait
         }
 
         $this->request->session()->destroy();
-        $this->Flash->success(__d('Users', 'You\'ve successfully logged out'));
+        $this->Flash->success(__d('CakeDC/Users', 'You\'ve successfully logged out'));
 
         $eventAfter = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_LOGOUT);
         if (is_array($eventAfter->result)) {
