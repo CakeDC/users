@@ -11,11 +11,11 @@
 ?>
 
 <p>
-<?= __d('Users', "Hi {0}", $user['first_name']) ?>,
+<?= __d('CakeDC/Users', "Hi {0}", $user['first_name']) ?>,
 </p>
 <p>
     <strong><?php
-    $text = __d('Users', 'Activate your social login here');
+    $text = __d('CakeDC/Users', 'Activate your social login here');
     $activationUrl = [
         '_full' => true,
         'plugin' => 'CakeDC/Users',
@@ -29,8 +29,8 @@
     ?></strong>
 </p>
 <p>
-    <?= __d('Users', "If the link is not correcly displayed, please copy the following address in your web browser {0}", $this->Url->build($activationUrl)) ?>
+    <?= __d('CakeDC/Users', "If the link is not correcly displayed, please copy the following address in your web browser {0}", $this->Url->build($activationUrl)) ?>
 </p>
 <p>
-    <?= __d('Users', 'Thank you') ?>,
+    <?= __d('CakeDC/Users', 'Thank you') ?>,
 </p>

@@ -6,16 +6,14 @@ CakeDC Users Plugin
 [![Latest Version](https://poser.pugx.org/CakeDC/users/v/stable.png)](https://packagist.org/packages/CakeDC/users)
 [![License](https://poser.pugx.org/CakeDC/users/license.svg)](https://packagist.org/packages/CakeDC/users)
 
-IMPORTANT: 3.2.x version is BETA status now.
-
 Versions and branches
 ---------------------
 
 | CakePHP | CakeDC Users Plugin | Tag   | Notes |
 | :-------------: | :------------------------: | :--:  | :---- |
 | 2.x             | [2.x](https://github.com/cakedc/users/tree/2.x)                     | 2.1.2 | Note CakePHP 2.7 is currently not supported, we are working on it now |
-| 3.x             | [master](https://github.com/cakedc/users/tree/master)                      | 3.x | stability is beta, but pretty stable now |
-| 3.x             | [develop](https://github.com/cakedc/users/tree/develop)                      | 3.x | stability is beta, unstable |
+| 3.2+             | [master](https://github.com/cakedc/users/tree/master)                      | 3.x | stable |
+| 3.2+             | [develop](https://github.com/cakedc/users/tree/develop)                      | 3.x | unstable |
 | 3.0             | [3.0.x](https://github.com/cakedc/users/tree/3.0.x)                      | 3.0.0 | stability is beta, but pretty stable now |
 | 3.1             | [3.1.x](https://github.com/cakedc/users/tree/3.1.x)                      | 3.1.0 | stability is beta, but pretty stable now |
 
@@ -46,7 +44,7 @@ Another decision made was limiting the plugin dependencies on other packages as 
 Requirements
 ------------
 
-* CakePHP 3.2+
+* CakePHP 3.2.9+
 * PHP 5.5.9+
 
 Documentation

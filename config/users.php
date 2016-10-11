@@ -33,6 +33,10 @@ $config = [
             'active' => true,
             //determines if the reCaptcha is enabled for registration
             'reCaptcha' => true,
+            //allow a logged in user to access the registration form
+            'allowLoggedIn' => false,
+            //ensure user is active (confirmed email) to reset his password
+            'ensureActive' => false
         ],
         'reCaptcha' => [
             //reCaptcha key goes here
@@ -91,17 +95,17 @@ $config = [
             ]
         ],
     ],
-//default configuration used to auto-load the Auth Component, override to change the way Auth works
+    //default configuration used to auto-load the Auth Component, override to change the way Auth works
     'Auth' => [
         'loginAction' => [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'login',
-            'prefix' => false
+            'prefix' => null
         ],
         'authenticate' => [
             'all' => [
-                'finder' => 'active',
+                'finder' => 'auth',
             ],
             'CakeDC/Users.ApiKey',
             'CakeDC/Users.RememberMe',
@@ -113,7 +117,7 @@ $config = [
         ],
     ],
     'OAuth' => [
-        'path' => ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'socialLogin', 'prefix' => false],
+        'path' => ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'socialLogin', 'prefix' => null],
         'providers' => [
             'facebook' => [
                 'className' => 'League\OAuth2\Client\Provider\Facebook',

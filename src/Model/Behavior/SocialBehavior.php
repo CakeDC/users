@@ -54,7 +54,7 @@ class SocialBehavior extends Behavior
                 $existingAccount = $user->social_accounts[0];
             } else {
                 //@todo: what if we don't have a social account after createSocialUser?
-                throw new InvalidArgumentException(__d('Users', 'Unable to login user with reference {0}', $reference));
+                throw new InvalidArgumentException(__d('CakeDC/Users', 'Unable to login user with reference {0}', $reference));
             }
         } else {
             $user = $existingAccount->user;
@@ -76,6 +76,7 @@ class SocialBehavior extends Behavior
                 ]);
             }
         }
+
         return false;
     }
 
@@ -95,7 +96,7 @@ class SocialBehavior extends Behavior
         $existingUser = null;
         $email = Hash::get($data, 'email');
         if ($useEmail && empty($email)) {
-            throw new MissingEmailException(__d('Users', 'Email not present'));
+            throw new MissingEmailException(__d('CakeDC/Users', 'Email not present'));
         } else {
             $existingUser = $this->_table->find()
                     ->where([$this->_table->alias() . '.email' => $email])
@@ -105,6 +106,7 @@ class SocialBehavior extends Behavior
         $user = $this->_populateUser($data, $existingUser, $useEmail, $validateEmail, $tokenExpiration);
         $this->_table->isValidateEmail = $validateEmail;
         $result = $this->_table->save($user);
+
         return $result;
     }
 
@@ -196,6 +198,7 @@ class SocialBehavior extends Behavior
         //ensure provider is present in Entity
         $socialAccount['provider'] = Hash::get($data, 'provider');
         $user['social_accounts'] = [$socialAccount];
+
         return $user;
     }
 
@@ -217,6 +220,7 @@ class SocialBehavior extends Behavior
             }
             break;
         }
+
         return $username;
     }
 }

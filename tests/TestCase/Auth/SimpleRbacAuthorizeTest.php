@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Test\TestCase\Auth;
 
+use CakeDC\Users\Auth\Rules\Rule;
 use CakeDC\Users\Auth\SimpleRbacAuthorize;
 use Cake\Controller\ComponentRegistry;
 use Cake\Controller\Controller;
@@ -63,11 +64,10 @@ class SimpleRbacAuthorizeTest extends TestCase
         $request = new Request();
         $response = new Response();
 
-        $this->controller = $this->getMock(
-            'Cake\Controller\Controller',
-            null,
-            [$request, $response]
-        );
+        $this->controller = $this->getMockBuilder('Cake\Controller\Controller')
+            ->setMethods(null)
+            ->setConstructorArgs([$request, $response])
+            ->getMock();
         $this->registry = new ComponentRegistry($this->controller);
     }
 
@@ -112,11 +112,10 @@ class SimpleRbacAuthorizeTest extends TestCase
      */
     public function testConstructMissingPermissionsFile()
     {
-        $this->simpleRbacAuthorize = $this->getMock(
-            'CakeDC\Users\Auth\SimpleRbacAuthorize',
-            null,
-            [$this->registry, ['autoload_config' => 'does-not-exist']]
-        );
+        $this->simpleRbacAuthorize = $this->getMockBuilder('CakeDC\Users\Auth\SimpleRbacAuthorize')
+            ->setMethods(null)
+            ->setConstructorArgs([$this->registry, ['autoload_config' => 'does-not-exist']])
+            ->getMock();
         //we should have the default permissions
         $this->assertEquals($this->defaultPermissions, $this->simpleRbacAuthorize->config('permissions'));
     }
@@ -162,6 +161,7 @@ class SimpleRbacAuthorizeTest extends TestCase
                 ->disableOriginalConstructor()
                 ->getMock();
         $simpleRbacAuthorize->config('permissions', $permissions);
+
         return $simpleRbacAuthorize;
     }
 
@@ -176,8 +176,13 @@ class SimpleRbacAuthorizeTest extends TestCase
         $request->controller = $requestParams['controller'];
         $request->action = $requestParams['action'];
         $prefix = Hash::get($requestParams, 'prefix');
+        $request->params = [];
         if ($prefix) {
-            $request->params = ['prefix' => $prefix];
+            $request->params['prefix'] = $prefix;
+        }
+        $extension = Hash::get($requestParams, '_ext');
+        if ($extension) {
+            $request->params['_ext'] = $extension;
         }
 
         $result = $this->simpleRbacAuthorize->authorize($user, $request);
@@ -186,6 +191,13 @@ class SimpleRbacAuthorizeTest extends TestCase
 
     public function providerAuthorize()
     {
+        $trueRuleMock = $this->getMockBuilder(Rule::class)
+            ->setMethods(['allowed'])
+            ->getMock();
+        $trueRuleMock->expects($this->any())
+            ->method('allowed')
+            ->willReturn(true);
+
         return [
             'happy-strict-all' => [
                 //permissions
@@ -686,6 +698,159 @@ class SimpleRbacAuthorizeTest extends TestCase
                 ],
                 //expected
                 false
+            ],
+            'happy-ext' => [
+                //permissions
+                [[
+                    'role' => ['test'],
+                    'prefix' => ['admin'],
+                    'extension' => ['csv'],
+                    'controller' => ['Tests'],
+                    'action' => ['one', 'two'],
+                ]],
+                //user
+                [
+                    'id' => 1,
+                    'username' => 'luke',
+                    'role' => 'test',
+                ],
+                //request
+                [
+                    'prefix' => 'admin',
+                    '_ext' => 'csv',
+                    'controller' => 'Tests',
+                    'action' => 'one'
+                ],
+                //expected
+                true
+            ],
+            'deny-ext' => [
+                //permissions
+                [[
+                    'role' => ['test'],
+                    'extension' => ['csv'],
+                    'controller' => ['Tests'],
+                    'action' => ['one', 'two'],
+                    'allowed' => false,
+                ]],
+                //user
+                [
+                    'id' => 1,
+                    'username' => 'luke',
+                    'role' => 'test',
+                ],
+                //request
+                [
+                    'controller' => 'Tests',
+                    '_ext' => 'csv',
+                    'action' => 'one'
+                ],
+                //expected
+                false
+            ],
+            'star-ext' => [
+                //permissions
+                [[
+                    'role' => ['test'],
+                    'prefix' => '*',
+                    'extension' => '*',
+                    'controller' => ['Tests'],
+                    'action' => ['one', 'two'],
+                ]],
+                //user
+                [
+                    'id' => 1,
+                    'username' => 'luke',
+                    'role' => 'test',
+                ],
+                //request
+                [
+                    'prefix' => 'admin',
+                    '_ext' => 'other',
+                    'controller' => 'Tests',
+                    'action' => 'one'
+                ],
+                //expected
+                true
+            ],
+            'array-ext' => [
+                //permissions
+                [[
+                    'role' => ['test'],
+                    'extension' => ['csv', 'pdf'],
+                    'controller' => '*',
+                    'action' => '*',
+                ]],
+                //user
+                [
+                    'id' => 1,
+                    'username' => 'luke',
+                    'role' => 'test',
+                ],
+                //request
+                [
+                    '_ext' => 'csv',
+                    'controller' => 'Tests',
+                    'action' => 'one'
+                ],
+                //expected
+                true
+            ],
+            'array-ext' => [
+                //permissions
+                [
+                    [
+                        'role' => ['test'],
+                        'extension' => ['csv', 'docx'],
+                        'controller' => '*',
+                        'action' => 'one',
+                        'allowed' => false,
+                    ],
+                    [
+                        'role' => ['test'],
+                        'extension' => ['csv', 'docx'],
+                        'controller' => '*',
+                        'action' => '*',
+                    ],
+                ],
+                //user
+                [
+                    'id' => 1,
+                    'username' => 'luke',
+                    'role' => 'test',
+                ],
+                //request
+                [
+                    'prefix' => 'csv',
+                    'controller' => 'Tests',
+                    'action' => 'one'
+                ],
+                //expected
+                false
+            ],
+            'rule-class' => [
+                //permissions
+                [
+                    [
+                        'role' => ['test'],
+                        'controller' => '*',
+                        'action' => 'one',
+                        'allowed' => $trueRuleMock,
+                    ],
+                ],
+                //user
+                [
+                    'id' => 1,
+                    'username' => 'luke',
+                    'role' => 'test',
+                ],
+                //request
+                [
+                    'controller' => 'Tests',
+                    'action' => 'one'
+                ],
+                //expected
+                true
             ],
         ];
     }

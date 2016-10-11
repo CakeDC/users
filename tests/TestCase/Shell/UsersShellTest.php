@@ -38,7 +38,7 @@ class UsersShellTest extends TestCase
     {
         parent::setUp();
         $this->out = new ConsoleOutput();
-        $this->io = $this->getMock('Cake\Console\ConsoleIo');
+        $this->io = $this->getMockBuilder('Cake\Console\ConsoleIo')->getMock();
         $this->Users = TableRegistry::get('CakeDC/Users.Users');
 
         $this->Shell = $this->getMockBuilder('CakeDC\Users\Shell\UsersShell')
@@ -47,15 +47,14 @@ class UsersShellTest extends TestCase
             ->setConstructorArgs([$this->io])
             ->getMock();
 
-        $this->Shell->Users = $this->getMockBuilder('CakeDC\Users\Model\UsersTable')
+        $this->Shell->Users = $this->getMockBuilder('CakeDC\Users\Model\Table\UsersTable')
             ->setMethods(['generateUniqueUsername', 'newEntity', 'save', 'updateAll'])
             ->getMock();
 
-        $this->Shell->Command = $this->getMock(
-            'Cake\Shell\Task\CommandTask',
-            ['in', '_stop', 'clear', 'out'],
-            [$this->io]
-        );
+        $this->Shell->Command = $this->getMockBuilder('Cake\Shell\Task\CommandTask')
+            ->setMethods(['in', '_stop', 'clear', 'out'])
+            ->setConstructorArgs([$this->io])
+            ->getMock();
     }
 
     /**

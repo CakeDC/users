@@ -16,9 +16,11 @@ use Cake\Core\App;
 use Cake\Core\Configure;
 use Cake\Core\Plugin;
 use Cake\Event\Event;
+use Cake\I18n\I18n;
 use Cake\Network\Request;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
+use Cake\View\Helper\HtmlHelper;
 use Cake\View\View;
 
 /**
@@ -36,8 +38,19 @@ class UserHelperTest extends TestCase
     {
         parent::setUp();
         Plugin::routes('CakeDC/Users');
-        $this->View = $this->getMock('Cake\View\View', ['append']);
+        $this->View = $this->getMockBuilder('Cake\View\View')
+                ->setMethods(['append'])
+                ->getMock();
+        //Assuming all these url's are authorized
+        $this->AuthLink = $this->getMockBuilder('CakeDC\Users\View\Helper\AuthLinkHelper')
+                ->setMethods(['isAuthorized'])
+                ->setConstructorArgs([$this->View])
+                ->getMock();
+        $this->AuthLink->expects($this->any())
+            ->method('isAuthorized')
+            ->will($this->returnValue(true));
         $this->User = new UserHelper($this->View);
+        $this->User->AuthLink = $this->AuthLink;
         $this->request = new Request();
     }
 
@@ -94,69 +107,11 @@ class UserHelperTest extends TestCase
      *
      * @return void
      */
-    public function testLinkFalse()
-    {
-        $link = $this->User->link('title', ['controller' => 'noaccess']);
-        $this->assertSame(false, $link);
-    }
-
-    /**
-     * Test link
-     *
-     * @return void
-     */
-    public function testLinkAuthorized()
-    {
-        $view = new View();
-        $eventManagerMock = $this->getMockBuilder('Cake\Event\EventManager')
-                ->setMethods(['dispatch'])
-                ->getMock();
-        $view->eventManager($eventManagerMock);
-        $this->User = new UserHelper($view);
-        $result = new Event('dispatch-result');
-        $result->result = true;
-        $eventManagerMock->expects($this->once())
-                ->method('dispatch')
-                ->will($this->returnValue($result));
-
-        $link = $this->User->link('title', '/', ['before' => 'before_', 'after' => '_after', 'class' => 'link-class']);
-        $this->assertSame('before_<a href="/" class="link-class">title</a>_after', $link);
-    }
-
-
-    /**
-     * Test isAuthorized
-     *
-     * @return void
-     */
-    public function testIsAuthorized()
-    {
-        $view = new View();
-        $eventManagerMock = $this->getMockBuilder('Cake\Event\EventManager')
-            ->setMethods(['dispatch'])
-            ->getMock();
-        $view->eventManager($eventManagerMock);
-        $this->User = new UserHelper($view);
-        $result = new Event('dispatch-result');
-        $result->result = true;
-        $eventManagerMock->expects($this->once())
-            ->method('dispatch')
-            ->will($this->returnValue($result));
-
-        $result = $this->User->isAuthorized(['controller' => 'MyController', 'action' => 'myAction']);
-        $this->assertTrue($result);
-    }
-
-
-
-    /**
-     * Test link
-     *
-     * @return void
-     */
     public function testWelcome()
     {
-        $session = $this->getMock('Cake\Network\Session', ['read']);
+        $session = $this->getMockBuilder('Cake\Network\Session')
+                ->setMethods(['read'])
+                ->getMock();
         $session->expects($this->at(0))
             ->method('read')
             ->with('Auth.User.id')
@@ -167,7 +122,9 @@ class UserHelperTest extends TestCase
             ->with('Auth.User.first_name')
             ->will($this->returnValue('david'));
 
-        $this->User->request = $this->getMock('Cake\Network\Request', ['session']);
+        $this->User->request = $this->getMockBuilder('Cake\Network\Request')
+                ->setMethods(['session'])
+                ->getMock();
         $this->User->request->expects($this->any())
             ->method('session')
             ->will($this->returnValue($session));
@@ -184,13 +141,17 @@ class UserHelperTest extends TestCase
      */
     public function testWelcomeNotLoggedInUser()
     {
-        $session = $this->getMock('Cake\Network\Session', ['read']);
+        $session = $this->getMockBuilder('Cake\Network\Session')
+                ->setMethods(['read'])
+                ->getMock();
         $session->expects($this->at(0))
             ->method('read')
             ->with('Auth.User.id')
             ->will($this->returnValue(null));
 
-        $this->User->request = $this->getMock('Cake\Network\Request', ['session']);
+        $this->User->request = $this->getMockBuilder('Cake\Network\Request')
+                ->setMethods(['session'])
+                ->getMock();
         $this->User->request->expects($this->any())
             ->method('session')
             ->will($this->returnValue($session));
@@ -222,7 +183,7 @@ class UserHelperTest extends TestCase
         $expected = '<p>reCaptcha is not configured! Please configure Users.reCaptcha.key</p>';
         $this->assertEquals($expected, $result);
     }
-    
+
     /**
      * Test add ReCaptcha field
      *
@@ -248,5 +209,18 @@ class UserHelperTest extends TestCase
 
         $result = $this->User->socialLogin('twitter', ['label' => 'Register with']);
         $this->assertEquals('<a href="/auth/twitter" class="btn btn-social btn-twitter "><i class="fa fa-twitter"></i>Register with Twitter</a>', $result);
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testSocialLoginTranslation()
+    {
+        I18n::locale('es_ES');
+        $result = $this->User->socialLogin('facebook');
+        $this->assertEquals('<a href="/auth/facebook" class="btn btn-social btn-facebook"><i class="fa fa-facebook"></i>Iniciar sesión con Facebook</a>', $result);
+        I18n::locale('en_US');
     }
 }

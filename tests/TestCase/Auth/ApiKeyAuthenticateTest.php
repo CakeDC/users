@@ -38,11 +38,10 @@ class ApiKeyAuthenticateTest extends TestCase
         $request = new Request();
         $response = new Response();
 
-        $controller = $this->getMock(
-            'Cake\Controller\Controller',
-            null,
-            [$request, $response]
-        );
+        $controller = $this->getMockBuilder('Cake\Controller\Controller')
+            ->setMethods(null)
+            ->setConstructorArgs([$request, $response])
+            ->getMock();
         $registry = new ComponentRegistry($controller);
         $this->apiKey = new ApiKeyAuthenticate($registry, ['require_ssl' => false]);
     }
