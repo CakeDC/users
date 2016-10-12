@@ -21,7 +21,6 @@ interface Rule
      * @param string $role role of the user
      * @param Request $request current request, used to get a default table if not provided
      * @return bool
-     * @throws \OutOfBoundsException if table is not found or it doesn't have the expected fields
      */
     public function allowed(array $user, $role, Request $request);
 }

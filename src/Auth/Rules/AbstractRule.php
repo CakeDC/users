@@ -10,7 +10,10 @@
  */
 namespace CakeDC\Users\Auth\Rules;
 
+use Cake\Core\InstanceConfigTrait;
+use Cake\Datasource\ModelAwareTrait;
 use Cake\Network\Request;
+use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
@@ -22,9 +25,9 @@ use OutOfBoundsException;
  */
 abstract class AbstractRule implements Rule
 {
-    use \Cake\Core\InstanceConfigTrait;
-    use \Cake\Datasource\ModelAwareTrait;
-    use \Cake\ORM\Locator\LocatorAwareTrait;
+    use InstanceConfigTrait;
+    use LocatorAwareTrait;
+    use ModelAwareTrait;
 
     /**
      * @var array default config
@@ -46,7 +49,7 @@ abstract class AbstractRule implements Rule
      * @param Request $request request
      * @param mixed $table table
      * @return \Cake\ORM\Table
-     * @throw OutOfBoundsException if table alias is empty
+     * @throws \OutOfBoundsException if table alias is empty
      */
     protected function _getTable(Request $request, $table = null)
     {
@@ -65,7 +68,7 @@ abstract class AbstractRule implements Rule
      *
      * @param Request $request request
      * @return Table
-     * @throws OutOfBoundsException if table alias can't be extracted from request
+     * @throws \OutOfBoundsException if table alias can't be extracted from request
      */
     protected function _getTableFromRequest(Request $request)
     {
@@ -88,7 +91,7 @@ abstract class AbstractRule implements Rule
      * @param string $role role of the user
      * @param Request $request current request, used to get a default table if not provided
      * @return bool
-     * @throws OutOfBoundsException if table is not found or it doesn't have the expected fields
+     * @throws \OutOfBoundsException if table is not found or it doesn't have the expected fields
      */
     abstract public function allowed(array $user, $role, Request $request);
 }
