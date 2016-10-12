@@ -101,7 +101,7 @@ $config = [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'login',
-            'prefix' => null
+            'prefix' => false
         ],
         'authenticate' => [
             'all' => [
@@ -117,7 +117,7 @@ $config = [
         ],
     ],
     'OAuth' => [
-        'path' => ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'socialLogin', 'prefix' => null],
+        'path' => ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'socialLogin', 'prefix' => false],
         'providers' => [
             'facebook' => [
                 'className' => 'League\OAuth2\Client\Provider\Facebook',

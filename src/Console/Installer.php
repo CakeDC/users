@@ -10,6 +10,9 @@
  */
 namespace CakeDC\Users\Console;
 
+use Cake\Database\Schema\Table;
+use Cake\ORM\TableRegistry;
+use Cake\Utility\Text;
 use CakeDC\Users\Console\Traits\CommonQuestionsTrait;
 use Composer\Script\Event;
 
@@ -49,6 +52,12 @@ class Installer
             'N',
             ['\CakeDC\Users\Console\Installer::enableConfigOptions', [&$usersConfig, ['Users.Registration.active']]]
         );
+        static::yesNo(
+            $io,
+            '[Users]: Add superuser [y/N]? ',
+            'N',
+            ['\CakeDC\Users\Console\Installer::addSuperuser', [$io]]
+            );
         $providers = ['facebook', 'google', 'twitter', 'linkedIn', 'instagram'];
         foreach ($providers as $provider) {
             static::yesNo(
@@ -60,6 +69,47 @@ class Installer
         }
 
         static::generateUsersConfigOverride($rootDir, $io, $usersConfig);
+    }
+
+    /**
+     * Generates a random password.
+     *
+     * @return string
+     */
+    protected static function _generateRandomPassword()
+    {
+        return str_replace('-', '', Text::uuid());
+    }
+
+    public static function addSuperuser($io)
+    {
+        $Users = TableRegistry::get('Users');
+        $username = $Users->generateUniqueUsername('superadmin');
+        $password = self::_generateRandomPassword();
+        $user = [
+            'username' => $username,
+            'email' => $username . '@example.com',
+            'password' => $password,
+            'active' => 1,
+        ];
+
+        $userEntity = $Users->newEntity($user);
+        $userEntity->is_superuser = true;
+        $userEntity->role = 'superuser';
+        $savedUser = $Users->save($userEntity);
+        if (!empty($savedUser)) {
+            $io->write(__d('CakeDC/Users', 'Superuser added:'));
+            $io->write(__d('CakeDC/Users', 'Id: {0}', $savedUser->id));
+            $io->write(__d('CakeDC/Users', 'Username: {0}', $username));
+            $io->write(__d('CakeDC/Users', 'Email: {0}', $savedUser->email));
+            $io->write(__d('CakeDC/Users', 'Password: {0}', $password));
+        } else {
+            $io->write(__d('CakeDC/Users', 'Superuser could not be added:'));
+
+            collection($userEntity->errors())->each(function ($error, $field) use ($io) {
+                $io->write(__d('CakeDC/Users', 'Field: {0} Error: {1}', $field, implode(',', $error)));
+            });
+        }
     }
 
     /**
