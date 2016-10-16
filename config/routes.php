@@ -29,3 +29,4 @@ Router::connect('/accounts/validate/*', [
 Router::connect('/profile/*', ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile']);
 Router::connect('/login', ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
 Router::connect('/logout', ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'logout']);
+Router::connect('/users', ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'index']);
