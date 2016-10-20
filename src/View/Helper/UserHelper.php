@@ -50,9 +50,8 @@ class UserHelper extends Helper
         ]);
         $providerTitle = __d('CakeDC/Users', '{0} {1}', Hash::get($options, 'label'), Inflector::camelize($name));
         $providerClass = __d('CakeDC/Users', 'btn btn-social btn-{0} ' . Hash::get($options, 'class') ?: '', strtolower($name));
-
         return $this->Html->link($icon . $providerTitle, "/auth/$name", [
-            'escape' => false, 'class' => $providerClass
+            'escape' => false, 'class' => $providerClass, 'allowed' => true
         ]);
     }
 
@@ -68,14 +67,14 @@ class UserHelper extends Helper
         }
         $outProviders = [];
         $providers = Configure::read('OAuth.providers');
+
         foreach ($providers as $provider => $options) {
             if (!empty($options['options']['redirectUri']) &&
                 !empty($options['options']['clientId']) &&
                 !empty($options['options']['clientSecret'])) {
-                $outProviders[] = $this->socialLogin($provider);
+                $outProviders[] = $this->socialLogin($provider, Hash::get($options, 'htmlOptions'));
             }
         }
-
         return $outProviders;
     }
 
