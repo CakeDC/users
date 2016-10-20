@@ -101,7 +101,7 @@ $config = [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'login',
-            'prefix' => null
+            'prefix' => false
         ],
         'authenticate' => [
             'all' => [
