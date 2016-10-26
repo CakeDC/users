@@ -57,7 +57,7 @@ class RegisterBehavior extends Behavior
         $validateEmail = Hash::get($options, 'validate_email');
         $tokenExpiration = Hash::get($options, 'token_expiration');
         $emailClass = Hash::get($options, 'email_class');
-        $user = $this->_table->patchEntity($user, $data, ['validate' => Hash::get($options, 'validator') ?: $this->_getValidators($options)]);
+        $user = $this->_table->patchEntity($user, $data, ['validate' => Hash::get($options, 'validator') ?: $this->getRegisterValidators($options)]);
         $user->validated = false;
         //@todo move updateActive to afterSave?
         $user = $this->_updateActive($user, $validateEmail, $tokenExpiration);
@@ -173,7 +173,7 @@ class RegisterBehavior extends Behavior
      * @param array $options Array of options ['validate_email' => true/false, 'use_tos' => true/false]
      * @return Validator
      */
-    protected function _getValidators($options)
+    public function getRegisterValidators($options)
     {
         $validateEmail = Hash::get($options, 'validate_email');
         $useTos = Hash::get($options, 'use_tos');
