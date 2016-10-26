@@ -15,12 +15,15 @@ use Cake\Core\Configure;
     <fieldset>
         <legend><?= __d('CakeDC/Users', 'Add User') ?></legend>
         <?php
-        echo $this->Form->input('username');
-        echo $this->Form->input('email');
-        echo $this->Form->input('password');
-        echo $this->Form->input('password_confirm', ['type' => 'password']);
-        echo $this->Form->input('first_name');
-        echo $this->Form->input('last_name');
+        echo $this->Form->input('username', ['label' => __d('CakeDC/Users', 'Username')]);
+        echo $this->Form->input('email', ['label' => __d('CakeDC/Users', 'Email')]);
+        echo $this->Form->input('password', ['label' => __d('CakeDC/Users', 'Password')]);
+        echo $this->Form->input('password_confirm', [
+            'type' => 'password',
+            'label' => __d('CakeDC/Users', 'Confirm password')
+        ]);
+        echo $this->Form->input('first_name', ['label' => __d('CakeDC/Users', 'First name')]);
+        echo $this->Form->input('last_name', ['label' => __d('CakeDC/Users', 'Last name')]);
         if (Configure::read('Users.Tos.required')) {
             echo $this->Form->input('tos', ['type' => 'checkbox', 'label' => __d('CakeDC/Users', 'Accept TOS conditions?'), 'required' => true]);
         }
