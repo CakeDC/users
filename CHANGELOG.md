@@ -3,6 +3,9 @@ Changelog
 
 Releases for CakePHP 3
 -------------
+* 3.2.5
+  * Fixed RegisterBehavior api, make getRegisterValidators public.
+
 * 3.2.3
   * Added compatibility with CakePHP 3.3+ 
   * Fixed several bugs, including regression issue with Facebook login & improvements
