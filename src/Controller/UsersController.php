@@ -36,15 +36,4 @@ class UsersController extends AppController
     use RegisterTrait;
     use SimpleCrudTrait;
     use SocialTrait;
-
-    /**
-     * Initialize and set defaults for model class
-     *
-     * @return void
-     */
-    public function initialize()
-    {
-        parent::initialize();
-        $this->_setModelClass(Configure::read('Users.table'));
-    }
 }

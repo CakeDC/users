@@ -22,6 +22,9 @@ collection((array)Configure::read('Users.config'))->each(function ($file) {
     Configure::load($file);
 });
 
+TableRegistry::config('Users', ['className' => Configure::read('Users.table')]);
+TableRegistry::config('CakeDC/Users.Users', ['className' => Configure::read('Users.table')]);
+
 if (Configure::check('Users.auth')) {
     Configure::write('Auth.authenticate.all.userModel', Configure::read('Users.table'));
 }
