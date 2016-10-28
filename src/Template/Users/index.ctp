@@ -19,10 +19,10 @@
     <table cellpadding="0" cellspacing="0">
     <thead>
         <tr>
-            <th><?= $this->Paginator->sort('username') ?></th>
-            <th><?= $this->Paginator->sort('email') ?></th>
-            <th><?= $this->Paginator->sort('first_name') ?></th>
-            <th><?= $this->Paginator->sort('last_name') ?></th>
+            <th><?= $this->Paginator->sort('username', __d('CakeDC/Users', 'Username')) ?></th>
+            <th><?= $this->Paginator->sort('email', __d('CakeDC/Users', 'Email')) ?></th>
+            <th><?= $this->Paginator->sort('first_name', __d('CakeDC/Users', 'First name')) ?></th>
+            <th><?= $this->Paginator->sort('last_name', __d('CakeDC/Users', 'Last name')) ?></th>
             <th class="actions"><?= __d('CakeDC/Users', 'Actions') ?></th>
         </tr>
     </thead>
