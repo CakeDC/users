@@ -212,7 +212,7 @@ trait LoginTrait
             $verificationCode = $this->request->data['code'];
             $user = $this->Auth->user();
 
-            $verified = $this->GoogleAuthenticator->verifyCode($secret, $verificationCode) );
+            $verified = $this->GoogleAuthenticator->verifyCode($secret, $verificationCode);
 
             if (!$verified) {
                 $message = __d('CakeDC/Users', 'Verification code is invalid. Try again');
@@ -229,16 +229,6 @@ trait LoginTrait
             }
         }
     }
-
-    /**
-     * verify for Google Authenticator codes
-     */
-
-            $this->redirect($this->Auth->redirectUrl());
-            }
-        }
-    }
-
 
     /**
      * Check reCaptcha if enabled for login
