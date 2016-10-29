@@ -19,6 +19,7 @@ use CakeDC\Users\Model\Table\SocialAccountsTable;
 use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Network\Exception\NotFoundException;
+use Cake\ORM\TableRegistry;
 use League\OAuth1\Client\Server\Twitter;
 
 /**
@@ -155,8 +156,9 @@ trait LoginTrait
         }
 
         $socialLogin = $this->_isSocialLogin();
+		$googleAuthenticatorLogin = $this->_isGoogleAuthenticator();
 
-        if ($this->request->is('post')) {
+		if ($this->request->is('post')) {
             if (!$this->_checkReCaptcha()) {
                 $this->Flash->error(__d('CakeDC/Users', 'Invalid reCaptcha'));
 
@@ -164,9 +166,10 @@ trait LoginTrait
             }
             $user = $this->Auth->identify();
 
-            return $this->_afterIdentifyUser($user, $socialLogin);
+            return $this->_afterIdentifyUser($user, $socialLogin, $googleAuthenticatorLogin);
         }
-        if (!$this->request->is('post') && !$socialLogin) {
+
+		if (!$this->request->is('post') && !$socialLogin) {
             if ($this->Auth->user()) {
                 $msg = __d('CakeDC/Users', 'You are already logged in');
                 $this->Flash->error($msg);
@@ -176,6 +179,66 @@ trait LoginTrait
             }
         }
     }
+
+    /**
+     * verify for Google Authenticator codes
+     */
+    public function verify()
+    {
+        if (!Configure::read('Users.GoogleAuthenticator.login')) {
+            $message = __d('CakeDC/Users', 'Google Authenticator is disabled');
+            $this->Flash->error($message, 'default', [], 'auth');
+
+            $this->redirect(Configure::read('Auth.loginAction'));
+        }
+
+        $user = $this->Auth->user();
+        $secret = $user['secret'];
+        if ( empty($secret) ) {
+            $secret = $this->GoogleAuthenticator->tfa->createSecret();
+
+            $users = TableRegistry::get('Users');
+            $query = $users->query();
+            $query->update()
+                ->set(['secret' => $secret])
+                ->where(['id' => $user['id']])
+                ->execute();
+
+            $this->request->session()->write('Auth.User.secret', $secret);
+            $this->set('secretDataUri', $this->GoogleAuthenticator->getQRCodeImageAsDataUri($user['email'], $secret));
+        }
+
+        if ($this->request->is('post')) {
+            $verificationCode = $this->request->data['code'];
+            $user = $this->Auth->user();
+
+            $verified = $this->GoogleAuthenticator->verifyCode($secret, $verificationCode) );
+
+            if (!$verified) {
+                $message = __d('CakeDC/Users', 'Verification code is invalid. Try again');
+                $this->Flash->error($message, 'default', [], 'auth');
+
+                //prevent the user accessing the authorized area
+                //with unverified two-step, thus destroying the session
+                $this->request->session()->destroy();
+
+                $this->redirect(Configure::read('Auth.loginAction'));
+            } else {
+                $url = $this->Auth->redirectUrl();
+                return $this->redirect($url);
+            }
+        }
+    }
+
+    /**
+     * verify for Google Authenticator codes
+     */
+
+            $this->redirect($this->Auth->redirectUrl());
+            }
+        }
+    }
+
 
     /**
      * Check reCaptcha if enabled for login
@@ -200,15 +263,21 @@ trait LoginTrait
      * @param bool $socialLogin is social login
      * @return array
      */
-    protected function _afterIdentifyUser($user, $socialLogin = false)
+    protected function _afterIdentifyUser($user, $socialLogin = false, $googleAuthenticatorLogin = false)
     {
         if (!empty($user)) {
             $this->Auth->setUser($user);
 
+            if ($googleAuthenticatorLogin) {
+                $url = Configure::read('GoogleAuthenticator.verifyAction');
+                return $this->redirect($url);
+            }
+
             $event = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_LOGIN, ['user' => $user]);
-            if (is_array($event->result)) {
+			if (is_array($event->result)) {
                 return $this->redirect($event->result);
             }
+
             $url = $this->Auth->redirectUrl();
 
             return $this->redirect($url);
@@ -256,4 +325,13 @@ trait LoginTrait
         return Configure::read('Users.Social.login') &&
                 $this->request->session()->check(Configure::read('Users.Key.Session.social'));
     }
+
+	/**
+	 * Check if we doing Google Authenticator Two Factor auth
+	 * @return bool true if Google Authenticator is enabled
+	 */
+	protected function _isGoogleAuthenticator()
+	{
+		return Configure::read('Users.GoogleAuthenticator.login');
+	}
 }

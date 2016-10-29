@@ -32,6 +32,7 @@ class UsersAuthComponent extends Component
     const EVENT_BEFORE_LOGOUT = 'Users.Component.UsersAuth.beforeLogout';
     const EVENT_AFTER_LOGOUT = 'Users.Component.UsersAuth.afterLogout';
 
+
     /**
      * Initialize method, setup Auth if not already done passing the $config provided and
      * setup the default table to Users.Users if not provided
@@ -52,7 +53,15 @@ class UsersAuthComponent extends Component
             $this->_loadRememberMe();
         }
 
+        if (Configure::read('Users.GoogleAuthenticator.login')) {
+            $this->_loadGoogleAuthenticator();
+        }
         $this->_attachPermissionChecker();
+    }
+
+    protected function _loadGoogleAuthenticator()
+    {
+        $this->_registry->getController()->loadComponent('CakeDC/Users.GoogleAuthenticator');
     }
 
     /**

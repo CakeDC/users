@@ -21,6 +21,7 @@ use CakeDC\Users\Controller\Traits\SimpleCrudTrait;
 use CakeDC\Users\Controller\Traits\SocialTrait;
 use CakeDC\Users\Model\Table\UsersTable;
 use Cake\Core\Configure;
+use Cake\Event\Event;
 use Cake\ORM\Table;
 
 /**
@@ -36,4 +37,14 @@ class UsersController extends AppController
     use RegisterTrait;
     use SimpleCrudTrait;
     use SocialTrait;
+
+    public function beforeFilter(Event $event)
+    {
+        parent::beforeFilter($event);
+
+        // let us verify the code received from Google Authenticator
+        if (Configure::read('Users.GoogleAuthenticator.login')) {
+        //    $this->Auth->allow(['verify']);
+        }
+    }
 }
