@@ -21,7 +21,6 @@ use CakeDC\Users\Controller\Traits\SimpleCrudTrait;
 use CakeDC\Users\Controller\Traits\SocialTrait;
 use CakeDC\Users\Model\Table\UsersTable;
 use Cake\Core\Configure;
-use Cake\Event\Event;
 use Cake\ORM\Table;
 
 /**
