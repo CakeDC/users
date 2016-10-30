@@ -156,9 +156,9 @@ trait LoginTrait
         }
 
         $socialLogin = $this->_isSocialLogin();
-		$googleAuthenticatorLogin = $this->_isGoogleAuthenticator();
+        $googleAuthenticatorLogin = $this->_isGoogleAuthenticator();
 
-		if ($this->request->is('post')) {
+        if ($this->request->is('post')) {
             if (!$this->_checkReCaptcha()) {
                 $this->Flash->error(__d('CakeDC/Users', 'Invalid reCaptcha'));
 
@@ -169,7 +169,7 @@ trait LoginTrait
             return $this->_afterIdentifyUser($user, $socialLogin, $googleAuthenticatorLogin);
         }
 
-		if (!$this->request->is('post') && !$socialLogin) {
+        if (!$this->request->is('post') && !$socialLogin) {
             if ($this->Auth->user()) {
                 $msg = __d('CakeDC/Users', 'You are already logged in');
                 $this->Flash->error($msg);
@@ -194,7 +194,7 @@ trait LoginTrait
 
         $user = $this->Auth->user();
         $secret = $user['secret'];
-        if ( empty($secret) ) {
+        if (empty($secret)) {
             $secret = $this->GoogleAuthenticator->createSecret();
 
             $users = TableRegistry::get('Users');
@@ -225,6 +225,7 @@ trait LoginTrait
                 $this->redirect(Configure::read('Auth.loginAction'));
             } else {
                 $url = $this->Auth->redirectUrl();
+
                 return $this->redirect($url);
             }
         }
@@ -260,11 +261,12 @@ trait LoginTrait
 
             if ($googleAuthenticatorLogin) {
                 $url = Configure::read('GoogleAuthenticator.verifyAction');
+
                 return $this->redirect($url);
             }
 
             $event = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_LOGIN, ['user' => $user]);
-			if (is_array($event->result)) {
+            if (is_array($event->result)) {
                 return $this->redirect($event->result);
             }
 
@@ -316,12 +318,12 @@ trait LoginTrait
                 $this->request->session()->check(Configure::read('Users.Key.Session.social'));
     }
 
-	/**
-	 * Check if we doing Google Authenticator Two Factor auth
-	 * @return bool true if Google Authenticator is enabled
-	 */
-	protected function _isGoogleAuthenticator()
-	{
-		return Configure::read('Users.GoogleAuthenticator.login');
-	}
+    /**
+     * Check if we doing Google Authenticator Two Factor auth
+     * @return bool true if Google Authenticator is enabled
+     */
+    protected function _isGoogleAuthenticator()
+    {
+        return Configure::read('Users.GoogleAuthenticator.login');
+    }
 }

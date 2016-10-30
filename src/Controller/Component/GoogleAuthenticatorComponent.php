@@ -1,7 +1,6 @@
 <?php
 namespace CakeDC\Users\Controller\Component;
 
-use Cake\Core\Plugin;
 use Cake\Controller\Component;
 use Cake\Core\Configure;
 use Cake\Event\Event;
@@ -16,7 +15,7 @@ use RobThree\Auth\TwoFactorAuth;
  */
 class GoogleAuthenticatorComponent extends Component
 {
-	/** @var RobThree\Auth\TwoFactorAuth $tfa */
+    /** @var RobThree\Auth\TwoFactorAuth $tfa */
     public $tfa;
 
     /**
@@ -24,11 +23,11 @@ class GoogleAuthenticatorComponent extends Component
      * @param array $config The config data
      * @return void
      */
-	public function initialize(array $config)
-	{
+    public function initialize(array $config)
+    {
         parent::initialize($config);
 
-		if (Configure::read('Users.GoogleAuthenticator.login')) {
+        if (Configure::read('Users.GoogleAuthenticator.login')) {
             $this->tfa = new TwoFactorAuth(
                 Configure::read('Users.GoogleAuthenticator.issuer'),
                 Configure::read('Users.GoogleAuthenticator.digits'),
@@ -39,7 +38,7 @@ class GoogleAuthenticatorComponent extends Component
                 Configure::read('Users.GoogleAuthenticator.encryptionKey')
             );
         }
-	}
+    }
 
     /**
      * createSecret
@@ -55,7 +54,7 @@ class GoogleAuthenticatorComponent extends Component
      * Verifying tfa code with shared secret
      * @param string $secret of the user
      * @param string $code from verification form
-     * @return boolean
+     * @return bool
      */
     public function verifyCode($secret, $code)
     {
@@ -71,4 +70,3 @@ class GoogleAuthenticatorComponent extends Component
         return $this->tfa->getQRCodeImageAsDataUri($issuer, $secret);
     }
 }
-

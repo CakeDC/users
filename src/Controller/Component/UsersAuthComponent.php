@@ -59,6 +59,11 @@ class UsersAuthComponent extends Component
         $this->_attachPermissionChecker();
     }
 
+    /**
+     * Load GoogleAuthenticator object
+     *
+     * @return void
+     */
     protected function _loadGoogleAuthenticator()
     {
         $this->_registry->getController()->loadComponent('CakeDC/Users.GoogleAuthenticator');
