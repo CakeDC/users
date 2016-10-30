@@ -27,7 +27,8 @@
         "source": "https://github.com/CakeDC/users"
     },
     "require": {
-        "cakephp/cakephp": ">=3.2.9 <4.0.0"
+        "cakephp/cakephp": ">=3.2.9 <4.0.0",
+        "robthree/twofactorauth": "^1.5"
     },
     "require-dev": {
         "phpunit/phpunit": "@stable",
