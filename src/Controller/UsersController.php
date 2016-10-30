@@ -37,14 +37,4 @@ class UsersController extends AppController
     use RegisterTrait;
     use SimpleCrudTrait;
     use SocialTrait;
-
-    public function beforeFilter(Event $event)
-    {
-        parent::beforeFilter($event);
-
-        // let us verify the code received from Google Authenticator
-        if (Configure::read('Users.GoogleAuthenticator.login')) {
-        //    $this->Auth->allow(['verify']);
-        }
-    }
 }
