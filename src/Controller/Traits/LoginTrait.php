@@ -224,6 +224,8 @@ trait LoginTrait
 
                 $this->redirect(Configure::read('Auth.loginAction'));
             } else {
+                //removing secret key from the session, once verified
+                $this->request->session()->delete('Auth.User.secret');
                 $url = $this->Auth->redirectUrl();
 
                 return $this->redirect($url);
