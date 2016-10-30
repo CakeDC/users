@@ -195,7 +195,7 @@ trait LoginTrait
         $user = $this->Auth->user();
         $secret = $user['secret'];
         if ( empty($secret) ) {
-            $secret = $this->GoogleAuthenticator->tfa->createSecret();
+            $secret = $this->GoogleAuthenticator->createSecret();
 
             $users = TableRegistry::get('Users');
             $query = $users->query();
