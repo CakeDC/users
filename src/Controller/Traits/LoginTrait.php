@@ -180,7 +180,12 @@ trait LoginTrait
     }
 
     /**
-     * verify for Google Authenticator codes
+     * Verify for Google Authenticator
+     * If Google Authenticator's enabled we need to verify
+     * authenticated user. To avoid accidental access to
+     * other URL's we store auth'ed used into temporary session
+     * to perform code verification.
+     *
      * @return void
      */
     public function verify()
@@ -225,7 +230,7 @@ trait LoginTrait
 
             $codeVerified = $this->GoogleAuthenticator->verifyCode($user['secret'], $verificationCode);
 
-            if($codeVerified) {
+            if ($codeVerified) {
                 unset($user['secret']);
 
                 if (!$user['secret_verified']) {
