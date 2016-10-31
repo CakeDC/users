@@ -56,6 +56,7 @@ class UsersAuthComponent extends Component
         if (Configure::read('Users.GoogleAuthenticator.login')) {
             $this->_loadGoogleAuthenticator();
         }
+
         $this->_attachPermissionChecker();
     }
 
@@ -124,7 +125,8 @@ class UsersAuthComponent extends Component
             'requestResetPassword',
             'changePassword',
             'endpoint',
-            'authenticated'
+            'authenticated',
+            'verify'
         ]);
     }
 

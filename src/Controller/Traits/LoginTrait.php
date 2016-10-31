@@ -19,7 +19,6 @@ use CakeDC\Users\Model\Table\SocialAccountsTable;
 use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Network\Exception\NotFoundException;
-use Cake\ORM\TableRegistry;
 use League\OAuth1\Client\Server\Twitter;
 
 /**
@@ -182,53 +181,73 @@ trait LoginTrait
 
     /**
      * verify for Google Authenticator codes
+     * @return void
      */
     public function verify()
     {
         if (!Configure::read('Users.GoogleAuthenticator.login')) {
-            $message = __d('CakeDC/Users', 'Google Authenticator is disabled');
+            $message = __d('CakeDC/Users', 'Please enable Google Authenticator first.');
             $this->Flash->error($message, 'default', [], 'auth');
 
             $this->redirect(Configure::read('Auth.loginAction'));
         }
 
-        $user = $this->Auth->user();
-        $secret = $user['secret'];
-        if (empty($secret)) {
-            $secret = $this->GoogleAuthenticator->createSecret();
+        // storing user's session in the temporary one
+        // until the GA verification is checked
+        $temporarySession = $this->Auth->user();
+        $this->request->session()->delete('Auth.User');
 
-            $users = TableRegistry::get('Users');
-            $query = $users->query();
-            $query->update()
-                ->set(['secret' => $secret])
-                ->where(['id' => $user['id']])
-                ->execute();
+        if (!empty($temporarySession)) {
+            $this->request->session()->write('temporarySession', $temporarySession);
+        }
 
-            $this->request->session()->write('Auth.User.secret', $secret);
-            $this->set('secretDataUri', $this->GoogleAuthenticator->getQRCodeImageAsDataUri($user['email'], $secret));
+        $secret = $temporarySession['secret'];
+        $secretVerified = $temporarySession['secret_verified'];
+
+        // showing QR-code until shared secret is verified
+        if (!$secretVerified) {
+            if (empty($secret)) {
+                $secret = $this->GoogleAuthenticator->createSecret();
+
+                $query = $this->getUsersTable()->query();
+                $query->update()
+                    ->set(['secret' => $secret])
+                    ->where(['id' => $temporarySession['id']])
+                    ->execute();
+            }
+
+            $this->set('secretDataUri', $this->GoogleAuthenticator->getQRCodeImageAsDataUri($temporarySession['email'], $secret));
         }
 
         if ($this->request->is('post')) {
             $verificationCode = $this->request->data['code'];
-            $user = $this->Auth->user();
+            $user = $this->request->session()->read('temporarySession');
 
-            $verified = $this->GoogleAuthenticator->verifyCode($secret, $verificationCode);
+            $codeVerified = $this->GoogleAuthenticator->verifyCode($user['secret'], $verificationCode);
 
-            if (!$verified) {
+            if($codeVerified) {
+                unset($user['secret']);
+
+                if (!$user['secret_verified']) {
+                    $this->getUsersTable()->query()->update()
+                        ->set(['secret_verified' => true])
+                        ->where(['id' => $user['id']])
+                        ->execute();
+                }
+
+                $this->request->session()->delete('temporarySession');
+                $this->request->session()->write('Auth.User', $user);
+
+                $url = $this->Auth->redirectUrl();
+
+                $this->redirect($url);
+            } else {
                 $message = __d('CakeDC/Users', 'Verification code is invalid. Try again');
                 $this->Flash->error($message, 'default', [], 'auth');
 
-                //prevent the user accessing the authorized area
-                //with unverified two-step, thus destroying the session
                 $this->request->session()->destroy();
 
                 $this->redirect(Configure::read('Auth.loginAction'));
-            } else {
-                //removing secret key from the session, once verified
-                $this->request->session()->delete('Auth.User.secret');
-                $url = $this->Auth->redirectUrl();
-
-                return $this->redirect($url);
             }
         }
     }
