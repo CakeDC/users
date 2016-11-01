@@ -117,7 +117,7 @@ $config = [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'verify',
-            'prefix' => null,
+            'prefix' => false,
         ],
     ],
     //default configuration used to auto-load the Auth Component, override to change the way Auth works

@@ -13,10 +13,14 @@ class AddSecretToUsers extends AbstractMigration
     public function change()
     {
         $table = $this->table('users');
+        /**
+         * Limiting secret field to 32 chars
+         * @see https://en.wikipedia.org/wiki/Google_Authenticator#Technical_description
+         */
         $table->addColumn('secret', 'string', [
             'after' => 'activation_date',
             'default' => null,
-            'limit' => 255,
+            'limit' => 32,
             'null' => true,
         ]);
         $table->addColumn('secret_verified', 'boolean', [

@@ -17,6 +17,7 @@ use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Model\Table\SocialAccountsTable;
 use Cake\Core\Configure;
+use Cake\Core\Exception\Exception;
 use Cake\Event\Event;
 use Cake\Network\Exception\NotFoundException;
 use League\OAuth1\Client\Server\Twitter;
@@ -206,7 +207,10 @@ trait LoginTrait
             $this->request->session()->write('temporarySession', $temporarySession);
         }
 
-        $secret = $temporarySession['secret'];
+        if (array_key_exists('secret', $temporarySession)) {
+            $secret = $temporarySession['secret'];
+        }
+
         $secretVerified = $temporarySession['secret_verified'];
 
         // showing QR-code until shared secret is verified
@@ -214,21 +218,32 @@ trait LoginTrait
             if (empty($secret)) {
                 $secret = $this->GoogleAuthenticator->createSecret();
 
-                $query = $this->getUsersTable()->query();
-                $query->update()
-                    ->set(['secret' => $secret])
-                    ->where(['id' => $temporarySession['id']])
-                    ->execute();
+                // catching sql exception in case of any sql inconsistencies
+                try {
+                    $query = $this->getUsersTable()->query();
+                    $query->update()
+                        ->set(['secret' => $secret])
+                        ->where(['id' => $temporarySession['id']]);
+                    $executed = $query->execute();
+                } catch (\Exception $e) {
+                    $this->request->session()->destroy();
+                    $message = __d('CakeDC/Users', $e->getMessage());
+                    $this->Flash->error($message, 'default', [], 'auth');
+
+                    return $this->redirect(Configure::read('Auth.loginAction'));
+                }
             }
 
             $this->set('secretDataUri', $this->GoogleAuthenticator->getQRCodeImageAsDataUri($temporarySession['email'], $secret));
         }
 
         if ($this->request->is('post')) {
-            $verificationCode = $this->request->data['code'];
+            $verificationCode = $this->request->data('code');
             $user = $this->request->session()->read('temporarySession');
 
-            $codeVerified = $this->GoogleAuthenticator->verifyCode($user['secret'], $verificationCode);
+            if (array_key_exists('secret', $user)) {
+                $codeVerified = $this->GoogleAuthenticator->verifyCode($user['secret'], $verificationCode);
+            }
 
             if ($codeVerified) {
                 unset($user['secret']);
@@ -242,17 +257,15 @@ trait LoginTrait
 
                 $this->request->session()->delete('temporarySession');
                 $this->request->session()->write('Auth.User', $user);
-
                 $url = $this->Auth->redirectUrl();
 
-                $this->redirect($url);
+                return $this->redirect($url);
             } else {
+                $this->request->session()->destroy();
                 $message = __d('CakeDC/Users', 'Verification code is invalid. Try again');
                 $this->Flash->error($message, 'default', [], 'auth');
 
-                $this->request->session()->destroy();
-
-                $this->redirect(Configure::read('Auth.loginAction'));
+                return $this->redirect(Configure::read('Auth.loginAction'));
             }
         }
     }

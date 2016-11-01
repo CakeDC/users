@@ -32,7 +32,6 @@ class UsersAuthComponent extends Component
     const EVENT_BEFORE_LOGOUT = 'Users.Component.UsersAuth.beforeLogout';
     const EVENT_AFTER_LOGOUT = 'Users.Component.UsersAuth.afterLogout';
 
-
     /**
      * Initialize method, setup Auth if not already done passing the $config provided and
      * setup the default table to Users.Users if not provided
