@@ -92,7 +92,6 @@ class UsersShell extends Shell
         ];
 
         $userEntity = $this->Users->newEntity($user);
-        $userEntity->is_superuser = true;
         $userEntity->role = 'user';
         $savedUser = $this->Users->save($userEntity);
         $this->out(__d('CakeDC/Users', 'User added:'));
