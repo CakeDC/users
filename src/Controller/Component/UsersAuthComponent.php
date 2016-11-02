@@ -52,7 +52,21 @@ class UsersAuthComponent extends Component
             $this->_loadRememberMe();
         }
 
+        if (Configure::read('Users.GoogleAuthenticator.login')) {
+            $this->_loadGoogleAuthenticator();
+        }
+
         $this->_attachPermissionChecker();
+    }
+
+    /**
+     * Load GoogleAuthenticator object
+     *
+     * @return void
+     */
+    protected function _loadGoogleAuthenticator()
+    {
+        $this->_registry->getController()->loadComponent('CakeDC/Users.GoogleAuthenticator');
     }
 
     /**
@@ -110,7 +124,8 @@ class UsersAuthComponent extends Component
             'requestResetPassword',
             'changePassword',
             'endpoint',
-            'authenticated'
+            'authenticated',
+            'verify'
         ]);
     }
 
