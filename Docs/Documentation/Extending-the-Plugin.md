@@ -42,7 +42,7 @@ class MyUser extends User
 config/bootstrap.php
 ```
 Configure::write('Users.config', ['users']);
-Plugin::load('Users', ['routes' => true, 'bootstrap' => true]);
+Plugin::load('CakeDC/Users', ['routes' => true, 'bootstrap' => true]);
 ```
 
 Then in your config/users.php
