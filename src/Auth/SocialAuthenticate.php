@@ -196,6 +196,7 @@ class SocialAuthenticate extends BaseAuthenticate
                 $e
             );
             $this->log($message);
+
             return false;
         }
     }
