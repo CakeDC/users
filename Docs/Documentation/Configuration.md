@@ -180,3 +180,26 @@ Check http://book.cakephp.org/3.0/en/core-libraries/internationalization-and-loc
 for more details about how the PO files should be managed in your application.
 
 We've included an updated POT file with all the `Users` domain keys for your customization.
+
+##Migrate Users Table to your Database
+
+You will need the Users table in your database, execute this command in your terminal.
+
+```
+bin/cake migrations migrate -p CakeDC/Users
+```
+
+##Generate SuperUSer
+
+When you have finish configuring the Users Plugin you will need one **SuperUser** for access tou your applicaction, for create it only open your terminal and execute this command:
+
+```
+bin/cake users addSuperuser
+```
+And you will see something like this:
+
+![addsuperuser](https://www.cakedc.com/img/cakedc-users-plugin-generate-superuser-shell.png)
+
+
+
+
