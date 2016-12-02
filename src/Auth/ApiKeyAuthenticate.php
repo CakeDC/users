@@ -38,6 +38,10 @@ class ApiKeyAuthenticate extends BaseAuthenticate
         'field' => 'api_token',
         //require SSL to pass the token. You should always require SSL to use tokens for Auth
         'require_ssl' => true,
+        //set a specific table for API auth, set as null to use Users.table
+        'table' => null,
+        //set a specific finder for API auth, set as null to use Auth.authenticate.all.finder
+        'finder' => null,
     ];
 
     /**
@@ -87,8 +91,8 @@ class ApiKeyAuthenticate extends BaseAuthenticate
         }
 
         $this->_config['fields']['username'] = $this->config('field');
-        $this->_config['userModel'] = Configure::read('Users.table');
-        $this->_config['finder'] = 'all';
+        $this->_config['userModel'] = $this->config('table') ?: Configure::read('Users.table');
+        $this->_config['finder'] = $this->config('finder') ?: Configure::read('Auth.authenticate.all.finder') ?: 'all';
         $result = $this->_query($apiKey)->first();
 
         if (empty($result)) {
