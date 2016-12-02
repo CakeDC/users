@@ -18,7 +18,6 @@ $Users = ${$tableAlias};
         <li><?= $this->Form->postLink(__d('CakeDC/Users', 'Delete User'), ['action' => 'delete', $Users->id], ['confirm' => __d('CakeDC/Users', 'Are you sure you want to delete # {0}?', $Users->id)]) ?> </li>
         <li><?= $this->Html->link(__d('CakeDC/Users', 'List Users'), ['action' => 'index']) ?> </li>
         <li><?= $this->Html->link(__d('CakeDC/Users', 'New User'), ['action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__d('CakeDC/Users', 'List Accounts'), ['controller' => 'Accounts', 'action' => 'index']) ?> </li>
     </ul>
 </div>
 <div class="users view large-10 medium-9 columns">
@@ -60,51 +59,26 @@ $Users = ${$tableAlias};
 </div>
 <div class="related row">
     <div class="column large-12">
-        <h4 class="subheader"><?= __d('CakeDC/Users', 'Related Accounts') ?></h4>
+        <h4 class="subheader"><?= __d('CakeDC/Users', 'Social Accounts') ?></h4>
         <?php if (!empty($Users->social_accounts)) : ?>
             <table cellpadding="0" cellspacing="0">
                 <tr>
-                    <th><?= __d('CakeDC/Users', 'Id') ?></th>
-                    <th><?= __d('CakeDC/Users', 'User Id') ?></th>
                     <th><?= __d('CakeDC/Users', 'Provider') ?></th>
-                    <th><?= __d('CakeDC/Users', 'Username') ?></th>
-                    <th><?= __d('CakeDC/Users', 'Reference') ?></th>
                     <th><?= __d('CakeDC/Users', 'Avatar') ?></th>
-                    <th><?= __d('CakeDC/Users', 'Token') ?></th>
-                    <th><?= __d('CakeDC/Users', 'Token Expires') ?></th>
                     <th><?= __d('CakeDC/Users', 'Active') ?></th>
-                    <th><?= __d('CakeDC/Users', 'Data') ?></th>
                     <th><?= __d('CakeDC/Users', 'Created') ?></th>
                     <th><?= __d('CakeDC/Users', 'Modified') ?></th>
-                    <th class="actions"><?= __d('CakeDC/Users', 'Actions') ?></th>
                 </tr>
                 <?php foreach ($Users->social_accounts as $socialAccount) : ?>
                     <tr>
-                        <td><?= h($socialAccount->id) ?></td>
-                        <td><?= h($socialAccount->user_id) ?></td>
                         <td><?= h($socialAccount->provider) ?></td>
-                        <td><?= h($socialAccount->username) ?></td>
-                        <td><?= h($socialAccount->reference) ?></td>
                         <td><?= h($socialAccount->avatar) ?></td>
-                        <td><?= h($socialAccount->token) ?></td>
-                        <td><?= h($socialAccount->token_expires) ?></td>
                         <td><?= h($socialAccount->active) ?></td>
-                        <td><?= h($socialAccount->data) ?></td>
                         <td><?= h($socialAccount->created) ?></td>
                         <td><?= h($socialAccount->modified) ?></td>
-
-                        <td class="actions">
-                            <?= $this->Html->link(__d('CakeDC/Users', 'View'), ['controller' => 'Accounts', 'action' => 'view', $socialAccount->id]) ?>
-
-                            <?= $this->Html->link(__d('CakeDC/Users', 'Edit'), ['controller' => 'Accounts', 'action' => 'edit', $socialAccount->id]) ?>
-
-                            <?= $this->Form->postLink(__d('CakeDC/Users', 'Delete'), ['controller' => 'Accounts', 'action' => 'delete', $socialAccount->id], ['confirm' => __d('CakeDC/Users', 'Are you sure you want to delete # {0}?', $accounts->id)]) ?>
-
-                        </td>
                     </tr>
-
-        <?php endforeach; ?>
+                <?php endforeach; ?>
             </table>
-            <?php endif; ?>
+        <?php endif; ?>
     </div>
 </div>
