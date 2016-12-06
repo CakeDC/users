@@ -11,6 +11,7 @@
 namespace CakeDC\Users\Console;
 
 use Cake\Database\Schema\Table;
+use Cake\Filesystem\File;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Text;
 use CakeDC\Users\Console\Traits\CommonQuestionsTrait;
@@ -32,6 +33,11 @@ class Installer
      */
     public static function configureUsers($rootDir, $io)
     {
+        $usersFilePath = $rootDir . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'users.php';
+        if ((new File($usersFilePath))->exists()) {
+            return;
+        }
+
         $usersConfig = [
             'Users.Registration.active' => false,
             'Users.Social.login' => false,
