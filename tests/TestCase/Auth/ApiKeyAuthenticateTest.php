@@ -13,6 +13,7 @@ namespace CakeDC\Users\Test\TestCase\Auth;
 
 use CakeDC\Users\Auth\ApiKeyAuthenticate;
 use Cake\Controller\ComponentRegistry;
+use Cake\Core\Configure;
 use Cake\Network\Request;
 use Cake\Network\Response;
 use Cake\TestSuite\TestCase;
@@ -62,9 +63,9 @@ class ApiKeyAuthenticateTest extends TestCase
      */
     public function testAuthenticateHappy()
     {
-        $request = new Request('/?api_key=yyy');
+        $request = new Request('/?api_key=xxx');
         $result = $this->apiKey->authenticate($request, new Response());
-        $this->assertEquals('user-1', $result['username']);
+        $this->assertEquals('user-2', $result['username']);
     }
 
     /**
@@ -83,6 +84,10 @@ class ApiKeyAuthenticateTest extends TestCase
         $this->assertFalse($result);
 
         $request = new Request('/?api_key=');
+        $result = $this->apiKey->authenticate($request, new Response());
+        $this->assertFalse($result);
+
+        $request = new Request('/?api_key=yyy');
         $result = $this->apiKey->authenticate($request, new Response());
         $this->assertFalse($result);
     }
@@ -140,10 +145,10 @@ class ApiKeyAuthenticateTest extends TestCase
         $request->expects($this->once())
             ->method('header')
             ->with('api_key')
-            ->will($this->returnValue('yyy'));
+            ->will($this->returnValue('xxx'));
         $this->apiKey->config('type', 'header');
         $result = $this->apiKey->authenticate($request, new Response());
-        $this->assertEquals('user-1', $result['username']);
+        $this->assertEquals('user-2', $result['username']);
     }
 
     /**
@@ -163,5 +168,46 @@ class ApiKeyAuthenticateTest extends TestCase
         $this->apiKey->config('type', 'header');
         $result = $this->apiKey->authenticate($request, new Response());
         $this->assertFalse($result);
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     * @expectedException \BadMethodCallException
+     * @expectedExceptionMessage Unknown finder method "undefinedInConfig"
+     */
+    public function testAuthenticateFinderConfig()
+    {
+        $this->apiKey->config('finder', 'undefinedInConfig');
+        $request = new Request('/?api_key=xxx');
+        $result = $this->apiKey->authenticate($request, new Response());
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     * @expectedException \BadMethodCallException
+     * @expectedExceptionMessage Unknown finder method "undefinedFinderInAuth"
+     */
+    public function testAuthenticateFinderAuthConfig()
+    {
+        Configure::write('Auth.authenticate.all.finder', 'undefinedFinderInAuth');
+        $request = new Request('/?api_key=xxx');
+        $result = $this->apiKey->authenticate($request, new Response());
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testAuthenticateDefaultAllFinder()
+    {
+        Configure::write('Auth.authenticate.all.finder', null);
+        $request = new Request('/?api_key=yyy');
+        $result = $this->apiKey->authenticate($request, new Response());
+        $this->assertEquals('user-1', $result['username']);
     }
 }
