@@ -13,7 +13,6 @@
     <h3><?= __d('CakeDC/Users', 'Actions') ?></h3>
     <ul class="side-nav">
         <li><?= $this->Html->link(__d('CakeDC/Users', 'List Users'), ['action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__d('CakeDC/Users', 'List Accounts'), ['controller' => 'Accounts', 'action' => 'index']) ?> </li>
     </ul>
 </div>
 <div class="users form large-10 medium-9 columns">
