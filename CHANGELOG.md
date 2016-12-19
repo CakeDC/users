@@ -3,6 +3,12 @@ Changelog
 
 Releases for CakePHP 3
 -------------
+* 4.0.0
+  * Add Google Authenticator
+  * Add improvements to SimpleRbac, like star to invert rules and `user.` prefix to match values from the user array
+  * Add `allowed` to manage the AuthLinkHelper when action is allowed
+  * Add option to configure the api table and finder in ApiKeyAuthenticate
+
 * 3.2.5
   * Fixed RegisterBehavior api, make getRegisterValidators public.
 

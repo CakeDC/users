@@ -34,6 +34,18 @@ composer require google/recaptcha:@stable
 NOTE: you'll need to configure the reCaptcha key and secret, check the [Configuration](Configuration.md)
 page for more details.
 
+If you want to use Google Authenticator features...
+
+```
+composer require robthree/twofactorauth:"^1.5.2"
+```
+
+NOTE: you'll need to enable `Users.GoogleAuthenticator.login`
+
+```
+Configure::write('Users.GoogleAuthenticator.login', true);
+```
+
 Creating Required Tables
 ------------------------
 If you want to use the Users tables to store your users and social accounts:
