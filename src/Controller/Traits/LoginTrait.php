@@ -17,6 +17,7 @@ use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Model\Table\SocialAccountsTable;
 use Cake\Core\Configure;
+use Cake\Core\Exception\Exception;
 use Cake\Event\Event;
 use Cake\Network\Exception\NotFoundException;
 use League\OAuth1\Client\Server\Twitter;
@@ -155,6 +156,7 @@ trait LoginTrait
         }
 
         $socialLogin = $this->_isSocialLogin();
+        $googleAuthenticatorLogin = $this->_isGoogleAuthenticator();
 
         if ($this->request->is('post')) {
             if (!$this->_checkReCaptcha()) {
@@ -164,8 +166,9 @@ trait LoginTrait
             }
             $user = $this->Auth->identify();
 
-            return $this->_afterIdentifyUser($user, $socialLogin);
+            return $this->_afterIdentifyUser($user, $socialLogin, $googleAuthenticatorLogin);
         }
+
         if (!$this->request->is('post') && !$socialLogin) {
             if ($this->Auth->user()) {
                 $msg = __d('CakeDC/Users', 'You are already logged in');
@@ -173,6 +176,96 @@ trait LoginTrait
                 $url = $this->Auth->redirectUrl();
 
                 return $this->redirect($url);
+            }
+        }
+    }
+
+    /**
+     * Verify for Google Authenticator
+     * If Google Authenticator's enabled we need to verify
+     * authenticated user. To avoid accidental access to
+     * other URL's we store auth'ed used into temporary session
+     * to perform code verification.
+     *
+     * @return void
+     */
+    public function verify()
+    {
+        if (!Configure::read('Users.GoogleAuthenticator.login')) {
+            $message = __d('CakeDC/Users', 'Please enable Google Authenticator first.');
+            $this->Flash->error($message, 'default', [], 'auth');
+
+            $this->redirect(Configure::read('Auth.loginAction'));
+        }
+
+        // storing user's session in the temporary one
+        // until the GA verification is checked
+        $temporarySession = $this->Auth->user();
+        $this->request->session()->delete('Auth.User');
+
+        if (!empty($temporarySession)) {
+            $this->request->session()->write('temporarySession', $temporarySession);
+        }
+
+        if (array_key_exists('secret', $temporarySession)) {
+            $secret = $temporarySession['secret'];
+        }
+
+        $secretVerified = $temporarySession['secret_verified'];
+
+        // showing QR-code until shared secret is verified
+        if (!$secretVerified) {
+            if (empty($secret)) {
+                $secret = $this->GoogleAuthenticator->createSecret();
+
+                // catching sql exception in case of any sql inconsistencies
+                try {
+                    $query = $this->getUsersTable()->query();
+                    $query->update()
+                        ->set(['secret' => $secret])
+                        ->where(['id' => $temporarySession['id']]);
+                    $executed = $query->execute();
+                } catch (\Exception $e) {
+                    $this->request->session()->destroy();
+                    $message = __d('CakeDC/Users', $e->getMessage());
+                    $this->Flash->error($message, 'default', [], 'auth');
+
+                    return $this->redirect(Configure::read('Auth.loginAction'));
+                }
+            }
+
+            $this->set('secretDataUri', $this->GoogleAuthenticator->getQRCodeImageAsDataUri($temporarySession['email'], $secret));
+        }
+
+        if ($this->request->is('post')) {
+            $verificationCode = $this->request->data('code');
+            $user = $this->request->session()->read('temporarySession');
+
+            if (array_key_exists('secret', $user)) {
+                $codeVerified = $this->GoogleAuthenticator->verifyCode($user['secret'], $verificationCode);
+            }
+
+            if ($codeVerified) {
+                unset($user['secret']);
+
+                if (!$user['secret_verified']) {
+                    $this->getUsersTable()->query()->update()
+                        ->set(['secret_verified' => true])
+                        ->where(['id' => $user['id']])
+                        ->execute();
+                }
+
+                $this->request->session()->delete('temporarySession');
+                $this->request->session()->write('Auth.User', $user);
+                $url = $this->Auth->redirectUrl();
+
+                return $this->redirect($url);
+            } else {
+                $this->request->session()->destroy();
+                $message = __d('CakeDC/Users', 'Verification code is invalid. Try again');
+                $this->Flash->error($message, 'default', [], 'auth');
+
+                return $this->redirect(Configure::read('Auth.loginAction'));
             }
         }
     }
@@ -200,15 +293,22 @@ trait LoginTrait
      * @param bool $socialLogin is social login
      * @return array
      */
-    protected function _afterIdentifyUser($user, $socialLogin = false)
+    protected function _afterIdentifyUser($user, $socialLogin = false, $googleAuthenticatorLogin = false)
     {
         if (!empty($user)) {
             $this->Auth->setUser($user);
+
+            if ($googleAuthenticatorLogin) {
+                $url = Configure::read('GoogleAuthenticator.verifyAction');
+
+                return $this->redirect($url);
+            }
 
             $event = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_LOGIN, ['user' => $user]);
             if (is_array($event->result)) {
                 return $this->redirect($event->result);
             }
+
             $url = $this->Auth->redirectUrl();
 
             return $this->redirect($url);
@@ -255,5 +355,14 @@ trait LoginTrait
     {
         return Configure::read('Users.Social.login') &&
                 $this->request->session()->check(Configure::read('Users.Key.Session.social'));
+    }
+
+    /**
+     * Check if we doing Google Authenticator Two Factor auth
+     * @return bool true if Google Authenticator is enabled
+     */
+    protected function _isGoogleAuthenticator()
+    {
+        return Configure::read('Users.GoogleAuthenticator.login');
     }
 }
