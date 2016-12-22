@@ -133,4 +133,54 @@ trait PasswordManagementTrait
             $this->Flash->error(__d('CakeDC/Users', 'Token could not be reset'));
         }
     }
+
+    /**
+     * resetGoogleAuthenticator
+     *
+     * Resets Google Authenticator token by setting secret_verified
+     * to false.
+     * Currently allowed to be done either by superuser or user himself.
+     *
+     * @param mixed $id of the user record.
+     * @return mixed.
+     */
+    public function resetGoogleAuthenticator($id = null)
+    {
+        $allowed = false;
+        $currentUser = !empty($this->Auth->user()) ? $this->Auth->user() : false;
+
+        if (!$currentUser) {
+            $message = __d('CakeDC/User', 'Please login to the system');
+            $this->Flash->error($message, 'auth');
+
+            return $this->redirect($this->Auth->config('loginAction'));
+        }
+
+        if (true == $currentUser['is_superuser'] || $id == $currentUser['id']) {
+            $allowed = true;
+        }
+
+        if (!$allowed) {
+            $message = __d('CakeDC/Users', 'You are not allowed to reset users Google Authenticator token');
+            $this->Flash->error($message, 'default');
+        }
+
+        if ($this->request->is('post') && $allowed) {
+            try {
+                $query = $this->getUsersTable()->query();
+                $query->update()
+                    ->set(['secret_verified' => false, 'secret' => null])
+                    ->where(['id' => $id]);
+                $executed = $query->execute();
+
+                $message = __d('CakeDC/Users', 'Google Authenticator token was successfully reset');
+                $this->Flash->success($message, 'default');
+            } catch (\Exception $e) {
+                $message = __d('CakeDC/Users', $e->getMessage());
+                $this->Flash->error($message, 'default');
+            }
+        }
+
+        return $this->redirect($this->request->referer());
+    }
 }

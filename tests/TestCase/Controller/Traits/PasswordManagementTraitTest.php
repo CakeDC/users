@@ -383,4 +383,69 @@ class PasswordManagementTraitTest extends BaseTraitTest
             [$defaultBehavior]
         ];
     }
+
+    public function testRequestGoogleAuthTokenResetWithoutSession()
+    {
+        $this->_mockRequestGet(true);
+        $this->_mockAuth();
+        $this->_mockFlash();
+
+        $this->Trait->Auth->expects($this->any())
+            ->method('user')
+            ->will($this->returnValue(null));
+
+        $this->Trait->Flash->expects($this->once())
+            ->method('error')
+            ->with('Please login to the system');
+        $this->Trait->resetGoogleAuthenticator();
+    }
+
+    /**
+     * @dataProvider ensureGoogleAuthenticatorResets
+     *
+     * @return void
+     */
+    public function testRequestGoogleAuthTokenResetWithValidUser($userId, $entityId, $method, $msg)
+    {
+        $this->_mockRequestPost();
+        $this->_mockFlash();
+
+        $user = $this->table->get($userId);
+
+        $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
+            ->setMethods(['user', 'config'])
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->Trait->Auth->expects($this->any())
+            ->method('user')
+            ->will($this->returnValue($user));
+
+        $this->Trait->Flash->expects($this->any())
+            ->method($method)
+            ->with($msg);
+
+        $this->Trait->resetGoogleAuthenticator($entityId);
+    }
+
+    public function ensureGoogleAuthenticatorResets()
+    {
+        $error = 'error';
+        $success = 'success';
+        $errorMsg = 'You are not allowed to reset users Google Authenticator token';
+        $successMsg = 'Google Authenticator token was successfully reset';
+
+        return [
+            //is_superuser = true.
+            ['00000000-0000-0000-0000-000000000003', null, $success, $successMsg],
+            //is_superuser = true.
+            ['00000000-0000-0000-0000-000000000001', null, $success, $successMsg],
+            //is_superuser = false, and not his profile.
+            ['00000000-0000-0000-0000-000000000004', '00000000-0000-0000-0000-000000000001', $error, $errorMsg],
+            //is_superuser = false, editing own record.
+            ['00000000-0000-0000-0000-000000000004', '00000000-0000-0000-0000-000000000004', $success, $successMsg],
+            //is_superuser = false, and no entity-id given.
+            ['00000000-0000-0000-0000-000000000004', null, $error, $errorMsg],
+        ];
+    }
 }
