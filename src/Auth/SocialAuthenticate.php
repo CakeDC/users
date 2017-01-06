@@ -368,7 +368,7 @@ class SocialAuthenticate extends BaseAuthenticate
     {
         $data = $request->session()->read(Configure::read('Users.Key.Session.social'));
         $requestDataEmail = $request->data('email');
-        if (!empty($data) && (!empty($data['email']) || !empty($requestDataEmail))) {
+        if (!empty($data) && empty($data['uid']) && (!empty($data['email']) || !empty($requestDataEmail))) {
             if (!empty($requestDataEmail)) {
                 $data['email'] = $requestDataEmail;
             }
