@@ -146,7 +146,6 @@ trait PasswordManagementTrait
      */
     public function resetGoogleAuthenticator($id = null)
     {
-        $allowed = false;
         $currentUser = !empty($this->Auth->user()) ? $this->Auth->user() : false;
 
         if (!$currentUser) {
@@ -156,16 +155,7 @@ trait PasswordManagementTrait
             return $this->redirect($this->Auth->config('loginAction'));
         }
 
-        if (true == $currentUser['is_superuser'] || $id == $currentUser['id']) {
-            $allowed = true;
-        }
-
-        if (!$allowed) {
-            $message = __d('CakeDC/Users', 'You are not allowed to reset users Google Authenticator token');
-            $this->Flash->error($message, 'default');
-        }
-
-        if ($this->request->is('post') && $allowed) {
+        if ($this->request->is('post')) {
             try {
                 $query = $this->getUsersTable()->query();
                 $query->update()

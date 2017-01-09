@@ -63,7 +63,7 @@ $Users = ${$tableAlias};
             __d('CakeDC/Users', 'Reset Google Authenticator Token'), [
                     'plugin' => 'CakeDC/Users',
                     'controller' => 'Users',
-                    'action' => '/resetGoogleAuthenticator', $Users->id
+                    'action' => 'resetGoogleAuthenticator', $Users->id
                 ], [
                 'class' => 'btn btn-danger',
                 'confirm' => __d('CakeDC/Users', 'Are you sure you want to reset token for user "{0}"?', $Users->username)
