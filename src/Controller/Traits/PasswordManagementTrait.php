@@ -133,4 +133,34 @@ trait PasswordManagementTrait
             $this->Flash->error(__d('CakeDC/Users', 'Token could not be reset'));
         }
     }
+
+    /**
+     * resetGoogleAuthenticator
+     *
+     * Resets Google Authenticator token by setting secret_verified
+     * to false.
+     *
+     * @param mixed $id of the user record.
+     * @return mixed.
+     */
+    public function resetGoogleAuthenticator($id = null)
+    {
+        if ($this->request->is('post')) {
+            try {
+                $query = $this->getUsersTable()->query();
+                $query->update()
+                    ->set(['secret_verified' => false, 'secret' => null])
+                    ->where(['id' => $id]);
+                $executed = $query->execute();
+
+                $message = __d('CakeDC/Users', 'Google Authenticator token was successfully reset');
+                $this->Flash->success($message, 'default');
+            } catch (\Exception $e) {
+                $message = __d('CakeDC/Users', $e->getMessage());
+                $this->Flash->error($message, 'default');
+            }
+        }
+
+        return $this->redirect($this->request->referer());
+    }
 }
