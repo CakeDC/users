@@ -70,9 +70,8 @@ return [
             'action' => 'resetGoogleAuthenticator',
             'allowed' => function (array $user, $role, \Cake\Network\Request $request) {
                 $userId = \Cake\Utility\Hash::get($request->params, 'pass.0');
-                $userRecord = \Cake\ORM\TableRegistry::get('Users')->get($userId);
-                if (!empty($userId) && !empty($userRecord)) {
-                    return $userRecord->id === $user['id'];
+                if (!empty($userId) && !empty($user)) {
+                    return $userId === $user['id'];
                 }
 
                 return false;
