@@ -238,11 +238,13 @@ trait LoginTrait
         }
 
         if ($this->request->is('post')) {
+            $codeVerified = false;
             $verificationCode = $this->request->data('code');
             $user = $this->request->session()->read('temporarySession');
+            $entity = $this->getUsersTable()->get($user['id']);
 
-            if (array_key_exists('secret', $user)) {
-                $codeVerified = $this->GoogleAuthenticator->verifyCode($user['secret'], $verificationCode);
+            if (!empty($entity['secret'])) {
+                $codeVerified = $this->GoogleAuthenticator->verifyCode($entity['secret'], $verificationCode);
             }
 
             if ($codeVerified) {
