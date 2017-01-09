@@ -384,22 +384,6 @@ class PasswordManagementTraitTest extends BaseTraitTest
         ];
     }
 
-    public function testRequestGoogleAuthTokenResetWithoutSession()
-    {
-        $this->_mockRequestGet(true);
-        $this->_mockAuth();
-        $this->_mockFlash();
-
-        $this->Trait->Auth->expects($this->any())
-            ->method('user')
-            ->will($this->returnValue(null));
-
-        $this->Trait->Flash->expects($this->once())
-            ->method('error')
-            ->with('Please login to the system');
-        $this->Trait->resetGoogleAuthenticator();
-    }
-
     /**
      * @dataProvider ensureGoogleAuthenticatorResets
      *

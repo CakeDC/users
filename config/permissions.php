@@ -64,6 +64,21 @@ return [
             'action' => ['register', 'edit', 'view'],
         ],
         [
+            'role' => '*',
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+            'action' => 'resetGoogleAuthenticator',
+            'allowed' => function (array $user, $role, \Cake\Network\Request $request) {
+                $userId = \Cake\Utility\Hash::get($request->params, 'pass.0');
+                $userRecord = \Cake\ORM\TableRegistry::get('Users')->get($userId);
+                if (!empty($userId) && !empty($userRecord)) {
+                    return $userRecord->id === $user['id'];
+                }
+
+                return false;
+            }
+        ],
+        [
             'role' => 'user',
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
