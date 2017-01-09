@@ -139,22 +139,12 @@ trait PasswordManagementTrait
      *
      * Resets Google Authenticator token by setting secret_verified
      * to false.
-     * Currently allowed to be done either by superuser or user himself.
      *
      * @param mixed $id of the user record.
      * @return mixed.
      */
     public function resetGoogleAuthenticator($id = null)
     {
-        $currentUser = !empty($this->Auth->user()) ? $this->Auth->user() : false;
-
-        if (!$currentUser) {
-            $message = __d('CakeDC/User', 'Please login to the system');
-            $this->Flash->error($message, 'auth');
-
-            return $this->redirect($this->Auth->config('loginAction'));
-        }
-
         if ($this->request->is('post')) {
             try {
                 $query = $this->getUsersTable()->query();
