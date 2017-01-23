@@ -4,6 +4,7 @@ namespace CakeDC\Users\Test\TestCase\View\Helper;
 use CakeDC\Users\View\Helper\AuthLinkHelper;
 use CakeDC\Users\View\Helper\UserHelper;
 use Cake\Event\Event;
+use Cake\Event\EventManager;
 use Cake\TestSuite\TestCase;
 use Cake\View\View;
 
@@ -66,7 +67,7 @@ class AuthLinkHelperTest extends TestCase
         $eventManagerMock = $this->getMockBuilder('Cake\Event\EventManager')
             ->setMethods(['dispatch'])
             ->getMock();
-        $view->eventManager($eventManagerMock);
+        EventManager::instance($eventManagerMock);
         $this->AuthLink = new AuthLinkHelper($view);
         $result = new Event('dispatch-result');
         $result->result = true;
@@ -89,7 +90,7 @@ class AuthLinkHelperTest extends TestCase
         $eventManagerMock = $this->getMockBuilder('Cake\Event\EventManager')
             ->setMethods(['dispatch'])
             ->getMock();
-        $view->eventManager($eventManagerMock);
+        EventManager::instance($eventManagerMock);
         $this->AuthLink = new AuthLinkHelper($view);
         $result = new Event('dispatch-result');
         $result->result = true;
@@ -131,7 +132,7 @@ class AuthLinkHelperTest extends TestCase
         $eventManagerMock = $this->getMockBuilder('Cake\Event\EventManager')
             ->setMethods(['dispatch'])
             ->getMock();
-        $view->eventManager($eventManagerMock);
+        EventManager::instance($eventManagerMock);
         $this->AuthLink = new AuthLinkHelper($view);
         $result = new Event('dispatch-result');
         $result->result = true;

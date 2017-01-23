@@ -15,6 +15,7 @@ use CakeDC\Users\Exception\BadConfigurationException;
 use Cake\Controller\Component;
 use Cake\Core\Configure;
 use Cake\Event\Event;
+use Cake\Event\EventManager;
 use Cake\Network\Request;
 use Cake\Routing\Exception\MissingRouteException;
 use Cake\Routing\Router;
@@ -98,7 +99,7 @@ class UsersAuthComponent extends Component
      */
     protected function _attachPermissionChecker()
     {
-        $this->_registry->getController()->eventManager()->on(self::EVENT_IS_AUTHORIZED, [], [$this, 'isUrlAuthorized']);
+        EventManager::instance()->on(self::EVENT_IS_AUTHORIZED, [], [$this, 'isUrlAuthorized']);
     }
 
     /**
