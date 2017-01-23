@@ -11,11 +11,11 @@
 
 namespace CakeDC\Users\Controller\Component;
 
-use Cake\Event\EventManager;
 use CakeDC\Users\Exception\BadConfigurationException;
 use Cake\Controller\Component;
 use Cake\Core\Configure;
 use Cake\Event\Event;
+use Cake\Event\EventManager;
 use Cake\Network\Request;
 use Cake\Routing\Exception\MissingRouteException;
 use Cake\Routing\Router;

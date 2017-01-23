@@ -1,10 +1,10 @@
 <?php
 namespace CakeDC\Users\Test\TestCase\View\Helper;
 
-use Cake\Event\EventManager;
 use CakeDC\Users\View\Helper\AuthLinkHelper;
 use CakeDC\Users\View\Helper\UserHelper;
 use Cake\Event\Event;
+use Cake\Event\EventManager;
 use Cake\TestSuite\TestCase;
 use Cake\View\View;
 

@@ -1,9 +1,9 @@
 <?php
 namespace CakeDC\Users\View\Helper;
 
-use Cake\Event\EventManager;
 use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use Cake\Event\Event;
+use Cake\Event\EventManager;
 use Cake\Utility\Hash;
 use Cake\View\Helper;
 use Cake\View\Helper\HtmlHelper;
