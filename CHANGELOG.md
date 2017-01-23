@@ -4,7 +4,8 @@ Changelog
 Releases for CakePHP 3
 -------------
 * 4.1.2
-  * Fixed RememberMe redirect
+  * Fix RememberMe redirect
+  * Fix AuthLink rendering inside Cells
   
 * 4.1.1
   * Add missing password field in add user
