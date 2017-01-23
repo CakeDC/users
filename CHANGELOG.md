@@ -3,6 +3,12 @@ Changelog
 
 Releases for CakePHP 3
 -------------
+* 4.1.2
+  * Fixed RememberMe redirect
+  
+* 4.1.1
+  * Add missing password field in add user
+
 * 4.1.0
   * Add reset action for Google Authenticator
 

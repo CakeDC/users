@@ -483,7 +483,7 @@ msgstr "Redefina sua senha aqui"
 #: Template/Email/html/reset_password.ctp:27
 #: Template/Email/html/social_account_validation.ctp:32
 msgid ""
-"If the link is not correcly displayed, please copy the following address in "
+"If the link is not correctly displayed, please copy the following address in "
 "your web browser {0}"
 msgstr ""
 "Se o link não estiver sendo exibido corretamente, por favor, copie o "

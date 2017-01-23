@@ -44,7 +44,7 @@ class SocialBehavior extends Behavior
     {
         $reference = Hash::get($data, 'id');
         $existingAccount = $this->_table->SocialAccounts->find()
-                ->where(['SocialAccounts.reference' => $reference, 'SocialAccounts.provider' => $data['provider']])
+                ->where(['SocialAccounts.reference' => $reference, 'SocialAccounts.provider' => Hash::get($data, 'provider')])
                 ->contain(['Users'])
                 ->first();
         if (empty($existingAccount->user)) {
