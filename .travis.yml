@@ -39,9 +39,9 @@ before_script:
   - sh -c "if [ '$COVERALLS' = '1' ]; then mkdir -p build/logs; fi"
 
 script:
-  - sh -c "if [ '$DEFAULT' = '1' ]; then phpunit --stderr; fi"
+  - sh -c "if [ '$DEFAULT' = '1' ]; then ./vendor/bin/phpunit --stderr; fi"
   - sh -c "if [ '$PHPCS' = '1' ]; then ./vendor/bin/phpcs -p -n --extensions=php --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests; fi"
-  - sh -c "if [ '$COVERALLS' = '1' ]; then phpunit --stderr --coverage-clover build/logs/clover.xml; fi"
+  - sh -c "if [ '$COVERALLS' = '1' ]; then ./vendor/bin/phpunit --stderr --coverage-clover build/logs/clover.xml; fi"
   - sh -c "if [ '$COVERALLS' = '1' ]; then php vendor/bin/coveralls -c .coveralls.yml -v; fi"
 
 notifications:
