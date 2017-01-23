@@ -1,6 +1,7 @@
 <?php
 namespace CakeDC\Users\View\Helper;
 
+use Cake\Event\EventManager;
 use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use Cake\Event\Event;
 use Cake\Utility\Hash;
@@ -48,7 +49,7 @@ class AuthLinkHelper extends HtmlHelper
     public function isAuthorized($url = null)
     {
         $event = new Event(UsersAuthComponent::EVENT_IS_AUTHORIZED, $this, ['url' => $url]);
-        $result = $this->_View->eventManager()->dispatch($event);
+        $result = EventManager::instance()->dispatch($event);
 
         return $result->result;
     }

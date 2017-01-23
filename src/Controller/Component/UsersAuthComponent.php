@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Controller\Component;
 
+use Cake\Event\EventManager;
 use CakeDC\Users\Exception\BadConfigurationException;
 use Cake\Controller\Component;
 use Cake\Core\Configure;
@@ -98,7 +99,7 @@ class UsersAuthComponent extends Component
      */
     protected function _attachPermissionChecker()
     {
-        $this->_registry->getController()->eventManager()->on(self::EVENT_IS_AUTHORIZED, [], [$this, 'isUrlAuthorized']);
+        EventManager::instance()->on(self::EVENT_IS_AUTHORIZED, [], [$this, 'isUrlAuthorized']);
     }
 
     /**
