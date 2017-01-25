@@ -106,7 +106,13 @@ class RememberMeComponent extends Component
         if (empty($user)) {
             return;
         }
+
         $user['user_agent'] = $this->request->header('User-Agent');
+
+        if (!(bool)$event->subject()->request->data(Configure::read('Users.Key.Data.rememberMe'))) {
+            return;
+        }
+
         $this->Cookie->write($this->_cookieName, $user);
     }
 
