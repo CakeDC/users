@@ -34,6 +34,8 @@ $Users = ${$tableAlias};
             <p><?= h($Users->first_name) ?></p>
             <h6 class="subheader"><?= __d('CakeDC/Users', 'Last Name') ?></h6>
             <p><?= h($Users->last_name) ?></p>
+            <h6 class="subheader"><?= __d('CakeDC/Users', 'Role') ?></h6>
+            <p><?= h($Users->role) ?></p>
             <h6 class="subheader"><?= __d('CakeDC/Users', 'Token') ?></h6>
             <p><?= h($Users->token) ?></p>
             <h6 class="subheader"><?= __d('CakeDC/Users', 'Api Token') ?></h6>

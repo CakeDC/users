@@ -64,7 +64,8 @@ class UsersShell extends Shell
             ->addOptions([
                 'username' => ['short' => 'u', 'help' => 'The username for the new user'],
                 'password' => ['short' => 'p', 'help' => 'The password for the new user'],
-                'email' => ['short' => 'e', 'help' => 'The email for the new user']
+                'email' => ['short' => 'e', 'help' => 'The email for the new user'],
+                'role' => ['short' => 'r', 'help' => 'The role for the new user']
             ]);
 
         return $parser;
@@ -84,20 +85,22 @@ class UsersShell extends Shell
         $password = (empty($this->params['password']) ?
             $this->_generateRandomPassword() : $this->params['password']);
         $email = (empty($this->params['email']) ? $username . '@example.com' : $this->params['email']);
+        $role = (empty($this->params['role']) ? 'user' : $this->params['role']);
         $user = [
             'username' => $username,
             'email' => $email,
             'password' => $password,
-            'active' => 1,
+            'active' => 1
         ];
 
         $userEntity = $this->Users->newEntity($user);
-        $userEntity->role = 'user';
+        $userEntity->role = $role;
         $savedUser = $this->Users->save($userEntity);
         $this->out(__d('CakeDC/Users', 'User added:'));
         $this->out(__d('CakeDC/Users', 'Id: {0}', $savedUser->id));
         $this->out(__d('CakeDC/Users', 'Username: {0}', $username));
         $this->out(__d('CakeDC/Users', 'Email: {0}', $savedUser->email));
+        $this->out(__d('CakeDC/Users', 'Role: {0}', $savedUser->role));
         $this->out(__d('CakeDC/Users', 'Password: {0}', $password));
     }
 
@@ -126,6 +129,7 @@ class UsersShell extends Shell
             $this->out(__d('CakeDC/Users', 'Id: {0}', $savedUser->id));
             $this->out(__d('CakeDC/Users', 'Username: {0}', $username));
             $this->out(__d('CakeDC/Users', 'Email: {0}', $savedUser->email));
+            $this->out(__d('CakeDC/Users', 'Role: {0}', $savedUser->role));
             $this->out(__d('CakeDC/Users', 'Password: {0}', $password));
         } else {
             $this->out(__d('CakeDC/Users', 'Superuser could not be added:'));

@@ -82,7 +82,8 @@ class UsersShellTest extends TestCase
             'email' => 'yeli.parra@gmail.com',
             'active' => 1,
         ];
-
+        $role = 'tester';
+        
         $this->Shell->expects($this->never())
             ->method('_generateRandomUsername');
 
@@ -95,6 +96,7 @@ class UsersShellTest extends TestCase
             ->will($this->returnValue($user['username']));
 
         $entityUser = $this->Users->newEntity($user);
+        $entityUser->role = $role;
 
         $this->Shell->Users->expects($this->once())
             ->method('newEntity')
@@ -109,7 +111,7 @@ class UsersShellTest extends TestCase
             ->with($entityUser)
             ->will($this->returnValue($userSaved));
 
-        $this->Shell->runCommand(['addUser', '--username=' . $user['username'], '--password=' . $user['password'], '--email=' . $user['email']]);
+        $this->Shell->runCommand(['addUser', '--username=' . $user['username'], '--password=' . $user['password'], '--email=' . $user['email'], '--role=' . $role]);
     }
 
     /**
@@ -141,6 +143,7 @@ class UsersShellTest extends TestCase
             ->will($this->returnValue($user['username']));
 
         $entityUser = $this->Users->newEntity($user);
+        $entityUser->role = 'user';
 
         $this->Shell->Users->expects($this->once())
             ->method('newEntity')
