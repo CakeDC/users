@@ -25,7 +25,6 @@
             echo $this->Form->input('password', ['label' => __d('CakeDC/Users', 'Password')]);
             echo $this->Form->input('first_name', ['label' => __d('CakeDC/Users', 'First name')]);
             echo $this->Form->input('last_name', ['label' => __d('CakeDC/Users', 'Last name')]);
-            echo $this->Form->input('role', ['label' => __d('CakeDC/Users', 'Role')]);
             echo $this->Form->input('active', [
                 'type' => 'checkbox',
                 'label' => __d('CakeDC/Users', 'Active')

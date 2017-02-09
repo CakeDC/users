@@ -36,7 +36,6 @@ $Users = ${$tableAlias};
             echo $this->Form->input('email', ['label' => __d('CakeDC/Users', 'Email')]);
             echo $this->Form->input('first_name', ['label' => __d('CakeDC/Users', 'First name')]);
             echo $this->Form->input('last_name', ['label' => __d('CakeDC/Users', 'Last name')]);
-            echo $this->Form->input('role', ['label' => __d('CakeDC/Users', 'Role')]);
             echo $this->Form->input('token', ['label' => __d('CakeDC/Users', 'Token')]);
             echo $this->Form->input('token_expires', [
                 'label' => __d('CakeDC/Users', 'Token expires')
