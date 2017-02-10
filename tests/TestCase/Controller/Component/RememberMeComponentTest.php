@@ -150,12 +150,9 @@ class RememberMeComponentTest extends TestCase
         $this->rememberMeComponent->Auth->expects($this->once())
             ->method('setUser')
             ->with($user);
-        $this->rememberMeComponent->Auth->expects($this->once())
-            ->method('redirectUrl')
-            ->will($this->returnValue('/login'));
         $this->controller->expects($this->once())
                 ->method('redirect')
-                ->with('/login');
+                ->with('/controller_posts/index');
         $this->rememberMeComponent->beforeFilter($event);
     }
 
