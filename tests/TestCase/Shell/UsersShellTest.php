@@ -83,7 +83,7 @@ class UsersShellTest extends TestCase
             'active' => 1,
         ];
         $role = 'tester';
-        
+
         $this->Shell->expects($this->never())
             ->method('_generateRandomUsername');
 
