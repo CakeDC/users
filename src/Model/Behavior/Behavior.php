@@ -25,7 +25,7 @@ class Behavior extends BaseBehavior
      *
      * @param EntityInterface $user User to be updated.
      * @param bool $validateEmail email user to validate.
-     * @param type $tokenExpiration token to be updated.
+     * @param int $tokenExpiration seconds to expire from now
      * @return EntityInterface
      */
     protected function _updateActive(EntityInterface $user, $validateEmail, $tokenExpiration)

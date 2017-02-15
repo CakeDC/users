@@ -1,9 +1,9 @@
 language: php
 
 php:
-  - 5.4
-  - 5.5
   - 5.6
+  - 7.0
+  - 7.1
 
 sudo: false
 
@@ -20,10 +20,10 @@ matrix:
   fast_finish: true
 
   include:
-    - php: 5.5
+    - php: 5.6
       env: PHPCS=1 DEFAULT=0
 
-    - php: 5.5
+    - php: 5.6
       env: COVERALLS=1 DEFAULT=0 DB=mysql db_dsn='mysql://travis@0.0.0.0/cakephp_test'
 
 before_script:
@@ -39,9 +39,9 @@ before_script:
   - sh -c "if [ '$COVERALLS' = '1' ]; then mkdir -p build/logs; fi"
 
 script:
-  - sh -c "if [ '$DEFAULT' = '1' ]; then phpunit --stderr; fi"
+  - sh -c "if [ '$DEFAULT' = '1' ]; then ./vendor/bin/phpunit --stderr; fi"
   - sh -c "if [ '$PHPCS' = '1' ]; then ./vendor/bin/phpcs -p -n --extensions=php --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests; fi"
-  - sh -c "if [ '$COVERALLS' = '1' ]; then phpunit --stderr --coverage-clover build/logs/clover.xml; fi"
+  - sh -c "if [ '$COVERALLS' = '1' ]; then ./vendor/bin/phpunit --stderr --coverage-clover build/logs/clover.xml; fi"
   - sh -c "if [ '$COVERALLS' = '1' ]; then php vendor/bin/coveralls -c .coveralls.yml -v; fi"
 
 notifications:

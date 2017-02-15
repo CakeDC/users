@@ -33,6 +33,20 @@ $config = [
             'active' => true,
             //determines if the reCaptcha is enabled for registration
             'reCaptcha' => true,
+            //allow a logged in user to access the registration form
+            'allowLoggedIn' => false,
+            //ensure user is active (confirmed email) to reset his password
+            'ensureActive' => false
+        ],
+        'reCaptcha' => [
+            //reCaptcha key goes here
+            'key' => null,
+            //reCaptcha secret
+            'secret' => null,
+            //use reCaptcha in registration
+            'registration' => false,
+            //use reCaptcha in login, valid values are false, true
+            'login' => false,
         ],
         'Tos' => [
             //determines if the user should include tos accepted
@@ -41,6 +55,23 @@ $config = [
         'Social' => [
             //enable social login
             'login' => false,
+        ],
+        'GoogleAuthenticator' => [
+            //enable Google Authenticator
+            'login' => false,
+            'issuer' => null,
+            // The number of digits the resulting codes will be
+            'digits' => 6,
+            // The number of seconds a code will be valid
+            'period' => 30,
+            // The algorithm used
+            'algorithm' => 'sha1',
+            // QR-code provider (more on this later)
+            'qrcodeprovider' => null,
+            // Random Number Generator provider (more on this later)
+            'rngprovider' => null,
+            // Key used for encrypting the user credentials, leave this false to use Security.salt
+            'encryptionKey' => false
         ],
         'Profile' => [
             //Allow view other users profiles
@@ -81,7 +112,15 @@ $config = [
             ]
         ],
     ],
-//default configuration used to auto-load the Auth Component, override to change the way Auth works
+    'GoogleAuthenticator' => [
+        'verifyAction' => [
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+            'action' => 'verify',
+            'prefix' => false,
+        ],
+    ],
+    //default configuration used to auto-load the Auth Component, override to change the way Auth works
     'Auth' => [
         'loginAction' => [
             'plugin' => 'CakeDC/Users',
@@ -91,7 +130,7 @@ $config = [
         ],
         'authenticate' => [
             'all' => [
-                'scope' => ['active' => 1]
+                'finder' => 'auth',
             ],
             'CakeDC/Users.ApiKey',
             'CakeDC/Users.RememberMe',
@@ -103,32 +142,37 @@ $config = [
         ],
     ],
     'OAuth' => [
-        'path' => ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'socialLogin', 'prefix' => false],
+        'path' => ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'socialLogin', 'prefix' => null],
         'providers' => [
             'facebook' => [
                 'className' => 'League\OAuth2\Client\Provider\Facebook',
                 'options' => [
                     'graphApiVersion' => 'v2.5',
-                    'redirectUri' =>  Router::url('/auth/facebook', true)
+                    'redirectUri' => Router::fullBaseUrl() . '/auth/facebook',
+                ]
+            ],
+            'twitter' => [
+                'options' => [
+                    'redirectUri' => Router::fullBaseUrl() . '/auth/twitter',
                 ]
             ],
             'linkedIn' => [
                 'className' => 'League\OAuth2\Client\Provider\LinkedIn',
                 'options' => [
-                    'redirectUri' => Router::url('/auth/linkedIn', true)
+                    'redirectUri' => Router::fullBaseUrl() . '/auth/linkedIn',
                 ]
             ],
             'instagram' => [
                 'className' => 'League\OAuth2\Client\Provider\Instagram',
                 'options' => [
-                    'redirectUri' => Router::url('/auth/instagram', true)
+                    'redirectUri' => Router::fullBaseUrl() . '/auth/instagram',
                 ]
             ],
             'google' => [
                 'className' => 'League\OAuth2\Client\Provider\Google',
                 'options' => [
                     'userFields' => ['url', 'aboutMe'],
-                    'redirectUri' => Router::url('/auth/google', true)
+                    'redirectUri' => Router::fullBaseUrl() . '/auth/google',
                 ]
             ],
         ],

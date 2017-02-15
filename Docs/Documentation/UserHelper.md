@@ -25,9 +25,7 @@ You can use the helper included with the plugin to create Facebook/Twitter butto
 
 In templates
 ```php
-$this->User->facebookLogin();
-
-$this->User->twitterLogin();
+echo $this->User->socialLogin($provider); //provider is 'facebook', 'twitter', etc
 ```
 
 We recommend the use of [Bootstrap Social](http://lipis.github.io/bootstrap-social/) in order to automatically apply styles to buttons. Anyway you can always add your own style to the buttons.
@@ -59,12 +57,10 @@ It displays a welcome message for the user including the name and a link to the 
 $this->User->welcome();
 ```
 
-reCAPTCHA
+reCaptcha
 -----------------
 
-If you have configured reCAPTCHA for registration and have the proper key/secret configured then you will see the reCAPTCHA in registration page automatically.
-
-You could also use it in another templates with the following methods:
+Handles the reCaptcha input display:
 
 ```php
 $this->User->addReCaptchaScript();
@@ -72,4 +68,4 @@ $this->User->addReCaptchaScript();
 $this->User->addReCaptcha();
 ```
 
-Note that the script is added automatically if the feature is enabled in config.
+Note reCaptcha script is added to script block when `addReCaptcha` method is called.

@@ -16,42 +16,35 @@ use Cake\Core\Configure;
     <?= $this->Flash->render('auth') ?>
     <?= $this->Form->create() ?>
     <fieldset>
-        <legend><?= __d('Users', 'Please enter your username and password') ?></legend>
+        <legend><?= __d('CakeDC/Users', 'Please enter your username and password') ?></legend>
         <?= $this->Form->input('username', ['required' => true]) ?>
         <?= $this->Form->input('password', ['required' => true]) ?>
         <?php
-        if (Configure::check('Users.RememberMe.active')) {
+        if (Configure::read('Users.reCaptcha.login')) {
+            echo $this->User->addReCaptcha();
+        }
+        if (Configure::read('Users.RememberMe.active')) {
             echo $this->Form->input(Configure::read('Users.Key.Data.rememberMe'), [
                 'type' => 'checkbox',
-                'label' => __d('Users', 'Remember me'),
+                'label' => __d('CakeDC/Users', 'Remember me'),
                 'checked' => 'checked'
             ]);
         }
         ?>
-        <p>
             <?php
             $registrationActive = Configure::read('Users.Registration.active');
             if ($registrationActive) {
-                echo $this->Html->link(__d('users', 'Register'), ['action' => 'register']);
+                echo $this->Html->link(__d('CakeDC/Users', 'Register'), ['action' => 'register']);
             }
             if (Configure::read('Users.Email.required')) {
                 if ($registrationActive) {
                     echo ' | ';
                 }
-                echo $this->Html->link(__d('users', 'Reset Password'), ['action' => 'requestResetPassword']);
+                echo $this->Html->link(__d('CakeDC/Users', 'Reset Password'), ['action' => 'requestResetPassword']);
             }
             ?>
-        </p>
     </fieldset>
-    <?php if (Configure::read('Users.Social.login')) : ?>
-        <?php $providers = Configure::read('OAuth.providers'); ?>
-        <?php foreach ($providers as $provider => $options) : ?>
-            <?php if (!empty($options['options']['redirectUri'])) : ?>
-                <?= $this->User->socialLogin($provider); ?>
-            <?php endif; ?>
-        <?php endforeach; ?>
-    <?php
-    endif; ?>
-    <?= $this->Form->button(__d('Users', 'Login')); ?>
+    <?= implode(' ', $this->User->socialLoginList()); ?>
+    <?= $this->Form->button(__d('CakeDC/Users', 'Login')); ?>
     <?= $this->Form->end() ?>
 </div>

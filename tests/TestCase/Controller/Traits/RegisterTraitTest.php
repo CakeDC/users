@@ -63,8 +63,40 @@ class RegisterTraitTest extends BaseTraitTest
      *
      * @return void
      */
-    public function testRegisterHappy()
+    public function testRegister()
     {
+        $this->assertEquals(0, $this->table->find()->where(['username' => 'testRegistration'])->count());
+        $this->_mockRequestPost();
+        $this->_mockAuth();
+        $this->_mockFlash();
+        $this->_mockDispatchEvent();
+        $this->Trait->Flash->expects($this->once())
+                ->method('success')
+                ->with('Please validate your account before log in');
+        $this->Trait->expects($this->once())
+                ->method('redirect')
+                ->with(['action' => 'login']);
+        $this->Trait->request->data = [
+            'username' => 'testRegistration',
+            'password' => 'password',
+            'email' => 'test-registration@example.com',
+            'password_confirm' => 'password',
+            'tos' => 1
+        ];
+
+        $this->Trait->register();
+
+        $this->assertEquals(1, $this->table->find()->where(['username' => 'testRegistration'])->count());
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testRegisterReCaptcha()
+    {
+        Configure::write('Users.reCaptcha.registration', true);
         $this->assertEquals(0, $this->table->find()->where(['username' => 'testRegistration'])->count());
         $this->_mockRequestPost();
         $this->_mockAuth();
@@ -90,6 +122,7 @@ class RegisterTraitTest extends BaseTraitTest
         $this->Trait->register();
 
         $this->assertEquals(1, $this->table->find()->where(['username' => 'testRegistration'])->count());
+        Configure::write('Users.reCaptcha.registration', false);
     }
 
     /**
@@ -99,6 +132,7 @@ class RegisterTraitTest extends BaseTraitTest
      */
     public function testRegisterValidationErrors()
     {
+        Configure::write('Users.reCaptcha.registration', true);
         $this->assertEquals(0, $this->table->find()->where(['username' => 'testRegistration'])->count());
         $this->_mockRequestPost();
         $this->_mockAuth();
@@ -123,6 +157,7 @@ class RegisterTraitTest extends BaseTraitTest
         $this->Trait->register();
 
         $this->assertEquals(0, $this->table->find()->where(['username' => 'testRegistration'])->count());
+        Configure::write('Users.reCaptcha.registration', false);
     }
 
     /**
@@ -132,6 +167,7 @@ class RegisterTraitTest extends BaseTraitTest
      */
     public function testRegisterRecaptchaNotValid()
     {
+        Configure::write('Users.reCaptcha.registration', true);
         $this->assertEquals(0, $this->table->find()->where(['username' => 'testRegistration'])->count());
         $this->_mockRequestPost();
         $this->_mockAuth();
@@ -139,7 +175,7 @@ class RegisterTraitTest extends BaseTraitTest
         $this->_mockDispatchEvent();
         $this->Trait->Flash->expects($this->once())
                 ->method('error')
-                ->with('The reCaptcha could not be validated');
+                ->with('Invalid reCaptcha');
         $this->Trait->expects($this->once())
                 ->method('validateRecaptcha')
                 ->will($this->returnValue(false));
@@ -154,6 +190,7 @@ class RegisterTraitTest extends BaseTraitTest
         $this->Trait->register();
 
         $this->assertEquals(0, $this->table->find()->where(['username' => 'testRegistration'])->count());
+        Configure::write('Users.reCaptcha.registration', false);
     }
 
     /**
@@ -231,5 +268,73 @@ class RegisterTraitTest extends BaseTraitTest
         $this->_mockDispatchEvent();
         $this->Trait->register();
         Configure::write('Users.Registration.active', $active);
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testRegisterLoggedInUserAllowed()
+    {
+        $allowLoggedIn = Configure::read('Users.Registration.allowLoggedIn');
+        Configure::write('Users.Registration.allowLoggedIn', true);
+        $this->assertEquals(0, $this->table->find()->where(['username' => 'testRegistration'])->count());
+        $this->_mockRequestPost();
+        $this->_mockAuthLoggedIn();
+        $this->_mockFlash();
+        $this->_mockDispatchEvent();
+        $this->Trait->Flash->expects($this->once())
+                ->method('success')
+                ->with('Please validate your account before log in');
+        $this->Trait->expects($this->once())
+                ->method('redirect')
+                ->with(['action' => 'login']);
+        $this->Trait->request->data = [
+            'username' => 'testRegistration',
+            'password' => 'password',
+            'email' => 'test-registration@example.com',
+            'password_confirm' => 'password',
+            'tos' => 1
+        ];
+
+        $this->Trait->register();
+
+        $this->assertEquals(1, $this->table->find()->where(['username' => 'testRegistration'])->count());
+        Configure::write('Users.Registration.allowLoggedIn', $allowLoggedIn);
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testRegisterLoggedInUserNotAllowed()
+    {
+        $allowLoggedIn = Configure::read('Users.Registration.allowLoggedIn');
+        Configure::write('Users.Registration.allowLoggedIn', false);
+        $this->assertEquals(0, $this->table->find()->where(['username' => 'testRegistration'])->count());
+        $this->_mockRequestPost();
+        $this->_mockAuthLoggedIn();
+        $this->_mockFlash();
+        $this->_mockDispatchEvent();
+        $this->Trait->Flash->expects($this->once())
+                ->method('error')
+                ->with('You must log out to register a new user account');
+        $this->Trait->expects($this->once())
+                ->method('redirect')
+                ->with(Configure::read('Users.Profile.route'));
+        $this->Trait->request->data = [
+            'username' => 'testRegistration',
+            'password' => 'password',
+            'email' => 'test-registration@example.com',
+            'password_confirm' => 'password',
+            'tos' => 1
+        ];
+
+        $this->Trait->register();
+
+        $this->assertEquals(0, $this->table->find()->where(['username' => 'testRegistration'])->count());
+        Configure::write('Users.Registration.allowLoggedIn', $allowLoggedIn);
     }
 }

@@ -50,6 +50,12 @@ If email is required and the social network does not return the user email then 
 
 In most situations you would not need to change any Oauth setting besides applications details.
 
+For new facebook aps you must use the graphApiVersion 2.8 or greater:
+
+```
+Configure::write('OAuth.providers.facebook.options.graphApiVersion', 'v2.8');
+```
+
 User Helper
 ---------------------
 

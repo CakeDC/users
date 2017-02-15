@@ -66,7 +66,7 @@ class RememberMeComponent extends Component
     {
         if (mb_strlen(Security::salt(), '8bit') < 32) {
             throw new InvalidArgumentException(
-                __d('Users', 'Invalid app salt, app salt must be at least 256 bits (32 bytes) long')
+                __d('CakeDC/Users', 'Invalid app salt, app salt must be at least 256 bits (32 bytes) long')
             );
         }
     }
@@ -146,7 +146,8 @@ class RememberMeComponent extends Component
         if (is_array($event->result)) {
             return $this->_registry->getController()->redirect($event->result);
         }
-        $url = $this->Auth->redirectUrl();
+        $url = $this->request->here(false);
+
         return $this->_registry->getController()->redirect($url);
     }
 }

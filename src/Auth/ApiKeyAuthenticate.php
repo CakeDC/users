@@ -38,6 +38,10 @@ class ApiKeyAuthenticate extends BaseAuthenticate
         'field' => 'api_token',
         //require SSL to pass the token. You should always require SSL to use tokens for Auth
         'require_ssl' => true,
+        //set a specific table for API auth, set as null to use Users.table
+        'table' => null,
+        //set a specific finder for API auth, set as null to use Auth.authenticate.all.finder
+        'finder' => null,
     ];
 
     /**
@@ -50,13 +54,31 @@ class ApiKeyAuthenticate extends BaseAuthenticate
      */
     public function authenticate(Request $request, Response $response)
     {
+        return $this->getUser($request);
+    }
+
+    /**
+     * Stateless Authentication System
+     * http://book.cakephp.org/3.0/en/controllers/components/authentication.html#creating-stateless-authentication-systems
+     *
+     * Config:
+     *   $this->Auth->config('storage', 'Memory');
+     *   $this->Auth->config('unauthorizedRedirect', 'false');
+     *   $this->Auth->config('checkAuthIn', 'Controller.initialize');
+     *   $this->Auth->config('loginAction', false);
+     *
+     * @param Request $request Cake request object.
+     * @return mixed
+     */
+    public function getUser(Request $request)
+    {
         $type = $this->config('type');
         if (!in_array($type, $this->types)) {
-            throw new OutOfBoundsException(__d('Users', 'Type {0} is not valid', $type));
+            throw new OutOfBoundsException(__d('CakeDC/Users', 'Type {0} is not valid', $type));
         }
 
         if (!is_callable([$this, $type])) {
-            throw new OutOfBoundsException(__d('Users', 'Type {0} has no associated callable', $type));
+            throw new OutOfBoundsException(__d('CakeDC/Users', 'Type {0} has no associated callable', $type));
         }
 
         $apiKey = $this->$type($request);
@@ -65,12 +87,12 @@ class ApiKeyAuthenticate extends BaseAuthenticate
         }
 
         if ($this->config('require_ssl') && !$request->is('ssl')) {
-            throw new ForbiddenException(__d('Users', 'SSL is required for ApiKey Authentication', $type));
+            throw new ForbiddenException(__d('CakeDC/Users', 'SSL is required for ApiKey Authentication', $type));
         }
 
         $this->_config['fields']['username'] = $this->config('field');
-        $this->_config['userModel'] = Configure::read('Users.table');
-        $this->_config['finder'] = 'all';
+        $this->_config['userModel'] = $this->config('table') ?: Configure::read('Users.table');
+        $this->_config['finder'] = $this->config('finder') ?: Configure::read('Auth.authenticate.all.finder') ?: 'all';
         $result = $this->_query($apiKey)->first();
 
         if (empty($result)) {
@@ -90,6 +112,7 @@ class ApiKeyAuthenticate extends BaseAuthenticate
     public function querystring(Request $request)
     {
         $name = $this->config('name');
+
         return $request->query($name);
     }
 
@@ -102,6 +125,7 @@ class ApiKeyAuthenticate extends BaseAuthenticate
     public function header(Request $request)
     {
         $name = $this->config('name');
+
         return $request->header($name);
     }
 }

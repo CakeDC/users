@@ -38,6 +38,16 @@ Configure::write('OAuth.providers.twitter.options.clientSecret', 'YOUR APP SECRE
 
 Or use the config override option when loading the plugin (see above)
 
+Configuration for reCaptcha
+---------------------
+```
+Configure::write('Users.reCaptcha.key', 'YOUR RECAPTCHA KEY');
+Configure::write('Users.reCaptcha.secret', 'YOUR RECAPTCHA SECRET');
+Configure::write('Users.reCaptcha.registration', true); //enable on registration
+Configure::write('Users.reCaptcha.login', true); //enable on login
+```
+
+
 Configuration options
 ---------------------
 
@@ -74,6 +84,8 @@ NOTE: SOME keys were hidden in this doc page, please refer to `vendor/cakedc/use
             'active' => true,
             //determines if the reCaptcha is enabled for registration
             'reCaptcha' => true,
+            //ensure user is active (confirmed email) to reset his password
+            'ensureActive' => false
         ],
         'Tos' => [
             //determines if the user should include tos accepted
@@ -94,7 +106,7 @@ NOTE: SOME keys were hidden in this doc page, please refer to `vendor/cakedc/use
     'Auth' => [
         'authenticate' => [
             'all' => [
-                'scope' => ['active' => 1]
+                'finder' => 'active',
             ],
             'CakeDC/Users.RememberMe',
             'Form',
@@ -119,6 +131,27 @@ Using the UsersAuthComponent default initialization, the component will load the
 * Authorize
   * 'Users.Superuser' check [SuperuserAuthorize](SuperuserAuthorize.md) for configuration options
   * 'Users.SimpleRbac' check [SimpleRbacAuthorize](SimpleRbacAuthorize.md) for configuration options
+
+## Using the user's email to login
+
+You need to configure 2 things:
+* Change the Auth.authenticate.Form.fields configuration to let AuthComponent use the email instead of the username for user identify. Add this line to your bootstrap.php file, after CakeDC/Users Plugin is loaded
+
+```php
+Configure::write('Auth.authenticate.Form.fields.username', 'email');
+```
+
+* Override the login.ctp template to change the Form->input to "email". Add (or copy from the https://github.com/CakeDC/users/blob/master/src/Template/Users/login.ctp) the file login.ctp to path /src/Template/Plugin/CakeDC/Users/Users/login.ctp and ensure it has the following content
+
+```php
+        // ... inside the Form
+        <?= $this->Form->input('email', ['required' => true]) ?>
+        <?= $this->Form->input('password', ['required' => true]) ?>
+        // ... rest of your login.ctp code
+```
+
+
+
 
 Email Templates
 ---------------

@@ -57,7 +57,7 @@ class RegisterBehavior extends Behavior
         $validateEmail = Hash::get($options, 'validate_email');
         $tokenExpiration = Hash::get($options, 'token_expiration');
         $emailClass = Hash::get($options, 'email_class');
-        $user = $this->_table->patchEntity($user, $data, ['validate' => Hash::get($options, 'validator') ?: $this->_getValidators($options)]);
+        $user = $this->_table->patchEntity($user, $data, ['validate' => Hash::get($options, 'validator') ?: $this->getRegisterValidators($options)]);
         $user->validated = false;
         //@todo move updateActive to afterSave?
         $user = $this->_updateActive($user, $validateEmail, $tokenExpiration);
@@ -66,6 +66,7 @@ class RegisterBehavior extends Behavior
         if ($userSaved && $validateEmail) {
             $this->Email->sendValidationEmail($user, $emailClass);
         }
+
         return $userSaved;
     }
 
@@ -85,10 +86,10 @@ class RegisterBehavior extends Behavior
             ->where(['token' => $token])
             ->first();
         if (empty($user)) {
-            throw new UserNotFoundException(__d('Users', "User not found for the given token and email."));
+            throw new UserNotFoundException(__d('CakeDC/Users', "User not found for the given token and email."));
         }
         if ($user->tokenExpired()) {
-            throw new TokenExpiredException(__d('Users', "Token has already expired user with no token"));
+            throw new TokenExpiredException(__d('CakeDC/Users', "Token has already expired user with no token"));
         }
         if (!method_exists($this, $callback)) {
             return $user;
@@ -107,7 +108,7 @@ class RegisterBehavior extends Behavior
     public function activateUser(EntityInterface $user)
     {
         if ($user->active) {
-            throw new UserAlreadyActiveException(__d('Users', "User account already validated"));
+            throw new UserAlreadyActiveException(__d('CakeDC/Users', "User account already validated"));
         }
         $user->activation_date = new DateTime();
         $user->token_expires = null;
@@ -144,9 +145,10 @@ class RegisterBehavior extends Behavior
         $this->validateEmail = $validateEmail;
         $validator
             ->add('email', 'valid', ['rule' => 'email'])
-            ->notEmpty('email', 'This field is required', function ($context) {
+            ->notEmpty('email', __d('Users', 'This field is required'), function ($context) {
                 return $this->validateEmail;
             });
+
         return $validator;
     }
 
@@ -161,6 +163,7 @@ class RegisterBehavior extends Behavior
         $validator
             ->requirePresence('tos', 'create')
             ->notEmpty('tos');
+
         return $validator;
     }
 
@@ -170,7 +173,7 @@ class RegisterBehavior extends Behavior
      * @param array $options Array of options ['validate_email' => true/false, 'use_tos' => true/false]
      * @return Validator
      */
-    protected function _getValidators($options)
+    public function getRegisterValidators($options)
     {
         $validateEmail = Hash::get($options, 'validate_email');
         $useTos = Hash::get($options, 'use_tos');
@@ -184,6 +187,7 @@ class RegisterBehavior extends Behavior
         if ($validateEmail) {
             $validator = $this->_emailValidator($validator, $validateEmail);
         }
+
         return $validator;
     }
 }

@@ -1,11 +1,10 @@
 CakeDC Users Plugin
 ===================
 
-[![Bake Status](https://secure.travis-ci.org/CakeDC/users.png?branch=3.1.x)](http://travis-ci.org/CakeDC/users)
+[![Bake Status](https://secure.travis-ci.org/CakeDC/users.png?branch=master)](http://travis-ci.org/CakeDC/users)
 [![Downloads](https://poser.pugx.org/CakeDC/users/d/total.png)](https://packagist.org/packages/CakeDC/users)
 [![Latest Version](https://poser.pugx.org/CakeDC/users/v/stable.png)](https://packagist.org/packages/CakeDC/users)
-
-IMPORTANT: 3.1.x version is BETA status now, we are still improving and testing it.
+[![License](https://poser.pugx.org/CakeDC/users/license.svg)](https://packagist.org/packages/CakeDC/users)
 
 Versions and branches
 ---------------------
@@ -13,7 +12,8 @@ Versions and branches
 | CakePHP | CakeDC Users Plugin | Tag   | Notes |
 | :-------------: | :------------------------: | :--:  | :---- |
 | 2.x             | [2.x](https://github.com/cakedc/users/tree/2.x)                     | 2.1.2 | Note CakePHP 2.7 is currently not supported, we are working on it now |
-| 3.x             | [master](https://github.com/cakedc/users/tree/master)                      | 3.0.0 | stability is beta, but pretty stable now |
+| 3.2+             | [master](https://github.com/cakedc/users/tree/master)                      | 3.x | stable |
+| 3.2+             | [develop](https://github.com/cakedc/users/tree/develop)                      | 3.x | unstable |
 | 3.0             | [3.0.x](https://github.com/cakedc/users/tree/3.0.x)                      | 3.0.0 | stability is beta, but pretty stable now |
 | 3.1             | [3.1.x](https://github.com/cakedc/users/tree/3.1.x)                      | 3.1.0 | stability is beta, but pretty stable now |
 
@@ -22,7 +22,7 @@ The **Users** plugin is back!
 It covers the following features:
 * User registration
 * Login/logout
-* Social login (Facebook, Twitter)
+* Social login (Facebook, Twitter, Instagram, Google, Linkedin, etc)
 * Simple RBAC
 * Remember me (Cookie)
 * Manage user's profile
@@ -44,30 +44,13 @@ Another decision made was limiting the plugin dependencies on other packages as 
 Requirements
 ------------
 
-* CakePHP 3.1+
-* PHP 5.4.16+ Note CakePHP 3.2 requires PHP 5.5 so 5.4 compatibility would be dropped sooner than later...
+* CakePHP 3.2.9+
+* PHP 5.6+
 
 Documentation
 -------------
 
 For documentation, as well as tutorials, see the [Docs](Docs/Home.md) directory of this repository.
-
-Roadmap
-------
-
-
-* 3.1.4 << you are here
-  * SocialAuthenticate refactored to drop Opauth in favor of Muffin/OAuth2 and league/oauth2
-* 3.1.3
-  * UserHelper improvements
-* 3.1.2
-  * Fixes in RBAC permission matchers
-* 3.1.0 Migration to CakePHP 3.0
-  * Unit test coverage improvements
-  * Refactor UsersTable to Behavior
-  * Add google authentication
-  * Add reCaptcha
-  * Link social accounts in profile
 
 Support
 -------
@@ -84,6 +67,6 @@ This repository follows the [CakeDC Plugin Standard](http://cakedc.com/plugin-st
 License
 -------
 
-Copyright 2015 Cake Development Corporation (CakeDC). All rights reserved.
+Copyright 2017 Cake Development Corporation (CakeDC). All rights reserved.
 
 Licensed under the [MIT](http://www.opensource.org/licenses/mit-license.php) License. Redistributions of the source code included in this repository must retain the copyright notice found in each file.
