@@ -98,7 +98,7 @@ class UsersShell extends Shell
         $savedUser = $this->Users->save($userEntity);
         $this->out(__d('CakeDC/Users', 'User added:'));
         $this->out(__d('CakeDC/Users', 'Id: {0}', $savedUser->id));
-        $this->out(__d('CakeDC/Users', 'Username: {0}', $username));
+        $this->out(__d('CakeDC/Users', 'Username: {0}', $savedUser->username));
         $this->out(__d('CakeDC/Users', 'Email: {0}', $savedUser->email));
         $this->out(__d('CakeDC/Users', 'Role: {0}', $savedUser->role));
         $this->out(__d('CakeDC/Users', 'Password: {0}', $password));
@@ -111,23 +111,27 @@ class UsersShell extends Shell
      */
     public function addSuperuser()
     {
-        $username = $this->Users->generateUniqueUsername('superadmin');
-        $password = $this->_generateRandomPassword();
+        $username = (empty($this->params['username']) ?
+            'superadmin' : $this->params['username']);
+        $password = (empty($this->params['password']) ?
+            $this->_generateRandomPassword() : $this->params['password']);
+        $email = (empty($this->params['email']) ? $username . '@example.com' : $this->params['email']);
+        $role = (empty($this->params['role']) ? 'superuser' : $this->params['role']);
         $user = [
-            'username' => $username,
-            'email' => $username . '@example.com',
+            'username' => $this->Users->generateUniqueUsername($username),
+            'email' => $email,
             'password' => $password,
             'active' => 1,
         ];
 
         $userEntity = $this->Users->newEntity($user);
         $userEntity->is_superuser = true;
-        $userEntity->role = 'superuser';
+        $userEntity->role = $role;
         $savedUser = $this->Users->save($userEntity);
         if (!empty($savedUser)) {
             $this->out(__d('CakeDC/Users', 'Superuser added:'));
             $this->out(__d('CakeDC/Users', 'Id: {0}', $savedUser->id));
-            $this->out(__d('CakeDC/Users', 'Username: {0}', $username));
+            $this->out(__d('CakeDC/Users', 'Username: {0}', $savedUser->username));
             $this->out(__d('CakeDC/Users', 'Email: {0}', $savedUser->email));
             $this->out(__d('CakeDC/Users', 'Role: {0}', $savedUser->role));
             $this->out(__d('CakeDC/Users', 'Password: {0}', $password));
