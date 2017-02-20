@@ -79,7 +79,7 @@ class UsersShellTest extends TestCase
         $user = [
             'username' => 'yeliparra',
             'password' => '123',
-            'email' => 'yeli.parra@gmail.com',
+            'email' => 'yeli.parra@example.com',
             'active' => 1,
         ];
         $role = 'tester';
@@ -174,7 +174,7 @@ class UsersShellTest extends TestCase
         $user = [
             'username' => 'yeliparra',
             'password' => '123',
-            'email' => 'yeli.parra@gmail.com',
+            'email' => 'yeli.parra@example.com',
             'active' => 1,
         ];
         $role = 'tester';
