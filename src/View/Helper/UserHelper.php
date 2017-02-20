@@ -40,56 +40,56 @@ class UserHelper extends Helper
      * @param array $options options
      * @return string
      */
-     public function socialLogin($name, $options = [])
-     {
-         if (empty($options['label'])) {
-             $options['label'] = __d('CakeDC/Users', 'Sign in with');
-         }
-         $icon = $this->Html->tag('i', '', [
-             'class' => __d('CakeDC/Users', 'fa fa-{0}', strtolower($name)),
-         ]);
+    public function socialLogin($name, $options = [])
+    {
+        if (empty($options['label'])) {
+            $options['label'] = __d('CakeDC/Users', 'Sign in with');
+        }
+        $icon = $this->Html->tag('i', '', [
+            'class' => __d('CakeDC/Users', 'fa fa-{0}', strtolower($name)),
+        ]);
 
-         if (isset($options['title'])) {
-             $providerTitle = $options['title'];
-         } else {
-             $providerTitle = __d('CakeDC/Users', '{0} {1}', Hash::get($options, 'label'), Inflector::camelize($name));
-         }
+        if (isset($options['title'])) {
+            $providerTitle = $options['title'];
+        } else {
+            $providerTitle = __d('CakeDC/Users', '{0} {1}', Hash::get($options, 'label'), Inflector::camelize($name));
+        }
 
-         $providerClass = __d('CakeDC/Users', 'btn btn-social btn-{0} ' . Hash::get($options, 'class') ?: '', strtolower($name));
+        $providerClass = __d('CakeDC/Users', 'btn btn-social btn-{0} ' . Hash::get($options, 'class') ?: '', strtolower($name));
 
-         return $this->Html->link($icon . $providerTitle, "/auth/$name", [
-             'escape' => false, 'class' => $providerClass
-         ]);
-     }
+        return $this->Html->link($icon . $providerTitle, "/auth/$name", [
+            'escape' => false, 'class' => $providerClass
+        ]);
+    }
 
-     /**
-      * All available Social Login Icons
-      *
-      * @param array $providerOptions Provider link options.
-      * @return array Links to Social Login Urls
-      */
-     public function socialLoginList(array $providerOptions = [])
-     {
-         if (!Configure::read('Users.Social.login')) {
-             return [];
-         }
-         $outProviders = [];
-         $providers = Configure::read('OAuth.providers');
-         foreach ($providers as $provider => $options) {
-             if (!empty($options['options']['redirectUri']) &&
-                 !empty($options['options']['clientId']) &&
-                 !empty($options['options']['clientSecret'])) {
+    /**
+     * All available Social Login Icons
+     *
+     * @param array $providerOptions Provider link options.
+     * @return array Links to Social Login Urls
+     */
+    public function socialLoginList(array $providerOptions = [])
+    {
+        if (!Configure::read('Users.Social.login')) {
+            return [];
+        }
+        $outProviders = [];
+        $providers = Configure::read('OAuth.providers');
+        foreach ($providers as $provider => $options) {
+            if (!empty($options['options']['redirectUri']) &&
+                !empty($options['options']['clientId']) &&
+                !empty($options['options']['clientSecret'])
+            ) {
+                if (isset($providerOptions[$provider])) {
+                    $options['options'] = Hash::merge($options['options'], $providerOptions[$provider]);
+                }
 
-                 if (isset($providerOptions[$provider])) {
-                     $options['options'] = Hash::merge($options['options'], $providerOptions[$provider]);
-                 }
+                $outProviders[] = $this->socialLogin($provider, $options['options']);
+            }
+        }
 
-                 $outProviders[] = $this->socialLogin($provider, $options['options']);
-             }
-         }
-
-         return $outProviders;
-     }
+        return $outProviders;
+    }
 
     /**
      * Logout link
@@ -102,7 +102,7 @@ class UserHelper extends Helper
     {
         return $this->AuthLink->link(empty($message) ? __d('CakeDC/Users', 'Logout') : $message, [
             'plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'logout'
-            ], $options);
+        ], $options);
     }
 
     /**
