@@ -48,7 +48,13 @@ class UserHelper extends Helper
         $icon = $this->Html->tag('i', '', [
             'class' => __d('CakeDC/Users', 'fa fa-{0}', strtolower($name)),
         ]);
-        $providerTitle = __d('CakeDC/Users', '{0} {1}', Hash::get($options, 'label'), Inflector::camelize($name));
+
+        if (isset($options['title'])) {
+            $providerTitle = $options['title'];
+        } else {
+            $providerTitle = __d('CakeDC/Users', '{0} {1}', Hash::get($options, 'label'), Inflector::camelize($name));
+        }
+
         $providerClass = __d('CakeDC/Users', 'btn btn-social btn-{0} ' . Hash::get($options, 'class') ?: '', strtolower($name));
 
         return $this->Html->link($icon . $providerTitle, "/auth/$name", [
@@ -59,9 +65,10 @@ class UserHelper extends Helper
     /**
      * All available Social Login Icons
      *
+     * @param array $providerOptions Provider link options.
      * @return array Links to Social Login Urls
      */
-    public function socialLoginList()
+    public function socialLoginList(array $providerOptions = [])
     {
         if (!Configure::read('Users.Social.login')) {
             return [];
@@ -71,8 +78,13 @@ class UserHelper extends Helper
         foreach ($providers as $provider => $options) {
             if (!empty($options['options']['redirectUri']) &&
                 !empty($options['options']['clientId']) &&
-                !empty($options['options']['clientSecret'])) {
-                $outProviders[] = $this->socialLogin($provider);
+                !empty($options['options']['clientSecret'])
+            ) {
+                if (isset($providerOptions[$provider])) {
+                    $options['options'] = Hash::merge($options['options'], $providerOptions[$provider]);
+                }
+
+                $outProviders[] = $this->socialLogin($provider, $options['options']);
             }
         }
 
@@ -90,7 +102,7 @@ class UserHelper extends Helper
     {
         return $this->AuthLink->link(empty($message) ? __d('CakeDC/Users', 'Logout') : $message, [
             'plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'logout'
-            ], $options);
+        ], $options);
     }
 
     /**
