@@ -69,9 +69,7 @@ $config = [
             // QR-code provider (more on this later)
             'qrcodeprovider' => null,
             // Random Number Generator provider (more on this later)
-            'rngprovider' => null,
-            // Key used for encrypting the user credentials, leave this false to use Security.salt
-            'encryptionKey' => false
+            'rngprovider' => null
         ],
         'Profile' => [
             //Allow view other users profiles

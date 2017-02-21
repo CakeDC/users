@@ -34,8 +34,7 @@ class GoogleAuthenticatorComponent extends Component
                 Configure::read('Users.GoogleAuthenticator.period'),
                 Configure::read('Users.GoogleAuthenticator.algorithm'),
                 Configure::read('Users.GoogleAuthenticator.qrcodeprovider'),
-                Configure::read('Users.GoogleAuthenticator.rngprovider'),
-                Configure::read('Users.GoogleAuthenticator.encryptionKey')
+                Configure::read('Users.GoogleAuthenticator.rngprovider')
             );
         }
     }
