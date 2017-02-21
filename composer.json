@@ -37,7 +37,7 @@
         "league/oauth2-google": "@stable",
         "league/oauth2-linkedin": "@stable",
         "google/recaptcha": "@stable",
-        "robthree/twofactorauth": "~1.5.0"
+        "robthree/twofactorauth": "~1.6.0"
     },
     "suggest": {
         "league/oauth1-client": "Provides Social Authentication with Twitter",
