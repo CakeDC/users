@@ -119,6 +119,7 @@ class UsersAuthComponent extends Component
             'validateEmail',
             'resendTokenValidation',
             'login',
+            'logout',
             'twitterLogin',
             'socialEmail',
             'resetPassword',
