@@ -78,11 +78,7 @@ class UsersShell extends Shell
      */
     public function addUser()
     {
-        $this->_createUser([
-                'role' => 'user'
-            ],
-            false
-        );
+        $this->_createUser(['role' => 'user']);
     }
 
     /**
@@ -93,12 +89,10 @@ class UsersShell extends Shell
     public function addSuperuser()
     {
         $this->_createUser([
-                'username' => 'superadmin',
-                'role' => 'superuser',
-                'is_superuser' => true
-            ],
-            true
-        );
+            'username' => 'superadmin',
+            'role' => 'superuser',
+            'is_superuser' => true
+        ]);
     }
 
     /**
@@ -255,24 +249,23 @@ class UsersShell extends Shell
     /**
      * Create a new user or superuser
      *
-     * @param bool $is_superuser is superuser value
      * @param array $template template with deafault user values
      * @return void
      */
-    public function _createUser($template)
+    protected function _createUser($template)
     {
         if (!empty($this->params['username'])) {
             $username = $this->params['username'];
         } else {
-            $username = !empty($template['username']) ? 
+            $username = !empty($template['username']) ?
                 $template['username'] : $this->_generateRandomUsername();
         }
 
         $password = (empty($this->params['password']) ?
             $this->_generateRandomPassword() : $this->params['password']);
-        $email = (empty($this->params['email']) ? 
+        $email = (empty($this->params['email']) ?
             $username . '@example.com' : $this->params['email']);
-        $role = (empty($this->params['role']) ? 
+        $role = (empty($this->params['role']) ?
             $template['role'] : $this->params['role']);
 
         $user = [
