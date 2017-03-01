@@ -801,7 +801,7 @@ msgstr "Logar com"
 
 #: View/Helper/UserHelper.php:49
 msgid "fa fa-{0}"
-msgstr "fa-fa-{0}"
+msgstr "fa fa-{0}"
 
 #: View/Helper/UserHelper.php:52
 msgid "btn btn-social btn-{0} "
