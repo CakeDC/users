@@ -116,4 +116,17 @@ class SocialAccountsTable extends Table
 
         return $rules;
     }
+    
+    /**
+     * Finder for active social accounts
+     *
+     * @param Query $query
+     * @return \Cake\ORM\Query
+     */
+    public function findActive(Query $query)
+    {
+        return $query->where([
+            $this->aliasField('active') => true
+        ]);
+    }
 }
