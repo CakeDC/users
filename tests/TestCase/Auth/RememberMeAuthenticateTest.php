@@ -115,7 +115,6 @@ class RememberMeAuthenticateTest extends TestCase
         $this->assertFalse($result);
     }
 
-
     /**
      * test
      *

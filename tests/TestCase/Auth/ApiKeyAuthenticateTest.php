@@ -131,7 +131,6 @@ class ApiKeyAuthenticateTest extends TestCase
         $this->assertFalse($this->apiKey->authenticate($request, new Response()));
     }
 
-
     /**
      * test
      *

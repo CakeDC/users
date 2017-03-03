@@ -40,7 +40,6 @@ class RememberMeComponent extends Component
      */
     protected $_cookieName = null;
 
-
     /**
      * Initialize config data and properties.
      *

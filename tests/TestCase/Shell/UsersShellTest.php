@@ -252,7 +252,6 @@ class UsersShellTest extends TestCase
         $this->Shell->runCommand(['addSuperuser']);
     }
 
-
     /**
      * Reset all passwords
      *

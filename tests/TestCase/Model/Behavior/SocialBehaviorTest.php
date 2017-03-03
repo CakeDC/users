@@ -295,7 +295,6 @@ class SocialBehaviorTest extends TestCase
         $this->Behavior->socialLogin($data, $options);
     }
 
-
     /**
      * Provider for socialLogin with facebook and not existing user
      *

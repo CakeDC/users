@@ -154,7 +154,6 @@ class UsersMailerTest extends TestCase
             ->with('first1, Your social account validation link')
             ->will($this->returnValue($this->Email));
 
-
         $this->Email->expects($this->once())
             ->method('viewVars')
             ->with(['user' => $social->user, 'socialAccount' => $social])
@@ -196,7 +195,6 @@ class UsersMailerTest extends TestCase
             ->method('template')
             ->with('myTemplate')
             ->will($this->returnValue($this->Email));
-
 
         $this->invokeMethod($this->UsersMailer, 'resetPassword', [$user, 'myTemplate']);
     }
