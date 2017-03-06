@@ -13,8 +13,8 @@ namespace CakeDC\Users\Auth;
 
 use Cake\Auth\BaseAuthenticate;
 use Cake\Core\Configure;
+use Cake\Http\ServerRequest;
 use Cake\Network\Exception\ForbiddenException;
-use Cake\Network\Request;
 use Cake\Network\Response;
 use \OutOfBoundsException;
 
@@ -48,11 +48,11 @@ class ApiKeyAuthenticate extends BaseAuthenticate
      * Authenticate callback
      * Reads the API Key based on configuration and login the user
      *
-     * @param Request $request Cake request object.
-     * @param Response $response Cake response object.
+     * @param ServerRequest $request request object.
+     * @param Response $response response object.
      * @return mixed
      */
-    public function authenticate(Request $request, Response $response)
+    public function authenticate(ServerRequest $request, Response $response)
     {
         return $this->getUser($request);
     }
@@ -70,9 +70,9 @@ class ApiKeyAuthenticate extends BaseAuthenticate
      * @param Request $request Cake request object.
      * @return mixed
      */
-    public function getUser(Request $request)
+    public function getUser(ServerRequest $request)
     {
-        $type = $this->config('type');
+        $type = $this->getConfig('type');
         if (!in_array($type, $this->types)) {
             throw new OutOfBoundsException(__d('CakeDC/Users', 'Type {0} is not valid', $type));
         }
@@ -109,7 +109,7 @@ class ApiKeyAuthenticate extends BaseAuthenticate
      * @param Request $request request
      * @return string api key
      */
-    public function querystring(Request $request)
+    public function querystring(ServerRequest $request)
     {
         $name = $this->config('name');
 
@@ -122,7 +122,7 @@ class ApiKeyAuthenticate extends BaseAuthenticate
      * @param Request $request request
      * @return string api key
      */
-    public function header(Request $request)
+    public function header(ServerRequest $request)
     {
         $name = $this->config('name');
 
