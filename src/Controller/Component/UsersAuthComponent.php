@@ -114,20 +114,30 @@ class UsersAuthComponent extends Component
             $this->_registry->getController()->loadComponent('Auth', Configure::read('Auth'));
         }
 
-        $this->_registry->getController()->Auth->allow([
-            'register',
-            'validateEmail',
-            'resendTokenValidation',
-            'login',
-            'twitterLogin',
-            'socialEmail',
-            'resetPassword',
-            'requestResetPassword',
-            'changePassword',
-            'endpoint',
-            'authenticated',
-            'verify'
-        ]);
+        list($plugin, $controller) = pluginSplit(Configure::read('Users.controller'));
+        if ($this->request->param('plugin') === $plugin &&
+            $this->request->param('controller') === $controller
+        ) {
+            $this->_registry->getController()->Auth->allow([
+                // LoginTrait
+                'twitterLogin',
+                'login',
+                'socialEmail',
+                'verify',
+                // RegisterTrait
+                'register',
+                'validateEmail',
+                // PasswordManagementTrait used in RegisterTrait
+                'changePassword',
+                'resetPassword',
+                'requestResetPassword',
+                // UserValidationTrait used in PasswordManagementTrait
+                'resendTokenValidation',
+                // Social
+                'endpoint',
+                'authenticated',
+            ]);
+        }
     }
 
     /**

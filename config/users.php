@@ -16,6 +16,8 @@ $config = [
     'Users' => [
         //Table used to manage users
         'table' => 'CakeDC/Users.Users',
+        //Controller used to manage users
+        'controller' => 'CakeDC/Users.Users',
         //configure Auth component
         'auth' => true,
         //Password Hasher
