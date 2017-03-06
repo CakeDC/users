@@ -13,7 +13,7 @@ namespace CakeDC\Users\Auth;
 
 use Cake\Auth\BaseAuthenticate;
 use Cake\Core\Configure;
-use Cake\Network\Request;
+use Cake\Http\ServerRequest;
 use Cake\Network\Response;
 
 /**
@@ -26,22 +26,23 @@ class RememberMeAuthenticate extends BaseAuthenticate
      * Authenticate callback
      * Reads the stored cookie and auto login the user
      *
-     * @param Request $request Cake request object.
+     * @param \Cake\Http\ServerRequest $request Cake request object.
      * @param Response $response Cake response object.
      * @return mixed
      */
-    public function authenticate(Request $request, Response $response)
+    public function authenticate(ServerRequest $request, Response $response)
     {
         $cookieName = Configure::read('Users.RememberMe.Cookie.name');
-        $cookie = $this->_registry->Cookie->read($cookieName);
+        $cookie = $this->_registry->getController()->Cookie->read($cookieName);
         if (empty($cookie)) {
             return false;
         }
-        $this->config('fields.username', 'id');
+        $this->setConfig('fields.username', 'id');
         $user = $this->_findUser($cookie['id']);
         if ($user &&
             !empty($cookie['user_agent']) &&
-            $request->header('User-Agent') === $cookie['user_agent']) {
+            $request->getHeader('User-Agent') === $cookie['user_agent']
+        ) {
             return $user;
         }
 

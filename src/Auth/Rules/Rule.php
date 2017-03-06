@@ -10,7 +10,7 @@
  */
 namespace CakeDC\Users\Auth\Rules;
 
-use Cake\Network\Request;
+use Cake\Http\ServerRequest;
 
 interface Rule
 {
@@ -19,8 +19,8 @@ interface Rule
      *
      * @param array $user Auth array with the logged in data
      * @param string $role role of the user
-     * @param Request $request current request, used to get a default table if not provided
+     * @param \Cake\Http\ServerRequest $request current request, used to get a default table if not provided
      * @return bool
      */
-    public function allowed(array $user, $role, Request $request);
+    public function allowed(array $user, $role, ServerRequest $request);
 }

@@ -17,7 +17,7 @@ use Cake\Controller\ComponentRegistry;
 use Cake\Core\Configure;
 use Cake\Core\Exception\Exception;
 use Cake\Log\LogTrait;
-use Cake\Network\Request;
+use Cake\Http\ServerRequest;
 use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
 use Psr\Log\LogLevel;
@@ -118,10 +118,10 @@ class SimpleRbacAuthorize extends BaseAuthorize
     public function __construct(ComponentRegistry $registry, array $config = [])
     {
         parent::__construct($registry, $config);
-        $autoload = $this->config('autoload_config');
+        $autoload = $this->getConfig('autoload_config');
         if ($autoload) {
             $loadedPermissions = $this->_loadPermissions($autoload);
-            $this->config('permissions', $loadedPermissions);
+            $this->setConfig('permissions', $loadedPermissions);
         }
     }
 
@@ -155,13 +155,13 @@ class SimpleRbacAuthorize extends BaseAuthorize
      * Set a default role if no role is provided
      *
      * @param array $user user data
-     * @param Request $request request
+     * @param \Cake\Http\ServerRequest $request request
      * @return bool
      */
-    public function authorize($user, Request $request)
+    public function authorize($user, ServerRequest $request)
     {
-        $roleField = $this->config('role_field');
-        $role = $this->config('default_role');
+        $roleField = $this->getConfig('role_field');
+        $role = $this->getConfig('default_role');
         if (Hash::check($user, $roleField)) {
             $role = Hash::get($user, $roleField);
         }
@@ -177,12 +177,12 @@ class SimpleRbacAuthorize extends BaseAuthorize
      *
      * @param array $user current user array
      * @param string $role effective role for the current user
-     * @param Request $request request
+     * @param \Cake\Http\ServerRequest $request request
      * @return bool true if there is a match in permissions
      */
-    protected function _checkPermissions(array $user, $role, Request $request)
+    protected function _checkPermissions(array $user, $role, ServerRequest $request)
     {
-        $permissions = $this->config('permissions');
+        $permissions = $this->getConfig('permissions');
         foreach ($permissions as $permission) {
             $allowed = $this->_matchPermission($permission, $user, $role, $request);
             if ($allowed !== null) {
@@ -199,11 +199,11 @@ class SimpleRbacAuthorize extends BaseAuthorize
      * @param array $permission The permission configuration
      * @param array $user Current user data
      * @param string $role Effective user's role
-     * @param \Cake\Network\Request $request Current request
+     * @param \Cake\Http\ServerRequest $request Current request
      *
      * @return null|bool Null if permission is discarded, boolean if a final result is produced
      */
-    protected function _matchPermission(array $permission, array $user, $role, Request $request)
+    protected function _matchPermission(array $permission, array $user, $role, ServerRequest $request)
     {
         $issetController = isset($permission['controller']) || isset($permission['*controller']);
         $issetAction = isset($permission['action']) || isset($permission['*action']);
@@ -229,11 +229,11 @@ class SimpleRbacAuthorize extends BaseAuthorize
         $permission += ['allowed' => true];
         $userArr = ['user' => $user];
         $reserved = [
-            'prefix' => Hash::get($request->params, 'prefix'),
-            'plugin' => $request->plugin,
-            'extension' => Hash::get($request->params, '_ext'),
-            'controller' => $request->controller,
-            'action' => $request->action,
+            'prefix' => $request->getParams('prefix'),
+            'plugin' => $request->getParam('plugin'),
+            'extension' => $request->getParam('_ext'),
+            'controller' => $request->getParam('controller'),
+            'action' => $request->getParam('action'),
             'role' => $role
         ];
 
@@ -301,7 +301,7 @@ class SimpleRbacAuthorize extends BaseAuthorize
     }
 
     /**
-     * Checks if $heystack begins with $needle
+     * Checks if $haystack begins with $needle
      *
      * @see http://stackoverflow.com/a/7168986/2588539
      *

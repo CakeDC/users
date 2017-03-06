@@ -12,7 +12,7 @@
 namespace CakeDC\Users\Auth;
 
 use Cake\Auth\BaseAuthorize;
-use Cake\Network\Request;
+use Cake\Http\ServerRequest;
 use Cake\Utility\Hash;
 
 /**
@@ -37,13 +37,13 @@ class SuperuserAuthorize extends BaseAuthorize
      * Check if the user is superuser
      *
      * @param type $user User information object.
-     * @param Request $request Cake request object.
+     * @param \Cake\Http\ServerRequest $request Cake request object.
      * @return bool
      */
-    public function authorize($user, Request $request)
+    public function authorize($user, ServerRequest $request)
     {
         $user = (array)$user;
-        $superuserField = $this->config('superuser_field');
+        $superuserField = $this->getConfig('superuser_field');
         if (Hash::check($user, $superuserField)) {
             return (bool)Hash::get($user, $superuserField);
         }

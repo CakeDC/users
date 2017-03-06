@@ -11,7 +11,7 @@
 namespace CakeDC\Users\Auth\Rules;
 
 use Cake\Core\Exception\Exception;
-use Cake\Network\Request;
+use Cake\Http\ServerRequest;
 use Cake\Utility\Hash;
 use OutOfBoundsException;
 
@@ -55,28 +55,42 @@ class Owner extends AbstractRule
     /**
      * {@inheritdoc}
      */
-    public function allowed(array $user, $role, Request $request)
+    public function allowed(array $user, $role, ServerRequest $request)
     {
-        $table = $this->_getTable($request, $this->config('table'));
+        $table = $this->_getTable($request, $this->getConfig('table'));
         //retrieve table id from request
-        $id = Hash::get($request->{$this->config('tableKeyType')}, $this->config('tableIdParamsKey'));
+        $id = Hash::get($request->{$this->getConfig('tableKeyType')}, $this->getConfig('tableIdParamsKey'));
         $userId = Hash::get($user, 'id');
 
         try {
-            if (!$table->hasField($this->config('ownerForeignKey'))) {
-                throw new OutOfBoundsException(__d('CakeDC/Users', 'Missing column {0} in table {1} while checking ownership permissions for user {2}', $this->config('ownerForeignKey'), $table->alias(), $userId));
+            if (!$table->hasField($this->getConfig('ownerForeignKey'))) {
+                $msg = __d(
+                    'CakeDC/Users',
+                    'Missing column {0} in table {1} while checking ownership permissions for user {2}',
+                    $this->getConfig('ownerForeignKey'),
+                    $table->getAlias(),
+                    $userId
+                );
+                throw new OutOfBoundsException($msg);
             }
         } catch (Exception $ex) {
-            throw new OutOfBoundsException(__d('CakeDC/Users', 'Missing column {0} in table {1} while checking ownership permissions for user {2}', $this->config('ownerForeignKey'), $table->alias(), $userId));
+            $msg = __d(
+                'CakeDC/Users',
+                'Missing column {0} in table {1} while checking ownership permissions for user {2}',
+                $this->getConfig('ownerForeignKey'),
+                $table->getAlias(),
+                $userId
+            );
+            throw new OutOfBoundsException($msg);
         }
-        $idColumn = $this->config('id');
+        $idColumn = $this->getConfig('id');
         if (empty($idColumn)) {
-            $idColumn = $table->primaryKey();
+            $idColumn = $table->getPrimaryKey();
         }
         $conditions = array_merge([
             $idColumn => $id,
-            $this->config('ownerForeignKey') => $userId
-        ], $this->config('conditions'));
+            $this->getConfig('ownerForeignKey') => $userId
+        ], $this->getConfig('conditions'));
 
         return $table->exists($conditions);
     }

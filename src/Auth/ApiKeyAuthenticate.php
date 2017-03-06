@@ -48,7 +48,7 @@ class ApiKeyAuthenticate extends BaseAuthenticate
      * Authenticate callback
      * Reads the API Key based on configuration and login the user
      *
-     * @param ServerRequest $request request object.
+     * @param \Cake\Http\ServerRequest $request request object.
      * @param Response $response response object.
      * @return mixed
      */
@@ -67,7 +67,7 @@ class ApiKeyAuthenticate extends BaseAuthenticate
      *   $this->Auth->config('checkAuthIn', 'Controller.initialize');
      *   $this->Auth->config('loginAction', false);
      *
-     * @param Request $request Cake request object.
+     * @param \Cake\Http\ServerRequest $request Cake request object.
      * @return mixed
      */
     public function getUser(ServerRequest $request)
@@ -86,13 +86,15 @@ class ApiKeyAuthenticate extends BaseAuthenticate
             return false;
         }
 
-        if ($this->config('require_ssl') && !$request->is('ssl')) {
+        if ($this->getConfig('require_ssl') && !$request->is('ssl')) {
             throw new ForbiddenException(__d('CakeDC/Users', 'SSL is required for ApiKey Authentication', $type));
         }
 
-        $this->_config['fields']['username'] = $this->config('field');
-        $this->_config['userModel'] = $this->config('table') ?: Configure::read('Users.table');
-        $this->_config['finder'] = $this->config('finder') ?: Configure::read('Auth.authenticate.all.finder') ?: 'all';
+        $this->_config['fields']['username'] = $this->getConfig('field');
+        $this->_config['userModel'] = $this->getConfig('table') ?: Configure::read('Users.table');
+        $this->_config['finder'] = $this->getConfig('finder') ?:
+            Configure::read('Auth.authenticate.all.finder') ?:
+                'all';
         $result = $this->_query($apiKey)->first();
 
         if (empty($result)) {
@@ -100,32 +102,31 @@ class ApiKeyAuthenticate extends BaseAuthenticate
         }
 
         return $result->toArray();
-        //idea: add array with checks to be passed to $request->is(...)
     }
 
     /**
      * Get the api key from the querystring
      *
-     * @param Request $request request
+     * @param \Cake\Http\ServerRequest $request request
      * @return string api key
      */
     public function querystring(ServerRequest $request)
     {
-        $name = $this->config('name');
+        $name = $this->getConfig('name');
 
-        return $request->query($name);
+        return $request->getQuery($name);
     }
 
     /**
      * Get the api key from the header
      *
-     * @param Request $request request
+     * @param \Cake\Http\ServerRequest $request request
      * @return string api key
      */
     public function header(ServerRequest $request)
     {
-        $name = $this->config('name');
+        $name = $this->getConfig('name');
 
-        return $request->header($name);
+        return $request->getHeader($name);
     }
 }
