@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Test\TestCase\Controller\Component;
 
+use Cake\Http\ServerRequest;
 use CakeDC\Users\Controller\Component\RememberMeComponent;
 use Cake\Controller\ComponentRegistry;
 use Cake\Controller\Component\AuthComponent;
@@ -42,7 +43,7 @@ class RememberMeComponentTest extends TestCase
     {
         parent::setUp();
         Security::salt('2a20bac195a9eb2e28f05b7ac7090afe599365a8fe480b7d8a5ce0f79687346e');
-        $this->request = new Request('controller_posts/index');
+        $this->request = new ServerRequest('controller_posts/index');
         $this->request->params['pass'] = [];
         $this->controller = $this->getMockBuilder('Cake\Controller\Controller')
                 ->setMethods(['redirect'])
@@ -122,7 +123,7 @@ class RememberMeComponentTest extends TestCase
             ->setMethods(['write'])
             ->disableOriginalConstructor()
             ->getMock();
-        $this->rememberMeComponent->request = (new Request('/'))->env('HTTP_USER_AGENT', 'user-agent');
+        $this->rememberMeComponent->request = (new ServerRequest('/'))->env('HTTP_USER_AGENT', 'user-agent');
         $this->rememberMeComponent->Cookie->expects($this->once())
             ->method('write')
             ->with('remember_me', ['id' => 1, 'user_agent' => 'user-agent']);

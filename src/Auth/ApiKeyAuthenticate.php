@@ -126,7 +126,10 @@ class ApiKeyAuthenticate extends BaseAuthenticate
     public function header(ServerRequest $request)
     {
         $name = $this->getConfig('name');
+        if (!empty($request->getHeader($name))) {
+            return $request->getHeaderLine($name);
+        }
 
-        return $request->getHeader($name);
+        return null;
     }
 }

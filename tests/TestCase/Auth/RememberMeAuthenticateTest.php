@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Test\TestCase\Auth;
 
+use Cake\Http\ServerRequest;
 use CakeDC\Users\Auth\RememberMeAuthenticate;
 use CakeDC\Users\Auth\SuperuserAuthorize;
 use Cake\Controller\ComponentRegistry;
@@ -38,7 +39,7 @@ class RememberMeAuthenticateTest extends TestCase
      */
     public function setUp()
     {
-        $request = new Request();
+        $request = new ServerRequest();
         $response = new Response();
 
         $this->controller = $this->getMockBuilder('Cake\Controller\Controller')
@@ -65,8 +66,8 @@ class RememberMeAuthenticateTest extends TestCase
      */
     public function testAuthenticateHappy()
     {
-        $request = new Request('/');
-        $request->env('HTTP_USER_AGENT', 'user-agent');
+        $request = new ServerRequest('/');
+        $request = $request->env('HTTP_USER_AGENT', 'user-agent');
         $mockCookie = $this->getMockBuilder('Cake\Controller\Component\CookieComponent')
                 ->disableOriginalConstructor()
                 ->setMethods(['check', 'read'])
@@ -80,7 +81,7 @@ class RememberMeAuthenticateTest extends TestCase
                     'user_agent' => 'user-agent'
                 ]));
         $registry = new ComponentRegistry($this->controller);
-        $registry->set('Cookie', $mockCookie);
+        $this->controller->Cookie = $mockCookie;
         $this->rememberMe = new RememberMeAuthenticate($registry);
         $result = $this->rememberMe->authenticate($request, new Response());
         $this->assertEquals('user-1', $result['username']);
@@ -93,7 +94,7 @@ class RememberMeAuthenticateTest extends TestCase
      */
     public function testAuthenticateBadUser()
     {
-        $request = new Request('/');
+        $request = new ServerRequest('/');
         $request->env('HTTP_USER_AGENT', 'user-agent');
         $mockCookie = $this->getMockBuilder('Cake\Controller\Component\CookieComponent')
                 ->disableOriginalConstructor()
@@ -109,7 +110,7 @@ class RememberMeAuthenticateTest extends TestCase
                     'user_agent' => 'user-agent'
                 ]));
         $registry = new ComponentRegistry($this->controller);
-        $registry->set('Cookie', $mockCookie);
+        $this->controller->Cookie = $mockCookie;
         $this->rememberMe = new RememberMeAuthenticate($registry);
         $result = $this->rememberMe->authenticate($request, new Response());
         $this->assertFalse($result);
@@ -122,7 +123,7 @@ class RememberMeAuthenticateTest extends TestCase
      */
     public function testAuthenticateBadAgent()
     {
-        $request = new Request('/');
+        $request = new ServerRequest('/');
         $request->env('HTTP_USER_AGENT', 'user-agent');
         $mockCookie = $this->getMockBuilder('Cake\Controller\Component\CookieComponent')
                 ->disableOriginalConstructor()
@@ -137,7 +138,7 @@ class RememberMeAuthenticateTest extends TestCase
                     'user_agent' => 'bad-agent'
                 ]));
         $registry = new ComponentRegistry($this->controller);
-        $registry->set('Cookie', $mockCookie);
+        $this->controller->Cookie = $mockCookie;
         $this->rememberMe = new RememberMeAuthenticate($registry);
         $result = $this->rememberMe->authenticate($request, new Response());
         $this->assertFalse($result);
@@ -150,7 +151,7 @@ class RememberMeAuthenticateTest extends TestCase
      */
     public function testAuthenticateNoCookie()
     {
-        $request = new Request('/');
+        $request = new ServerRequest('/');
         $request->env('HTTP_USER_AGENT', 'user-agent');
         $mockCookie = $this->getMockBuilder('Cake\Controller\Component\CookieComponent')
                 ->disableOriginalConstructor()
@@ -163,7 +164,7 @@ class RememberMeAuthenticateTest extends TestCase
                 ->will($this->returnValue(null));
 
         $registry = new ComponentRegistry($this->controller);
-        $registry->set('Cookie', $mockCookie);
+        $this->controller->Cookie = $mockCookie;
         $this->rememberMe = new RememberMeAuthenticate($registry);
         $result = $this->rememberMe->authenticate($request, new Response());
         $this->assertFalse($result);

@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Test\TestCase\View\Helper;
 
+use Cake\Http\ServerRequest;
 use CakeDC\Users\View\Helper\UserHelper;
 use Cake\Core\App;
 use Cake\Core\Configure;
@@ -51,7 +52,7 @@ class UserHelperTest extends TestCase
             ->will($this->returnValue(true));
         $this->User = new UserHelper($this->View);
         $this->User->AuthLink = $this->AuthLink;
-        $this->request = new Request();
+        $this->request = new ServerRequest();
     }
 
     /**

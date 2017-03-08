@@ -11,6 +11,8 @@
 
 namespace CakeDC\Users\Test\TestCase\Auth;
 
+use Cake\Http\Server;
+use Cake\Http\ServerRequest;
 use CakeDC\Users\Auth\Rules\Rule;
 use CakeDC\Users\Auth\SimpleRbacAuthorize;
 use Cake\Controller\ComponentRegistry;
@@ -59,7 +61,7 @@ class SimpleRbacAuthorizeTest extends TestCase
      */
     public function setUp()
     {
-        $request = new Request();
+        $request = new ServerRequest();
         $response = new Response();
 
         $this->controller = $this->getMockBuilder('Cake\Controller\Controller')
@@ -1185,24 +1187,17 @@ class SimpleRbacAuthorizeTest extends TestCase
 
     /**
      * @param array $params
-     * @return \Cake\Network\Request
+     * @return ServerRequest
      */
     protected function _requestFromArray($params)
     {
-        $request = new Request();
-        $request->plugin = Hash::get($params, 'plugin');
-        $request->controller = $params['controller'];
-        $request->action = $params['action'];
-        $prefix = Hash::get($params, 'prefix');
-        $request->params = [];
-        if ($prefix) {
-            $request->params['prefix'] = $prefix;
-        }
-        $extension = Hash::get($params, '_ext');
-        if ($extension) {
-            $request->params['_ext'] = $extension;
-        }
+        $request = new ServerRequest();
 
-        return $request;
+        return $request
+            ->withParam('plugin', Hash::get($params, 'plugin'))
+            ->withParam('controller', Hash::get($params, 'controller'))
+            ->withParam('action', Hash::get($params, 'action'))
+            ->withParam('prefix', Hash::get($params, 'prefix'))
+            ->withParam('_ext', Hash::get($params, '_ext'));
     }
 }

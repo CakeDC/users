@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
+use Cake\Http\ServerRequest;
 use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Controller\Traits\LoginTrait;
 use CakeDC\Users\Exception\AccountNotActiveException;
@@ -36,7 +37,7 @@ class LoginTraitTest extends BaseTraitTest
         $this->traitMockMethods = ['dispatchEvent', 'isStopped', 'redirect', 'getUsersTable', 'set'];
 
         parent::setUp();
-        $request = new Request();
+        $request = new ServerRequest();
         $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\Traits\LoginTrait')
             ->setMethods(['dispatchEvent', 'redirect'])
             ->getMockForTrait();

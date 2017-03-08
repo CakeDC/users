@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Test\TestCase\Auth;
 
+use Cake\Http\ServerRequest;
 use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
@@ -41,7 +42,7 @@ class SocialAuthenticateTest extends TestCase
      */
     public function setUp()
     {
-        $request = new Request();
+        $request = new ServerRequest();
         $response = new Response();
 
         $this->Table = TableRegistry::get('CakeDC/Users.Users');

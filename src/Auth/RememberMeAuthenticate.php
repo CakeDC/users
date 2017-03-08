@@ -41,7 +41,7 @@ class RememberMeAuthenticate extends BaseAuthenticate
         $user = $this->_findUser($cookie['id']);
         if ($user &&
             !empty($cookie['user_agent']) &&
-            $request->getHeader('User-Agent') === $cookie['user_agent']
+            $request->getHeaderLine('User-Agent') === $cookie['user_agent']
         ) {
             return $user;
         }

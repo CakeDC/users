@@ -249,10 +249,11 @@ class UsersAuthComponentTest extends TestCase
             ->method('isAuthorized')
             ->with(null, $this->callback(function ($subject) {
                 return $subject->params === [
-                        'pass' => [],
                         'plugin' => 'CakeDC/Users',
                         'controller' => 'Users',
                         'action' => 'requestResetPassword',
+                        '_ext' => null,
+                        'pass' => [],
                         '_matchedRoute' => '/route/*',
                     ];
             }))
@@ -328,10 +329,11 @@ class UsersAuthComponentTest extends TestCase
             ->method('isAuthorized')
             ->with(null, $this->callback(function ($subject) {
                 return $subject->params === [
-                        'pass' => [],
                         'plugin' => 'CakeDC/Users',
                         'controller' => 'Users',
                         'action' => 'requestResetPassword',
+                        '_ext' => null,
+                        'pass' => [],
                         '_matchedRoute' => '/route/*',
                     ];
             }))
@@ -362,10 +364,11 @@ class UsersAuthComponentTest extends TestCase
             ->method('isAuthorized')
             ->with(null, $this->callback(function ($subject) {
                 return $subject->params === [
-                        'pass' => [],
                         'plugin' => 'CakeDC/Users',
                         'controller' => 'Users',
                         'action' => 'requestResetPassword',
+                        '_ext' => null,
+                        'pass' => [],
                         '_matchedRoute' => '/route/*',
                     ];
             }))
@@ -422,10 +425,11 @@ class UsersAuthComponentTest extends TestCase
             ->method('isAuthorized')
             ->with(null, $this->callback(function ($subject) {
                 return $subject->params === [
-                        'pass' => ['pass-one'],
                         'plugin' => 'CakeDC/Users',
                         'controller' => 'Users',
                         'action' => 'requestResetPassword',
+                        '_ext' => null,
+                        'pass' => ['pass-one'],
                         '_matchedRoute' => '/route/*',
                     ];
             }))

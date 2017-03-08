@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Test\TestCase\Auth;
 
+use Cake\Http\ServerRequest;
 use CakeDC\Users\Auth\SuperuserAuthorize;
 use Cake\Controller\ComponentRegistry;
 use Cake\Controller\Controller;
@@ -33,7 +34,7 @@ class SuperuserAuthorizeTest extends TestCase
      */
     public function setUp()
     {
-        $request = new Request();
+        $request = new ServerRequest();
         $response = new Response();
 
         $this->controller = $this->getMockBuilder('Cake\Controller\Controller')
@@ -61,7 +62,7 @@ class SuperuserAuthorizeTest extends TestCase
         $user = [
             'is_superuser' => true,
         ];
-        $request = new Request();
+        $request = new ServerRequest();
         $result = $this->superuserAuthorize->authorize($user, $request);
         $this->assertTrue($result);
     }
@@ -74,7 +75,7 @@ class SuperuserAuthorizeTest extends TestCase
         $user = [
             'is_superuser' => false,
         ];
-        $request = new Request();
+        $request = new ServerRequest();
         $result = $this->superuserAuthorize->authorize($user, $request);
         $this->assertFalse($result);
     }
@@ -84,7 +85,7 @@ class SuperuserAuthorizeTest extends TestCase
      */
     public function testAuthorizeWeirdUser()
     {
-        $request = new Request();
+        $request = new ServerRequest();
         $user = 'non array';
         $result = $this->superuserAuthorize->authorize($user, $request);
         $this->assertFalse($result);

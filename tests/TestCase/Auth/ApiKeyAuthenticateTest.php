@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Test\TestCase\Auth;
 
+use Cake\Http\ServerRequest;
 use CakeDC\Users\Auth\ApiKeyAuthenticate;
 use Cake\Controller\ComponentRegistry;
 use Cake\Core\Configure;
@@ -36,7 +37,7 @@ class ApiKeyAuthenticateTest extends TestCase
      */
     public function setUp()
     {
-        $request = new Request();
+        $request = new ServerRequest();
         $response = new Response();
 
         $controller = $this->getMockBuilder('Cake\Controller\Controller')
@@ -63,7 +64,7 @@ class ApiKeyAuthenticateTest extends TestCase
      */
     public function testAuthenticateHappy()
     {
-        $request = new Request('/?api_key=xxx');
+        $request = new ServerRequest('/?api_key=xxx');
         $result = $this->apiKey->authenticate($request, new Response());
         $this->assertEquals('user-2', $result['username']);
     }
@@ -75,19 +76,19 @@ class ApiKeyAuthenticateTest extends TestCase
      */
     public function testAuthenticateFail()
     {
-        $request = new Request('/');
+        $request = new ServerRequest('/');
         $result = $this->apiKey->authenticate($request, new Response());
         $this->assertFalse($result);
 
-        $request = new Request('/?api_key=none');
+        $request = new ServerRequest('/?api_key=none');
         $result = $this->apiKey->authenticate($request, new Response());
         $this->assertFalse($result);
 
-        $request = new Request('/?api_key=');
+        $request = new ServerRequest('/?api_key=');
         $result = $this->apiKey->authenticate($request, new Response());
         $this->assertFalse($result);
 
-        $request = new Request('/?api_key=yyy');
+        $request = new ServerRequest('/?api_key=yyy');
         $result = $this->apiKey->authenticate($request, new Response());
         $this->assertFalse($result);
     }
@@ -102,7 +103,7 @@ class ApiKeyAuthenticateTest extends TestCase
     public function testAuthenticateWrongType()
     {
         $this->apiKey->config('type', 'wrong');
-        $request = new Request('/');
+        $request = new ServerRequest('/');
         $this->apiKey->authenticate($request, new Response());
     }
 
@@ -116,7 +117,7 @@ class ApiKeyAuthenticateTest extends TestCase
     public function testAuthenticateRequireSSL()
     {
         $this->apiKey->config('require_ssl', true);
-        $request = new Request('/?api_key=test');
+        $request = new ServerRequest('/?api_key=test');
         $this->apiKey->authenticate($request, new Response());
     }
 
@@ -127,7 +128,7 @@ class ApiKeyAuthenticateTest extends TestCase
     public function testAuthenticateRequireSSLNoKey()
     {
         $this->apiKey->config('require_ssl', true);
-        $request = new Request('/');
+        $request = new ServerRequest('/');
         $this->assertFalse($this->apiKey->authenticate($request, new Response()));
     }
 
@@ -138,14 +139,18 @@ class ApiKeyAuthenticateTest extends TestCase
      */
     public function testHeaderHappy()
     {
-        $request = $this->getMockBuilder('\Cake\Network\Request')
-            ->setMethods(['header'])
+        $request = $this->getMockBuilder('\Cake\Http\ServerRequest')
+            ->setMethods(['getHeader', 'getHeaderLine'])
             ->getMock();
-        $request->expects($this->once())
-            ->method('header')
+        $request->expects($this->at(0))
+            ->method('getHeader')
+            ->with('api_key')
+            ->will($this->returnValue(['xxx']));
+        $request->expects($this->at(1))
+            ->method('getHeaderLine')
             ->with('api_key')
             ->will($this->returnValue('xxx'));
-        $this->apiKey->config('type', 'header');
+        $this->apiKey->setConfig('type', 'header');
         $result = $this->apiKey->authenticate($request, new Response());
         $this->assertEquals('user-2', $result['username']);
     }
@@ -157,14 +162,37 @@ class ApiKeyAuthenticateTest extends TestCase
      */
     public function testAuthenticateHeaderFail()
     {
-        $request = $this->getMockBuilder('\Cake\Network\Request')
-            ->setMethods(['header'])
+        $request = $this->getMockBuilder('\Cake\Http\ServerRequest')
+            ->setMethods(['getHeader', 'getHeaderLine'])
             ->getMock();
-        $request->expects($this->once())
-            ->method('header')
+        $request->expects($this->at(0))
+            ->method('getHeader')
+            ->with('api_key')
+            ->will($this->returnValue(['wrong']));
+        $request->expects($this->at(1))
+            ->method('getHeaderLine')
             ->with('api_key')
             ->will($this->returnValue('wrong'));
-        $this->apiKey->config('type', 'header');
+        $this->apiKey->setConfig('type', 'header');
+        $result = $this->apiKey->authenticate($request, new Response());
+        $this->assertFalse($result);
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testAuthenticateHeaderNotPresent()
+    {
+        $request = $this->getMockBuilder('\Cake\Http\ServerRequest')
+            ->setMethods(['getHeader'])
+            ->getMock();
+        $request->expects($this->once())
+            ->method('getHeader')
+            ->with('api_key')
+            ->will($this->returnValue([]));
+        $this->apiKey->setConfig('type', 'header');
         $result = $this->apiKey->authenticate($request, new Response());
         $this->assertFalse($result);
     }
@@ -178,8 +206,8 @@ class ApiKeyAuthenticateTest extends TestCase
      */
     public function testAuthenticateFinderConfig()
     {
-        $this->apiKey->config('finder', 'undefinedInConfig');
-        $request = new Request('/?api_key=xxx');
+        $this->apiKey->setConfig('finder', 'undefinedInConfig');
+        $request = new ServerRequest('/?api_key=xxx');
         $result = $this->apiKey->authenticate($request, new Response());
     }
 
@@ -193,7 +221,7 @@ class ApiKeyAuthenticateTest extends TestCase
     public function testAuthenticateFinderAuthConfig()
     {
         Configure::write('Auth.authenticate.all.finder', 'undefinedFinderInAuth');
-        $request = new Request('/?api_key=xxx');
+        $request = new ServerRequest('/?api_key=xxx');
         $result = $this->apiKey->authenticate($request, new Response());
     }
 
@@ -205,7 +233,7 @@ class ApiKeyAuthenticateTest extends TestCase
     public function testAuthenticateDefaultAllFinder()
     {
         Configure::write('Auth.authenticate.all.finder', null);
-        $request = new Request('/?api_key=yyy');
+        $request = new ServerRequest('/?api_key=yyy');
         $result = $this->apiKey->authenticate($request, new Response());
         $this->assertEquals('user-1', $result['username']);
     }

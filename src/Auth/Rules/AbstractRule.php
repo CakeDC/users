@@ -72,7 +72,7 @@ abstract class AbstractRule implements Rule
     protected function _getTableFromRequest(ServerRequest $request)
     {
         $plugin = $request->getParam('plugin');
-        $controller = $request->getParams('controller');
+        $controller = $request->getParam('controller');
         $modelClass = ($plugin ? $plugin . '.' : '') . $controller;
 
         $this->modelFactory('Table', [$this->tableLocator(), 'get']);

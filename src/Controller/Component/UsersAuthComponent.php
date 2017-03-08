@@ -67,7 +67,7 @@ class UsersAuthComponent extends Component
      */
     protected function _loadGoogleAuthenticator()
     {
-        $this->_registry->getController()->loadComponent('CakeDC/Users.GoogleAuthenticator');
+        $this->getController()->loadComponent('CakeDC/Users.GoogleAuthenticator');
     }
 
     /**
@@ -77,7 +77,7 @@ class UsersAuthComponent extends Component
      */
     protected function _loadSocialLogin()
     {
-        $this->_registry->getController()->Auth->config('authenticate', [
+        $this->getController()->Auth->config('authenticate', [
             'CakeDC/Users.Social'
         ], true);
     }
@@ -89,7 +89,7 @@ class UsersAuthComponent extends Component
      */
     protected function _loadRememberMe()
     {
-        $this->_registry->getController()->loadComponent('CakeDC/Users.RememberMe');
+        $this->getController()->loadComponent('CakeDC/Users.RememberMe');
     }
 
     /**
@@ -111,14 +111,14 @@ class UsersAuthComponent extends Component
     {
         if (Configure::read('Users.auth')) {
             //initialize Auth
-            $this->_registry->getController()->loadComponent('Auth', Configure::read('Auth'));
+            $this->getController()->loadComponent('Auth', Configure::read('Auth'));
         }
 
         list($plugin, $controller) = pluginSplit(Configure::read('Users.controller'));
         if ($this->request->param('plugin') === $plugin &&
             $this->request->param('controller') === $controller
         ) {
-            $this->_registry->getController()->Auth->allow([
+            $this->getController()->Auth->allow([
                 // LoginTrait
                 'twitterLogin',
                 'login',
@@ -178,15 +178,15 @@ class UsersAuthComponent extends Component
         }
 
         // check we are logged in
-        $user = $this->_registry->getController()->Auth->user();
+        $user = $this->getController()->Auth->user();
         if (empty($user)) {
             return false;
         }
 
-        $request = new Request($requestUrl);
-        $request->params = $requestParams;
+        $request = new ServerRequest($requestUrl);
+        $request = $request->addParams($requestParams);
 
-        $isAuthorized = $this->_registry->getController()->Auth->isAuthorized(null, $request);
+        $isAuthorized = $this->getController()->Auth->isAuthorized(null, $request);
 
         return $isAuthorized;
     }
@@ -216,7 +216,7 @@ class UsersAuthComponent extends Component
             return false;
         }
         $action = strtolower($requestParams['action']);
-        if (in_array($action, array_map('strtolower', $this->_registry->getController()->Auth->allowedActions))) {
+        if (in_array($action, array_map('strtolower', $this->getController()->Auth->allowedActions))) {
             return true;
         }
 

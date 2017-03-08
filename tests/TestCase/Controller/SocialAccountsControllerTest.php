@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Test\TestCase\Controller;
 
+use Cake\Http\ServerRequest;
 use CakeDC\Users\Controller\SocialAccountsController;
 use CakeDC\Users\Model\Behavior\SocialAccountBehavior;
 use CakeDC\Users\Model\Table\SocialAccountsTable;
@@ -55,7 +56,7 @@ class SocialAccountsControllerTest extends TestCase
             'from' => 'cakedc@example.com'
         ]);
 
-        $request = new Request('/users/users/index');
+        $request = new ServerRequest('/users/users/index');
         $request->params['plugin'] = 'CakeDC/Users';
 
         $this->Controller = $this->getMockBuilder('CakeDC\Users\Controller\SocialAccountsController')

@@ -77,7 +77,7 @@ class RememberMeComponent extends Component
      */
     protected function _attachEvents()
     {
-        $eventManager = $this->_registry->getController()->eventManager();
+        $eventManager = $this->getController()->eventManager();
         $eventManager->on(UsersAuthComponent::EVENT_AFTER_LOGIN, [], [$this, 'setLoginCookie']);
         $eventManager->on(UsersAuthComponent::EVENT_BEFORE_LOGOUT, [], [$this, 'destroy']);
     }
@@ -141,12 +141,12 @@ class RememberMeComponent extends Component
             return;
         }
         $this->Auth->setUser($user);
-        $event = $this->_registry->getController()->dispatchEvent(UsersAuthComponent::EVENT_AFTER_COOKIE_LOGIN);
+        $event = $this->getController()->dispatchEvent(UsersAuthComponent::EVENT_AFTER_COOKIE_LOGIN);
         if (is_array($event->result)) {
-            return $this->_registry->getController()->redirect($event->result);
+            return $this->getController()->redirect($event->result);
         }
         $url = $this->request->here(false);
 
-        return $this->_registry->getController()->redirect($url);
+        return $this->getController()->redirect($url);
     }
 }

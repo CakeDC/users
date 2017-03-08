@@ -10,13 +10,14 @@
  */
 namespace CakeDC\Users\Auth\Rules;
 
+use Cake\Http\ServerRequest;
 use Cake\Network\Request;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
  * @property Owner Owner
- * @property Request request
+ * @property ServerRequest request
  */
 class OwnerTest extends TestCase
 {
@@ -34,8 +35,7 @@ class OwnerTest extends TestCase
     public function setUp()
     {
         $this->Owner = new Owner();
-        $this->request = $this->getMockBuilder('\Cake\Network\Request')
-            ->getMock();
+        $this->request = new ServerRequest();
     }
 
     /**
@@ -54,11 +54,10 @@ class OwnerTest extends TestCase
      */
     public function testAllowed()
     {
-        $this->request->params = [
-            'plugin' => 'CakeDC/Users',
-            'controller' => 'Posts',
-            'pass' => ['00000000-0000-0000-0000-000000000001']
-        ];
+        $this->request = $this->request
+            ->withParam('plugin', 'CakeDC/Users')
+            ->withParam('controller', 'Posts')
+            ->withParam('pass', ['00000000-0000-0000-0000-000000000001']);
         $user = [
             'id' => '00000000-0000-0000-0000-000000000001',
         ];
@@ -75,9 +74,7 @@ class OwnerTest extends TestCase
         $this->Owner = new Owner([
             'table' => 'Posts'
         ]);
-        $this->request->params = [
-            'pass' => ['00000000-0000-0000-0000-000000000001']
-        ];
+        $this->request = $this->request->withParam('pass', ['00000000-0000-0000-0000-000000000001']);
         $user = [
             'id' => '00000000-0000-0000-0000-000000000001',
         ];
@@ -94,9 +91,7 @@ class OwnerTest extends TestCase
         $this->Owner = new Owner([
             'table' => TableRegistry::get('CakeDC/Users.Posts'),
         ]);
-        $this->request->params = [
-            'pass' => ['00000000-0000-0000-0000-000000000001']
-        ];
+        $this->request = $this->request->withParam('pass', ['00000000-0000-0000-0000-000000000001']);
         $user = [
             'id' => '00000000-0000-0000-0000-000000000001',
         ];
@@ -108,13 +103,11 @@ class OwnerTest extends TestCase
      *
      * @return void
      * @expectedException \OutOfBoundsException
-     * @expectedExceptionMessage Table alias is empty, please define a table alias, we could not extract a default table from the request
+     * @expectedExceptionMessage Missing Table alias, we could not extract a default table from the request
      */
     public function testAllowedShouldThrowExceptionBecauseEmptyAliasFromRequest()
     {
-        $this->request->params = [
-            'pass' => ['00000000-0000-0000-0000-000000000001']
-        ];
+        $this->request = $this->request->withParam('pass', ['00000000-0000-0000-0000-000000000001']);
         $user = [
             'id' => '00000000-0000-0000-0000-000000000001',
         ];
@@ -134,9 +127,7 @@ class OwnerTest extends TestCase
             'table' => TableRegistry::get('CakeDC/Users.Posts'),
             'ownerForeignKey' => 'column_not_found',
         ]);
-        $this->request->params = [
-            'pass' => ['00000000-0000-0000-0000-000000000001']
-        ];
+        $this->request = $this->request->withParam('pass', ['00000000-0000-0000-0000-000000000001']);
         $user = [
             'id' => '00000000-0000-0000-0000-000000000001',
         ];
@@ -150,11 +141,11 @@ class OwnerTest extends TestCase
      */
     public function testNotAllowedBecauseNotOwner()
     {
-        $this->request->params = [
+        $this->request = $this->request->addParams([
             'plugin' => 'CakeDC/Users',
             'controller' => 'Posts',
             'pass' => ['00000000-0000-0000-0000-000000000002']
-        ];
+        ]);
         $user = [
             'id' => '00000000-0000-0000-0000-000000000001',
         ];
@@ -168,11 +159,11 @@ class OwnerTest extends TestCase
      */
     public function testNotAllowedBecauseUserNotFound()
     {
-        $this->request->params = [
+        $this->request = $this->request->addParams([
             'plugin' => 'CakeDC/Users',
             'controller' => 'Posts',
             'pass' => ['00000000-0000-0000-0000-000000000002']
-        ];
+        ]);
         $user = [
             'id' => '99999999-0000-0000-0000-000000000000',
         ];
@@ -186,11 +177,11 @@ class OwnerTest extends TestCase
      */
     public function testNotAllowedBecausePostNotFound()
     {
-        $this->request->params = [
+        $this->request = $this->request->addParams([
             'plugin' => 'CakeDC/Users',
             'controller' => 'Posts',
             'pass' => ['99999999-0000-0000-0000-000000000000'] //not found
-        ];
+        ]);
         $user = [
             'id' => '00000000-0000-0000-0000-000000000001',
         ];
@@ -206,11 +197,11 @@ class OwnerTest extends TestCase
      */
     public function testNotAllowedBecauseNoDefaultTable()
     {
-        $this->request->params = [
+        $this->request = $this->request->addParams([
             'plugin' => 'CakeDC/Users',
             'controller' => 'NoDefaultTable',
             'pass' => ['00000000-0000-0000-0000-000000000001']
-        ];
+        ]);
         $user = [
             'id' => '00000000-0000-0000-0000-000000000001',
         ];
@@ -228,11 +219,11 @@ class OwnerTest extends TestCase
             'table' => 'PostsUsers',
             'id' => 'post_id',
         ]);
-        $this->request->params = [
+        $this->request = $this->request->addParams([
             'plugin' => 'CakeDC/Users',
             'controller' => 'IsNotUsed',
             'pass' => ['00000000-0000-0000-0000-000000000001']
-        ];
+        ]);
         $user = [
             'id' => '00000000-0000-0000-0000-000000000001',
         ];
@@ -250,11 +241,11 @@ class OwnerTest extends TestCase
             'table' => 'PostsUsers',
             'id' => 'post_id',
         ]);
-        $this->request->params = [
+        $this->request = $this->request->addParams([
             'plugin' => 'CakeDC/Users',
             'controller' => 'IsNotUsed',
             'pass' => ['00000000-0000-0000-0000-000000000002']
-        ];
+        ]);
         $user = [
             'id' => '00000000-0000-0000-0000-000000000001',
         ];
