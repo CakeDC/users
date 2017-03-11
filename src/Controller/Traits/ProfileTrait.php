@@ -19,6 +19,7 @@ use Cake\Datasource\Exception\RecordNotFoundException;
 /**
  * Covers the profile action
  *
+ * @property \Cake\Http\ServerRequest $request
  */
 trait ProfileTrait
 {

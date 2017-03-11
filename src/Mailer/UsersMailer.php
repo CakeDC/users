@@ -36,9 +36,9 @@ class UsersMailer extends Mailer
 
         $this
             ->to($user['email'])
-            ->subject($firstName . $subject)
-            ->viewVars($user->toArray())
-            ->template($template);
+            ->setSubject($firstName . $subject)
+            ->setViewVars($user->toArray())
+            ->setTemplate($template);
     }
 
     /**
@@ -57,9 +57,9 @@ class UsersMailer extends Mailer
 
         $this
             ->to($user['email'])
-            ->subject($subject)
-            ->viewVars($user->toArray())
-            ->template($template);
+            ->setSubject($subject)
+            ->setViewVars($user->toArray())
+            ->setTemplate($template);
     }
 
     /**
@@ -71,15 +71,18 @@ class UsersMailer extends Mailer
      *
      * @return array email send result
      */
-    protected function socialAccountValidation(EntityInterface $user, EntityInterface $socialAccount, $template = 'CakeDC/Users.social_account_validation')
-    {
+    protected function socialAccountValidation(
+        EntityInterface $user,
+        EntityInterface $socialAccount,
+        $template = 'CakeDC/Users.social_account_validation'
+    ) {
         $firstName = isset($user['first_name'])? $user['first_name'] . ', ' : '';
         //note: we control the space after the username in the previous line
         $subject = __d('CakeDC/Users', '{0}Your social account validation link', $firstName);
         $this
             ->to($user['email'])
-            ->subject($subject)
-            ->viewVars(compact('user', 'socialAccount'))
-            ->template($template);
+            ->setSubject($subject)
+            ->setViewVars(compact('user', 'socialAccount'))
+            ->setTemplate($template);
     }
 }

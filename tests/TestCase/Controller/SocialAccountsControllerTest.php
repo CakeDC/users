@@ -47,17 +47,17 @@ class SocialAccountsControllerTest extends TestCase
         Configure::write('Opauth', null);
         Configure::write('Users.RememberMe.active', false);
 
-        Email::configTransport('test', [
+        Email::setConfigTransport('test', [
             'className' => 'Debug'
         ]);
-        $this->configEmail = Email::config('default');
-        Email::config('default', [
+        $this->configEmail = Email::getConfig('default');
+        Email::setConfig('default', [
             'transport' => 'test',
             'from' => 'cakedc@example.com'
         ]);
 
         $request = new ServerRequest('/users/users/index');
-        $request->params['plugin'] = 'CakeDC/Users';
+        $request = $request->withParam('plugin', 'CakeDC/Users');
 
         $this->Controller = $this->getMockBuilder('CakeDC\Users\Controller\SocialAccountsController')
                 ->setMethods(['redirect', 'render'])
@@ -77,7 +77,7 @@ class SocialAccountsControllerTest extends TestCase
     {
         Email::drop('default');
         Email::dropTransport('test');
-        Email::config('default', $this->configEmail);
+        //Email::setConfig('default', $this->configEmail);
 
         Configure::write('Opauth', $this->configOpauth);
         Configure::write('Users.RememberMe.active', $this->configRememberMe);

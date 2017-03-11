@@ -55,7 +55,11 @@ class UserHelper extends Helper
             $providerTitle = __d('CakeDC/Users', '{0} {1}', Hash::get($options, 'label'), Inflector::camelize($name));
         }
 
-        $providerClass = __d('CakeDC/Users', 'btn btn-social btn-{0} ' . Hash::get($options, 'class') ?: '', strtolower($name));
+        $providerClass = __d(
+            'CakeDC/Users',
+            'btn btn-social btn-{0} ' . Hash::get($options, 'class') ?: '',
+            strtolower($name)
+        );
 
         return $this->Html->link($icon . $providerTitle, "/auth/$name", [
             'escape' => false, 'class' => $providerClass

@@ -16,6 +16,7 @@ use Cake\Core\Configure;
 /**
  * Covers registration features and email token validation
  *
+ * @property \Cake\Http\ServerRequest $request
  */
 trait ReCaptchaTrait
 {
@@ -42,7 +43,7 @@ trait ReCaptchaTrait
     /**
      * Create reCaptcha instance if enabled in configuration
      *
-     * @return ReCaptcha
+     * @return \ReCaptcha\ReCaptcha
      */
     protected function _getReCaptchaInstance()
     {

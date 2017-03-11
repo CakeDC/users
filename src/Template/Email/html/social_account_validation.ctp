@@ -11,25 +11,29 @@
 ?>
 
 <p>
-<?= __d('CakeDC/Users', "Hi {0}", $user['first_name']) ?>,
+    <?= __d('CakeDC/Users', "Hi {0}", $user['first_name']) ?>,
 </p>
 <p>
     <strong><?php
-    $text = __d('CakeDC/Users', 'Activate your social login here');
-    $activationUrl = [
-        '_full' => true,
-        'plugin' => 'CakeDC/Users',
-        'controller' => 'SocialAccounts',
-        'action' => 'validateAccount',
-        $socialAccount['provider'],
-        $socialAccount['reference'],
-        $socialAccount['token'],
-    ];
-    echo $this->Html->link($text, $activationUrl);
-    ?></strong>
+        $text = __d('CakeDC/Users', 'Activate your social login here');
+        $activationUrl = [
+            '_full' => true,
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'SocialAccounts',
+            'action' => 'validateAccount',
+            $socialAccount['provider'],
+            $socialAccount['reference'],
+            $socialAccount['token'],
+        ];
+        echo $this->Html->link($text, $activationUrl);
+        ?></strong>
 </p>
 <p>
-    <?= __d('CakeDC/Users', "If the link is not correctly displayed, please copy the following address in your web browser {0}", $this->Url->build($activationUrl)) ?>
+<?= __d(
+    'CakeDC/Users',
+    "If the link is not correctly displayed, please copy the following address in your web browser {0}",
+    $this->Url->build($activationUrl)
+) ?>
 </p>
 <p>
     <?= __d('CakeDC/Users', 'Thank you') ?>,

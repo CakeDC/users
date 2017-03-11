@@ -14,6 +14,7 @@ namespace CakeDC\Users\Model\Behavior;
 use ArrayObject;
 use CakeDC\Users\Email\EmailSender;
 use CakeDC\Users\Exception\AccountAlreadyActiveException;
+use CakeDC\Users\Model\Entity\SocialAccount;
 use CakeDC\Users\Model\Entity\User;
 use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
@@ -72,10 +73,13 @@ class SocialAccountBehavior extends Behavior
      * @param EntityInterface $socialAccount social account
      * @param EntityInterface $user user
      * @param Email $email Email instance or null to use 'default' configuration
-     * @return mixed
+     * @return void
      */
-    public function sendSocialValidationEmail(EntityInterface $socialAccount, EntityInterface $user, Email $email = null)
-    {
+    public function sendSocialValidationEmail(
+        EntityInterface $socialAccount,
+        EntityInterface $user,
+        Email $email = null
+    ) {
         $this->Email = new EmailSender();
         $this->Email->sendSocialValidationEmail($socialAccount, $user, $email);
     }
@@ -138,7 +142,7 @@ class SocialAccountBehavior extends Behavior
     /**
      * Activates an account
      *
-     * @param Account $socialAccount social account
+     * @param SocialAccount $socialAccount social account
      * @return EntityInterface
      */
     protected function _activateAccount($socialAccount)

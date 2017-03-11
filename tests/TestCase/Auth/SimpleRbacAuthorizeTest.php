@@ -87,7 +87,7 @@ class SimpleRbacAuthorizeTest extends TestCase
     {
         //don't autoload config
         $this->simpleRbacAuthorize = new SimpleRbacAuthorize($this->registry, ['autoload_config' => false]);
-        $this->assertEmpty($this->simpleRbacAuthorize->config('permissions'));
+        $this->assertEmpty($this->simpleRbacAuthorize->getConfig('permissions'));
     }
 
     /**
@@ -117,7 +117,7 @@ class SimpleRbacAuthorizeTest extends TestCase
             ->setConstructorArgs([$this->registry, ['autoload_config' => 'does-not-exist']])
             ->getMock();
         //we should have the default permissions
-        $this->assertEquals($this->defaultPermissions, $this->simpleRbacAuthorize->config('permissions'));
+        $this->assertEquals($this->defaultPermissions, $this->simpleRbacAuthorize->getConfig('permissions'));
     }
 
     protected function assertConstructorPermissions($instance, $config, $permissions)
@@ -127,7 +127,7 @@ class SimpleRbacAuthorizeTest extends TestCase
         $constructor->invoke($this->simpleRbacAuthorize, $this->registry, $config);
 
         //we should have the default permissions
-        $resultPermissions = $this->simpleRbacAuthorize->config('permissions');
+        $resultPermissions = $this->simpleRbacAuthorize->getConfig('permissions');
         $this->assertEquals($permissions, $resultPermissions);
     }
 

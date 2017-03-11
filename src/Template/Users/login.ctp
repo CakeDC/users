@@ -31,18 +31,18 @@ use Cake\Core\Configure;
             ]);
         }
         ?>
-            <?php
-            $registrationActive = Configure::read('Users.Registration.active');
+        <?php
+        $registrationActive = Configure::read('Users.Registration.active');
+        if ($registrationActive) {
+            echo $this->Html->link(__d('CakeDC/Users', 'Register'), ['action' => 'register']);
+        }
+        if (Configure::read('Users.Email.required')) {
             if ($registrationActive) {
-                echo $this->Html->link(__d('CakeDC/Users', 'Register'), ['action' => 'register']);
+                echo ' | ';
             }
-            if (Configure::read('Users.Email.required')) {
-                if ($registrationActive) {
-                    echo ' | ';
-                }
-                echo $this->Html->link(__d('CakeDC/Users', 'Reset Password'), ['action' => 'requestResetPassword']);
-            }
-            ?>
+            echo $this->Html->link(__d('CakeDC/Users', 'Reset Password'), ['action' => 'requestResetPassword']);
+        }
+        ?>
     </fieldset>
     <?= implode(' ', $this->User->socialLoginList()); ?>
     <?= $this->Form->button(__d('CakeDC/Users', 'Login')); ?>

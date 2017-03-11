@@ -17,6 +17,7 @@ use Cake\Network\Exception\NotFoundException;
 /**
  * Covers registration features and email token validation
  *
+ * @property \Cake\Http\ServerRequest $request
  */
 trait SocialTrait
 {
@@ -24,7 +25,7 @@ trait SocialTrait
      * Render the social email form
      *
      * @throws NotFoundException
-     * @return void
+     * @return mixed
      */
     public function socialEmail()
     {

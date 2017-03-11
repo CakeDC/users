@@ -5,9 +5,9 @@
         <legend><?= __d('CakeDC/Users', 'Please enter the new password') ?></legend>
         <?php if ($validatePassword) : ?>
             <?= $this->Form->input('current_password', [
-                    'type' => 'password',
-                    'required' => true,
-                    'label' => __d('CakeDC/Users', 'Current password')]);
+                'type' => 'password',
+                'required' => true,
+                'label' => __d('CakeDC/Users', 'Current password')]);
             ?>
         <?php endif; ?>
         <?= $this->Form->input('password', [

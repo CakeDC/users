@@ -133,7 +133,7 @@ class UserValidationTraitTest extends BaseTraitTest
         $this->_mockRequestPost();
         $this->_mockFlash();
         $this->Trait->request->expects($this->once())
-                ->method('data')
+                ->method('getData')
                 ->with('reference')
                 ->will($this->returnValue('user-3'));
 
@@ -156,7 +156,7 @@ class UserValidationTraitTest extends BaseTraitTest
         $this->_mockRequestPost();
         $this->_mockFlash();
         $this->Trait->request->expects($this->once())
-                ->method('data')
+                ->method('getData')
                 ->with('reference')
                 ->will($this->returnValue('user-4'));
 
@@ -179,7 +179,7 @@ class UserValidationTraitTest extends BaseTraitTest
         $this->_mockRequestPost();
         $this->_mockFlash();
         $this->Trait->request->expects($this->once())
-                ->method('data')
+                ->method('getData')
                 ->with('reference')
                 ->will($this->returnValue('not-found'));
 

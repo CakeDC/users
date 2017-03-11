@@ -39,12 +39,12 @@ class UsersMailerTest extends TestCase
     {
         parent::setUp();
         $this->Email = $this->getMockBuilder('Cake\Mailer\Email')
-            ->setMethods(['to', 'subject', 'viewVars', 'template'])
+            ->setMethods(['to', 'setSubject', 'setViewVars', 'setTemplate'])
             ->getMock();
 
         $this->UsersMailer = $this->getMockBuilder('CakeDC\Users\Mailer\UsersMailer')
             ->setConstructorArgs([$this->Email])
-            ->setMethods(['to', 'subject', 'viewVars', 'template'])
+            ->setMethods(['to', 'setSubject', 'setViewVars', 'setTemplate'])
             ->getMock();
     }
 
@@ -80,17 +80,17 @@ class UsersMailerTest extends TestCase
             ->will($this->returnValue($this->Email));
 
         $this->Email->expects($this->once())
-            ->method('subject')
+            ->method('setSubject')
             ->with('FirstName, Validate your Account')
             ->will($this->returnValue($this->Email));
 
         $this->Email->expects($this->once())
-            ->method('viewVars')
+            ->method('setViewVars')
             ->with($data)
             ->will($this->returnValue($this->Email));
 
         $this->Email->expects($this->once())
-            ->method('template')
+            ->method('setTemplate')
             ->with('CakeDC/Users.validation')
             ->will($this->returnValue($this->Email));
 
@@ -117,17 +117,17 @@ class UsersMailerTest extends TestCase
             ->will($this->returnValue($this->Email));
 
         $this->Email->expects($this->once())
-            ->method('subject')
+            ->method('setSubject')
             ->with('FirstName, Validate your Account')
             ->will($this->returnValue($this->Email));
 
         $this->Email->expects($this->once())
-            ->method('viewVars')
+            ->method('setViewVars')
             ->with($data)
             ->will($this->returnValue($this->Email));
 
         $this->Email->expects($this->once())
-            ->method('template')
+            ->method('setTemplate')
             ->with('myTemplate')
             ->will($this->returnValue($this->Email));
 
@@ -150,12 +150,12 @@ class UsersMailerTest extends TestCase
             ->will($this->returnValue($this->Email));
 
         $this->Email->expects($this->once())
-            ->method('subject')
+            ->method('setSubject')
             ->with('first1, Your social account validation link')
             ->will($this->returnValue($this->Email));
 
         $this->Email->expects($this->once())
-            ->method('viewVars')
+            ->method('setViewVars')
             ->with(['user' => $social->user, 'socialAccount' => $social])
             ->will($this->returnValue($this->Email));
 
@@ -182,17 +182,17 @@ class UsersMailerTest extends TestCase
             ->will($this->returnValue($this->Email));
 
         $this->Email->expects($this->once())
-            ->method('subject')
+            ->method('setSubject')
             ->with('FirstName, Your reset password link')
             ->will($this->returnValue($this->Email));
 
         $this->Email->expects($this->once())
-            ->method('viewVars')
+            ->method('setViewVars')
             ->with($data)
             ->will($this->returnValue($this->Email));
 
         $this->Email->expects($this->once())
-            ->method('template')
+            ->method('setTemplate')
             ->with('myTemplate')
             ->will($this->returnValue($this->Email));
 

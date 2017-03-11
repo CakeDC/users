@@ -21,6 +21,7 @@ use Exception;
 /**
  * Covers the user validation
  *
+ * @property \Cake\Http\ServerRequest $request
  */
 trait UserValidationTrait
 {
@@ -51,7 +52,10 @@ trait UserValidationTrait
                     $result = $this->getUsersTable()->validate($token);
                     if (!empty($result)) {
                         $this->Flash->success(__d('CakeDC/Users', 'Reset password token was validated successfully'));
-                        $this->request->session()->write(Configure::read('Users.Key.Session.resetPasswordUserId'), $result->id);
+                        $this->request->session()->write(
+                            Configure::read('Users.Key.Session.resetPasswordUserId'),
+                            $result->id
+                        );
 
                         return $this->redirect(['action' => 'changePassword']);
                     } else {
@@ -82,7 +86,7 @@ trait UserValidationTrait
         if (!$this->request->is('post')) {
             return;
         }
-        $reference = $this->request->data('reference');
+        $reference = $this->request->getData('reference');
         try {
             if ($this->getUsersTable()->resetToken($reference, [
                 'expiration' => Configure::read('Users.Token.expiration'),
@@ -90,7 +94,10 @@ trait UserValidationTrait
                 'sendEmail' => true,
                 'emailTemplate' => 'CakeDC/Users.validation'
             ])) {
-                $this->Flash->success(__d('CakeDC/Users', 'Token has been reset successfully. Please check your email.'));
+                $this->Flash->success(__d(
+                    'CakeDC/Users',
+                    'Token has been reset successfully. Please check your email.'
+                ));
             } else {
                 $this->Flash->error(__d('CakeDC/Users', 'Token could not be reset'));
             }

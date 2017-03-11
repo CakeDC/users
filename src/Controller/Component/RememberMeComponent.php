@@ -105,7 +105,7 @@ class RememberMeComponent extends Component
         if (empty($user)) {
             return;
         }
-        $user['user_agent'] = $this->request->header('User-Agent');
+        $user['user_agent'] = $this->getController()->request->getHeaderLine('User-Agent');
         $this->Cookie->write($this->_cookieName, $user);
     }
 
@@ -131,12 +131,16 @@ class RememberMeComponent extends Component
     public function beforeFilter(Event $event)
     {
         $user = $this->Auth->user();
-        if (!empty($user) || $this->request->is(['post', 'put']) || $this->request->action === 'logout' || $this->request->session()->check(Configure::read('Users.Key.Session.social')) || $this->request->param('provider')) {
+        if (!empty($user) ||
+            $this->getController()->request->is(['post', 'put']) ||
+            $this->getController()->request->getParam('action') === 'logout' ||
+            $this->getController()->request->session()->check(Configure::read('Users.Key.Session.social')) ||
+            $this->getController()->request->getParam('provider')) {
             return;
         }
 
         $user = $this->Auth->identify();
-        //No user no cookies
+        // No user no cookies
         if (empty($user)) {
             return;
         }
@@ -145,7 +149,7 @@ class RememberMeComponent extends Component
         if (is_array($event->result)) {
             return $this->getController()->redirect($event->result);
         }
-        $url = $this->request->here(false);
+        $url = $this->getController()->request->getRequestTarget();
 
         return $this->getController()->redirect($url);
     }

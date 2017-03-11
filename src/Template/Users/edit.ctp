@@ -32,43 +32,46 @@ $Users = ${$tableAlias};
     <fieldset>
         <legend><?= __d('CakeDC/Users', 'Edit User') ?></legend>
         <?php
-            echo $this->Form->input('username', ['label' => __d('CakeDC/Users', 'Username')]);
-            echo $this->Form->input('email', ['label' => __d('CakeDC/Users', 'Email')]);
-            echo $this->Form->input('first_name', ['label' => __d('CakeDC/Users', 'First name')]);
-            echo $this->Form->input('last_name', ['label' => __d('CakeDC/Users', 'Last name')]);
-            echo $this->Form->input('token', ['label' => __d('CakeDC/Users', 'Token')]);
-            echo $this->Form->input('token_expires', [
-                'label' => __d('CakeDC/Users', 'Token expires')
-            ]);
-            echo $this->Form->input('api_token', [
-                'label' => __d('CakeDC/Users', 'API token')
-            ]);
-            echo $this->Form->input('activation_date', [
-                'label' => __d('CakeDC/Users', 'Activation date')
-            ]);
-            echo $this->Form->input('tos_date', [
-                'label' => __d('CakeDC/Users', 'TOS date')
-            ]);
-            echo $this->Form->input('active', [
-                'label' => __d('CakeDC/Users', 'Active')
-            ]);
+        echo $this->Form->input('username', ['label' => __d('CakeDC/Users', 'Username')]);
+        echo $this->Form->input('email', ['label' => __d('CakeDC/Users', 'Email')]);
+        echo $this->Form->input('first_name', ['label' => __d('CakeDC/Users', 'First name')]);
+        echo $this->Form->input('last_name', ['label' => __d('CakeDC/Users', 'Last name')]);
+        echo $this->Form->input('token', ['label' => __d('CakeDC/Users', 'Token')]);
+        echo $this->Form->input('token_expires', [
+            'label' => __d('CakeDC/Users', 'Token expires')
+        ]);
+        echo $this->Form->input('api_token', [
+            'label' => __d('CakeDC/Users', 'API token')
+        ]);
+        echo $this->Form->input('activation_date', [
+            'label' => __d('CakeDC/Users', 'Activation date')
+        ]);
+        echo $this->Form->input('tos_date', [
+            'label' => __d('CakeDC/Users', 'TOS date')
+        ]);
+        echo $this->Form->input('active', [
+            'label' => __d('CakeDC/Users', 'Active')
+        ]);
         ?>
     </fieldset>
     <?= $this->Form->button(__d('CakeDC/Users', 'Submit')) ?>
     <?= $this->Form->end() ?>
-    <?php if(Configure::read('Users.GoogleAuthenticator.login')) : ?>
-    <fieldset>
-        <legend>Reset Google Authenticator</legend>
-        <?= $this->Form->postLink(
-            __d('CakeDC/Users', 'Reset Google Authenticator Token'), [
-                    'plugin' => 'CakeDC/Users',
-                    'controller' => 'Users',
-                    'action' => 'resetGoogleAuthenticator', $Users->id
-                ], [
+    <?php if (Configure::read('Users.GoogleAuthenticator.login')) : ?>
+        <fieldset>
+            <legend>Reset Google Authenticator</legend>
+            <?= $this->Form->postLink(
+                __d('CakeDC/Users', 'Reset Google Authenticator Token'), [
+                'plugin' => 'CakeDC/Users',
+                'controller' => 'Users',
+                'action' => 'resetGoogleAuthenticator', $Users->id
+            ], [
                 'class' => 'btn btn-danger',
-                'confirm' => __d('CakeDC/Users', 'Are you sure you want to reset token for user "{0}"?', $Users->username)
+                'confirm' => __d(
+                    'CakeDC/Users',
+                    'Are you sure you want to reset token for user "{0}"?', $Users->username
+                )
             ]);
-        ?>
-    </fieldset>
+            ?>
+        </fieldset>
     <?php endif; ?>
 </div>

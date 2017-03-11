@@ -15,7 +15,7 @@ use RobThree\Auth\TwoFactorAuth;
  */
 class GoogleAuthenticatorComponent extends Component
 {
-    /** @var RobThree\Auth\TwoFactorAuth $tfa */
+    /** @var \RobThree\Auth\TwoFactorAuth $tfa */
     public $tfa;
 
     /**
@@ -41,7 +41,7 @@ class GoogleAuthenticatorComponent extends Component
 
     /**
      * createSecret
-     * @return base32 shared secret stored in users table
+     * @return string base32 shared secret stored in users table
      */
     public function createSecret()
     {
@@ -62,6 +62,8 @@ class GoogleAuthenticatorComponent extends Component
 
     /**
      * getQRCodeImageAsDataUri
+     * @param $issuer
+     * @param $secret
      * @return string base64 string containing QR code for shared secret
      */
     public function getQRCodeImageAsDataUri($issuer, $secret)

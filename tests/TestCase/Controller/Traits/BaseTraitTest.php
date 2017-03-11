@@ -60,11 +60,11 @@ abstract class BaseTraitTest extends TestCase
         }
 
         if ($this->mockDefaultEmail) {
-            Email::configTransport('test', [
+            Email::setConfigTransport('test', [
                 'className' => 'Debug'
             ]);
-            $this->configEmail = Email::config('default');
-            Email::config('default', [
+            $this->configEmail = Email::getConfig('default');
+            Email::setConfig('default', [
                 'transport' => 'test',
                 'from' => 'cakedc@example.com'
             ]);
@@ -82,7 +82,7 @@ abstract class BaseTraitTest extends TestCase
         if ($this->mockDefaultEmail) {
             Email::drop('default');
             Email::dropTransport('test');
-            Email::config('default', $this->configEmail);
+            //Email::setConfig('default', $this->setConfigEmail);
         }
         parent::tearDown();
     }
@@ -113,7 +113,7 @@ abstract class BaseTraitTest extends TestCase
      */
     protected function _mockRequestGet($withSession = false)
     {
-        $methods = ['is', 'referer', 'data'];
+        $methods = ['is', 'referer', 'getData'];
 
         if ($withSession) {
             $methods[] = 'session';
@@ -150,7 +150,7 @@ abstract class BaseTraitTest extends TestCase
     protected function _mockRequestPost($with = 'post')
     {
         $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
-                ->setMethods(['is', 'data', 'allow'])
+                ->setMethods(['is', 'getData', 'allow'])
                 ->getMock();
         $this->Trait->request->expects($this->any())
                 ->method('is')

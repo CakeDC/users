@@ -44,7 +44,10 @@ class SocialBehavior extends Behavior
     {
         $reference = Hash::get($data, 'id');
         $existingAccount = $this->_table->SocialAccounts->find()
-                ->where(['SocialAccounts.reference' => $reference, 'SocialAccounts.provider' => Hash::get($data, 'provider')])
+                ->where([
+                    'SocialAccounts.reference' => $reference,
+                    'SocialAccounts.provider' => Hash::get($data, 'provider')
+                ])
                 ->contain(['Users'])
                 ->first();
         if (empty($existingAccount->user)) {
@@ -98,7 +101,7 @@ class SocialBehavior extends Behavior
             throw new MissingEmailException(__d('CakeDC/Users', 'Email not present'));
         } else {
             $existingUser = $this->_table->find()
-                    ->where([$this->_table->alias() . '.email' => $email])
+                    ->where([$this->_table->aliasField('email') => $email])
                     ->first();
         }
 
@@ -211,7 +214,9 @@ class SocialBehavior extends Behavior
     {
         $i = 0;
         while (true) {
-            $existingUsername = $this->_table->find()->where([$this->_table->alias() . '.username' => $username])->count();
+            $existingUsername = $this->_table->find()
+                ->where([$this->_table->aliasField('username') => $username])
+                ->count();
             if ($existingUsername > 0) {
                 $username = $username . $i;
                 $i++;

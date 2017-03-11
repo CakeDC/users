@@ -44,7 +44,7 @@ class RememberMeComponentTest extends TestCase
         parent::setUp();
         Security::salt('2a20bac195a9eb2e28f05b7ac7090afe599365a8fe480b7d8a5ce0f79687346e');
         $this->request = new ServerRequest('controller_posts/index');
-        $this->request->params['pass'] = [];
+        $this->request = $this->request->withParam('pass', []);
         $this->controller = $this->getMockBuilder('Cake\Controller\Controller')
                 ->setMethods(['redirect'])
                 ->setConstructorArgs([$this->request])

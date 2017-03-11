@@ -15,7 +15,11 @@ $Users = ${$tableAlias};
     <h3><?= __d('CakeDC/Users', 'Actions') ?></h3>
     <ul class="side-nav">
         <li><?= $this->Html->link(__d('CakeDC/Users', 'Edit User'), ['action' => 'edit', $Users->id]) ?> </li>
-        <li><?= $this->Form->postLink(__d('CakeDC/Users', 'Delete User'), ['action' => 'delete', $Users->id], ['confirm' => __d('CakeDC/Users', 'Are you sure you want to delete # {0}?', $Users->id)]) ?> </li>
+        <li><?= $this->Form->postLink(
+                __d('CakeDC/Users', 'Delete User'),
+                ['action' => 'delete', $Users->id],
+                ['confirm' => __d('CakeDC/Users', 'Are you sure you want to delete # {0}?', $Users->id)]
+            ) ?> </li>
         <li><?= $this->Html->link(__d('CakeDC/Users', 'List Users'), ['action' => 'index']) ?> </li>
         <li><?= $this->Html->link(__d('CakeDC/Users', 'New User'), ['action' => 'add']) ?> </li>
     </ul>

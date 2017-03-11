@@ -32,6 +32,7 @@ use Cake\Http\ServerRequest;
 use Cake\Network\Response;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
+use League\OAuth2\Client\Provider\AbstractProvider;
 
 /**
  * Class SocialAuthenticate
@@ -259,7 +260,7 @@ class SocialAuthenticate extends BaseAuthenticate
     public function unauthenticated(ServerRequest $request, Response $response)
     {
         $provider = $this->provider($request);
-        if (empty($provider) || !empty($request->query['code'])) {
+        if (empty($provider) || !empty($request->getQuery('code'))) {
             return null;
         }
 

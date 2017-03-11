@@ -49,7 +49,7 @@ class EmailSenderTest extends TestCase
         $this->fullBaseBackup = Router::fullBaseUrl();
         Router::fullBaseUrl('http://users.test');
 
-        Email::configTransport('test', [
+        Email::setConfigTransport('test', [
             'className' => 'Debug'
         ]);
     }

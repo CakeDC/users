@@ -46,9 +46,9 @@ class UsersTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('users');
-        $this->displayField('username');
-        $this->primaryKey('id');
+        $this->setTable('users');
+        $this->setDisplayField('username');
+        $this->setPrimaryKey('id');
         $this->addBehavior('Timestamp');
         $this->addBehavior('CakeDC/Users.Register');
         $this->addBehavior('CakeDC/Users.Password');

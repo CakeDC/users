@@ -41,9 +41,9 @@ class SocialAccountsTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('social_accounts');
-        $this->displayField('id');
-        $this->primaryKey('id');
+        $this->setTable('social_accounts');
+        $this->setDisplayField('id');
+        $this->setPrimaryKey('id');
         $this->addBehavior('Timestamp');
         $this->addBehavior('CakeDC/Users.SocialAccount');
     }

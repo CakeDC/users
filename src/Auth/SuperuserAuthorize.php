@@ -36,7 +36,7 @@ class SuperuserAuthorize extends BaseAuthorize
     /**
      * Check if the user is superuser
      *
-     * @param type $user User information object.
+     * @param array $user User information object.
      * @param \Cake\Http\ServerRequest $request Cake request object.
      * @return bool
      */

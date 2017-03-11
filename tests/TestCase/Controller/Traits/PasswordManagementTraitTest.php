@@ -54,7 +54,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
         $this->_mockAuthLoggedIn();
         $this->_mockFlash();
         $this->Trait->request->expects($this->once())
-                ->method('data')
+                ->method('getData')
                 ->will($this->returnValue([
                     'password' => 'new',
                     'password_confirm' => 'new',
@@ -82,7 +82,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
         $this->_mockAuthLoggedIn();
         $this->_mockFlash();
         $this->Trait->request->expects($this->once())
-                ->method('data')
+                ->method('getData')
                 ->will($this->returnValue([
                     'password' => 'new',
                     'password_confirm' => 'wrong_new',
@@ -108,7 +108,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
         $this->_mockAuthLoggedIn(['id' => '00000000-0000-0000-0000-000000000006', 'password' => '$2y$10$IPPgJNSfvATsMBLbv/2r8OtpyTBibyM1g5GDxD4PivW9qBRwRkRbC']);
         $this->_mockFlash();
         $this->Trait->request->expects($this->once())
-            ->method('data')
+            ->method('getData')
             ->will($this->returnValue([
                 'current_password' => '12345',
                 'password' => '12345',
@@ -131,7 +131,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
         $this->_mockAuthLoggedIn(['id' => '00000000-0000-0000-0000-000000000006', 'password' => '$2y$10$IPPgJNSfvATsMBLbv/2r8OtpyTBibyM1g5GDxD4PivW9qBRwRkRbC']);
         $this->_mockFlash();
         $this->Trait->request->expects($this->once())
-            ->method('data')
+            ->method('getData')
             ->will($this->returnValue([
                 'current_password' => '',
                 'password' => '54321',
@@ -158,7 +158,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
         $this->_mockAuthLoggedIn(['id' => '00000000-0000-0000-0000-000000000006', 'password' => '$2y$10$IPPgJNSfvATsMBLbv/2r8OtpyTBibyM1g5GDxD4PivW9qBRwRkRbC']);
         $this->_mockFlash();
         $this->Trait->request->expects($this->once())
-            ->method('data')
+            ->method('getData')
             ->will($this->returnValue([
                 'current_password' => 'wrong-password',
                 'password' => '12345',
@@ -181,7 +181,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
         $this->_mockAuthLoggedIn(['id' => '12312312-0000-0000-0000-000000000002', 'password' => 'invalid-pass']);
         $this->_mockFlash();
         $this->Trait->request->expects($this->once())
-                ->method('data')
+                ->method('getData')
                 ->will($this->returnValue([
                     'password' => 'new',
                     'password_confirm' => 'new',
@@ -275,7 +275,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
         $this->_mockRequestGet();
         $this->_mockFlash();
         $this->Trait->request->expects($this->never())
-                ->method('data');
+                ->method('getData');
         $this->Trait->requestResetPassword();
     }
 
@@ -292,7 +292,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
         $this->_mockFlash();
         $reference = 'user-2';
         $this->Trait->request->expects($this->once())
-                ->method('data')
+                ->method('getData')
                 ->with('reference')
                 ->will($this->returnValue($reference));
         $this->Trait->Flash->expects($this->any())
@@ -314,7 +314,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
         $this->_mockFlash();
         $reference = '12312312-0000-0000-0000-000000000002';
         $this->Trait->request->expects($this->once())
-                ->method('data')
+                ->method('getData')
                 ->with('reference')
                 ->will($this->returnValue($reference));
         $this->Trait->Flash->expects($this->any())
@@ -335,7 +335,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
         $this->_mockFlash();
         $reference = '';
         $this->Trait->request->expects($this->once())
-                ->method('data')
+                ->method('getData')
                 ->with('reference')
                 ->will($this->returnValue($reference));
         $this->Trait->Flash->expects($this->any())
@@ -363,7 +363,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
         $this->_mockFlash();
         $reference = 'user-1';
         $this->Trait->request->expects($this->once())
-                ->method('data')
+                ->method('getData')
                 ->with('reference')
                 ->will($this->returnValue($reference));
         $this->Trait->Flash->expects($expectError)

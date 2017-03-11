@@ -121,7 +121,10 @@ class PasswordBehavior extends Behavior
                 throw new WrongPasswordException(__d('CakeDC/Users', 'The current password does not match'));
             }
             if ($user->current_password === $user->password_confirm) {
-                throw new WrongPasswordException(__d('CakeDC/Users', 'You cannot use the current password as the new one'));
+                throw new WrongPasswordException(__d(
+                    'CakeDC/Users',
+                    'You cannot use the current password as the new one'
+                ));
             }
         }
         $user = $this->_table->save($user);

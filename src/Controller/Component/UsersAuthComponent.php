@@ -77,7 +77,7 @@ class UsersAuthComponent extends Component
      */
     protected function _loadSocialLogin()
     {
-        $this->getController()->Auth->config('authenticate', [
+        $this->getController()->Auth->setConfig('authenticate', [
             'CakeDC/Users.Social'
         ], true);
     }
@@ -115,8 +115,8 @@ class UsersAuthComponent extends Component
         }
 
         list($plugin, $controller) = pluginSplit(Configure::read('Users.controller'));
-        if ($this->request->param('plugin') === $plugin &&
-            $this->request->param('controller') === $controller
+        if ($this->getController()->request->getParam('plugin') === $plugin &&
+            $this->getController()->request->getParam('controller') === $controller
         ) {
             $this->getController()->Auth->allow([
                 // LoginTrait
@@ -156,12 +156,12 @@ class UsersAuthComponent extends Component
 
         if (is_array($url)) {
             $requestUrl = Router::reverse($url);
-            $requestParams = Router::parse($requestUrl);
+            $requestParams = Router::parseRequest(new ServerRequest($requestUrl));
         } else {
             try {
                 //remove base from $url if exists
                 $normalizedUrl = Router::normalize($url);
-                $requestParams = Router::parse($normalizedUrl);
+                $requestParams = Router::parseRequest(new ServerRequest($normalizedUrl));
             } catch (MissingRouteException $ex) {
                 //if it's a url pointing to our own app
                 if (substr($normalizedUrl, 0, 1) === '/') {

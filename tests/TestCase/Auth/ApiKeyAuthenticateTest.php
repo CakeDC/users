@@ -102,7 +102,7 @@ class ApiKeyAuthenticateTest extends TestCase
      */
     public function testAuthenticateWrongType()
     {
-        $this->apiKey->config('type', 'wrong');
+        $this->apiKey->setConfig('type', 'wrong');
         $request = new ServerRequest('/');
         $this->apiKey->authenticate($request, new Response());
     }
@@ -116,7 +116,7 @@ class ApiKeyAuthenticateTest extends TestCase
      */
     public function testAuthenticateRequireSSL()
     {
-        $this->apiKey->config('require_ssl', true);
+        $this->apiKey->setConfig('require_ssl', true);
         $request = new ServerRequest('/?api_key=test');
         $this->apiKey->authenticate($request, new Response());
     }
@@ -127,7 +127,7 @@ class ApiKeyAuthenticateTest extends TestCase
      */
     public function testAuthenticateRequireSSLNoKey()
     {
-        $this->apiKey->config('require_ssl', true);
+        $this->apiKey->setConfig('require_ssl', true);
         $request = new ServerRequest('/');
         $this->assertFalse($this->apiKey->authenticate($request, new Response()));
     }

@@ -57,7 +57,7 @@ class SocialAccountsController extends AppController
             $this->Flash->error(__d('CakeDC/Users', 'Invalid token and/or social account'));
         } catch (AccountAlreadyActiveException $exception) {
             $this->Flash->error(__d('CakeDC/Users', 'Social Account already active'));
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             $this->Flash->error(__d('CakeDC/Users', 'Social Account could not be validated'));
         }
 
@@ -69,8 +69,8 @@ class SocialAccountsController extends AppController
      *
      * @param string $provider provider
      * @param string $reference reference
-     * @return Response|void
-     * @throws \Users\Model\Table\AccountAlreadyActiveException
+     * @return mixed
+     * @throws AccountAlreadyActiveException
      */
     public function resendValidation($provider, $reference)
     {
@@ -85,7 +85,7 @@ class SocialAccountsController extends AppController
             $this->Flash->error(__d('CakeDC/Users', 'Invalid account'));
         } catch (AccountAlreadyActiveException $exception) {
             $this->Flash->error(__d('CakeDC/Users', 'Social Account already active'));
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             $this->Flash->error(__d('CakeDC/Users', 'Email could not be resent'));
         }
 

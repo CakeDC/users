@@ -43,7 +43,7 @@ class LoginTraitTest extends BaseTraitTest
             ->getMockForTrait();
 
         $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
-            ->setMethods(['config'])
+            ->setMethods(['setConfig'])
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -326,11 +326,11 @@ class LoginTraitTest extends BaseTraitTest
             ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
 
         $this->Trait->Auth->expects($this->at(0))
-            ->method('config')
+            ->method('setConfig')
             ->with('authError', 'Your user has not been validated yet. Please check your inbox for instructions');
 
         $this->Trait->Auth->expects($this->at(1))
-            ->method('config')
+            ->method('setConfig')
             ->with('flash.params', ['class' => 'success']);
 
         $this->Trait->failedSocialLogin($event->data['exception'], $event->data['rawData'], true);

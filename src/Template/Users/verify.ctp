@@ -7,9 +7,9 @@
                 <?= $this->Flash->render('auth') ?>
                 <?= $this->Flash->render() ?>
                 <fieldset>
-                    <?php if (!empty($secretDataUri)):?>
-                        <p class='text-center'><img src="<?php echo $secretDataUri;?>"/></p>
-                    <?php endif;?>
+                    <?php if (!empty($secretDataUri)): ?>
+                        <p class='text-center'><img src="<?php echo $secretDataUri; ?>"/></p>
+                    <?php endif; ?>
                     <?= $this->Form->input('code', ['required' => true, 'label' => __d('CakeDC/Users', 'Verification Code')]) ?>
                 </fieldset>
                 <?= $this->Form->button(__d('CakeDC/Users', '<span class="glyphicon glyphicon-log-in" aria-hidden="true"></span> Verify'), ['class' => 'btn btn-primary']); ?>

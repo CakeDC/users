@@ -13,4 +13,5 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 ?>
-<?= $this->fetch('content') ?>
+<?php
+echo $this->fetch('content');
