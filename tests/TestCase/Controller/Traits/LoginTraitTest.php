@@ -12,6 +12,7 @@
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
 use Cake\Http\ServerRequest;
+use CakeDC\Users\Controller\Component\GoogleAuthenticatorComponent;
 use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Controller\Traits\LoginTrait;
 use CakeDC\Users\Exception\AccountNotActiveException;
@@ -39,7 +40,7 @@ class LoginTraitTest extends BaseTraitTest
         parent::setUp();
         $request = new ServerRequest();
         $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\Traits\LoginTrait')
-            ->setMethods(['dispatchEvent', 'redirect'])
+            ->setMethods(['dispatchEvent', 'redirect', 'set'])
             ->getMockForTrait();
 
         $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
@@ -389,5 +390,91 @@ class LoginTraitTest extends BaseTraitTest
             ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
 
         $this->Trait->failedSocialLogin(null, $event->data['rawData'], true);
+    }
+
+    /**
+     * testVerifyHappy
+     *
+     */
+    public function testVerifyHappy()
+    {
+        Configure::write('Users.GoogleAuthenticator.login', true);
+        $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
+            ->setMethods(['user', ])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $user = [
+            'id' => 1,
+            'secret_verified' => 1,
+        ];
+        $this->Trait->Auth->expects($this->at(0))
+            ->method('user')
+            ->will($this->returnValue($user));
+        $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
+            ->setMethods(['is', 'getData', 'allow'])
+            ->getMock();
+        $this->Trait->request->expects($this->at(0))
+            ->method('is')
+            ->with('post')
+            ->will($this->returnValue(false));
+        $this->Trait->verify();
+    }
+
+    /**
+     * testVerifyHappy
+     *
+     */
+    public function testVerifyNotEnabled()
+    {
+        $this->_mockFlash();
+        Configure::write('Users.GoogleAuthenticator.login', false);
+        $this->Trait->Flash->expects($this->once())
+            ->method('error')
+            ->with('Please enable Google Authenticator first.');
+        $this->Trait->verify();
+    }
+
+    /**
+     * testVerifyHappy
+     *
+     */
+    public function testVerifyGetShowQR()
+    {
+        Configure::write('Users.GoogleAuthenticator.login', true);
+        $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
+            ->setMethods(['user', ])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $user = [
+            'id' => 1,
+            'email' => 'email@example.com',
+            'secret_verified' => 0,
+        ];
+        $this->Trait->Auth->expects($this->at(0))
+            ->method('user')
+            ->will($this->returnValue($user));
+        $this->Trait->GoogleAuthenticator = $this->getMockBuilder(GoogleAuthenticatorComponent::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['createSecret', 'getQRCodeImageAsDataUri'])
+            ->getMock();
+
+        $this->Trait->request = $this->getMockBuilder(ServerRequest::class)
+            ->setMethods(['is', 'getData', 'allow'])
+            ->getMock();
+        $this->Trait->request->expects($this->at(0))
+            ->method('is')
+            ->with('post')
+            ->will($this->returnValue(false));
+        $this->Trait->GoogleAuthenticator->expects($this->at(0))
+            ->method('createSecret')
+            ->will($this->returnValue('newSecret'));
+        $this->Trait->GoogleAuthenticator->expects($this->at(1))
+            ->method('getQRCodeImageAsDataUri')
+            ->with('email@example.com', 'newSecret')
+            ->will($this->returnValue('newDataUriGenerated'));
+        $this->Trait->expects($this->at(0))
+            ->method('set')
+            ->with(['secretDataUri' => 'newDataUriGenerated']);
+        $this->Trait->verify();
     }
 }

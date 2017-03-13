@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Controller\Traits;
 
+use Cake\Utility\Hash;
 use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
@@ -211,7 +212,7 @@ trait LoginTrait
             $message = __d('CakeDC/Users', 'Please enable Google Authenticator first.');
             $this->Flash->error($message, 'default', [], 'auth');
 
-            $this->redirect(Configure::read('Auth.loginAction'));
+            return $this->redirect(Configure::read('Auth.loginAction'));
         }
 
         // storing user's session in the temporary one
@@ -250,7 +251,7 @@ trait LoginTrait
                 }
             }
             $secretDataUri = $this->GoogleAuthenticator->getQRCodeImageAsDataUri(
-                $temporarySession['email'],
+                Hash::get($temporarySession, 'email'),
                 $secret
             );
             $this->set(compact('secretDataUri'));

@@ -12,20 +12,20 @@ use Cake\Core\Configure;
 use Cake\Routing\Router;
 
 Router::plugin('CakeDC/Users', ['path' => '/users'], function ($routes) {
-        $routes->fallbacks('DashedRoute');
-    });
+    $routes->fallbacks('DashedRoute');
+});
 
 Router::connect('/auth/twitter', [
-        'plugin' => 'CakeDC/Users',
-        'controller' => 'Users',
-        'action' => 'twitterLogin',
-        'provider' => 'twitter'
-    ]);
+    'plugin' => 'CakeDC/Users',
+    'controller' => 'Users',
+    'action' => 'twitterLogin',
+    'provider' => 'twitter'
+]);
 Router::connect('/accounts/validate/*', [
-        'plugin' => 'CakeDC/Users',
-        'controller' => 'SocialAccounts',
-        'action' => 'validate'
-    ]);
+    'plugin' => 'CakeDC/Users',
+    'controller' => 'SocialAccounts',
+    'action' => 'validate'
+]);
 // Google Authenticator related routes
 if (Configure::read('Users.GoogleAuthenticator.login')) {
     Router::connect('/verify', ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'verify']);

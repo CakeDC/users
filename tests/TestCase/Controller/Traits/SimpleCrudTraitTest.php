@@ -30,13 +30,13 @@ class SimpleCrudTraitTest extends BaseTraitTest
         parent::setUp();
         $viewVarsContainer = $this;
         $this->Trait->expects($this->any())
-                ->method('set')
-                ->will($this->returnCallback(function ($param1, $param2 = null) use ($viewVarsContainer) {
-                    $viewVarsContainer->viewVars[$param1] = $param2;
-                }));
+            ->method('set')
+            ->will($this->returnCallback(function ($param1, $param2 = null) use ($viewVarsContainer) {
+                $viewVarsContainer->viewVars[$param1] = $param2;
+            }));
         $this->Trait->expects($this->once())
-                ->method('loadModel')
-                ->will($this->returnValue($this->table));
+            ->method('loadModel')
+            ->will($this->returnValue($this->table));
     }
 
     /**
@@ -58,9 +58,9 @@ class SimpleCrudTraitTest extends BaseTraitTest
     public function testIndex()
     {
         $this->Trait->expects($this->once())
-                ->method('paginate')
-                ->with($this->table)
-                ->will($this->returnValue([]));
+            ->method('paginate')
+            ->with($this->table)
+            ->will($this->returnValue([]));
         $this->Trait->index();
         $expected = [
             'Users' => [],
@@ -145,14 +145,20 @@ class SimpleCrudTraitTest extends BaseTraitTest
         $this->assertSame(0, $this->table->find()->where(['username' => 'testuser'])->count());
         $this->_mockRequestPost();
         $this->_mockFlash();
-        $this->Trait->request->data = [
-            'username' => 'testuser',
-            'email' => 'testuser@test.com',
-            'password' => 'password',
-            'first_name' => 'test',
-            'last_name' => 'user',
-        ];
-
+        $this->Trait->request->expects($this->at(0))
+            ->method('is')
+            ->with('post')
+            ->will($this->returnValue(true));
+        $this->Trait->request->expects($this->at(1))
+            ->method('getData')
+            ->with()
+            ->will($this->returnValue([
+                'username' => 'testuser',
+                'email' => 'testuser@test.com',
+                'password' => 'password',
+                'first_name' => 'test',
+                'last_name' => 'user',
+            ]));
         $this->Trait->Flash->expects($this->once())
             ->method('success')
             ->with('The User has been saved');
@@ -172,12 +178,19 @@ class SimpleCrudTraitTest extends BaseTraitTest
         $this->assertSame(0, $this->table->find()->where(['username' => 'testuser'])->count());
         $this->_mockRequestPost();
         $this->_mockFlash();
-        $this->Trait->request->data = [
-            'username' => 'testuser',
-            'email' => 'testuser@test.com',
-            'first_name' => 'test',
-            'last_name' => 'user',
-        ];
+        $this->Trait->request->expects($this->at(0))
+            ->method('is')
+            ->with('post')
+            ->will($this->returnValue(true));
+        $this->Trait->request->expects($this->at(1))
+            ->method('getData')
+            ->with()
+            ->will($this->returnValue([
+                'username' => 'testuser',
+                'email' => 'testuser@test.com',
+                'first_name' => 'test',
+                'last_name' => 'user',
+            ]));
 
         $this->Trait->Flash->expects($this->once())
             ->method('error')
@@ -198,9 +211,16 @@ class SimpleCrudTraitTest extends BaseTraitTest
         $this->assertEquals('user-1@test.com', $this->table->get('00000000-0000-0000-0000-000000000001')->email);
         $this->_mockRequestPost(['patch', 'post', 'put']);
         $this->_mockFlash();
-        $this->Trait->request->data = [
-            'email' => 'newtestuser@test.com',
-        ];
+        $this->Trait->request->expects($this->at(0))
+            ->method('is')
+            ->with(['patch', 'post', 'put'])
+            ->will($this->returnValue(true));
+        $this->Trait->request->expects($this->at(1))
+            ->method('getData')
+            ->with()
+            ->will($this->returnValue([
+                'email' => 'newtestuser@test.com',
+            ]));
 
         $this->Trait->Flash->expects($this->once())
             ->method('success')
@@ -221,9 +241,16 @@ class SimpleCrudTraitTest extends BaseTraitTest
         $this->assertEquals('user-1@test.com', $this->table->get('00000000-0000-0000-0000-000000000001')->email);
         $this->_mockRequestPost(['patch', 'post', 'put']);
         $this->_mockFlash();
-        $this->Trait->request->data = [
-            'email' => 'not-an-email',
-        ];
+        $this->Trait->request->expects($this->at(0))
+            ->method('is')
+            ->with(['patch', 'post', 'put'])
+            ->will($this->returnValue(true));
+        $this->Trait->request->expects($this->at(1))
+            ->method('getData')
+            ->with()
+            ->will($this->returnValue([
+                'email' => 'not-an-email',
+            ]));
 
         $this->Trait->Flash->expects($this->once())
             ->method('error')

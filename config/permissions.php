@@ -68,8 +68,8 @@ return [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'resetGoogleAuthenticator',
-            'allowed' => function (array $user, $role, \Cake\Network\Request $request) {
-                $userId = \Cake\Utility\Hash::get($request->params, 'pass.0');
+            'allowed' => function (array $user, $role, \Cake\Http\ServerRequest $request) {
+                $userId = \Cake\Utility\Hash::get($request->getAttribute('params'), 'pass.0');
                 if (!empty($userId) && !empty($user)) {
                     return $userId === $user['id'];
                 }
@@ -90,4 +90,4 @@ return [
             'action' => ['other', 'display'],
             'allowed' => true,
         ],
-        ]];
+    ]];

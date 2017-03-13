@@ -77,6 +77,7 @@ class EmailSender
         } else {
             $template = $email->getTemplate();
         }
+
         return $this
             ->getMailer(
                 'CakeDC/Users.Users',
