@@ -71,6 +71,8 @@ NOTE: SOME keys were hidden in this doc page, please refer to `vendor/cakedc/use
     'Users' => [
         // Table used to manage users
         'table' => 'CakeDC/Users.Users',
+        // Controller used to manage users plugin features & actions
+        'controller' => 'CakeDC/Users.Users',
         // configure Auth component
         'auth' => true,
         'Email' => [
