@@ -4,18 +4,18 @@
     <fieldset>
         <legend><?= __d('CakeDC/Users', 'Please enter the new password') ?></legend>
         <?php if ($validatePassword) : ?>
-            <?= $this->Form->input('current_password', [
+            <?= $this->Form->control('current_password', [
                 'type' => 'password',
                 'required' => true,
                 'label' => __d('CakeDC/Users', 'Current password')]);
             ?>
         <?php endif; ?>
-        <?= $this->Form->input('password', [
+        <?= $this->Form->control('password', [
             'type' => 'password',
             'required' => true,
             'label' => __d('CakeDC/Users', 'New password')]);
         ?>
-        <?= $this->Form->input('password_confirm', [
+        <?= $this->Form->control('password_confirm', [
             'type' => 'password',
             'required' => true,
             'label' => __d('CakeDC/Users', 'Confirm password')]);

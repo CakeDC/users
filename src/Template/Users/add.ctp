@@ -20,12 +20,12 @@
     <fieldset>
         <legend><?= __d('CakeDC/Users', 'Add User') ?></legend>
         <?php
-            echo $this->Form->input('username', ['label' => __d('CakeDC/Users', 'Username')]);
-            echo $this->Form->input('email', ['label' => __d('CakeDC/Users', 'Email')]);
-            echo $this->Form->input('password', ['label' => __d('CakeDC/Users', 'Password')]);
-            echo $this->Form->input('first_name', ['label' => __d('CakeDC/Users', 'First name')]);
-            echo $this->Form->input('last_name', ['label' => __d('CakeDC/Users', 'Last name')]);
-            echo $this->Form->input('active', [
+            echo $this->Form->control('username', ['label' => __d('CakeDC/Users', 'Username')]);
+            echo $this->Form->control('email', ['label' => __d('CakeDC/Users', 'Email')]);
+            echo $this->Form->control('password', ['label' => __d('CakeDC/Users', 'Password')]);
+            echo $this->Form->control('first_name', ['label' => __d('CakeDC/Users', 'First name')]);
+            echo $this->Form->control('last_name', ['label' => __d('CakeDC/Users', 'Last name')]);
+            echo $this->Form->control('active', [
                 'type' => 'checkbox',
                 'label' => __d('CakeDC/Users', 'Active')
             ]);

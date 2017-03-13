@@ -17,14 +17,14 @@ use Cake\Core\Configure;
     <?= $this->Form->create() ?>
     <fieldset>
         <legend><?= __d('CakeDC/Users', 'Please enter your username and password') ?></legend>
-        <?= $this->Form->input('username', ['required' => true]) ?>
-        <?= $this->Form->input('password', ['required' => true]) ?>
+        <?= $this->Form->control('username', ['required' => true]) ?>
+        <?= $this->Form->control('password', ['required' => true]) ?>
         <?php
         if (Configure::read('Users.reCaptcha.login')) {
             echo $this->User->addReCaptcha();
         }
         if (Configure::read('Users.RememberMe.active')) {
-            echo $this->Form->input(Configure::read('Users.Key.Data.rememberMe'), [
+            echo $this->Form->control(Configure::read('Users.Key.Data.rememberMe'), [
                 'type' => 'checkbox',
                 'label' => __d('CakeDC/Users', 'Remember me'),
                 'checked' => 'checked'

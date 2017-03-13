@@ -32,24 +32,24 @@ $Users = ${$tableAlias};
     <fieldset>
         <legend><?= __d('CakeDC/Users', 'Edit User') ?></legend>
         <?php
-        echo $this->Form->input('username', ['label' => __d('CakeDC/Users', 'Username')]);
-        echo $this->Form->input('email', ['label' => __d('CakeDC/Users', 'Email')]);
-        echo $this->Form->input('first_name', ['label' => __d('CakeDC/Users', 'First name')]);
-        echo $this->Form->input('last_name', ['label' => __d('CakeDC/Users', 'Last name')]);
-        echo $this->Form->input('token', ['label' => __d('CakeDC/Users', 'Token')]);
-        echo $this->Form->input('token_expires', [
+        echo $this->Form->control('username', ['label' => __d('CakeDC/Users', 'Username')]);
+        echo $this->Form->control('email', ['label' => __d('CakeDC/Users', 'Email')]);
+        echo $this->Form->control('first_name', ['label' => __d('CakeDC/Users', 'First name')]);
+        echo $this->Form->control('last_name', ['label' => __d('CakeDC/Users', 'Last name')]);
+        echo $this->Form->control('token', ['label' => __d('CakeDC/Users', 'Token')]);
+        echo $this->Form->control('token_expires', [
             'label' => __d('CakeDC/Users', 'Token expires')
         ]);
-        echo $this->Form->input('api_token', [
+        echo $this->Form->control('api_token', [
             'label' => __d('CakeDC/Users', 'API token')
         ]);
-        echo $this->Form->input('activation_date', [
+        echo $this->Form->control('activation_date', [
             'label' => __d('CakeDC/Users', 'Activation date')
         ]);
-        echo $this->Form->input('tos_date', [
+        echo $this->Form->control('tos_date', [
             'label' => __d('CakeDC/Users', 'TOS date')
         ]);
-        echo $this->Form->input('active', [
+        echo $this->Form->control('active', [
             'label' => __d('CakeDC/Users', 'Active')
         ]);
         ?>

@@ -14,7 +14,7 @@
     <?= $this->Form->create('User') ?>
     <fieldset>
         <legend><?= __d('CakeDC/Users', 'Please enter your email') ?></legend>
-        <?= $this->Form->input('email') ?>
+        <?= $this->Form->control('email') ?>
     </fieldset>
     <?= $this->Form->button(__d('CakeDC/Users', 'Submit')); ?>
     <?= $this->Form->end() ?>

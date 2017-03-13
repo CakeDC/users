@@ -69,40 +69,40 @@ NOTE: SOME keys were hidden in this doc page, please refer to `vendor/cakedc/use
 
 ```
     'Users' => [
-        //Table used to manage users
+        // Table used to manage users
         'table' => 'CakeDC/Users.Users',
-        //configure Auth component
+        // configure Auth component
         'auth' => true,
         'Email' => [
-            //determines if the user should include email
+            // determines if the user should include email
             'required' => true,
-            //determines if registration workflow includes email validation
+            // determines if registration workflow includes email validation
             'validate' => true,
         ],
         'Registration' => [
-            //determines if the register is enabled
+            // determines if the register is enabled
             'active' => true,
-            //determines if the reCaptcha is enabled for registration
+            // determines if the reCaptcha is enabled for registration
             'reCaptcha' => true,
-            //ensure user is active (confirmed email) to reset his password
+            // ensure user is active (confirmed email) to reset his password
             'ensureActive' => false
         ],
         'Tos' => [
-            //determines if the user should include tos accepted
+            // determines if the user should include tos accepted
             'required' => true,
         ],
         'Social' => [
-            //enable social login
+            // enable social login
             'login' => false,
         ],
-        //Avatar placeholder
+        // Avatar placeholder
         'Avatar' => ['placeholder' => 'CakeDC/Users.avatar_placeholder.png'],
         'RememberMe' => [
-            //configure Remember Me component
+            // configure Remember Me component
             'active' => true,
         ],
     ],
-//default configuration used to auto-load the Auth Component, override to change the way Auth works
+// default configuration used to auto-load the Auth Component, override to change the way Auth works
     'Auth' => [
         'authenticate' => [
             'all' => [
@@ -141,12 +141,12 @@ You need to configure 2 things:
 Configure::write('Auth.authenticate.Form.fields.username', 'email');
 ```
 
-* Override the login.ctp template to change the Form->input to "email". Add (or copy from the https://github.com/CakeDC/users/blob/master/src/Template/Users/login.ctp) the file login.ctp to path /src/Template/Plugin/CakeDC/Users/Users/login.ctp and ensure it has the following content
+* Override the login.ctp template to change the Form->control to "email". Add (or copy from the https://github.com/CakeDC/users/blob/master/src/Template/Users/login.ctp) the file login.ctp to path /src/Template/Plugin/CakeDC/Users/Users/login.ctp and ensure it has the following content
 
 ```php
         // ... inside the Form
-        <?= $this->Form->input('email', ['required' => true]) ?>
-        <?= $this->Form->input('password', ['required' => true]) ?>
+        <?= $this->Form->control('email', ['required' => true]) ?>
+        <?= $this->Form->control('password', ['required' => true]) ?>
         // ... rest of your login.ctp code
 ```
 

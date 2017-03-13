@@ -14,7 +14,7 @@
     <fieldset>
         <legend><?= __d('CakeDC/Users', 'Resend Validation email') ?></legend>
         <?php
-        echo $this->Form->input('reference', ['label' => __d('CakeDC/Users', 'Email or username')]);
+        echo $this->Form->control('reference', ['label' => __d('CakeDC/Users', 'Email or username')]);
         ?>
     </fieldset>
     <?= $this->Form->button(__d('CakeDC/Users', 'Submit')) ?>
