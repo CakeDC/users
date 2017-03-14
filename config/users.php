@@ -1,12 +1,12 @@
 <?php
 
 /**
- * Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 use Cake\Core\Configure;
@@ -132,13 +132,13 @@ $config = [
             'all' => [
                 'finder' => 'auth',
             ],
-            'CakeDC/Users.ApiKey',
-            'CakeDC/Users.RememberMe',
+            'CakeDC/Auth.ApiKey',
+            'CakeDC/Auth.RememberMe',
             'Form',
         ],
         'authorize' => [
-            'CakeDC/Users.Superuser',
-            'CakeDC/Users.SimpleRbac',
+            'CakeDC/Auth.Superuser',
+            'CakeDC/Auth.SimpleRbac',
         ],
     ],
     'OAuth' => [

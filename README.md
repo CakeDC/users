@@ -23,8 +23,8 @@ It covers the following features:
 * User registration
 * Login/logout
 * Social login (Facebook, Twitter, Instagram, Google, Linkedin, etc)
-* Simple RBAC
-* Remember me (Cookie)
+* Simple RBAC via https://github.com/CakeDC/auth
+* Remember me (Cookie) via https://github.com/CakeDC/auth
 * Manage user's profile
 * Admin management
 
@@ -44,7 +44,7 @@ Another decision made was limiting the plugin dependencies on other packages as 
 Requirements
 ------------
 
-* CakePHP 3.2.9+
+* CakePHP 3.4.0+
 * PHP 5.6+
 
 Documentation
@@ -57,12 +57,12 @@ Support
 
 For bugs and feature requests, please use the [issues](https://github.com/CakeDC/users/issues) section of this repository.
 
-Commercial support is also available, [contact us](http://cakedc.com/contact) for more information.
+Commercial support is also available, [contact us](https://www.cakedc.com/contact) for more information.
 
 Contributing
 ------------
 
-This repository follows the [CakeDC Plugin Standard](http://cakedc.com/plugin-standard). If you'd like to contribute new features, enhancements or bug fixes to the plugin, please read our [Contribution Guidelines](http://cakedc.com/contribution-guidelines) for detailed instructions.
+This repository follows the [CakeDC Plugin Standard](https://www.cakedc.com/plugin-standard). If you'd like to contribute new features, enhancements or bug fixes to the plugin, please read our [Contribution Guidelines](https://www.cakedc.com/contribution-guidelines) for detailed instructions.
 
 License
 -------

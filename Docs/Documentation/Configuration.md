@@ -114,8 +114,8 @@ NOTE: SOME keys were hidden in this doc page, please refer to `vendor/cakedc/use
             'Form',
         ],
         'authorize' => [
-            'CakeDC/Users.Superuser',
-            'CakeDC/Users.SimpleRbac',
+            'CakeDC/Auth.Superuser',
+            'CakeDC/Auth.SimpleRbac',
         ],
     ],
 ];
@@ -128,11 +128,12 @@ Default Authenticate and Authorize Objects used
 Using the UsersAuthComponent default initialization, the component will load the following objects into AuthComponent:
 * Authenticate
   * 'Form'
-  * 'Social' check [SocialAuthenticate](SocialAuthenticate.md) for configuration options
-  * 'RememberMe' check [SocialAuthenticate](RememberMeAuthenticate.md) for configuration options
+  * 'CakeDC/Users.Social' check [SocialAuthenticate](SocialAuthenticate.md) for configuration options
+  * 'CakeDC/Auth.RememberMe' check [RememberMeAuthenticate](https://github.com/CakeDC/auth/blob/master/src/RememberMeAuthenticate.php) for configuration options
 * Authorize
-  * 'Users.Superuser' check [SuperuserAuthorize](SuperuserAuthorize.md) for configuration options
-  * 'Users.SimpleRbac' check [SimpleRbacAuthorize](SimpleRbacAuthorize.md) for configuration options
+  * 'CakeDC/Auth.Superuser' check [SuperuserAuthorize](https://github.com/CakeDC/auth/blob/master/Docs/Documentation/SuperuserAuthorize.md) for configuration options
+  * 'CakeDC/Auth.SimpleRbac' check [SimpleRbacAuthorize](https://github.com/CakeDC/auth/blob/master/Docs/Documentation/SimpleRbacAuthorize.md) for configuration options
+  * 'CakeDC/Auth.ApiKey' check [ApiKeyAuthenticate](https://github.com/CakeDC/auth/blob/master/Docs/Documentation/ApiKeyAuthenticate.md) for configuration options
 
 ## Using the user's email to login
 

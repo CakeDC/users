@@ -3,6 +3,10 @@ Changelog
 
 Releases for CakePHP 3
 -------------
+* 5.0.0
+  * Some Auth objects refactored into https://github.com/CakeDC/auth
+  * Upgrade to CakePHP 3.4
+
 * 4.1.2
   * Fix RememberMe redirect
   * Fix AuthLink rendering inside Cells
