@@ -10,8 +10,8 @@ That it works out of the box doesn't mean it is thought to be used exactly like 
 Requirements
 ------------
 
-* CakePHP 3.1.*
-* PHP 5.4.16+
+* CakePHP 3.2.9+
+* PHP 5.5.9+
 
 Documentation
 -------------
