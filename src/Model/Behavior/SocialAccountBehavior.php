@@ -21,6 +21,7 @@ use Cake\Datasource\EntityInterface;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Event\Event;
 use Cake\Mailer\Email;
+use Cake\ORM\Behavior;
 use Cake\ORM\Entity;
 
 /**

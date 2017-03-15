@@ -25,7 +25,7 @@ use InvalidArgumentException;
  * Covers social features
  *
  */
-class SocialBehavior extends Behavior
+class SocialBehavior extends BaseTokenBehavior
 {
     use EventDispatcherTrait;
     use RandomStringTrait;

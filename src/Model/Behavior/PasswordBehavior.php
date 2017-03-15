@@ -16,17 +16,15 @@ use CakeDC\Users\Exception\UserAlreadyActiveException;
 use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Exception\UserNotFoundException;
 use CakeDC\Users\Exception\WrongPasswordException;
-use CakeDC\Users\Model\Behavior\Behavior;
 use Cake\Datasource\EntityInterface;
 use Cake\Datasource\Exception\RecordNotFoundException;
-use Cake\Mailer\Email;
 use Cake\Utility\Hash;
 use InvalidArgumentException;
 
 /**
  * Covers the password management features
  */
-class PasswordBehavior extends Behavior
+class PasswordBehavior extends BaseTokenBehavior
 {
     /**
      * Constructor hook method.

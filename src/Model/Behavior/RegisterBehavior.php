@@ -27,7 +27,7 @@ use InvalidArgumentException;
 /**
  * Covers the user registration
  */
-class RegisterBehavior extends Behavior
+class RegisterBehavior extends BaseTokenBehavior
 {
     /**
      * Constructor hook method.

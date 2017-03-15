@@ -13,12 +13,12 @@ namespace CakeDC\Users\Model\Behavior;
 
 use Cake\Datasource\EntityInterface;
 use Cake\I18n\Time;
-use Cake\ORM\Behavior as BaseBehavior;
+use Cake\ORM\Behavior;
 
 /**
  * Covers the user registration
  */
-class Behavior extends BaseBehavior
+class BaseTokenBehavior extends Behavior
 {
     /**
      * DRY for update active and token based on validateEmail flag
