@@ -304,7 +304,7 @@ class SocialAuthenticate extends BaseAuthenticate
             return false;
         }
 
-        $this->getConfig($config);
+        $this->setConfig($config);
 
         if (is_object($config) && $config instanceof AbstractProvider) {
             return $config;
