@@ -72,8 +72,8 @@ class GoogleAuthenticatorComponent extends Component
 
     /**
      * getQRCodeImageAsDataUri
-     * @param $issuer
-     * @param $secret
+     * @param string $issuer issuer
+     * @param string $secret secret
      * @return string base64 string containing QR code for shared secret
      */
     public function getQRCodeImageAsDataUri($issuer, $secret)

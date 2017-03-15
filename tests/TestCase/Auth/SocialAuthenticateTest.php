@@ -11,13 +11,13 @@
 
 namespace CakeDC\Users\Test\TestCase\Auth;
 
-use Cake\Http\ServerRequest;
 use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\UserNotActiveException;
 use Cake\Controller\ComponentRegistry;
 use Cake\Event\Event;
+use Cake\Http\ServerRequest;
 use Cake\Network\Request;
 use Cake\Network\Response;
 use Cake\ORM\TableRegistry;

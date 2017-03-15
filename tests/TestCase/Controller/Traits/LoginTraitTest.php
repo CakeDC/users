@@ -11,7 +11,6 @@
 
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
-use Cake\Http\ServerRequest;
 use CakeDC\Users\Controller\Component\GoogleAuthenticatorComponent;
 use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Controller\Traits\LoginTrait;
@@ -21,6 +20,7 @@ use CakeDC\Users\Exception\UserNotActiveException;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Event\Event;
+use Cake\Http\ServerRequest;
 use Cake\Network\Request;
 use Cake\ORM\Entity;
 use Cake\TestSuite\TestCase;

@@ -312,48 +312,4 @@ class UsersTableTest extends TestCase
         $this->assertEquals('First Name', $result->first_name);
         $this->assertEquals('Last Name', $result->last_name);
     }
-
-    /**
-     * Test findActive method.
-     *
-     */
-    public function testFindActive()
-    {
-        $actual = $this->Users->find('active')->toArray();
-        $this->assertCount(8, $actual);
-        $this->assertCount(8, Hash::extract($actual, '{n}[active=1]'));
-        $this->assertCount(0, Hash::extract($actual, '{n}[active=0]'));
-    }
-
-    /**
-     * Test findAuth method.
-     *
-     * @expectedException \BadMethodCallException
-     * @expectedExceptionMessage  Missing 'username' in options data
-     */
-    public function testFindAuthBadMethodCallException()
-    {
-        $user = $this->Users->find('auth');
-    }
-
-    /**
-     * Test findAuth method.
-     *
-     * @expected
-     */
-    public function testFindAuth()
-    {
-        $user = $this->Users
-                ->find('auth', ['username' => 'not-exist@email.com'])
-                ->toArray();
-        $this->assertEmpty($user);
-
-        $user = $this->Users
-                ->find('auth', ['username' => 'user-2@test.com'])
-                ->first()
-                ->toArray();
-
-        $this->assertSame('00000000-0000-0000-0000-000000000002', Hash::get($user, 'id'));
-        $this->assertSame('user-2', Hash::get($user, 'username'));
-    }
 }

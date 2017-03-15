@@ -11,14 +11,13 @@
 
 namespace CakeDC\Users\Shell;
 
-use Cake\Console\ConsoleOptionParser;
 use CakeDC\Users\Model\Entity\User;
-use Cake\Auth\DefaultPasswordHasher;
+use CakeDC\Users\Model\Table\UsersTable;
+use Cake\Console\ConsoleOptionParser;
 use Cake\Console\Shell;
 use Cake\Core\Configure;
 use Cake\Utility\Hash;
 use Cake\Utility\Text;
-use CakeDC\Users\Model\Table\UsersTable;
 
 /**
  * Shell with utilities for the Users Plugin

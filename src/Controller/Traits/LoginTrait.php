@@ -11,7 +11,6 @@
 
 namespace CakeDC\Users\Controller\Traits;
 
-use Cake\Utility\Hash;
 use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
@@ -21,6 +20,7 @@ use Cake\Core\Configure;
 use Cake\Core\Exception\Exception;
 use Cake\Event\Event;
 use Cake\Network\Exception\NotFoundException;
+use Cake\Utility\Hash;
 use League\OAuth1\Client\Server\Twitter;
 
 /**
@@ -313,7 +313,7 @@ trait LoginTrait
      * Update remember me and determine redirect url after user identified
      * @param array $user user data after identified
      * @param bool $socialLogin is social login
-     * @param bool $googleAuthenticatorLogin
+     * @param bool $googleAuthenticatorLogin googleAuthenticatorLogin
      * @return array
      */
     protected function _afterIdentifyUser($user, $socialLogin = false, $googleAuthenticatorLogin = false)

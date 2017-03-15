@@ -53,6 +53,7 @@ class UsersTable extends Table
         $this->addBehavior('CakeDC/Users.Register');
         $this->addBehavior('CakeDC/Users.Password');
         $this->addBehavior('CakeDC/Users.Social');
+        $this->addBehavior('CakeDC/Users.AuthFinder');
         $this->hasMany('SocialAccounts', [
             'foreignKey' => 'user_id',
             'className' => 'CakeDC/Users.SocialAccounts'
@@ -183,41 +184,5 @@ class UsersTable extends Table
         }
 
         return $rules;
-    }
-
-    /**
-     * Custom finder to filter active users
-     *
-     * @param Query $query Query object to modify
-     * @param array $options Query options
-     * @return Query
-     */
-    public function findActive(Query $query, array $options = [])
-    {
-        $query->where([$this->aliasField('active') => 1]);
-
-        return $query;
-    }
-
-    /**
-     * Custom finder to log in users
-     *
-     * @param Query $query Query object to modify
-     * @param array $options Query options
-     * @return Query
-     * @throws \BadMethodCallException
-     */
-    public function findAuth(Query $query, array $options = [])
-    {
-        $identifier = Hash::get($options, 'username');
-        if (empty($identifier)) {
-            throw new \BadMethodCallException(__d('CakeDC/Users', 'Missing \'username\' in options data'));
-        }
-
-        $query
-            ->orWhere([$this->aliasField('email') => $identifier])
-            ->find('active', $options);
-
-        return $query;
     }
 }

@@ -11,7 +11,6 @@
 
 namespace CakeDC\Users\Test\TestCase\Controller\Component;
 
-use Cake\Http\ServerRequest;
 use CakeDC\Users\Controller\Component\RememberMeComponent;
 use Cake\Controller\ComponentRegistry;
 use Cake\Controller\Component\AuthComponent;
@@ -19,7 +18,7 @@ use Cake\Controller\Component\CookieComponent;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Event\Event;
-use Cake\Network\Request;
+use Cake\Http\ServerRequest;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Security;
