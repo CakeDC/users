@@ -3,9 +3,18 @@ Changelog
 
 Releases for CakePHP 3
 -------------
+
 * 5.0.0
   * Some Auth objects refactored into https://github.com/CakeDC/auth
   * Upgrade to CakePHP 3.4
+
+* 4.1.3
+  * Configurable rememberMe checkbox status
+  * Update brazilian portuguese translations
+  * Add active finder to SocialAccountsTable
+  * Improvements in UsersShell for superuser add options
+  * Update to robthree/twofactorauth 1.6
+  * UserHelper improvements
 
 * 4.1.2
   * Fix RememberMe redirect
