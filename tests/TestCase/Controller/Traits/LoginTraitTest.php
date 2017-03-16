@@ -446,7 +446,7 @@ class LoginTraitTest extends BaseTraitTest
             ->disableOriginalConstructor()
             ->getMock();
         $user = [
-            'id' => 1,
+            'id' => '00000000-0000-0000-0000-000000000001',
             'email' => 'email@example.com',
             'secret_verified' => 0,
         ];

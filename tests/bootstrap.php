@@ -110,5 +110,17 @@ if (!getenv('db_dsn')) {
 
 Cake\Datasource\ConnectionManager::setConfig('test', [
     'url' => getenv('db_dsn'),
+//    'className' => 'Cake\Database\Connection',
+//    'driver' => 'Cake\Database\Driver\Postgres',
+//    'persistent' => true,
+//    'host' => 'localhost',
+//    'username' => 'my_app',
+//    'password' => null,
+//    'database' => 'test',
+//    'schema' => 'public',
+//    'port' => 5432,
+//    'encoding' => 'utf8',
+//    'flags' => [],
+//    'init' => [],
     'timezone' => 'UTC'
 ]);
