@@ -101,6 +101,7 @@ $config = [
         'RememberMe' => [
             //configure Remember Me component
             'active' => true,
+            'checked' => true,
             'Cookie' => [
                 'name' => 'remember_me',
                 'Config' => [
