@@ -12,10 +12,11 @@ Versions and branches
 | CakePHP | CakeDC Users Plugin | Tag   | Notes |
 | :-------------: | :------------------------: | :--:  | :---- |
 | 2.x             | [2.x](https://github.com/cakedc/users/tree/2.x)                     | 2.1.2 | Note CakePHP 2.7 is currently not supported, we are working on it now |
-| 3.2+             | [master](https://github.com/cakedc/users/tree/master)                      | 3.x | stable |
-| 3.2+             | [develop](https://github.com/cakedc/users/tree/develop)                      | 3.x | unstable |
-| 3.0             | [3.0.x](https://github.com/cakedc/users/tree/3.0.x)                      | 3.0.0 | stability is beta, but pretty stable now |
-| 3.1             | [3.1.x](https://github.com/cakedc/users/tree/3.1.x)                      | 3.1.0 | stability is beta, but pretty stable now |
+| 3.4+             | [master](https://github.com/cakedc/users/tree/master)                      | 5.0.0 | stable |
+| 3.4+             | [develop](https://github.com/cakedc/users/tree/develop)                      | 5.0.0 | unstable |
+| 3.0             | [3.0.x](https://github.com/cakedc/users/tree/3.0.x)                      | 3.0.0 | stable |
+| 3.1             | [3.1.x](https://github.com/cakedc/users/tree/3.1.x)                      | 3.1.0 | stable |
+| 3.3             | [3.3.x](https://github.com/cakedc/users/tree/3.3.x)                      | 4.1.3 | stable |
 
 The **Users** plugin is back!
 
