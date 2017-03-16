@@ -91,7 +91,6 @@ if (file_exists($root . '/config/bootstrap.php')) {
 Cake\Routing\DispatcherFactory::add('Routing');
 Cake\Routing\DispatcherFactory::add('ControllerFactory');
 
-
 class_alias('CakeDC\Users\Test\App\Controller\AppController', 'App\Controller\AppController');
 
 // Ensure default test connection is defined

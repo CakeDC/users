@@ -123,7 +123,6 @@ class SocialAuthenticateTest extends TestCase
             ->method('_socialLogin')
             ->will($this->returnValue($user));
 
-
         $result = $this->SocialAuthenticate->getUser($this->Request);
         $this->assertTrue($result['active']);
         $this->assertEquals('00000000-0000-0000-0000-000000000002', $result['id']);

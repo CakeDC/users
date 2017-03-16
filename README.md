@@ -45,7 +45,7 @@ Requirements
 ------------
 
 * CakePHP 3.2.9+
-* PHP 5.5.9+
+* PHP 5.6+
 
 Documentation
 -------------

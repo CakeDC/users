@@ -70,7 +70,7 @@ class UsersShellTest extends TestCase
 
     /**
      * Add user test
-     * Adding user with username, email and password
+     * Adding user with username, email, password and role
      *
      * @return void
      */
@@ -79,9 +79,10 @@ class UsersShellTest extends TestCase
         $user = [
             'username' => 'yeliparra',
             'password' => '123',
-            'email' => 'yeli.parra@gmail.com',
+            'email' => 'yeli.parra@example.com',
             'active' => 1,
         ];
+        $role = 'tester';
 
         $this->Shell->expects($this->never())
             ->method('_generateRandomUsername');
@@ -95,6 +96,7 @@ class UsersShellTest extends TestCase
             ->will($this->returnValue($user['username']));
 
         $entityUser = $this->Users->newEntity($user);
+        $entityUser->role = $role;
 
         $this->Shell->Users->expects($this->once())
             ->method('newEntity')
@@ -109,7 +111,7 @@ class UsersShellTest extends TestCase
             ->with($entityUser)
             ->will($this->returnValue($userSaved));
 
-        $this->Shell->runCommand(['addUser', '--username=' . $user['username'], '--password=' . $user['password'], '--email=' . $user['email']]);
+        $this->Shell->runCommand(['addUser', '--username=' . $user['username'], '--password=' . $user['password'], '--email=' . $user['email'], '--role=' . $role]);
     }
 
     /**
@@ -141,6 +143,7 @@ class UsersShellTest extends TestCase
             ->will($this->returnValue($user['username']));
 
         $entityUser = $this->Users->newEntity($user);
+        $entityUser->role = 'user';
 
         $this->Shell->Users->expects($this->once())
             ->method('newEntity')
@@ -161,11 +164,58 @@ class UsersShellTest extends TestCase
     }
 
     /**
-     * Add superadmin user
+     * Add user test
+     * Adding user with username, email, password and role
      *
      * @return void
      */
     public function testAddSuperuser()
+    {
+        $user = [
+            'username' => 'yeliparra',
+            'password' => '123',
+            'email' => 'yeli.parra@example.com',
+            'active' => 1,
+        ];
+        $role = 'tester';
+
+        $this->Shell->expects($this->never())
+            ->method('_generateRandomUsername');
+
+        $this->Shell->expects($this->never())
+            ->method('_generateRandomPassword');
+
+        $this->Shell->Users->expects($this->once())
+            ->method('generateUniqueUsername')
+            ->with($user['username'])
+            ->will($this->returnValue($user['username']));
+
+        $entityUser = $this->Users->newEntity($user);
+        $entityUser->role = $role;
+
+        $this->Shell->Users->expects($this->once())
+            ->method('newEntity')
+            ->with($user)
+            ->will($this->returnValue($entityUser));
+
+        $userSaved = $entityUser;
+        $userSaved->id = 'my-id';
+        $userSaved->is_superuser = true;
+
+        $this->Shell->Users->expects($this->once())
+            ->method('save')
+            ->with($entityUser)
+            ->will($this->returnValue($userSaved));
+
+        $this->Shell->runCommand(['addSuperuser', '--username=' . $user['username'], '--password=' . $user['password'], '--email=' . $user['email'], '--role=' . $role]);
+    }
+
+    /**
+     * Add superadmin user
+     *
+     * @return void
+     */
+    public function testAddSuperuserWithNoParams()
     {
         $this->Shell->Users->expects($this->once())
             ->method('generateUniqueUsername')

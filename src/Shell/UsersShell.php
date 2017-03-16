@@ -64,7 +64,8 @@ class UsersShell extends Shell
             ->addOptions([
                 'username' => ['short' => 'u', 'help' => 'The username for the new user'],
                 'password' => ['short' => 'p', 'help' => 'The password for the new user'],
-                'email' => ['short' => 'e', 'help' => 'The email for the new user']
+                'email' => ['short' => 'e', 'help' => 'The email for the new user'],
+                'role' => ['short' => 'r', 'help' => 'The role for the new user']
             ]);
 
         return $parser;
@@ -77,28 +78,7 @@ class UsersShell extends Shell
      */
     public function addUser()
     {
-        $username = (empty($this->params['username']) ?
-            $this->_generateRandomUsername() : $this->params['username']);
-
-        $username = $this->Users->generateUniqueUsername($username);
-        $password = (empty($this->params['password']) ?
-            $this->_generateRandomPassword() : $this->params['password']);
-        $email = (empty($this->params['email']) ? $username . '@example.com' : $this->params['email']);
-        $user = [
-            'username' => $username,
-            'email' => $email,
-            'password' => $password,
-            'active' => 1,
-        ];
-
-        $userEntity = $this->Users->newEntity($user);
-        $userEntity->role = 'user';
-        $savedUser = $this->Users->save($userEntity);
-        $this->out(__d('CakeDC/Users', 'User added:'));
-        $this->out(__d('CakeDC/Users', 'Id: {0}', $savedUser->id));
-        $this->out(__d('CakeDC/Users', 'Username: {0}', $username));
-        $this->out(__d('CakeDC/Users', 'Email: {0}', $savedUser->email));
-        $this->out(__d('CakeDC/Users', 'Password: {0}', $password));
+        $this->_createUser(['role' => 'user']);
     }
 
     /**
@@ -108,32 +88,11 @@ class UsersShell extends Shell
      */
     public function addSuperuser()
     {
-        $username = $this->Users->generateUniqueUsername('superadmin');
-        $password = $this->_generateRandomPassword();
-        $user = [
-            'username' => $username,
-            'email' => $username . '@example.com',
-            'password' => $password,
-            'active' => 1,
-        ];
-
-        $userEntity = $this->Users->newEntity($user);
-        $userEntity->is_superuser = true;
-        $userEntity->role = 'superuser';
-        $savedUser = $this->Users->save($userEntity);
-        if (!empty($savedUser)) {
-            $this->out(__d('CakeDC/Users', 'Superuser added:'));
-            $this->out(__d('CakeDC/Users', 'Id: {0}', $savedUser->id));
-            $this->out(__d('CakeDC/Users', 'Username: {0}', $username));
-            $this->out(__d('CakeDC/Users', 'Email: {0}', $savedUser->email));
-            $this->out(__d('CakeDC/Users', 'Password: {0}', $password));
-        } else {
-            $this->out(__d('CakeDC/Users', 'Superuser could not be added:'));
-
-            collection($userEntity->errors())->each(function ($error, $field) {
-                $this->out(__d('CakeDC/Users', 'Field: {0} Error: {1}', $field, implode(',', $error)));
-            });
-        }
+        $this->_createUser([
+            'username' => 'superadmin',
+            'role' => 'superuser',
+            'is_superuser' => true
+        ]);
     }
 
     /**
@@ -285,6 +244,61 @@ class UsersShell extends Shell
         ];
 
         return $this->_updateUser($username, $data);
+    }
+
+    /**
+     * Create a new user or superuser
+     *
+     * @param array $template template with deafault user values
+     * @return void
+     */
+    protected function _createUser($template)
+    {
+        if (!empty($this->params['username'])) {
+            $username = $this->params['username'];
+        } else {
+            $username = !empty($template['username']) ?
+                $template['username'] : $this->_generateRandomUsername();
+        }
+
+        $password = (empty($this->params['password']) ?
+            $this->_generateRandomPassword() : $this->params['password']);
+        $email = (empty($this->params['email']) ?
+            $username . '@example.com' : $this->params['email']);
+        $role = (empty($this->params['role']) ?
+            $template['role'] : $this->params['role']);
+
+        $user = [
+            'username' => $this->Users->generateUniqueUsername($username),
+            'email' => $email,
+            'password' => $password,
+            'active' => 1,
+        ];
+
+        $userEntity = $this->Users->newEntity($user);
+        $userEntity->is_superuser = empty($template['is_superuser']) ?
+            false : $template['is_superuser'];
+        $userEntity->role = $role;
+        $savedUser = $this->Users->save($userEntity);
+
+        if (!empty($savedUser)) {
+            if ($savedUser->is_superuser) {
+                $this->out(__d('CakeDC/Users', 'Superuser added:'));
+            } else {
+                $this->out(__d('CakeDC/Users', 'User added:'));
+            }
+            $this->out(__d('CakeDC/Users', 'Id: {0}', $savedUser->id));
+            $this->out(__d('CakeDC/Users', 'Username: {0}', $savedUser->username));
+            $this->out(__d('CakeDC/Users', 'Email: {0}', $savedUser->email));
+            $this->out(__d('CakeDC/Users', 'Role: {0}', $savedUser->role));
+            $this->out(__d('CakeDC/Users', 'Password: {0}', $password));
+        } else {
+            $this->out(__d('CakeDC/Users', 'User could not be added:'));
+
+            collection($userEntity->errors())->each(function ($error, $field) {
+                $this->out(__d('CakeDC/Users', 'Field: {0} Error: {1}', $field, implode(',', $error)));
+            });
+        }
     }
 
     /**
