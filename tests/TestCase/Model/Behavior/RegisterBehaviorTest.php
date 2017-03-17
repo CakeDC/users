@@ -12,6 +12,7 @@
 
 namespace CakeDC\Users\Test\TestCase\Model\Behavior;
 
+use Cake\Core\Configure;
 use Cake\Mailer\Email;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
@@ -228,7 +229,7 @@ class RegisterBehaviorTest extends TestCase
      * Test Validate method
      *
      * @return void
-     * @expectedException CakeDC\Users\Exception\TokenExpiredException
+     * @expectedException \CakeDC\Users\Exception\TokenExpiredException
      */
     public function testValidateUserWithExpiredToken()
     {
@@ -239,7 +240,7 @@ class RegisterBehaviorTest extends TestCase
      * Test Validate method
      *
      * @return void
-     * @expectedException CakeDC\Users\Exception\UserNotFoundException
+     * @expectedException \CakeDC\Users\Exception\UserNotFoundException
      */
     public function testValidateNotExistingUser()
     {
@@ -263,5 +264,55 @@ class RegisterBehaviorTest extends TestCase
         $resultValidationToken->token = null;
 
         $this->Behavior->activateUser($user);
+    }
+
+    /**
+     * Test register default role
+     *
+     * @return void
+     */
+    public function testRegisterUsingDefaultRole()
+    {
+        $user = [
+            'username' => 'testuser',
+            'email' => 'testuser@test.com',
+            'password' => 'password',
+            'password_confirm' => 'password',
+            'first_name' => 'test',
+            'last_name' => 'user',
+            'tos' => 1
+        ];
+        Configure::write('Users.Registration.defaultRole', false);
+        $result = $this->Table->register($this->Table->newEntity(), $user, [
+            'token_expiration' => 3600,
+            'validate_email' => 0,
+            'email_class' => $this->Email
+        ]);
+        $this->assertSame('user', $result['role']);
+    }
+
+    /**
+     * Test register not default role
+     *
+     * @return void
+     */
+    public function testRegisterUsingCustomRole()
+    {
+        $user = [
+            'username' => 'testuser',
+            'email' => 'testuser@test.com',
+            'password' => 'password',
+            'password_confirm' => 'password',
+            'first_name' => 'test',
+            'last_name' => 'user',
+            'tos' => 1
+        ];
+        Configure::write('Users.Registration.defaultRole', 'emperor');
+        $result = $this->Table->register($this->Table->newEntity(), $user, [
+            'token_expiration' => 3600,
+            'validate_email' => 0,
+            'email_class' => $this->Email
+        ]);
+        $this->assertSame('emperor', $result['role']);
     }
 }

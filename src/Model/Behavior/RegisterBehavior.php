@@ -62,6 +62,7 @@ class RegisterBehavior extends BaseTokenBehavior
             $data,
             ['validate' => Hash::get($options, 'validator') ?: $this->getRegisterValidators($options)]
         );
+        $user['role'] = Configure::read('Users.Registration.defaultRole') ?: 'user';
         $user->validated = false;
         //@todo move updateActive to afterSave?
         $user = $this->_updateActive($user, $validateEmail, $tokenExpiration);

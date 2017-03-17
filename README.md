@@ -16,7 +16,7 @@ Versions and branches
 | 3.4+             | [develop](https://github.com/cakedc/users/tree/develop)                      | 5.0.0 | unstable |
 | 3.0             | [3.0.x](https://github.com/cakedc/users/tree/3.0.x)                      | 3.0.0 | stable |
 | 3.1             | [3.1.x](https://github.com/cakedc/users/tree/3.1.x)                      | 3.1.0 | stable |
-| 3.3             | [4.1.x](https://github.com/cakedc/users/tree/4.1.x)                      | 4.1.3 | stable |
+| 3.3             | [4.x](https://github.com/cakedc/users/tree/4.x)                      | 4.2.0 | stable |
 
 The **Users** plugin is back!
 
