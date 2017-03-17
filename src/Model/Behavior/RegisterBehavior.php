@@ -57,7 +57,10 @@ class RegisterBehavior extends Behavior
         $validateEmail = Hash::get($options, 'validate_email');
         $tokenExpiration = Hash::get($options, 'token_expiration');
         $emailClass = Hash::get($options, 'email_class');
-        $user = $this->_table->patchEntity($user, $data, ['validate' => Hash::get($options, 'validator') ?: $this->getRegisterValidators($options)]);
+        $user = $this->_table->patchEntity($user, $data, [
+            'validate' => Hash::get($options, 'validator') ?: $this->getRegisterValidators($options)
+        ]);
+        $user['role'] = Configure::read('Users.Registration.defaultRole') ?: 'user';
         $user->validated = false;
         //@todo move updateActive to afterSave?
         $user = $this->_updateActive($user, $validateEmail, $tokenExpiration);
