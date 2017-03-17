@@ -51,6 +51,7 @@ class SocialAccountsControllerTest extends TestCase
             'className' => 'Debug'
         ]);
         $this->configEmail = Email::getConfig('default');
+        Email::drop('default');
         Email::setConfig('default', [
             'transport' => 'test',
             'from' => 'cakedc@example.com'
