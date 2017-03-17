@@ -12,8 +12,8 @@
 namespace CakeDC\Users\Test\TestCase\Shell;
 
 use CakeDC\Users\Shell\UsersShell;
-use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOutput;
+use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
@@ -354,5 +354,68 @@ class UsersShellTest extends TestCase
         $this->assertNotEmpty($this->Users->findById('00000000-0000-0000-0000-000000000005')->first());
         $this->Shell->runCommand(['deleteUser', 'user-5']);
         $this->assertEmpty($this->Users->findById('00000000-0000-0000-0000-000000000005')->first());
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testAddUserCustomRole()
+    {
+        $this->Shell = new UsersShell($this->io);
+        $this->Shell->Users = $this->Users;
+        $this->assertEmpty($this->Users->findByUsername('custom')->first());
+        $this->Shell->runCommand([
+            'addUser',
+            '--username=custom',
+            '--password=12345678',
+            '--email=custom@example.com',
+            '--role=custom'
+        ]);
+        $user = $this->Users->findByUsername('custom')->first();
+        $this->assertSame('custom', $user['role']);
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testAddUserDefaultRole()
+    {
+        $this->Shell = new UsersShell($this->io);
+        $this->Shell->Users = $this->Users;
+        $this->assertEmpty($this->Users->findByUsername('custom')->first());
+        Configure::write('Users.Registration.defaultRole', false);
+        $this->Shell->runCommand([
+            'addUser',
+            '--username=custom',
+            '--password=12345678',
+            '--email=custom@example.com',
+        ]);
+        $user = $this->Users->findByUsername('custom')->first();
+        $this->assertSame('user', $user['role']);
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testAddUserCustomDefaultRole()
+    {
+        $this->Shell = new UsersShell($this->io);
+        $this->Shell->Users = $this->Users;
+        $this->assertEmpty($this->Users->findByUsername('custom')->first());
+        Configure::write('Users.Registration.defaultRole', 'emperor');
+        $this->Shell->runCommand([
+            'addUser',
+            '--username=custom',
+            '--password=12345678',
+            '--email=custom@example.com',
+        ]);
+        $user = $this->Users->findByUsername('custom')->first();
+        $this->assertSame('emperor', $user['role']);
     }
 }

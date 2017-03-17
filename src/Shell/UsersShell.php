@@ -78,7 +78,7 @@ class UsersShell extends Shell
      */
     public function addUser()
     {
-        $this->_createUser(['role' => 'user']);
+        $this->_createUser(['role' => Configure::read('Users.Registration.defaultRole') ?: 'user']);
     }
 
     /**
