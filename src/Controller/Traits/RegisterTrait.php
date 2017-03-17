@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -20,6 +20,7 @@ use Cake\Network\Response;
 /**
  * Covers registration features and email token validation
  *
+ * @property \Cake\Http\ServerRequest $request
  */
 trait RegisterTrait
 {
@@ -29,7 +30,7 @@ trait RegisterTrait
      * Register a new user
      *
      * @throws NotFoundException
-     * @return type
+     * @return mixed
      */
     public function register()
     {
@@ -54,7 +55,7 @@ trait RegisterTrait
             'validate_email' => $validateEmail,
             'use_tos' => $useTos
         ];
-        $requestData = $this->request->data;
+        $requestData = $this->request->getData();
         $event = $this->dispatchEvent(UsersAuthComponent::EVENT_BEFORE_REGISTER, [
             'usersTable' => $usersTable,
             'options' => $options,
@@ -105,7 +106,7 @@ trait RegisterTrait
         }
 
         return $this->validateReCaptcha(
-            $this->request->data('g-recaptcha-response'),
+            $this->request->getData('g-recaptcha-response'),
             $this->request->clientIp()
         );
     }

@@ -1,18 +1,18 @@
 <?php
 /**
- * Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 namespace CakeDC\Users\Auth;
 
 use Cake\Auth\BaseAuthorize;
-use Cake\Network\Request;
+use Cake\Http\ServerRequest;
 use Cake\Utility\Hash;
 
 /**
@@ -36,14 +36,14 @@ class SuperuserAuthorize extends BaseAuthorize
     /**
      * Check if the user is superuser
      *
-     * @param type $user User information object.
-     * @param Request $request Cake request object.
+     * @param array $user User information object.
+     * @param \Cake\Http\ServerRequest $request Cake request object.
      * @return bool
      */
-    public function authorize($user, Request $request)
+    public function authorize($user, ServerRequest $request)
     {
         $user = (array)$user;
-        $superuserField = $this->config('superuser_field');
+        $superuserField = $this->getConfig('superuser_field');
         if (Hash::check($user, $superuserField)) {
             return (bool)Hash::get($user, $superuserField);
         }

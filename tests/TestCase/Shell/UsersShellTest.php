@@ -1,19 +1,19 @@
 <?php
 /**
- * Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 namespace CakeDC\Users\Test\TestCase\Shell;
 
 use CakeDC\Users\Shell\UsersShell;
-use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOutput;
+use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
@@ -43,7 +43,7 @@ class UsersShellTest extends TestCase
 
         $this->Shell = $this->getMockBuilder('CakeDC\Users\Shell\UsersShell')
             ->setMethods(['in', 'out', '_stop', 'clear', '_usernameSeed', '_generateRandomPassword',
-                '_generateRandomUsername', '_generatedHashedPassword', 'error', '_updateUser'])
+                '_generateRandomUsername', '_generatedHashedPassword', 'setError', '_updateUser'])
             ->setConstructorArgs([$this->io])
             ->getMock();
 
@@ -278,7 +278,7 @@ class UsersShellTest extends TestCase
     public function testResetAllPasswordsNoPassingParams()
     {
         $this->Shell->expects($this->once())
-            ->method('error')
+            ->method('setError')
             ->with('Please enter a password.');
 
         $this->Shell->runCommand(['resetAllPasswords']);
@@ -354,5 +354,68 @@ class UsersShellTest extends TestCase
         $this->assertNotEmpty($this->Users->findById('00000000-0000-0000-0000-000000000005')->first());
         $this->Shell->runCommand(['deleteUser', 'user-5']);
         $this->assertEmpty($this->Users->findById('00000000-0000-0000-0000-000000000005')->first());
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testAddUserCustomRole()
+    {
+        $this->Shell = new UsersShell($this->io);
+        $this->Shell->Users = $this->Users;
+        $this->assertEmpty($this->Users->findByUsername('custom')->first());
+        $this->Shell->runCommand([
+            'addUser',
+            '--username=custom',
+            '--password=12345678',
+            '--email=custom@example.com',
+            '--role=custom'
+        ]);
+        $user = $this->Users->findByUsername('custom')->first();
+        $this->assertSame('custom', $user['role']);
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testAddUserDefaultRole()
+    {
+        $this->Shell = new UsersShell($this->io);
+        $this->Shell->Users = $this->Users;
+        $this->assertEmpty($this->Users->findByUsername('custom')->first());
+        Configure::write('Users.Registration.defaultRole', false);
+        $this->Shell->runCommand([
+            'addUser',
+            '--username=custom',
+            '--password=12345678',
+            '--email=custom@example.com',
+        ]);
+        $user = $this->Users->findByUsername('custom')->first();
+        $this->assertSame('user', $user['role']);
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testAddUserCustomDefaultRole()
+    {
+        $this->Shell = new UsersShell($this->io);
+        $this->Shell->Users = $this->Users;
+        $this->assertEmpty($this->Users->findByUsername('custom')->first());
+        Configure::write('Users.Registration.defaultRole', 'emperor');
+        $this->Shell->runCommand([
+            'addUser',
+            '--username=custom',
+            '--password=12345678',
+            '--email=custom@example.com',
+        ]);
+        $user = $this->Users->findByUsername('custom')->first();
+        $this->assertSame('emperor', $user['role']);
     }
 }

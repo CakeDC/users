@@ -1,5 +1,15 @@
 <?php
 /**
+ * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ *
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
+ */
+
+/**
  * Test suite bootstrap.
  *
  * This function is used to find the location of CakePHP whether CakePHP
@@ -72,7 +82,7 @@ $cache = [
     ],
 ];
 
-Cake\Cache\Cache::config($cache);
+Cake\Cache\Cache::setConfig($cache);
 Cake\Core\Configure::write('Session', [
     'defaults' => 'php'
 ]);
@@ -98,7 +108,19 @@ if (!getenv('db_dsn')) {
     putenv('db_dsn=sqlite:///:memory:');
 }
 
-Cake\Datasource\ConnectionManager::config('test', [
+Cake\Datasource\ConnectionManager::setConfig('test', [
     'url' => getenv('db_dsn'),
+//    'className' => 'Cake\Database\Connection',
+//    'driver' => 'Cake\Database\Driver\Postgres',
+//    'persistent' => true,
+//    'host' => 'localhost',
+//    'username' => 'my_app',
+//    'password' => null,
+//    'database' => 'test',
+//    'schema' => 'public',
+//    'port' => 5432,
+//    'encoding' => 'utf8',
+//    'flags' => [],
+//    'init' => [],
     'timezone' => 'UTC'
 ]);
