@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 ?>
@@ -14,7 +14,7 @@
     <fieldset>
         <legend><?= __d('CakeDC/Users', 'Resend Validation email') ?></legend>
         <?php
-        echo $this->Form->input('reference', ['label' => __d('CakeDC/Users', 'Email or username')]);
+        echo $this->Form->control('reference', ['label' => __d('CakeDC/Users', 'Email or username')]);
         ?>
     </fieldset>
     <?= $this->Form->button(__d('CakeDC/Users', 'Submit')) ?>

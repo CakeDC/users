@@ -1,16 +1,19 @@
 <?php
 /**
- * Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 ?>
 <div class="users">
-    <h3><?= $this->Html->image(empty($user->avatar) ? $avatarPlaceholder : $user->avatar, ['width' => '180', 'height' => '180']); ?></h3>
+    <h3><?= $this->Html->image(
+            empty($user->avatar) ? $avatarPlaceholder : $user->avatar,
+            ['width' => '180', 'height' => '180']
+        ); ?></h3>
     <h3>
         <?=
         $this->Html->tag(
@@ -34,11 +37,11 @@
                 <h6 class="subheader"><?= __d('CakeDC/Users', 'Social Accounts') ?></h6>
                 <table cellpadding="0" cellspacing="0">
                     <thead>
-                        <tr>
-                            <th><?= __d('CakeDC/Users', 'Avatar'); ?></th>
-                            <th><?= __d('CakeDC/Users', 'Provider'); ?></th>
-                            <th><?= __d('CakeDC/Users', 'Link'); ?></th>
-                        </tr>
+                    <tr>
+                        <th><?= __d('CakeDC/Users', 'Avatar'); ?></th>
+                        <th><?= __d('CakeDC/Users', 'Provider'); ?></th>
+                        <th><?= __d('CakeDC/Users', 'Link'); ?></th>
+                    </tr>
                     </thead>
                     <tbody>
                     <?php
@@ -61,12 +64,12 @@
                                     ['target' => '_blank']
                                 ) ?></td>
                         </tr>
-                    <?php
+                        <?php
                     endforeach;
                     ?>
                     </tbody>
                 </table>
-            <?php
+                <?php
             endif;
             ?>
         </div>

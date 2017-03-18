@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -18,6 +18,7 @@ use Cake\Utility\Inflector;
 /**
  * Covers the baked CRUD actions, note we could use Crud Plugin too
  *
+ * @property \Cake\Http\ServerRequest $request
  */
 trait SimpleCrudTrait
 {
@@ -57,7 +58,7 @@ trait SimpleCrudTrait
     /**
      * Add method
      *
-     * @return void Redirects on successful add, renders view otherwise.
+     * @return mixed Redirects on successful add, renders view otherwise.
      */
     public function add()
     {
@@ -70,7 +71,7 @@ trait SimpleCrudTrait
         if (!$this->request->is('post')) {
             return;
         }
-        $entity = $table->patchEntity($entity, $this->request->data);
+        $entity = $table->patchEntity($entity, $this->request->getData());
         $singular = Inflector::singularize(Inflector::humanize($tableAlias));
         if ($table->save($entity)) {
             $this->Flash->success(__d('CakeDC/Users', 'The {0} has been saved', $singular));
@@ -84,7 +85,7 @@ trait SimpleCrudTrait
      * Edit method
      *
      * @param string|null $id User id.
-     * @return void Redirects on successful edit, renders view otherwise.
+     * @return mixed Redirects on successful edit, renders view otherwise.
      * @throws NotFoundException When record not found.
      */
     public function edit($id = null)
@@ -100,7 +101,7 @@ trait SimpleCrudTrait
         if (!$this->request->is(['patch', 'post', 'put'])) {
             return;
         }
-        $entity = $table->patchEntity($entity, $this->request->data);
+        $entity = $table->patchEntity($entity, $this->request->getData());
         $singular = Inflector::singularize(Inflector::humanize($tableAlias));
         if ($table->save($entity)) {
             $this->Flash->success(__d('CakeDC/Users', 'The {0} has been saved', $singular));

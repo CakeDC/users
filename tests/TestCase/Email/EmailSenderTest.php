@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 namespace CakeDC\Users\Test\TestCase\Email;
@@ -42,14 +42,14 @@ class EmailSenderTest extends TestCase
             ->setMethods(['_getEmailInstance', 'getMailer'])
             ->getMock();
 
-        $this->UserMailer = $this->getMockBuilder('CakeDC\Users\Mailer\UserMailer')
+        $this->UserMailer = $this->getMockBuilder('CakeDC\Users\Mailer\UsersMailer')
             ->setMethods(['send'])
             ->getMock();
 
         $this->fullBaseBackup = Router::fullBaseUrl();
         Router::fullBaseUrl('http://users.test');
 
-        Email::configTransport('test', [
+        Email::setConfigTransport('test', [
             'className' => 'Debug'
         ]);
     }

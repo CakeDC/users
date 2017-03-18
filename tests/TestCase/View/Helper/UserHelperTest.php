@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -16,6 +16,7 @@ use Cake\Core\App;
 use Cake\Core\Configure;
 use Cake\Core\Plugin;
 use Cake\Event\Event;
+use Cake\Http\ServerRequest;
 use Cake\I18n\I18n;
 use Cake\Network\Request;
 use Cake\Routing\Router;
@@ -51,7 +52,7 @@ class UserHelperTest extends TestCase
             ->will($this->returnValue(true));
         $this->User = new UserHelper($this->View);
         $this->User->AuthLink = $this->AuthLink;
-        $this->request = new Request();
+        $this->request = new ServerRequest();
     }
 
     /**

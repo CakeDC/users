@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -48,10 +48,20 @@ class UserHelper extends Helper
         $icon = $this->Html->tag('i', '', [
             'class' => __d('CakeDC/Users', 'fa fa-{0}', strtolower($name)),
         ]);
-        $providerTitle = __d('CakeDC/Users', '{0} {1}', Hash::get($options, 'label'), Inflector::camelize($name));
-        $providerClass = __d('CakeDC/Users', 'btn btn-social btn-{0} ' . Hash::get($options, 'class') ?: '', strtolower($name));
 
-        return $this->AuthLink->link($icon . $providerTitle, "/auth/$name", [
+        if (isset($options['title'])) {
+            $providerTitle = $options['title'];
+        } else {
+            $providerTitle = __d('CakeDC/Users', '{0} {1}', Hash::get($options, 'label'), Inflector::camelize($name));
+        }
+
+        $providerClass = __d(
+            'CakeDC/Users',
+            'btn btn-social btn-{0} ' . Hash::get($options, 'class') ?: '',
+            strtolower($name)
+        );
+
+        return $this->Html->link($icon . $providerTitle, "/auth/$name", [
             'escape' => false, 'class' => $providerClass
         ]);
     }
@@ -59,9 +69,10 @@ class UserHelper extends Helper
     /**
      * All available Social Login Icons
      *
+     * @param array $providerOptions Provider link options.
      * @return array Links to Social Login Urls
      */
-    public function socialLoginList()
+    public function socialLoginList(array $providerOptions = [])
     {
         if (!Configure::read('Users.Social.login')) {
             return [];
@@ -71,8 +82,13 @@ class UserHelper extends Helper
         foreach ($providers as $provider => $options) {
             if (!empty($options['options']['redirectUri']) &&
                 !empty($options['options']['clientId']) &&
-                !empty($options['options']['clientSecret'])) {
-                $outProviders[] = $this->socialLogin($provider);
+                !empty($options['options']['clientSecret'])
+            ) {
+                if (isset($providerOptions[$provider])) {
+                    $options['options'] = Hash::merge($options['options'], $providerOptions[$provider]);
+                }
+
+                $outProviders[] = $this->socialLogin($provider, $options['options']);
             }
         }
 
@@ -90,9 +106,9 @@ class UserHelper extends Helper
     {
         return $this->AuthLink->link(empty($message) ? __d('CakeDC/Users', 'Logout') : $message, [
             'plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'logout'
-            ], $options);
+        ], $options);
     }
-    
+
     /**
      * Welcome display
      * @return mixed
@@ -137,5 +153,43 @@ class UserHelper extends Helper
             'class' => 'g-recaptcha',
             'data-sitekey' => Configure::read('Users.reCaptcha.key')
         ]);
+    }
+
+    /**
+     * Generate a link if the target url is authorized for the logged in user
+     *
+     * @deprecated Since 3.2.1. Use AuthLinkHelper::link() instead
+     *
+     * @param string $title link's title.
+     * @param string|array|null $url url that the user is making request.
+     * @param array $options Array with option data.
+     * @return string
+     */
+    public function link($title, $url = null, array $options = [])
+    {
+        trigger_error(
+            'UserHelper::link() deprecated since 3.2.1. Use AuthLinkHelper::link() instead',
+            E_USER_DEPRECATED
+        );
+
+        return $this->AuthLink->link($title, $url, $options);
+    }
+
+    /**
+     * Returns true if the target url is authorized for the logged in user
+     *
+     * @deprecated Since 3.2.1. Use AuthLinkHelper::link() instead
+     *
+     * @param string|array|null $url url that the user is making request.
+     * @return bool
+     */
+    public function isAuthorized($url = null)
+    {
+        trigger_error(
+            'UserHelper::isAuthorized() deprecated since 3.2.1. Use AuthLinkHelper::isAuthorized() instead',
+            E_USER_DEPRECATED
+        );
+
+        return $this->AuthLink->isAuthorized($url);
     }
 }

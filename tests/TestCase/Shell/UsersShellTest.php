@@ -1,19 +1,19 @@
 <?php
 /**
- * Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 namespace CakeDC\Users\Test\TestCase\Shell;
 
 use CakeDC\Users\Shell\UsersShell;
-use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOutput;
+use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
@@ -43,11 +43,11 @@ class UsersShellTest extends TestCase
 
         $this->Shell = $this->getMockBuilder('CakeDC\Users\Shell\UsersShell')
             ->setMethods(['in', 'out', '_stop', 'clear', '_usernameSeed', '_generateRandomPassword',
-                '_generateRandomUsername', '_generatedHashedPassword', 'error', '_updateUser'])
+                '_generateRandomUsername', '_generatedHashedPassword', 'setError', '_updateUser'])
             ->setConstructorArgs([$this->io])
             ->getMock();
 
-        $this->Shell->Users = $this->getMockBuilder('CakeDC\Users\Model\UsersTable')
+        $this->Shell->Users = $this->getMockBuilder('CakeDC\Users\Model\Table\UsersTable')
             ->setMethods(['generateUniqueUsername', 'newEntity', 'save', 'updateAll'])
             ->getMock();
 
@@ -70,7 +70,7 @@ class UsersShellTest extends TestCase
 
     /**
      * Add user test
-     * Adding user with username, email and password
+     * Adding user with username, email, password and role
      *
      * @return void
      */
@@ -79,9 +79,10 @@ class UsersShellTest extends TestCase
         $user = [
             'username' => 'yeliparra',
             'password' => '123',
-            'email' => 'yeli.parra@gmail.com',
+            'email' => 'yeli.parra@example.com',
             'active' => 1,
         ];
+        $role = 'tester';
 
         $this->Shell->expects($this->never())
             ->method('_generateRandomUsername');
@@ -95,6 +96,7 @@ class UsersShellTest extends TestCase
             ->will($this->returnValue($user['username']));
 
         $entityUser = $this->Users->newEntity($user);
+        $entityUser->role = $role;
 
         $this->Shell->Users->expects($this->once())
             ->method('newEntity')
@@ -109,7 +111,7 @@ class UsersShellTest extends TestCase
             ->with($entityUser)
             ->will($this->returnValue($userSaved));
 
-        $this->Shell->runCommand(['addUser', '--username=' . $user['username'], '--password=' . $user['password'], '--email=' . $user['email']]);
+        $this->Shell->runCommand(['addUser', '--username=' . $user['username'], '--password=' . $user['password'], '--email=' . $user['email'], '--role=' . $role]);
     }
 
     /**
@@ -141,6 +143,7 @@ class UsersShellTest extends TestCase
             ->will($this->returnValue($user['username']));
 
         $entityUser = $this->Users->newEntity($user);
+        $entityUser->role = 'user';
 
         $this->Shell->Users->expects($this->once())
             ->method('newEntity')
@@ -161,11 +164,58 @@ class UsersShellTest extends TestCase
     }
 
     /**
-     * Add superadmin user
+     * Add user test
+     * Adding user with username, email, password and role
      *
      * @return void
      */
     public function testAddSuperuser()
+    {
+        $user = [
+            'username' => 'yeliparra',
+            'password' => '123',
+            'email' => 'yeli.parra@example.com',
+            'active' => 1,
+        ];
+        $role = 'tester';
+
+        $this->Shell->expects($this->never())
+            ->method('_generateRandomUsername');
+
+        $this->Shell->expects($this->never())
+            ->method('_generateRandomPassword');
+
+        $this->Shell->Users->expects($this->once())
+            ->method('generateUniqueUsername')
+            ->with($user['username'])
+            ->will($this->returnValue($user['username']));
+
+        $entityUser = $this->Users->newEntity($user);
+        $entityUser->role = $role;
+
+        $this->Shell->Users->expects($this->once())
+            ->method('newEntity')
+            ->with($user)
+            ->will($this->returnValue($entityUser));
+
+        $userSaved = $entityUser;
+        $userSaved->id = 'my-id';
+        $userSaved->is_superuser = true;
+
+        $this->Shell->Users->expects($this->once())
+            ->method('save')
+            ->with($entityUser)
+            ->will($this->returnValue($userSaved));
+
+        $this->Shell->runCommand(['addSuperuser', '--username=' . $user['username'], '--password=' . $user['password'], '--email=' . $user['email'], '--role=' . $role]);
+    }
+
+    /**
+     * Add superadmin user
+     *
+     * @return void
+     */
+    public function testAddSuperuserWithNoParams()
     {
         $this->Shell->Users->expects($this->once())
             ->method('generateUniqueUsername')
@@ -228,7 +278,7 @@ class UsersShellTest extends TestCase
     public function testResetAllPasswordsNoPassingParams()
     {
         $this->Shell->expects($this->once())
-            ->method('error')
+            ->method('setError')
             ->with('Please enter a password.');
 
         $this->Shell->runCommand(['resetAllPasswords']);
@@ -304,5 +354,68 @@ class UsersShellTest extends TestCase
         $this->assertNotEmpty($this->Users->findById('00000000-0000-0000-0000-000000000005')->first());
         $this->Shell->runCommand(['deleteUser', 'user-5']);
         $this->assertEmpty($this->Users->findById('00000000-0000-0000-0000-000000000005')->first());
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testAddUserCustomRole()
+    {
+        $this->Shell = new UsersShell($this->io);
+        $this->Shell->Users = $this->Users;
+        $this->assertEmpty($this->Users->findByUsername('custom')->first());
+        $this->Shell->runCommand([
+            'addUser',
+            '--username=custom',
+            '--password=12345678',
+            '--email=custom@example.com',
+            '--role=custom'
+        ]);
+        $user = $this->Users->findByUsername('custom')->first();
+        $this->assertSame('custom', $user['role']);
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testAddUserDefaultRole()
+    {
+        $this->Shell = new UsersShell($this->io);
+        $this->Shell->Users = $this->Users;
+        $this->assertEmpty($this->Users->findByUsername('custom')->first());
+        Configure::write('Users.Registration.defaultRole', false);
+        $this->Shell->runCommand([
+            'addUser',
+            '--username=custom',
+            '--password=12345678',
+            '--email=custom@example.com',
+        ]);
+        $user = $this->Users->findByUsername('custom')->first();
+        $this->assertSame('user', $user['role']);
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testAddUserCustomDefaultRole()
+    {
+        $this->Shell = new UsersShell($this->io);
+        $this->Shell->Users = $this->Users;
+        $this->assertEmpty($this->Users->findByUsername('custom')->first());
+        Configure::write('Users.Registration.defaultRole', 'emperor');
+        $this->Shell->runCommand([
+            'addUser',
+            '--username=custom',
+            '--password=12345678',
+            '--email=custom@example.com',
+        ]);
+        $user = $this->Users->findByUsername('custom')->first();
+        $this->assertSame('emperor', $user['role']);
     }
 }

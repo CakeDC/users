@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -14,12 +14,14 @@ namespace CakeDC\Users\Model\Behavior;
 use ArrayObject;
 use CakeDC\Users\Email\EmailSender;
 use CakeDC\Users\Exception\AccountAlreadyActiveException;
+use CakeDC\Users\Model\Entity\SocialAccount;
 use CakeDC\Users\Model\Entity\User;
 use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Event\Event;
 use Cake\Mailer\Email;
+use Cake\ORM\Behavior;
 use Cake\ORM\Entity;
 
 /**
@@ -72,10 +74,13 @@ class SocialAccountBehavior extends Behavior
      * @param EntityInterface $socialAccount social account
      * @param EntityInterface $user user
      * @param Email $email Email instance or null to use 'default' configuration
-     * @return mixed
+     * @return void
      */
-    public function sendSocialValidationEmail(EntityInterface $socialAccount, EntityInterface $user, Email $email = null)
-    {
+    public function sendSocialValidationEmail(
+        EntityInterface $socialAccount,
+        EntityInterface $user,
+        Email $email = null
+    ) {
         $this->Email = new EmailSender();
         $this->Email->sendSocialValidationEmail($socialAccount, $user, $email);
     }
@@ -138,7 +143,7 @@ class SocialAccountBehavior extends Behavior
     /**
      * Activates an account
      *
-     * @param Account $socialAccount social account
+     * @param SocialAccount $socialAccount social account
      * @return EntityInterface
      */
     protected function _activateAccount($socialAccount)
