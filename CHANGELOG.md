@@ -3,6 +3,41 @@ Changelog
 
 Releases for CakePHP 3
 -------------
+
+* 4.1.3
+  * Configurable rememberMe checkbox status
+  * Update brazilian portuguese translations
+  * Add active finder to SocialAccountsTable
+  * Improvements in UsersShell for superuser add options
+  * Update to robthree/twofactorauth 1.6
+  * UserHelper improvements
+
+* 4.1.2
+  * Fix RememberMe redirect
+  * Fix AuthLink rendering inside Cells
+  
+* 4.1.1
+  * Add missing password field in add user
+
+* 4.1.0
+  * Add reset action for Google Authenticator
+
+* 4.0.0
+  * Add Google Authenticator
+  * Add improvements to SimpleRbac, like star to invert rules and `user.` prefix to match values from the user array
+  * Add `allowed` to manage the AuthLinkHelper when action is allowed
+  * Add option to configure the api table and finder in ApiKeyAuthenticate
+
+* 3.2.5
+  * Fixed RegisterBehavior api, make getRegisterValidators public.
+
+* 3.2.3
+  * Added compatibility with CakePHP 3.3+ 
+  * Fixed several bugs, including regression issue with Facebook login & improvements
+
+* 3.2.2
+  * Fix bug with socialLogin links not being displayed for unauthenticated users
+
 * 3.2.1
   * New Translations (see https://github.com/CakeDC/users/blob/master/Docs/Documentation/Translations.md)
   * Stateless API Authenticate support

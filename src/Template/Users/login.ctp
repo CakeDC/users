@@ -23,11 +23,11 @@ use Cake\Core\Configure;
         if (Configure::read('Users.reCaptcha.login')) {
             echo $this->User->addReCaptcha();
         }
-        if (Configure::check('Users.RememberMe.active')) {
+        if (Configure::read('Users.RememberMe.active')) {
             echo $this->Form->input(Configure::read('Users.Key.Data.rememberMe'), [
                 'type' => 'checkbox',
                 'label' => __d('CakeDC/Users', 'Remember me'),
-                'checked' => 'checked'
+                'checked' => Configure::read('Users.RememberMe.checked')
             ]);
         }
         ?>

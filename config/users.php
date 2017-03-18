@@ -56,6 +56,21 @@ $config = [
             //enable social login
             'login' => false,
         ],
+        'GoogleAuthenticator' => [
+            //enable Google Authenticator
+            'login' => false,
+            'issuer' => null,
+            // The number of digits the resulting codes will be
+            'digits' => 6,
+            // The number of seconds a code will be valid
+            'period' => 30,
+            // The algorithm used
+            'algorithm' => 'sha1',
+            // QR-code provider (more on this later)
+            'qrcodeprovider' => null,
+            // Random Number Generator provider (more on this later)
+            'rngprovider' => null
+        ],
         'Profile' => [
             //Allow view other users profiles
             'viewOthers' => true,
@@ -86,6 +101,7 @@ $config = [
         'RememberMe' => [
             //configure Remember Me component
             'active' => true,
+            'checked' => true,
             'Cookie' => [
                 'name' => 'remember_me',
                 'Config' => [
@@ -93,6 +109,14 @@ $config = [
                     'httpOnly' => true,
                 ]
             ]
+        ],
+    ],
+    'GoogleAuthenticator' => [
+        'verifyAction' => [
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+            'action' => 'verify',
+            'prefix' => false,
         ],
     ],
     //default configuration used to auto-load the Auth Component, override to change the way Auth works
@@ -117,7 +141,7 @@ $config = [
         ],
     ],
     'OAuth' => [
-        'path' => ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'socialLogin', 'prefix' => false],
+        'path' => ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'socialLogin', 'prefix' => null],
         'providers' => [
             'facebook' => [
                 'className' => 'League\OAuth2\Client\Provider\Facebook',

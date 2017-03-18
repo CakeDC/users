@@ -27,6 +27,7 @@ use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Event\EventDispatcherTrait;
 use Cake\Event\EventManager;
+use Cake\Log\LogTrait;
 use Cake\Network\Request;
 use Cake\Network\Response;
 use Cake\ORM\TableRegistry;
@@ -39,6 +40,7 @@ class SocialAuthenticate extends BaseAuthenticate
 {
 
     use EventDispatcherTrait;
+    use LogTrait;
 
     /**
      * Instance of OAuth2 provider.
@@ -59,6 +61,15 @@ class SocialAuthenticate extends BaseAuthenticate
         $oauthConfig = Configure::read('OAuth');
         //We unset twitter from providers to exclude from OAuth2 config
         unset($oauthConfig['providers']['twitter']);
+        $providers = [];
+        foreach ($oauthConfig['providers'] as $provider => $options) {
+            if (!empty($options['options']['redirectUri']) &&
+                !empty($options['options']['clientId']) &&
+                !empty($options['options']['clientSecret'])) {
+                $providers[$provider] = $options;
+            }
+        }
+        $oauthConfig['providers'] = $providers;
         Configure::write('OAuth2', $oauthConfig);
         $config = $this->normalizeConfig(array_merge($config, $oauthConfig));
         parent::__construct($registry, $config);
@@ -179,6 +190,13 @@ class SocialAuthenticate extends BaseAuthenticate
 
             return compact('token') + $provider->getResourceOwner($token)->toArray();
         } catch (\Exception $e) {
+            $message = sprintf(
+                "Error getting an access token / retrieving the authorized user's profile data. Error message: %s %s",
+                $e->getMessage(),
+                $e
+            );
+            $this->log($message);
+
             return false;
         }
     }
@@ -350,7 +368,7 @@ class SocialAuthenticate extends BaseAuthenticate
     {
         $data = $request->session()->read(Configure::read('Users.Key.Session.social'));
         $requestDataEmail = $request->data('email');
-        if (!empty($data) && (!empty($data['email']) || !empty($requestDataEmail))) {
+        if (!empty($data) && empty($data['uid']) && (!empty($data['email']) || !empty($requestDataEmail))) {
             if (!empty($requestDataEmail)) {
                 $data['email'] = $requestDataEmail;
             }

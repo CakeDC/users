@@ -26,6 +26,17 @@ Router::connect('/accounts/validate/*', [
         'controller' => 'SocialAccounts',
         'action' => 'validate'
     ]);
+// Google Authenticator related routes
+if (Configure::read('Users.GoogleAuthenticator.login')) {
+    Router::connect('/verify', ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'verify']);
+
+    Router::connect('/resetGoogleAuthenticator', [
+        'plugin' => 'CakeDC/Users',
+        'controller' => 'Users',
+        'action' => 'resetGoogleAuthenticator'
+    ]);
+}
+
 Router::connect('/profile/*', ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile']);
 Router::connect('/login', ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
 Router::connect('/logout', ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'logout']);

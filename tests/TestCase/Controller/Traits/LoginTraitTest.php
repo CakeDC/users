@@ -363,7 +363,6 @@ class LoginTraitTest extends BaseTraitTest
         $this->Trait->failedSocialLogin($event->data['exception'], $event->data['rawData'], true);
     }
 
-
     /**
      * test
      *

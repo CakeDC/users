@@ -62,7 +62,6 @@ class PasswordBehaviorTest extends TestCase
         parent::tearDown();
     }
 
-
     /**
      * Test resetToken
      *
