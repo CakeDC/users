@@ -468,6 +468,7 @@ msgstr ""
 
 #: Template/Email/html/reset_password.ctp:27
 #: Template/Email/html/social_account_validation.ctp:32
+#: Template/Email/html/validation.ctp:27
 msgid "If the link is not correcly displayed, please copy the following address in your web browser {0}"
 msgstr ""
 
@@ -486,10 +487,6 @@ msgstr ""
 
 #: Template/Email/html/validation.ctp:24
 msgid "Activate your account here"
-msgstr ""
-
-#: Template/Email/html/validation.ctp:27
-msgid "If the link is not correctly displayed, please copy the following address in your web browser {0}"
 msgstr ""
 
 #: Template/Email/text/reset_password.ctp:22
