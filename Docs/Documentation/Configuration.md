@@ -73,6 +73,8 @@ NOTE: SOME keys were hidden in this doc page, please refer to `vendor/cakedc/use
         'table' => 'CakeDC/Users.Users',
         //configure Auth component
         'auth' => true,
+        //Public access control
+        'publicAcl' => false,
         'Email' => [
             //determines if the user should include email
             'required' => true,
