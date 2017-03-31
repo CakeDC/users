@@ -19,7 +19,7 @@ composer require league/oauth1-client:@stable
 ```
 
 NOTE: you'll need to enable social login in your bootstrap.php file if you want to use it, social
-login is disabled by default. Check the [Configuration](Configuration.md) page for more details.
+login is disabled by default. Check the [Configuration](Configuration.md#configuration-for-social-login) page for more details.
 
 ```
 Configure::write('Users.Social.login', true); //to enable social login
