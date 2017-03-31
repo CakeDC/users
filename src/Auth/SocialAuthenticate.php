@@ -27,9 +27,9 @@ use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Event\EventDispatcherTrait;
 use Cake\Event\EventManager;
+use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 use Cake\Log\LogTrait;
-use Cake\Network\Response;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 use League\OAuth2\Client\Provider\AbstractProvider;
@@ -60,19 +60,19 @@ class SocialAuthenticate extends BaseAuthenticate
     public function __construct(ComponentRegistry $registry, array $config = [])
     {
         $oauthConfig = Configure::read('OAuth');
+        $enabledNoOAuth2Provider = $this->_isProviderEnabled($oauthConfig['providers']['twitter']);
         //We unset twitter from providers to exclude from OAuth2 config
         unset($oauthConfig['providers']['twitter']);
+
         $providers = [];
         foreach ($oauthConfig['providers'] as $provider => $options) {
-            if (!empty($options['options']['redirectUri']) &&
-                !empty($options['options']['clientId']) &&
-                !empty($options['options']['clientSecret'])) {
+            if ($this->_isProviderEnable($options)) {
                 $providers[$provider] = $options;
             }
         }
         $oauthConfig['providers'] = $providers;
         Configure::write('OAuth2', $oauthConfig);
-        $config = $this->normalizeConfig(array_merge($config, $oauthConfig));
+        $config = $this->normalizeConfig(array_merge($config, $oauthConfig), $enabledNoOAuth2Provider);
         parent::__construct($registry, $config);
     }
 
@@ -80,14 +80,15 @@ class SocialAuthenticate extends BaseAuthenticate
      * Normalizes providers' configuration.
      *
      * @param array $config Array of config to normalize.
+     * @param bool $enabledNoOAuth2Provider True when any noOAuth2 provider is enabled
      * @return array
      * @throws \Exception
      */
-    public function normalizeConfig(array $config)
+    public function normalizeConfig(array $config, $enabledNoOAuth2Provider = false)
     {
         $config = Hash::merge((array)Configure::read('OAuth2'), $config);
 
-        if (empty($config['providers'])) {
+        if (empty($config['providers']) && !$enabledNoOAuth2Provider) {
             throw new MissingProviderConfigurationException();
         }
 
@@ -157,11 +158,24 @@ class SocialAuthenticate extends BaseAuthenticate
         return $this->_registry->getController();
     }
 
+
+    /**
+     * Returns when a provider has been enabled.
+     *
+     * @param $options
+     * @return \Cake\Controller\Controller Controller instance
+     */
+    protected function _isProviderEnabled($options)
+    {
+        return !empty($options['options']['redirectUri']) && !empty($options['options']['clientId']) &&
+            !empty($options['options']['clientSecret']);
+    }
+
     /**
      * Get a user based on information in the request.
      *
      * @param \Cake\Http\ServerRequest $request Request object.
-     * @param \Cake\Network\Response $response Response object.
+     * @param \Cake\Http\Response $response Response object.
      * @return bool
      * @throws \RuntimeException If the `CakeDC/Users/OAuth2.newUser` event is missing or returns empty.
      */
