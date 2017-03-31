@@ -17,4 +17,15 @@ class InvalidSettingsException extends Exception
 {
     protected $_messageTemplate = 'Invalid settings for key (%s)';
     protected $code = 500;
+
+    /**
+     * InvalidSettingsException constructor.
+     * @param array|string $message
+     * @param int $code
+     * @param null $previous
+     */
+    public function __construct($message, $code = 500, $previous = null)
+    {
+        parent::__construct($message, $code, $previous);
+    }
 }

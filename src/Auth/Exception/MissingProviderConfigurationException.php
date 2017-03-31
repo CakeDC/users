@@ -17,4 +17,15 @@ class MissingProviderConfigurationException extends Exception
 {
     protected $_messageTemplate = 'No OAuth providers configured.';
     protected $code = 500;
+
+    /**
+     * MissingProviderConfigurationException constructor.
+     * @param string $message
+     * @param int $code
+     * @param null $previous
+     */
+    public function __construct($message = null, $code = 500, $previous = null)
+    {
+        parent::__construct($message, $code, $previous);
+    }
 }

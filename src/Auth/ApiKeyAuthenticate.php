@@ -12,6 +12,7 @@
 namespace CakeDC\Users\Auth;
 
 use Cake\Auth\BaseAuthenticate;
+use Cake\Controller\ComponentRegistry;
 use Cake\Core\Configure;
 use Cake\Http\ServerRequest;
 use Cake\Network\Exception\ForbiddenException;
@@ -43,6 +44,11 @@ class ApiKeyAuthenticate extends BaseAuthenticate
         //set a specific finder for API auth, set as null to use Auth.authenticate.all.finder
         'finder' => null,
     ];
+
+    public function __construct(ComponentRegistry $registry, array $config = [])
+    {
+        parent::__construct($registry, $config);
+    }
 
     /**
      * Authenticate callback
