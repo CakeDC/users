@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -40,7 +40,6 @@ class RememberMeComponent extends Component
      */
     protected $_cookieName = null;
 
-
     /**
      * Initialize config data and properties.
      *
@@ -66,7 +65,7 @@ class RememberMeComponent extends Component
     {
         if (mb_strlen(Security::salt(), '8bit') < 32) {
             throw new InvalidArgumentException(
-                __d('Users', 'Invalid app salt, app salt must be at least 256 bits (32 bytes) long')
+                __d('CakeDC/Users', 'Invalid app salt, app salt must be at least 256 bits (32 bytes) long')
             );
         }
     }
@@ -78,7 +77,7 @@ class RememberMeComponent extends Component
      */
     protected function _attachEvents()
     {
-        $eventManager = $this->_registry->getController()->eventManager();
+        $eventManager = $this->getController()->eventManager();
         $eventManager->on(UsersAuthComponent::EVENT_AFTER_LOGIN, [], [$this, 'setLoginCookie']);
         $eventManager->on(UsersAuthComponent::EVENT_BEFORE_LOGOUT, [], [$this, 'destroy']);
     }
@@ -106,7 +105,7 @@ class RememberMeComponent extends Component
         if (empty($user)) {
             return;
         }
-        $user['user_agent'] = $this->request->header('User-Agent');
+        $user['user_agent'] = $this->getController()->request->getHeaderLine('User-Agent');
         $this->Cookie->write($this->_cookieName, $user);
     }
 
@@ -132,21 +131,26 @@ class RememberMeComponent extends Component
     public function beforeFilter(Event $event)
     {
         $user = $this->Auth->user();
-        if (!empty($user) || $this->request->is(['post', 'put']) || $this->request->action === 'logout' || $this->request->session()->check(Configure::read('Users.Key.Session.social')) || $this->request->param('provider')) {
+        if (!empty($user) ||
+            $this->getController()->request->is(['post', 'put']) ||
+            $this->getController()->request->getParam('action') === 'logout' ||
+            $this->getController()->request->session()->check(Configure::read('Users.Key.Session.social')) ||
+            $this->getController()->request->getParam('provider')) {
             return;
         }
 
         $user = $this->Auth->identify();
-        //No user no cookies
+        // No user no cookies
         if (empty($user)) {
             return;
         }
         $this->Auth->setUser($user);
-        $event = $this->_registry->getController()->dispatchEvent(UsersAuthComponent::EVENT_AFTER_COOKIE_LOGIN);
+        $event = $this->getController()->dispatchEvent(UsersAuthComponent::EVENT_AFTER_COOKIE_LOGIN);
         if (is_array($event->result)) {
-            return $this->_registry->getController()->redirect($event->result);
+            return $this->getController()->redirect($event->result);
         }
-        $url = $this->Auth->redirectUrl();
-        return $this->_registry->getController()->redirect($url);
+        $url = $this->getController()->request->getRequestTarget();
+
+        return $this->getController()->redirect($url);
     }
 }

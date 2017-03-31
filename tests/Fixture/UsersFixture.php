@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -37,6 +37,8 @@ class UsersFixture extends TestFixture
         'token_expires' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
         'api_token' => ['type' => 'string', 'length' => 255, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null, 'fixed' => null],
         'activation_date' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
+        'secret' => ['type' => 'string', 'length' => 255, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null, 'fixed' => null],
+        'secret_verified' => ['type' => 'boolean', 'length' => null, 'null' => true, 'default' => false, 'comment' => '', 'precision' => null],
         'tos_date' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
         'active' => ['type' => 'boolean', 'length' => null, 'null' => false, 'default' => true, 'comment' => '', 'precision' => null],
         'is_superuser' => ['type' => 'boolean', 'length' => null, 'unsigned' => false, 'null' => false, 'default' => false, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
@@ -70,6 +72,8 @@ class UsersFixture extends TestFixture
             'token_expires' => '2035-06-24 17:33:54',
             'api_token' => 'yyy',
             'activation_date' => '2015-06-24 17:33:54',
+            'secret' => 'yyy',
+            'secret_verified' => false,
             'tos_date' => '2015-06-24 17:33:54',
             'active' => false,
             'is_superuser' => true,
@@ -88,6 +92,8 @@ class UsersFixture extends TestFixture
             'token_expires' => '2015-06-24 17:33:54',
             'api_token' => 'xxx',
             'activation_date' => '2015-06-24 17:33:54',
+            'secret' => 'xxx',
+            'secret_verified' => false,
             'tos_date' => '2015-06-24 17:33:54',
             'active' => true,
             'is_superuser' => true,
@@ -106,6 +112,9 @@ class UsersFixture extends TestFixture
             'token_expires' => '2030-06-20 17:33:54',
             'api_token' => 'xxx',
             'activation_date' => '2015-06-24 17:33:54',
+            'secret' => 'xxx',
+            'secret_verified' => true,
+            'is_superuser' => true,
             'tos_date' => '2015-06-24 17:33:54',
             'active' => false,
             'is_superuser' => true,
@@ -124,6 +133,9 @@ class UsersFixture extends TestFixture
             'token_expires' => '2030-06-24 17:33:54',
             'api_token' => 'Lorem ipsum dolor sit amet',
             'activation_date' => '2015-06-24 17:33:54',
+            'secret' => 'Lorem ipsum dolor sit amet',
+            'secret_verified' => true,
+            'is_superuser' => false,
             'tos_date' => '2015-06-24 17:33:54',
             'active' => true,
             'is_superuser' => false,
@@ -142,6 +154,8 @@ class UsersFixture extends TestFixture
             'token_expires' => '2015-06-24 17:33:54',
             'api_token' => '',
             'activation_date' => '2015-06-24 17:33:54',
+            'secret' => '',
+            'secret_verified' => false,
             'tos_date' => '2015-06-24 17:33:54',
             'active' => true,
             'is_superuser' => false,
@@ -151,19 +165,21 @@ class UsersFixture extends TestFixture
         ],
         [
             'id' => '00000000-0000-0000-0000-000000000006',
-            'username' => 'Lorem ipsum dolor sit amet',
-            'email' => 'Lorem ipsum dolor sit amet',
-            'password' => 'Lorem ipsum dolor sit amet',
-            'first_name' => 'Lorem ipsum dolor sit amet',
-            'last_name' => 'Lorem ipsum dolor sit amet',
-            'token' => 'Lorem ipsum dolor sit amet',
+            'username' => 'user-6',
+            'email' => '6@example.com',
+            'password' => '$2y$10$IPPgJNSfvATsMBLbv/2r8OtpyTBibyM1g5GDxD4PivW9qBRwRkRbC',
+            'first_name' => 'first-user-6',
+            'last_name' => 'firts name 6',
+            'token' => 'token-6',
             'token_expires' => '2015-06-24 17:33:54',
-            'api_token' => 'Lorem ipsum dolor sit amet',
+            'api_token' => '',
             'activation_date' => '2015-06-24 17:33:54',
+            'secret' => '',
+            'secret_verified' => false,
             'tos_date' => '2015-06-24 17:33:54',
             'active' => true,
             'is_superuser' => false,
-            'role' => 'Lorem ipsum dolor sit amet',
+            'role' => 'user',
             'created' => '2015-06-24 17:33:54',
             'modified' => '2015-06-24 17:33:54'
         ],
@@ -178,6 +194,8 @@ class UsersFixture extends TestFixture
             'token_expires' => '2015-06-24 17:33:54',
             'api_token' => 'Lorem ipsum dolor sit amet',
             'activation_date' => '2015-06-24 17:33:54',
+            'secret' => 'Lorem ipsum dolor sit amet',
+            'secret_verified' => false,
             'tos_date' => '2015-06-24 17:33:54',
             'active' => true,
             'is_superuser' => false,
@@ -196,6 +214,8 @@ class UsersFixture extends TestFixture
             'token_expires' => '2015-06-24 17:33:54',
             'api_token' => 'Lorem ipsum dolor sit amet',
             'activation_date' => '2015-06-24 17:33:54',
+            'secret' => 'Lorem ipsum dolor sit amet',
+            'secret_verified' => false,
             'tos_date' => '2015-06-24 17:33:54',
             'active' => true,
             'is_superuser' => false,
@@ -214,6 +234,8 @@ class UsersFixture extends TestFixture
             'token_expires' => '2015-06-24 17:33:54',
             'api_token' => 'Lorem ipsum dolor sit amet',
             'activation_date' => '2015-06-24 17:33:54',
+            'secret' => 'Lorem ipsum dolor sit amet',
+            'secret_verified' => false,
             'tos_date' => '2015-06-24 17:33:54',
             'active' => true,
             'is_superuser' => false,
@@ -232,6 +254,8 @@ class UsersFixture extends TestFixture
             'token_expires' => '2015-06-24 17:33:54',
             'api_token' => 'Lorem ipsum dolor sit amet',
             'activation_date' => '2015-06-24 17:33:54',
+            'secret' => 'Lorem ipsum dolor sit amet',
+            'secret_verified' => false,
             'tos_date' => '2015-06-24 17:33:54',
             'active' => true,
             'is_superuser' => false,

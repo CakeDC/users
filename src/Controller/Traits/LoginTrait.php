@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -17,13 +17,17 @@ use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Model\Table\SocialAccountsTable;
 use Cake\Core\Configure;
+use Cake\Core\Exception\Exception;
 use Cake\Event\Event;
 use Cake\Network\Exception\NotFoundException;
+use Cake\Utility\Hash;
 use League\OAuth1\Client\Server\Twitter;
 
 /**
  * Covers the login, logout and social login
  *
+ * @property \Cake\Controller\Component\AuthComponent $Auth
+ * @property \Cake\Http\ServerRequest $request
  */
 trait LoginTrait
 {
@@ -32,7 +36,7 @@ trait LoginTrait
     /**
      * Do twitter login
      *
-     * @return mixed|void
+     * @return mixed
      */
     public function twitterLogin()
     {
@@ -42,8 +46,8 @@ trait LoginTrait
             'secret' => Configure::read('OAuth.providers.twitter.options.clientSecret'),
             'callbackUri' => Configure::read('OAuth.providers.twitter.options.redirectUri'),
         ]);
-        $oauthToken = $this->request->query('oauth_token');
-        $oauthVerifier = $this->request->query('oauth_verifier');
+        $oauthToken = $this->request->getQuery('oauth_token');
+        $oauthVerifier = $this->request->getQuery('oauth_verifier');
         if (!empty($oauthToken) && !empty($oauthVerifier)) {
             $temporaryCredentials = $this->request->session()->read('temporary_credentials');
             $tokenCredentials = $server->getTokenCredentials($temporaryCredentials, $oauthToken, $oauthVerifier);
@@ -65,18 +69,24 @@ trait LoginTrait
             }
 
             if (!empty($exception)) {
-                return $this->failedSocialLogin($exception, $this->request->session()->read(Configure::read('Users.Key.Session.social')), true);
+                return $this->failedSocialLogin(
+                    $exception,
+                    $this->request->session()->read(Configure::read('Users.Key.Session.social')),
+                    true
+                );
             }
         } else {
             $temporaryCredentials = $server->getTemporaryCredentials();
             $this->request->session()->write('temporary_credentials', $temporaryCredentials);
-            $server->authorize($temporaryCredentials);
-            return $this->response;
+            $url = $server->getAuthorizationUrl($temporaryCredentials);
+
+            return $this->redirect($url);
         }
     }
+
     /**
      * @param Event $event event
-     * @return void
+     * @return mixed
      */
     public function failedSocialLoginListener(Event $event)
     {
@@ -91,28 +101,40 @@ trait LoginTrait
      */
     public function failedSocialLogin($exception, $data, $flash = false)
     {
-        $msg = __d('Users', 'Issues trying to log in with your social account');
+        $msg = __d('CakeDC/Users', 'Issues trying to log in with your social account');
 
         if (isset($exception)) {
             if ($exception instanceof MissingEmailException) {
                 if ($flash) {
-                    $this->Flash->success(__d('Users', 'Please enter your email'));
+                    $this->Flash->success(__d('CakeDC/Users', 'Please enter your email'));
                 }
                 $this->request->session()->write(Configure::read('Users.Key.Session.social'), $data);
-                return $this->redirect(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'socialEmail']);
+
+                return $this->redirect([
+                    'plugin' => 'CakeDC/Users',
+                    'controller' => 'Users',
+                    'action' => 'socialEmail'
+                ]);
             }
             if ($exception instanceof UserNotActiveException) {
-                $msg = __d('Users', 'Your user has not been validated yet. Please check your inbox for instructions');
+                $msg = __d(
+                    'CakeDC/Users',
+                    'Your user has not been validated yet. Please check your inbox for instructions'
+                );
             } elseif ($exception instanceof AccountNotActiveException) {
-                $msg = __d('Users', 'Your social account has not been validated yet. Please check your inbox for instructions');
+                $msg = __d(
+                    'CakeDC/Users',
+                    'Your social account has not been validated yet. Please check your inbox for instructions'
+                );
             }
         }
         if ($flash) {
-            $this->Auth->config('authError', $msg);
-            $this->Auth->config('flash.params', ['class' => 'success']);
+            $this->Auth->setConfig('authError', $msg);
+            $this->Auth->setConfig('flash.params', ['class' => 'success']);
             $this->request->session()->delete(Configure::read('Users.Key.Session.social'));
-            $this->Flash->success(__d('Users', $msg));
+            $this->Flash->success(__d('CakeDC/Users', $msg));
         }
+
         return $this->redirect(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
     }
 
@@ -124,13 +146,14 @@ trait LoginTrait
      */
     public function socialLogin()
     {
-        $socialProvider = $this->request->param('provider');
+        $socialProvider = $this->request->getParam('provider');
         $socialUser = $this->request->session()->read(Configure::read('Users.Key.Session.social'));
 
         if (empty($socialProvider) && empty($socialUser)) {
             throw new NotFoundException();
         }
         $user = $this->Auth->user();
+
         return $this->_afterIdentifyUser($user, true);
     }
 
@@ -150,6 +173,18 @@ trait LoginTrait
         }
 
         $socialLogin = $this->_isSocialLogin();
+        $googleAuthenticatorLogin = $this->_isGoogleAuthenticator();
+
+        if ($this->request->is('post')) {
+            if (!$this->_checkReCaptcha()) {
+                $this->Flash->error(__d('CakeDC/Users', 'Invalid reCaptcha'));
+
+                return;
+            }
+            $user = $this->Auth->identify();
+
+            return $this->_afterIdentifyUser($user, $socialLogin, $googleAuthenticatorLogin);
+        }
 
         if (!$this->request->is('post') && !$socialLogin) {
             if ($this->Auth->user()) {
@@ -157,34 +192,150 @@ trait LoginTrait
                 $this->Flash->info($msg);
                 return $this->redirect($this->referer());
             }
-            return;
         }
+    }
+
+    /**
+     * Verify for Google Authenticator
+     * If Google Authenticator's enabled we need to verify
+     * authenticated user. To avoid accidental access to
+     * other URL's we store auth'ed used into temporary session
+     * to perform code verification.
+     *
+     * @return mixed
+     */
+    public function verify()
+    {
+        if (!Configure::read('Users.GoogleAuthenticator.login')) {
+            $message = __d('CakeDC/Users', 'Please enable Google Authenticator first.');
+            $this->Flash->error($message, 'default', [], 'auth');
+
+            return $this->redirect(Configure::read('Auth.loginAction'));
+        }
+
+        // storing user's session in the temporary one
+        // until the GA verification is checked
+        $temporarySession = $this->Auth->user();
+        $this->request->session()->delete('Auth.User');
+
+        if (!empty($temporarySession)) {
+            $this->request->session()->write('temporarySession', $temporarySession);
+        }
+
+        if (array_key_exists('secret', $temporarySession)) {
+            $secret = $temporarySession['secret'];
+        }
+
+        $secretVerified = $temporarySession['secret_verified'];
+
+        // showing QR-code until shared secret is verified
+        if (!$secretVerified) {
+            if (empty($secret)) {
+                $secret = $this->GoogleAuthenticator->createSecret();
+
+                // catching sql exception in case of any sql inconsistencies
+                try {
+                    $query = $this->getUsersTable()->query();
+                    $query->update()
+                        ->set(['secret' => $secret])
+                        ->where(['id' => $temporarySession['id']]);
+                    $query->execute();
+                } catch (\Exception $e) {
+                    $this->request->session()->destroy();
+                    $message = __d('CakeDC/Users', $e->getMessage());
+                    $this->Flash->error($message, 'default', [], 'auth');
+
+                    return $this->redirect(Configure::read('Auth.loginAction'));
+                }
+            }
+            $secretDataUri = $this->GoogleAuthenticator->getQRCodeImageAsDataUri(
+                Hash::get($temporarySession, 'email'),
+                $secret
+            );
+            $this->set(compact('secretDataUri'));
+        }
+
         if ($this->request->is('post')) {
-            $user = $this->Auth->identify();
-            return $this->_afterIdentifyUser($user, $socialLogin);
+            $codeVerified = false;
+            $verificationCode = $this->request->getData('code');
+            $user = $this->request->session()->read('temporarySession');
+            $entity = $this->getUsersTable()->get($user['id']);
+
+            if (!empty($entity['secret'])) {
+                $codeVerified = $this->GoogleAuthenticator->verifyCode($entity['secret'], $verificationCode);
+            }
+
+            if ($codeVerified) {
+                unset($user['secret']);
+
+                if (!$user['secret_verified']) {
+                    $this->getUsersTable()->query()->update()
+                        ->set(['secret_verified' => true])
+                        ->where(['id' => $user['id']])
+                        ->execute();
+                }
+
+                $this->request->session()->delete('temporarySession');
+                $this->request->session()->write('Auth.User', $user);
+                $url = $this->Auth->redirectUrl();
+
+                return $this->redirect($url);
+            } else {
+                $this->request->session()->destroy();
+                $message = __d('CakeDC/Users', 'Verification code is invalid. Try again');
+                $this->Flash->error($message, 'default', [], 'auth');
+
+                return $this->redirect(Configure::read('Auth.loginAction'));
+            }
         }
+    }
+
+    /**
+     * Check reCaptcha if enabled for login
+     *
+     * @return bool
+     */
+    protected function _checkReCaptcha()
+    {
+        if (!Configure::read('Users.reCaptcha.login')) {
+            return true;
+        }
+
+        return $this->validateReCaptcha(
+            $this->request->getData('g-recaptcha-response'),
+            $this->request->clientIp()
+        );
     }
 
     /**
      * Update remember me and determine redirect url after user identified
      * @param array $user user data after identified
      * @param bool $socialLogin is social login
+     * @param bool $googleAuthenticatorLogin googleAuthenticatorLogin
      * @return array
      */
-    protected function _afterIdentifyUser($user, $socialLogin = false)
+    protected function _afterIdentifyUser($user, $socialLogin = false, $googleAuthenticatorLogin = false)
     {
         if (!empty($user)) {
             $this->Auth->setUser($user);
+
+            if ($googleAuthenticatorLogin) {
+                $url = Configure::read('GoogleAuthenticator.verifyAction');
+
+                return $this->redirect($url);
+            }
 
             $event = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_LOGIN, ['user' => $user]);
             if (is_array($event->result)) {
                 return $this->redirect($event->result);
             }
+
             $url = $this->Auth->redirectUrl();
+
             return $this->redirect($url);
         } else {
             if (!$socialLogin) {
-                $message = __d('Users', 'Username or password is incorrect');
+                $message = __d('CakeDC/Users', 'Username or password is incorrect');
                 $this->Flash->error($message, 'default', [], 'auth');
             }
 
@@ -195,7 +346,7 @@ trait LoginTrait
     /**
      * Logout
      *
-     * @return type
+     * @return mixed
      */
     public function logout()
     {
@@ -205,7 +356,7 @@ trait LoginTrait
         }
 
         $this->request->session()->destroy();
-        $this->Flash->success(__d('Users', 'You\'ve successfully logged out'));
+        $this->Flash->success(__d('CakeDC/Users', 'You\'ve successfully logged out'));
 
         $eventAfter = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_LOGOUT);
         if (is_array($eventAfter->result)) {
@@ -224,6 +375,15 @@ trait LoginTrait
     protected function _isSocialLogin()
     {
         return Configure::read('Users.Social.login') &&
-                $this->request->session()->check(Configure::read('Users.Key.Session.social'));
+            $this->request->session()->check(Configure::read('Users.Key.Session.social'));
+    }
+
+    /**
+     * Check if we doing Google Authenticator Two Factor auth
+     * @return bool true if Google Authenticator is enabled
+     */
+    protected function _isGoogleAuthenticator()
+    {
+        return Configure::read('Users.GoogleAuthenticator.login');
     }
 }

@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -62,14 +62,13 @@ class PasswordBehaviorTest extends TestCase
         parent::tearDown();
     }
 
-
     /**
      * Test resetToken
      *
      */
     public function testResetToken()
     {
-        $user = $this->table->findAllByUsername('user-1')->first();
+        $user = $this->table->findByUsername('user-1')->first();
         $token = $user->token;
         $this->Behavior->Email->expects($this->never())
                 ->method('sendResetPasswordEmail')
@@ -89,7 +88,7 @@ class PasswordBehaviorTest extends TestCase
      */
     public function testResetTokenSendEmail()
     {
-        $user = $this->table->findAllByUsername('user-1')->first();
+        $user = $this->table->findByUsername('user-1')->first();
         $token = $user->token;
         $tokenExpires = $user->token_expires;
         $this->Behavior->Email->expects($this->once())
@@ -116,6 +115,17 @@ class PasswordBehaviorTest extends TestCase
     }
 
     /**
+     * Test resetTokenNoExpiration
+     *
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Token expiration cannot be empty
+     */
+    public function testResetTokenNoExpiration()
+    {
+        $this->Behavior->resetToken('ref');
+    }
+
+    /**
      * Test resetToken
      *
      * @expectedException CakeDC\Users\Exception\UserNotFoundException
@@ -134,7 +144,7 @@ class PasswordBehaviorTest extends TestCase
      */
     public function testResetTokenUserAlreadyActive()
     {
-        $activeUser = TableRegistry::get('CakeDC/Users.Users')->findAllByUsername('user-4')->first();
+        $activeUser = TableRegistry::get('CakeDC/Users.Users')->findByUsername('user-4')->first();
         $this->assertTrue($activeUser->active);
         $this->table = $this->getMockForModel('CakeDC/Users.Users', ['save']);
         $this->table->expects($this->never())
@@ -145,5 +155,45 @@ class PasswordBehaviorTest extends TestCase
             'expiration' => 3600,
             'checkActive' => true,
         ]);
+    }
+
+    /**
+     * Test resetToken
+     *
+     * @expectedException CakeDC\Users\Exception\UserNotActiveException
+     */
+    public function testResetTokenUserNotActive()
+    {
+        $user = TableRegistry::get('CakeDC/Users.Users')->findByUsername('user-1')->first();
+        $this->Behavior->resetToken('user-1', [
+            'ensureActive' => true,
+            'expiration' => 3600
+        ]);
+    }
+
+    /**
+     * Test resetToken
+     */
+    public function testResetTokenUserActive()
+    {
+        $user = TableRegistry::get('CakeDC/Users.Users')->findByUsername('user-2')->first();
+        $result = $this->Behavior->resetToken('user-2', [
+            'ensureActive' => true,
+            'expiration' => 3600
+        ]);
+        $this->assertEquals($user->id, $result->id);
+    }
+
+    /**
+     * Test changePassword
+     */
+    public function testChangePassword()
+    {
+        $user = TableRegistry::get('CakeDC/Users.Users')->findByUsername('user-6')->first();
+        $user->current_password = '12345';
+        $user->password = 'new';
+        $user->password_confirmation = 'new';
+
+        $result = $this->Behavior->changePassword($user);
     }
 }

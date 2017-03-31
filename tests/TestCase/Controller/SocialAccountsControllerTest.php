@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -16,6 +16,7 @@ use CakeDC\Users\Model\Behavior\SocialAccountBehavior;
 use CakeDC\Users\Model\Table\SocialAccountsTable;
 use Cake\Core\Configure;
 use Cake\Event\EventManager;
+use Cake\Http\ServerRequest;
 use Cake\Mailer\Email;
 use Cake\Network\Request;
 use Cake\TestSuite\TestCase;
@@ -46,17 +47,18 @@ class SocialAccountsControllerTest extends TestCase
         Configure::write('Opauth', null);
         Configure::write('Users.RememberMe.active', false);
 
-        Email::configTransport('test', [
+        Email::setConfigTransport('test', [
             'className' => 'Debug'
         ]);
-        $this->configEmail = Email::config('default');
-        Email::config('default', [
+        $this->configEmail = Email::getConfig('default');
+        Email::drop('default');
+        Email::setConfig('default', [
             'transport' => 'test',
             'from' => 'cakedc@example.com'
         ]);
 
-        $request = new Request('/users/users/index');
-        $request->params['plugin'] = 'CakeDC/Users';
+        $request = new ServerRequest('/users/users/index');
+        $request = $request->withParam('plugin', 'CakeDC/Users');
 
         $this->Controller = $this->getMockBuilder('CakeDC\Users\Controller\SocialAccountsController')
                 ->setMethods(['redirect', 'render'])
@@ -76,7 +78,7 @@ class SocialAccountsControllerTest extends TestCase
     {
         Email::drop('default');
         Email::dropTransport('test');
-        Email::config('default', $this->configEmail);
+        //Email::setConfig('default', $this->configEmail);
 
         Configure::write('Opauth', $this->configOpauth);
         Configure::write('Users.RememberMe.active', $this->configRememberMe);
@@ -123,7 +125,7 @@ class SocialAccountsControllerTest extends TestCase
                 ->method('redirect')
                 ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
         $this->Controller->validateAccount('Twitter', 'reference-1-1234', 'token-1234');
-        $this->assertEquals('SocialAccount already active', $this->Controller->request->session()->read('Flash.flash.0.message'));
+        $this->assertEquals('Social Account already active', $this->Controller->request->session()->read('Flash.flash.0.message'));
     }
 
     /**
@@ -197,6 +199,6 @@ class SocialAccountsControllerTest extends TestCase
                 ->method('redirect')
                 ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
         $this->Controller->validateAccount('Twitter', 'reference-1-1234', 'token-1234');
-        $this->assertEquals('SocialAccount already active', $this->Controller->request->session()->read('Flash.flash.0.message'));
+        $this->assertEquals('Social Account already active', $this->Controller->request->session()->read('Flash.flash.0.message'));
     }
 }

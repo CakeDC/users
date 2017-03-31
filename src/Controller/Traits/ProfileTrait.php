@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -19,6 +19,7 @@ use Cake\Datasource\Exception\RecordNotFoundException;
 /**
  * Covers the profile action
  *
+ * @property \Cake\Http\ServerRequest $request
  */
 trait ProfileTrait
 {
@@ -46,10 +47,12 @@ trait ProfileTrait
                 $isCurrentUser = true;
             }
         } catch (RecordNotFoundException $ex) {
-            $this->Flash->error(__d('Users', 'User was not found'));
+            $this->Flash->error(__d('CakeDC/Users', 'User was not found'));
+
             return $this->redirect($this->request->referer());
         } catch (InvalidPrimaryKeyException $ex) {
-            $this->Flash->error(__d('Users', 'Not authorized, please login first'));
+            $this->Flash->error(__d('CakeDC/Users', 'Not authorized, please login first'));
+
             return $this->redirect($this->request->referer());
         }
         $this->set(compact('user', 'isCurrentUser'));

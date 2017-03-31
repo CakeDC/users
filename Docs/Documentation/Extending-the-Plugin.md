@@ -42,7 +42,7 @@ class MyUser extends User
 config/bootstrap.php
 ```
 Configure::write('Users.config', ['users']);
-Plugin::load('Users', ['routes' => true, 'bootstrap' => true]);
+Plugin::load('CakeDC/Users', ['routes' => true, 'bootstrap' => true]);
 ```
 
 Then in your config/users.php
@@ -83,6 +83,8 @@ Extending the Controller
 You want to use one of your controllers to handle all the users features in your app, and keep the
 login/register/etc actions from Users Plugin,
 
+First create a new controller class:
+
 ```php
 <?php
 namespace App\Controller;
@@ -101,6 +103,16 @@ class MyUsersController extends AppController
 
 //add your new actions, override, etc here
 }
+```
+
+Don't forget to update the `Users.controller` configuration in `users.php`
+
+```php
+    'Users' => [
+        // ...
+        // Controller used to manage users plugin features & actions
+        'controller' => 'MyUsers',
+        // ...
 ```
 
 Note you'll need to **copy the Plugin templates** you need into your project src/Template/MyUsers/[action].ctp

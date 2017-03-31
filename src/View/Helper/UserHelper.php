@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -24,7 +24,7 @@ use Cake\View\Helper;
 class UserHelper extends Helper
 {
 
-    public $helpers = ['Html', 'Form'];
+    public $helpers = ['Html', 'Form', 'CakeDC/Users.AuthLink'];
 
     /**
      * Default configuration.
@@ -32,19 +32,6 @@ class UserHelper extends Helper
      * @var array
      */
     protected $_defaultConfig = [];
-
-    /**
-     * beforeLayout callback loads reCaptcha if enabled
-     *
-     * @param Event $event event
-     * @return void
-     */
-    public function beforeLayout(Event $event)
-    {
-        if (Configure::read('Users.Registration.reCaptcha')) {
-            $this->addReCaptchaScript();
-        }
-    }
 
     /**
      * Social login link
@@ -56,13 +43,56 @@ class UserHelper extends Helper
     public function socialLogin($name, $options = [])
     {
         if (empty($options['label'])) {
-            $options['label'] = 'Sign in with';
+            $options['label'] = __d('CakeDC/Users', 'Sign in with');
         }
-        return $this->Html->link($this->Html->tag('i', '', [
-                'class' => __d('Users', 'fa fa-{0}', strtolower($name)),
-            ]) . __d('Users', '{0} {1}', Hash::get($options, 'label'), Inflector::camelize($name)), "/auth/$name", [
-            'escape' => false, 'class' => __d('Users', 'btn btn-social btn-{0} ' . Hash::get($options, 'class') ? :'', strtolower($name))
-            ]);
+        $icon = $this->Html->tag('i', '', [
+            'class' => __d('CakeDC/Users', 'fa fa-{0}', strtolower($name)),
+        ]);
+
+        if (isset($options['title'])) {
+            $providerTitle = $options['title'];
+        } else {
+            $providerTitle = __d('CakeDC/Users', '{0} {1}', Hash::get($options, 'label'), Inflector::camelize($name));
+        }
+
+        $providerClass = __d(
+            'CakeDC/Users',
+            'btn btn-social btn-{0} ' . Hash::get($options, 'class') ?: '',
+            strtolower($name)
+        );
+
+        return $this->Html->link($icon . $providerTitle, "/auth/$name", [
+            'escape' => false, 'class' => $providerClass
+        ]);
+    }
+
+    /**
+     * All available Social Login Icons
+     *
+     * @param array $providerOptions Provider link options.
+     * @return array Links to Social Login Urls
+     */
+    public function socialLoginList(array $providerOptions = [])
+    {
+        if (!Configure::read('Users.Social.login')) {
+            return [];
+        }
+        $outProviders = [];
+        $providers = Configure::read('OAuth.providers');
+        foreach ($providers as $provider => $options) {
+            if (!empty($options['options']['redirectUri']) &&
+                !empty($options['options']['clientId']) &&
+                !empty($options['options']['clientSecret'])
+            ) {
+                if (isset($providerOptions[$provider])) {
+                    $options['options'] = Hash::merge($options['options'], $providerOptions[$provider]);
+                }
+
+                $outProviders[] = $this->socialLogin($provider, $options['options']);
+            }
+        }
+
+        return $outProviders;
     }
 
     /**
@@ -74,41 +104,9 @@ class UserHelper extends Helper
      */
     public function logout($message = null, $options = [])
     {
-        return $this->Html->link(empty($message) ? __d('Users', 'Logout') : $message, [
+        return $this->AuthLink->link(empty($message) ? __d('CakeDC/Users', 'Logout') : $message, [
             'plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'logout'
-            ], $options);
-    }
-
-    /**
-     * Generate a link if the target url is authorized for the logged in user
-     *
-     * @param type $title link's title.
-     * @param type $url url that the user is making request.
-     * @param array $options Array with option data.
-     * @return string
-     */
-    public function link($title, $url = null, array $options = [])
-    {
-        if ($this->isAuthorized($url)) {
-            $linkOptions = $options;
-            unset($linkOptions['before'], $linkOptions['after']);
-            return Hash::get($options, 'before') . $this->Html->link($title, $url, $linkOptions) . Hash::get($options, 'after');
-        }
-
-        return false;
-    }
-
-    /**
-     * Retunrs true if the target url is authorized for the logged in user
-     *
-     * @param type $url url that the user is making request.
-     * @return bool
-     */
-    public function isAuthorized($url = null)
-    {
-        $event = new Event(UsersAuthComponent::EVENT_IS_AUTHORIZED, $this, ['url' => $url]);
-        $result = $this->_View->eventManager()->dispatch($event);
-        return $result->result;
+        ], $options);
     }
 
     /**
@@ -123,7 +121,8 @@ class UserHelper extends Helper
         }
 
         $profileUrl = Configure::read('Users.Profile.route');
-        $label = __d('Users', 'Welcome, {0}', $this->Html->link($this->request->session()->read('Auth.User.first_name'), $profileUrl));
+        $label = __d('CakeDC/Users', 'Welcome, {0}', $this->AuthLink->link($this->request->session()->read('Auth.User.first_name') ?: $this->request->session()->read('Auth.User.username'), $profileUrl));
+
         return $this->Html->tag('span', $label, ['class' => 'welcome']);
     }
 
@@ -144,16 +143,53 @@ class UserHelper extends Helper
      */
     public function addReCaptcha()
     {
-        if (!Configure::read('Users.Registration.reCaptcha')) {
-            return false;
+        if (!Configure::read('Users.reCaptcha.key')) {
+            return $this->Html->tag('p', __d('CakeDC/Users', 'reCaptcha is not configured! Please configure Users.reCaptcha.key'));
         }
-        if (!Configure::read('reCaptcha.key')) {
-            return $this->Html->tag('p', __d('Users', 'reCaptcha is not configured! Please configure reCaptcha.key or set Users.Registration.reCaptcha to false'));
-        }
+        $this->addReCaptchaScript();
         $this->Form->unlockField('g-recaptcha-response');
+
         return $this->Html->tag('div', '', [
             'class' => 'g-recaptcha',
-            'data-sitekey' => Configure::read('reCaptcha.key')
+            'data-sitekey' => Configure::read('Users.reCaptcha.key')
         ]);
+    }
+
+    /**
+     * Generate a link if the target url is authorized for the logged in user
+     *
+     * @deprecated Since 3.2.1. Use AuthLinkHelper::link() instead
+     *
+     * @param string $title link's title.
+     * @param string|array|null $url url that the user is making request.
+     * @param array $options Array with option data.
+     * @return string
+     */
+    public function link($title, $url = null, array $options = [])
+    {
+        trigger_error(
+            'UserHelper::link() deprecated since 3.2.1. Use AuthLinkHelper::link() instead',
+            E_USER_DEPRECATED
+        );
+
+        return $this->AuthLink->link($title, $url, $options);
+    }
+
+    /**
+     * Returns true if the target url is authorized for the logged in user
+     *
+     * @deprecated Since 3.2.1. Use AuthLinkHelper::link() instead
+     *
+     * @param string|array|null $url url that the user is making request.
+     * @return bool
+     */
+    public function isAuthorized($url = null)
+    {
+        trigger_error(
+            'UserHelper::isAuthorized() deprecated since 3.2.1. Use AuthLinkHelper::isAuthorized() instead',
+            E_USER_DEPRECATED
+        );
+
+        return $this->AuthLink->isAuthorized($url);
     }
 }

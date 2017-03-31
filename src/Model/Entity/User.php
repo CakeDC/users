@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -74,6 +74,7 @@ class User extends Entity
         if ((bool)$tos === true) {
             $this->set('tos_date', Time::now());
         }
+
         return $tos;
     }
 
@@ -87,6 +88,7 @@ class User extends Entity
     public function hashPassword($password)
     {
         $PasswordHasher = $this->getPasswordHasher();
+
         return $PasswordHasher->hash($password);
     }
 
@@ -101,6 +103,7 @@ class User extends Entity
         if (!class_exists($passwordHasher)) {
             $passwordHasher = '\Cake\Auth\DefaultPasswordHasher';
         }
+
         return new $passwordHasher;
     }
 
@@ -114,6 +117,7 @@ class User extends Entity
     public function checkPassword($password, $hashedPassword)
     {
         $PasswordHasher = $this->getPasswordHasher();
+
         return $PasswordHasher->check($password, $hashedPassword);
     }
 
@@ -142,6 +146,7 @@ class User extends Entity
         if (!empty($this->_properties['social_accounts'][0])) {
             $avatar = $this->_properties['social_accounts'][0]['avatar'];
         }
+
         return $avatar;
     }
 

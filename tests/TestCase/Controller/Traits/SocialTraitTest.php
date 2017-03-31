@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -19,10 +19,10 @@ class SocialTraitTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->controller = $this->getMock(
-            'Cake\Controller\Controller',
-            ['header', 'redirect', 'render', '_stop']
-        );
+        $this->controller = $this->getMockBuilder('Cake\Controller\Controller')
+            ->setMethods(['header', 'redirect', 'render', '_stop'])
+            ->getMock();
+
         $this->controller->Trait = $this->getMockForTrait(
             'CakeDC\Users\Controller\Traits\SocialTrait',
             [],
@@ -45,7 +45,9 @@ class SocialTraitTest extends TestCase
      */
     public function testSocialEmail()
     {
-        $session = $this->getMock('Cake\Network\Session', ['check', 'delete']);
+        $session = $this->getMockBuilder('Cake\Network\Session')
+                ->setMethods(['check', 'delete'])
+                ->getMock();
         $session->expects($this->at(0))
             ->method('check')
             ->with('Users.social')
@@ -55,7 +57,9 @@ class SocialTraitTest extends TestCase
             ->method('delete')
             ->with('Flash.auth');
 
-        $this->controller->Trait->request = $this->getMock('Cake\Network\Request', ['session']);
+        $this->controller->Trait->request = $this->getMockBuilder('Cake\Network\Request')
+                ->setMethods(['session'])
+                ->getMock();
         $this->controller->Trait->request->expects($this->any())
             ->method('session')
             ->will($this->returnValue($session));
@@ -70,13 +74,17 @@ class SocialTraitTest extends TestCase
      */
     public function testSocialEmailInvalid()
     {
-        $session = $this->getMock('Cake\Network\Session', ['check']);
+        $session = $this->getMockBuilder('Cake\Network\Session')
+                ->setMethods(['check'])
+                ->getMock();
         $session->expects($this->once())
             ->method('check')
             ->with('Users.social')
             ->will($this->returnValue(null));
 
-        $this->controller->Trait->request = $this->getMock('Cake\Network\Request', ['session']);
+        $this->controller->Trait->request = $this->getMockBuilder('Cake\Network\Request')
+                ->setMethods(['session'])
+                ->getMock();
         $this->controller->Trait->request->expects($this->once())
             ->method('session')
             ->will($this->returnValue($session));
@@ -86,7 +94,9 @@ class SocialTraitTest extends TestCase
 
     public function testSocialEmailPostValidateFalse()
     {
-        $session = $this->getMock('Cake\Network\Session', ['check', 'delete']);
+        $session = $this->getMockBuilder('Cake\Network\Session')
+                ->setMethods(['check', 'delete'])
+                ->getMock();
         $session->expects($this->any())
             ->method('check')
             ->with('Users.social')
@@ -96,7 +106,9 @@ class SocialTraitTest extends TestCase
             ->method('delete')
             ->with('Flash.auth');
 
-        $this->controller->Trait->request = $this->getMock('Cake\Network\Request', ['session', 'is']);
+        $this->controller->Trait->request = $this->getMockBuilder('Cake\Network\Request')
+                ->setMethods(['session', 'is'])
+                ->getMock();
         $this->controller->Trait->request->expects($this->any())
             ->method('session')
             ->will($this->returnValue($session));
@@ -124,7 +136,9 @@ class SocialTraitTest extends TestCase
 
     public function testSocialEmailPostValidateTrue()
     {
-        $session = $this->getMock('Cake\Network\Session', ['check', 'delete']);
+        $session = $this->getMockBuilder('Cake\Network\Session')
+                ->setMethods(['check', 'delete'])
+                ->getMock();
         $session->expects($this->any())
             ->method('check')
             ->with('Users.social')
@@ -134,7 +148,9 @@ class SocialTraitTest extends TestCase
             ->method('delete')
             ->with('Flash.auth');
 
-        $this->controller->Trait->request = $this->getMock('Cake\Network\Request', ['session', 'is']);
+        $this->controller->Trait->request = $this->getMockBuilder('Cake\Network\Request')
+                ->setMethods(['session', 'is'])
+                ->getMock();
         $this->controller->Trait->request->expects($this->any())
             ->method('session')
             ->will($this->returnValue($session));

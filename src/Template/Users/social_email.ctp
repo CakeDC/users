@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 ?>
@@ -13,10 +13,9 @@
     <?= $this->Flash->render() ?>
     <?= $this->Form->create('User') ?>
     <fieldset>
-        <legend><?= __d('Users', 'Please enter your email') ?></legend>
-        <?= $this->Form->input('email') ?>
+        <legend><?= __d('CakeDC/Users', 'Please enter your email') ?></legend>
+        <?= $this->Form->control('email') ?>
     </fieldset>
-    <?= $this->User->addReCaptcha(); ?>
-    <?= $this->Form->button(__d('Users', 'Submit')); ?>
+    <?= $this->Form->button(__d('CakeDC/Users', 'Submit')); ?>
     <?= $this->Form->end() ?>
 </div>

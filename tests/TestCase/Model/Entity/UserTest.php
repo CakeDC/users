@@ -1,4 +1,14 @@
 <?php
+/**
+ * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ *
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
+ */
+
 namespace CakeDC\Users\Test\TestCase\Model\Entity;
 
 use CakeDC\Users\Model\Entity\User;
@@ -88,6 +98,7 @@ class UserTest extends TestCase
         $this->User->token_expires = '-1 day';
         $isExpired = $this->User->tokenExpired();
         $this->assertTrue($isExpired);
+        I18n::locale('en_US');
     }
 
     /**
@@ -175,9 +186,7 @@ class UserTest extends TestCase
         $this->assertNull($this->User['token']);
         $this->assertNull($this->User['token_expires']);
         $this->User->updateToken(20);
-        $nowModified = new Time('now');
-        $nowModified->addSecond(20);
-        $this->assertEquals($nowModified, $this->User['token_expires']);
+        $this->assertEquals('20 seconds after', $this->User['token_expires']->diffForHumans($this->now));
         $this->assertNotNull($this->User['token']);
     }
 
@@ -191,9 +200,7 @@ class UserTest extends TestCase
         $this->User['token'] = 'aaa';
         $this->User['token_expires'] = $this->now;
         $this->User->updateToken(20);
-        $nowModified = new Time('now');
-        $nowModified->addSecond(20);
-        $this->assertEquals($nowModified, $this->User['token_expires']);
+        $this->assertEquals('20 seconds after', $this->User['token_expires']->diffForHumans($this->now));
         $this->assertNotEquals('aaa', $this->User['token']);
     }
 }

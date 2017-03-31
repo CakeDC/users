@@ -1,22 +1,22 @@
 <?php
 /**
- * Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 namespace CakeDC\Users\Controller\Traits;
 
 use Cake\Core\Configure;
-use ReCaptcha\ReCaptcha;
 
 /**
  * Covers registration features and email token validation
  *
+ * @property \Cake\Http\ServerRequest $request
  */
 trait ReCaptchaTrait
 {
@@ -30,27 +30,28 @@ trait ReCaptchaTrait
      */
     public function validateReCaptcha($recaptchaResponse, $clientIp)
     {
-        $validReCaptcha = true;
         $recaptcha = $this->_getReCaptchaInstance();
         if (!empty($recaptcha)) {
             $response = $recaptcha->verify($recaptchaResponse, $clientIp);
-            $validReCaptcha = $response->isSuccess();
+
+            return $response->isSuccess();
         }
-        return $validReCaptcha;
+
+        return false;
     }
 
     /**
      * Create reCaptcha instance if enabled in configuration
      *
-     * @return ReCaptcha
+     * @return \ReCaptcha\ReCaptcha
      */
     protected function _getReCaptchaInstance()
     {
-        $useReCaptcha = (bool)Configure::read('Users.Registration.reCaptcha');
-        $reCaptchaSecret = Configure::read('reCaptcha.secret');
-        if ($useReCaptcha && !empty($reCaptchaSecret)) {
-            return new ReCaptcha($reCaptchaSecret);
+        $reCaptchaSecret = Configure::read('Users.reCaptcha.secret');
+        if (!empty($reCaptchaSecret)) {
+            return new \ReCaptcha\ReCaptcha($reCaptchaSecret);
         }
+
         return null;
     }
 }

@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -45,8 +45,14 @@ class ReCaptchaTraitTest extends TestCase
      */
     public function testValidateValidReCaptcha()
     {
-        $ReCaptcha = $this->getMock('ReCaptcha\ReCaptcha', ['verify'], [], '', false);
-        $Response = $this->getMock('ReCaptcha\Response', ['isSuccess'], [], '', false);
+        $ReCaptcha = $this->getMockBuilder('ReCaptcha\ReCaptcha')
+                ->setMethods(['verify'])
+                ->disableOriginalConstructor()
+                ->getMock();
+        $Response = $this->getMockBuilder('ReCaptcha\Response')
+                ->setMethods(['isSuccess'])
+                ->disableOriginalConstructor()
+                ->getMock();
         $Response->expects($this->any())
             ->method('isSuccess')
             ->will($this->returnValue(true));
@@ -67,8 +73,14 @@ class ReCaptchaTraitTest extends TestCase
      */
     public function testValidateInvalidReCaptcha()
     {
-        $ReCaptcha = $this->getMock('ReCaptcha\ReCaptcha', ['verify'], [], '', false);
-        $Response = $this->getMock('ReCaptcha\Response', ['isSuccess'], [], '', false);
+        $ReCaptcha = $this->getMockBuilder('ReCaptcha\ReCaptcha')
+                ->setMethods(['verify'])
+                ->disableOriginalConstructor()
+                ->getMock();
+        $Response = $this->getMockBuilder('ReCaptcha\Response')
+                ->setMethods(['isSuccess'])
+                ->disableOriginalConstructor()
+                ->getMock();
         $Response->expects($this->any())
             ->method('isSuccess')
             ->will($this->returnValue(false));

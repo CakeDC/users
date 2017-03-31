@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -13,8 +13,8 @@ namespace CakeDC\Users\Auth;
 
 use Cake\Auth\BaseAuthenticate;
 use Cake\Core\Configure;
+use Cake\Http\ServerRequest;
 use Cake\Network\Exception\ForbiddenException;
-use Cake\Network\Request;
 use Cake\Network\Response;
 use \OutOfBoundsException;
 
@@ -38,25 +38,47 @@ class ApiKeyAuthenticate extends BaseAuthenticate
         'field' => 'api_token',
         //require SSL to pass the token. You should always require SSL to use tokens for Auth
         'require_ssl' => true,
+        //set a specific table for API auth, set as null to use Users.table
+        'table' => null,
+        //set a specific finder for API auth, set as null to use Auth.authenticate.all.finder
+        'finder' => null,
     ];
 
     /**
      * Authenticate callback
      * Reads the API Key based on configuration and login the user
      *
-     * @param Request $request Cake request object.
-     * @param Response $response Cake response object.
+     * @param \Cake\Http\ServerRequest $request request object.
+     * @param Response $response response object.
      * @return mixed
      */
-    public function authenticate(Request $request, Response $response)
+    public function authenticate(ServerRequest $request, Response $response)
     {
-        $type = $this->config('type');
+        return $this->getUser($request);
+    }
+
+    /**
+     * Stateless Authentication System
+     * http://book.cakephp.org/3.0/en/controllers/components/authentication.html#creating-stateless-authentication-systems
+     *
+     * Config:
+     *   $this->Auth->config('storage', 'Memory');
+     *   $this->Auth->config('unauthorizedRedirect', 'false');
+     *   $this->Auth->config('checkAuthIn', 'Controller.initialize');
+     *   $this->Auth->config('loginAction', false);
+     *
+     * @param \Cake\Http\ServerRequest $request Cake request object.
+     * @return mixed
+     */
+    public function getUser(ServerRequest $request)
+    {
+        $type = $this->getConfig('type');
         if (!in_array($type, $this->types)) {
-            throw new OutOfBoundsException(__d('Users', 'Type {0} is not valid', $type));
+            throw new OutOfBoundsException(__d('CakeDC/Users', 'Type {0} is not valid', $type));
         }
 
         if (!is_callable([$this, $type])) {
-            throw new OutOfBoundsException(__d('Users', 'Type {0} has no associated callable', $type));
+            throw new OutOfBoundsException(__d('CakeDC/Users', 'Type {0} has no associated callable', $type));
         }
 
         $apiKey = $this->$type($request);
@@ -64,13 +86,15 @@ class ApiKeyAuthenticate extends BaseAuthenticate
             return false;
         }
 
-        if ($this->config('require_ssl') && !$request->is('ssl')) {
-            throw new ForbiddenException(__d('Users', 'SSL is required for ApiKey Authentication', $type));
+        if ($this->getConfig('require_ssl') && !$request->is('ssl')) {
+            throw new ForbiddenException(__d('CakeDC/Users', 'SSL is required for ApiKey Authentication', $type));
         }
 
-        $this->_config['fields']['username'] = $this->config('field');
-        $this->_config['userModel'] = Configure::read('Users.table');
-        $this->_config['finder'] = 'all';
+        $this->_config['fields']['username'] = $this->getConfig('field');
+        $this->_config['userModel'] = $this->getConfig('table') ?: Configure::read('Users.table');
+        $this->_config['finder'] = $this->getConfig('finder') ?:
+            Configure::read('Auth.authenticate.all.finder') ?:
+                'all';
         $result = $this->_query($apiKey)->first();
 
         if (empty($result)) {
@@ -78,30 +102,34 @@ class ApiKeyAuthenticate extends BaseAuthenticate
         }
 
         return $result->toArray();
-        //idea: add array with checks to be passed to $request->is(...)
     }
 
     /**
      * Get the api key from the querystring
      *
-     * @param Request $request request
+     * @param \Cake\Http\ServerRequest $request request
      * @return string api key
      */
-    public function querystring(Request $request)
+    public function querystring(ServerRequest $request)
     {
-        $name = $this->config('name');
-        return $request->query($name);
+        $name = $this->getConfig('name');
+
+        return $request->getQuery($name);
     }
 
     /**
      * Get the api key from the header
      *
-     * @param Request $request request
+     * @param \Cake\Http\ServerRequest $request request
      * @return string api key
      */
-    public function header(Request $request)
+    public function header(ServerRequest $request)
     {
-        $name = $this->config('name');
-        return $request->header($name);
+        $name = $this->getConfig('name');
+        if (!empty($request->getHeader($name))) {
+            return $request->getHeaderLine($name);
+        }
+
+        return null;
     }
 }

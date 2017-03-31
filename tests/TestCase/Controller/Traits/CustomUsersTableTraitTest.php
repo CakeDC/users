@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2015, Cake Development Corporation (+1 702 425 5085) (http://cakedc.com)
+ * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2015, Cake Development Corporation (+1 702 425 5085) (http://cakedc.com)
+ * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -19,10 +19,9 @@ class CustomUsersTableTraitTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->controller = $this->getMock(
-            'Cake\Controller\Controller',
-            ['header', 'redirect', 'render', '_stop']
-        );
+        $this->controller = $this->getMockBuilder('Cake\Controller\Controller')
+                ->setMethods(['header', 'redirect', 'render', '_stop'])
+                ->getMock();
         $this->controller->Trait = $this->getMockForTrait('CakeDC\Users\Controller\Traits\CustomUsersTableTrait');
     }
 

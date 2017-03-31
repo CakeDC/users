@@ -1,21 +1,23 @@
 <?php
 /**
- * Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 namespace CakeDC\Users\Test\TestCase\Auth;
 
+use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\UserNotActiveException;
 use Cake\Controller\ComponentRegistry;
 use Cake\Event\Event;
+use Cake\Http\ServerRequest;
 use Cake\Network\Request;
 use Cake\Network\Response;
 use Cake\ORM\TableRegistry;
@@ -40,21 +42,24 @@ class SocialAuthenticateTest extends TestCase
      */
     public function setUp()
     {
-        $request = new Request();
+        $request = new ServerRequest();
         $response = new Response();
 
         $this->Table = TableRegistry::get('CakeDC/Users.Users');
 
-        $this->Token = $this->getMockBuilder('AccessToken')
+        $this->Token = $this->getMockBuilder('League\OAuth2\Client\Token\AccessToken')
             ->setMethods(['getToken', 'getExpires'])
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->controller = $this->getMock(
-            'Cake\Controller\Controller',
-            ['failedSocialLogin'],
-            [$request, $response]
-        );
+        $this->controller = $this->getMockBuilder('Cake\Controller\Controller')
+            ->setMethods(['failedSocialLogin', 'dispatchEvent'])
+            ->setConstructorArgs([$request, $response])
+            ->getMock();
+
+        $this->controller->expects($this->any())
+            ->method('dispatchEvent')
+            ->will($this->returnValue(new Event('test')));
 
         $this->Request = $request;
         $this->SocialAuthenticate = $this->_getSocialAuthenticateMockMethods(['_authenticate', '_getProviderName',
@@ -96,7 +101,13 @@ class SocialAuthenticateTest extends TestCase
      */
     public function testGetUserAuth($rawData, $mapper)
     {
-         $this->SocialAuthenticate->expects($this->once())
+        $user = $this->Table->get('00000000-0000-0000-0000-000000000002', ['contain' => ['SocialAccounts']]);
+
+        $this->controller->expects($this->once())
+            ->method('dispatchEvent')
+            ->with(UsersAuthComponent::EVENT_AFTER_REGISTER, compact('user'));
+
+        $this->SocialAuthenticate->expects($this->once())
          ->method('_authenticate')
          ->with($this->Request)
          ->will($this->returnValue($rawData));
@@ -109,11 +120,9 @@ class SocialAuthenticateTest extends TestCase
             ->method('_mapUser')
             ->will($this->returnValue($mapper));
 
-        $user = $this->Table->get('00000000-0000-0000-0000-000000000002');
         $this->SocialAuthenticate->expects($this->once())
             ->method('_socialLogin')
             ->will($this->returnValue($user));
-
 
         $result = $this->SocialAuthenticate->getUser($this->Request);
         $this->assertTrue($result['active']);
@@ -178,7 +187,9 @@ class SocialAuthenticateTest extends TestCase
         $this->SocialAuthenticate = $this->_getSocialAuthenticateMockMethods(['_authenticate',
                 '_getProviderName', '_mapUser', '_touch', '_validateConfig' ]);
 
-        $session = $this->getMock('Cake\Network\Session', ['read', 'delete']);
+        $session = $this->getMockBuilder('Cake\Network\Session')
+                ->setMethods(['read', 'delete'])
+                ->getMock();
         $session->expects($this->once())
             ->method('read')
             ->with('Users.social')
@@ -188,7 +199,9 @@ class SocialAuthenticateTest extends TestCase
             ->method('delete')
             ->with('Users.social');
 
-        $this->Request = $this->getMock('Cake\Network\Request', ['session']);
+        $this->Request = $this->getMockBuilder('Cake\Network\Request')
+                ->setMethods(['session'])
+                ->getMock();
         $this->Request->expects($this->any())
             ->method('session')
             ->will($this->returnValue($session));
@@ -223,6 +236,10 @@ class SocialAuthenticateTest extends TestCase
         $this->SocialAuthenticate->expects($this->once())
             ->method('_socialLogin')
             ->will($this->throwException(new MissingEmailException('missing email')));
+
+        $this->controller->expects($this->once())
+            ->method('dispatchEvent')
+            ->with(UsersAuthComponent::EVENT_FAILED_SOCIAL_LOGIN);
 
         $this->controller->expects($this->once())
             ->method('failedSocialLogin');
@@ -404,7 +421,7 @@ class SocialAuthenticateTest extends TestCase
 
         $result = $mapUser->invoke($this->SocialAuthenticate, 'Facebook', $data);
         unset($result['raw']);
-        $this->assertEquals($result, $mappedData);
+        $this->assertEquals($mappedData, $result);
     }
 
     /**
@@ -432,7 +449,7 @@ class SocialAuthenticateTest extends TestCase
                     'first_name' => 'My first name',
                     'last_name' => 'My lastname.',
                     'email' => 'myemail@example.com',
-                    'avatar' => 'https://graph.facebook.com/my-facebook-id/picture?type=normal',
+                    'avatar' => 'https://graph.facebook.com/my-facebook-id/picture?type=large',
                     'gender' => 'female',
                     'link' => 'https://www.facebook.com/app_scoped_user_id/my-facebook-id/',
                     'bio' => null,
