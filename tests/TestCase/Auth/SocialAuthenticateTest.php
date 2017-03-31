@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Test\TestCase\Auth;
 
+use Cake\Core\Configure;
 use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
@@ -481,5 +482,111 @@ class SocialAuthenticateTest extends TestCase
         $mapUser = $reflectedClass->getMethod('_mapUser');
         $mapUser->setAccessible(true);
         $mapUser->invoke($this->SocialAuthenticate, null, $data);
+    }
+
+    /**
+     * Provider for normalizeConfig test method
+     *
+     * @dataProvider providers
+     */
+    public function testNormalizeConfig($data, $oauth2, $callTimes, $enabledNoOAuth2Provider)
+    {
+        Configure::write('OAuth2', $oauth2);
+        $this->SocialAuthenticate = $this->_getSocialAuthenticateMockMethods(['_authenticate',
+            '_getProviderName', '_mapUser', '_touch', '_validateConfig', '_normalizeConfig' ]);
+
+        $this->SocialAuthenticate->expects($this->exactly($callTimes))
+            ->method('_normalizeConfig');
+
+        $this->SocialAuthenticate->normalizeConfig($data, $enabledNoOAuth2Provider);
+    }
+
+    /**
+     * Test normalizeConfig
+     *
+     * @expectedException CakeDC\Users\Auth\Exception\MissingProviderConfigurationException
+     */
+    public function testNormalizeConfigException()
+    {
+        $this->SocialAuthenticate->normalizeConfig([]);
+    }
+
+    /**
+     * Provider for normalizeConfig test method
+     *
+     */
+    public function providers()
+    {
+        return [
+            [
+                [
+                    'providers' => [
+                        'facebook' => [
+                            'className' => 'League\OAuth2\Client\Provider\Facebook',
+                        ],
+                        'instagram' => [
+                            'className' => 'League\OAuth2\Client\Provider\Instagram',
+                        ]
+                    ],
+
+                ],
+                [
+                    'providers' => [
+                        'facebook' => [
+                            'className' => 'League\OAuth2\Client\Provider\Facebook',
+                        ],
+                        'instagram' => [
+                            'className' => 'League\OAuth2\Client\Provider\Instagram',
+                        ]
+                    ]
+                ],
+                2,
+                false
+            ],
+            [
+                [
+                    'providers' => [
+                        'facebook' => [
+                            'className' => 'League\OAuth2\Client\Provider\Facebook',
+                        ],
+                    ],
+
+                ],
+                [
+                    'providers' => [
+                        'facebook' => [
+                            'className' => 'League\OAuth2\Client\Provider\Facebook',
+                        ],
+                    ]
+                ],
+                1,
+                false
+            ],
+            [
+                [
+                    'providers' => [
+                        'facebook' => [
+                            'className' => 'League\OAuth2\Client\Provider\Facebook',
+                        ],
+                    ],
+
+                ],
+                [
+                    'providers' => [
+                        'instagram' => [
+                            'className' => 'League\OAuth2\Client\Provider\Instagram',
+                        ]
+                    ]
+                ],
+                2,
+                false
+            ],
+            [
+                [],
+                [],
+                0,
+                true
+            ]
+        ];
     }
 }

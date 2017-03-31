@@ -92,7 +92,9 @@ class SocialAuthenticate extends BaseAuthenticate
             throw new MissingProviderConfigurationException();
         }
 
-        array_walk($config['providers'], [$this, '_normalizeConfig'], $config);
+        if (!empty($config['providers'])) {
+            array_walk($config['providers'], [$this, '_normalizeConfig'], $config);
+        }
 
         return $config;
     }
