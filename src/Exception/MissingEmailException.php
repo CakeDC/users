@@ -17,9 +17,9 @@ class MissingEmailException extends Exception
 {
     /**
      * MissingEmailException constructor.
-     * @param array|string $message
-     * @param int $code
-     * @param null $previous
+     * @param array|string $message message
+     * @param int $code code
+     * @param null $previous previous
      */
     public function __construct($message, $code = 500, $previous = null)
     {

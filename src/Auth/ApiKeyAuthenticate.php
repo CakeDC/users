@@ -45,6 +45,11 @@ class ApiKeyAuthenticate extends BaseAuthenticate
         'finder' => null,
     ];
 
+    /**
+     * ApiKeyAuthenticate constructor.
+     * @param ComponentRegistry $registry registry
+     * @param array $config config
+     */
     public function __construct(ComponentRegistry $registry, array $config = [])
     {
         parent::__construct($registry, $config);

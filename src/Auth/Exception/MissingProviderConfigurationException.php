@@ -20,9 +20,9 @@ class MissingProviderConfigurationException extends Exception
 
     /**
      * MissingProviderConfigurationException constructor.
-     * @param string $message
-     * @param int $code
-     * @param null $previous
+     * @param string $message message
+     * @param int $code code
+     * @param null $previous previous
      */
     public function __construct($message = null, $code = 500, $previous = null)
     {
