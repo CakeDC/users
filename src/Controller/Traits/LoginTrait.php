@@ -190,6 +190,7 @@ trait LoginTrait
             if ($this->Auth->user()) {
                 $msg = __d('Users', 'You are already logged in');
                 $this->Flash->info($msg);
+
                 return $this->redirect($this->referer());
             }
         }
@@ -387,3 +388,4 @@ trait LoginTrait
         return Configure::read('Users.GoogleAuthenticator.login');
     }
 }
+
