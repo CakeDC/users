@@ -160,12 +160,11 @@ class SocialAuthenticate extends BaseAuthenticate
         return $this->_registry->getController();
     }
 
-
     /**
      * Returns when a provider has been enabled.
      *
-     * @param $options
-     * @return \Cake\Controller\Controller Controller instance
+     * @param array $options array of options by provider
+     * @return bool
      */
     protected function _isProviderEnabled($options)
     {
