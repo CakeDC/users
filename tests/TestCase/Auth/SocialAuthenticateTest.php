@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -16,7 +16,9 @@ use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\UserNotActiveException;
 use Cake\Controller\ComponentRegistry;
+use Cake\Core\Configure;
 use Cake\Event\Event;
+use Cake\Http\ServerRequest;
 use Cake\Network\Request;
 use Cake\Network\Response;
 use Cake\ORM\TableRegistry;
@@ -41,7 +43,7 @@ class SocialAuthenticateTest extends TestCase
      */
     public function setUp()
     {
-        $request = new Request();
+        $request = new ServerRequest();
         $response = new Response();
 
         $this->Table = TableRegistry::get('CakeDC/Users.Users');
@@ -480,5 +482,111 @@ class SocialAuthenticateTest extends TestCase
         $mapUser = $reflectedClass->getMethod('_mapUser');
         $mapUser->setAccessible(true);
         $mapUser->invoke($this->SocialAuthenticate, null, $data);
+    }
+
+    /**
+     * Provider for normalizeConfig test method
+     *
+     * @dataProvider providers
+     */
+    public function testNormalizeConfig($data, $oauth2, $callTimes, $enabledNoOAuth2Provider)
+    {
+        Configure::write('OAuth2', $oauth2);
+        $this->SocialAuthenticate = $this->_getSocialAuthenticateMockMethods(['_authenticate',
+            '_getProviderName', '_mapUser', '_touch', '_validateConfig', '_normalizeConfig' ]);
+
+        $this->SocialAuthenticate->expects($this->exactly($callTimes))
+            ->method('_normalizeConfig');
+
+        $this->SocialAuthenticate->normalizeConfig($data, $enabledNoOAuth2Provider);
+    }
+
+    /**
+     * Test normalizeConfig
+     *
+     * @expectedException CakeDC\Users\Auth\Exception\MissingProviderConfigurationException
+     */
+    public function testNormalizeConfigException()
+    {
+        $this->SocialAuthenticate->normalizeConfig([]);
+    }
+
+    /**
+     * Provider for normalizeConfig test method
+     *
+     */
+    public function providers()
+    {
+        return [
+            [
+                [
+                    'providers' => [
+                        'facebook' => [
+                            'className' => 'League\OAuth2\Client\Provider\Facebook',
+                        ],
+                        'instagram' => [
+                            'className' => 'League\OAuth2\Client\Provider\Instagram',
+                        ]
+                    ],
+
+                ],
+                [
+                    'providers' => [
+                        'facebook' => [
+                            'className' => 'League\OAuth2\Client\Provider\Facebook',
+                        ],
+                        'instagram' => [
+                            'className' => 'League\OAuth2\Client\Provider\Instagram',
+                        ]
+                    ]
+                ],
+                2,
+                false
+            ],
+            [
+                [
+                    'providers' => [
+                        'facebook' => [
+                            'className' => 'League\OAuth2\Client\Provider\Facebook',
+                        ],
+                    ],
+
+                ],
+                [
+                    'providers' => [
+                        'facebook' => [
+                            'className' => 'League\OAuth2\Client\Provider\Facebook',
+                        ],
+                    ]
+                ],
+                1,
+                false
+            ],
+            [
+                [
+                    'providers' => [
+                        'facebook' => [
+                            'className' => 'League\OAuth2\Client\Provider\Facebook',
+                        ],
+                    ],
+
+                ],
+                [
+                    'providers' => [
+                        'instagram' => [
+                            'className' => 'League\OAuth2\Client\Provider\Instagram',
+                        ]
+                    ]
+                ],
+                2,
+                false
+            ],
+            [
+                [],
+                [],
+                0,
+                true
+            ]
+        ];
     }
 }

@@ -51,7 +51,7 @@ msgid ""
 "Missing column {0} in table {1} while checking ownership permissions for "
 "user {2}"
 msgstr ""
-"Saknar kolumn {0} i tabell {1} ​​vid kontroll av ägarbehörigheter för "
+"Saknar kolumn {0} i tabell {1} vid kontroll av ägarbehörigheter för "
 "användare {2}"
 
 #: Controller/SocialAccountsController.php:52

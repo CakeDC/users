@@ -4,6 +4,16 @@ Changelog
 Releases for CakePHP 3
 -------------
 
+* 5.0.0
+  * Some Auth objects refactored into https://github.com/CakeDC/auth
+  * Upgrade to CakePHP 3.4
+
+* 4.2.1
+  * Improvements in unit tests
+
+* 4.2.0
+  * New configuration param `Users.Registration.defaultRole` to set the default role on user registration or addUser Shell action
+
 * 4.1.3
   * Configurable rememberMe checkbox status
   * Update brazilian portuguese translations

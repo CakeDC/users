@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -16,17 +16,15 @@ use CakeDC\Users\Exception\UserAlreadyActiveException;
 use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Exception\UserNotFoundException;
 use CakeDC\Users\Exception\WrongPasswordException;
-use CakeDC\Users\Model\Behavior\Behavior;
 use Cake\Datasource\EntityInterface;
 use Cake\Datasource\Exception\RecordNotFoundException;
-use Cake\Mailer\Email;
 use Cake\Utility\Hash;
 use InvalidArgumentException;
 
 /**
  * Covers the password management features
  */
-class PasswordBehavior extends Behavior
+class PasswordBehavior extends BaseTokenBehavior
 {
     /**
      * Constructor hook method.
@@ -121,7 +119,10 @@ class PasswordBehavior extends Behavior
                 throw new WrongPasswordException(__d('CakeDC/Users', 'The current password does not match'));
             }
             if ($user->current_password === $user->password_confirm) {
-                throw new WrongPasswordException(__d('CakeDC/Users', 'You cannot use the current password as the new one'));
+                throw new WrongPasswordException(__d(
+                    'CakeDC/Users',
+                    'You cannot use the current password as the new one'
+                ));
             }
         }
         $user = $this->_table->save($user);

@@ -1,4 +1,14 @@
 <?php
+/**
+ * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ *
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
+ */
+
 namespace CakeDC\Users\Controller\Component;
 
 use Cake\Controller\Component;
@@ -15,7 +25,7 @@ use RobThree\Auth\TwoFactorAuth;
  */
 class GoogleAuthenticatorComponent extends Component
 {
-    /** @var RobThree\Auth\TwoFactorAuth $tfa */
+    /** @var \RobThree\Auth\TwoFactorAuth $tfa */
     public $tfa;
 
     /**
@@ -41,7 +51,7 @@ class GoogleAuthenticatorComponent extends Component
 
     /**
      * createSecret
-     * @return base32 shared secret stored in users table
+     * @return string base32 shared secret stored in users table
      */
     public function createSecret()
     {
@@ -62,6 +72,8 @@ class GoogleAuthenticatorComponent extends Component
 
     /**
      * getQRCodeImageAsDataUri
+     * @param string $issuer issuer
+     * @param string $secret secret
      * @return string base64 string containing QR code for shared secret
      */
     public function getQRCodeImageAsDataUri($issuer, $secret)
