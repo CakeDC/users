@@ -25,6 +25,6 @@ Documentation
 Migration guides
 ----------------
 
-* [4.1.x to 5.0](Documentation/Migration/4.1.x-5.0.md)
+* [4.x to 5.0](Documentation/Migration/4.x-5.0.md)
 
 
