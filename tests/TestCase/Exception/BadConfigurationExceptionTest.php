@@ -11,8 +11,8 @@
 
 namespace CakeDC\Users\Test\TestCase\Exception;
 
-use Cake\TestSuite\TestCase;
 use CakeDC\Users\Exception\BadConfigurationException;
+use Cake\TestSuite\TestCase;
 
 class BadConfigurationExceptionTest extends TestCase
 {

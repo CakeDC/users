@@ -11,8 +11,8 @@
 
 namespace CakeDC\Users\Test\TestCase\Auth\Social\Mapper;
 
-use Cake\TestSuite\TestCase;
 use CakeDC\Users\Auth\Social\Mapper\Facebook;
+use Cake\TestSuite\TestCase;
 
 class FacebookTest extends TestCase
 {
@@ -56,9 +56,9 @@ class FacebookTest extends TestCase
             'gender' => 'male',
             'locale' => 'en_US',
             'link' => 'https://www.facebook.com/app_scoped_user_id/1/',
-            'timezone' => (int) -5,
+            'timezone' => -5,
             'age_range' => [
-                'min' => (int) 21
+                'min' => 21
             ],
             'bio' => 'I am the best test user in the world.',
             'picture_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',

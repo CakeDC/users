@@ -11,8 +11,8 @@
 
 namespace CakeDC\Users\Test\TestCase\Auth\Social\Mapper;
 
-use Cake\TestSuite\TestCase;
 use CakeDC\Users\Auth\Social\Mapper\Twitter;
+use Cake\TestSuite\TestCase;
 
 class TwitterTest extends TestCase
 {

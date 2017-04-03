@@ -11,8 +11,8 @@
 
 namespace CakeDC\Users\Test\TestCase\Auth\Exception;
 
-use Cake\TestSuite\TestCase;
 use CakeDC\Users\Auth\Exception\InvalidProviderException;
+use Cake\TestSuite\TestCase;
 
 class InvalidProviderExceptionTest extends TestCase
 {

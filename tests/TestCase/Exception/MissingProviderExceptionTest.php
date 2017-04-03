@@ -11,8 +11,8 @@
 
 namespace CakeDC\Users\Test\TestCase\Exception;
 
-use Cake\TestSuite\TestCase;
 use CakeDC\Users\Exception\MissingProviderException;
+use Cake\TestSuite\TestCase;
 
 class MissingProviderExceptionTest extends TestCase
 {

@@ -11,8 +11,8 @@
 
 namespace CakeDC\Users\Test\TestCase\Exception;
 
-use Cake\TestSuite\TestCase;
 use CakeDC\Users\Exception\UserAlreadyActiveException;
+use Cake\TestSuite\TestCase;
 
 class UserAlreadyActiveExceptionTest extends TestCase
 {

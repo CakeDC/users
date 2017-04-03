@@ -11,8 +11,8 @@
 
 namespace CakeDC\Users\Test\TestCase\Auth\Exception;
 
-use Cake\TestSuite\TestCase;
 use CakeDC\Users\Auth\Exception\MissingEventListenerException;
+use Cake\TestSuite\TestCase;
 
 class MissingEventListenerExceptionTest extends TestCase
 {

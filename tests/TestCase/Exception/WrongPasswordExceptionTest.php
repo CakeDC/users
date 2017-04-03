@@ -11,8 +11,8 @@
 
 namespace CakeDC\Users\Test\TestCase\Exception;
 
-use Cake\TestSuite\TestCase;
 use CakeDC\Users\Exception\WrongPasswordException;
+use Cake\TestSuite\TestCase;
 
 class WrongPasswordExceptionTest extends TestCase
 {

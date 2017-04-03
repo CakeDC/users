@@ -11,8 +11,8 @@
 
 namespace CakeDC\Users\Test\TestCase\Auth\Exception;
 
-use Cake\TestSuite\TestCase;
 use CakeDC\Users\Auth\Exception\InvalidSettingsException;
+use Cake\TestSuite\TestCase;
 
 class MissingProviderConfigurationExceptionTest extends TestCase
 {

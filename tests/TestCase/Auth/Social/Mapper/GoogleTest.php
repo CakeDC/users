@@ -11,8 +11,8 @@
 
 namespace CakeDC\Users\Test\TestCase\Auth\Social\Mapper;
 
-use Cake\TestSuite\TestCase;
 use CakeDC\Users\Auth\Social\Mapper\Google;
+use Cake\TestSuite\TestCase;
 
 class GoogleTest extends TestCase
 {
@@ -46,7 +46,7 @@ class GoogleTest extends TestCase
             'image' => [
                 'url' => 'https://lh3.googleusercontent.com/photo.jpg'
             ]
-	    ];
+        ];
         $providerMapper = new Google($rawData);
         $user = $providerMapper();
         $this->assertEquals([
