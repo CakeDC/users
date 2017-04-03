@@ -39,7 +39,6 @@ use League\OAuth2\Client\Provider\AbstractProvider;
  */
 class SocialAuthenticate extends BaseAuthenticate
 {
-
     use EventDispatcherTrait;
     use LogTrait;
 

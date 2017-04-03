@@ -23,7 +23,6 @@ use Cake\View\Helper;
  */
 class UserHelper extends Helper
 {
-
     public $helpers = ['Html', 'Form', 'CakeDC/Users.AuthLink'];
 
     /**
