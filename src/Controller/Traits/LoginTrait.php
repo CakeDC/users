@@ -388,4 +388,3 @@ trait LoginTrait
         return Configure::read('Users.GoogleAuthenticator.login');
     }
 }
-
