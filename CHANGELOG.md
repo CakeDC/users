@@ -4,6 +4,10 @@ Changelog
 Releases for CakePHP 3
 -------------
 
+* 5.0.1
+  * Bugfix release
+  * Minor BR language improvements
+
 * 5.0.0
   * Some Auth objects refactored into https://github.com/CakeDC/auth
   * Upgrade to CakePHP 3.4
