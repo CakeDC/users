@@ -65,7 +65,7 @@ class SocialAuthenticate extends BaseAuthenticate
 
         $providers = [];
         foreach ($oauthConfig['providers'] as $provider => $options) {
-            if ($this->_isProviderEnable($options)) {
+            if ($this->_isProviderEnabled($options)) {
                 $providers[$provider] = $options;
             }
         }
