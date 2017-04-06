@@ -361,7 +361,7 @@ msgstr "Adicionar um novo usuário"
 
 #: Shell/UsersShell.php:58
 msgid "Change the role for an specific user"
-msgstr "Mudar o role de um usuário específico"
+msgstr "Alterar o role de um usuário específico"
 
 #: Shell/UsersShell.php:59
 msgid "Deactivate an specific user"
@@ -653,7 +653,7 @@ msgstr "Visualizar"
 
 #: Template/Users/index.ctp:38
 msgid "Change password"
-msgstr "Mudar senha"
+msgstr "Alterar senha"
 
 #: Template/Users/index.ctp:39 Template/Users/view.ctp:99
 msgid "Edit"
@@ -721,7 +721,7 @@ msgstr "Senha"
 
 #: Template/Users/register.ctp:28
 msgid "Accept TOS conditions?"
-msgstr "Concordar com TOS?"
+msgstr "Concordar com Termos de Uso?"
 
 #: Template/Users/request_reset_password.ctp:5
 msgid "Please enter your email to reset your password"

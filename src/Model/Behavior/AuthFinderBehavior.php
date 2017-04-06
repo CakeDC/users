@@ -29,7 +29,7 @@ class AuthFinderBehavior extends Behavior
      */
     public function findActive(Query $query, array $options = [])
     {
-        $query->where([$this->getTable()->aliasField('active') => 1]);
+        $query->where([$this->_table->aliasField('active') => 1]);
 
         return $query;
     }
@@ -50,7 +50,7 @@ class AuthFinderBehavior extends Behavior
         }
 
         $query
-            ->orWhere([$this->getTable()->aliasField('email') => $identifier])
+            ->orWhere([$this->_table->aliasField('email') => $identifier])
             ->find('active', $options);
 
         return $query;

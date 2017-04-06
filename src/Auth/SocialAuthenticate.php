@@ -65,13 +65,13 @@ class SocialAuthenticate extends BaseAuthenticate
 
         $providers = [];
         foreach ($oauthConfig['providers'] as $provider => $options) {
-            if ($this->_isProviderEnable($options)) {
+            if ($this->_isProviderEnabled($options)) {
                 $providers[$provider] = $options;
             }
         }
         $oauthConfig['providers'] = $providers;
         Configure::write('OAuth2', $oauthConfig);
-        $config = $this->normalizeConfig(array_merge($config, $oauthConfig), $enabledNoOAuth2Provider);
+        $config = $this->normalizeConfig(Hash::merge($config, $oauthConfig), $enabledNoOAuth2Provider);
         parent::__construct($registry, $config);
     }
 
