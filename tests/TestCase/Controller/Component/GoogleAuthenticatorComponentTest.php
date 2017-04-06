@@ -29,7 +29,6 @@ use Cake\Utility\Security;
 
 class GoogleAuthenticatorComponentTest extends TestCase
 {
-
     public $fixtures = [
         'plugin.CakeDC/Users.users'
     ];

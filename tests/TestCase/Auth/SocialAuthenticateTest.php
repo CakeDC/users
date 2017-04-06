@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Test\TestCase\Auth;
 
+use CakeDC\Users\Auth\SocialAuthenticate;
 use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
@@ -64,7 +65,7 @@ class SocialAuthenticateTest extends TestCase
 
         $this->Request = $request;
         $this->SocialAuthenticate = $this->_getSocialAuthenticateMockMethods(['_authenticate', '_getProviderName',
-                '_mapUser', '_socialLogin', 'dispatchEvent', '_validateConfig', '_getController']);
+            '_mapUser', '_socialLogin', 'dispatchEvent', '_validateConfig', '_getController']);
 
         $this->SocialAuthenticate->expects($this->any())
             ->method('_getController')
@@ -96,6 +97,57 @@ class SocialAuthenticateTest extends TestCase
     }
 
     /**
+     * test
+     *
+     * @expectedException \CakeDC\Users\Auth\Exception\MissingProviderConfigurationException
+     */
+    public function testConstructorMissingConfig()
+    {
+        $socialAuthenticate = new SocialAuthenticate(new ComponentRegistry($this->controller));
+    }
+
+    /**
+     * test
+     *
+     */
+    public function testConstructor()
+    {
+        $socialAuthenticate = new SocialAuthenticate(new ComponentRegistry($this->controller), [
+            'providers' => [
+                'facebook' => [
+                    'className' => 'League\OAuth2\Client\Provider\Facebook',
+                    'options' => [
+                        'graphApiVersion' => 'v2.5',
+                        'redirectUri' => 'http://example.com/auth/facebook',
+                    ]
+                ]
+            ]
+        ]);
+
+        $this->assertInstanceOf('\CakeDC\Users\Auth\SocialAuthenticate', $socialAuthenticate);
+    }
+
+    /**
+     * test
+     *
+     * @expectedException \CakeDC\Users\Auth\Exception\InvalidProviderException
+     */
+    public function testConstructorMissingProvider()
+    {
+        $socialAuthenticate = new SocialAuthenticate(new ComponentRegistry($this->controller), [
+            'providers' => [
+                'facebook' => [
+                    'className' => 'missing',
+                    'options' => [
+                        'graphApiVersion' => 'v2.5',
+                        'redirectUri' => 'http://example.com/auth/facebook',
+                    ]
+                ]
+            ]
+        ]);
+    }
+
+    /**
      * Test getUser
      *
      * @dataProvider providerGetUser
@@ -109,9 +161,9 @@ class SocialAuthenticateTest extends TestCase
             ->with(UsersAuthComponent::EVENT_AFTER_REGISTER, compact('user'));
 
         $this->SocialAuthenticate->expects($this->once())
-         ->method('_authenticate')
-         ->with($this->Request)
-         ->will($this->returnValue($rawData));
+            ->method('_authenticate')
+            ->with($this->Request)
+            ->will($this->returnValue($rawData));
 
         $this->SocialAuthenticate->expects($this->once())
             ->method('_getProviderName')
@@ -186,11 +238,11 @@ class SocialAuthenticateTest extends TestCase
     {
         $user = ['username' => 'username', 'email' => 'myemail@test.com'];
         $this->SocialAuthenticate = $this->_getSocialAuthenticateMockMethods(['_authenticate',
-                '_getProviderName', '_mapUser', '_touch', '_validateConfig' ]);
+            '_getProviderName', '_mapUser', '_touch', '_validateConfig']);
 
         $session = $this->getMockBuilder('Cake\Network\Session')
-                ->setMethods(['read', 'delete'])
-                ->getMock();
+            ->setMethods(['read', 'delete'])
+            ->getMock();
         $session->expects($this->once())
             ->method('read')
             ->with('Users.social')
@@ -201,8 +253,8 @@ class SocialAuthenticateTest extends TestCase
             ->with('Users.social');
 
         $this->Request = $this->getMockBuilder('Cake\Network\Request')
-                ->setMethods(['session'])
-                ->getMock();
+            ->setMethods(['session'])
+            ->getMock();
         $this->Request->expects($this->any())
             ->method('session')
             ->will($this->returnValue($session));
@@ -432,7 +484,7 @@ class SocialAuthenticateTest extends TestCase
     public function providerMapper()
     {
         return [
-                [
+            [
                 'rawData' => [
                     'id' => 'my-facebook-id',
                     'name' => 'My name.',
@@ -463,7 +515,7 @@ class SocialAuthenticateTest extends TestCase
                     ],
                     'provider' => 'Facebook'
                 ],
-                ]
+            ]
 
         ];
     }
@@ -493,7 +545,7 @@ class SocialAuthenticateTest extends TestCase
     {
         Configure::write('OAuth2', $oauth2);
         $this->SocialAuthenticate = $this->_getSocialAuthenticateMockMethods(['_authenticate',
-            '_getProviderName', '_mapUser', '_touch', '_validateConfig', '_normalizeConfig' ]);
+            '_getProviderName', '_mapUser', '_touch', '_validateConfig', '_normalizeConfig']);
 
         $this->SocialAuthenticate->expects($this->exactly($callTimes))
             ->method('_normalizeConfig');
