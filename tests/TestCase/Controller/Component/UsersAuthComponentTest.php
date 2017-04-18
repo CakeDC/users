@@ -74,6 +74,7 @@ class UsersAuthComponentTest extends TestCase
             ->setMethods(['stop'])
             ->getMock();
         $this->Controller = new Controller($this->request, $this->response);
+        $this->Controller->name = 'Users';
         $this->Registry = $this->Controller->components();
         $this->Controller->UsersAuth = new UsersAuthComponent($this->Registry);
     }
@@ -267,7 +268,7 @@ class UsersAuthComponentTest extends TestCase
      * test
      *
      * @return void
-     * @expectedException Cake\Routing\Exception\MissingRouteException
+     * @expectedException \Cake\Routing\Exception\MissingRouteException
      */
     public function testIsUrlAuthorizedMissingRouteString()
     {
@@ -288,7 +289,7 @@ class UsersAuthComponentTest extends TestCase
      * test
      *
      * @return void
-     * @expectedException Cake\Routing\Exception\MissingRouteException
+     * @expectedException \Cake\Routing\Exception\MissingRouteException
      */
     public function testIsUrlAuthorizedMissingRouteArray()
     {
@@ -484,5 +485,37 @@ class UsersAuthComponentTest extends TestCase
             ->will($this->returnValue(true));
         $result = $this->Controller->UsersAuth->isUrlAuthorized($event);
         $this->assertTrue($result);
+    }
+    /**
+     * test The user is logged in and allowed by rules to access this action,
+     * and we are checking another controller action not allowed
+     *
+     * this case would prevent permissions checked for allowed actions in another controller
+     * @see https://github.com/CakeDC/users/issues/527 for a workaround if you need to
+     * check allowed on another controller
+     *
+     * @return void
+     */
+    public function testIsUrlAuthorizedUserLoggedInAllowedActionAllowedAnotherController()
+    {
+        Router::connect('/route-another-controller/*', [
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'AnotherController',
+            'action' => 'requestResetPassword'
+        ]);
+        $event = new Event('event');
+        $event->data = [
+            'url' => '/route-another-controller',
+        ];
+        $this->Controller->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
+            ->setMethods(['user', 'isAuthorized'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->Controller->Auth->allowedActions = ['requestResetPassword'];
+        $this->Controller->Auth->expects($this->once())
+            ->method('user')
+            ->will($this->returnValue(false));
+        $result = $this->Controller->UsersAuth->isUrlAuthorized($event);
+        $this->assertFalse($result);
     }
 }
