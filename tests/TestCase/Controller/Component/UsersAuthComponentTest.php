@@ -11,7 +11,6 @@
 
 namespace CakeDC\Users\Test\TestCase\Controller\Component;
 
-use Cake\Http\ServerRequest;
 use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\UserNotFoundException;
@@ -20,6 +19,7 @@ use Cake\Core\Configure;
 use Cake\Core\Plugin;
 use Cake\Database\Exception;
 use Cake\Event\Event;
+use Cake\Http\ServerRequest;
 use Cake\Network\Request;
 use Cake\Network\Session;
 use Cake\ORM\Entity;
