@@ -155,7 +155,7 @@ class UsersAuthComponent extends Component
         }
 
         if (is_array($url)) {
-            $requestUrl = Router::reverse($url);
+            $requestUrl = Router::normalize(Router::reverse($url));
             $requestParams = Router::parseRequest(new ServerRequest($requestUrl));
         } else {
             try {
