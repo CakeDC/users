@@ -453,8 +453,7 @@ class UsersAuthComponentTest extends TestCase
         Router::pushRequest(new ServerRequest([
                 'base' => '/app',
                 'url' => '/',
-            ]
-        ));
+            ]));
         $event = new Event('event');
         $event->data = [
             'url' => [
