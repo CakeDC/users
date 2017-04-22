@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Test\TestCase\Controller\Component;
 
+use Cake\Http\ServerRequest;
 use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\UserNotFoundException;
@@ -430,6 +431,54 @@ class UsersAuthComponentTest extends TestCase
                         'action' => 'requestResetPassword',
                         '_ext' => null,
                         'pass' => ['pass-one'],
+                        '_matchedRoute' => '/route/*',
+                    ];
+            }))
+            ->will($this->returnValue(true));
+        $result = $this->Controller->UsersAuth->isUrlAuthorized($event);
+        $this->assertTrue($result);
+    }
+
+    /**
+     * When application is installed using a base folder, we need to ensure array routes are
+     * normalized too to remove the base from the url used for matching the rules
+     *
+     * @see https://github.com/CakeDC/users/issues/538
+     *
+     * @return void
+     */
+    public function testIsUrlAuthorizedBaseUrl()
+    {
+        Configure::write('App.base', 'app');
+        Router::pushRequest(new ServerRequest([
+                'base' => '/app',
+                'url' => '/',
+            ]
+        ));
+        $event = new Event('event');
+        $event->data = [
+            'url' => [
+                'plugin' => 'CakeDC/Users',
+                'controller' => 'Users',
+                'action' => 'requestResetPassword',
+            ],
+        ];
+        $this->Controller->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
+            ->setMethods(['user', 'isAuthorized'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->Controller->Auth->expects($this->once())
+            ->method('user')
+            ->will($this->returnValue(['id' => 1]));
+        $this->Controller->Auth->expects($this->once())
+            ->method('isAuthorized')
+            ->with(null, $this->callback(function ($subject) {
+                return $subject->params === [
+                        'plugin' => 'CakeDC/Users',
+                        'controller' => 'Users',
+                        'action' => 'requestResetPassword',
+                        '_ext' => null,
+                        'pass' => [],
                         '_matchedRoute' => '/route/*',
                     ];
             }))
