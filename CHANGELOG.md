@@ -4,6 +4,9 @@ Changelog
 Releases for CakePHP 3
 -------------
 
+* 5.0.2
+  * Fixed bug parsing rule urls when application installed in a subdirectory
+
 * 5.0.1
   * Bugfix release
   * Minor BR language improvements
