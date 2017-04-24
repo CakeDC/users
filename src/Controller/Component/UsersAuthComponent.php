@@ -79,7 +79,7 @@ class UsersAuthComponent extends Component
     protected function _loadSocialLogin()
     {
         $this->getController()->Auth->setConfig('authenticate', [
-            'CakeDC/Users.Social'
+            Configure::read('Users.Social.authenticator')
         ], true);
     }
 
