@@ -43,7 +43,7 @@ class UsersShellTest extends TestCase
 
         $this->Shell = $this->getMockBuilder('CakeDC\Users\Shell\UsersShell')
             ->setMethods(['in', 'out', '_stop', 'clear', '_usernameSeed', '_generateRandomPassword',
-                '_generateRandomUsername', '_generatedHashedPassword', 'setError', '_updateUser'])
+                '_generateRandomUsername', '_generatedHashedPassword', 'error', '_updateUser'])
             ->setConstructorArgs([$this->io])
             ->getMock();
 
@@ -278,7 +278,7 @@ class UsersShellTest extends TestCase
     public function testResetAllPasswordsNoPassingParams()
     {
         $this->Shell->expects($this->once())
-            ->method('setError')
+            ->method('error')
             ->with('Please enter a password.');
 
         $this->Shell->runCommand(['resetAllPasswords']);
