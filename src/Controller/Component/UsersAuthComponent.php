@@ -208,12 +208,19 @@ class UsersAuthComponent extends Component
 
     /**
      * Check if the action is in allowedActions array for the controller
+     * Important, this function will check only for allowed actions in the current
+     * controller, creating a new instance and providing initialization for the Auth
+     * instance in another controller could lead to undesired side effects.
+     *
      * @param array $requestParams request parameters
      * @return bool
      */
     protected function _isActionAllowed($requestParams = [])
     {
         if (empty($requestParams['action'])) {
+            return false;
+        }
+        if (!empty($requestParams['controller']) && $requestParams['controller'] !== $this->getController()->name) {
             return false;
         }
         $action = strtolower($requestParams['action']);
