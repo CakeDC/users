@@ -27,16 +27,19 @@
         "source": "https://github.com/CakeDC/users"
     },
     "require": {
-        "cakephp/cakephp": ">=3.2.9 <4.0.0"
+        "cakephp/cakephp": "~3.4.0",
+        "cakedc/auth": "^1.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "@stable",
+        "phpunit/phpunit": "^5.0",
         "cakephp/cakephp-codesniffer": "^2.0",
         "league/oauth2-facebook": "@stable",
         "league/oauth2-instagram": "@stable",
         "league/oauth2-google": "@stable",
         "league/oauth2-linkedin": "@stable",
-        "google/recaptcha": "@stable"
+        "google/recaptcha": "@stable",
+        "robthree/twofactorauth": "~1.6.0",
+        "satooshi/php-coveralls": "dev-master"
     },
     "suggest": {
         "league/oauth1-client": "Provides Social Authentication with Twitter",
@@ -44,7 +47,8 @@
         "league/oauth2-instagram": "Provides Social Authentication with Instagram",
         "league/oauth2-google": "Provides Social Authentication with Google+",
         "league/oauth2-linkedin": "Provides Social Authentication with LinkedIn",
-        "google/recaptcha": "Provides reCAPTCHA validation for registration form"
+        "google/recaptcha": "Provides reCAPTCHA validation for registration form",
+        "robthree/twofactorauth": "Provides Google Authenticator functionality"
     },
     "autoload": {
         "psr-4": {

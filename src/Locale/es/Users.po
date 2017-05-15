@@ -495,7 +495,7 @@ msgstr "Restablezca su contraseña aquí"
 #: Template/Email/html/reset_password.ctp:27
 #: Template/Email/html/social_account_validation.ctp:32
 msgid ""
-"If the link is not correcly displayed, please copy the following address in "
+"If the link is not correctly displayed, please copy the following address in "
 "your web browser {0}"
 msgstr ""
 "Si el enlace no se ve correctamente, por favor copie la siguente URL en su "

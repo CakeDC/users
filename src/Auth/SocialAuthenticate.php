@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -27,18 +27,20 @@ use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Event\EventDispatcherTrait;
 use Cake\Event\EventManager;
-use Cake\Network\Request;
-use Cake\Network\Response;
+use Cake\Http\Response;
+use Cake\Http\ServerRequest;
+use Cake\Log\LogTrait;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
+use League\OAuth2\Client\Provider\AbstractProvider;
 
 /**
  * Class SocialAuthenticate
  */
 class SocialAuthenticate extends BaseAuthenticate
 {
-
     use EventDispatcherTrait;
+    use LogTrait;
 
     /**
      * Instance of OAuth2 provider.
@@ -57,19 +59,19 @@ class SocialAuthenticate extends BaseAuthenticate
     public function __construct(ComponentRegistry $registry, array $config = [])
     {
         $oauthConfig = Configure::read('OAuth');
+        $enabledNoOAuth2Provider = $this->_isProviderEnabled($oauthConfig['providers']['twitter']);
         //We unset twitter from providers to exclude from OAuth2 config
         unset($oauthConfig['providers']['twitter']);
+
         $providers = [];
         foreach ($oauthConfig['providers'] as $provider => $options) {
-            if (!empty($options['options']['redirectUri']) &&
-                !empty($options['options']['clientId']) &&
-                !empty($options['options']['clientSecret'])) {
+            if ($this->_isProviderEnabled($options)) {
                 $providers[$provider] = $options;
             }
         }
         $oauthConfig['providers'] = $providers;
         Configure::write('OAuth2', $oauthConfig);
-        $config = $this->normalizeConfig(array_merge($config, $oauthConfig));
+        $config = $this->normalizeConfig(Hash::merge($config, $oauthConfig), $enabledNoOAuth2Provider);
         parent::__construct($registry, $config);
     }
 
@@ -77,18 +79,21 @@ class SocialAuthenticate extends BaseAuthenticate
      * Normalizes providers' configuration.
      *
      * @param array $config Array of config to normalize.
+     * @param bool $enabledNoOAuth2Provider True when any noOAuth2 provider is enabled
      * @return array
      * @throws \Exception
      */
-    public function normalizeConfig(array $config)
+    public function normalizeConfig(array $config, $enabledNoOAuth2Provider = false)
     {
         $config = Hash::merge((array)Configure::read('OAuth2'), $config);
 
-        if (empty($config['providers'])) {
+        if (empty($config['providers']) && !$enabledNoOAuth2Provider) {
             throw new MissingProviderConfigurationException();
         }
 
-        array_walk($config['providers'], [$this, '_normalizeConfig'], $config);
+        if (!empty($config['providers'])) {
+            array_walk($config['providers'], [$this, '_normalizeConfig'], $config);
+        }
 
         return $config;
     }
@@ -132,8 +137,8 @@ class SocialAuthenticate extends BaseAuthenticate
      * @param mixed $value Value.
      * @param string $key Key.
      * @return void
-     * @throws CakeDC\Users\Auth\Exception\InvalidProviderException
-     * @throws CakeDC\Users\Auth\Exception\InvalidSettingsException
+     * @throws \CakeDC\Users\Auth\Exception\InvalidProviderException
+     * @throws \CakeDC\Users\Auth\Exception\InvalidSettingsException
      */
     protected function _validateConfig(&$value, $key)
     {
@@ -155,14 +160,26 @@ class SocialAuthenticate extends BaseAuthenticate
     }
 
     /**
+     * Returns when a provider has been enabled.
+     *
+     * @param array $options array of options by provider
+     * @return bool
+     */
+    protected function _isProviderEnabled($options)
+    {
+        return !empty($options['options']['redirectUri']) && !empty($options['options']['clientId']) &&
+            !empty($options['options']['clientSecret']);
+    }
+
+    /**
      * Get a user based on information in the request.
      *
-     * @param \Cake\Network\Request $request Request object.
-     * @param \Cake\Network\Response $response Response object.
+     * @param \Cake\Http\ServerRequest $request Request object.
+     * @param \Cake\Http\Response $response Response object.
      * @return bool
      * @throws \RuntimeException If the `CakeDC/Users/OAuth2.newUser` event is missing or returns empty.
      */
-    public function authenticate(Request $request, Response $response)
+    public function authenticate(ServerRequest $request, Response $response)
     {
         return $this->getUser($request);
     }
@@ -171,23 +188,30 @@ class SocialAuthenticate extends BaseAuthenticate
      * Authenticates with OAuth2 provider by getting an access token and
      * retrieving the authorized user's profile data.
      *
-     * @param \Cake\Network\Request $request Request object.
+     * @param \Cake\Http\ServerRequest $request Request object.
      * @return array|bool
      */
-    protected function _authenticate(Request $request)
+    protected function _authenticate(ServerRequest $request)
     {
         if (!$this->_validate($request)) {
             return false;
         }
 
         $provider = $this->provider($request);
-        $code = $request->query('code');
+        $code = $request->getQuery('code');
 
         try {
             $token = $provider->getAccessToken('authorization_code', compact('code'));
 
             return compact('token') + $provider->getResourceOwner($token)->toArray();
         } catch (\Exception $e) {
+            $message = sprintf(
+                "Error getting an access token / retrieving the authorized user's profile data. Error message: %s %s",
+                $e->getMessage(),
+                $e
+            );
+            $this->log($message);
+
             return false;
         }
     }
@@ -195,20 +219,20 @@ class SocialAuthenticate extends BaseAuthenticate
     /**
      * Validates OAuth2 request.
      *
-     * @param \Cake\Network\Request $request Request object.
+     * @param \Cake\Http\ServerRequest $request Request object.
      * @return bool
      */
-    protected function _validate(Request $request)
+    protected function _validate(ServerRequest $request)
     {
-        if (!array_key_exists('code', $request->query) || !$this->provider($request)) {
+        if (!array_key_exists('code', $request->getQueryParams()) || !$this->provider($request)) {
             return false;
         }
 
         $session = $request->session();
         $sessionKey = 'oauth2state';
-        $state = $request->query('state');
+        $state = $request->getQuery('state');
 
-        if ($this->config('options.state') &&
+        if ($this->getConfig('options.state') &&
             (!$state || $state !== $session->read($sessionKey))) {
             $session->delete($sessionKey);
 
@@ -226,7 +250,7 @@ class SocialAuthenticate extends BaseAuthenticate
      */
     protected function _map($data)
     {
-        if (!$map = $this->config('mapFields')) {
+        if (!$map = $this->getConfig('mapFields')) {
             return $data;
         }
 
@@ -243,22 +267,22 @@ class SocialAuthenticate extends BaseAuthenticate
      * requested provider's authorization URL to let the user grant access to the
      * application.
      *
-     * @param \Cake\Network\Request $request Request object.
+     * @param \Cake\Http\ServerRequest $request Request object.
      * @param \Cake\Network\Response $response Response object.
      * @return \Cake\Network\Response|null
      */
-    public function unauthenticated(Request $request, Response $response)
+    public function unauthenticated(ServerRequest $request, Response $response)
     {
         $provider = $this->provider($request);
-        if (empty($provider) || !empty($request->query['code'])) {
+        if (empty($provider) || !empty($request->getQuery('code'))) {
             return null;
         }
 
-        if ($this->config('options.state')) {
+        if ($this->getConfig('options.state')) {
             $request->session()->write('oauth2state', $provider->getState());
         }
 
-        $response->location($provider->getAuthorizationUrl());
+        $response = $response->withLocation($provider->getAuthorizationUrl());
 
         return $response;
     }
@@ -266,12 +290,12 @@ class SocialAuthenticate extends BaseAuthenticate
     /**
      * Returns the `$request`-ed provider.
      *
-     * @param \Cake\Network\Request $request Current HTTP request.
+     * @param \Cake\Http\ServerRequest $request Current HTTP request.
      * @return \League\Oauth2\Client\Provider\GenericProvider|false
      */
-    public function provider(Request $request)
+    public function provider(ServerRequest $request)
     {
-        if (!$alias = $request->param('provider')) {
+        if (!$alias = $request->getParam('provider')) {
             return false;
         }
 
@@ -290,11 +314,11 @@ class SocialAuthenticate extends BaseAuthenticate
      */
     protected function _getProvider($alias)
     {
-        if (!$config = $this->config('providers.' . $alias)) {
+        if (!$config = $this->getConfig('providers.' . $alias)) {
             return false;
         }
 
-        $this->config($config);
+        $this->setConfig($config);
 
         if (is_object($config) && $config instanceof AbstractProvider) {
             return $config;
@@ -351,15 +375,15 @@ class SocialAuthenticate extends BaseAuthenticate
     /**
      * Get a user based on information in the request.
      *
-     * @param \Cake\Network\Request $request Request object.
+     * @param \Cake\Http\ServerRequest $request Request object.
      * @return mixed Either false or an array of user information
      * @throws \RuntimeException If the `CakeDC/Users/OAuth2.newUser` event is missing or returns empty.
      */
-    public function getUser(Request $request)
+    public function getUser(ServerRequest $request)
     {
         $data = $request->session()->read(Configure::read('Users.Key.Session.social'));
-        $requestDataEmail = $request->data('email');
-        if (!empty($data) && (!empty($data['email']) || !empty($requestDataEmail))) {
+        $requestDataEmail = $request->getData('email');
+        if (!empty($data) && empty($data['uid']) && (!empty($data['email']) || !empty($requestDataEmail))) {
             if (!empty($requestDataEmail)) {
                 $data['email'] = $requestDataEmail;
             }
@@ -385,7 +409,7 @@ class SocialAuthenticate extends BaseAuthenticate
             }
         }
 
-        if (!$user || !$this->config('userModel')) {
+        if (!$user || !$this->getConfig('userModel')) {
             return false;
         }
 
@@ -403,7 +427,7 @@ class SocialAuthenticate extends BaseAuthenticate
     /**
      * Get the provider name based on the request or on the provider set.
      *
-     * @param \Cake\Network\Request $request Request object.
+     * @param \Cake\Http\ServerRequest $request Request object.
      * @return mixed Either false or an array of user information
      */
     protected function _getProviderName($request = null)
@@ -412,7 +436,7 @@ class SocialAuthenticate extends BaseAuthenticate
         if (!is_null($this->_provider)) {
             $provider = SocialUtils::getProvider($this->_provider);
         } elseif (!empty($request)) {
-            $provider = ucfirst($request->param('provider'));
+            $provider = ucfirst($request->getParam('provider'));
         }
 
         return $provider;
