@@ -4,6 +4,11 @@ Changelog
 Releases for CakePHP 3
 -------------
 
+* 5.0.3
+  * Implemented event dispatching on social login
+  * Fixed bugs reported
+  * Don't check for allowed actions in other controllers
+
 * 5.0.2
   * Fixed bug parsing rule urls when application installed in a subdirectory
 

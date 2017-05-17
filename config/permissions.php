@@ -51,17 +51,21 @@
 
 return [
     'Users.SimpleRbac.permissions' => [
+        //admin role allowed to all the things
         [
-            'role' => '*',
-            'plugin' => 'CakeDC/Users',
+            'role' => 'admin',
+            'prefix' => '*',
+            'extension' => '*',
+            'plugin' => '*',
             'controller' => '*',
             'action' => '*',
         ],
+        //specific actions allowed for the all roles in Users plugin
         [
-            'role' => 'user',
+            'role' => '*',
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
-            'action' => ['register', 'edit', 'view'],
+            'action' => ['profile', 'logout'],
         ],
         [
             'role' => '*',
@@ -77,17 +81,12 @@ return [
                 return false;
             }
         ],
+        //all roles allowed to Pages/display
         [
-            'role' => 'user',
-            'plugin' => 'CakeDC/Users',
-            'controller' => 'Users',
-            'action' => '*',
-            'allowed' => false,
+            'role' => '*',
+            //'plugin' => null,
+            'controller' => 'Pages',
+            'action' => 'display',
         ],
-        [
-            'role' => ['user'],
-            'controller' => ['Pages'],
-            'action' => ['other', 'display'],
-            'allowed' => true,
-        ],
-    ]];
+    ]
+];
