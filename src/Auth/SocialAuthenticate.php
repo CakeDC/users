@@ -201,7 +201,6 @@ class SocialAuthenticate extends BaseAuthenticate
         $code = $request->getQuery('code');
 
         try {
-
             $token = $provider->getAccessToken('authorization_code', compact('code'));
 
             return compact('token') + $provider->getResourceOwner($token)->toArray();
