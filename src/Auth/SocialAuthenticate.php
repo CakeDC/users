@@ -201,6 +201,7 @@ class SocialAuthenticate extends BaseAuthenticate
         $code = $request->getQuery('code');
 
         try {
+
             $token = $provider->getAccessToken('authorization_code', compact('code'));
 
             return compact('token') + $provider->getResourceOwner($token)->toArray();
@@ -433,10 +434,10 @@ class SocialAuthenticate extends BaseAuthenticate
     protected function _getProviderName($request = null)
     {
         $provider = false;
-        if (!is_null($this->_provider)) {
-            $provider = SocialUtils::getProvider($this->_provider);
-        } elseif (!empty($request)) {
+        if (!empty($request->getParam('provider'))) {
             $provider = ucfirst($request->getParam('provider'));
+        } elseif (!is_null($this->_provider)) {
+            $provider = SocialUtils::getProvider($this->_provider);
         }
 
         return $provider;
@@ -455,7 +456,7 @@ class SocialAuthenticate extends BaseAuthenticate
         if (empty($provider)) {
             throw new MissingProviderException(__d('CakeDC/Users', "Provider cannot be empty"));
         }
-        $providerMapperClass = "\\CakeDC\\Users\\Auth\\Social\\Mapper\\$provider";
+        $providerMapperClass = $this->getConfig('providers.' . strtolower($provider) . '.options.mapper') ?: "\\CakeDC\\Users\\Auth\\Social\\Mapper\\$provider";
         $providerMapper = new $providerMapperClass($data);
         $user = $providerMapper();
         $user['provider'] = $provider;
