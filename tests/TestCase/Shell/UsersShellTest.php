@@ -278,7 +278,7 @@ class UsersShellTest extends TestCase
     public function testResetAllPasswordsNoPassingParams()
     {
         $this->Shell->expects($this->once())
-            ->method('error')
+            ->method('abort')
             ->with('Please enter a password.');
 
         $this->Shell->runCommand(['resetAllPasswords']);
