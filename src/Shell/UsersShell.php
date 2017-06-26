@@ -56,15 +56,33 @@ class UsersShell extends Shell
     {
         $parser = parent::getOptionParser();
         $parser->setDescription(__d('CakeDC/Users', 'Utilities for CakeDC Users Plugin'))
-            ->addSubcommand('activateUser')->setDescription(__d('CakeDC/Users', 'Activate an specific user'))
-            ->addSubcommand('addSuperuser')->setDescription(__d('CakeDC/Users', 'Add a new superadmin user for testing purposes'))
-            ->addSubcommand('addUser')->setDescription(__d('CakeDC/Users', 'Add a new user'))
-            ->addSubcommand('changeRole')->setDescription(__d('CakeDC/Users', 'Change the role for an specific user'))
-            ->addSubcommand('deactivateUser')->setDescription(__d('CakeDC/Users', 'Deactivate an specific user'))
-            ->addSubcommand('deleteUser')->setDescription(__d('CakeDC/Users', 'Delete an specific user'))
-            ->addSubcommand('passwordEmail')->setDescription(__d('CakeDC/Users', 'Reset the password via email'))
-            ->addSubcommand('resetAllPasswords')->setDescription(__d('CakeDC/Users', 'Reset the password for all users'))
-            ->addSubcommand('resetPassword')->setDescription(__d('CakeDC/Users', 'Reset the password for an specific user'))
+            ->addSubcommand('activateUser', [
+                'help' => __d('CakeDC/Users', 'Activate an specific user')
+            ])
+            ->addSubcommand('addSuperuser', [
+                'help' => __d('CakeDC/Users', 'Add a new superadmin user for testing purposes')
+            ])
+            ->addSubcommand('addUser', [
+                'help' => __d('CakeDC/Users', 'Add a new user')
+            ])
+            ->addSubcommand('changeRole', [
+                'help' => __d('CakeDC/Users', 'Change the role for an specific user')
+            ])
+            ->addSubcommand('deactivateUser', [
+                'help' => __d('CakeDC/Users', 'Deactivate an specific user')
+            ])
+            ->addSubcommand('deleteUser', [
+                'help' => __d('CakeDC/Users', 'Delete an specific user')
+            ])
+            ->addSubcommand('passwordEmail', [
+                'help' => __d('CakeDC/Users', 'Reset the password via email')
+            ])
+            ->addSubcommand('resetAllPasswords', [
+                'help' => __d('CakeDC/Users', 'Reset the password for all users')
+            ])
+            ->addSubcommand('resetPassword', [
+                'help' => __d('CakeDC/Users', 'Reset the password for an specific user')
+            ])
             ->addOptions([
                 'username' => ['short' => 'u', 'help' => 'The username for the new user'],
                 'password' => ['short' => 'p', 'help' => 'The password for the new user'],
