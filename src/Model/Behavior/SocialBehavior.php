@@ -36,8 +36,8 @@ class SocialBehavior extends BaseTokenBehavior
      *
      * @var string
      */
-        protected $_username = 'username';
-    
+    protected $_username = 'username';
+
     /**
      * Initialize an action instance
      *
@@ -49,7 +49,7 @@ class SocialBehavior extends BaseTokenBehavior
         if (isset($config['username'])) {
             $this->_username = $config['username'];
         }
-      
+
         parent::initialize($config);
     }
 
