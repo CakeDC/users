@@ -32,6 +32,28 @@ class SocialBehavior extends BaseTokenBehavior
     use RandomStringTrait;
 
     /**
+     * Username field it can be modified via config
+     *
+     * @var string
+     */
+        protected $_username = 'username';
+    
+    /**
+     * Initialize an action instance
+     *
+     * @param array $config Configuration options passed to the constructor
+     * @return void
+     */
+    public function initialize(array $config)
+    {
+        if (isset($config['username'])) {
+            $this->_username = $config['username'];
+        }
+      
+        parent::initialize($config);
+    }
+
+    /**
      * Performs social login
      *
      * @param array $data Array social login.
