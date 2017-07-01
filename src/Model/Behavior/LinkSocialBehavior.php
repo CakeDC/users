@@ -30,10 +30,10 @@ class LinkSocialBehavior extends Behavior
     protected $_defaultConfig = [];
 
     /**
-     * Linkando uma conta de usuário a uma conta social (facebook, google)
+     * Link an user account with a social account (facebook, google)
      *
-     * @param User  $user Usuário a linkar
-     * @param array $data Dados da conta social que será linkada
+     * @param EntityInterface  $user User to link.
+     * @param array $data Social account information.
      *
      * @return EntityInterface
      */
@@ -50,7 +50,7 @@ class LinkSocialBehavior extends Behavior
         if ($socialAccount && $user->id !== $socialAccount->user_id) {
             $user->errors([
                 'social_accounts' => [
-                    '_existsIn' => 'Conta social já está associada a um conta'
+                    '_existsIn' => __d('CakeDC/Users', 'Social account already associated to another user')
                 ]
             ]);
 
@@ -61,15 +61,15 @@ class LinkSocialBehavior extends Behavior
     }
 
     /**
-     * Cria/atualiza conta social associando a um usuário.
+     * Create or update a new social account linking to the user.
      *
-     * @param User            $user          Usuário a linkar
-     * @param array           $data          Dados da conta social que será linkada
-     * @param EntityInterface $socialAccount Entidade SocialAccount para popular
+     * @param EntityInterface  $user User to link.
+     * @param array $data Social account information.
+     * @param EntityInterface $socialAccount to update or create.
      *
      * @return EntityInterface
      */
-    protected function createOrUpdateSocialAccount($user, $data, $socialAccount)
+    protected function createOrUpdateSocialAccount(EntityInterface $user, $data, $socialAccount)
     {
         if (!$socialAccount) {
             $socialAccount = $this->_table->SocialAccounts->newEntity();
@@ -89,6 +89,7 @@ class LinkSocialBehavior extends Behavior
                 break;
             }
         }
+
         if (!$found) {
             $accounts[] = $socialAccount;
         }
@@ -98,16 +99,14 @@ class LinkSocialBehavior extends Behavior
             return $user;
         }
 
-        $user->errors($socialAccount->errors());
-
         return $user;
     }
 
     /**
-     * Creates social user, populate the user data based on the social login data first and save it
+     * Populate the social account
      *
-     * @param EntityInterface $socialAccount Entidade SocialAccount para popular
-     * @param array           $data          Dados da conta social que será linkada
+     * @param EntityInterface $socialAccount to populate.
+     * @param array $data Social account information.
      *
      * @return EntityInterface
      */
@@ -123,13 +122,13 @@ class LinkSocialBehavior extends Behavior
         $accountData['token'] = Hash::get($data, 'credentials.token');
         $accountData['token_secret'] = Hash::get($data, 'credentials.secret');
         $accountData['user_id'] = Hash::get($data, 'user_id');
+        $accountData['token_expires'] = null;
         $expires = Hash::get($data, 'credentials.expires');
         if (!empty($expires)) {
             $expiresTime = new Time();
             $accountData['token_expires'] = $expiresTime->setTimestamp($expires)->format('Y-m-d H:i:s');
-        } else {
-            $accountData['token_expires'] = null;
         }
+
         $accountData['data'] = serialize(Hash::get($data, 'raw'));
         $accountData['active'] = true;
 

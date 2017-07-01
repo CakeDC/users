@@ -51,8 +51,9 @@ trait LinkSocialTrait
     public function callbackLinkSocial($alias = null)
     {
         $provider = $this->_getSocialProvider($alias);
+        $message = __d('CakeDC/Users', 'Could not associate account, please try again.');
         if (!$this->_validateCallbackSocialLink()) {
-            $this->Flash->error('Não foi possivel associar conta, por favor tente novamente');
+            $this->Flash->error($message);
 
             return $this->redirect(['action' => 'profile']);
         }
@@ -69,11 +70,9 @@ trait LinkSocialTrait
             $this->getUsersTable()->linkSocialAccount($user, $data);
 
             if ($user->errors()) {
-                $error = $user->errors('social_accounts');
-                $error = $error ? reset($error) : 'Não foi possivel associar conta, por favor tente novamente';
-                $this->Flash->error(is_array($error) ? implode('. ', $error) : $error);
+                $this->Flash->error($message);
             } else {
-                $this->Flash->success('Conta social associada ao cadastro.');
+                $this->Flash->success(__d('CakeDC/Users', 'Social account was associated.'));
             }
         } catch (\Exception $e) {
             $message = sprintf(
@@ -83,7 +82,7 @@ trait LinkSocialTrait
             );
             $this->log($message);
 
-            $this->Flash->error('Não foi possivel associar conta, por favor tente novamente');
+            $this->Flash->error($message);
         }
 
         return $this->redirect(['action' => 'profile']);
@@ -93,7 +92,7 @@ trait LinkSocialTrait
      * Get the provider name based on the request or on the provider set.
      *
      * @param string $alias of the provider.
-     * @param array $data User data
+     * @param array $data User data.
      *
      * @throws MissingProviderException
      * @return array
@@ -114,19 +113,15 @@ trait LinkSocialTrait
      *
      * @param string $alias of the provider.
      *
-     * @throws \Cake\Network\Exception\NotFoundException Quando o provider informado não existe
+     * @throws \Cake\Network\Exception\NotFoundException
      * @return \League\OAuth2\Client\Provider\AbstractProvider
      */
-    protected function _getSocialProvider($alias) : AbstractProvider
+    protected function _getSocialProvider($alias)
     {
         $config = Configure::read('OAuth.providers.' . $alias);
-        if (!$config) {
-            throw new NotFoundException("Página não encontrada");
-        }
-
         $optionsLink = Configure::read('SocialLink.providers.' . $alias . '.options.redirectUri');
-        if (!$optionsLink) {
-            throw new NotFoundException("Página não encontrada");
+        if (!$config || !$optionsLink) {
+            throw new NotFoundException;
         }
 
         if (is_object($config) && $config instanceof AbstractProvider) {
@@ -144,7 +139,7 @@ trait LinkSocialTrait
      *
      * @return bool
      */
-    protected function _validateCallbackSocialLink(): bool
+    protected function _validateCallbackSocialLink()
     {
         $error = $this->request->getQuery('error');
         if (!empty($error)) {
