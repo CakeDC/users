@@ -283,7 +283,9 @@ class LinkSocialBehaviorTest extends TestCase
             'provider' => $data['provider']
         ])->firstOrFail();
 
-        $userBase = $this->Table->get('00000000-0000-0000-0000-000000000002');
+        $userBase = $this->Table->get('00000000-0000-0000-0000-000000000002', [
+            'contain' => ['SocialAccounts']
+        ]);
         $resultUser = $this->Behavior->linkSocialAccount($userBase, $data);
         $this->assertInstanceOf('\CakeDC\Users\Model\Entity\User', $resultUser);
         $this->assertEquals([], $userBase->errors());
