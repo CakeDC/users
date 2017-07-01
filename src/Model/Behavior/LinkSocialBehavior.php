@@ -61,7 +61,7 @@ class LinkSocialBehavior extends Behavior
     }
 
     /**
-     * Cria/atualiza conta social associando a um usuário
+     * Cria/atualiza conta social associando a um usuário.
      *
      * @param User            $user          Usuário a linkar
      * @param array           $data          Dados da conta social que será linkada
