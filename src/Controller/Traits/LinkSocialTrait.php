@@ -64,7 +64,9 @@ trait LinkSocialTrait
             $token = $provider->getAccessToken('authorization_code', compact('code'));
 
             $data = compact('token') + $provider->getResourceOwner($token)->toArray();
+
             $data = $this->_mapSocialUser($alias, $data);
+
             $user = $this->getUsersTable()->get($this->Auth->user('id'));
 
             $this->getUsersTable()->linkSocialAccount($user, $data);
@@ -75,12 +77,12 @@ trait LinkSocialTrait
                 $this->Flash->success(__d('CakeDC/Users', 'Social account was associated.'));
             }
         } catch (\Exception $e) {
-            $message = sprintf(
+            $log = sprintf(
                 "Error getting an access token / retrieving the authorized user's profile data. Error message: %s %s",
                 $e->getMessage(),
                 $e
             );
-            $this->log($message);
+            $this->log($log);
 
             $this->Flash->error($message);
         }
@@ -119,15 +121,27 @@ trait LinkSocialTrait
     protected function _getSocialProvider($alias)
     {
         $config = Configure::read('OAuth.providers.' . $alias);
+
         $optionsLink = Configure::read('SocialLink.providers.' . $alias . '.options.redirectUri');
+
         if (!$config || !$optionsLink) {
             throw new NotFoundException;
         }
 
-        if (is_object($config) && $config instanceof AbstractProvider) {
-            return $config;
-        }
+        return $this->_createSocialProvider($config, $optionsLink);
+    }
 
+    /**
+     * Instantiates provider object.
+     *
+     * @param array $config for social provider.
+     * @param string $optionsLink to use as redirect.
+     *
+     * @throws \Cake\Network\Exception\NotFoundException
+     * @return \League\OAuth2\Client\Provider\AbstractProvider
+     */
+    protected function _createSocialProvider($config, $optionsLink)
+    {
         $class = $config['className'];
         $config['options']['redirectUri'] = $optionsLink;
 
@@ -141,14 +155,13 @@ trait LinkSocialTrait
      */
     protected function _validateCallbackSocialLink()
     {
-        $error = $this->request->getQuery('error');
-        if (!empty($error)) {
-            $this->log('Got error in _validateCallbackSocialLink: ' . htmlspecialchars($error, ENT_QUOTES, 'UTF-8'));
+        $queryParams = $this->request->getQueryParams();
+        if (isset($queryParams['error']) && !empty($queryParams['error'])) {
+            $this->log('Got error in _validateCallbackSocialLink: ' . htmlspecialchars($queryParams['error'], ENT_QUOTES, 'UTF-8'));
 
             return false;
         }
 
-        $queryParams = $this->request->getQueryParams();
         if (!array_key_exists('code', $queryParams)) {
             return false;
         }
@@ -156,7 +169,7 @@ trait LinkSocialTrait
         $sessionKey = 'SocialLink.oauth2state';
         $oauth2state = $this->request->session()->read($sessionKey);
         $this->request->session()->delete($sessionKey);
-        $state = $this->request->getQuery('state');
+        $state = $queryParams['state'];
 
         return $oauth2state === $state;
     }
