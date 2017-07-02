@@ -132,11 +132,11 @@ class LinkSocialTraitTest extends BaseTraitTest
             ->method('_createSocialProvider')
             ->with(
                 $this->equalTo([
-                	'className' => 'League\OAuth2\Client\Provider\Facebook',
-                	'options' => [
-                		'graphApiVersion' => 'v2.5',
-                		'redirectUri' => '/auth/facebook'
-                	]
+                    'className' => 'League\OAuth2\Client\Provider\Facebook',
+                    'options' => [
+                        'graphApiVersion' => 'v2.5',
+                        'redirectUri' => '/auth/facebook'
+                    ]
                 ]),
                 $this->equalTo('/callback-link-social/facebook')
             )
@@ -265,11 +265,11 @@ class LinkSocialTraitTest extends BaseTraitTest
             ->method('_createSocialProvider')
             ->with(
                 $this->equalTo([
-                	'className' => 'League\OAuth2\Client\Provider\Facebook',
-                	'options' => [
-                		'graphApiVersion' => 'v2.5',
-                		'redirectUri' => '/auth/facebook'
-                	]
+                    'className' => 'League\OAuth2\Client\Provider\Facebook',
+                    'options' => [
+                        'graphApiVersion' => 'v2.5',
+                        'redirectUri' => '/auth/facebook'
+                    ]
                 ]),
                 $this->equalTo('/callback-link-social/facebook')
             )
@@ -406,11 +406,11 @@ class LinkSocialTraitTest extends BaseTraitTest
             ->method('_createSocialProvider')
             ->with(
                 $this->equalTo([
-                	'className' => 'League\OAuth2\Client\Provider\Facebook',
-                	'options' => [
-                		'graphApiVersion' => 'v2.5',
-                		'redirectUri' => '/auth/facebook'
-                	]
+                    'className' => 'League\OAuth2\Client\Provider\Facebook',
+                    'options' => [
+                        'graphApiVersion' => 'v2.5',
+                        'redirectUri' => '/auth/facebook'
+                    ]
                 ]),
                 $this->equalTo('/callback-link-social/facebook')
             )
@@ -495,11 +495,11 @@ class LinkSocialTraitTest extends BaseTraitTest
             ->method('_createSocialProvider')
             ->with(
                 $this->equalTo([
-                	'className' => 'League\OAuth2\Client\Provider\Facebook',
-                	'options' => [
-                		'graphApiVersion' => 'v2.5',
-                		'redirectUri' => '/auth/facebook'
-                	]
+                    'className' => 'League\OAuth2\Client\Provider\Facebook',
+                    'options' => [
+                        'graphApiVersion' => 'v2.5',
+                        'redirectUri' => '/auth/facebook'
+                    ]
                 ]),
                 $this->equalTo('/callback-link-social/facebook')
             )
@@ -582,11 +582,11 @@ class LinkSocialTraitTest extends BaseTraitTest
             ->method('_createSocialProvider')
             ->with(
                 $this->equalTo([
-                	'className' => 'League\OAuth2\Client\Provider\Facebook',
-                	'options' => [
-                		'graphApiVersion' => 'v2.5',
-                		'redirectUri' => '/auth/facebook'
-                	]
+                    'className' => 'League\OAuth2\Client\Provider\Facebook',
+                    'options' => [
+                        'graphApiVersion' => 'v2.5',
+                        'redirectUri' => '/auth/facebook'
+                    ]
                 ]),
                 $this->equalTo('/callback-link-social/facebook')
             )
@@ -665,11 +665,11 @@ class LinkSocialTraitTest extends BaseTraitTest
             ->method('_createSocialProvider')
             ->with(
                 $this->equalTo([
-                	'className' => 'League\OAuth2\Client\Provider\Facebook',
-                	'options' => [
-                		'graphApiVersion' => 'v2.5',
-                		'redirectUri' => '/auth/facebook'
-                	]
+                    'className' => 'League\OAuth2\Client\Provider\Facebook',
+                    'options' => [
+                        'graphApiVersion' => 'v2.5',
+                        'redirectUri' => '/auth/facebook'
+                    ]
                 ]),
                 $this->equalTo('/callback-link-social/facebook')
             )
