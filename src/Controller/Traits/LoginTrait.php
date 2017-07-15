@@ -352,7 +352,9 @@ trait LoginTrait
      */
     public function logout()
     {
-        $eventBefore = $this->dispatchEvent(UsersAuthComponent::EVENT_BEFORE_LOGOUT);
+        $user = (array)$this->Auth->user();
+
+        $eventBefore = $this->dispatchEvent(UsersAuthComponent::EVENT_BEFORE_LOGOUT, ['user' => $user]);
         if (is_array($eventBefore->result)) {
             return $this->redirect($eventBefore->result);
         }
@@ -360,7 +362,7 @@ trait LoginTrait
         $this->request->session()->destroy();
         $this->Flash->success(__d('CakeDC/Users', 'You\'ve successfully logged out'));
 
-        $eventAfter = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_LOGOUT);
+        $eventAfter = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_LOGOUT, ['user' => $user]);
         if (is_array($eventAfter->result)) {
             return $this->redirect($eventAfter->result);
         }
