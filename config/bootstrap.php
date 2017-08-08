@@ -47,3 +47,5 @@ if (is_array($oauthPath)) {
         );
     });
 }
+
+class_alias(\CakeDC\Auth\Rbac\Rules\Owner::class, '\CakeDC\Auth\Auth\Rules\Owner');
