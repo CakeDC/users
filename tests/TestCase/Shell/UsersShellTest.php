@@ -43,7 +43,7 @@ class UsersShellTest extends TestCase
 
         $this->Shell = $this->getMockBuilder('CakeDC\Users\Shell\UsersShell')
             ->setMethods(['in', 'out', '_stop', 'clear', '_usernameSeed', '_generateRandomPassword',
-                '_generateRandomUsername', '_generatedHashedPassword', 'error', '_updateUser'])
+                '_generateRandomUsername', '_generatedHashedPassword', 'abort', '_updateUser'])
             ->setConstructorArgs([$this->io])
             ->getMock();
 
