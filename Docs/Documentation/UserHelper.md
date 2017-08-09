@@ -42,7 +42,7 @@ echo $this->User->socialConnectLinkList($user->social_accounts);
 
 We recommend the use of [Bootstrap Social](http://lipis.github.io/bootstrap-social/) in order to automatically apply styles to buttons. Anyway you can always add your own style to the buttons.
 
-The user must be allowed to access the urls "/link-social" and "/callback-link-social/[provider]".
+The user must be allowed to access the urls "/link-social/[provider]" and "/callback-link-social/[provider]".
 
 Logout link
 -----------------
