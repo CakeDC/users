@@ -209,12 +209,12 @@ class UserHelper extends Helper
         );
         if ($isConnected) {
             $title = __d('CakeDC/Users', 'Connected with {0}', Inflector::camelize($name));
-            
+
             return "<a class=\"$linkClass disabled\"><span class=\"fa fa-$name\"></span> $title</a>";
         }
 
         $title = __d('CakeDC/Users', 'Connect with {0}', Inflector::camelize($name));
-        
+
         return $this->Html->link(
             "<span class=\"fa fa-$name\"></span> $title",
             "/link-social/$name",
@@ -245,7 +245,7 @@ class UserHelper extends Helper
         $providers = Configure::read('OAuth.providers');
         foreach ($providers as $name => $provider) {
             if (!empty($provider['options']['callbackLinkSocialUri']) &&
-                !empty($provider['options']['linkSocialUri']) && 
+                !empty($provider['options']['linkSocialUri']) &&
                 !empty($provider['options']['clientId']) &&
                 !empty($provider['options']['clientSecret'])
             ) {

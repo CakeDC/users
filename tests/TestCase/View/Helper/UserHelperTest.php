@@ -36,7 +36,7 @@ class UserHelperTest extends TestCase
      * @var array
      */
     private $oauthConfig;
-    
+
     /**
      * Keep original config Users.Social.login
      *
@@ -245,7 +245,7 @@ class UserHelperTest extends TestCase
         $this->assertEquals('<a href="/auth/facebook" class="btn btn-social btn-facebook"><i class="fa fa-facebook"></i>Iniciar sesión con Facebook</a>', $result);
         I18n::locale('en_US');
     }
-    
+
     /**
      * Test social connect link list
      *
@@ -254,19 +254,19 @@ class UserHelperTest extends TestCase
     public function testSocialConnectLinkList()
     {
         Configure::write('Users.Social.login', true);
-        
+
         Configure::write('OAuth.providers.facebook.options.clientId', 'testclientidtestclientid');
         Configure::write('OAuth.providers.facebook.options.clientSecret', 'testclientsecrettestclientsecret');
-        
+
         Configure::write('OAuth.providers.google.options.clientId', 'testclientidgoogtestclientidgoog');
         Configure::write('OAuth.providers.google.options.clientSecret', 'testclientsecretgoogtestclientsecretgoog');
-        
+
         $actual = $this->User->socialConnectLinkList();
         $expected = '<a href="/link-social/facebook" class="btn btn-social btn-facebook"><span class="fa fa-facebook"></span> Connect with Facebook</a>';
         $expected .= '<a href="/link-social/google" class="btn btn-social btn-google"><span class="fa fa-google"></span> Connect with Google</a>';
         $this->assertEquals($expected, $actual);
     }
-    
+
     /**
      * Test social connect link list, user is connected with facebook
      *
@@ -275,13 +275,13 @@ class UserHelperTest extends TestCase
     public function testSocialConnectLinkListIsConnectedWithFacebook()
     {
         Configure::write('Users.Social.login', true);
-        
+
         Configure::write('OAuth.providers.facebook.options.clientId', 'testclientidtestclientid');
         Configure::write('OAuth.providers.facebook.options.clientSecret', 'testclientsecrettestclientsecret');
-        
+
         Configure::write('OAuth.providers.google.options.clientId', 'testclientidgoogtestclientidgoog');
         Configure::write('OAuth.providers.google.options.clientSecret', 'testclientsecretgoogtestclientsecretgoog');
-        
+
         $socialAccounts = [
             new SocialAccount([
                 'id' => '00000000-0000-0000-0000-000000000001',
@@ -305,8 +305,7 @@ class UserHelperTest extends TestCase
         $expected .= '<a href="/link-social/google" class="btn btn-social btn-google"><span class="fa fa-google"></span> Connect with Google</a>';
         $this->assertEquals($expected, $actual);
     }
-    
-    
+
     /**
      * Test social connect link list, social is not enabled
      *
@@ -315,13 +314,13 @@ class UserHelperTest extends TestCase
     public function testSocialConnectLinkListSocialIsNotEnabled()
     {
         Configure::write('Users.Social.login', false);
-        
+
         Configure::write('OAuth.providers.facebook.options.clientId', 'testclientidtestclientid');
         Configure::write('OAuth.providers.facebook.options.clientSecret', 'testclientsecrettestclientsecret');
-        
+
         Configure::write('OAuth.providers.google.options.clientId', 'testclientidgoogtestclientidgoog');
         Configure::write('OAuth.providers.google.options.clientSecret', 'testclientsecretgoogtestclientsecretgoog');
-        
+
         $socialAccounts = [
             new SocialAccount([
                 'id' => '00000000-0000-0000-0000-000000000001',
@@ -344,8 +343,8 @@ class UserHelperTest extends TestCase
         $expected = '';
         $this->assertEquals($expected, $actual);
     }
-    
-     /**
+
+    /**
      * Test social connect link list, social is enabled but any provider was configured
      *
      * @return void
@@ -353,7 +352,7 @@ class UserHelperTest extends TestCase
     public function testSocialConnectLinkListSocialEnabledButNotConfiguredProvider()
     {
         Configure::write('Users.Social.login', true);
-        
+
         $socialAccounts = [
             new SocialAccount([
                 'id' => '00000000-0000-0000-0000-000000000001',

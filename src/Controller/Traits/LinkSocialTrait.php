@@ -144,7 +144,7 @@ trait LinkSocialTrait
     {
         $class = $config['className'];
         $redirectUri = $config['options']['callbackLinkSocialUri'];
-    
+
         unset($config['options']['callbackLinkSocialUri'], $config['options']['linkSocialUri']);
 
         $config['options']['redirectUri'] = $redirectUri;

@@ -191,7 +191,7 @@ class LinkSocialTraitTest extends BaseTraitTest
         }
         $this->assertTrue($result);
     }
-    
+
     /**
      * test
      *
@@ -215,7 +215,7 @@ class LinkSocialTraitTest extends BaseTraitTest
         }
         $this->assertTrue($result);
     }
-    
+
     /**
      * test
      *
