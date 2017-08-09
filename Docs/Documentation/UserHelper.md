@@ -30,6 +30,20 @@ echo $this->User->socialLogin($provider); //provider is 'facebook', 'twitter', e
 
 We recommend the use of [Bootstrap Social](http://lipis.github.io/bootstrap-social/) in order to automatically apply styles to buttons. Anyway you can always add your own style to the buttons.
 
+Connect Social Account
+-----------------
+
+You can use the helper included with the plugin to create some 'Connect with Facebook/Twitter' buttons:
+
+In templates, call socialConnectLinkList method to get links for all social providers enabled
+```php
+echo $this->User->socialConnectLinkList($user->social_accounts); 
+```
+
+We recommend the use of [Bootstrap Social](http://lipis.github.io/bootstrap-social/) in order to automatically apply styles to buttons. Anyway you can always add your own style to the buttons.
+
+The user must be allowed to access the urls "/link-social" and "/callback-link-social/[provider]".
+
 Logout link
 -----------------
 
