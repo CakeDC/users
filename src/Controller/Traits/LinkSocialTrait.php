@@ -121,29 +121,33 @@ trait LinkSocialTrait
     protected function _getSocialProvider($alias)
     {
         $config = Configure::read('OAuth.providers.' . $alias);
-
-        $optionsLink = Configure::read('SocialLink.providers.' . $alias . '.options.redirectUri');
-
-        if (!$config || !$optionsLink) {
+        if (!$config || !isset($config['options'], $config['options']['callbackLinkSocialUri'])) {
             throw new NotFoundException;
         }
 
-        return $this->_createSocialProvider($config, $optionsLink);
+        if (!isset($config['options']['clientId'], $config['options']['clientSecret'])) {
+            throw new NotFoundException;
+        }
+
+        return $this->_createSocialProvider($config);
     }
 
     /**
      * Instantiates provider object.
      *
      * @param array $config for social provider.
-     * @param string $optionsLink to use as redirect.
      *
      * @throws \Cake\Network\Exception\NotFoundException
      * @return \League\OAuth2\Client\Provider\AbstractProvider
      */
-    protected function _createSocialProvider($config, $optionsLink)
+    protected function _createSocialProvider($config)
     {
         $class = $config['className'];
-        $config['options']['redirectUri'] = $optionsLink;
+        $redirectUri = $config['options']['callbackLinkSocialUri'];
+    
+        unset($config['options']['callbackLinkSocialUri'], $config['options']['linkSocialUri']);
+
+        $config['options']['redirectUri'] = $redirectUri;
 
         return new $class($config['options'], []);
     }

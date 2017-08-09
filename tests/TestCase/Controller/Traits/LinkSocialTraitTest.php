@@ -25,6 +25,13 @@ use League\OAuth2\Client\Token\AccessToken;
 
 class LinkSocialTraitTest extends BaseTraitTest
 {
+     /**
+     * Keep the original config for oauth
+     *
+     * @var array
+     */
+    private $oauthConfig;
+
     /**
      * Fixtures
      *
@@ -42,6 +49,9 @@ class LinkSocialTraitTest extends BaseTraitTest
      */
     public function setUp()
     {
+        if ($this->oauthConfig === null) {
+            $this->oauthConfig = Configure::read('OAuth');
+        }
         $this->traitClassName = 'CakeDC\Users\Controller\Traits\LinkSocialTrait';
         $this->traitMockMethods = ['dispatchEvent', 'isStopped', 'redirect', 'getUsersTable', 'set'];
 
@@ -66,6 +76,7 @@ class LinkSocialTraitTest extends BaseTraitTest
      */
     public function tearDown()
     {
+        Configure::write('OAuth', $this->oauthConfig);
         parent::tearDown();
     }
 
@@ -98,7 +109,8 @@ class LinkSocialTraitTest extends BaseTraitTest
      */
     public function testLinkSocialHappy()
     {
-        Configure::write('SocialLink.providers.facebook.options.redirectUri', '/callback-link-social/facebook');
+        Configure::write('OAuth.providers.facebook.options.clientId', 'testclientidtestclientid');
+        Configure::write('OAuth.providers.facebook.options.clientSecret', 'testclientsecrettestclientsecret');
 
         $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\Traits\LinkSocialTrait')
             ->setMethods(['dispatchEvent', 'redirect', 'set', '_createSocialProvider', 'getUsersTable', 'log'])
@@ -135,10 +147,13 @@ class LinkSocialTraitTest extends BaseTraitTest
                     'className' => 'League\OAuth2\Client\Provider\Facebook',
                     'options' => [
                         'graphApiVersion' => 'v2.5',
-                        'redirectUri' => '/auth/facebook'
+                        'redirectUri' => '/auth/facebook',
+                        'linkSocialUri' => '/link-social/facebook',
+                        'callbackLinkSocialUri' => '/callback-link-social/facebook',
+                        'clientId' => 'testclientidtestclientid',
+                        'clientSecret' => 'testclientsecrettestclientsecret'
                     ]
-                ]),
-                $this->equalTo('/callback-link-social/facebook')
+                ])
             )
             ->will($this->returnValue($ProviderMock));
 
@@ -156,8 +171,60 @@ class LinkSocialTraitTest extends BaseTraitTest
      *
      * @return void
      */
-    public function testLinkSocialNotDefineSocialLinkRedictUri()
+    public function testLinkSocialNotDefineLinkSocialRedirectUri()
     {
+        Configure::write('OAuth.providers.facebook.options.clientId', 'testclientidtestclientid');
+        Configure::write('OAuth.providers.facebook.options.clientSecret', 'testclientsecrettestclientsecret');
+        Configure::delete('OAuth.providers.facebook.options.callbackLinkSocialUri');
+
+        $result = false;
+        try {
+            $this->_mockRequestGet();
+            $this->_mockAuthLoggedIn();
+            $this->_mockFlash();
+
+            $this->_mockDispatchEvent(new Event('event'));
+
+            $this->Trait->linkSocial('facebook');
+        } catch (NotFoundException $e) {
+            $result = true;
+        }
+        $this->assertTrue($result);
+    }
+    
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testLinkSocialNotDefinedClientId()
+    {
+        Configure::delete('OAuth.providers.facebook.options.clientId');
+        Configure::write('OAuth.providers.facebook.options.clientSecret', 'testclientsecrettestclientsecret');
+        $result = false;
+        try {
+            $this->_mockRequestGet();
+            $this->_mockAuthLoggedIn();
+            $this->_mockFlash();
+
+            $this->_mockDispatchEvent(new Event('event'));
+
+            $this->Trait->linkSocial('facebook');
+        } catch (NotFoundException $e) {
+            $result = true;
+        }
+        $this->assertTrue($result);
+    }
+    
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testLinkSocialNotDefinedClientSecret()
+    {
+        Configure::write('OAuth.providers.facebook.options.clientId', 'testclientidtestclientid');
+        Configure::delete('OAuth.providers.facebook.options.clientSecret', 'testclientsecrettestclientsecret');
         $result = false;
         try {
             $this->_mockRequestGet();
@@ -180,7 +247,8 @@ class LinkSocialTraitTest extends BaseTraitTest
      */
     public function testCallbackLinkSocialHappy()
     {
-        Configure::write('SocialLink.providers.facebook.options.redirectUri', '/callback-link-social/facebook');
+        Configure::write('OAuth.providers.facebook.options.clientId', 'testclientidtestclientid');
+        Configure::write('OAuth.providers.facebook.options.clientSecret', 'testclientsecrettestclientsecret');
 
         $Table = TableRegistry::get('CakeDC/Users.Users');
 
@@ -268,10 +336,13 @@ class LinkSocialTraitTest extends BaseTraitTest
                     'className' => 'League\OAuth2\Client\Provider\Facebook',
                     'options' => [
                         'graphApiVersion' => 'v2.5',
-                        'redirectUri' => '/auth/facebook'
+                        'redirectUri' => '/auth/facebook',
+                        'linkSocialUri' => '/link-social/facebook',
+                        'callbackLinkSocialUri' => '/callback-link-social/facebook',
+                        'clientId' => 'testclientidtestclientid',
+                        'clientSecret' => 'testclientsecrettestclientsecret'
                     ]
-                ]),
-                $this->equalTo('/callback-link-social/facebook')
+                ])
             )
             ->will($this->returnValue($ProviderMock));
 
@@ -307,7 +378,8 @@ class LinkSocialTraitTest extends BaseTraitTest
      */
     public function testCallbackLinkSocialWithValidationErrors()
     {
-        Configure::write('SocialLink.providers.facebook.options.redirectUri', '/callback-link-social/facebook');
+        Configure::write('OAuth.providers.facebook.options.clientId', 'testclientidtestclientid');
+        Configure::write('OAuth.providers.facebook.options.clientSecret', 'testclientsecrettestclientsecret');
         $user = TableRegistry::get('akeDC/Users.Users')->get('00000000-0000-0000-0000-000000000001');
         $user->errors([
             'social_accounts' => [
@@ -409,10 +481,13 @@ class LinkSocialTraitTest extends BaseTraitTest
                     'className' => 'League\OAuth2\Client\Provider\Facebook',
                     'options' => [
                         'graphApiVersion' => 'v2.5',
-                        'redirectUri' => '/auth/facebook'
+                        'redirectUri' => '/auth/facebook',
+                        'linkSocialUri' => '/link-social/facebook',
+                        'callbackLinkSocialUri' => '/callback-link-social/facebook',
+                        'clientId' => 'testclientidtestclientid',
+                        'clientSecret' => 'testclientsecrettestclientsecret'
                     ]
-                ]),
-                $this->equalTo('/callback-link-social/facebook')
+                ])
             )
             ->will($this->returnValue($ProviderMock));
 
@@ -429,7 +504,8 @@ class LinkSocialTraitTest extends BaseTraitTest
      */
     public function testCallbackLinkSocialFailGettingAccessToken()
     {
-        Configure::write('SocialLink.providers.facebook.options.redirectUri', '/callback-link-social/facebook');
+        Configure::write('OAuth.providers.facebook.options.clientId', 'testclientidtestclientid');
+        Configure::write('OAuth.providers.facebook.options.clientSecret', 'testclientsecrettestclientsecret');
 
         $Table = TableRegistry::get('CakeDC/Users.Users');
 
@@ -498,10 +574,13 @@ class LinkSocialTraitTest extends BaseTraitTest
                     'className' => 'League\OAuth2\Client\Provider\Facebook',
                     'options' => [
                         'graphApiVersion' => 'v2.5',
-                        'redirectUri' => '/auth/facebook'
+                        'redirectUri' => '/auth/facebook',
+                        'linkSocialUri' => '/link-social/facebook',
+                        'callbackLinkSocialUri' => '/callback-link-social/facebook',
+                        'clientId' => 'testclientidtestclientid',
+                        'clientSecret' => 'testclientsecrettestclientsecret'
                     ]
-                ]),
-                $this->equalTo('/callback-link-social/facebook')
+                ])
             )
             ->will($this->returnValue($ProviderMock));
 
@@ -518,7 +597,8 @@ class LinkSocialTraitTest extends BaseTraitTest
      */
     public function testCallbackLinkSocialQueryHasErrors()
     {
-        Configure::write('SocialLink.providers.facebook.options.redirectUri', '/callback-link-social/facebook');
+        Configure::write('OAuth.providers.facebook.options.clientId', 'testclientidtestclientid');
+        Configure::write('OAuth.providers.facebook.options.clientSecret', 'testclientsecrettestclientsecret');
 
         $Table = TableRegistry::get('CakeDC/Users.Users');
 
@@ -585,10 +665,13 @@ class LinkSocialTraitTest extends BaseTraitTest
                     'className' => 'League\OAuth2\Client\Provider\Facebook',
                     'options' => [
                         'graphApiVersion' => 'v2.5',
-                        'redirectUri' => '/auth/facebook'
+                        'redirectUri' => '/auth/facebook',
+                        'linkSocialUri' => '/link-social/facebook',
+                        'callbackLinkSocialUri' => '/callback-link-social/facebook',
+                        'clientId' => 'testclientidtestclientid',
+                        'clientSecret' => 'testclientsecrettestclientsecret'
                     ]
-                ]),
-                $this->equalTo('/callback-link-social/facebook')
+                ])
             )
             ->will($this->returnValue($ProviderMock));
 
@@ -602,7 +685,8 @@ class LinkSocialTraitTest extends BaseTraitTest
      */
     public function testCallbackLinkSocialWrongState()
     {
-        Configure::write('SocialLink.providers.facebook.options.redirectUri', '/callback-link-social/facebook');
+        Configure::write('OAuth.providers.facebook.options.clientId', 'testclientidtestclientid');
+        Configure::write('OAuth.providers.facebook.options.clientSecret', 'testclientsecrettestclientsecret');
 
         $Table = TableRegistry::get('CakeDC/Users.Users');
 
@@ -668,10 +752,13 @@ class LinkSocialTraitTest extends BaseTraitTest
                     'className' => 'League\OAuth2\Client\Provider\Facebook',
                     'options' => [
                         'graphApiVersion' => 'v2.5',
-                        'redirectUri' => '/auth/facebook'
+                        'redirectUri' => '/auth/facebook',
+                        'linkSocialUri' => '/link-social/facebook',
+                        'callbackLinkSocialUri' => '/callback-link-social/facebook',
+                        'clientId' => 'testclientidtestclientid',
+                        'clientSecret' => 'testclientsecrettestclientsecret'
                     ]
-                ]),
-                $this->equalTo('/callback-link-social/facebook')
+                ])
             )
             ->will($this->returnValue($ProviderMock));
 
@@ -685,7 +772,8 @@ class LinkSocialTraitTest extends BaseTraitTest
      */
     public function testCallbackLinkSocialMissingCode()
     {
-        Configure::write('SocialLink.providers.facebook.options.redirectUri', '/callback-link-social/facebook');
+        Configure::write('OAuth.providers.facebook.options.clientId', 'testclientidtestclientid');
+        Configure::write('OAuth.providers.facebook.options.clientSecret', 'testclientsecrettestclientsecret');
 
         $Table = TableRegistry::get('CakeDC/Users.Users');
 
