@@ -25,7 +25,7 @@ use League\OAuth2\Client\Token\AccessToken;
 
 class LinkSocialTraitTest extends BaseTraitTest
 {
-     /**
+    /**
      * Keep the original config for oauth
      *
      * @var array
