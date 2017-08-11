@@ -315,4 +315,29 @@ class RegisterBehaviorTest extends TestCase
         ]);
         $this->assertSame('emperor', $result['role']);
     }
+
+    /**
+     * Test resendValidationEmail method
+     *
+     * @return void
+     */
+    public function testResendValidationEmail()
+    { 
+        $user = [
+            'username' => 'testuser',
+            'email' => 'testuser@test.com',
+            'password' => 'password',
+            'password_confirm' => 'password',
+            'first_name' => 'test',
+            'last_name' => 'user',
+            'tos' => 1
+        ];
+        $result = $this->Table->register($this->Table->newEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1, 'email_class' => $this->Email]);
+        $this->assertFalse($result->active);
+        $originalExpiration = $result->token_expires;
+        $updatedResult = $this->Table->resendValidationEmail($result, ['token_expiration' => 3600, 'email_class' => $this->Email]);
+        $this->assertNotEmpty($updatedResult);
+        $this->assertFalse($updatedResult->active);
+        $this->assertNotEquals($updatedResult->token_expires, $originalExpiration);
+    }
 }
