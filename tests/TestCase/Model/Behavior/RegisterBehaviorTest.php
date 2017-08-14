@@ -322,7 +322,7 @@ class RegisterBehaviorTest extends TestCase
      * @return void
      */
     public function testResendValidationEmail()
-    { 
+    {
         $user = [
             'username' => 'testuser',
             'email' => 'testuser@test.com',
