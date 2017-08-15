@@ -16,6 +16,7 @@ use Cake\Core\Configure;
 use Cake\Mailer\Email;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use CakeDC\Users\Exception\UserAlreadyActiveException;
 use InvalidArgumentException;
 
 /**
@@ -340,5 +341,29 @@ class RegisterBehaviorTest extends TestCase
         $this->assertFalse($updatedResult->active);
         $newExpiration = $updatedResult->token_expires;
         $this->assertNotEquals($originalExpiration, $newExpiration);
+    }
+
+    /**
+     * Test resendValidationEmail method throw exception on active user
+     *
+     * @return void
+     */
+    public function testResendValidationEmailThrows()
+    {
+        $user = [
+            'username' => 'testuser',
+            'email' => 'testuser@test.com',
+            'password' => 'password',
+            'password_confirm' => 'password',
+            'first_name' => 'test',
+            'last_name' => 'user',
+            'tos' => 1
+        ];
+        $result = $this->Table->register($this->Table->newEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1, 'email_class' => $this->Email]);
+        $this->assertFalse($result->active);
+        $activeUser = $this->Table->activateUser($result);
+        $this->assertTrue($result->active);
+        $this->expectException(UserAlreadyActiveException::class);
+        $updatedResult = $this->Table->resendValidationEmail($result, ['token_expiration' => 4000, 'email_class' => $this->Email]);
     }
 }
