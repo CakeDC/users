@@ -362,8 +362,8 @@ class RegisterBehaviorTest extends TestCase
         $result = $this->Table->register($this->Table->newEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1, 'email_class' => $this->Email]);
         $this->assertFalse($result->active);
         $activeUser = $this->Table->activateUser($result);
-        $this->assertTrue($result->active);
+        $this->assertTrue($activeUser->active);
         $this->expectException(UserAlreadyActiveException::class);
-        $updatedResult = $this->Table->resendValidationEmail($result, ['token_expiration' => 4000, 'email_class' => $this->Email]);
+        $updatedResult = $this->Table->resendValidationEmail($activeUser, ['token_expiration' => 4000, 'email_class' => $this->Email]);
     }
 }
