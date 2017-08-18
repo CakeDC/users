@@ -154,23 +154,31 @@ $config = [
                 'options' => [
                     'graphApiVersion' => 'v2.5',
                     'redirectUri' => Router::fullBaseUrl() . '/auth/facebook',
+                    'linkSocialUri' => Router::fullBaseUrl() . '/link-social/facebook',
+                    'callbackLinkSocialUri' => Router::fullBaseUrl() . '/callback-link-social/facebook',
                 ]
             ],
             'twitter' => [
                 'options' => [
                     'redirectUri' => Router::fullBaseUrl() . '/auth/twitter',
+                    'linkSocialUri' => Router::fullBaseUrl() . '/link-social/twitter',
+                    'callbackLinkSocialUri' => Router::fullBaseUrl() . '/callback-link-social/twitter',
                 ]
             ],
             'linkedIn' => [
                 'className' => 'League\OAuth2\Client\Provider\LinkedIn',
                 'options' => [
                     'redirectUri' => Router::fullBaseUrl() . '/auth/linkedIn',
+                    'linkSocialUri' => Router::fullBaseUrl() . '/link-social/linkedIn',
+                    'callbackLinkSocialUri' => Router::fullBaseUrl() . '/callback-link-social/linkedIn',
                 ]
             ],
             'instagram' => [
                 'className' => 'League\OAuth2\Client\Provider\Instagram',
                 'options' => [
                     'redirectUri' => Router::fullBaseUrl() . '/auth/instagram',
+                    'linkSocialUri' => Router::fullBaseUrl() . '/link-social/instagram',
+                    'callbackLinkSocialUri' => Router::fullBaseUrl() . '/callback-link-social/instagram',
                 ]
             ],
             'google' => [
@@ -178,6 +186,8 @@ $config = [
                 'options' => [
                     'userFields' => ['url', 'aboutMe'],
                     'redirectUri' => Router::fullBaseUrl() . '/auth/google',
+                    'linkSocialUri' => Router::fullBaseUrl() . '/link-social/google',
+                    'callbackLinkSocialUri' => Router::fullBaseUrl() . '/callback-link-social/google',
                 ]
             ],
         ],
