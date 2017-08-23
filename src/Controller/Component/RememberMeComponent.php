@@ -106,7 +106,7 @@ class RememberMeComponent extends Component
             return;
         }
         $user['user_agent'] = $this->getController()->request->getHeaderLine('User-Agent');
-	    if (!(bool)$this->getController()->request->getData(Configure::read('Users.Key.Data.rememberMe'))) {
+        if (!(bool)$this->getController()->request->getData(Configure::read('Users.Key.Data.rememberMe'))) {
              return;
         }
         $this->Cookie->write($this->_cookieName, $user);
