@@ -16,4 +16,15 @@ use Cake\Core\Exception\Exception;
 class MissingEventListenerException extends Exception
 {
     protected $_messageTemplate = 'Missing listener to the (%s) event.';
+
+    /**
+     * MissingEventListenerException constructor.
+     * @param array|string $message message
+     * @param int $code code
+     * @param null $previous previous
+     */
+    public function __construct($message, $code = 500, $previous = null)
+    {
+        parent::__construct($message, $code, $previous);
+    }
 }

@@ -31,6 +31,7 @@
             <p><?= h($user->username) ?></p>
             <h6 class="subheader"><?= __d('CakeDC/Users', 'Email') ?></h6>
             <p><?= h($user->email) ?></p>
+            <?= $this->User->socialConnectLinkList($user->social_accounts) ?>
             <?php
             if (!empty($user->social_accounts)):
                 ?>

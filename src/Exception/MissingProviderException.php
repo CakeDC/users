@@ -15,4 +15,14 @@ use Cake\Core\Exception\Exception;
 
 class MissingProviderException extends Exception
 {
+    /**
+     * MissingProviderException constructor.
+     * @param array|string $message message
+     * @param int $code code
+     * @param null $previous previous
+     */
+    public function __construct($message, $code = 500, $previous = null)
+    {
+        parent::__construct($message, $code, $previous);
+    }
 }

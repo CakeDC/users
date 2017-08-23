@@ -32,6 +32,7 @@ class UsersAuthComponent extends Component
     const EVENT_AFTER_REGISTER = 'Users.Component.UsersAuth.afterRegister';
     const EVENT_BEFORE_LOGOUT = 'Users.Component.UsersAuth.beforeLogout';
     const EVENT_AFTER_LOGOUT = 'Users.Component.UsersAuth.afterLogout';
+    const EVENT_BEFORE_SOCIAL_LOGIN_USER_CREATE = 'Users.Component.UsersAuth.beforeSocialLoginUserCreate';
 
     /**
      * Initialize method, setup Auth if not already done passing the $config provided and
@@ -78,7 +79,7 @@ class UsersAuthComponent extends Component
     protected function _loadSocialLogin()
     {
         $this->getController()->Auth->setConfig('authenticate', [
-            'CakeDC/Users.Social'
+            Configure::read('Users.Social.authenticator')
         ], true);
     }
 
@@ -155,7 +156,7 @@ class UsersAuthComponent extends Component
         }
 
         if (is_array($url)) {
-            $requestUrl = Router::reverse($url);
+            $requestUrl = Router::normalize(Router::reverse($url));
             $requestParams = Router::parseRequest(new ServerRequest($requestUrl));
         } else {
             try {
@@ -207,12 +208,19 @@ class UsersAuthComponent extends Component
 
     /**
      * Check if the action is in allowedActions array for the controller
+     * Important, this function will check only for allowed actions in the current
+     * controller, creating a new instance and providing initialization for the Auth
+     * instance in another controller could lead to undesired side effects.
+     *
      * @param array $requestParams request parameters
      * @return bool
      */
     protected function _isActionAllowed($requestParams = [])
     {
         if (empty($requestParams['action'])) {
+            return false;
+        }
+        if (!empty($requestParams['controller']) && $requestParams['controller'] !== $this->getController()->name) {
             return false;
         }
         $action = strtolower($requestParams['action']);

@@ -29,7 +29,6 @@ use InvalidArgumentException;
  */
 class RememberMeComponentTest extends TestCase
 {
-
     public $fixtures = [
         'plugin.CakeDC/Users.users'
     ];

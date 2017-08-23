@@ -17,4 +17,15 @@ class InvalidProviderException extends Exception
 {
     protected $_messageTemplate = 'Invalid provider or missing class (%s)';
     protected $code = 500;
+
+    /**
+     * InvalidProviderException constructor.
+     * @param array|string $message message
+     * @param int $code code
+     * @param null $previous previous
+     */
+    public function __construct($message, $code = 500, $previous = null)
+    {
+        parent::__construct($message, $code, $previous);
+    }
 }

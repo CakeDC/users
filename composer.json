@@ -27,7 +27,7 @@
         "source": "https://github.com/CakeDC/users"
     },
     "require": {
-        "cakephp/cakephp": "~3.4.0",
+        "cakephp/cakephp": "^3.4.0",
         "cakedc/auth": "^1.0"
     },
     "require-dev": {
@@ -38,7 +38,8 @@
         "league/oauth2-google": "@stable",
         "league/oauth2-linkedin": "@stable",
         "google/recaptcha": "@stable",
-        "robthree/twofactorauth": "~1.6.0"
+        "robthree/twofactorauth": "~1.6.0",
+        "satooshi/php-coveralls": "dev-master"
     },
     "suggest": {
         "league/oauth1-client": "Provides Social Authentication with Twitter",

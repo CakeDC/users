@@ -15,4 +15,14 @@ use Cake\Datasource\Exception\RecordNotFoundException;
 
 class UserNotFoundException extends RecordNotFoundException
 {
+    /**
+     * UserNotFoundException constructor.
+     * @param string $message message
+     * @param int $code code
+     * @param null $previous previous
+     */
+    public function __construct($message, $code = 500, $previous = null)
+    {
+        parent::__construct($message, $code, $previous);
+    }
 }

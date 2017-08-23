@@ -28,7 +28,9 @@ class AppController extends BaseController
     {
         parent::initialize();
         $this->loadComponent('Security');
-        $this->loadComponent('Csrf');
+        if ($this->request->getParam('_csrfToken') === false) {
+            $this->loadComponent('Csrf');
+        }
         $this->loadComponent('CakeDC/Users.UsersAuth');
     }
 }
