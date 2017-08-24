@@ -150,7 +150,8 @@ class UsersTableTest extends TestCase
 
     /**
      * Test register method
-    testValidateRegisterValidateEmail     */
+     * testValidateRegisterValidateEmail
+     */
     public function testValidateRegisterNoTosRequired()
     {
         $user = [

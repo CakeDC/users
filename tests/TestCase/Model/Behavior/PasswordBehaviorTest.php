@@ -46,9 +46,6 @@ class PasswordBehaviorTest extends TestCase
                 ->setMethods(['sendResetPasswordEmail'])
                 ->setConstructorArgs([$this->table])
                 ->getMock();
-        $this->Behavior->Email = $this->getMockBuilder('CakeDC\Users\Email\EmailSender')
-            ->setMethods(['sendResetPasswordEmail'])
-            ->getMock();
     }
 
     /**

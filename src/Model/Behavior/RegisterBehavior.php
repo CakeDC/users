@@ -11,24 +11,24 @@
 
 namespace CakeDC\Users\Model\Behavior;
 
-use CakeDC\Users\Email\EmailSender;
 use CakeDC\Users\Exception\TokenExpiredException;
 use CakeDC\Users\Exception\UserAlreadyActiveException;
 use CakeDC\Users\Exception\UserNotFoundException;
-use CakeDC\Users\Model\Entity\User;
 use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\Event;
+use Cake\Mailer\MailerAwareTrait;
 use Cake\Utility\Hash;
 use Cake\Validation\Validator;
-use DateTime;
-use InvalidArgumentException;
 
 /**
  * Covers the user registration
  */
 class RegisterBehavior extends BaseTokenBehavior
 {
+
+    use MailerAwareTrait;
+
     /**
      * Constructor hook method.
      *
@@ -40,7 +40,6 @@ class RegisterBehavior extends BaseTokenBehavior
         parent::initialize($config);
         $this->validateEmail = (bool)Configure::read('Users.Email.validate');
         $this->useTos = (bool)Configure::read('Users.Tos.required');
-        $this->Email = new EmailSender();
     }
 
     /**
@@ -50,7 +49,6 @@ class RegisterBehavior extends BaseTokenBehavior
      * @param array $data User information
      * @param array $options ['tokenExpiration]
      * @return bool|EntityInterface
-     * @throws InvalidArgumentException
      */
     public function register($user, $data, $options)
     {
@@ -69,7 +67,7 @@ class RegisterBehavior extends BaseTokenBehavior
         $this->_table->isValidateEmail = $validateEmail;
         $userSaved = $this->_table->save($user);
         if ($userSaved && $validateEmail) {
-            $this->Email->sendValidationEmail($user, $emailClass);
+            $this->_sendValidationEmail($user, $emailClass);
         }
 
         return $userSaved;
@@ -82,7 +80,7 @@ class RegisterBehavior extends BaseTokenBehavior
      * @param null $callback function that will be returned.
      * @throws TokenExpiredException when token has expired.
      * @throws UserNotFoundException when user isn't found.
-     * @return User $user
+     * @return EntityInterface $user
      */
     public function validate($token, $callback = null)
     {
@@ -115,7 +113,7 @@ class RegisterBehavior extends BaseTokenBehavior
         if ($user->active) {
             throw new UserAlreadyActiveException(__d('CakeDC/Users', "User account already validated"));
         }
-        $user->activation_date = new DateTime();
+        $user->activation_date = new \DateTime();
         $user->token_expires = null;
         $user->active = true;
         $result = $this->_table->save($user);
@@ -214,9 +212,22 @@ class RegisterBehavior extends BaseTokenBehavior
         $user = $this->_updateActive($user, true, $tokenExpiration);
         $userSaved = $this->_table->saveOrFail($user);
         if ($userSaved) {
-            $this->Email->sendValidationEmail($userSaved, $emailClass);
+            $this->_sendValidationEmail($userSaved, $emailClass);
         }
 
         return $userSaved;
+    }
+
+    /**
+     * Wrapper for mailer
+     *
+     * @param $user
+     */
+    protected function _sendValidationEmail($user)
+    {
+        $mailer = Configure::read('Users.Email.mailerClass') ?: 'CakeDC/Users.Users';
+        $this
+            ->getMailer($mailer)
+            ->send('validation', [$user]);
     }
 }

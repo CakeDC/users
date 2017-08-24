@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Model\Behavior;
 
+use Cake\Core\Configure;
 use CakeDC\Users\Email\EmailSender;
 use CakeDC\Users\Exception\UserAlreadyActiveException;
 use CakeDC\Users\Exception\UserNotActiveException;
@@ -26,17 +27,6 @@ use InvalidArgumentException;
  */
 class PasswordBehavior extends BaseTokenBehavior
 {
-    /**
-     * Constructor hook method.
-     *
-     * @param array $config The configuration settings provided to this behavior.
-     * @return void
-     */
-    public function initialize(array $config)
-    {
-        parent::initialize($config);
-        $this->Email = new EmailSender();
-    }
     /**
      * Resets user token
      *
@@ -78,9 +68,10 @@ class PasswordBehavior extends BaseTokenBehavior
         }
         $user->updateToken($expiration);
         $saveResult = $this->_table->save($user);
-        $template = !empty($options['emailTemplate']) ? $options['emailTemplate'] : 'CakeDC/Users.reset_password';
         if (Hash::get($options, 'sendEmail')) {
-            $this->Email->sendResetPasswordEmail($saveResult, null, $template);
+            $this
+                ->getMailer(Configure::read('Users.Email.mailerClass') ?: 'CakeDC/Users.Users')
+                ->send('resetPassword', [$user]);
         }
 
         return $saveResult;
