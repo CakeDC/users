@@ -53,6 +53,7 @@ class UsersTable extends Table
         $this->addBehavior('CakeDC/Users.Register');
         $this->addBehavior('CakeDC/Users.Password');
         $this->addBehavior('CakeDC/Users.Social');
+        $this->addBehavior('CakeDC/Users.LinkSocial');
         $this->addBehavior('CakeDC/Users.AuthFinder');
         $this->hasMany('SocialAccounts', [
             'foreignKey' => 'user_id',

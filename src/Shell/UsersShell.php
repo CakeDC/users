@@ -130,7 +130,7 @@ class UsersShell extends Shell
     {
         $password = Hash::get($this->args, 0);
         if (empty($password)) {
-            $this->error(__d('CakeDC/Users', 'Please enter a password.'));
+            $this->abort(__d('CakeDC/Users', 'Please enter a password.'));
         }
         $hashedPassword = $this->_generatedHashedPassword($password);
         $this->Users->updateAll(['password' => $hashedPassword], ['id IS NOT NULL']);
@@ -153,10 +153,10 @@ class UsersShell extends Shell
         $username = Hash::get($this->args, 0);
         $password = Hash::get($this->args, 1);
         if (empty($username)) {
-            $this->error(__d('CakeDC/Users', 'Please enter a username.'));
+            $this->abort(__d('CakeDC/Users', 'Please enter a username.'));
         }
         if (empty($password)) {
-            $this->error(__d('CakeDC/Users', 'Please enter a password.'));
+            $this->abort(__d('CakeDC/Users', 'Please enter a password.'));
         }
         $data = [
             'password' => $password
@@ -181,10 +181,10 @@ class UsersShell extends Shell
         $username = Hash::get($this->args, 0);
         $role = Hash::get($this->args, 1);
         if (empty($username)) {
-            $this->error(__d('CakeDC/Users', 'Please enter a username.'));
+            $this->abort(__d('CakeDC/Users', 'Please enter a username.'));
         }
         if (empty($role)) {
-            $this->error(__d('CakeDC/Users', 'Please enter a role.'));
+            $this->abort(__d('CakeDC/Users', 'Please enter a role.'));
         }
         $data = [
             'role' => $role
@@ -233,7 +233,7 @@ class UsersShell extends Shell
     {
         $reference = Hash::get($this->args, 0);
         if (empty($reference)) {
-            $this->error(__d('CakeDC/Users', 'Please enter a username or email.'));
+            $this->abort(__d('CakeDC/Users', 'Please enter a username or email.'));
         }
         $resetUser = $this->Users->resetToken($reference, [
             'expiration' => Configure::read('Users.Token.expiration'),
@@ -245,7 +245,7 @@ class UsersShell extends Shell
             $this->out($msg);
         } else {
             $msg = __d('CakeDC/Users', 'The password token could not be generated. Please try again');
-            $this->error($msg);
+            $this->abort($msg);
         }
     }
 
@@ -259,7 +259,7 @@ class UsersShell extends Shell
     {
         $username = Hash::get($this->args, 0);
         if (empty($username)) {
-            $this->error(__d('CakeDC/Users', 'Please enter a username.'));
+            $this->abort(__d('CakeDC/Users', 'Please enter a username.'));
         }
         $data = [
             'active' => $active
@@ -334,7 +334,7 @@ class UsersShell extends Shell
     {
         $user = $this->Users->find()->where(['username' => $username])->first();
         if (empty($user)) {
-            $this->error(__d('CakeDC/Users', 'The user was not found.'));
+            $this->abort(__d('CakeDC/Users', 'The user was not found.'));
         }
         $user = $this->Users->patchEntity($user, $data);
         collection($data)->filter(function ($value, $field) use ($user) {
@@ -356,7 +356,7 @@ class UsersShell extends Shell
     {
         $username = Hash::get($this->args, 0);
         if (empty($username)) {
-            $this->error(__d('CakeDC/Users', 'Please enter a username.'));
+            $this->abort(__d('CakeDC/Users', 'Please enter a username.'));
         }
         $user = $this->Users->find()->where(['username' => $username])->first();
         if (isset($this->Users->SocialAccounts)) {
@@ -364,7 +364,7 @@ class UsersShell extends Shell
         }
         $deleteUser = $this->Users->delete($user);
         if (!$deleteUser) {
-            $this->error(__d('CakeDC/Users', 'The user {0} was not deleted. Please try again', $username));
+            $this->abort(__d('CakeDC/Users', 'The user {0} was not deleted. Please try again', $username));
         }
         $this->out(__d('CakeDC/Users', 'The user {0} was deleted successfully', $username));
     }

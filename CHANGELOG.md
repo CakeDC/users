@@ -4,6 +4,13 @@ Changelog
 Releases for CakePHP 3
 -------------
 
+* 5.1.0
+  * New resend validation method in RegisterBehavior
+  * Allow upgrade to CakePHP 3.5.x
+  * New feature connect social account
+  * New polish translations
+  * Fixed bugs reported
+
 * 5.0.3
   * Implemented event dispatching on social login
   * Fixed bugs reported

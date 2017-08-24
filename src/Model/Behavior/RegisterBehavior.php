@@ -197,4 +197,26 @@ class RegisterBehavior extends BaseTokenBehavior
 
         return $validator;
     }
+
+    /**
+     * @param EntityInterface $user User information
+     * @param array $options ['tokenExpiration]
+     * @return bool|EntityInterface
+     */
+    public function resendValidationEmail($user, $options)
+    {
+        if ($user->active) {
+            throw new UserAlreadyActiveException(__d('CakeDC/Users', "User account already validated"));
+        }
+
+        $tokenExpiration = Hash::get($options, 'token_expiration');
+        $emailClass = Hash::get($options, 'email_class');
+        $user = $this->_updateActive($user, true, $tokenExpiration);
+        $userSaved = $this->_table->saveOrFail($user);
+        if ($userSaved) {
+            $this->Email->sendValidationEmail($userSaved, $emailClass);
+        }
+
+        return $userSaved;
+    }
 }
