@@ -9,7 +9,7 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-use Phinx\Migration\AbstractMigration;
+use Migrations\AbstractMigration;
 
 class Initial extends AbstractMigration
 {

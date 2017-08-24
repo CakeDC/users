@@ -253,7 +253,7 @@ class LoginTraitTest extends BaseTraitTest
     {
         $this->_mockDispatchEvent(new Event('event'));
         $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
-            ->setMethods(['logout'])
+            ->setMethods(['logout', 'user'])
             ->disableOriginalConstructor()
             ->getMock();
         $redirectLogoutOK = '/';

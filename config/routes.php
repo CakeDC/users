@@ -40,3 +40,13 @@ if (Configure::read('Users.GoogleAuthenticator.login')) {
 Router::connect('/profile/*', ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile']);
 Router::connect('/login', ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
 Router::connect('/logout', ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'logout']);
+Router::connect('/link-social/*', [
+    'controller' => 'Users',
+    'action' => 'linkSocial',
+    'plugin' => 'CakeDC/Users',
+]);
+Router::connect('/callback-link-social/*', [
+    'controller' => 'Users',
+    'action' => 'callbackLinkSocial',
+    'plugin' => 'CakeDC/Users',
+]);
