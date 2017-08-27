@@ -26,7 +26,6 @@ use Cake\Validation\Validator;
  */
 class RegisterBehavior extends BaseTokenBehavior
 {
-
     use MailerAwareTrait;
 
     /**

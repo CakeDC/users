@@ -55,7 +55,6 @@ class PasswordBehaviorTest extends TestCase
             'transport' => 'test',
             'from' => 'cakedc@example.com'
         ]);
-
     }
 
     /**
