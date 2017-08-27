@@ -124,3 +124,7 @@ Cake\Datasource\ConnectionManager::setConfig('test', [
 //    'init' => [],
     'timezone' => 'UTC'
 ]);
+
+\Cake\Core\Configure::write('App.paths.templates', [
+    APP . 'Template/',
+]);

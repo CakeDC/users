@@ -54,7 +54,6 @@ class RegisterBehavior extends BaseTokenBehavior
     {
         $validateEmail = Hash::get($options, 'validate_email');
         $tokenExpiration = Hash::get($options, 'token_expiration');
-        $emailClass = Hash::get($options, 'email_class');
         $user = $this->_table->patchEntity(
             $user,
             $data,
@@ -67,7 +66,7 @@ class RegisterBehavior extends BaseTokenBehavior
         $this->_table->isValidateEmail = $validateEmail;
         $userSaved = $this->_table->save($user);
         if ($userSaved && $validateEmail) {
-            $this->_sendValidationEmail($user, $emailClass);
+            $this->_sendValidationEmail($user);
         }
 
         return $userSaved;
@@ -208,11 +207,10 @@ class RegisterBehavior extends BaseTokenBehavior
         }
 
         $tokenExpiration = Hash::get($options, 'token_expiration');
-        $emailClass = Hash::get($options, 'email_class');
         $user = $this->_updateActive($user, true, $tokenExpiration);
         $userSaved = $this->_table->saveOrFail($user);
         if ($userSaved) {
-            $this->_sendValidationEmail($userSaved, $emailClass);
+            $this->_sendValidationEmail($userSaved);
         }
 
         return $userSaved;

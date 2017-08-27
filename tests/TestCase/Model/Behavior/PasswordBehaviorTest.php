@@ -11,16 +11,17 @@
 
 namespace CakeDC\Users\Test\TestCase\Model\Behavior;
 
-use CakeDC\Users\Exception\UserAlreadyActiveException;
-use CakeDC\Users\Model\Table\UsersTable;
+use Cake\Core\Configure;
 use Cake\Mailer\Email;
 use Cake\ORM\TableRegistry;
-use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
+use CakeDC\Users\Model\Behavior\PasswordBehavior;
+use CakeDC\Users\Test\App\Mailer\OverrideMailer;
 use InvalidArgumentException;
 
 /**
  * Test Case
+ * @property \CakeDC\Users\Model\Behavior\PasswordBehavior Behavior
  */
 class PasswordBehaviorTest extends TestCase
 {
@@ -46,6 +47,15 @@ class PasswordBehaviorTest extends TestCase
                 ->setMethods(['sendResetPasswordEmail'])
                 ->setConstructorArgs([$this->table])
                 ->getMock();
+        Email::setConfigTransport('test', [
+            'className' => 'Debug'
+        ]);
+        //$this->configEmail = Email::getConfig('default');
+        Email::setConfig('default', [
+            'transport' => 'test',
+            'from' => 'cakedc@example.com'
+        ]);
+
     }
 
     /**
@@ -56,6 +66,8 @@ class PasswordBehaviorTest extends TestCase
     public function tearDown()
     {
         unset($this->table, $this->Behavior);
+        Email::drop('default');
+        Email::dropTransport('test');
         parent::tearDown();
     }
 
@@ -67,7 +79,7 @@ class PasswordBehaviorTest extends TestCase
     {
         $user = $this->table->findByUsername('user-1')->first();
         $token = $user->token;
-        $this->Behavior->Email->expects($this->never())
+        $this->Behavior->expects($this->never())
                 ->method('sendResetPasswordEmail')
                 ->with($user);
         $result = $this->Behavior->resetToken('user-1', [
@@ -88,7 +100,7 @@ class PasswordBehaviorTest extends TestCase
         $user = $this->table->findByUsername('user-1')->first();
         $token = $user->token;
         $tokenExpires = $user->token_expires;
-        $this->Behavior->Email->expects($this->once())
+        $this->Behavior->expects($this->once())
                 ->method('sendResetPasswordEmail');
         $result = $this->Behavior->resetToken('user-1', [
             'expiration' => 3600,
@@ -161,7 +173,7 @@ class PasswordBehaviorTest extends TestCase
      */
     public function testResetTokenUserNotActive()
     {
-        $user = TableRegistry::get('CakeDC/Users.Users')->findByUsername('user-1')->first();
+        $user = $this->table->findByUsername('user-1')->first();
         $this->Behavior->resetToken('user-1', [
             'ensureActive' => true,
             'expiration' => 3600
@@ -192,5 +204,16 @@ class PasswordBehaviorTest extends TestCase
         $user->password_confirmation = 'new';
 
         $result = $this->Behavior->changePassword($user);
+    }
+
+    public function testEmailOverride()
+    {
+        Configure::write('Users.Email.mailerClass', OverrideMailer::class);
+        $this->Behavior = new PasswordBehavior($this->table);
+        $this->Behavior->resetToken('user-1', [
+            'expiration' => 3600,
+            'checkActive' => true,
+            'sendEmail' => true
+        ]);
     }
 }

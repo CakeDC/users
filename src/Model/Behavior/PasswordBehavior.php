@@ -11,22 +11,23 @@
 
 namespace CakeDC\Users\Model\Behavior;
 
-use Cake\Core\Configure;
-use CakeDC\Users\Email\EmailSender;
 use CakeDC\Users\Exception\UserAlreadyActiveException;
 use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Exception\UserNotFoundException;
 use CakeDC\Users\Exception\WrongPasswordException;
+use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
 use Cake\Datasource\Exception\RecordNotFoundException;
+use Cake\Mailer\MailerAwareTrait;
 use Cake\Utility\Hash;
-use InvalidArgumentException;
 
 /**
  * Covers the password management features
  */
 class PasswordBehavior extends BaseTokenBehavior
 {
+    use MailerAwareTrait;
+
     /**
      * Resets user token
      *
@@ -34,19 +35,19 @@ class PasswordBehavior extends BaseTokenBehavior
      * @param array $options checkActive, sendEmail, expiration
      *
      * @return string
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      * @throws UserNotFoundException
      * @throws UserAlreadyActiveException
      */
     public function resetToken($reference, array $options = [])
     {
         if (empty($reference)) {
-            throw new InvalidArgumentException(__d('CakeDC/Users', "Reference cannot be null"));
+            throw new \InvalidArgumentException(__d('CakeDC/Users', "Reference cannot be null"));
         }
 
         $expiration = Hash::get($options, 'expiration');
         if (empty($expiration)) {
-            throw new InvalidArgumentException(__d('CakeDC/Users', "Token expiration cannot be empty"));
+            throw new \InvalidArgumentException(__d('CakeDC/Users', "Token expiration cannot be empty"));
         }
 
         $user = $this->_getUser($reference);
@@ -69,12 +70,22 @@ class PasswordBehavior extends BaseTokenBehavior
         $user->updateToken($expiration);
         $saveResult = $this->_table->save($user);
         if (Hash::get($options, 'sendEmail')) {
-            $this
-                ->getMailer(Configure::read('Users.Email.mailerClass') ?: 'CakeDC/Users.Users')
-                ->send('resetPassword', [$user]);
+            $this->sendResetPasswordEmail($user);
         }
 
         return $saveResult;
+    }
+
+    /**
+     * Send the reset password related email link
+     *
+     * @param $user
+     */
+    protected function sendResetPasswordEmail($user)
+    {
+        $this
+            ->getMailer(Configure::read('Users.Email.mailerClass') ?: 'CakeDC/Users.Users')
+            ->send('resetPassword', [$user]);
     }
 
     /**
