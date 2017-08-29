@@ -93,7 +93,6 @@ class GoogleAuthenticatorComponentTest extends TestCase
      */
     public function testInitialize()
     {
-        $this->Registry->unload('GoogleAuthenticator');
         $this->Controller->GoogleAuthenticator = new GoogleAuthenticatorComponent($this->Registry);
         $this->assertInstanceOf('CakeDC\Users\Controller\Component\GoogleAuthenticatorComponent', $this->Controller->GoogleAuthenticator);
     }

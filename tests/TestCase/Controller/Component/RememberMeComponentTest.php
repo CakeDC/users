@@ -121,7 +121,8 @@ class RememberMeComponentTest extends TestCase
             ->setMethods(['write'])
             ->disableOriginalConstructor()
             ->getMock();
-        $this->rememberMeComponent->request = (new ServerRequest('/'))->env('HTTP_USER_AGENT', 'user-agent');
+        $this->rememberMeComponent->request = (new ServerRequest('/'))->env('HTTP_USER_AGENT', 'user-agent')
+            ->withData(Configure::read('Users.Key.Data.rememberMe'), '1');
         $this->rememberMeComponent->Cookie->expects($this->once())
             ->method('write')
             ->with('remember_me', ['id' => 1, 'user_agent' => 'user-agent']);
