@@ -24,6 +24,7 @@ class UsersMailer extends Mailer
      * Send the templated email to the user
      *
      * @param EntityInterface $user User entity
+     * @return void
      */
     protected function validation(EntityInterface $user)
     {
@@ -43,7 +44,7 @@ class UsersMailer extends Mailer
      *
      * @param EntityInterface $user User entity
      *
-     * @return array email send result
+     * @return void
      */
     protected function resetPassword(EntityInterface $user)
     {
@@ -65,7 +66,7 @@ class UsersMailer extends Mailer
      * @param EntityInterface $user User entity
      * @param EntityInterface $socialAccount SocialAccount entity
      *
-     * @return array email send result
+     * @return void
      */
     protected function socialAccountValidation(EntityInterface $user, EntityInterface $socialAccount)
     {

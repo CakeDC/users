@@ -79,7 +79,8 @@ class PasswordBehavior extends BaseTokenBehavior
     /**
      * Send the reset password related email link
      *
-     * @param $user
+     * @param EntityInterface $user user
+     * @return void
      */
     protected function sendResetPasswordEmail($user)
     {

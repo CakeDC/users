@@ -11,8 +11,8 @@
 
 namespace CakeDC\Users\Test\App\Mailer;
 
-use Cake\Datasource\EntityInterface;
 use CakeDC\Users\Mailer\UsersMailer;
+use Cake\Datasource\EntityInterface;
 
 /**
  * Override default mailer class to test customization

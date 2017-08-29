@@ -12,13 +12,11 @@
 
 namespace CakeDC\Users\Test\TestCase\Model\Behavior;
 
-use Cake\Routing\Router;
 use CakeDC\Users\Exception\UserAlreadyActiveException;
 use Cake\Core\Configure;
 use Cake\Mailer\Email;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
-use InvalidArgumentException;
 
 /**
  * Test Case

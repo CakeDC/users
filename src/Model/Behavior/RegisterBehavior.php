@@ -218,7 +218,8 @@ class RegisterBehavior extends BaseTokenBehavior
     /**
      * Wrapper for mailer
      *
-     * @param $user
+     * @param EntityInterface $user user
+     * @return void
      */
     protected function _sendValidationEmail($user)
     {

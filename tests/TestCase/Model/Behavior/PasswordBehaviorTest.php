@@ -11,12 +11,12 @@
 
 namespace CakeDC\Users\Test\TestCase\Model\Behavior;
 
+use CakeDC\Users\Model\Behavior\PasswordBehavior;
+use CakeDC\Users\Test\App\Mailer\OverrideMailer;
 use Cake\Core\Configure;
 use Cake\Mailer\Email;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
-use CakeDC\Users\Model\Behavior\PasswordBehavior;
-use CakeDC\Users\Test\App\Mailer\OverrideMailer;
 use InvalidArgumentException;
 
 /**
