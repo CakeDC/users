@@ -83,6 +83,7 @@ trait PasswordManagementTrait
                 $this->Flash->error(__d('CakeDC/Users', '{0}', $wpe->getMessage()));
             } catch (Exception $exception) {
                 $this->Flash->error(__d('CakeDC/Users', 'Password could not be changed'));
+                $this->log($exception->getMessage());
             }
         }
         $this->set(compact('user'));
@@ -136,6 +137,7 @@ trait PasswordManagementTrait
             $this->Flash->error(__d('CakeDC/Users', 'The user is not active'));
         } catch (Exception $exception) {
             $this->Flash->error(__d('CakeDC/Users', 'Token could not be reset'));
+            $this->log($exception->getMessage());
         }
     }
 
