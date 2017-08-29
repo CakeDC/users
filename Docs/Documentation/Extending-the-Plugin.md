@@ -156,5 +156,38 @@ Updating the Templates
 Use the standard CakePHP conventions to override Plugin views using your application views
 http://book.cakephp.org/3.0/en/plugins.html#overriding-plugin-templates-from-inside-your-application
 
+Updating the Emails
+-------------------
+
+Extend the `\CakeDC\Users\Mailer\UsersMailer` class and override the email configuration to change the way the 
+emails are sent by the Plugin. We currently have:
+* validation, sent with a link to validate new users registered
+* resetPassword, sent with a link to access the reset password feature
+* socialAccountValidation, sent with a link to validate the social account used for login
+
+Example, to override the validation email you would need to:
+* Create a new class in your application
+```php
+namespace App\Mailer;
+
+use Cake\Datasource\EntityInterface;
+use CakeDC\Users\Mailer\UsersMailer;
+
+class MyUsersMailer extends UsersMailer
+{
+    public function resetPassword(EntityInterface $user)
+    {
+        parent::resetPassword($user);
+        $this->setSubject('This is the new subject');
+        $this->setTemplate('custom-template-in-app-namespace');
+    }
+}
+```
+* Configure the Plugin to use this new mailer class in bootstrap or users.php
+`Configure::write('Users.Email.mailerClass', \App\Mailer\MyUsersMailer::class);`
+
+* Create the file `src/Template/Email/text/custom_template_in_app_namespace.ctp`
+with your custom contents. Note you can also prepare an html version of the file,
+change the template, or do any other customization in the `MyUsersMailer` method.
 
 
