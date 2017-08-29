@@ -136,7 +136,7 @@ class PasswordBehaviorTest extends TestCase
     /**
      * Test resetToken
      *
-     * @expectedException CakeDC\Users\Exception\UserNotFoundException
+     * @expectedException \CakeDC\Users\Exception\UserNotFoundException
      */
     public function testResetTokenNotExistingUser()
     {
@@ -148,7 +148,7 @@ class PasswordBehaviorTest extends TestCase
     /**
      * Test resetToken
      *
-     * @expectedException CakeDC\Users\Exception\UserAlreadyActiveException
+     * @expectedException \CakeDC\Users\Exception\UserAlreadyActiveException
      */
     public function testResetTokenUserAlreadyActive()
     {
@@ -168,7 +168,7 @@ class PasswordBehaviorTest extends TestCase
     /**
      * Test resetToken
      *
-     * @expectedException CakeDC\Users\Exception\UserNotActiveException
+     * @expectedException \CakeDC\Users\Exception\UserNotActiveException
      */
     public function testResetTokenUserNotActive()
     {
@@ -205,10 +205,27 @@ class PasswordBehaviorTest extends TestCase
         $result = $this->Behavior->changePassword($user);
     }
 
+    /**
+     * test Email Override
+     */
     public function testEmailOverride()
     {
+        $overrideMailer = $this->getMockBuilder(OverrideMailer::class)
+            ->setMethods(['send'])
+            ->getMock();
         Configure::write('Users.Email.mailerClass', OverrideMailer::class);
-        $this->Behavior = new PasswordBehavior($this->table);
+        $this->Behavior = $this->getMockBuilder(PasswordBehavior::class)
+            ->setConstructorArgs([$this->table])
+            ->setMethods(['getMailer'])
+            ->getMock();
+        $overrideMailer->expects($this->once())
+            ->method('send')
+            ->with('resetPassword')
+            ->willReturn(true);
+        $this->Behavior->expects($this->once())
+            ->method('getMailer')
+            ->with(OverrideMailer::class)
+            ->willReturn($overrideMailer);
         $this->Behavior->resetToken('user-1', [
             'expiration' => 3600,
             'checkActive' => true,
