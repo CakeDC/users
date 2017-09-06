@@ -138,7 +138,7 @@ trait PasswordManagementTrait
             $this->Flash->error(__d('CakeDC/Users', 'The user is not active'));
         } catch (Exception $exception) {
             $this->Flash->error(__d('CakeDC/Users', 'Token could not be reset'));
-            Log::error($exception->getMessage());
+            $this->log($exception->getMessage());
         }
     }
 

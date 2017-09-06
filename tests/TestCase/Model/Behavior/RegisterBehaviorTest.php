@@ -48,7 +48,6 @@ class RegisterBehaviorTest extends TestCase
         Email::setConfigTransport('test', [
             'className' => 'Debug'
         ]);
-        //$this->configEmail = Email::getConfig('default');
         Email::setConfig('default', [
             'transport' => 'test',
             'from' => 'cakedc@example.com'
