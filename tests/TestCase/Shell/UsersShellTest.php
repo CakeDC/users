@@ -272,10 +272,9 @@ class UsersShellTest extends TestCase
 
     /**
      * Reset all passwords
-     * 
+     *
      * @expectedException \Cake\Console\Exception\StopException
      * @expectedExceptionMessage Please enter a password.
-     * @return void
      */
     public function testResetAllPasswordsNoPassingParams()
     {

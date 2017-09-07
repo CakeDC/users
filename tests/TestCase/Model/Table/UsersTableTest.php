@@ -52,12 +52,10 @@ class UsersTableTest extends TestCase
         Email::setConfigTransport('test', [
             'className' => 'Debug'
         ]);
-        //$this->configEmail = Email::getConfig('default');
         Email::setConfig('default', [
             'transport' => 'test',
             'from' => 'cakedc@example.com'
         ]);
-        $this->Email = new Email(['from' => 'test@example.com', 'transport' => 'test']);
         Plugin::routes('CakeDC/Users');
     }
 
@@ -72,7 +70,6 @@ class UsersTableTest extends TestCase
         Router::fullBaseUrl($this->fullBaseBackup);
         Email::drop('default');
         Email::dropTransport('test');
-        //Email::setConfig('default', $this->configEmail);
 
         parent::tearDown();
     }
@@ -150,7 +147,8 @@ class UsersTableTest extends TestCase
 
     /**
      * Test register method
-    testValidateRegisterValidateEmail     */
+     * testValidateRegisterValidateEmail
+     */
     public function testValidateRegisterNoTosRequired()
     {
         $user = [

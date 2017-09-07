@@ -27,7 +27,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
     public function setUp()
     {
         $this->traitClassName = 'CakeDC\Users\Controller\Traits\PasswordManagementTrait';
-        $this->traitMockMethods = ['set', 'redirect', 'validate'];
+        $this->traitMockMethods = ['set', 'redirect', 'validate', 'log'];
         $this->mockDefaultEmail = true;
         parent::setUp();
     }

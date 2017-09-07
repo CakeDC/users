@@ -17,7 +17,6 @@ use Cake\Core\Configure;
 use Cake\Mailer\Email;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
-use InvalidArgumentException;
 
 /**
  * Test Case
@@ -49,7 +48,10 @@ class RegisterBehaviorTest extends TestCase
         Email::setConfigTransport('test', [
             'className' => 'Debug'
         ]);
-        $this->Email = new Email(['from' => 'test@example.com', 'transport' => 'test']);
+        Email::setConfig('default', [
+            'transport' => 'test',
+            'from' => 'cakedc@example.com'
+        ]);
     }
 
     /**
@@ -60,6 +62,7 @@ class RegisterBehaviorTest extends TestCase
     public function tearDown()
     {
         unset($this->Table, $this->Behavior);
+        Email::drop('default');
         Email::dropTransport('test');
         parent::tearDown();
     }
@@ -80,7 +83,7 @@ class RegisterBehaviorTest extends TestCase
             'last_name' => 'user',
             'tos' => 1
         ];
-        $result = $this->Table->register($this->Table->newEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 0, 'email_class' => $this->Email]);
+        $result = $this->Table->register($this->Table->newEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 0]);
         $this->assertTrue($result->active);
     }
 
@@ -92,7 +95,7 @@ class RegisterBehaviorTest extends TestCase
     public function testValidateRegisterEmptyUser()
     {
         $user = [];
-        $result = $this->Table->register($this->Table->newEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1, 'email_class' => $this->Email]);
+        $result = $this->Table->register($this->Table->newEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1]);
         $this->assertFalse($result);
     }
 
@@ -112,7 +115,7 @@ class RegisterBehaviorTest extends TestCase
             'last_name' => 'user',
             'tos' => 1
         ];
-        $result = $this->Table->register($this->Table->newEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1, 'email_class' => $this->Email]);
+        $result = $this->Table->register($this->Table->newEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1]);
         $this->assertNotEmpty($result);
         $this->assertFalse($result->active);
         $this->assertNotEmpty($result->tos_date);
@@ -161,7 +164,7 @@ class RegisterBehaviorTest extends TestCase
                 ->with($entityUser)
                 ->will($this->returnValue($entityUser));
 
-        $result = $this->Behavior->register($this->Table->newEntity(), $user, ['validator' => 'custom', 'validate_email' => 1, 'email_class' => $this->Email]);
+        $result = $this->Behavior->register($this->Table->newEntity(), $user, ['validator' => 'custom', 'validate_email' => 1]);
         $this->assertNotEmpty($result->tos_date);
     }
 
@@ -179,7 +182,7 @@ class RegisterBehaviorTest extends TestCase
             'first_name' => 'test',
             'last_name' => 'user',
         ];
-        $result = $this->Table->register($this->Table->newEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1, 'use_tos' => 1, 'email_class' => $this->Email]);
+        $result = $this->Table->register($this->Table->newEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1, 'use_tos' => 1]);
         $this->assertFalse($result);
     }
 
@@ -198,7 +201,7 @@ class RegisterBehaviorTest extends TestCase
             'first_name' => 'test',
             'last_name' => 'user',
         ];
-        $result = $this->Table->register($this->Table->newEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1, 'use_tos' => 0, 'email_class' => $this->Email]);
+        $result = $this->Table->register($this->Table->newEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1, 'use_tos' => 0]);
         $this->assertNotEmpty($result);
     }
 
@@ -286,8 +289,7 @@ class RegisterBehaviorTest extends TestCase
         Configure::write('Users.Registration.defaultRole', false);
         $result = $this->Table->register($this->Table->newEntity(), $user, [
             'token_expiration' => 3600,
-            'validate_email' => 0,
-            'email_class' => $this->Email
+            'validate_email' => 0
         ]);
         $this->assertSame('user', $result['role']);
     }
@@ -312,7 +314,6 @@ class RegisterBehaviorTest extends TestCase
         $result = $this->Table->register($this->Table->newEntity(), $user, [
             'token_expiration' => 3600,
             'validate_email' => 0,
-            'email_class' => $this->Email
         ]);
         $this->assertSame('emperor', $result['role']);
     }
@@ -333,10 +334,10 @@ class RegisterBehaviorTest extends TestCase
             'last_name' => 'user',
             'tos' => 1
         ];
-        $result = $this->Table->register($this->Table->newEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1, 'email_class' => $this->Email]);
+        $result = $this->Table->register($this->Table->newEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1]);
         $this->assertFalse($result->active);
         $originalExpiration = $result->token_expires;
-        $updatedResult = $this->Table->resendValidationEmail($result, ['token_expiration' => 4000, 'email_class' => $this->Email]);
+        $updatedResult = $this->Table->resendValidationEmail($result, ['token_expiration' => 4000]);
         $this->assertNotEmpty($updatedResult);
         $this->assertFalse($updatedResult->active);
         $newExpiration = $updatedResult->token_expires;
@@ -359,9 +360,9 @@ class RegisterBehaviorTest extends TestCase
             'last_name' => 'user',
             'tos' => 1
         ];
-        $result = $this->Table->register($this->Table->newEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1, 'email_class' => $this->Email]);
+        $result = $this->Table->register($this->Table->newEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1]);
         $activeUser = $this->Table->activateUser($result);
         $this->expectException(UserAlreadyActiveException::class);
-        $updatedResult = $this->Table->resendValidationEmail($activeUser, ['token_expiration' => 4000, 'email_class' => $this->Email]);
+        $updatedResult = $this->Table->resendValidationEmail($activeUser, ['token_expiration' => 4000]);
     }
 }
