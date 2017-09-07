@@ -72,19 +72,15 @@ class UsersTable extends Table
             ->requirePresence('password_confirm', 'create')
             ->notEmpty('password_confirm');
 
-        $validator->add('password', 'custom', [
-            'rule' => function ($value, $context) {
-                $confirm = Hash::get($context, 'data.password_confirm');
-                if (!is_null($confirm) && $value != $confirm) {
-                    return false;
-                }
-
-                return true;
-            },
-            'message' => __d('CakeDC/Users', 'Your password does not match your confirm password. Please try again'),
-            'on' => ['create', 'update'],
-            'allowEmpty' => false
-        ]);
+        $validator
+            ->requirePresence('password', 'create')
+            ->notEmpty('password')
+            ->add('password', [
+                'password_confirm_check' => [
+                    'rule' => ['compareWith', 'password_confirm'],
+                    'message' => __d('CakeDC/Users', 'Your password does not match your confirm password. Please try again'),
+                    'allowEmpty' => false 
+            ]]);
 
         return $validator;
     }
