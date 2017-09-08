@@ -114,13 +114,13 @@ class UserHelper extends Helper
      */
     public function welcome()
     {
-        $userId = $this->request->session()->read('Auth.User.id');
+        $userId = $this->request->getSession()->read('Auth.User.id');
         if (empty($userId)) {
             return;
         }
 
         $profileUrl = Configure::read('Users.Profile.route');
-        $label = __d('CakeDC/Users', 'Welcome, {0}', $this->AuthLink->link($this->request->session()->read('Auth.User.first_name') ?: $this->request->session()->read('Auth.User.username'), $profileUrl));
+        $label = __d('CakeDC/Users', 'Welcome, {0}', $this->AuthLink->link($this->request->getSession()->read('Auth.User.first_name') ?: $this->request->getSession()->read('Auth.User.username'), $profileUrl));
 
         return $this->Html->tag('span', $label, ['class' => 'welcome']);
     }

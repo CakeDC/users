@@ -8,11 +8,12 @@ The plugin itself is already capable of:
 * User registration
 * Account verification by a token sent via email
 * User login (email / password)
-* Social login (Twitter, Facebook)
+* Social login (Twitter, Facebook, Google, Instagram, LinkedIn)
 * Password reset based on requesting a token by email and entering a new password
 * User management (add / edit / delete)
 * Simple roles management
 * Simple Rbac and SuperUser Authorize
 * RememberMe using cookie feature
 * reCaptcha for user registration and login
+* Two Factor authentication
 
