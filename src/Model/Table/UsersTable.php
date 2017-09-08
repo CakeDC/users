@@ -79,8 +79,8 @@ class UsersTable extends Table
                 'password_confirm_check' => [
                     'rule' => ['compareWith', 'password_confirm'],
                     'message' => __d('CakeDC/Users', 'Your password does not match your confirm password. Please try again'),
-                    'allowEmpty' => false 
-            ]]);
+                    'allowEmpty' => false
+                ]]);
 
         return $validator;
     }
