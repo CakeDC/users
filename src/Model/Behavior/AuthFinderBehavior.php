@@ -48,7 +48,7 @@ class AuthFinderBehavior extends Behavior
         if (empty($identifier)) {
             throw new \BadMethodCallException(__d('CakeDC/Users', 'Missing \'username\' in options data'));
         }
-        $where = $query->clause('where');
+        $where = $query->clause('where') ?: [];
         $query
             ->where(function ($exp) use ($identifier, $where) {
                 $or = $exp->or_([$this->_table->aliasField('email') => $identifier]);

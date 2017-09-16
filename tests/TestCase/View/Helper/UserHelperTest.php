@@ -145,10 +145,10 @@ class UserHelperTest extends TestCase
             ->will($this->returnValue('david'));
 
         $this->User->request = $this->getMockBuilder('Cake\Network\Request')
-                ->setMethods(['session'])
+                ->setMethods(['getSession'])
                 ->getMock();
         $this->User->request->expects($this->any())
-            ->method('session')
+            ->method('getSession')
             ->will($this->returnValue($session));
 
         $expected = '<span class="welcome">Welcome, <a href="/profile">david</a></span>';
@@ -172,10 +172,10 @@ class UserHelperTest extends TestCase
             ->will($this->returnValue(null));
 
         $this->User->request = $this->getMockBuilder('Cake\Network\Request')
-                ->setMethods(['session'])
+                ->setMethods(['getSession'])
                 ->getMock();
         $this->User->request->expects($this->any())
-            ->method('session')
+            ->method('getSession')
             ->will($this->returnValue($session));
 
         $result = $this->User->welcome();

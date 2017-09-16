@@ -253,10 +253,10 @@ class SocialAuthenticateTest extends TestCase
             ->with('Users.social');
 
         $this->Request = $this->getMockBuilder('Cake\Network\Request')
-            ->setMethods(['session'])
+            ->setMethods(['getSession'])
             ->getMock();
         $this->Request->expects($this->any())
-            ->method('session')
+            ->method('getSession')
             ->will($this->returnValue($session));
 
         $this->SocialAuthenticate->expects($this->once())
