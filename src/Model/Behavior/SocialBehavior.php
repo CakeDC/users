@@ -98,6 +98,7 @@ class SocialBehavior extends BaseTokenBehavior
                 ]);
             }
         }
+
         return $user;
     }
 
