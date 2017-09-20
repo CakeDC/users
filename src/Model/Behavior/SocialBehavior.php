@@ -32,6 +32,28 @@ class SocialBehavior extends BaseTokenBehavior
     use RandomStringTrait;
 
     /**
+     * Username field it can be modified via config
+     *
+     * @var string
+     */
+    protected $_username = 'username';
+
+    /**
+     * Initialize an action instance
+     *
+     * @param array $config Configuration options passed to the constructor
+     * @return void
+     */
+    public function initialize(array $config)
+    {
+        if (isset($config['username'])) {
+            $this->_username = $config['username'];
+        }
+
+        parent::initialize($config);
+    }
+
+    /**
      * Performs social login
      *
      * @param array $data Array social login.
@@ -63,24 +85,21 @@ class SocialBehavior extends BaseTokenBehavior
             $user = $existingAccount->user;
         }
         if (!empty($existingAccount)) {
-            if ($existingAccount->active) {
-                if ($user->active) {
-                    return $user;
-                } else {
-                    throw new UserNotActiveException([
-                        $existingAccount->provider,
-                        $existingAccount->$user
-                    ]);
-                }
-            } else {
+            if (!$existingAccount->active) {
                 throw new AccountNotActiveException([
                     $existingAccount->provider,
                     $existingAccount->reference
                 ]);
             }
+            if (!$user->active) {
+                throw new UserNotActiveException([
+                    $existingAccount->provider,
+                    $existingAccount->$user
+                ]);
+            }
         }
 
-        return false;
+        return $user;
     }
 
     /**
@@ -102,8 +121,8 @@ class SocialBehavior extends BaseTokenBehavior
             throw new MissingEmailException(__d('CakeDC/Users', 'Email not present'));
         } else {
             $existingUser = $this->_table->find()
-                    ->where([$this->_table->aliasField('email') => $email])
-                    ->first();
+                ->where([$this->_table->aliasField('email') => $email])
+                ->first();
         }
 
         $user = $this->_populateUser($data, $existingUser, $useEmail, $validateEmail, $tokenExpiration);
@@ -182,6 +201,7 @@ class SocialBehavior extends BaseTokenBehavior
                     $userData['username'] = preg_replace('/[^A-Za-z0-9]/i', '', Hash::get($userData, 'username'));
                 }
             }
+
             $userData['username'] = $this->generateUniqueUsername(Hash::get($userData, 'username'));
             if ($useEmail) {
                 $userData['email'] = Hash::get($data, 'email');
@@ -224,7 +244,7 @@ class SocialBehavior extends BaseTokenBehavior
         $i = 0;
         while (true) {
             $existingUsername = $this->_table->find()
-                ->where([$this->_table->aliasField('username') => $username])
+                ->where([$this->_table->aliasField($this->_username) => $username])
                 ->count();
             if ($existingUsername > 0) {
                 $username = $username . $i;

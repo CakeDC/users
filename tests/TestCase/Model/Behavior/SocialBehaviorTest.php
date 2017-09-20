@@ -87,6 +87,39 @@ class SocialBehaviorTest extends TestCase
     }
 
     /**
+     * Test socialLogin with facebook and not existing user
+     *
+     * @dataProvider providerFacebookSocialLogin
+     */
+    public function testSocialLoginFacebookProviderUsingEmail($data, $options, $dataUser)
+    {
+        $user = $this->Table->newEntity($dataUser, ['associated' => ['SocialAccounts']]);
+        $user->password = '$2y$10$0QzszaIEpW1pYpoKJVf4DeqEAHtg9whiLTX/l3TcHAoOLF1bC9U.6';
+
+        $this->Behavior->expects($this->once())
+            ->method('generateUniqueUsername')
+            ->with('email')
+            ->will($this->returnValue('username'));
+
+        $this->Behavior->expects($this->once())
+            ->method('randomString')
+            ->will($this->returnValue('password'));
+
+        $this->Behavior->expects($this->once())
+            ->method('_updateActive')
+            ->will($this->returnValue($user));
+
+        $this->Table->expects($this->once())
+            ->method('save')
+            ->with($user)
+            ->will($this->returnValue($user));
+
+        $this->Behavior->initialize(['username' => 'email']);
+        $result = $this->Behavior->socialLogin($data, $options);
+        $this->assertEquals($result, $user);
+    }
+
+    /**
      * Provider for socialLogin with facebook and not existing user
      *
      */
