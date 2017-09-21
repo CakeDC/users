@@ -72,3 +72,17 @@ We recommend the use of [Bootstrap Social](http://lipis.github.io/bootstrap-soci
 
 Social Authentication was inspired by [UseMuffin/OAuth2](https://github.com/UseMuffin/OAuth2) library.
 
+Custom username field
+---------------------
+
+You can custom the username field in the SocialBehavior. It's pretty simple.
+
+In your `UsersCustomTable` you just need to add the SocialBehavior in this way.
+
+```php
+$this->addBehavior('CakeDC.Users/Social', [
+    'username' => 'email' 
+]);
+```
+
+By default it will use `username` field.
