@@ -75,9 +75,7 @@ Social Authentication was inspired by [UseMuffin/OAuth2](https://github.com/UseM
 Custom username field
 ---------------------
 
-You can custom the username field in the SocialBehavior. It's pretty simple.
-
-In your `UsersCustomTable` you just need to add the SocialBehavior in this way.
+In your customized users table, add the SocialBehavior with the following configuration:
 
 ```php
 $this->addBehavior('CakeDC.Users/Social', [
