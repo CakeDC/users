@@ -4,6 +4,16 @@ Changelog
 Releases for CakePHP 3
 -------------
 
+* 5.2.0
+  * Compatible with 3.5, deprecations will be removed in next major version of the plugin
+  * Username is now custom in SocialBehavior
+  * Better handling of the RememberMe checkbox
+  * Updated CakeDC/Auth to use ^2.0
+  * Use of UsersMailer class, and allow override of the emails sent by the plugin
+  * Better token generation via randomBytes
+  * Improved documentation
+  * Fixed bugs reported
+
 * 5.1.0
   * New resend validation method in RegisterBehavior
   * Allow upgrade to CakePHP 3.5.x
