@@ -63,7 +63,7 @@ class RememberMeComponent extends Component
      */
     protected function _validateConfig()
     {
-        if (mb_strlen(Security::salt(), '8bit') < 32) {
+        if (mb_strlen(Security::getSalt(), '8bit') < 32) {
             throw new InvalidArgumentException(
                 __d('CakeDC/Users', 'Invalid app salt, app salt must be at least 256 bits (32 bytes) long')
             );
@@ -77,7 +77,7 @@ class RememberMeComponent extends Component
      */
     protected function _attachEvents()
     {
-        $eventManager = $this->getController()->eventManager();
+        $eventManager = $this->getController()->getEventManager();
         $eventManager->on(UsersAuthComponent::EVENT_AFTER_LOGIN, [], [$this, 'setLoginCookie']);
         $eventManager->on(UsersAuthComponent::EVENT_BEFORE_LOGOUT, [], [$this, 'destroy']);
     }
@@ -137,7 +137,7 @@ class RememberMeComponent extends Component
         if (!empty($user) ||
             $this->getController()->request->is(['post', 'put']) ||
             $this->getController()->request->getParam('action') === 'logout' ||
-            $this->getController()->request->session()->check(Configure::read('Users.Key.Session.social')) ||
+            $this->getController()->request->getSession()->check(Configure::read('Users.Key.Session.social')) ||
             $this->getController()->request->getParam('provider')) {
             return;
         }

@@ -29,10 +29,10 @@ trait SocialTrait
      */
     public function socialEmail()
     {
-        if (!$this->request->session()->check(Configure::read('Users.Key.Session.social'))) {
+        if (!$this->request->getSession()->check(Configure::read('Users.Key.Session.social'))) {
             throw new NotFoundException();
         }
-        $this->request->session()->delete('Flash.auth');
+        $this->request->getSession()->delete('Flash.auth');
 
         if ($this->request->is('post')) {
             $validPost = $this->_validateRegisterPost();

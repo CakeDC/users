@@ -381,7 +381,7 @@ class LinkSocialTraitTest extends BaseTraitTest
         Configure::write('OAuth.providers.facebook.options.clientId', 'testclientidtestclientid');
         Configure::write('OAuth.providers.facebook.options.clientSecret', 'testclientsecrettestclientsecret');
         $user = TableRegistry::get('akeDC/Users.Users')->get('00000000-0000-0000-0000-000000000001');
-        $user->errors([
+        $user->setErrors([
             'social_accounts' => [
                 '_existsIn' => __d('CakeDC/Users', 'Social account already associated to another user')
             ]

@@ -49,14 +49,14 @@ trait LoginTrait
         $oauthToken = $this->request->getQuery('oauth_token');
         $oauthVerifier = $this->request->getQuery('oauth_verifier');
         if (!empty($oauthToken) && !empty($oauthVerifier)) {
-            $temporaryCredentials = $this->request->session()->read('temporary_credentials');
+            $temporaryCredentials = $this->request->getSession()->read('temporary_credentials');
             $tokenCredentials = $server->getTokenCredentials($temporaryCredentials, $oauthToken, $oauthVerifier);
             $user = (array)$server->getUserDetails($tokenCredentials);
             $user['token'] = [
                 'accessToken' => $tokenCredentials->getIdentifier(),
                 'tokenSecret' => $tokenCredentials->getSecret(),
             ];
-            $this->request->session()->write(Configure::read('Users.Key.Session.social'), $user);
+            $this->request->getSession()->write(Configure::read('Users.Key.Session.social'), $user);
             try {
                 $user = $this->Auth->identify();
                 $this->_afterIdentifyUser($user, true);
@@ -71,13 +71,13 @@ trait LoginTrait
             if (!empty($exception)) {
                 return $this->failedSocialLogin(
                     $exception,
-                    $this->request->session()->read(Configure::read('Users.Key.Session.social')),
+                    $this->request->getSession()->read(Configure::read('Users.Key.Session.social')),
                     true
                 );
             }
         } else {
             $temporaryCredentials = $server->getTemporaryCredentials();
-            $this->request->session()->write('temporary_credentials', $temporaryCredentials);
+            $this->request->getSession()->write('temporary_credentials', $temporaryCredentials);
             $url = $server->getAuthorizationUrl($temporaryCredentials);
 
             return $this->redirect($url);
@@ -108,7 +108,7 @@ trait LoginTrait
                 if ($flash) {
                     $this->Flash->success(__d('CakeDC/Users', 'Please enter your email'));
                 }
-                $this->request->session()->write(Configure::read('Users.Key.Session.social'), $data);
+                $this->request->getSession()->write(Configure::read('Users.Key.Session.social'), $data);
 
                 return $this->redirect([
                     'plugin' => 'CakeDC/Users',
@@ -131,7 +131,7 @@ trait LoginTrait
         if ($flash) {
             $this->Auth->setConfig('authError', $msg);
             $this->Auth->setConfig('flash.params', ['class' => 'success']);
-            $this->request->session()->delete(Configure::read('Users.Key.Session.social'));
+            $this->request->getSession()->delete(Configure::read('Users.Key.Session.social'));
             $this->Flash->success(__d('CakeDC/Users', $msg));
         }
 
@@ -147,7 +147,7 @@ trait LoginTrait
     public function socialLogin()
     {
         $socialProvider = $this->request->getParam('provider');
-        $socialUser = $this->request->session()->read(Configure::read('Users.Key.Session.social'));
+        $socialUser = $this->request->getSession()->read(Configure::read('Users.Key.Session.social'));
 
         if (empty($socialProvider) && empty($socialUser)) {
             throw new NotFoundException();
@@ -218,10 +218,10 @@ trait LoginTrait
         // storing user's session in the temporary one
         // until the GA verification is checked
         $temporarySession = $this->Auth->user();
-        $this->request->session()->delete('Auth.User');
+        $this->request->getSession()->delete('Auth.User');
 
         if (!empty($temporarySession)) {
-            $this->request->session()->write('temporarySession', $temporarySession);
+            $this->request->getSession()->write('temporarySession', $temporarySession);
         }
 
         if (array_key_exists('secret', $temporarySession)) {
@@ -243,7 +243,7 @@ trait LoginTrait
                         ->where(['id' => $temporarySession['id']]);
                     $query->execute();
                 } catch (\Exception $e) {
-                    $this->request->session()->destroy();
+                    $this->request->getSession()->destroy();
                     $message = __d('CakeDC/Users', $e->getMessage());
                     $this->Flash->error($message, 'default', [], 'auth');
 
@@ -260,7 +260,7 @@ trait LoginTrait
         if ($this->request->is('post')) {
             $codeVerified = false;
             $verificationCode = $this->request->getData('code');
-            $user = $this->request->session()->read('temporarySession');
+            $user = $this->request->getSession()->read('temporarySession');
             $entity = $this->getUsersTable()->get($user['id']);
 
             if (!empty($entity['secret'])) {
@@ -277,13 +277,13 @@ trait LoginTrait
                         ->execute();
                 }
 
-                $this->request->session()->delete('temporarySession');
-                $this->request->session()->write('Auth.User', $user);
+                $this->request->getSession()->delete('temporarySession');
+                $this->request->getSession()->write('Auth.User', $user);
                 $url = $this->Auth->redirectUrl();
 
                 return $this->redirect($url);
             } else {
-                $this->request->session()->destroy();
+                $this->request->getSession()->destroy();
                 $message = __d('CakeDC/Users', 'Verification code is invalid. Try again');
                 $this->Flash->error($message, 'default', [], 'auth');
 
@@ -359,7 +359,7 @@ trait LoginTrait
             return $this->redirect($eventBefore->result);
         }
 
-        $this->request->session()->destroy();
+        $this->request->getSession()->destroy();
         $this->Flash->success(__d('CakeDC/Users', 'You\'ve successfully logged out'));
 
         $eventAfter = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_LOGOUT, ['user' => $user]);
@@ -379,7 +379,7 @@ trait LoginTrait
     protected function _isSocialLogin()
     {
         return Configure::read('Users.Social.login') &&
-            $this->request->session()->check(Configure::read('Users.Key.Session.social'));
+            $this->request->getSession()->check(Configure::read('Users.Key.Session.social'));
     }
 
     /**

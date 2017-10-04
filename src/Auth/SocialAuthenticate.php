@@ -228,7 +228,7 @@ class SocialAuthenticate extends BaseAuthenticate
             return false;
         }
 
-        $session = $request->session();
+        $session = $request->getSession();
         $sessionKey = 'oauth2state';
         $state = $request->getQuery('state');
 
@@ -279,7 +279,7 @@ class SocialAuthenticate extends BaseAuthenticate
         }
 
         if ($this->getConfig('options.state')) {
-            $request->session()->write('oauth2state', $provider->getState());
+            $request->getSession()->write('oauth2state', $provider->getState());
         }
 
         $response = $response->withLocation($provider->getAuthorizationUrl());
@@ -381,14 +381,14 @@ class SocialAuthenticate extends BaseAuthenticate
      */
     public function getUser(ServerRequest $request)
     {
-        $data = $request->session()->read(Configure::read('Users.Key.Session.social'));
+        $data = $request->getSession()->read(Configure::read('Users.Key.Session.social'));
         $requestDataEmail = $request->getData('email');
         if (!empty($data) && empty($data['uid']) && (!empty($data['email']) || !empty($requestDataEmail))) {
             if (!empty($requestDataEmail)) {
                 $data['email'] = $requestDataEmail;
             }
             $user = $data;
-            $request->session()->delete(Configure::read('Users.Key.Session.social'));
+            $request->getSession()->delete(Configure::read('Users.Key.Session.social'));
         } else {
             if (empty($data) && !$rawData = $this->_authenticate($request)) {
                 return false;
@@ -401,11 +401,11 @@ class SocialAuthenticate extends BaseAuthenticate
             try {
                 $user = $this->_mapUser($provider, $rawData);
             } catch (MissingProviderException $ex) {
-                $request->session()->delete(Configure::read('Users.Key.Session.social'));
+                $request->getSession()->delete(Configure::read('Users.Key.Session.social'));
                 throw $ex;
             }
             if ($user['provider'] === SocialAccountsTable::PROVIDER_TWITTER) {
-                $request->session()->write(Configure::read('Users.Key.Session.social'), $user);
+                $request->getSession()->write(Configure::read('Users.Key.Session.social'), $user);
             }
         }
 
@@ -417,8 +417,8 @@ class SocialAuthenticate extends BaseAuthenticate
             return false;
         }
 
-        if ($request->session()->check(Configure::read('Users.Key.Session.social'))) {
-            $request->session()->delete(Configure::read('Users.Key.Session.social'));
+        if ($request->getSession()->check(Configure::read('Users.Key.Session.social'))) {
+            $request->getSession()->delete(Configure::read('Users.Key.Session.social'));
         }
 
         return $result;

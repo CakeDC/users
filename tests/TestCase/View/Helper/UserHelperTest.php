@@ -145,10 +145,10 @@ class UserHelperTest extends TestCase
             ->will($this->returnValue('david'));
 
         $this->User->request = $this->getMockBuilder('Cake\Network\Request')
-                ->setMethods(['session'])
+                ->setMethods(['getSession'])
                 ->getMock();
         $this->User->request->expects($this->any())
-            ->method('session')
+            ->method('getSession')
             ->will($this->returnValue($session));
 
         $expected = '<span class="welcome">Welcome, <a href="/profile">david</a></span>';
@@ -172,10 +172,10 @@ class UserHelperTest extends TestCase
             ->will($this->returnValue(null));
 
         $this->User->request = $this->getMockBuilder('Cake\Network\Request')
-                ->setMethods(['session'])
+                ->setMethods(['getSession'])
                 ->getMock();
         $this->User->request->expects($this->any())
-            ->method('session')
+            ->method('getSession')
             ->will($this->returnValue($session));
 
         $result = $this->User->welcome();
@@ -240,10 +240,10 @@ class UserHelperTest extends TestCase
      */
     public function testSocialLoginTranslation()
     {
-        I18n::locale('es_ES');
+        I18n::setLocale('es_ES');
         $result = $this->User->socialLogin('facebook');
         $this->assertEquals('<a href="/auth/facebook" class="btn btn-social btn-facebook"><i class="fa fa-facebook"></i>Iniciar sesión con Facebook</a>', $result);
-        I18n::locale('en_US');
+        I18n::setLocale('en_US');
     }
 
     /**

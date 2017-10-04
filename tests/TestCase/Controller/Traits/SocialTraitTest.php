@@ -58,10 +58,10 @@ class SocialTraitTest extends TestCase
             ->with('Flash.auth');
 
         $this->controller->Trait->request = $this->getMockBuilder('Cake\Network\Request')
-                ->setMethods(['session'])
+                ->setMethods(['getSession'])
                 ->getMock();
         $this->controller->Trait->request->expects($this->any())
-            ->method('session')
+            ->method('getSession')
             ->will($this->returnValue($session));
 
         $this->controller->Trait->socialEmail();
@@ -83,10 +83,10 @@ class SocialTraitTest extends TestCase
             ->will($this->returnValue(null));
 
         $this->controller->Trait->request = $this->getMockBuilder('Cake\Network\Request')
-                ->setMethods(['session'])
+                ->setMethods(['getSession'])
                 ->getMock();
         $this->controller->Trait->request->expects($this->once())
-            ->method('session')
+            ->method('getSession')
             ->will($this->returnValue($session));
 
         $this->controller->Trait->socialEmail();
@@ -107,10 +107,10 @@ class SocialTraitTest extends TestCase
             ->with('Flash.auth');
 
         $this->controller->Trait->request = $this->getMockBuilder('Cake\Network\Request')
-                ->setMethods(['session', 'is'])
+                ->setMethods(['getSession', 'is'])
                 ->getMock();
         $this->controller->Trait->request->expects($this->any())
-            ->method('session')
+            ->method('getSession')
             ->will($this->returnValue($session));
 
         $this->controller->Trait->request->expects($this->once())
@@ -149,10 +149,10 @@ class SocialTraitTest extends TestCase
             ->with('Flash.auth');
 
         $this->controller->Trait->request = $this->getMockBuilder('Cake\Network\Request')
-                ->setMethods(['session', 'is'])
+                ->setMethods(['getSession', 'is'])
                 ->getMock();
         $this->controller->Trait->request->expects($this->any())
-            ->method('session')
+            ->method('getSession')
             ->will($this->returnValue($session));
 
         $this->controller->Trait->request->expects($this->once())
