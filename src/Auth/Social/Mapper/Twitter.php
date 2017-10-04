@@ -48,4 +48,12 @@ class Twitter extends AbstractMapper
     {
         return self::TWITTER_BASE_URL . Hash::get($this->_rawData, $this->_mapFields['username']);
     }
+
+    /**
+     * @return string
+     */
+    protected function _avatar()
+    {
+        return str_replace('normal', 'bigger', Hash::get($this->_rawData, $this->_mapFields['avatar']));
+    }
 }

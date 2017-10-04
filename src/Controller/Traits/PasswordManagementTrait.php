@@ -15,6 +15,7 @@ use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Exception\UserNotFoundException;
 use CakeDC\Users\Exception\WrongPasswordException;
 use Cake\Core\Configure;
+use Cake\Log\Log;
 use Cake\Validation\Validator;
 use Exception;
 
@@ -83,6 +84,7 @@ trait PasswordManagementTrait
                 $this->Flash->error(__d('CakeDC/Users', '{0}', $wpe->getMessage()));
             } catch (Exception $exception) {
                 $this->Flash->error(__d('CakeDC/Users', 'Password could not be changed'));
+                $this->log($exception->getMessage());
             }
         }
         $this->set(compact('user'));
@@ -136,6 +138,7 @@ trait PasswordManagementTrait
             $this->Flash->error(__d('CakeDC/Users', 'The user is not active'));
         } catch (Exception $exception) {
             $this->Flash->error(__d('CakeDC/Users', 'Token could not be reset'));
+            $this->log($exception->getMessage());
         }
     }
 

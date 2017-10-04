@@ -228,7 +228,7 @@ trait LoginTrait
             $secret = $temporarySession['secret'];
         }
 
-        $secretVerified = $temporarySession['secret_verified'];
+        $secretVerified = Hash::get((array)$temporarySession, 'secret_verified');
 
         // showing QR-code until shared secret is verified
         if (!$secretVerified) {
@@ -251,7 +251,7 @@ trait LoginTrait
                 }
             }
             $secretDataUri = $this->GoogleAuthenticator->getQRCodeImageAsDataUri(
-                Hash::get($temporarySession, 'email'),
+                Hash::get((array)$temporarySession, 'email'),
                 $secret
             );
             $this->set(compact('secretDataUri'));

@@ -14,8 +14,7 @@ namespace CakeDC\Users\Model\Entity;
 use Cake\Core\Configure;
 use Cake\I18n\Time;
 use Cake\ORM\Entity;
-use Cake\Utility\Text;
-use DateTime;
+use Cake\Utility\Security;
 
 /**
  * User Entity.
@@ -159,7 +158,6 @@ class User extends Entity
     {
         $expiration = new Time('now');
         $this->token_expires = $expiration->addSeconds($tokenExpiration);
-
-        $this->token = str_replace('-', '', Text::uuid());
+        $this->token = bin2hex(Security::randomBytes(16));
     }
 }

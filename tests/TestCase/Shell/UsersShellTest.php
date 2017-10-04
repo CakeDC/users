@@ -273,14 +273,11 @@ class UsersShellTest extends TestCase
     /**
      * Reset all passwords
      *
-     * @return void
+     * @expectedException \Cake\Console\Exception\StopException
+     * @expectedExceptionMessage Please enter a password.
      */
     public function testResetAllPasswordsNoPassingParams()
     {
-        $this->Shell->expects($this->once())
-            ->method('abort')
-            ->with('Please enter a password.');
-
         $this->Shell->runCommand(['resetAllPasswords']);
     }
 

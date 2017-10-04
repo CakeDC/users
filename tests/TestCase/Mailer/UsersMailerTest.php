@@ -81,7 +81,7 @@ class UsersMailerTest extends TestCase
 
         $this->Email->expects($this->once())
             ->method('setSubject')
-            ->with('FirstName, Validate your Account')
+            ->with('FirstName, Your account validation link')
             ->will($this->returnValue($this->Email));
 
         $this->Email->expects($this->once())
@@ -89,49 +89,7 @@ class UsersMailerTest extends TestCase
             ->with($data)
             ->will($this->returnValue($this->Email));
 
-        $this->Email->expects($this->once())
-            ->method('setTemplate')
-            ->with('CakeDC/Users.validation')
-            ->will($this->returnValue($this->Email));
-
-        $this->invokeMethod($this->UsersMailer, 'validation', [$user, 'Validate your Account']);
-    }
-
-    /**
-     * test sendValidationEmail including 'template'
-     *
-     * @return void
-     */
-    public function testValidationWithTemplate()
-    {
-        $table = TableRegistry::get('CakeDC/Users.Users');
-        $data = [
-            'first_name' => 'FirstName',
-            'email' => 'test@example.com',
-            'token' => '12345'
-        ];
-        $user = $table->newEntity($data);
-        $this->UsersMailer->expects($this->once())
-            ->method('to')
-            ->with($user['email'])
-            ->will($this->returnValue($this->Email));
-
-        $this->Email->expects($this->once())
-            ->method('setSubject')
-            ->with('FirstName, Validate your Account')
-            ->will($this->returnValue($this->Email));
-
-        $this->Email->expects($this->once())
-            ->method('setViewVars')
-            ->with($data)
-            ->will($this->returnValue($this->Email));
-
-        $this->Email->expects($this->once())
-            ->method('setTemplate')
-            ->with('myTemplate')
-            ->will($this->returnValue($this->Email));
-
-        $this->invokeMethod($this->UsersMailer, 'validation', [$user, 'Validate your Account', 'myTemplate']);
+        $this->invokeMethod($this->UsersMailer, 'validation', [$user]);
     }
 
     /**
@@ -191,12 +149,7 @@ class UsersMailerTest extends TestCase
             ->with($data)
             ->will($this->returnValue($this->Email));
 
-        $this->Email->expects($this->once())
-            ->method('setTemplate')
-            ->with('myTemplate')
-            ->will($this->returnValue($this->Email));
-
-        $this->invokeMethod($this->UsersMailer, 'resetPassword', [$user, 'myTemplate']);
+        $this->invokeMethod($this->UsersMailer, 'resetPassword', [$user]);
     }
 
     /**
