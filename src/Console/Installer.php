@@ -187,12 +187,14 @@ class Installer
 
         if ($count == 0) {
             $io->write('No changes made to Users configuration, project was already configured.');
+
             return;
         }
 
         $result = file_put_contents($config, $content);
         if ($result) {
             $io->write('Updated config/users.php.');
+
             return;
         }
         $io->write('Unable to update config/users.php.');
