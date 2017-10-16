@@ -50,6 +50,12 @@ If email is required and the social network does not return the user email then 
 
 In most situations you would not need to change any Oauth setting besides applications details.
 
+For new facebook aps you must use the graphApiVersion 2.8 or greater:
+
+```
+Configure::write('OAuth.providers.facebook.options.graphApiVersion', 'v2.8');
+```
+
 User Helper
 ---------------------
 
@@ -66,3 +72,15 @@ We recommend the use of [Bootstrap Social](http://lipis.github.io/bootstrap-soci
 
 Social Authentication was inspired by [UseMuffin/OAuth2](https://github.com/UseMuffin/OAuth2) library.
 
+Custom username field
+---------------------
+
+In your customized users table, add the SocialBehavior with the following configuration:
+
+```php
+$this->addBehavior('CakeDC.Users/Social', [
+    'username' => 'email' 
+]);
+```
+
+By default it will use `username` field.

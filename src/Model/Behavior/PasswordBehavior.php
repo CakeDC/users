@@ -1,44 +1,33 @@
 <?php
 /**
- * Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 namespace CakeDC\Users\Model\Behavior;
 
-use CakeDC\Users\Email\EmailSender;
 use CakeDC\Users\Exception\UserAlreadyActiveException;
 use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Exception\UserNotFoundException;
 use CakeDC\Users\Exception\WrongPasswordException;
-use CakeDC\Users\Model\Behavior\Behavior;
+use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
 use Cake\Datasource\Exception\RecordNotFoundException;
-use Cake\Mailer\Email;
+use Cake\Mailer\MailerAwareTrait;
 use Cake\Utility\Hash;
-use InvalidArgumentException;
 
 /**
  * Covers the password management features
  */
-class PasswordBehavior extends Behavior
+class PasswordBehavior extends BaseTokenBehavior
 {
-    /**
-     * Constructor hook method.
-     *
-     * @param array $config The configuration settings provided to this behavior.
-     * @return void
-     */
-    public function initialize(array $config)
-    {
-        parent::initialize($config);
-        $this->Email = new EmailSender();
-    }
+    use MailerAwareTrait;
+
     /**
      * Resets user token
      *
@@ -46,19 +35,19 @@ class PasswordBehavior extends Behavior
      * @param array $options checkActive, sendEmail, expiration
      *
      * @return string
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      * @throws UserNotFoundException
      * @throws UserAlreadyActiveException
      */
     public function resetToken($reference, array $options = [])
     {
         if (empty($reference)) {
-            throw new InvalidArgumentException(__d('CakeDC/Users', "Reference cannot be null"));
+            throw new \InvalidArgumentException(__d('CakeDC/Users', "Reference cannot be null"));
         }
 
         $expiration = Hash::get($options, 'expiration');
         if (empty($expiration)) {
-            throw new InvalidArgumentException(__d('CakeDC/Users', "Token expiration cannot be empty"));
+            throw new \InvalidArgumentException(__d('CakeDC/Users', "Token expiration cannot be empty"));
         }
 
         $user = $this->_getUser($reference);
@@ -80,12 +69,24 @@ class PasswordBehavior extends Behavior
         }
         $user->updateToken($expiration);
         $saveResult = $this->_table->save($user);
-        $template = !empty($options['emailTemplate']) ? $options['emailTemplate'] : 'CakeDC/Users.reset_password';
         if (Hash::get($options, 'sendEmail')) {
-            $this->Email->sendResetPasswordEmail($saveResult, null, $template);
+            $this->sendResetPasswordEmail($user);
         }
 
         return $saveResult;
+    }
+
+    /**
+     * Send the reset password related email link
+     *
+     * @param EntityInterface $user user
+     * @return void
+     */
+    protected function sendResetPasswordEmail($user)
+    {
+        $this
+            ->getMailer(Configure::read('Users.Email.mailerClass') ?: 'CakeDC/Users.Users')
+            ->send('resetPassword', [$user]);
     }
 
     /**
@@ -121,7 +122,10 @@ class PasswordBehavior extends Behavior
                 throw new WrongPasswordException(__d('CakeDC/Users', 'The current password does not match'));
             }
             if ($user->current_password === $user->password_confirm) {
-                throw new WrongPasswordException(__d('CakeDC/Users', 'You cannot use the current password as the new one'));
+                throw new WrongPasswordException(__d(
+                    'CakeDC/Users',
+                    'You cannot use the current password as the new one'
+                ));
             }
         }
         $user = $this->_table->save($user);

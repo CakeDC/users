@@ -42,7 +42,7 @@ class MyUser extends User
 config/bootstrap.php
 ```
 Configure::write('Users.config', ['users']);
-Plugin::load('Users', ['routes' => true, 'bootstrap' => true]);
+Plugin::load('CakeDC/Users', ['routes' => true, 'bootstrap' => true]);
 ```
 
 Then in your config/users.php
@@ -83,6 +83,8 @@ Extending the Controller
 You want to use one of your controllers to handle all the users features in your app, and keep the
 login/register/etc actions from Users Plugin,
 
+First create a new controller class:
+
 ```php
 <?php
 namespace App\Controller;
@@ -101,6 +103,16 @@ class MyUsersController extends AppController
 
 //add your new actions, override, etc here
 }
+```
+
+Don't forget to update the `Users.controller` configuration in `users.php`
+
+```php
+    'Users' => [
+        // ...
+        // Controller used to manage users plugin features & actions
+        'controller' => 'MyUsers',
+        // ...
 ```
 
 Note you'll need to **copy the Plugin templates** you need into your project src/Template/MyUsers/[action].ctp
@@ -144,5 +156,38 @@ Updating the Templates
 Use the standard CakePHP conventions to override Plugin views using your application views
 http://book.cakephp.org/3.0/en/plugins.html#overriding-plugin-templates-from-inside-your-application
 
+Updating the Emails
+-------------------
+
+Extend the `\CakeDC\Users\Mailer\UsersMailer` class and override the email configuration to change the way the 
+emails are sent by the Plugin. We currently have:
+* validation, sent with a link to validate new users registered
+* resetPassword, sent with a link to access the reset password feature
+* socialAccountValidation, sent with a link to validate the social account used for login
+
+Example, to override the validation email you would need to:
+* Create a new class in your application
+```php
+namespace App\Mailer;
+
+use Cake\Datasource\EntityInterface;
+use CakeDC\Users\Mailer\UsersMailer;
+
+class MyUsersMailer extends UsersMailer
+{
+    public function resetPassword(EntityInterface $user)
+    {
+        parent::resetPassword($user);
+        $this->setSubject('This is the new subject');
+        $this->setTemplate('custom-template-in-app-namespace');
+    }
+}
+```
+* Configure the Plugin to use this new mailer class in bootstrap or users.php
+`Configure::write('Users.Email.mailerClass', \App\Mailer\MyUsersMailer::class);`
+
+* Create the file `src/Template/Email/text/custom_template_in_app_namespace.ctp`
+with your custom contents. Note you can also prepare an html version of the file,
+change the template, or do any other customization in the `MyUsersMailer` method.
 
 

@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -57,7 +57,7 @@ class SocialAccountsController extends AppController
             $this->Flash->error(__d('CakeDC/Users', 'Invalid token and/or social account'));
         } catch (AccountAlreadyActiveException $exception) {
             $this->Flash->error(__d('CakeDC/Users', 'Social Account already active'));
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             $this->Flash->error(__d('CakeDC/Users', 'Social Account could not be validated'));
         }
 
@@ -69,8 +69,8 @@ class SocialAccountsController extends AppController
      *
      * @param string $provider provider
      * @param string $reference reference
-     * @return Response|void
-     * @throws \Users\Model\Table\AccountAlreadyActiveException
+     * @return mixed
+     * @throws AccountAlreadyActiveException
      */
     public function resendValidation($provider, $reference)
     {
@@ -85,7 +85,7 @@ class SocialAccountsController extends AppController
             $this->Flash->error(__d('CakeDC/Users', 'Invalid account'));
         } catch (AccountAlreadyActiveException $exception) {
             $this->Flash->error(__d('CakeDC/Users', 'Social Account already active'));
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             $this->Flash->error(__d('CakeDC/Users', 'Email could not be resent'));
         }
 

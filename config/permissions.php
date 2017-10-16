@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -51,29 +51,42 @@
 
 return [
     'Users.SimpleRbac.permissions' => [
+        //admin role allowed to all the things
         [
-            'role' => '*',
-            'plugin' => 'CakeDC/Users',
+            'role' => 'admin',
+            'prefix' => '*',
+            'extension' => '*',
+            'plugin' => '*',
             'controller' => '*',
             'action' => '*',
         ],
+        //specific actions allowed for the all roles in Users plugin
         [
-            'role' => 'user',
+            'role' => '*',
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
-            'action' => ['register', 'edit', 'view'],
+            'action' => ['profile', 'logout'],
         ],
         [
-            'role' => 'user',
+            'role' => '*',
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
-            'action' => '*',
-            'allowed' => false,
+            'action' => 'resetGoogleAuthenticator',
+            'allowed' => function (array $user, $role, \Cake\Http\ServerRequest $request) {
+                $userId = \Cake\Utility\Hash::get($request->getAttribute('params'), 'pass.0');
+                if (!empty($userId) && !empty($user)) {
+                    return $userId === $user['id'];
+                }
+
+                return false;
+            }
         ],
+        //all roles allowed to Pages/display
         [
-            'role' => ['user'],
-            'controller' => ['Pages'],
-            'action' => ['other', 'display'],
-            'allowed' => true,
+            'role' => '*',
+            //'plugin' => null,
+            'controller' => 'Pages',
+            'action' => 'display',
         ],
-        ]];
+    ]
+];

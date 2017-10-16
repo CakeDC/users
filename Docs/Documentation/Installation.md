@@ -19,7 +19,7 @@ composer require league/oauth1-client:@stable
 ```
 
 NOTE: you'll need to enable social login in your bootstrap.php file if you want to use it, social
-login is disabled by default. Check the [Configuration](Configuration.md) page for more details.
+login is disabled by default. Check the [Configuration](Configuration.md#configuration-for-social-login) page for more details.
 
 ```
 Configure::write('Users.Social.login', true); //to enable social login
@@ -33,6 +33,18 @@ composer require google/recaptcha:@stable
 
 NOTE: you'll need to configure the reCaptcha key and secret, check the [Configuration](Configuration.md)
 page for more details.
+
+If you want to use Google Authenticator features...
+
+```
+composer require robthree/twofactorauth:"^1.5.2"
+```
+
+NOTE: you'll need to enable `Users.GoogleAuthenticator.login`
+
+```
+Configure::write('Users.GoogleAuthenticator.login', true);
+```
 
 Creating Required Tables
 ------------------------

@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -46,13 +46,15 @@ class UsersTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('users');
-        $this->displayField('username');
-        $this->primaryKey('id');
+        $this->setTable('users');
+        $this->setDisplayField('username');
+        $this->setPrimaryKey('id');
         $this->addBehavior('Timestamp');
         $this->addBehavior('CakeDC/Users.Register');
         $this->addBehavior('CakeDC/Users.Password');
         $this->addBehavior('CakeDC/Users.Social');
+        $this->addBehavior('CakeDC/Users.LinkSocial');
+        $this->addBehavior('CakeDC/Users.AuthFinder');
         $this->hasMany('SocialAccounts', [
             'foreignKey' => 'user_id',
             'className' => 'CakeDC/Users.SocialAccounts'
@@ -70,19 +72,15 @@ class UsersTable extends Table
             ->requirePresence('password_confirm', 'create')
             ->notEmpty('password_confirm');
 
-        $validator->add('password', 'custom', [
-            'rule' => function ($value, $context) {
-                $confirm = Hash::get($context, 'data.password_confirm');
-                if (!is_null($confirm) && $value != $confirm) {
-                    return false;
-                }
-
-                return true;
-            },
-            'message' => __d('CakeDC/Users', 'Your password does not match your confirm password. Please try again'),
-            'on' => ['create', 'update'],
-            'allowEmpty' => false
-        ]);
+        $validator
+            ->requirePresence('password', 'create')
+            ->notEmpty('password')
+            ->add('password', [
+                'password_confirm_check' => [
+                    'rule' => ['compareWith', 'password_confirm'],
+                    'message' => __d('CakeDC/Users', 'Your password does not match your confirm password. Please try again'),
+                    'allowEmpty' => false
+                ]]);
 
         return $validator;
     }
@@ -183,41 +181,5 @@ class UsersTable extends Table
         }
 
         return $rules;
-    }
-
-    /**
-     * Custom finder to filter active users
-     *
-     * @param Query $query Query object to modify
-     * @param array $options Query options
-     * @return Query
-     */
-    public function findActive(Query $query, array $options = [])
-    {
-        $query->where([$this->aliasField('active') => 1]);
-
-        return $query;
-    }
-
-    /**
-     * Custom finder to log in users
-     *
-     * @param Query $query Query object to modify
-     * @param array $options Query options
-     * @return Query
-     * @throws \BadMethodCallException
-     */
-    public function findAuth(Query $query, array $options = [])
-    {
-        $identifier = Hash::get($options, 'username');
-        if (empty($identifier)) {
-            throw new \BadMethodCallException(__d('CakeDC/Users', 'Missing \'username\' in options data'));
-        }
-
-        $query
-            ->orWhere([$this->aliasField('email') => $identifier])
-            ->find('active', $options);
-
-        return $query;
     }
 }
