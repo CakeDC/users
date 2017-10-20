@@ -116,7 +116,7 @@ class UsersAuthComponent extends Component
         }
 
         list($plugin, $controller) = pluginSplit(Configure::read('Users.controller'));
-        if ($this->getController()->request->getParam('plugin') === $plugin &&
+        if ($this->getController()->request->getParam('plugin', null) === $plugin &&
             $this->getController()->request->getParam('controller') === $controller
         ) {
             $this->getController()->Auth->allow([
