@@ -190,6 +190,14 @@ $config = [
                     'callbackLinkSocialUri' => Router::fullBaseUrl() . '/callback-link-social/google',
                 ]
             ],
+            'amazon' => [
+                'className' => 'Luchianenco\OAuth2\Client\Provider\Amazon',
+                'options' => [
+                    'redirectUri' => Router::fullBaseUrl() . '/auth/amazon',
+                    'linkSocialUri' => Router::fullBaseUrl() . '/link-social/amazon',
+                    'callbackLinkSocialUri' => Router::fullBaseUrl() . '/callback-link-social/amazon',
+                ]
+            ],
         ],
     ]
 ];
