@@ -117,7 +117,7 @@ class SocialAuthenticateTest extends TestCase
                 'facebook' => [
                     'className' => 'League\OAuth2\Client\Provider\Facebook',
                     'options' => [
-                        'graphApiVersion' => 'v2.5',
+                        'graphApiVersion' => 'v2.8',
                         'redirectUri' => 'http://example.com/auth/facebook',
                     ]
                 ]
@@ -139,7 +139,7 @@ class SocialAuthenticateTest extends TestCase
                 'facebook' => [
                     'className' => 'missing',
                     'options' => [
-                        'graphApiVersion' => 'v2.5',
+                        'graphApiVersion' => 'v2.8',
                         'redirectUri' => 'http://example.com/auth/facebook',
                     ]
                 ]
