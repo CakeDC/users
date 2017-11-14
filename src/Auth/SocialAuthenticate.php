@@ -352,12 +352,12 @@ class SocialAuthenticate extends BaseAuthenticate
         }
         if (!empty($exception)) {
             $args = ['exception' => $exception, 'rawData' => $data];
-            $event = $this->_getController()->dispatchEvent(UsersAuthComponent::EVENT_FAILED_SOCIAL_LOGIN, $args);
+            $this->_getController()->dispatchEvent(UsersAuthComponent::EVENT_FAILED_SOCIAL_LOGIN, $args);
             if (method_exists($this->_getController(), 'failedSocialLogin')) {
                 $this->_getController()->failedSocialLogin($exception, $data, true);
             }
 
-            return $event->result;
+            return false;
         }
 
         // If new SocialAccount was created $user is returned containing it
