@@ -8,6 +8,7 @@ For easier configuration, you can specify an array of config files to override t
 
 config/bootstrap.php
 ```
+// The following configuration setting must be set before loading the Users plugin
 Configure::write('Users.config', ['users']);
 Plugin::load('CakeDC/Users', ['routes' => true, 'bootstrap' => true]);
 Configure::write('Users.Social.login', true); //to enable social login

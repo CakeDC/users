@@ -56,7 +56,7 @@ class GoogleAuthenticatorComponentTest extends TestCase
             'action' => 'edit'
         ]);
 
-        Security::salt('YJfIxfs2guVoUubWDYhG93b0qyJfIxfs2guwvniR2G0FgaC9mi');
+        Security::setSalt('YJfIxfs2guVoUubWDYhG93b0qyJfIxfs2guwvniR2G0FgaC9mi');
         Configure::write('App.namespace', 'Users');
         Configure::write('Users.GoogleAuthenticator.login', true);
 

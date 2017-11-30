@@ -91,14 +91,14 @@ class UserTest extends TestCase
      */
     public function testTokenExpiredLocale()
     {
-        I18n::locale('es_AR');
+        I18n::setLocale('es_AR');
         $this->User->token_expires = '+1 day';
         $isExpired = $this->User->tokenExpired();
         $this->assertFalse($isExpired);
         $this->User->token_expires = '-1 day';
         $isExpired = $this->User->tokenExpired();
         $this->assertTrue($isExpired);
-        I18n::locale('en_US');
+        I18n::setLocale('en_US');
     }
 
     /**

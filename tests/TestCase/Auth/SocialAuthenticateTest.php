@@ -117,7 +117,7 @@ class SocialAuthenticateTest extends TestCase
                 'facebook' => [
                     'className' => 'League\OAuth2\Client\Provider\Facebook',
                     'options' => [
-                        'graphApiVersion' => 'v2.5',
+                        'graphApiVersion' => 'v2.8',
                         'redirectUri' => 'http://example.com/auth/facebook',
                     ]
                 ]
@@ -139,7 +139,7 @@ class SocialAuthenticateTest extends TestCase
                 'facebook' => [
                     'className' => 'missing',
                     'options' => [
-                        'graphApiVersion' => 'v2.5',
+                        'graphApiVersion' => 'v2.8',
                         'redirectUri' => 'http://example.com/auth/facebook',
                     ]
                 ]
@@ -253,10 +253,10 @@ class SocialAuthenticateTest extends TestCase
             ->with('Users.social');
 
         $this->Request = $this->getMockBuilder('Cake\Network\Request')
-            ->setMethods(['session'])
+            ->setMethods(['getSession'])
             ->getMock();
         $this->Request->expects($this->any())
-            ->method('session')
+            ->method('getSession')
             ->will($this->returnValue($session));
 
         $this->SocialAuthenticate->expects($this->once())

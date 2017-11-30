@@ -27,7 +27,7 @@
         "source": "https://github.com/CakeDC/users"
     },
     "require": {
-        "cakephp/cakephp": "^3.4.0",
+        "cakephp/cakephp": "^3.5.0",
         "cakedc/auth": "^2.0"
     },
     "require-dev": {

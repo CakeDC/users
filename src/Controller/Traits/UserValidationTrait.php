@@ -52,7 +52,7 @@ trait UserValidationTrait
                     $result = $this->getUsersTable()->validate($token);
                     if (!empty($result)) {
                         $this->Flash->success(__d('CakeDC/Users', 'Reset password token was validated successfully'));
-                        $this->request->session()->write(
+                        $this->request->getSession()->write(
                             Configure::read('Users.Key.Session.resetPasswordUserId'),
                             $result->id
                         );

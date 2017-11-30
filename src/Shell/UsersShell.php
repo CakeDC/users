@@ -317,7 +317,7 @@ class UsersShell extends Shell
         } else {
             $this->out(__d('CakeDC/Users', 'User could not be added:'));
 
-            collection($userEntity->errors())->each(function ($error, $field) {
+            collection($userEntity->getErrors())->each(function ($error, $field) {
                 $this->out(__d('CakeDC/Users', 'Field: {0} Error: {1}', $field, implode(',', $error)));
             });
         }
@@ -338,7 +338,7 @@ class UsersShell extends Shell
         }
         $user = $this->Users->patchEntity($user, $data);
         collection($data)->filter(function ($value, $field) use ($user) {
-            return !$user->accessible($field);
+            return !$user->isAccessible($field);
         })->each(function ($value, $field) use (&$user) {
             $user->{$field} = $value;
         });
