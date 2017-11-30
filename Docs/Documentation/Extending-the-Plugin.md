@@ -9,7 +9,7 @@ users data. Check the initial users migration to know the default columns expect
 If your column names doesn't match the columns in your current table, you could use the Entity to
 match the colums using accessors & mutators as described here http://book.cakephp.org/3.0/en/orm/entities.html#accessors-mutators
 
-Example: we are going to use a custom table in our application ```my_users```
+Example: we are going to use a custom table ```my_users``` in our application , which has a field named ``is_active`` instead of the default ``active``.
 * Create a new Table under src/Model/Table/MyUsersTable.php
 
 ```php
@@ -18,7 +18,7 @@ namespace App\Model\Table;
 use CakeDC\Users\Model\Table\UsersTable;
 
 /**
- * Users Model
+ * Application specific Users Table with non plugin conform field(s)
  */
 class MyUsersTable extends UsersTable
 {
@@ -32,8 +32,32 @@ namespace App\Model\Entity;
 
 use CakeDC\Users\Model\Entity\User;
 
+/**
+ * Application specific User Entity with non plugin conform field(s)
+ */
 class MyUser extends User
 {
+    /**
+     * Map CakeDC's User.active field to User.is_active when getting
+     *
+     * @return mixed The value of the mapped property.
+     */
+    protected function _getActive()
+    {
+        return $this->_properties['is_active'];
+    }
+
+    /**
+     * Map CakeDC's User.active field to User.is_active when setting
+     *
+     * @param mixed $value The value to set.
+     * @return static
+     */
+    protected function _setActive($value)
+    {
+        $this->set('is_active', $value);
+        return $value;
+    }
 }
 ```
 
@@ -53,7 +77,7 @@ return [
 ```
 
 Now the Users Plugin will use MyUsers Table and Entity to register and login user in. Use the
-Entity to match your own columns in case they don't match the default column names:
+Entity as shown above to match your own columns in case they don't match the default column names:
 
 ```sql
 CREATE TABLE IF NOT EXISTS `users` (
