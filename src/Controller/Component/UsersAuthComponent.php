@@ -120,10 +120,11 @@ class UsersAuthComponent extends Component
             $rbac = new Rbac();
             // filter bypassAuth only
             $filteredPermissions = collection($rbac->getPermissions())
-                ->filter(function($permission) {
+                ->filter(function ($permission) {
                     if (!isset($permission['bypassAuth'])) {
                         return false;
                     }
+
                     return $permission['bypassAuth'] === true;
                 })
                 ->toArray();
