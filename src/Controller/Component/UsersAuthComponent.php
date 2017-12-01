@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Controller\Component;
 
+use CakeDC\Auth\Rbac\Rbac;
 use CakeDC\Users\Exception\BadConfigurationException;
 use Cake\Controller\Component;
 use Cake\Core\Configure;
@@ -113,6 +114,23 @@ class UsersAuthComponent extends Component
         if (Configure::read('Users.auth')) {
             //initialize Auth
             $this->getController()->loadComponent('Auth', Configure::read('Auth'));
+
+            // allow action if present in bypassAuth
+
+            $rbac = new Rbac();
+            // filter bypassAuth only
+            $filteredPermissions = collection($rbac->getPermissions())
+                ->filter(function($permission) {
+                    if (!isset($permission['bypassAuth'])) {
+                        return false;
+                    }
+                    return $permission['bypassAuth'] === true;
+                })
+                ->toArray();
+            $rbac->setPermissions($filteredPermissions);
+            if ($rbac->checkPermissions([], $this->getController()->request)) {
+                $this->getController()->Auth->allow($this->getController()->request->getParam('action'));
+            }
         }
 
         list($plugin, $controller) = pluginSplit(Configure::read('Users.controller'));
