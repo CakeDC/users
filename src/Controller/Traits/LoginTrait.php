@@ -188,8 +188,13 @@ trait LoginTrait
 
         if (!$this->request->is('post') && !$socialLogin) {
             if ($this->Auth->user()) {
-                $msg = __d('CakeDC/Users', 'You are already logged in');
-                $this->Flash->error($msg);
+                if (!$this->request->getSession()->read('Users.successSocialLogin')) {
+                    $msg = __d('CakeDC/Users', 'You are already logged in');
+                    $this->Flash->error($msg);
+                } else {
+                    $this->request->getSession()->delete('Users.successSocialLogin');
+                    $this->request->getSession()->delete('Flash');
+                }
                 $url = $this->Auth->redirectUrl();
 
                 return $this->redirect($url);

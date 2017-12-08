@@ -420,7 +420,7 @@ class SocialAuthenticate extends BaseAuthenticate
         if ($request->getSession()->check(Configure::read('Users.Key.Session.social'))) {
             $request->getSession()->delete(Configure::read('Users.Key.Session.social'));
         }
-
+        $request->getSession()->write('Users.successSocialLogin', true);
         return $result;
     }
 
