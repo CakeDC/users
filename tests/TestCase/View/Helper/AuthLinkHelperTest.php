@@ -122,7 +122,7 @@ class AuthLinkHelperTest extends TestCase
         $eventManagerMock = $this->getMockBuilder('Cake\Event\EventManager')
             ->setMethods(['dispatch'])
             ->getMock();
-        $view->eventManager($eventManagerMock);
+        $view->getEventManager($eventManagerMock);
         $this->AuthLink = new AuthLinkHelper($view);
         $result = new Event('dispatch-result');
         $eventManagerMock->expects($this->never())

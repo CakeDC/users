@@ -152,7 +152,7 @@ $config = [
             'facebook' => [
                 'className' => 'League\OAuth2\Client\Provider\Facebook',
                 'options' => [
-                    'graphApiVersion' => 'v2.5',
+                    'graphApiVersion' => 'v2.8', //bio field was deprecated on >= v2.8
                     'redirectUri' => Router::fullBaseUrl() . '/auth/facebook',
                     'linkSocialUri' => Router::fullBaseUrl() . '/link-social/facebook',
                     'callbackLinkSocialUri' => Router::fullBaseUrl() . '/callback-link-social/facebook',
@@ -188,6 +188,14 @@ $config = [
                     'redirectUri' => Router::fullBaseUrl() . '/auth/google',
                     'linkSocialUri' => Router::fullBaseUrl() . '/link-social/google',
                     'callbackLinkSocialUri' => Router::fullBaseUrl() . '/callback-link-social/google',
+                ]
+            ],
+            'amazon' => [
+                'className' => 'Luchianenco\OAuth2\Client\Provider\Amazon',
+                'options' => [
+                    'redirectUri' => Router::fullBaseUrl() . '/auth/amazon',
+                    'linkSocialUri' => Router::fullBaseUrl() . '/link-social/amazon',
+                    'callbackLinkSocialUri' => Router::fullBaseUrl() . '/callback-link-social/amazon',
                 ]
             ],
         ],
