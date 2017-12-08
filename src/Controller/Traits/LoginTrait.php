@@ -106,7 +106,7 @@ trait LoginTrait
         if (isset($exception)) {
             if ($exception instanceof MissingEmailException) {
                 if ($flash) {
-                    $this->Flash->success(__d('CakeDC/Users', 'Please enter your email'));
+                    $this->Flash->success(__d('CakeDC/Users', 'Please enter your email'), ['clear' => true]);
                 }
                 $this->request->getSession()->write(Configure::read('Users.Key.Session.social'), $data);
 
@@ -129,10 +129,8 @@ trait LoginTrait
             }
         }
         if ($flash) {
-            $this->Auth->setConfig('authError', $msg);
-            $this->Auth->setConfig('flash.params', ['class' => 'success']);
             $this->request->getSession()->delete(Configure::read('Users.Key.Session.social'));
-            $this->Flash->success(__d('CakeDC/Users', $msg));
+            $this->Flash->success(__d('CakeDC/Users', $msg), ['clear' => true]);
         }
 
         return $this->redirect(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
