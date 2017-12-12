@@ -1,6 +1,17 @@
 SocialAuthenticate
 =============
 
+We currently support the following providers to perform login as well as to link an existing account:
+
+* Facebook
+* Twitter
+* Google
+* LinkedIn
+* Instagram
+* Amazon
+
+Please [contact us](https://cakedc.com/contact) if you need to support another provider.
+
 Setup
 ---------------------
 
