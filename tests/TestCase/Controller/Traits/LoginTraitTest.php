@@ -326,14 +326,6 @@ class LoginTraitTest extends BaseTraitTest
             ->method('redirect')
             ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
 
-        $this->Trait->Auth->expects($this->at(0))
-            ->method('setConfig')
-            ->with('authError', 'Your user has not been validated yet. Please check your inbox for instructions');
-
-        $this->Trait->Auth->expects($this->at(1))
-            ->method('setConfig')
-            ->with('flash.params', ['class' => 'success']);
-
         $this->Trait->failedSocialLogin($event->data['exception'], $event->data['rawData'], true);
     }
 

@@ -400,7 +400,9 @@ class SocialAuthenticate extends BaseAuthenticate
             $provider = $this->_getProviderName($request);
             try {
                 $user = $this->_mapUser($provider, $rawData);
-                $this->_getController()->Auth->setConfig('authError', false);
+                if ($this->_getController()->components()->has('Auth')) {
+                    $this->_getController()->Auth->setConfig('authError', false);
+                }
             } catch (MissingProviderException $ex) {
                 $request->getSession()->delete(Configure::read('Users.Key.Session.social'));
                 throw $ex;
@@ -422,6 +424,7 @@ class SocialAuthenticate extends BaseAuthenticate
             $request->getSession()->delete(Configure::read('Users.Key.Session.social'));
         }
         $request->getSession()->write('Users.successSocialLogin', true);
+
         return $result;
     }
 

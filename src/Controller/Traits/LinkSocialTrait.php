@@ -11,11 +11,10 @@
 
 namespace CakeDC\Users\Controller\Traits;
 
+use CakeDC\Users\Model\Table\SocialAccountsTable;
 use Cake\Core\Configure;
 use Cake\Network\Exception\NotFoundException;
-use CakeDC\Users\Model\Table\SocialAccountsTable;
 use League\OAuth1\Client\Server\Twitter;
-use League\OAuth2\Client\Provider\AbstractProvider;
 
 /**
  * Ações para "linkar" contas sociais
@@ -44,6 +43,7 @@ trait LinkSocialTrait
         if (empty($temporaryCredentials)) {
             $this->request->session()->write('SocialLink.oauth2state', $provider->getState());
         }
+
         return $this->redirect($authUrl);
     }
 
@@ -80,7 +80,6 @@ trait LinkSocialTrait
                 } catch (\Exception $e) {
                     $error = $e;
                 }
-
             }
         } else {
             if (!$this->_validateCallbackSocialLink()) {
@@ -96,7 +95,6 @@ trait LinkSocialTrait
             } catch (\Exception $e) {
                 $error = $e;
             }
-
         }
 
         if (!empty($error) || empty($data)) {
@@ -108,6 +106,8 @@ trait LinkSocialTrait
             $this->log($log);
 
             $this->Flash->error($message);
+
+            return $this->redirect(['action' => 'profile']);
         }
 
         try {
@@ -124,9 +124,9 @@ trait LinkSocialTrait
             }
         } catch (\Exception $e) {
             $log = sprintf(
-                    "Error retrieving the authorized user's profile data. Error message: %s %s",
-                    $e->getMessage(),
-                    $e
+                "Error retrieving the authorized user's profile data. Error message: %s %s",
+                $e->getMessage(),
+                $e
             );
             $this->log($log);
 
@@ -195,8 +195,8 @@ trait LinkSocialTrait
                 'secret' => Configure::read('OAuth.providers.twitter.options.clientSecret'),
                 'callback_uri' => Configure::read('OAuth.providers.twitter.options.callbackLinkSocialUri'),
             ]);
-            return $server;
 
+            return $server;
         }
         $class = $config['className'];
         $redirectUri = $config['options']['callbackLinkSocialUri'];
