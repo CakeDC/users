@@ -44,7 +44,7 @@ trait LoginTrait
         $server = new Twitter([
             'identifier' => Configure::read('OAuth.providers.twitter.options.clientId'),
             'secret' => Configure::read('OAuth.providers.twitter.options.clientSecret'),
-            'callbackUri' => Configure::read('OAuth.providers.twitter.options.redirectUri'),
+            'callback_uri' => Configure::read('OAuth.providers.twitter.options.redirectUri'),
         ]);
         $oauthToken = $this->request->getQuery('oauth_token');
         $oauthVerifier = $this->request->getQuery('oauth_verifier');

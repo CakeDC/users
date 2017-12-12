@@ -159,6 +159,7 @@ $config = [
                 ]
             ],
             'twitter' => [
+                //'className' =>
                 'options' => [
                     'redirectUri' => Router::fullBaseUrl() . '/auth/twitter',
                     'linkSocialUri' => Router::fullBaseUrl() . '/link-social/twitter',

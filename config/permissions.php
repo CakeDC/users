@@ -65,7 +65,7 @@ return [
             'role' => '*',
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
-            'action' => ['profile', 'logout'],
+            'action' => ['profile', 'logout', 'linkSocial', 'callbackLinkSocial'],
         ],
         [
             'role' => '*',
