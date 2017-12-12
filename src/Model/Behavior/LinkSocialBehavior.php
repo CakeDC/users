@@ -48,7 +48,7 @@ class LinkSocialBehavior extends Behavior
             ])->first();
 
         if ($socialAccount && $user->id !== $socialAccount->user_id) {
-            $user->errors([
+            $user->setErrors([
                 'social_accounts' => [
                     '_existsIn' => __d('CakeDC/Users', 'Social account already associated to another user')
                 ]
@@ -95,7 +95,7 @@ class LinkSocialBehavior extends Behavior
         }
         $user->social_accounts = $accounts;
 
-        if ($result && !$result->errors()) {
+        if ($result && !$result->getErrors()) {
             return $user;
         }
 

@@ -64,7 +64,7 @@ class UsersAuthComponentTest extends TestCase
             'controller' => 'Users',
             'action' => 'edit'
         ]);
-        Security::salt('YJfIxfs2guVoUubWDYhG93b0qyJfIxfs2guwvniR2G0FgaC9mi');
+        Security::setSalt('YJfIxfs2guVoUubWDYhG93b0qyJfIxfs2guwvniR2G0FgaC9mi');
         Configure::write('App.namespace', 'Users');
         $this->request = $this->getMockBuilder('Cake\Network\Request')
             ->setMethods(['is', 'method'])
