@@ -130,7 +130,7 @@ trait LoginTrait
         }
         if ($flash) {
             $this->request->getSession()->delete(Configure::read('Users.Key.Session.social'));
-            $this->Flash->success(__d('CakeDC/Users', $msg), ['clear' => true]);
+            $this->Flash->success($msg, ['clear' => true]);
         }
 
         return $this->redirect(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
@@ -247,7 +247,7 @@ trait LoginTrait
                     $query->execute();
                 } catch (\Exception $e) {
                     $this->request->getSession()->destroy();
-                    $message = __d('CakeDC/Users', $e->getMessage());
+                    $message = $e->getMessage();
                     $this->Flash->error($message, 'default', [], 'auth');
 
                     return $this->redirect(Configure::read('Auth.loginAction'));
