@@ -45,20 +45,16 @@ class UserHelper extends Helper
             $options['label'] = __d('CakeDC/Users', 'Sign in with');
         }
         $icon = $this->Html->tag('i', '', [
-            'class' => __d('CakeDC/Users', 'fa fa-{0}', strtolower($name)),
+            'class' => 'fa fa-' . strtolower($name),
         ]);
 
         if (isset($options['title'])) {
             $providerTitle = $options['title'];
         } else {
-            $providerTitle = __d('CakeDC/Users', '{0} {1}', Hash::get($options, 'label'), Inflector::camelize($name));
+            $providerTitle = Hash::get($options, 'label') . ' ' . Inflector::camelize($name);
         }
 
-        $providerClass = __d(
-            'CakeDC/Users',
-            'btn btn-social btn-{0} ' . Hash::get($options, 'class') ?: '',
-            strtolower($name)
-        );
+        $providerClass = 'btn btn-social btn-' . strtolower($name) . ' ' . Hash::get($options, 'class') ?: '';
 
         return $this->Html->link($icon . $providerTitle, "/auth/$name", [
             'escape' => false, 'class' => $providerClass
@@ -202,11 +198,7 @@ class UserHelper extends Helper
      */
     public function socialConnectLink($name, $provider, $isConnected = false)
     {
-        $linkClass = __d(
-            'CakeDC/Users',
-            'btn btn-social btn-{0}' . Hash::get($provider['options'], 'class') ?: '',
-            strtolower($name)
-        );
+        $linkClass = 'btn btn-social btn-' .  strtolower($name) . Hash::get($provider['options'], 'class') ?: '';
         if ($isConnected) {
             $title = __d('CakeDC/Users', 'Connected with {0}', Inflector::camelize($name));
 
