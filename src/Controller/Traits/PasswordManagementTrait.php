@@ -81,7 +81,7 @@ trait PasswordManagementTrait
             } catch (UserNotFoundException $exception) {
                 $this->Flash->error(__d('CakeDC/Users', 'User was not found'));
             } catch (WrongPasswordException $wpe) {
-                $this->Flash->error(__d('CakeDC/Users', '{0}', $wpe->getMessage()));
+                $this->Flash->error($wpe->getMessage());
             } catch (Exception $exception) {
                 $this->Flash->error(__d('CakeDC/Users', 'Password could not be changed'));
                 $this->log($exception->getMessage());
@@ -164,7 +164,7 @@ trait PasswordManagementTrait
                 $message = __d('CakeDC/Users', 'Google Authenticator token was successfully reset');
                 $this->Flash->success($message, 'default');
             } catch (\Exception $e) {
-                $message = __d('CakeDC/Users', $e->getMessage());
+                $message = $e->getMessage();
                 $this->Flash->error($message, 'default');
             }
         }
