@@ -54,7 +54,7 @@ class UserHelper extends Helper
             $providerTitle = Hash::get($options, 'label') . ' ' . Inflector::camelize($name);
         }
 
-        $providerClass = 'btn btn-social btn-' . strtolower($name) . ' ' . Hash::get($options, 'class') ?: '';
+        $providerClass = 'btn btn-social btn-' . strtolower($name) . (Hash::get($options, 'class')) ? ' ' . Hash::get($options, 'class') : '';
 
         return $this->Html->link($icon . $providerTitle, "/auth/$name", [
             'escape' => false, 'class' => $providerClass
@@ -198,7 +198,7 @@ class UserHelper extends Helper
      */
     public function socialConnectLink($name, $provider, $isConnected = false)
     {
-        $linkClass = 'btn btn-social btn-' .  strtolower($name) . Hash::get($provider['options'], 'class') ?: '';
+        $linkClass = 'btn btn-social btn-' . strtolower($name) . (Hash::get($provider['options'], 'class')) ? ' ' . Hash::get($provider['options'], 'class') : '';
         if ($isConnected) {
             $title = __d('CakeDC/Users', 'Connected with {0}', Inflector::camelize($name));
 
