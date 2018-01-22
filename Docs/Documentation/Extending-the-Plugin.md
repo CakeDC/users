@@ -180,6 +180,8 @@ Updating the Templates
 Use the standard CakePHP conventions to override Plugin views using your application views
 http://book.cakephp.org/3.0/en/plugins.html#overriding-plugin-templates-from-inside-your-application
 
+`{project_dir}/src/Template/Plugin/CakeDC/Users/Users/{templates_in_here}`
+
 Updating the Emails
 -------------------
 
