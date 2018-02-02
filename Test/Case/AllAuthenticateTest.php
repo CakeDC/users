@@ -1,4 +1,5 @@
 <?php
+
 /**
  * All Users Authenticate plugin tests
  *
@@ -9,7 +10,7 @@ class AllAuthenticateTest extends CakeTestCase {
 /**
  * Suite define the tests for this suite
  *
- * @return void
+ * @return CakeTestSuite
  */
 	public static function suite() {
 		$suite = new CakeTestSuite('All Users Authenticate test');

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * MultiColumnAuthenticateTest file
  *
@@ -36,9 +37,9 @@ class TokenAuthenticateTest extends CakeTestCase {
  *
  * @var array
  */
-	public $fixtures = array(
+	public $fixtures = [
 		'plugin.users.multi_user'
-	);
+	];
 
 /**
  * setup
@@ -47,19 +48,19 @@ class TokenAuthenticateTest extends CakeTestCase {
  */
 	public function setUp() {
 		parent::setUp();
-		$this->Collection = $this->getMock('ComponentCollection');
-		$this->auth = new TokenAuthenticate($this->Collection, array(
-			'fields' => array(
+		$this->Collection = $this->getMockBuilder('ComponentCollection')->getMock();
+		$this->auth = new TokenAuthenticate($this->Collection, [
+			'fields' => [
 				'username' => 'user',
 				'password' => 'password',
 				'token' => 'token'
-			),
+			],
 			'userModel' => 'MultiUser',
-		));
+		]);
 		$password = Security::hash('password', null, true);
 		$User = ClassRegistry::init('MultiUser');
-		$User->updateAll(array('password' => $User->getDataSource()->value($password)));
-		$this->response = $this->getMock('CakeResponse');
+		$User->updateAll(['password' => $User->getDataSource()->value($password)]);
+		$this->response = $this->getMockBuilder('CakeResponse')->getMock();
 	}
 
 /**
@@ -74,14 +75,14 @@ class TokenAuthenticateTest extends CakeTestCase {
 		$result = $this->auth->getUser($request, $this->response);
 		$this->assertFalse($result);
 
-		$expected = array(
+		$expected = [
 			'id' => '1',
 			'user' => 'mariano',
 			'email' => 'mariano@example.com',
 			'token' => '12345',
 			'created' => '2007-03-17 01:16:23',
 			'updated' => '2007-03-17 01:18:31'
-		);
+		];
 		$request = new CakeRequest('posts/index?_token=12345');
 		$result = $this->auth->getUser($request, $this->response);
 		$this->assertEquals($expected, $result);
@@ -104,14 +105,14 @@ class TokenAuthenticateTest extends CakeTestCase {
 		$result = $this->auth->getUser($request, $this->response);
 		$this->assertFalse($result);
 
-		$expected = array(
+		$expected = [
 			'id' => '1',
 			'user' => 'mariano',
 			'email' => 'mariano@example.com',
 			'token' => '12345',
 			'created' => '2007-03-17 01:16:23',
 			'updated' => '2007-03-17 01:18:31'
-		);
+		];
 		$_SERVER['HTTP_X_APITOKEN'] = '12345';
 		$result = $this->auth->getUser($request, $this->response);
 		$this->assertEquals($expected, $result);

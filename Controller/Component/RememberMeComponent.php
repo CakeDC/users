@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2014, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2009 - 2018, Cake Development Corporation (http://cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2014, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2009 - 2018, Cake Development Corporation (http://cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -26,10 +26,10 @@ class RememberMeComponent extends Component {
  *
  * @var array
  */
-	public $components = array(
+	public $components = [
 		'Cookie',
 		'Auth'
-	);
+	];
 
 /**
  * Request object
@@ -43,27 +43,27 @@ class RememberMeComponent extends Component {
  *
  * @var array
  */
-	public $settings = array();
+	public $settings = [];
 
 /**
  * Default settings
  *
  * @var array
  */
-	protected $_defaults = array(
+	protected $_defaults = [
 		'autoLogin' => true,
 		'userModel' => 'User',
 		'cookieKey' => 'rememberMe',
 		'cookieLifeTime' => '+1 year',
-		'cookie' => array(
+		'cookie' => [
 			'name' => 'User'
-		),
-		'fields' => array(
+		],
+		'fields' => [
 			'email',
 			'username',
 			'password'
-		)
-	);
+		]
+	];
 
 /**
  * Constructor
@@ -72,7 +72,7 @@ class RememberMeComponent extends Component {
  * @param array $settings Array of settings.
  * @return RememberMeComponent
  */
-	public function __construct(ComponentCollection $collection, $settings = array()) {
+	public function __construct(ComponentCollection $collection, $settings = []) {
 		parent::__construct($collection, $settings);
 
 		$this->_checkAndSetCookieLifeTime();
@@ -115,11 +115,11 @@ class RememberMeComponent extends Component {
 /**
  * startup
  *
- * @param Controller $controller
+ * @param Controller $controller A reference to the instantiating controller object
  * @return void
  */
 	public function startup(Controller $controller) {
-		if ($this->settings['autoLogin'] == true && !$this->Auth->loggedIn()) {
+		if ($this->settings['autoLogin'] == true && !$this->Auth->user()) {
 			$this->restoreLoginFromCookie();
 		}
 	}
@@ -127,11 +127,11 @@ class RememberMeComponent extends Component {
 /**
  * Logs the user again in based on the cookie data
  *
- * @param boolean $checkLoginStatus
- * @return boolean True on login success, false on failure
+ * @param bool $checkLoginStatus Check login status if true
+ * @return bool True on login success, false on failure
  */
 	public function restoreLoginFromCookie($checkLoginStatus = true) {
-		if ($checkLoginStatus && $this->Auth->loggedIn()) {
+		if ($checkLoginStatus && $this->Auth->user()) {
 			return true;
 		}
 
@@ -160,10 +160,10 @@ class RememberMeComponent extends Component {
 /**
  * Sets the cookie with the specified fields
  *
- * @param array Optional, login credentials array in the form of Model.field, if empty this->request['<model>'] will be used
- * @return boolean
+ * @param array $data Optional, login credentials array in the form of Model.field, if empty this->request['<model>'] will be used
+ * @return bool
  */
-	public function setCookie($data = array()) {
+	public function setCookie($data = []) {
 		extract($this->settings);
 
 		if (empty($data)) {
@@ -177,7 +177,7 @@ class RememberMeComponent extends Component {
 			return false;
 		}
 
-		$cookieData = array();
+		$cookieData = [];
 
 		foreach ($fields as $field) {
 			if (isset($data[$userModel][$field]) && !empty($data[$userModel][$field])) {
@@ -192,7 +192,7 @@ class RememberMeComponent extends Component {
 /**
  * Checks if the remember me cookie is set
  *
- * @return boolean
+ * @return bool
  */
 	public function cookieIsSet() {
 		extract($this->settings);
@@ -216,15 +216,15 @@ class RememberMeComponent extends Component {
 /**
  * Configures the cookie component instance
  *
- * @param array $options
+ * @param array $options Options to configure
  * @throws InvalidArgumentException Thrown if an invalid option key was passed
  * @return void
  */
-	public function configureCookie($options = array()) {
-		$validProperties = array('domain', 'key', 'name', 'path', 'secure', 'time');
-		$defaults = array(
+	public function configureCookie($options = []) {
+		$validProperties = ['domain', 'key', 'name', 'path', 'secure', 'time'];
+		$defaults = [
 			'time' => '1 month',
-			'name' => 'User');
+			'name' => 'User'];
 
 		$options = array_merge($defaults, $options);
 

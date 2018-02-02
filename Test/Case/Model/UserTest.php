@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2014, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2009 - 2018, Cake Development Corporation (http://cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2014, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2009 - 2018, Cake Development Corporation (http://cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -36,9 +36,9 @@ class UserTestCase extends CakeTestCase {
  *
  * @var array
  */
-	public $fixtures = array(
+	public $fixtures = [
 		'plugin.users.user',
-	);
+	];
 
 /**
  * startTest
@@ -78,11 +78,11 @@ class UserTestCase extends CakeTestCase {
  */
 	public function testConfirmPassword() {
 		$this->User->data['User']['password'] = 'password';
-		$result = $this->User->confirmPassword(array('temppassword' => 'password'));
+		$result = $this->User->confirmPassword(['temppassword' => 'password']);
 		$this->assertTrue($result);
 
 		$this->User->data['User']['password'] = 'different_password';
-		$result = $this->User->confirmPassword(array('temppassword' => 'password'));
+		$result = $this->User->confirmPassword(['temppassword' => 'password']);
 		$this->assertFalse($result);
 	}
 
@@ -92,13 +92,13 @@ class UserTestCase extends CakeTestCase {
  * @return void
  */
 	public function testConfirmEmail() {
-		$this->User->data['User'] = array(
-			'email' => 'test@email.com');
-		$this->assertFalse($this->User->confirmEmail(array('confirm_email' => 'test@wrong.com')));
+		$this->User->data['User'] = [
+			'email' => 'test@email.com'];
+		$this->assertFalse($this->User->confirmEmail(['confirm_email' => 'test@wrong.com']));
 
-		$this->User->data['User'] = array(
-			'email' => 'test@email.com');
-		$this->assertTrue($this->User->confirmEmail(array('confirm_email' => 'test@email.com')));
+		$this->User->data['User'] = [
+			'email' => 'test@email.com'];
+		$this->assertTrue($this->User->confirmEmail(['confirm_email' => 'test@email.com']));
 	}
 
 /**
@@ -128,32 +128,31 @@ class UserTestCase extends CakeTestCase {
 		$this->assertFalse($this->User->updateLastActivity('invalid-id!'));
 	}
 
-
 /**
  * testResetPassword
  *
  * @return void
  */
 	public function testResetPassword() {
-		$data = array(
-			'User' => array(
+		$data = [
+			'User' => [
 				'id' => 1,
 				'new_password' => '',
-				'confirm_password' => 'dsgdsgsdg'));
+				'confirm_password' => 'dsgdsgsdg']];
 		$this->assertFalse($this->User->resetPassword($data));
 
-		$data = array(
-			'User' => array(
+		$data = [
+			'User' => [
 				'id' => 1,
 				'new_password' => '',
-				'confirm_password' => ''));
+				'confirm_password' => '']];
 		$this->assertFalse($this->User->resetPassword($data));
 
-		$data = array(
-			'User' => array(
+		$data = [
+			'User' => [
 				'id' => 1,
 				'new_password' => 'newpassword',
-				'confirm_password' => 'newpassword'));
+				'confirm_password' => 'newpassword']];
 		$this->assertInternalType('array', $this->User->resetPassword($data));
 	}
 
@@ -175,18 +174,18 @@ class UserTestCase extends CakeTestCase {
  * @return void
  */
 	public function testPasswordReset() {
-		$data = array(
-			'User' => array(
+		$data = [
+			'User' => [
 				'id' => 1,
-				'email' => 'somethingwrong in here!'));
+				'email' => 'somethingwrong in here!']];
 		$this->assertFalse($this->User->passwordReset($data));
 
 		$this->User->id = '1';
 		$this->User->saveField('email_token_expires', date('Y-m-d H:i:s', strtotime('+1 year')));
-		$data = array(
-			'User' => array(
+		$data = [
+			'User' => [
 				'id' => 1,
-				'email' => 'adminuser@cakedc.com'));
+				'email' => 'adminuser@cakedc.com']];
 		$this->assertInternalType('array', $this->User->passwordReset($data));
 	}
 
@@ -199,15 +198,15 @@ class UserTestCase extends CakeTestCase {
 		$password = $this->User->hash('password', null, true);
 		$this->User->id = '1';
 		$this->User->saveField('password', $password);
-		$this->User->data = array(
-			'User' => array(
+		$this->User->data = [
+			'User' => [
 				'id' => '1',
-				'password'));
+				'password']];
 
-		$result = $this->User->validateOldPassword(array('old_password' => 'password'));
+		$result = $this->User->validateOldPassword(['old_password' => 'password']);
 		$this->assertTrue($result);
 
-		$result = $this->User->validateOldPassword(array('old_password' => 'FAIL!'));
+		$result = $this->User->validateOldPassword(['old_password' => 'FAIL!']);
 		$this->assertFalse($result);
 	}
 
@@ -220,7 +219,7 @@ class UserTestCase extends CakeTestCase {
 		$result = $this->User->view('adminuser');
 		$this->assertTrue(is_array($result) && !empty($result));
 
-		$this->expectException('NotFoundException');
+		$this->setExpectedException('NotFoundException');
 		$result = $this->User->view('non-existing-user-slug');
 	}
 
@@ -230,61 +229,61 @@ class UserTestCase extends CakeTestCase {
  * @return void
  */
 	public function testRegister() {
-		$postData = array();
+		$postData = [];
 		$result = $this->User->register($postData);
 		$this->assertFalse($result);
 
-		$postData = array('User' => array(
+		$postData = ['User' => [
 			'username' => '#236236326sdg!!!.s#invalid',
 			'email' => 'invalid',
 			'password' => 'password',
 			'temppassword' => 'wrong',
-			'tos' => 0));
+			'tos' => 0]];
 		$result = $this->User->register($postData);
 		$this->assertFalse($result);
-		$this->assertEquals(array_keys($this->User->invalidFields()), array(
-			'username', 'email', 'temppassword', 'tos'));
+		$this->assertEquals(array_keys($this->User->invalidFields()), [
+			'username', 'email', 'temppassword', 'tos']);
 
-		$postData = array('User' => array(
+		$postData = ['User' => [
 			'username' => 'validusername',
 			'email' => 'test@test.com',
 			'password' => '12345',
 			'temppassword' => '12345',
-			'tos' => 1));
+			'tos' => 1]];
 		$result = $this->User->register($postData);
 		$this->assertFalse($result);
-		$this->assertEquals(array_keys($this->User->invalidFields()), array(
-			'password'));
+		$this->assertEquals(array_keys($this->User->invalidFields()), [
+			'password']);
 
-		$postData = array('User' => array(
+		$postData = ['User' => [
 			'username' => ' 			  ',
 			'email' => 'test@test.com',
 			'password' => '123456',
 			'temppassword' => '123456',
-			'tos' => 1));
+			'tos' => 1]];
 		$result = $this->User->register($postData);
 		$this->assertFalse($result);
-		$this->assertEquals(array_keys($this->User->invalidFields()), array(
-			'username'));
+		$this->assertEquals(array_keys($this->User->invalidFields()), [
+			'username']);
 
-		$postData = array('User' => array(
+		$postData = ['User' => [
 			'username' => ' ',
 			'email' => 'test@test.com',
 			'password' => '123456',
 			'temppassword' => '123456',
-			'tos' => 1));
+			'tos' => 1]];
 		$result = $this->User->register($postData);
 		$this->assertFalse($result);
-		$this->assertEquals(array_keys($this->User->invalidFields()), array(
-			'username'));
+		$this->assertEquals(array_keys($this->User->invalidFields()), [
+			'username']);
 
-		$postData = array('User' => array(
+		$postData = ['User' => [
 			'username' => 'imanewuser',
 			'email' => 'foo@bar.com',
 			'password' => 'password',
 			'temppassword' => 'password',
-			'tos' => 1));
-		$result = $this->User->register($postData, array('returnData' => false));
+			'tos' => 1]];
+		$result = $this->User->register($postData, ['returnData' => false]);
 		$this->assertTrue($result);
 		$result = $this->User->data;
 
@@ -302,33 +301,33 @@ class UserTestCase extends CakeTestCase {
  * @return void
  */
 	public function testChangePassword() {
-		$postData = array();
+		$postData = [];
 		$result = $this->User->changePassword($postData);
 		$this->assertFalse($result);
 
-		$postData = array(
-			'User' => array(
+		$postData = [
+			'User' => [
 				'id' => 1,
 				'old_password' => 'test',
 				'new_password' => 'not',
-				'confirm_password' => 'equal'));
+				'confirm_password' => 'equal']];
 
 		$result = $this->User->changePassword($postData);
 		$this->assertFalse($result);
-		$this->assertEquals(array('new_password', 'confirm_password'), array_keys($this->User->invalidFields()));
+		$this->assertEquals(['new_password', 'confirm_password'], array_keys($this->User->invalidFields()));
 
-		$postData = array(
-			'User' => array(
+		$postData = [
+			'User' => [
 				'id' => 1,
 				'old_password' => 'test',
 				'new_password' => 'testtest',
-				'confirm_password' => 'testtest'));
+				'confirm_password' => 'testtest']];
 		$result = $this->User->changePassword($postData);
 		$this->assertTrue($result);
-		$ressult = $this->User->find('first', array(
+		$ressult = $this->User->find('first', [
 			'recursive' => -1,
-			'conditions' => array(
-				'User.id' => 1)));
+			'conditions' => [
+				'User.id' => 1]]);
 		$this->assertEquals($ressult['User']['password'], $this->User->hash('testtest', null, true));
 	}
 
@@ -338,16 +337,16 @@ class UserTestCase extends CakeTestCase {
  * @return void
  */
 	public function testCompareFields() {
-		$this->User->data = array(
-			'User' => array(
+		$this->User->data = [
+			'User' => [
 				'field1' => 'foo',
-				'field2' => 'bar'));
+				'field2' => 'bar']];
 		$this->assertFalse($this->User->compareFields('field1', 'field2'));
 
-		$this->User->data = array(
-			'User' => array(
+		$this->User->data = [
+			'User' => [
 				'field1' => 'foo',
-				'field2' => 'foo'));
+				'field2' => 'foo']];
 		$this->assertTrue($this->User->compareFields('field1', 'field2'));
 	}
 
@@ -357,23 +356,23 @@ class UserTestCase extends CakeTestCase {
  * @return void
  */
 	public function testResendVerification() {
-		$postData = array(
-			'User' => array());
+		$postData = [
+			'User' => []];
 		$this->assertFalse($this->User->resendVerification($postData));
 
-		$postData = array(
-			'User' => array(
-				'email' => 'doesnotexist!'));
+		$postData = [
+			'User' => [
+				'email' => 'doesnotexist!']];
 		$this->assertFalse($this->User->resendVerification($postData));
 
-		$postData = array(
-			'User' => array(
-				'email' => 'adminuser@cakedc.com'));
+		$postData = [
+			'User' => [
+				'email' => 'adminuser@cakedc.com']];
 		$this->assertFalse($this->User->resendVerification($postData));
 
-		$postData = array(
-			'User' => array(
-				'email' => 'oidtest2@testuser.com'));
+		$postData = [
+			'User' => [
+				'email' => 'oidtest2@testuser.com']];
 		$result = $this->User->resendVerification($postData);
 		$this->assertTrue(is_array($result));
 	}
@@ -411,13 +410,13 @@ class UserTestCase extends CakeTestCase {
  * @return void
  */
 	public function testAdd() {
-		$postData = array(
-			'User' => array(
+		$postData = [
+			'User' => [
 				'username' => 'newusername',
 				'email' => 'newusername@newusername.com',
 				'password' => 'password',
 				'temppassword' => 'password',
-				'tos' => 1));
+				'tos' => 1]];
 		$result = $this->User->add($postData);
 		$this->assertTrue($result);
 	}
@@ -505,8 +504,8 @@ class UserTestCase extends CakeTestCase {
 		ClassRegistry::flush();
 		$this->User = ClassRegistry::init('Users.User');
 		$this->User->create();
-		$this->User->save(array(
-			'username' => 'foo2'), array('validate' => false));
+		$this->User->save([
+			'username' => 'foo2'], ['validate' => false]);
 		$result = $this->User->read(null, $this->User->id);
 		$this->assertEquals($result['User']['slug'], 'foo2');
 
@@ -514,8 +513,8 @@ class UserTestCase extends CakeTestCase {
 		Configure::write('Users.disableSlugs', true);
 		$this->User = ClassRegistry::init('Users.User');
 		$this->User->create();
-		$this->User->save(array(
-			'username' => 'bar2'), array('validate' => false));
+		$this->User->save([
+			'username' => 'bar2'], ['validate' => false]);
 		$result = $this->User->read(null, $this->User->id);
 		$this->assertTrue(empty($result['User']['slug']));
 	}

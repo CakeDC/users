@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2014, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2009 - 2018, Cake Development Corporation (http://cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2014, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2009 - 2018, Cake Development Corporation (http://cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -29,7 +29,7 @@ class UsersAppModel extends AppModel {
 /**
  * Recursive level for finds
  *
- * @var integer
+ * @var inte
  */
 	public $recursive = -1;
 
@@ -38,19 +38,19 @@ class UsersAppModel extends AppModel {
  *
  * @var array
  */
-	public $actsAs = array(
+	public $actsAs = [
 		'Containable'
-	);
+	];
 
 /**
  * Customized paginateCount method
  *
- * @param array
- * @param integer
- * @param array
+ * @param array $conditions Conditions for query
+ * @param int $recursive Set recursive param
+ * @param array $extra Extra options
  * @return mixed
  */
-	public function paginateCount($conditions = array(), $recursive = 0, $extra = array()) {
+	public function paginateCount($conditions = [], $recursive = 0, $extra = []) {
 		$parameters = compact('conditions');
 		if ($recursive != $this->recursive) {
 			$parameters['recursive'] = $recursive;

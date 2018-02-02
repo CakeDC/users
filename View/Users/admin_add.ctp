@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2014, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2009 - 2018, Cake Development Corporation (http://cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2014, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2009 - 2018, Cake Development Corporation (http://cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 ?>
@@ -14,26 +14,26 @@
 		<fieldset>
 			<legend><?php echo __d('users', 'Add User'); ?></legend>
 			<?php
-				echo $this->Form->input('username', array(
-					'label' => __d('users', 'Username')));
-				echo $this->Form->input('email', array(
+				echo $this->Form->input('username', [
+					'label' => __d('users', 'Username')]);
+				echo $this->Form->input('email', [
 					'label' => __d('users', 'E-mail (used as login)'),
-					'error' => array('isValid' => __d('users', 'Must be a valid email address'),
-						'isUnique' => __d('users', 'An account with that email already exists'))));
-				echo $this->Form->input('password', array(
+					'error' => ['isValid' => __d('users', 'Must be a valid email address'),
+						'isUnique' => __d('users', 'An account with that email already exists')]]);
+				echo $this->Form->input('password', [
 					'label' => __d('users', 'Password'),
-					'type' => 'password'));
-				echo $this->Form->input('temppassword', array(
+					'type' => 'password']);
+				echo $this->Form->input('temppassword', [
 					'label' => __d('users', 'Password (confirm)'),
-					'type' => 'password'));
+					'type' => 'password']);
 				if (!empty($roles)) {
-					echo $this->Form->input('role', array(
-						'label' => __d('users', 'Role'), 'values' => $roles));
+					echo $this->Form->input('role', [
+						'label' => __d('users', 'Role'), 'values' => $roles]);
 				}
-				echo $this->Form->input('is_admin', array(
-						'label' => __d('users', 'Is Admin')));
-				echo $this->Form->input('active', array(
-					'label' => __d('users', 'Active')));
+				echo $this->Form->input('is_admin', [
+						'label' => __d('users', 'Is Admin')]);
+				echo $this->Form->input('active', [
+					'label' => __d('users', 'Active')]);
 			?>
 		</fieldset>
 	<?php echo $this->Form->end('Submit'); ?>

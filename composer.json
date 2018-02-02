@@ -21,7 +21,8 @@
 		"source": "https://github.com/CakeDC/users"
 	},
 	"require": {
-		"php": ">=5.2.8",
+		"php": ">=5.6.0",
+		"cakephp/cakephp": "^2.10",
 		"composer/installers": "*"
 	},
 	"suggest": {

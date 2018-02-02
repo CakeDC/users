@@ -31,12 +31,19 @@ App::uses('Router', 'Routing');
  */
 class CookieAuthenticate extends BaseAuthenticate {
 
+/**
+ * CookieAuthenticate constructor.
+ *
+ * @param ComponentCollection $collection Component collection
+ * @param array $settings Settings to configure
+ * @return void
+ */
 	public function __construct(ComponentCollection $collection, $settings) {
-		$this->settings['cookie'] = array(
+		$this->settings['cookie'] = [
 			'name' => 'RememberMe',
 			'time' => '+2 weeks',
 			'base' => Router::getRequest()->base
-		);
+		];
 		$this->settings['crypt'] = 'rijndael';
 		parent::__construct($collection, $settings);
 	}
@@ -76,10 +83,23 @@ class CookieAuthenticate extends BaseAuthenticate {
 		return false;
 	}
 
+/**
+ * Authenticate callback
+ *
+ * @param CakeRequest $request Request object
+ * @param CakeResponse $response Response object
+ * @return mixed
+ */
 	public function authenticate(CakeRequest $request, CakeResponse $response) {
 		return $this->getUser($request);
 	}
 
+/**
+ * Logout feature
+ *
+ * @param array $user User object
+ * @return void
+ */
 	public function logout($user) {
 		$this->_Collection->Cookie->destroy();
 	}

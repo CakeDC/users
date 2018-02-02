@@ -41,19 +41,19 @@ class TokenAuthenticate extends BaseAuthenticate {
  *
  * @var array
  */
-	public $settings = array(
-		'fields' => array(
+	public $settings = [
+		'fields' => [
 			'username' => 'username',
 			'password' => 'password',
 			'token' => 'token',
-		),
+		],
 		'parameter' => '_token',
 		'header' => 'X-ApiToken',
 		'userModel' => 'User',
-		'scope' => array(),
+		'scope' => [],
 		'recursive' => 0,
 		'contain' => null,
-	);
+	];
 
 /**
  * Constructor
@@ -112,22 +112,22 @@ class TokenAuthenticate extends BaseAuthenticate {
  * @param string $password Unused password.
  * @return Mixed Either false on failure, or an array of user data.
  */
-	public function _findUser($username, $password = null) {
+	protected function _findUser($username, $password = null) {
 		$userModel = $this->settings['userModel'];
 		list($plugin, $model) = pluginSplit($userModel);
 		$fields = $this->settings['fields'];
 
-		$conditions = array(
+		$conditions = [
 			$model . '.' . $fields['token'] => $username,
-		);
+		];
 		if (!empty($this->settings['scope'])) {
 			$conditions = array_merge($conditions, $this->settings['scope']);
 		}
-		$result = ClassRegistry::init($userModel)->find('first', array(
+		$result = ClassRegistry::init($userModel)->find('first', [
 			'conditions' => $conditions,
 			'recursive' => (int)$this->settings['recursive'],
 			'contain' => $this->settings['contain'],
-		));
+		]);
 		if (empty($result) || empty($result[$model])) {
 			return false;
 		}

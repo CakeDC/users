@@ -1,6 +1,14 @@
 Changelog
 =========
 
+Release 2.2.0
+-------------
+
+https://github.com/CakeDC/users/tree/2.2.0
+
+* Upgrade plugin for compatibility with CakePHP 2.10
+* Remove deprecations
+
 Release 2.1.3
 -------------
 

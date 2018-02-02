@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CookieAuthenticateTest file
  *
@@ -33,7 +34,7 @@ App::uses('Router', 'Routing');
  */
 class CookieAuthenticateTest extends CakeTestCase {
 
-	public $fixtures = array('plugin.users.multi_user');
+	public $fixtures = ['plugin.users.multi_user'];
 
 /**
  * setup
@@ -47,14 +48,14 @@ class CookieAuthenticateTest extends CakeTestCase {
 		$this->Collection = new ComponentCollection();
 		$this->Collection->load('Cookie');
 		$this->Collection->load('Session');
-		$this->auth = new CookieAuthenticate($this->Collection, array(
-			'fields' => array('username' => 'user', 'password' => 'password'),
+		$this->auth = new CookieAuthenticate($this->Collection, [
+			'fields' => ['username' => 'user', 'password' => 'password'],
 			'userModel' => 'MultiUser',
-		));
+		]);
 		$password = Security::hash('password', null, true);
 		$User = ClassRegistry::init('MultiUser');
-		$User->updateAll(array('password' => $User->getDataSource()->value($password)));
-		$this->response = $this->getMock('CakeResponse');
+		$User->updateAll(['password' => $User->getDataSource()->value($password)]);
+		$this->response = $this->getMockBuilder('CakeResponse')->getMock();
 	}
 
 /**
@@ -73,19 +74,19 @@ class CookieAuthenticateTest extends CakeTestCase {
  * @return void
  */
 	public function testAuthenticate() {
-		$expected = array(
+		$expected = [
 			'id' => 1,
 			'user' => 'mariano',
 			'email' => 'mariano@example.com',
 			'token' => '12345',
 			'created' => '2007-03-17 01:16:23',
 			'updated' => '2007-03-17 01:18:31'
-		);
+		];
 
 		$result = $this->auth->authenticate($this->request, $this->response);
 		$this->assertFalse($result);
 
-		$this->Collection->Cookie->write('MultiUser', array('user' => 'mariano', 'password' => 'password'));
+		$this->Collection->Cookie->write('MultiUser', ['user' => 'mariano', 'password' => 'password']);
 		$result = $this->auth->authenticate($this->request, $this->response);
 		$this->assertEquals($expected, $result);
 	}
