@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2014, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2009 - 2018, Cake Development Corporation (http://cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2014, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2009 - 2018, Cake Development Corporation (http://cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -34,9 +34,9 @@ class User extends UsersAppModel {
  *
  * @var array
  */
-	public $findMethods = array(
+	public $findMethods = [
 		'search' => true
-	);
+	];
 
 /**
  * All search fields need to be configured in the Model::filterArgs array.
@@ -44,10 +44,10 @@ class User extends UsersAppModel {
  * @var array
  * @link https://github.com/CakeDC/search
  */
-	public $filterArgs = array(
-		'username' => array('type' => 'like'),
-		'email' => array('type' => 'value')
-	);
+	public $filterArgs = [
+		'username' => ['type' => 'like'],
+		'email' => ['type' => 'value']
+	];
 
 /**
  * Displayfield
@@ -59,7 +59,7 @@ class User extends UsersAppModel {
 /**
  * Time the email verification token is valid in seconds
  *
- * @var integer
+ * @var int
  */
 	public $emailTokenExpirationTime = 86400;
 
@@ -74,7 +74,7 @@ class User extends UsersAppModel {
  * Enable / Disable callbacks parameter.
  * Can be use when subclassing to ensure callbacks run.
  *
- * @var boolean
+ * @var bool
  */
 	public $enableCallbacks = false;
 
@@ -83,53 +83,53 @@ class User extends UsersAppModel {
  *
  * @var array
  */
-	public $validate = array(
-		'username' => array(
-			'required' => array(
-				'rule' => array('custom', '/.+/'),
+	public $validate = [
+		'username' => [
+			'required' => [
+				'rule' => ['custom', '/.+/'],
 				'required' => true,
 				'allowEmpty' => false,
 				'message' => 'Please enter a username.'
-			),
-			'alpha' => array(
-				'rule' => array('alphaNumeric'),
+			],
+			'alpha' => [
+				'rule' => ['alphaNumeric'],
 				'message' => 'The username must be alphanumeric.'
-			),
-			'unique_username' => array(
-				'rule' => array('isUnique', 'username'),
+			],
+			'unique_username' => [
+				'rule' => ['isUnique', 'username'],
 				'message' => 'This username is already in use.'
-			),
-			'username_min' => array(
-				'rule' => array('minLength', '3'),
+			],
+			'username_min' => [
+				'rule' => ['minLength', '3'],
 				'message' => 'The username must have at least 3 characters.'
-			)
-		),
-		'email' => array(
-			'isValid' => array(
+			]
+		],
+		'email' => [
+			'isValid' => [
 				'rule' => 'email',
 				'required' => true,
 				'message' => 'Please enter a valid email address.'
-			),
-			'isUnique' => array(
-				'rule' => array('isUnique', 'email'),
+			],
+			'isUnique' => [
+				'rule' => ['isUnique', 'email'],
 				'message' => 'This email is already in use.'
-			)
-		),
-		'password' => array(
-			'too_short' => array(
-				'rule' => array('minLength', '6'),
+			]
+		],
+		'password' => [
+			'too_short' => [
+				'rule' => ['minLength', '6'],
 				'message' => 'The password must have at least 6 characters.'
-			),
-		),
-		'temppassword' => array(
+			],
+		],
+		'temppassword' => [
 			'rule' => 'confirmPassword',
 			'message' => 'The passwords are not equal, please try again.'
-		),
-		'tos' => array(
-			'rule' => array('custom','[1]'),
+		],
+		'tos' => [
+			'rule' => ['custom', '[1]'],
 			'message' => 'You must agree to the terms of use.'
-		)
-	);
+		]
+	];
 
 /**
  * Constructor
@@ -159,10 +159,10 @@ class User extends UsersAppModel {
 		}
 
 		if (CakePlugin::loaded('Utils') && class_exists('SluggableBehavior') && Configure::read('Users.disableSlugs') !== true) {
-			$this->actsAs['Utils.Sluggable'] = array(
+			$this->actsAs['Utils.Sluggable'] = [
 				'label' => 'username',
 				'method' => 'multibyteSlug'
-			);
+			];
 		}
 	}
 
@@ -172,14 +172,14 @@ class User extends UsersAppModel {
  * @return void
  */
 	protected function _setupValidation() {
-		$this->validatePasswordChange = array(
+		$this->validatePasswordChange = [
 			'new_password' => $this->validate['password'],
-			'confirm_password' => array(
-				'required' => array('rule' => array('compareFields', 'new_password', 'confirm_password'), 'required' => true, 'message' => __d('users', 'The passwords are not equal.'))),
-			'old_password' => array(
-				'to_short' => array('rule' => 'validateOldPassword', 'required' => true, 'message' => __d('users', 'Invalid password.'))
-			)
-		);
+			'confirm_password' => [
+				'required' => ['rule' => ['compareFields', 'new_password', 'confirm_password'], 'required' => true, 'message' => __d('users', 'The passwords are not equal.')]],
+			'old_password' => [
+				'to_short' => ['rule' => 'validateOldPassword', 'required' => true, 'message' => __d('users', 'Invalid password.')]
+			]
+		];
 	}
 
 /**
@@ -190,7 +190,7 @@ class User extends UsersAppModel {
  *
  * @param string $string String to hash
  * @param string $type Method to use (sha1/sha256/md5)
- * @param boolean $salt If true, automatically appends the application's salt
+ * @param bool $salt If true, automatically appends the application's salt
  *	 value to $string (Security.salt)
  * @return string Hash
  */
@@ -202,7 +202,7 @@ class User extends UsersAppModel {
  * Custom validation method to ensure that the two entered passwords match
  *
  * @param string $password Password
- * @return boolean Success
+ * @return bool Success
  */
 	public function confirmPassword($password = null) {
 		if ((isset($this->data[$this->alias]['password']) && isset($password['temppassword']))
@@ -217,7 +217,7 @@ class User extends UsersAppModel {
  * Compares the email confirmation
  *
  * @param array $email Email data
- * @return boolean
+ * @return bool
  */
 	public function confirmEmail($email = null) {
 		if ((isset($this->data[$this->alias]['email']) && isset($email['confirm_email']))
@@ -231,18 +231,18 @@ class User extends UsersAppModel {
 /**
  * Checks the token for email verification
  *
- * @param string $token
+ * @param string $token Token to check
  * @return array
  */
 	public function checkEmailVerificationToken($token = null) {
-		$result = $this->find('first', array(
-			'contain' => array(),
-			'conditions' => array(
+		$result = $this->find('first', [
+			'contain' => [],
+			'conditions' => [
 				$this->alias . '.email_verified' => 0,
-				$this->alias . '.email_token' => $token),
-			'fields' => array(
-				'id', 'email', 'email_token_expires', 'role')
-			)
+				$this->alias . '.email_token' => $token],
+			'fields' => [
+				'id', 'email', 'email_token_expires', 'role']
+			]
 		);
 
 		if (empty($result)) {
@@ -276,10 +276,10 @@ class User extends UsersAppModel {
 		$user[$this->alias]['email_token'] = null;
 		$user[$this->alias]['email_token_expires'] = null;
 
-		$user = $this->save($user, array(
+		$user = $this->save($user, [
 			'validate' => false,
 			'callbacks' => $this->enableCallbacks
-		));
+		]);
 		$this->data = $user;
 		return $user;
 	}
@@ -289,14 +289,19 @@ class User extends UsersAppModel {
  *
  * @param string $userId User id
  * @param string $field Default is "last_action", changing it allows you to use this method also for "last_login" for example
- * @return boolean True on success
+ * @return bool True on success
+ * @throws Exception
  */
 	public function updateLastActivity($userId = null, $field = 'last_action') {
 		if (!empty($userId)) {
 			$this->id = $userId;
 		}
 		if ($this->exists()) {
-			return $this->saveField($field, date('Y-m-d H:i:s', time()));
+			$this->create(false);
+			return $this->save(
+				[$this->alias => [$this->primaryKey => $userId, $field => date('Y-m-d H:i:s', time())]],
+				['validate' => false, 'fieldList' => [$field]]
+			);
 		}
 		return false;
 	}
@@ -307,12 +312,12 @@ class User extends UsersAppModel {
  * @param array $postData post data from controller
  * @return mixed False or user data as array on success
  */
-	public function passwordReset($postData = array()) {
-		$user = $this->find('first', array(
-			'contain' => array(),
-			'conditions' => array(
+	public function passwordReset($postData = []) {
+		$user = $this->find('first', [
+			'contain' => [],
+			'conditions' => [
 				$this->alias . '.active' => 1,
-				$this->alias . '.email' => $postData[$this->alias]['email'])));
+				$this->alias . '.email' => $postData[$this->alias]['email']]]);
 
 		if (!empty($user) && $user[$this->alias]['email_verified'] == 1) {
 			$sixtyMins = time() + 43000;
@@ -338,12 +343,12 @@ class User extends UsersAppModel {
  * @return mixed False or user data as array
  */
 	public function checkPasswordToken($token = null) {
-		$user = $this->find('first', array(
-			'contain' => array(),
-			'conditions' => array(
+		$user = $this->find('first', [
+			'contain' => [],
+			'conditions' => [
 				$this->alias . '.active' => 1,
 				$this->alias . '.password_token' => $token,
-				$this->alias . '.email_token_expires >=' => date('Y-m-d H:i:s'))));
+				$this->alias . '.email_token_expires >=' => date('Y-m-d H:i:s')]]);
 		if (empty($user)) {
 			return false;
 		}
@@ -356,24 +361,24 @@ class User extends UsersAppModel {
  * @return array Set of rules required for the User::resetPassword() method
  */
 	public function setUpResetPasswordValidationRules() {
-		return array(
+		return [
 			'new_password' => $this->validate['password'],
-			'confirm_password' => array(
-				'required' => array(
-					'rule' => array('compareFields', 'new_password', 'confirm_password'),
+			'confirm_password' => [
+				'required' => [
+					'rule' => ['compareFields', 'new_password', 'confirm_password'],
 					'message' => __d('users', 'The passwords are not equal.')
-				)
-			)
-		);
+				]
+			]
+		];
 	}
 
 /**
  * Resets the password
  *
  * @param array $postData Post data from controller
- * @return boolean True on success
+ * @return bool True on success
  */
-	public function resetPassword($postData = array()) {
+	public function resetPassword($postData = []) {
 		$result = false;
 
 		$tmp = $this->validate;
@@ -383,9 +388,9 @@ class User extends UsersAppModel {
 		if ($this->validates()) {
 			$this->data[$this->alias]['password'] = $this->hash($this->data[$this->alias]['new_password'], null, true);
 			$this->data[$this->alias]['password_token'] = null;
-			$result = $this->save($this->data, array(
+			$result = $this->save($this->data, [
 				'validate' => false,
-				'callbacks' => $this->enableCallbacks)
+				'callbacks' => $this->enableCallbacks]
 			);
 		}
 
@@ -397,17 +402,17 @@ class User extends UsersAppModel {
  * Changes the password for a user
  *
  * @param array $postData Post data from controller
- * @return boolean True on success
+ * @return bool True on success
  */
-	public function changePassword($postData = array()) {
+	public function changePassword($postData = []) {
 		$this->validate = $this->validatePasswordChange;
 
 		$this->set($postData);
 		if ($this->validates()) {
 			$this->data[$this->alias]['password'] = $this->hash($this->data[$this->alias]['new_password'], null, true);
-			$this->save($postData, array(
+			$this->save($postData, [
 				'validate' => false,
-				'callbacks' => $this->enableCallbacks));
+				'callbacks' => $this->enableCallbacks]);
 			return true;
 		}
 		return false;
@@ -416,9 +421,9 @@ class User extends UsersAppModel {
 /**
  * Validation method to check the old password
  *
- * @param array $password
+ * @param array $password Password to validate
  * @throws OutOfBoundsException
- * @return boolean True on success
+ * @return bool True on success
  */
 	public function validateOldPassword($password) {
 		if (!isset($this->data[$this->alias]['id']) || empty($this->data[$this->alias]['id'])) {
@@ -427,7 +432,7 @@ class User extends UsersAppModel {
 			}
 		}
 
-		$currentPassword = $this->field('password', array($this->alias . '.id' => $this->data[$this->alias]['id']));
+		$currentPassword = $this->field('password', [$this->alias . '.id' => $this->data[$this->alias]['id']]);
 		return $currentPassword === $this->hash($password['old_password'], null, true);
 	}
 
@@ -436,7 +441,7 @@ class User extends UsersAppModel {
  *
  * @param mixed $field1 Array or string, if array the first key is used as fieldname
  * @param string $field2 Second fieldname
- * @return boolean True on success
+ * @return bool True on success
  */
 	public function compareFields($field1, $field2) {
 		if (is_array($field1)) {
@@ -453,20 +458,20 @@ class User extends UsersAppModel {
 /**
  * Returns all data about a user
  *
- * @param string|integer $slug user slug or the uuid of a user
- * @param string $field
+ * @param string|int $slug user slug or the uuid of a user
+ * @param string $field Field to find by
  * @throws NotFoundException
  * @return array
  */
 	public function view($slug = null, $field = 'slug') {
-		$user = $this->find('first', array(
-			'contain' => array(),
-			'conditions' => array(
-				'OR' => array(
+		$user = $this->find('first', [
+			'contain' => [],
+			'conditions' => [
+				'OR' => [
 					$this->alias . '.' . $field => $slug,
-					$this->alias . '.' . $this->primaryKey => $slug),
+					$this->alias . '.' . $this->primaryKey => $slug],
 				$this->alias . '.active' => 1,
-				$this->alias . '.email_verified' => 1)));
+				$this->alias . '.email_verified' => 1]]);
 
 		if (empty($user)) {
 			throw new NotFoundException(__d('users', 'The user does not exist.'));
@@ -484,26 +489,26 @@ class User extends UsersAppModel {
  *
  * Override it as needed, to add additional models to contain for example
  *
- * @param string $email
+ * @param string $email Email to find
  * @return array
  */
 	public function findByEmail($email = null) {
-		return $this->find('first', array(
-			'contain' => array(),
-			'conditions' => array(
+		return $this->find('first', [
+			'contain' => [],
+			'conditions' => [
 				$this->alias . '.email' => $email,
-			)
-		));
+			]
+		]);
 	}
 
 /**
  * Checks if an email is already verified and if not renews the expiration time
  *
  * @param array $postData the post data from the request
- * @param boolean $renew
+ * @param bool $renew Renew token if true
  * @return bool True if the email was not already verified
  */
-	public function checkEmailVerification($postData = array(), $renew = true) {
+	public function checkEmailVerification($postData = [], $renew = true) {
 		$user = $this->findByEmail($postData[$this->alias]['email']);
 
 		if (empty($user)) {
@@ -519,10 +524,10 @@ class User extends UsersAppModel {
 		if ($user[$this->alias]['email_verified'] == 0) {
 			if ($renew === true) {
 				$user[$this->alias]['email_token_expires'] = $this->emailTokenExpirationTime();
-				$this->save($user, array(
+				$this->save($user, [
 					'validate' => false,
 					'callbacks' => $this->enableCallbacks,
-				));
+				]);
 			}
 			$this->data = $user;
 			return true;
@@ -538,17 +543,18 @@ class User extends UsersAppModel {
  * - bool returnData : Default is true, if false the method returns true/false the data is always available through $this->User->data
  *
  * @param array $postData Post data from controller
- * @param mixed should be array now but can be boolean for emailVerification because of backward compatibility
+ * @param mixed $options should be array now but can be bool for emailVerification because of backward compatibility
  * @return mixed
+ * @throws Exception
  */
-	public function register($postData = array(), $options = array()) {
+	public function register($postData = [], $options = []) {
 		$Event = new CakeEvent(
 			'Users.Model.User.beforeRegister',
 			$this,
-			array(
+			[
 				'data' => $postData,
 				'options' => $options
-			)
+			]
 		);
 
 		$this->getEventManager()->dispatch($Event);
@@ -557,13 +563,13 @@ class User extends UsersAppModel {
 		}
 
 		if (is_bool($options)) {
-			$options = array('emailVerification' => $options);
+			$options = ['emailVerification' => $options];
 		}
 
-		$defaults = array(
+		$defaults = [
 			'emailVerification' => true,
 			'removeExpiredRegistrations' => true,
-			'returnData' => true);
+			'returnData' => true];
 		extract(array_merge($defaults, $options));
 
 		$postData = $this->_beforeRegistration($postData, $emailVerification);
@@ -582,10 +588,10 @@ class User extends UsersAppModel {
 			$Event = new CakeEvent(
 				'Users.Model.User.afterRegister',
 				$this,
-				array(
+				[
 					'data' => $this->data,
 					'options' => $options
-				)
+				]
 			);
 
 			$this->getEventManager()->dispatch($Event);
@@ -608,7 +614,7 @@ class User extends UsersAppModel {
  * @param array $postData Post data from controller
  * @return mixed False or user data array on success
  */
-	public function resendVerification($postData = array()) {
+	public function resendVerification($postData = []) {
 		if (!isset($postData[$this->alias]['email']) || empty($postData[$this->alias]['email'])) {
 			$this->invalidate('email', __d('users', 'Please enter your email address.'));
 			return false;
@@ -655,9 +661,9 @@ class User extends UsersAppModel {
 	public function generatePassword($length = 10) {
 		srand((double)microtime() * 1000000);
 		$password = '';
-		$vowels = array("a", "e", "i", "o", "u");
-		$cons = array("b", "c", "d", "g", "h", "j", "k", "l", "m", "n", "p", "r", "s", "t", "u", "v", "w", "tr",
-							"cr", "br", "fr", "th", "dr", "ch", "ph", "wr", "st", "sp", "sw", "pr", "sl", "cl");
+		$vowels = ["a", "e", "i", "o", "u"];
+		$cons = ["b", "c", "d", "g", "h", "j", "k", "l", "m", "n", "p", "r", "s", "t", "u", "v", "w", "tr",
+							"cr", "br", "fr", "th", "dr", "ch", "ph", "wr", "st", "sp", "sw", "pr", "sl", "cl"];
 		for ($i = 0; $i < $length; $i++) {
 			$password .= $cons[mt_rand(0, 31)] . $vowels[mt_rand(0, 4)];
 		}
@@ -688,11 +694,11 @@ class User extends UsersAppModel {
 /**
  * Optional data manipulation before the registration record is saved
  *
- * @param array post data array
- * @param boolean Use email generation, create token, default true
+ * @param array $postData post data array
+ * @param bool $useEmailVerification Use email generation, create token, default true
  * @return array
  */
-	protected function _beforeRegistration($postData = array(), $useEmailVerification = true) {
+	protected function _beforeRegistration($postData = [], $useEmailVerification = true) {
 		if ($useEmailVerification == true) {
 			$postData[$this->alias]['email_token'] = $this->generateToken();
 			$postData[$this->alias]['email_token_expires'] = date('Y-m-d H:i:s', time() + 86400);
@@ -719,14 +725,14 @@ class User extends UsersAppModel {
  * @return array
  * @link https://github.com/CakeDC/search
  */
-	protected function _findSearch($state, $query, $results = array()) {
+	protected function _findSearch($state, $query, $results = []) {
 		if (!class_exists('SearchableBehavior')) {
-			throw new MissingPluginException(array('plugin' => 'Utils'));
+			throw new MissingPluginException(['plugin' => 'Utils']);
 		}
 
 		if ($state == 'before') {
-			$this->Behaviors->load('Containable', array(
-				'autoFields' => false)
+			$this->Behaviors->load('Containable', [
+				'autoFields' => false]
 			);
 			$results = $query;
 
@@ -741,19 +747,19 @@ class User extends UsersAppModel {
 				case 'username':
 					$results['conditions'] = Hash::merge(
 						$query['conditions'],
-						array($this->alias . '.username LIKE' => $like));
+						[$this->alias . '.username LIKE' => $like]);
 					break;
 				case 'email':
 					$results['conditions'] = Hash::merge(
 						$query['conditions'],
-						array($this->alias . '.email LIKE' => $like));
+						[$this->alias . '.email LIKE' => $like]);
 					break;
 				case 'any':
 					$results['conditions'] = Hash::merge(
 						$query['conditions'],
-						array('OR' => array(
-							array($this->alias . '.username LIKE' => $like),
-							array($this->alias . '.email LIKE' => $like))));
+						['OR' => [
+							[$this->alias . '.username LIKE' => $like],
+							[$this->alias . '.email LIKE' => $like]]]);
 					break;
 				case '' :
 					$results['conditions'] = $query['conditions'];
@@ -761,12 +767,12 @@ class User extends UsersAppModel {
 				default :
 					$results['conditions'] = Hash::merge(
 						$query['conditions'],
-						array($this->alias . '.username LIKE' => $like));
+						[$this->alias . '.username LIKE' => $like]);
 					break;
 			}
 
 			if (isset($query['operation']) && $query['operation'] == 'count') {
-				$results['fields'] = array('COUNT(DISTINCT ' . $this->alias . '.id)');
+				$results['fields'] = ['COUNT(DISTINCT ' . $this->alias . '.id)'];
 			}
 
 			return $results;
@@ -789,7 +795,7 @@ class User extends UsersAppModel {
  * @param array $extra Extra options
  * @return array
  */
-	public function paginateCount($conditions = array(), $recursive = 0, $extra = array()) {
+	public function paginateCount($conditions = [], $recursive = 0, $extra = []) {
 		$parameters = compact('conditions');
 		if ($recursive != $this->recursive) {
 			$parameters['recursive'] = $recursive;
@@ -811,8 +817,9 @@ class User extends UsersAppModel {
  * The difference to register() is that this method here is intended to be used
  * by admins to add new users without going through all the registration logic
  *
- * @param array post data, should be Controller->data
- * @return boolean True if the data was saved successfully.
+ * @param array $postData post data, should be Controller->data
+ * @return bool True if the data was saved successfully.
+ * @throws Exception
  */
 	public function add($postData = null) {
 		if (!empty($postData)) {
@@ -859,7 +866,7 @@ class User extends UsersAppModel {
 		if (!empty($postData)) {
 			$this->set($postData);
 			if ($this->validates()) {
-				if(isset($postData[$this->alias]['password'])) {
+				if (isset($postData[$this->alias]['password'])) {
 					$this->data[$this->alias]['password'] = $this->hash($postData[$this->alias]['password'], 'sha1', true);
 				}
 				$result = $this->save(null, false);
@@ -878,18 +885,18 @@ class User extends UsersAppModel {
  *
  * Override this method and inject the conditions you need
  *
- * @var mixed $userId
- * @var array $options
+ * @param mixed $userId User id
+ * @param array $options Options array
  * @return array $user
  * @throws NotFoundException
  */
-	public function getUserForEditing($userId = null, $options = array()) {
-		$defaults = array(
-			'contain' => array(),
-			'conditions' => array(
+	public function getUserForEditing($userId = null, $options = []) {
+		$defaults = [
+			'contain' => [],
+			'conditions' => [
 				$this->alias . '.id' => $userId
-			)
-		);
+			]
+		];
 		$options = Hash::merge($defaults, $options);
 
 		$user = $this->find('first', $options);
@@ -909,9 +916,9 @@ class User extends UsersAppModel {
  * @return void
  */
 	protected function _removeExpiredRegistrations() {
-		$this->deleteAll(array(
+		$this->deleteAll([
 			$this->alias . '.email_verified' => 0,
-			$this->alias . '.email_token_expires <' => date('Y-m-d H:i:s'))
+			$this->alias . '.email_token_expires <' => date('Y-m-d H:i:s')]
 		);
 	}
 

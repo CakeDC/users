@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2014, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2009 - 2018, Cake Development Corporation (http://cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2014, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2009 - 2018, Cake Development Corporation (http://cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -36,35 +36,35 @@ class UserFixture extends CakeTestFixture {
  *
  * @var array
  */
-	public $fields = array(
-			'id' => array('type' => 'string', 'null' => false, 'length' => 36, 'key' => 'primary'),
-			'username' => array('type' => 'string', 'null' => false, 'default' => null),
-			'slug' => array('type' => 'string', 'null' => false, 'default' => null),
-			'password' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 128),
-			'password_token' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 128),
-			'email' => array('type' => 'string', 'null' => true, 'default' => null),
-			'email_verified' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
-			'email_token' => array('type' => 'string', 'null' => true, 'default' => null),
-			'email_token_expires' => array('type' => 'datetime', 'null' => true, 'default' => null),
-			'tos' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
-			'active' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
-			'last_action' => array('type' => 'datetime', 'null' => true, 'default' => null),
-			'last_login' => array('type' => 'datetime', 'null' => true, 'default' => null),
-			'is_admin' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
-			'role' => array('type' => 'string', 'null' => true, 'default' => null),
-			'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
-			'modified' => array('type' => 'datetime', 'null' => true, 'default' => null),
-			'indexes' => array(
-				'PRIMARY' => array('column' => 'id', 'unique' => 1))
-			);
+	public $fields = [
+			'id' => ['type' => 'string', 'null' => false, 'length' => 36, 'key' => 'primary'],
+			'username' => ['type' => 'string', 'null' => false, 'default' => null],
+			'slug' => ['type' => 'string', 'null' => false, 'default' => null],
+			'password' => ['type' => 'string', 'null' => true, 'default' => null, 'length' => 128],
+			'password_token' => ['type' => 'string', 'null' => true, 'default' => null, 'length' => 128],
+			'email' => ['type' => 'string', 'null' => true, 'default' => null],
+			'email_verified' => ['type' => 'boolean', 'null' => true, 'default' => '0'],
+			'email_token' => ['type' => 'string', 'null' => true, 'default' => null],
+			'email_token_expires' => ['type' => 'datetime', 'null' => true, 'default' => null],
+			'tos' => ['type' => 'boolean', 'null' => true, 'default' => '0'],
+			'active' => ['type' => 'boolean', 'null' => true, 'default' => '0'],
+			'last_action' => ['type' => 'datetime', 'null' => true, 'default' => null],
+			'last_login' => ['type' => 'datetime', 'null' => true, 'default' => null],
+			'is_admin' => ['type' => 'boolean', 'null' => true, 'default' => '0'],
+			'role' => ['type' => 'string', 'null' => true, 'default' => null],
+			'created' => ['type' => 'datetime', 'null' => true, 'default' => null],
+			'modified' => ['type' => 'datetime', 'null' => true, 'default' => null],
+			'indexes' => [
+				'PRIMARY' => ['column' => 'id', 'unique' => 1]]
+	];
 
 /**
  * Records
  *
  * @var array
  */
-	public $records = array(
-		array(
+	public $records = [
+		[
 			'id' => '1',
 			'username' => 'adminuser',
 			'slug' => 'adminuser',
@@ -82,8 +82,8 @@ class UserFixture extends CakeTestFixture {
 			'role' => 'admin',
 			'created' => '2008-03-25 02:45:46',
 			'modified' => '2008-03-25 02:45:46'
-		),
-		array(
+		],
+		[
 			'id' => '47ea303a-3cyc-k251-b313-4811c0a800bf',
 			'username' => 'testuser',
 			'slug' => 'testuser',
@@ -101,8 +101,8 @@ class UserFixture extends CakeTestFixture {
 			'role' => 'user',
 			'created' => '2008-03-25 02:45:46',
 			'modified' => '2008-03-25 02:45:46'
-		),
-		array(
+		],
+		[
 			'id' => '37ea303a-3bdc-4251-b315-1316c0b300fa',
 			'username' => 'user1',
 			'slug' => 'user1',
@@ -120,8 +120,8 @@ class UserFixture extends CakeTestFixture {
 			'role' => 'user',
 			'created' => '2008-03-25 02:45:46',
 			'modified' => '2008-03-25 02:45:46'
-		),
-		array(
+		],
+		[
 			'id' => '495e36a2-1f00-46b9-8247-58a367265f11',
 			'username' => 'oidtest',
 			'slug' => 'oistest',
@@ -139,8 +139,8 @@ class UserFixture extends CakeTestFixture {
 			'role' => 'user',
 			'created' => '2008-03-25 02:45:46',
 			'modified' => '2008-03-25 02:45:46'
-		),
-		array(
+		],
+		[
 			'id' => '315e36a2-1fxj-46b9-8247-58a367265f11',
 			'username' => 'oidtest2',
 			'slug' => 'oistest',
@@ -158,8 +158,8 @@ class UserFixture extends CakeTestFixture {
 			'role' => 'user',
 			'created' => '2008-03-25 02:45:46',
 			'modified' => '2008-03-25 02:45:46'
-		),
-		array(
+		],
+		[
 			'id' => '515e36a2-5fjj-46b9-8247-584367265f11',
 			'username' => 'resetuser',
 			'slug' => 'resetuser',
@@ -177,8 +177,8 @@ class UserFixture extends CakeTestFixture {
 			'role' => 'user',
 			'created' => '2008-03-25 02:45:46',
 			'modified' => '2008-03-25 02:45:46'
-		)
-	);
+		]
+	];
 
 /**
  * Constructor

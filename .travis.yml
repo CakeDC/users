@@ -1,39 +1,31 @@
 language: php
 
 php:
-  - 5.3
-  - 5.4
-  - 5.5
+  - 5.6
+  - 7.0
+  - 7.1
 
 env:
   global:
     - PLUGIN_NAME=Users
     - DB=mysql
-    - REQUIRE="phpunit/phpunit:3.7.31"
+    - REQUIRE="phpunit/phpunit:3.7.38"
 
   matrix:
-    - DB=mysql CAKE_VERSION=2.6
+    - DB=mysql CAKE_VERSION=2.10
 
 matrix:
   include:
-    - php: 5.3
+    - php: 5.6
       env:
-        - CAKE_VERSION=2.6
-    - php: 5.3
+        - CAKE_VERSION=2.10
+    - php: 7.0
       env:
-        - CAKE_VERSION=2.7
-    - php: 5.4
+        - CAKE_VERSION=2.10
+    - php: 7.1
       env:
-        - CAKE_VERSION=2.6
-    - php: 5.4
-      env:
-        - CAKE_VERSION=2.7
-    - php: 5.5
-      env:
-        - CAKE_VERSION=2.6
-    - php: 5.5
-      env:
-        - CAKE_VERSION=2.7
+        - CAKE_VERSION=2.10
+
 
 before_script:
   - git clone https://github.com/steinkel/travis.git --depth 1 ../travis

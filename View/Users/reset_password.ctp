@@ -1,16 +1,16 @@
 <div class="users form">
 <h2><?php echo __d('users', 'Reset your password'); ?></h2>
 <?php
-	echo $this->Form->create($model, array(
-		'url' => array(
+	echo $this->Form->create($model, [
+		'url' => [
 			'action' => 'reset_password',
-			$token)));
-	echo $this->Form->input('new_password', array(
+			$token]]);
+	echo $this->Form->input('new_password', [
 		'label' => __d('users', 'New Password'),
-		'type' => 'password'));
-	echo $this->Form->input('confirm_password', array(
+		'type' => 'password']);
+	echo $this->Form->input('confirm_password', [
 		'label' => __d('users', 'Confirm'),
-		'type' => 'password'));
+		'type' => 'password']);
 	echo $this->Form->submit(__d('users', 'Submit'));
 	echo $this->Form->end();
 ?>

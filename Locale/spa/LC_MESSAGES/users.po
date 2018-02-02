@@ -239,7 +239,7 @@ msgstr "Público"
 #: View/Elements/Users/sidebar.ctp:4
 #: View/Users/login.ctp:13
 msgid "Login"
-msgstr "Nombre de Usuario"
+msgstr "Iniciar sesión"
 
 #: View/Elements/Users/sidebar.ctp:6
 msgid "Register an account"

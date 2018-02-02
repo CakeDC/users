@@ -37,15 +37,15 @@ class MultiColumnAuthenticate extends FormAuthenticate {
  *
  * @var array
  */
-	public $settings = array(
-		'fields' => array(
+	public $settings = [
+		'fields' => [
 			'username' => 'username',
 			'password' => 'password'
-		),
-		'columns' => array(),
+		],
+		'columns' => [],
 		'userModel' => 'User',
-		'scope' => array()
-	);
+		'scope' => []
+	];
 
 /**
  * Find a user record using the standard options.
@@ -58,22 +58,22 @@ class MultiColumnAuthenticate extends FormAuthenticate {
 		$userModel = $this->settings['userModel'];
 		list($plugin, $model) = pluginSplit($userModel);
 		$fields = $this->settings['fields'];
-		$conditions = array($model . '.' . $fields['username'] => $username);
+		$conditions = [$model . '.' . $fields['username'] => $username];
 		if ($this->settings['columns'] && is_array($this->settings['columns'])) {
-			$columns = array();
+			$columns = [];
 			foreach ($this->settings['columns'] as $column) {
-				$columns[] = array($model . '.' . $column => $username);
+				$columns[] = [$model . '.' . $column => $username];
 			}
-			$conditions = array('OR' => $columns);
+			$conditions = ['OR' => $columns];
 		}
-		$conditions = array_merge($conditions, array($model . '.' . $fields['password'] => $this->_password($password)));
+		$conditions = array_merge($conditions, [$model . '.' . $fields['password'] => Security::hash($password, null, true)]);
 		if (!empty($this->settings['scope'])) {
 			$conditions = array_merge($conditions, $this->settings['scope']);
 		}
-		$result = ClassRegistry::init($userModel)->find('first', array(
+		$result = ClassRegistry::init($userModel)->find('first', [
 			'conditions' => $conditions,
 			'recursive' => 0
-		));
+		]);
 		if (empty($result) || empty($result[$model])) {
 			return false;
 		}

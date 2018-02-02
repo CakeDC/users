@@ -10,9 +10,11 @@ Versions and branches
 
 | CakePHP | CakeDC Users Plugin | Tag   | Notes |
 | :-------------: | :------------------------: | :--:  | :---- |
-| 2.x             | [master](https://github.com/cakedc/users/tree/master)                     | 2.1.3 | Note CakePHP 2.7 is currently not supported, we are working on it now |
-| 3.0             | [3.0.x](https://github.com/cakedc/users/tree/3.0.x)                      | 3.0.0 | stability is beta, but pretty stable now |
-| 3.1             | [3.1.x](https://github.com/cakedc/users/tree/3.1.x)                      | 3.1.0 | stability is beta, but pretty stable now |
+| ^3.5             | [master](https://github.com/cakedc/users/tree/master)                      | 6.0.0 | stable |
+| ^3.5             | [develop](https://github.com/cakedc/users/tree/develop)                      | - | unstable |
+| 3.4             | [5.x](https://github.com/cakedc/users/tree/5.x)                      | 5.2.0 | stable |
+| 3.3             | [4.x](https://github.com/cakedc/users/tree/4.x)                      | 4.2.0 | stable |
+| 2.x             | [2.x](https://github.com/cakedc/users/tree/2.x)                     | 2.2.0 | stable |
 
 The **Users** plugin is for allowing users to register and login manage their profile. It also allows admins to manage the users.
 
@@ -24,8 +26,8 @@ That it works out of the box doesn't mean it is thought to be used exactly like 
 Requirements
 ------------
 
-* CakePHP 2.5+
-* PHP 5.2.8+
+* CakePHP 2.10+
+* PHP 5.6.0+ - PHP 7.1
 * [CakeDC Utils plugin](http://github.com/CakeDC/utils) (Optional but recommended)
 * [CakeDC Search plugin](http://github.com/CakeDC/search) (Optional but recommended)
 
