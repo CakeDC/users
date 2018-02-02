@@ -16,7 +16,7 @@ Versions and branches
 | ^3.5             | [develop](https://github.com/cakedc/users/tree/develop)                      | - | unstable |
 | 3.4             | [5.x](https://github.com/cakedc/users/tree/5.x)                      | 5.2.0 | stable |
 | 3.3             | [4.x](https://github.com/cakedc/users/tree/4.x)                      | 4.2.0 | stable |
-| 2.x             | [2.x](https://github.com/cakedc/users/tree/2.x)                     | 2.1.2 | Note CakePHP 2.7 is currently not supported |
+| 2.x             | [2.x](https://github.com/cakedc/users/tree/2.x)                     | 2.2.0 |stable |
 
 The **Users** plugin is back!
 
