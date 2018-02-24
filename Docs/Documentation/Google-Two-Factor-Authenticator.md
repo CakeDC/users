@@ -21,7 +21,16 @@ Configure::write('Users.GoogleAuthenticator.login', true);
 
 How does it work
 ----------------
-When the user log-in, he is requested to inform the current validation
-code for your site in Google Authentation app, if this is the first 
+When the user log-in, he is requested (image 1) to inform the current validation
+code for your site in Google Authentation app (image 2), if this is the first 
 time he access he need to add your site to Google Authentation by reading
 the qrCode shown.
+
+1) Validation code page
+
+<img src="GoogleAuthenticator/NextLogin.png?raw=true" width="300"/>
+
+2) Google Authentation app
+
+<img src="GoogleAuthenticator/App.png?raw=true" width="300"/>
+
