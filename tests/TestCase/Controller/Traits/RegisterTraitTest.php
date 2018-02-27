@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
+use Cake\Event\Event;
 use CakeDC\Users\Test\TestCase\Controller\Traits\BaseTraitTest;
 use Cake\Core\Configure;
 use Cake\Core\Plugin;
@@ -88,6 +89,61 @@ class RegisterTraitTest extends BaseTraitTest
 
         $this->Trait->register();
 
+        $this->assertEquals(1, $this->table->find()->where(['username' => 'testRegistration'])->count());
+    }
+
+    /**
+     * Triggering beforeRegister event and not able to register the user
+     *
+     * @return void
+     */
+    public function testRegisterWithEventFalseResult()
+    {
+        $this->assertEquals(0, $this->table->find()->where(['username' => 'testRegistration'])->count());
+        $this->_mockRequestPost();
+        $this->_mockAuth();
+        $this->_mockFlash();
+        $this->_mockDispatchEvent(new Event('Users.Component.UsersAuth.beforeRegister'), ['username' => 'hello']);
+        $this->Trait->Flash->expects($this->once())
+            ->method('error')
+            ->with('The user could not be saved');
+        $this->Trait->expects($this->never())
+            ->method('redirect');
+        $this->Trait->request->expects($this->never())
+            ->method('is');
+
+        $this->Trait->register();
+        $this->assertEquals(0, $this->table->find()->where(['username' => 'testRegistration'])->count());
+    }
+
+    /**
+     * Triggering beforeRegister event and registering the user successfully
+     *
+     * @return void
+     */
+    public function testRegisterWithEventSuccessResult()
+    {
+        $this->assertEquals(0, $this->table->find()->where(['username' => 'testRegistration'])->count());
+        $this->_mockRequestPost();
+        $this->_mockAuth();
+        $this->_mockFlash();
+        $this->_mockDispatchEvent(new Event('Users.Component.UsersAuth.beforeRegister'), [
+            'username' => 'testRegistration',
+            'password' => 'password',
+            'email' => 'test-registration@example.com',
+            'password_confirm' => 'password',
+            'tos' => 1
+        ]);
+        $this->Trait->Flash->expects($this->once())
+            ->method('success')
+            ->with('Please validate your account before log in');
+        $this->Trait->expects($this->once())
+            ->method('redirect')
+            ->with(['action' => 'login']);
+        $this->Trait->request->expects($this->never())
+            ->method('is');
+
+        $this->Trait->register();
         $this->assertEquals(1, $this->table->find()->where(['username' => 'testRegistration'])->count());
     }
 
