@@ -68,6 +68,7 @@ trait RegisterTrait
             } else {
                 $this->set(compact('user'));
                 $this->Flash->error(__d('CakeDC/Users', 'The user could not be saved'));
+
                 return;
             }
         }
