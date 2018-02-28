@@ -13,6 +13,7 @@ namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
 use Cake\Event\Event;
 use Cake\Mailer\Email;
+use Cake\ORM\Entity;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use PHPUnit_Framework_MockObject_RuntimeException;
@@ -200,12 +201,17 @@ abstract class BaseTraitTest extends TestCase
      * mock utility
      *
      * @param Event $event event
+     * @param array $result array of data
      * @return void
      */
-    protected function _mockDispatchEvent(Event $event = null)
+    protected function _mockDispatchEvent(Event $event = null, $result = [])
     {
         if (is_null($event)) {
             $event = new Event('cool-name-here');
+        }
+
+        if (!empty($result)) {
+            $event->result = new Entity($result);
         }
         $this->Trait->expects($this->any())
                 ->method('dispatchEvent')
