@@ -68,7 +68,7 @@ trait RegisterTrait
             if ($userSaved = $usersTable->register($user, $data, $options)) {
                 return $this->_afterRegister($userSaved);
             } else {
-                $this->set(compact('user'));    
+                $this->set(compact('user'));
                 $this->Flash->error(__d('CakeDC/Users', 'The user could not be saved'));
 
                 return;
