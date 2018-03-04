@@ -92,12 +92,22 @@ class PasswordBehavior extends BaseTokenBehavior
     /**
      * Get the user by email or username
      *
-     * @param string $reference reference could be either an email or username
+     * @param string $reference reference could be either an email or configured username field
      * @return mixed user entity if found
      */
     protected function _getUser($reference)
     {
-        return $this->_table->findByUsernameOrEmail($reference, $reference)->first();
+        $options = ['email' => $reference];
+
+        $userNameField = Configure::read('Auth.authenticate.Form.fields.username');
+
+        if (!empty($userNameField)) {
+            $options[$userNameField] = $reference;
+        }
+
+        return $this->_table->find()
+            ->where(['OR' => $options])
+            ->first();
     }
 
     /**
