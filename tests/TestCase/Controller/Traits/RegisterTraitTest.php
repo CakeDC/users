@@ -123,17 +123,22 @@ class RegisterTraitTest extends BaseTraitTest
      */
     public function testRegisterWithEventSuccessResult()
     {
-        $this->assertEquals(0, $this->table->find()->where(['username' => 'testRegistration'])->count());
-        $this->_mockRequestPost();
-        $this->_mockAuth();
-        $this->_mockFlash();
-        $this->_mockDispatchEvent(new Event('Users.Component.UsersAuth.beforeRegister'), [
+        $data = [
             'username' => 'testRegistration',
             'password' => 'password',
             'email' => 'test-registration@example.com',
             'password_confirm' => 'password',
             'tos' => 1
-        ]);
+        ];
+
+        $this->assertEquals(0, $this->table->find()->where(['username' => 'testRegistration'])->count());
+        $this->_mockRequestPost();
+        $this->_mockAuth();
+        $this->_mockFlash();
+        $this->_mockDispatchEvent(new Event('Users.Component.UsersAuth.beforeRegister'), $data);
+        $this->Trait->request->expects($this->once())
+            ->method('getData')
+            ->will($this->returnValue($data));
         $this->Trait->Flash->expects($this->once())
             ->method('success')
             ->with('Please validate your account before log in');
