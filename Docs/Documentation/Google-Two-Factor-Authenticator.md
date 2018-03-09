@@ -28,7 +28,7 @@ the QR code shown (image 1).
 
 1) Validation code page
 
-<img src="GoogleAuthenticator/NextLogin.png?raw=true" width="300"/>
+<img src="GoogleAuthenticator/FirstLogin.png?raw=true" width="300"/>
 
 2) Google Authentation app
 
