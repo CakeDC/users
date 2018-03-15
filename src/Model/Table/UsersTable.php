@@ -59,6 +59,8 @@ class UsersTable extends Table
             'foreignKey' => 'user_id',
             'className' => 'CakeDC/Users.SocialAccounts'
         ]);
+        //mike test
+        $varMike = 'test mike';
     }
 
     /**
