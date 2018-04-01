@@ -41,7 +41,7 @@ class RegisterBehaviorTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $table = TableRegistry::get('CakeDC/Users.Users');
+        $table = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
         $table->addBehavior('CakeDC/Users/Register.Register');
         $this->Table = $table;
         $this->Behavior = $table->behaviors()->Register;

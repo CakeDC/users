@@ -20,7 +20,7 @@ use Cake\Core\Plugin;
 use Cake\Database\Exception;
 use Cake\Event\Event;
 use Cake\Network\Request;
-use Cake\Network\Session;
+use Cake\Http\Session;
 use Cake\ORM\Entity;
 use Cake\Routing\Exception\MissingRouteException;
 use Cake\Routing\Router;
@@ -64,7 +64,7 @@ class GoogleAuthenticatorComponentTest extends TestCase
                 ->setMethods(['is', 'method'])
                 ->getMock();
         $this->request->expects($this->any())->method('is')->will($this->returnValue(true));
-        $this->response = $this->getMockBuilder('Cake\Network\Response')
+        $this->response = $this->getMockBuilder('Cake\Http\Response')
                 ->setMethods(['stop'])
                 ->getMock();
         $this->Controller = new Controller($this->request, $this->response);

@@ -47,12 +47,12 @@ trait PasswordManagementTrait
             $validatePassword = false;
             if (!$user->id) {
                 $this->Flash->error(__d('CakeDC/Users', 'User was not found'));
-                $this->redirect($this->Auth->config('loginAction'));
+                $this->redirect($this->Auth->getConfig('loginAction'));
 
                 return;
             }
             //@todo add to the documentation: list of routes used
-            $redirect = $this->Auth->config('loginAction');
+            $redirect = $this->Auth->getConfig('loginAction');
         }
         $this->set('validatePassword', $validatePassword);
         if ($this->request->is('post')) {
@@ -66,7 +66,7 @@ trait PasswordManagementTrait
                     $this->request->getData(),
                     ['validate' => $validator]
                 );
-                if ($user->errors()) {
+                if ($user->getErrors()) {
                     $this->Flash->error(__d('CakeDC/Users', 'Password could not be changed'));
                 } else {
                     $user = $this->getUsersTable()->changePassword($user);
@@ -105,7 +105,7 @@ trait PasswordManagementTrait
     /**
      * Reset password
      *
-     * @return void|\Cake\Network\Response
+     * @return void|\Cake\Http\Response
      */
     public function requestResetPassword()
     {

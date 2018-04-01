@@ -14,8 +14,8 @@ namespace CakeDC\Users\Controller\Traits;
 use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
-use Cake\Network\Exception\NotFoundException;
-use Cake\Network\Response;
+use Cake\Http\Exception\NotFoundException;
+use Cake\Http\Response;
 
 /**
  * Covers registration features and email token validation

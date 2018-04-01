@@ -16,7 +16,7 @@ use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Http\ServerRequest;
 use Cake\I18n\Time;
-use Cake\Network\Exception\NotFoundException;
+use Cake\Http\Exception\NotFoundException;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use League\OAuth2\Client\Provider\Facebook;
@@ -250,7 +250,7 @@ class LinkSocialTraitTest extends BaseTraitTest
         Configure::write('OAuth.providers.facebook.options.clientId', 'testclientidtestclientid');
         Configure::write('OAuth.providers.facebook.options.clientSecret', 'testclientsecrettestclientsecret');
 
-        $Table = TableRegistry::get('CakeDC/Users.Users');
+        $Table = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
 
         $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\Traits\LinkSocialTrait')
             ->setMethods(['dispatchEvent', 'redirect', 'set', '_createSocialProvider', 'getUsersTable', 'log'])
@@ -380,7 +380,7 @@ class LinkSocialTraitTest extends BaseTraitTest
     {
         Configure::write('OAuth.providers.facebook.options.clientId', 'testclientidtestclientid');
         Configure::write('OAuth.providers.facebook.options.clientSecret', 'testclientsecrettestclientsecret');
-        $user = TableRegistry::get('akeDC/Users.Users')->get('00000000-0000-0000-0000-000000000001');
+        $user = TableRegistry::getTableLocator()->get('akeDC/Users.Users')->get('00000000-0000-0000-0000-000000000001');
         $user->setErrors([
             'social_accounts' => [
                 '_existsIn' => __d('CakeDC/Users', 'Social account already associated to another user')
@@ -507,7 +507,7 @@ class LinkSocialTraitTest extends BaseTraitTest
         Configure::write('OAuth.providers.facebook.options.clientId', 'testclientidtestclientid');
         Configure::write('OAuth.providers.facebook.options.clientSecret', 'testclientsecrettestclientsecret');
 
-        $Table = TableRegistry::get('CakeDC/Users.Users');
+        $Table = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
 
         $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\Traits\LinkSocialTrait')
             ->setMethods(['dispatchEvent', 'redirect', 'set', '_createSocialProvider', 'getUsersTable', 'log'])
@@ -600,7 +600,7 @@ class LinkSocialTraitTest extends BaseTraitTest
         Configure::write('OAuth.providers.facebook.options.clientId', 'testclientidtestclientid');
         Configure::write('OAuth.providers.facebook.options.clientSecret', 'testclientsecrettestclientsecret');
 
-        $Table = TableRegistry::get('CakeDC/Users.Users');
+        $Table = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
 
         $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\Traits\LinkSocialTrait')
             ->setMethods(['dispatchEvent', 'redirect', 'set', '_createSocialProvider', 'getUsersTable', 'log'])
@@ -688,7 +688,7 @@ class LinkSocialTraitTest extends BaseTraitTest
         Configure::write('OAuth.providers.facebook.options.clientId', 'testclientidtestclientid');
         Configure::write('OAuth.providers.facebook.options.clientSecret', 'testclientsecrettestclientsecret');
 
-        $Table = TableRegistry::get('CakeDC/Users.Users');
+        $Table = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
 
         $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\Traits\LinkSocialTrait')
             ->setMethods(['dispatchEvent', 'redirect', 'set', '_createSocialProvider', 'getUsersTable', 'log'])
@@ -775,7 +775,7 @@ class LinkSocialTraitTest extends BaseTraitTest
         Configure::write('OAuth.providers.facebook.options.clientId', 'testclientidtestclientid');
         Configure::write('OAuth.providers.facebook.options.clientSecret', 'testclientsecrettestclientsecret');
 
-        $Table = TableRegistry::get('CakeDC/Users.Users');
+        $Table = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
 
         $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\Traits\LinkSocialTrait')
             ->setMethods(['dispatchEvent', 'redirect', 'set', 'getUsersTable', 'log'])

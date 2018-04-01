@@ -46,7 +46,7 @@ class UsersTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->Users = TableRegistry::get('CakeDC/Users.Users');
+        $this->Users = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
         $this->fullBaseBackup = Router::fullBaseUrl();
         Router::fullBaseUrl('http://users.test');
         Email::setConfigTransport('test', [
@@ -142,7 +142,7 @@ class UsersTableTest extends TestCase
         ];
         $userEntity = $this->Users->newEntity();
         $this->Users->register($userEntity, $user, ['token_expiration' => 3600, 'validate_email' => 1, 'use_tos' => 1]);
-        $this->assertEquals(['tos' => ['_required' => 'This field is required']], $userEntity->errors());
+        $this->assertEquals(['tos' => ['_required' => 'This field is required']], $userEntity->getErrors());
     }
 
     /**

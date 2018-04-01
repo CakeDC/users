@@ -11,8 +11,8 @@
 
 namespace CakeDC\Users\Controller\Traits;
 
-use Cake\Network\Exception\NotFoundException;
-use Cake\Network\Response;
+use Cake\Http\Exception\NotFoundException;
+use Cake\Http\Response;
 use Cake\Utility\Inflector;
 
 /**
@@ -30,7 +30,7 @@ trait SimpleCrudTrait
     public function index()
     {
         $table = $this->loadModel();
-        $tableAlias = $table->alias();
+        $tableAlias = $table->getAlias();
         $this->set($tableAlias, $this->paginate($table));
         $this->set('tableAlias', $tableAlias);
         $this->set('_serialize', [$tableAlias, 'tableAlias']);
@@ -46,7 +46,7 @@ trait SimpleCrudTrait
     public function view($id = null)
     {
         $table = $this->loadModel();
-        $tableAlias = $table->alias();
+        $tableAlias = $table->getAlias();
         $entity = $table->get($id, [
             'contain' => []
         ]);
@@ -63,7 +63,7 @@ trait SimpleCrudTrait
     public function add()
     {
         $table = $this->loadModel();
-        $tableAlias = $table->alias();
+        $tableAlias = $table->getAlias();
         $entity = $table->newEntity();
         $this->set($tableAlias, $entity);
         $this->set('tableAlias', $tableAlias);
@@ -91,7 +91,7 @@ trait SimpleCrudTrait
     public function edit($id = null)
     {
         $table = $this->loadModel();
-        $tableAlias = $table->alias();
+        $tableAlias = $table->getAlias();
         $entity = $table->get($id, [
             'contain' => []
         ]);
@@ -122,7 +122,7 @@ trait SimpleCrudTrait
     {
         $this->request->allowMethod(['post', 'delete']);
         $table = $this->loadModel();
-        $tableAlias = $table->alias();
+        $tableAlias = $table->getAlias();
         $entity = $table->get($id, [
             'contain' => []
         ]);

@@ -11,7 +11,6 @@
 namespace CakeDC\Users\Mailer;
 
 use Cake\Datasource\EntityInterface;
-use Cake\Mailer\Email;
 use Cake\Mailer\Mailer;
 
 /**
@@ -33,10 +32,10 @@ class UsersMailer extends Mailer
         $user->setHidden(['password', 'token_expires', 'api_token']);
         $subject = __d('CakeDC/Users', 'Your account validation link');
         $this
-            ->to($user['email'])
-            ->setSubject($firstName . $subject)
-            ->setViewVars($user->toArray())
-            ->setTemplate('CakeDC/Users.validation');
+            ->setTo($user['email'])
+             ->setSubject($firstName . $subject)
+             ->setViewVars($user->toArray())
+             ->setTemplate('CakeDC/Users.validation');
     }
 
     /**
@@ -54,7 +53,7 @@ class UsersMailer extends Mailer
         $user->setHidden(['password', 'token_expires', 'api_token']);
 
         $this
-            ->to($user['email'])
+            ->setTo($user['email'])
             ->setSubject($subject)
             ->setViewVars($user->toArray())
             ->setTemplate('CakeDC/Users.resetPassword');
@@ -74,7 +73,7 @@ class UsersMailer extends Mailer
         // note: we control the space after the username in the previous line
         $subject = __d('CakeDC/Users', '{0}Your social account validation link', $firstName);
         $this
-            ->to($user['email'])
+            ->setTo($user['email'])
             ->setSubject($subject)
             ->setViewVars(compact('user', 'socialAccount'))
             ->setTemplate('CakeDC/Users.socialAccountValidation');

@@ -21,7 +21,7 @@ use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Http\ServerRequest;
 use Cake\Network\Request;
-use Cake\Network\Response;
+use Cake\Http\Response;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use ReflectionClass;
@@ -47,7 +47,7 @@ class SocialAuthenticateTest extends TestCase
         $request = new ServerRequest();
         $response = new Response();
 
-        $this->Table = TableRegistry::get('CakeDC/Users.Users');
+        $this->Table = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
 
         $this->Token = $this->getMockBuilder('League\OAuth2\Client\Token\AccessToken')
             ->setMethods(['getToken', 'getExpires'])
@@ -240,7 +240,7 @@ class SocialAuthenticateTest extends TestCase
         $this->SocialAuthenticate = $this->_getSocialAuthenticateMockMethods(['_authenticate',
             '_getProviderName', '_mapUser', '_touch', '_validateConfig']);
 
-        $session = $this->getMockBuilder('Cake\Network\Session')
+        $session = $this->getMockBuilder('Cake\Http\Session')
             ->setMethods(['read', 'delete'])
             ->getMock();
         $session->expects($this->once())

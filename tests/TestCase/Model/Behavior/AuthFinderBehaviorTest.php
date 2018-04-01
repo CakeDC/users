@@ -43,7 +43,7 @@ class AuthFinderBehaviorTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->table = TableRegistry::get('CakeDC/Users.Users');
+        $this->table = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
         $this->Behavior = new AuthFinderBehavior($this->table);
     }
 

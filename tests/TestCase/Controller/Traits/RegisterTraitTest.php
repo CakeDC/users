@@ -326,7 +326,7 @@ class RegisterTraitTest extends BaseTraitTest
      * test
      *
      * @return void
-     * @expectedException Cake\Network\Exception\NotFoundException
+     * @expectedException Cake\Http\Exception\NotFoundException
      */
     public function testRegisterNotEnabled()
     {

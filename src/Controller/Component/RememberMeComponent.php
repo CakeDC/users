@@ -105,8 +105,8 @@ class RememberMeComponent extends Component
         if (empty($user)) {
             return;
         }
-        $user['user_agent'] = $this->getController()->request->getHeaderLine('User-Agent');
-        if (!(bool)$this->getController()->request->getData(Configure::read('Users.Key.Data.rememberMe'))) {
+        $user['user_agent'] = $this->getController()->getRequest()->getHeaderLine('User-Agent');
+        if (!(bool)$this->getController()->getRequest()->getData(Configure::read('Users.Key.Data.rememberMe'))) {
              return;
         }
         $this->Cookie->write($this->_cookieName, $user);
@@ -135,10 +135,10 @@ class RememberMeComponent extends Component
     {
         $user = $this->Auth->user();
         if (!empty($user) ||
-            $this->getController()->request->is(['post', 'put']) ||
-            $this->getController()->request->getParam('action') === 'logout' ||
-            $this->getController()->request->getSession()->check(Configure::read('Users.Key.Session.social')) ||
-            $this->getController()->request->getParam('provider')) {
+            $this->getController()->getRequest()->is(['post', 'put']) ||
+            $this->getController()->getRequest()->getParam('action') === 'logout' ||
+            $this->getController()->getRequest()->getSession()->check(Configure::read('Users.Key.Session.social')) ||
+            $this->getController()->getRequest()->getParam('provider')) {
             return;
         }
 
@@ -152,7 +152,7 @@ class RememberMeComponent extends Component
         if (is_array($event->result)) {
             return $this->getController()->redirect($event->result);
         }
-        $url = $this->getController()->request->getRequestTarget();
+        $url = $this->getController()->getRequest()->getRequestTarget();
 
         return $this->getController()->redirect($url);
     }
