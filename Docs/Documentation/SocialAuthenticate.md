@@ -1,6 +1,17 @@
 SocialAuthenticate
 =============
 
+We currently support the following providers to perform login as well as to link an existing account:
+
+* Facebook
+* Twitter
+* Google
+* LinkedIn
+* Instagram
+* Amazon
+
+Please [contact us](https://cakedc.com/contact) if you need to support another provider.
+
 Setup
 ---------------------
 
@@ -72,3 +83,15 @@ We recommend the use of [Bootstrap Social](http://lipis.github.io/bootstrap-soci
 
 Social Authentication was inspired by [UseMuffin/OAuth2](https://github.com/UseMuffin/OAuth2) library.
 
+Custom username field
+---------------------
+
+In your customized users table, add the SocialBehavior with the following configuration:
+
+```php
+$this->addBehavior('CakeDC.Users/Social', [
+    'username' => 'email' 
+]);
+```
+
+By default it will use `username` field.

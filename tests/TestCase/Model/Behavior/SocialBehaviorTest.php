@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -82,6 +82,39 @@ class SocialBehaviorTest extends TestCase
             ->with($user)
             ->will($this->returnValue($user));
 
+        $result = $this->Behavior->socialLogin($data, $options);
+        $this->assertEquals($result, $user);
+    }
+
+    /**
+     * Test socialLogin with facebook and not existing user
+     *
+     * @dataProvider providerFacebookSocialLogin
+     */
+    public function testSocialLoginFacebookProviderUsingEmail($data, $options, $dataUser)
+    {
+        $user = $this->Table->newEntity($dataUser, ['associated' => ['SocialAccounts']]);
+        $user->password = '$2y$10$0QzszaIEpW1pYpoKJVf4DeqEAHtg9whiLTX/l3TcHAoOLF1bC9U.6';
+
+        $this->Behavior->expects($this->once())
+            ->method('generateUniqueUsername')
+            ->with('email')
+            ->will($this->returnValue('username'));
+
+        $this->Behavior->expects($this->once())
+            ->method('randomString')
+            ->will($this->returnValue('password'));
+
+        $this->Behavior->expects($this->once())
+            ->method('_updateActive')
+            ->will($this->returnValue($user));
+
+        $this->Table->expects($this->once())
+            ->method('save')
+            ->with($user)
+            ->will($this->returnValue($user));
+
+        $this->Behavior->initialize(['username' => 'email']);
         $result = $this->Behavior->socialLogin($data, $options);
         $this->assertEquals($result, $user);
     }

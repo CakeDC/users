@@ -4,6 +4,54 @@ Changelog
 Releases for CakePHP 3
 -------------
 
+* 6.0.0
+  * Removed deprecations and orWhere usage
+  * Amazon login implemented
+  * Fixed issues with login via twitter
+  * Updated Facebook Graph version to 2.8
+  * Fixed flash error messages on logic
+  * Added link social account feature for twitter
+  * Switched to codecov  
+
+* 5.2.0
+  * Compatible with 3.5, deprecations will be removed in next major version of the plugin
+  * Username is now custom in SocialBehavior
+  * Better handling of the RememberMe checkbox
+  * Updated CakeDC/Auth to use ^2.0
+  * Use of UsersMailer class, and allow override of the emails sent by the plugin
+  * Better token generation via randomBytes
+  * Improved documentation
+  * Fixed bugs reported
+
+* 5.1.0
+  * New resend validation method in RegisterBehavior
+  * Allow upgrade to CakePHP 3.5.x
+  * New feature connect social account
+  * New polish translations
+  * Fixed bugs reported
+
+* 5.0.3
+  * Implemented event dispatching on social login
+  * Fixed bugs reported
+  * Don't check for allowed actions in other controllers
+
+* 5.0.2
+  * Fixed bug parsing rule urls when application installed in a subdirectory
+
+* 5.0.1
+  * Bugfix release
+  * Minor BR language improvements
+
+* 5.0.0
+  * Some Auth objects refactored into https://github.com/CakeDC/auth
+  * Upgrade to CakePHP 3.4
+
+* 4.2.1
+  * Improvements in unit tests
+
+* 4.2.0
+  * New configuration param `Users.Registration.defaultRole` to set the default role on user registration or addUser Shell action
+
 * 4.1.3
   * Configurable rememberMe checkbox status
   * Update brazilian portuguese translations

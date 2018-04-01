@@ -1,4 +1,14 @@
 <?php
+/**
+ * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ *
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
+ */
+
 namespace CakeDC\Users\Test\TestCase\Model\Entity;
 
 use CakeDC\Users\Model\Entity\User;
@@ -81,14 +91,14 @@ class UserTest extends TestCase
      */
     public function testTokenExpiredLocale()
     {
-        I18n::locale('es_AR');
+        I18n::setLocale('es_AR');
         $this->User->token_expires = '+1 day';
         $isExpired = $this->User->tokenExpired();
         $this->assertFalse($isExpired);
         $this->User->token_expires = '-1 day';
         $isExpired = $this->User->tokenExpired();
         $this->assertTrue($isExpired);
-        I18n::locale('en_US');
+        I18n::setLocale('en_US');
     }
 
     /**

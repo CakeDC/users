@@ -1,25 +1,25 @@
 <?php
 /**
- * Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 namespace CakeDC\Users\Model\Behavior;
 
-use ArrayObject;
-use CakeDC\Users\Email\EmailSender;
 use CakeDC\Users\Exception\AccountAlreadyActiveException;
+use CakeDC\Users\Model\Entity\SocialAccount;
 use CakeDC\Users\Model\Entity\User;
 use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Event\Event;
-use Cake\Mailer\Email;
+use Cake\Mailer\MailerAwareTrait;
+use Cake\ORM\Behavior;
 use Cake\ORM\Entity;
 
 /**
@@ -28,6 +28,8 @@ use Cake\ORM\Entity;
  */
 class SocialAccountBehavior extends Behavior
 {
+    use MailerAwareTrait;
+
     /**
      * Initialize, attaching belongsTo Users association
      *
@@ -42,7 +44,6 @@ class SocialAccountBehavior extends Behavior
             'joinType' => 'INNER',
             'className' => Configure::read('Users.table')
         ]);
-        $this->Email = new EmailSender();
     }
 
     /**
@@ -50,7 +51,7 @@ class SocialAccountBehavior extends Behavior
      *
      * @param Event $event event
      * @param Entity $entity entity
-     * @param ArrayObject $options options
+     * @param \ArrayObject $options options
      * @return mixed
      */
     public function afterSave(Event $event, Entity $entity, $options)
@@ -71,13 +72,13 @@ class SocialAccountBehavior extends Behavior
      *
      * @param EntityInterface $socialAccount social account
      * @param EntityInterface $user user
-     * @param Email $email Email instance or null to use 'default' configuration
-     * @return mixed
+     * @return void
      */
-    public function sendSocialValidationEmail(EntityInterface $socialAccount, EntityInterface $user, Email $email = null)
+    protected function sendSocialValidationEmail(EntityInterface $socialAccount, EntityInterface $user)
     {
-        $this->Email = new EmailSender();
-        $this->Email->sendSocialValidationEmail($socialAccount, $user, $email);
+        return $this
+            ->getMailer(Configure::read('Users.Email.mailerClass') ?: 'CakeDC/Users.Users')
+            ->send('socialAccountValidation', [$user, $socialAccount]);
     }
 
     /**
@@ -138,7 +139,7 @@ class SocialAccountBehavior extends Behavior
     /**
      * Activates an account
      *
-     * @param Account $socialAccount social account
+     * @param SocialAccount $socialAccount social account
      * @return EntityInterface
      */
     protected function _activateAccount($socialAccount)

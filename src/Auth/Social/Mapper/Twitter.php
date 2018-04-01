@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -47,5 +47,13 @@ class Twitter extends AbstractMapper
     protected function _link()
     {
         return self::TWITTER_BASE_URL . Hash::get($this->_rawData, $this->_mapFields['username']);
+    }
+
+    /**
+     * @return string
+     */
+    protected function _avatar()
+    {
+        return str_replace('normal', 'bigger', Hash::get($this->_rawData, $this->_mapFields['avatar']));
     }
 }

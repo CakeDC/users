@@ -1,22 +1,25 @@
 <?php
 /**
- * Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 namespace CakeDC\Users\Test\TestCase\Auth;
 
+use CakeDC\Users\Auth\SocialAuthenticate;
 use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\UserNotActiveException;
 use Cake\Controller\ComponentRegistry;
+use Cake\Core\Configure;
 use Cake\Event\Event;
+use Cake\Http\ServerRequest;
 use Cake\Network\Request;
 use Cake\Network\Response;
 use Cake\ORM\TableRegistry;
@@ -41,7 +44,7 @@ class SocialAuthenticateTest extends TestCase
      */
     public function setUp()
     {
-        $request = new Request();
+        $request = new ServerRequest();
         $response = new Response();
 
         $this->Table = TableRegistry::get('CakeDC/Users.Users');
@@ -62,7 +65,7 @@ class SocialAuthenticateTest extends TestCase
 
         $this->Request = $request;
         $this->SocialAuthenticate = $this->_getSocialAuthenticateMockMethods(['_authenticate', '_getProviderName',
-                '_mapUser', '_socialLogin', 'dispatchEvent', '_validateConfig', '_getController']);
+            '_mapUser', '_socialLogin', 'dispatchEvent', '_validateConfig', '_getController']);
 
         $this->SocialAuthenticate->expects($this->any())
             ->method('_getController')
@@ -94,6 +97,57 @@ class SocialAuthenticateTest extends TestCase
     }
 
     /**
+     * test
+     *
+     * @expectedException \CakeDC\Users\Auth\Exception\MissingProviderConfigurationException
+     */
+    public function testConstructorMissingConfig()
+    {
+        $socialAuthenticate = new SocialAuthenticate(new ComponentRegistry($this->controller));
+    }
+
+    /**
+     * test
+     *
+     */
+    public function testConstructor()
+    {
+        $socialAuthenticate = new SocialAuthenticate(new ComponentRegistry($this->controller), [
+            'providers' => [
+                'facebook' => [
+                    'className' => 'League\OAuth2\Client\Provider\Facebook',
+                    'options' => [
+                        'graphApiVersion' => 'v2.8',
+                        'redirectUri' => 'http://example.com/auth/facebook',
+                    ]
+                ]
+            ]
+        ]);
+
+        $this->assertInstanceOf('\CakeDC\Users\Auth\SocialAuthenticate', $socialAuthenticate);
+    }
+
+    /**
+     * test
+     *
+     * @expectedException \CakeDC\Users\Auth\Exception\InvalidProviderException
+     */
+    public function testConstructorMissingProvider()
+    {
+        $socialAuthenticate = new SocialAuthenticate(new ComponentRegistry($this->controller), [
+            'providers' => [
+                'facebook' => [
+                    'className' => 'missing',
+                    'options' => [
+                        'graphApiVersion' => 'v2.8',
+                        'redirectUri' => 'http://example.com/auth/facebook',
+                    ]
+                ]
+            ]
+        ]);
+    }
+
+    /**
      * Test getUser
      *
      * @dataProvider providerGetUser
@@ -107,9 +161,9 @@ class SocialAuthenticateTest extends TestCase
             ->with(UsersAuthComponent::EVENT_AFTER_REGISTER, compact('user'));
 
         $this->SocialAuthenticate->expects($this->once())
-         ->method('_authenticate')
-         ->with($this->Request)
-         ->will($this->returnValue($rawData));
+            ->method('_authenticate')
+            ->with($this->Request)
+            ->will($this->returnValue($rawData));
 
         $this->SocialAuthenticate->expects($this->once())
             ->method('_getProviderName')
@@ -184,11 +238,11 @@ class SocialAuthenticateTest extends TestCase
     {
         $user = ['username' => 'username', 'email' => 'myemail@test.com'];
         $this->SocialAuthenticate = $this->_getSocialAuthenticateMockMethods(['_authenticate',
-                '_getProviderName', '_mapUser', '_touch', '_validateConfig' ]);
+            '_getProviderName', '_mapUser', '_touch', '_validateConfig']);
 
         $session = $this->getMockBuilder('Cake\Network\Session')
-                ->setMethods(['read', 'delete'])
-                ->getMock();
+            ->setMethods(['read', 'delete'])
+            ->getMock();
         $session->expects($this->once())
             ->method('read')
             ->with('Users.social')
@@ -199,10 +253,10 @@ class SocialAuthenticateTest extends TestCase
             ->with('Users.social');
 
         $this->Request = $this->getMockBuilder('Cake\Network\Request')
-                ->setMethods(['session'])
-                ->getMock();
+            ->setMethods(['getSession'])
+            ->getMock();
         $this->Request->expects($this->any())
-            ->method('session')
+            ->method('getSession')
             ->will($this->returnValue($session));
 
         $this->SocialAuthenticate->expects($this->once())
@@ -430,7 +484,7 @@ class SocialAuthenticateTest extends TestCase
     public function providerMapper()
     {
         return [
-                [
+            [
                 'rawData' => [
                     'id' => 'my-facebook-id',
                     'name' => 'My name.',
@@ -461,7 +515,7 @@ class SocialAuthenticateTest extends TestCase
                     ],
                     'provider' => 'Facebook'
                 ],
-                ]
+            ]
 
         ];
     }
@@ -480,5 +534,111 @@ class SocialAuthenticateTest extends TestCase
         $mapUser = $reflectedClass->getMethod('_mapUser');
         $mapUser->setAccessible(true);
         $mapUser->invoke($this->SocialAuthenticate, null, $data);
+    }
+
+    /**
+     * Provider for normalizeConfig test method
+     *
+     * @dataProvider providers
+     */
+    public function testNormalizeConfig($data, $oauth2, $callTimes, $enabledNoOAuth2Provider)
+    {
+        Configure::write('OAuth2', $oauth2);
+        $this->SocialAuthenticate = $this->_getSocialAuthenticateMockMethods(['_authenticate',
+            '_getProviderName', '_mapUser', '_touch', '_validateConfig', '_normalizeConfig']);
+
+        $this->SocialAuthenticate->expects($this->exactly($callTimes))
+            ->method('_normalizeConfig');
+
+        $this->SocialAuthenticate->normalizeConfig($data, $enabledNoOAuth2Provider);
+    }
+
+    /**
+     * Test normalizeConfig
+     *
+     * @expectedException CakeDC\Users\Auth\Exception\MissingProviderConfigurationException
+     */
+    public function testNormalizeConfigException()
+    {
+        $this->SocialAuthenticate->normalizeConfig([]);
+    }
+
+    /**
+     * Provider for normalizeConfig test method
+     *
+     */
+    public function providers()
+    {
+        return [
+            [
+                [
+                    'providers' => [
+                        'facebook' => [
+                            'className' => 'League\OAuth2\Client\Provider\Facebook',
+                        ],
+                        'instagram' => [
+                            'className' => 'League\OAuth2\Client\Provider\Instagram',
+                        ]
+                    ],
+
+                ],
+                [
+                    'providers' => [
+                        'facebook' => [
+                            'className' => 'League\OAuth2\Client\Provider\Facebook',
+                        ],
+                        'instagram' => [
+                            'className' => 'League\OAuth2\Client\Provider\Instagram',
+                        ]
+                    ]
+                ],
+                2,
+                false
+            ],
+            [
+                [
+                    'providers' => [
+                        'facebook' => [
+                            'className' => 'League\OAuth2\Client\Provider\Facebook',
+                        ],
+                    ],
+
+                ],
+                [
+                    'providers' => [
+                        'facebook' => [
+                            'className' => 'League\OAuth2\Client\Provider\Facebook',
+                        ],
+                    ]
+                ],
+                1,
+                false
+            ],
+            [
+                [
+                    'providers' => [
+                        'facebook' => [
+                            'className' => 'League\OAuth2\Client\Provider\Facebook',
+                        ],
+                    ],
+
+                ],
+                [
+                    'providers' => [
+                        'instagram' => [
+                            'className' => 'League\OAuth2\Client\Provider\Instagram',
+                        ]
+                    ]
+                ],
+                2,
+                false
+            ],
+            [
+                [],
+                [],
+                0,
+                true
+            ]
+        ];
     }
 }

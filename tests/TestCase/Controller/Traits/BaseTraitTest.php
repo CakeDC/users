@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2015, Cake Development Corporation (+1 702 425 5085) (http://cakedc.com)
+ * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2015, Cake Development Corporation (+1 702 425 5085) (http://cakedc.com)
+ * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -13,6 +13,7 @@ namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
 use Cake\Event\Event;
 use Cake\Mailer\Email;
+use Cake\ORM\Entity;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use PHPUnit_Framework_MockObject_RuntimeException;
@@ -60,11 +61,12 @@ abstract class BaseTraitTest extends TestCase
         }
 
         if ($this->mockDefaultEmail) {
-            Email::configTransport('test', [
+            Email::setConfigTransport('test', [
                 'className' => 'Debug'
             ]);
-            $this->configEmail = Email::config('default');
-            Email::config('default', [
+            $this->configEmail = Email::getConfig('default');
+            Email::drop('default');
+            Email::setConfig('default', [
                 'transport' => 'test',
                 'from' => 'cakedc@example.com'
             ]);
@@ -82,7 +84,7 @@ abstract class BaseTraitTest extends TestCase
         if ($this->mockDefaultEmail) {
             Email::drop('default');
             Email::dropTransport('test');
-            Email::config('default', $this->configEmail);
+            //Email::setConfig('default', $this->setConfigEmail);
         }
         parent::tearDown();
     }
@@ -113,7 +115,7 @@ abstract class BaseTraitTest extends TestCase
      */
     protected function _mockRequestGet($withSession = false)
     {
-        $methods = ['is', 'referer', 'data'];
+        $methods = ['is', 'referer', 'getData'];
 
         if ($withSession) {
             $methods[] = 'session';
@@ -150,7 +152,7 @@ abstract class BaseTraitTest extends TestCase
     protected function _mockRequestPost($with = 'post')
     {
         $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
-                ->setMethods(['is', 'data', 'allow'])
+                ->setMethods(['is', 'getData', 'allow'])
                 ->getMock();
         $this->Trait->request->expects($this->any())
                 ->method('is')
@@ -199,12 +201,17 @@ abstract class BaseTraitTest extends TestCase
      * mock utility
      *
      * @param Event $event event
+     * @param array $result array of data
      * @return void
      */
-    protected function _mockDispatchEvent(Event $event = null)
+    protected function _mockDispatchEvent(Event $event = null, $result = [])
     {
         if (is_null($event)) {
             $event = new Event('cool-name-here');
+        }
+
+        if (!empty($result)) {
+            $event->result = new Entity($result);
         }
         $this->Trait->expects($this->any())
                 ->method('dispatchEvent')

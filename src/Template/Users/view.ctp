@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -15,7 +15,11 @@ $Users = ${$tableAlias};
     <h3><?= __d('CakeDC/Users', 'Actions') ?></h3>
     <ul class="side-nav">
         <li><?= $this->Html->link(__d('CakeDC/Users', 'Edit User'), ['action' => 'edit', $Users->id]) ?> </li>
-        <li><?= $this->Form->postLink(__d('CakeDC/Users', 'Delete User'), ['action' => 'delete', $Users->id], ['confirm' => __d('CakeDC/Users', 'Are you sure you want to delete # {0}?', $Users->id)]) ?> </li>
+        <li><?= $this->Form->postLink(
+                __d('CakeDC/Users', 'Delete User'),
+                ['action' => 'delete', $Users->id],
+                ['confirm' => __d('CakeDC/Users', 'Are you sure you want to delete # {0}?', $Users->id)]
+            ) ?> </li>
         <li><?= $this->Html->link(__d('CakeDC/Users', 'List Users'), ['action' => 'index']) ?> </li>
         <li><?= $this->Html->link(__d('CakeDC/Users', 'New User'), ['action' => 'add']) ?> </li>
     </ul>

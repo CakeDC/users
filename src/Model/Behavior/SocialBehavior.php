@@ -1,16 +1,17 @@
 <?php
 /**
- * Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 namespace CakeDC\Users\Model\Behavior;
 
+use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\UserNotActiveException;
@@ -25,10 +26,32 @@ use InvalidArgumentException;
  * Covers social features
  *
  */
-class SocialBehavior extends Behavior
+class SocialBehavior extends BaseTokenBehavior
 {
     use EventDispatcherTrait;
     use RandomStringTrait;
+
+    /**
+     * Username field it can be modified via config
+     *
+     * @var string
+     */
+    protected $_username = 'username';
+
+    /**
+     * Initialize an action instance
+     *
+     * @param array $config Configuration options passed to the constructor
+     * @return void
+     */
+    public function initialize(array $config)
+    {
+        if (isset($config['username'])) {
+            $this->_username = $config['username'];
+        }
+
+        parent::initialize($config);
+    }
 
     /**
      * Performs social login
@@ -44,7 +67,10 @@ class SocialBehavior extends Behavior
     {
         $reference = Hash::get($data, 'id');
         $existingAccount = $this->_table->SocialAccounts->find()
-                ->where(['SocialAccounts.reference' => $reference, 'SocialAccounts.provider' => Hash::get($data, 'provider')])
+                ->where([
+                    'SocialAccounts.reference' => $reference,
+                    'SocialAccounts.provider' => Hash::get($data, 'provider')
+                ])
                 ->contain(['Users'])
                 ->first();
         if (empty($existingAccount->user)) {
@@ -59,24 +85,21 @@ class SocialBehavior extends Behavior
             $user = $existingAccount->user;
         }
         if (!empty($existingAccount)) {
-            if ($existingAccount->active) {
-                if ($user->active) {
-                    return $user;
-                } else {
-                    throw new UserNotActiveException([
-                        $existingAccount->provider,
-                        $existingAccount->$user
-                    ]);
-                }
-            } else {
+            if (!$existingAccount->active) {
                 throw new AccountNotActiveException([
                     $existingAccount->provider,
                     $existingAccount->reference
                 ]);
             }
+            if (!$user->active) {
+                throw new UserNotActiveException([
+                    $existingAccount->provider,
+                    $existingAccount->$user
+                ]);
+            }
         }
 
-        return false;
+        return $user;
     }
 
     /**
@@ -98,11 +121,19 @@ class SocialBehavior extends Behavior
             throw new MissingEmailException(__d('CakeDC/Users', 'Email not present'));
         } else {
             $existingUser = $this->_table->find()
-                    ->where([$this->_table->alias() . '.email' => $email])
-                    ->first();
+                ->where([$this->_table->aliasField('email') => $email])
+                ->first();
         }
 
         $user = $this->_populateUser($data, $existingUser, $useEmail, $validateEmail, $tokenExpiration);
+
+        $event = $this->dispatchEvent(UsersAuthComponent::EVENT_BEFORE_SOCIAL_LOGIN_USER_CREATE, [
+            'userEntity' => $user,
+        ]);
+        if ($event->result instanceof EntityInterface) {
+            $user = $event->result;
+        }
+
         $this->_table->isValidateEmail = $validateEmail;
         $result = $this->_table->save($user);
 
@@ -170,6 +201,7 @@ class SocialBehavior extends Behavior
                     $userData['username'] = preg_replace('/[^A-Za-z0-9]/i', '', Hash::get($userData, 'username'));
                 }
             }
+
             $userData['username'] = $this->generateUniqueUsername(Hash::get($userData, 'username'));
             if ($useEmail) {
                 $userData['email'] = Hash::get($data, 'email');
@@ -211,7 +243,9 @@ class SocialBehavior extends Behavior
     {
         $i = 0;
         while (true) {
-            $existingUsername = $this->_table->find()->where([$this->_table->alias() . '.username' => $username])->count();
+            $existingUsername = $this->_table->find()
+                ->where([$this->_table->aliasField($this->_username) => $username])
+                ->count();
             if ($existingUsername > 0) {
                 $username = $username . $i;
                 $i++;

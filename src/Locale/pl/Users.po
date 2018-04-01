@@ -1,0 +1,811 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2017-07-02 20:08+0200\n"
+"PO-Revision-Date: 2017-07-02 20:08+0200\n"
+"Last-Translator: \n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"Language: pl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2);\n"
+"X-Generator: Poedit 2.0.1\n"
+
+#: Auth/ApiKeyAuthenticate.php:73
+msgid "Type {0} is not valid"
+msgstr "Typ {0} jest nieprawidłowy"
+
+#: Auth/ApiKeyAuthenticate.php:77
+msgid "Type {0} has no associated callable"
+msgstr "Brak callable dla typu {0}"
+
+#: Auth/ApiKeyAuthenticate.php:86
+msgid "SSL is required for ApiKey Authentication"
+msgstr "Uwierzytelnienie ApiKey wymaga SSL"
+
+#: Auth/SimpleRbacAuthorize.php:142
+msgid ""
+"Missing configuration file: \"config/{0}.php\". Using default permissions"
+msgstr ""
+"Brak pliku konfiguracji: \"config/{0}.php\". Użyto domyślnych uprawnień"
+
+#: Auth/SocialAuthenticate.php:432
+msgid "Provider cannot be empty"
+msgstr "Dostawca nie może być pusty"
+
+#: Auth/Rules/AbstractRule.php:78
+msgid ""
+"Table alias is empty, please define a table alias, we could not extract a "
+"default table from the request"
+msgstr "Alias tabeli jest pusty, zdefiniuj alias tabeli"
+
+#: Auth/Rules/Owner.php:67;70
+msgid ""
+"Missing column {0} in table {1} while checking ownership permissions for "
+"user {2}"
+msgstr ""
+"Nieistniejąca kolumna {0} w tabeli {0} podczas sprawdzania uprawnień dla "
+"użytkownika {2}"
+
+#: Controller/SocialAccountsController.php:52
+msgid "Account validated successfully"
+msgstr "Konto zostało aktywowane"
+
+#: Controller/SocialAccountsController.php:54
+msgid "Account could not be validated"
+msgstr "Aktywacja konta nie powiodła się"
+
+#: Controller/SocialAccountsController.php:57
+msgid "Invalid token and/or social account"
+msgstr "Nieprawidłowy token lub konto społecznościowe"
+
+#: Controller/SocialAccountsController.php:59;87
+msgid "Social Account already active"
+msgstr "Konto społecznościowe jest już aktywne"
+
+#: Controller/SocialAccountsController.php:61
+msgid "Social Account could not be validated"
+msgstr "Aktywacja nie powiodła się"
+
+#: Controller/SocialAccountsController.php:80
+msgid "Email sent successfully"
+msgstr "E-mail został wysłany"
+
+#: Controller/SocialAccountsController.php:82
+msgid "Email could not be sent"
+msgstr "E-mail nie mógł zostać wysłany"
+
+#: Controller/SocialAccountsController.php:85
+msgid "Invalid account"
+msgstr "Nieprawidłowe konto"
+
+#: Controller/SocialAccountsController.php:89
+msgid "Email could not be resent"
+msgstr "Nie można wysłać wiadomości e-mail"
+
+#: Controller/Component/RememberMeComponent.php:69
+msgid "Invalid app salt, app salt must be at least 256 bits (32 bytes) long"
+msgstr ""
+"Nieprawidłowa sól aplikacji, sól aplikacji powinna mieć długość co najmniej "
+"256 bitów (32 bajty)"
+
+#: Controller/Component/UsersAuthComponent.php:178
+msgid "You can't enable email validation workflow if use_email is false"
+msgstr ""
+"Nie możesz włączyć potwierdzania kont przez e-mail jeśli opcja use_email = "
+"false"
+
+#: Controller/Traits/LoginTrait.php:96
+msgid "Issues trying to log in with your social account"
+msgstr ""
+"Wystąpiły problemy z logowaniem za pośrednictwem konta społecznościowego"
+
+#: Controller/Traits/LoginTrait.php:101 Template/Users/social_email.ctp:16
+msgid "Please enter your email"
+msgstr "Podaj swój adres e-mail"
+
+#: Controller/Traits/LoginTrait.php:108
+msgid ""
+"Your user has not been validated yet. Please check your inbox for "
+"instructions"
+msgstr ""
+"Twoje konto nie zostało jeszcze aktywowane. Sprawdź swoją skrzynkę odbiorczą"
+
+#: Controller/Traits/LoginTrait.php:110
+msgid ""
+"Your social account has not been validated yet. Please check your inbox for "
+"instructions"
+msgstr ""
+"Konto społecznościowe nie zostało jeszcze aktywowane. Sprawdź swoją pocztę e-"
+"mail."
+
+#: Controller/Traits/LoginTrait.php:161 Controller/Traits/RegisterTrait.php:81
+msgid "Invalid reCaptcha"
+msgstr "Błąd reCaptcha"
+
+#: Controller/Traits/LoginTrait.php:171
+msgid "You are already logged in"
+msgstr "Jesteś już zalogowany"
+
+#: Controller/Traits/LoginTrait.php:217
+msgid "Username or password is incorrect"
+msgstr "Nazwa użytkownika lub hasło jest nieprawidłowe"
+
+#: Controller/Traits/LoginTrait.php:238
+msgid "You've successfully logged out"
+msgstr "Wylogowano"
+
+#: Controller/Traits/PasswordManagementTrait.php:47;76
+#: Controller/Traits/ProfileTrait.php:49
+msgid "User was not found"
+msgstr "Konto użytkownika nie istnieje"
+
+#: Controller/Traits/PasswordManagementTrait.php:64;72;80
+msgid "Password could not be changed"
+msgstr "Zmiana hasła nie powiodła się"
+
+#: Controller/Traits/PasswordManagementTrait.php:68
+msgid "Password has been changed successfully"
+msgstr "Hasło zostało zmienione"
+
+#: Controller/Traits/PasswordManagementTrait.php:78
+msgid "{0}"
+msgstr "{0}"
+
+#: Controller/Traits/PasswordManagementTrait.php:120
+msgid "Please check your email to continue with password reset process"
+msgstr "Aby dokończyć zmianę hasła, sprawdź swoją pocztę e-mail."
+
+#: Controller/Traits/PasswordManagementTrait.php:123 Shell/UsersShell.php:267
+msgid "The password token could not be generated. Please try again"
+msgstr "Nie można wygenerować tokenu. Spróbuj ponownie"
+
+#: Controller/Traits/PasswordManagementTrait.php:129
+#: Controller/Traits/UserValidationTrait.php:100
+msgid "User {0} was not found"
+msgstr "Nie znaleziono użytkownika {0}"
+
+#: Controller/Traits/PasswordManagementTrait.php:131
+msgid "The user is not active"
+msgstr "Konto użytkownika nie jest aktywne"
+
+#: Controller/Traits/PasswordManagementTrait.php:133
+#: Controller/Traits/UserValidationTrait.php:95;104
+msgid "Token could not be reset"
+msgstr "Nie można zresetować tokenu"
+
+#: Controller/Traits/ProfileTrait.php:53
+msgid "Not authorized, please login first"
+msgstr "Wymagane logowanie"
+
+#: Controller/Traits/RegisterTrait.php:42
+msgid "You must log out to register a new user account"
+msgstr "Wyloguj się aby utworzyć nowe konto"
+
+#: Controller/Traits/RegisterTrait.php:88
+msgid "The user could not be saved"
+msgstr "Nie można utworzyć konta"
+
+#: Controller/Traits/RegisterTrait.php:122
+msgid "You have registered successfully, please log in"
+msgstr "Rejestracja zakończona sukcesem, możesz się zalogować"
+
+#: Controller/Traits/RegisterTrait.php:124
+msgid "Please validate your account before log in"
+msgstr "Potwierdź swoje konto przed logowaniem"
+
+#: Controller/Traits/SimpleCrudTrait.php:76;106
+msgid "The {0} has been saved"
+msgstr "{0} został zapisany"
+
+#: Controller/Traits/SimpleCrudTrait.php:80;110
+msgid "The {0} could not be saved"
+msgstr "{0} nie mógł zostać zapisany"
+
+#: Controller/Traits/SimpleCrudTrait.php:130
+msgid "The {0} has been deleted"
+msgstr "{0} został usunięty"
+
+#: Controller/Traits/SimpleCrudTrait.php:132
+msgid "The {0} could not be deleted"
+msgstr "{0} nie mógł zostać usunięty"
+
+#: Controller/Traits/SocialTrait.php:39
+msgid "The reCaptcha could not be validated"
+msgstr "Błąd walidacji reCaptcha"
+
+#: Controller/Traits/UserValidationTrait.php:42
+msgid "User account validated successfully"
+msgstr "Konto użytkownika zostało aktywowane"
+
+#: Controller/Traits/UserValidationTrait.php:44
+msgid "User account could not be validated"
+msgstr "Aktywacja konta nie powiodła się"
+
+#: Controller/Traits/UserValidationTrait.php:47
+msgid "User already active"
+msgstr "Konto jest już aktywne"
+
+#: Controller/Traits/UserValidationTrait.php:53
+msgid "Reset password token was validated successfully"
+msgstr "Token zmiany hasła został zatwierdzony"
+
+#: Controller/Traits/UserValidationTrait.php:58
+msgid "Reset password token could not be validated"
+msgstr "Błąd podczas walidacji tokenu zmiany hasła"
+
+#: Controller/Traits/UserValidationTrait.php:62
+msgid "Invalid validation type"
+msgstr "Nieprawidłowy typ walidacji"
+
+#: Controller/Traits/UserValidationTrait.php:65
+msgid "Invalid token or user account already validated"
+msgstr "Nieprawidłowy token lub konto jest już aktywne"
+
+#: Controller/Traits/UserValidationTrait.php:67
+msgid "Token already expired"
+msgstr "Token wygasł"
+
+#: Controller/Traits/UserValidationTrait.php:93
+msgid "Token has been reset successfully. Please check your email."
+msgstr "Token został zresetowany. Sprawdź swoją pocztę e-mail."
+
+#: Controller/Traits/UserValidationTrait.php:102
+msgid "User {0} is already active"
+msgstr "Użytkownik {0} jest już aktywny"
+
+#: Email/EmailSender.php:39
+msgid "Your account validation link"
+msgstr "Twój link aktywacyjny"
+
+#: Mailer/UsersMailer.php:55
+msgid "{0}Your reset password link"
+msgstr "{0}Twój link zmiany hasła"
+
+#: Mailer/UsersMailer.php:78
+msgid "{0}Your social account validation link"
+msgstr "{0} Twój link aktywacyjny"
+
+#: Model/Behavior/PasswordBehavior.php:56
+msgid "Reference cannot be null"
+msgstr "Wartość nie może być pusta"
+
+#: Model/Behavior/PasswordBehavior.php:61
+msgid "Token expiration cannot be empty"
+msgstr "Parametr 'expiration' nie może być pusty"
+
+#: Model/Behavior/PasswordBehavior.php:67;116
+msgid "User not found"
+msgstr "Nie odnaleziono użytkownika"
+
+#: Model/Behavior/PasswordBehavior.php:71
+#: Model/Behavior/RegisterBehavior.php:111
+msgid "User account already validated"
+msgstr "Konto użytkownika zostało już aktywowane"
+
+#: Model/Behavior/PasswordBehavior.php:78
+msgid "User not active"
+msgstr "Użytkownik nie jest aktywny"
+
+#: Model/Behavior/PasswordBehavior.php:121
+msgid "The current password does not match"
+msgstr "Bieżące hasło nie jest prawidłowe"
+
+#: Model/Behavior/PasswordBehavior.php:124
+msgid "You cannot use the current password as the new one"
+msgstr "Nowe hasło nie może być takie same jak obecne"
+
+#: Model/Behavior/RegisterBehavior.php:89
+msgid "User not found for the given token and email."
+msgstr "Nie odnaleziono użytkownika dla danego tokenu i adresu e-mail."
+
+#: Model/Behavior/RegisterBehavior.php:92
+msgid "Token has already expired user with no token"
+msgstr "Token wygasł"
+
+#: Model/Behavior/SocialAccountBehavior.php:102;129
+msgid "Account already validated"
+msgstr "Konto zostało już aktywowane"
+
+#: Model/Behavior/SocialAccountBehavior.php:105;132
+msgid "Account not found for the given token and email."
+msgstr "Nie odnaleziono konta dla danego tokenu i adresu e-mail."
+
+#: Model/Behavior/SocialBehavior.php:56
+msgid "Unable to login user with reference {0}"
+msgstr "Nie można zalogować użytkownika o loginie {0}"
+
+#: Model/Behavior/SocialBehavior.php:98
+msgid "Email not present"
+msgstr "Brak adresu e-mail"
+
+#: Model/Table/UsersTable.php:82
+msgid "Your password does not match your confirm password. Please try again"
+msgstr "Podane hasła różnią się. Spróbuj ponownie."
+
+#: Model/Table/UsersTable.php:175
+msgid "Username already exists"
+msgstr "Nazwa użytkownika już istnieje"
+
+#: Model/Table/UsersTable.php:181
+msgid "Email already exists"
+msgstr "Adres e-mail już istnieje"
+
+#: Model/Table/UsersTable.php:214
+msgid "Missing 'username' in options data"
+msgstr "Brak klucza 'username'"
+
+#: Shell/UsersShell.php:54
+msgid "Utilities for CakeDC Users Plugin"
+msgstr "Narzędzia dla CakeDC Users Plugin"
+
+#: Shell/UsersShell.php:55
+msgid "Activate an specific user"
+msgstr "Aktywuj użytkownika"
+
+#: Shell/UsersShell.php:56
+msgid "Add a new superadmin user for testing purposes"
+msgstr "Dodaj konto administracyjne do celów testowych"
+
+#: Shell/UsersShell.php:57
+msgid "Add a new user"
+msgstr "Dodaj użytkownika"
+
+#: Shell/UsersShell.php:58
+msgid "Change the role for an specific user"
+msgstr "Zmień rolę konkretnego użytkownika"
+
+#: Shell/UsersShell.php:59
+msgid "Deactivate an specific user"
+msgstr "Deaktywuj użytkownika"
+
+#: Shell/UsersShell.php:60
+msgid "Delete an specific user"
+msgstr "Usuń użytkownika"
+
+#: Shell/UsersShell.php:61
+msgid "Reset the password via email"
+msgstr "Zresetuj hasło przez e-mail"
+
+#: Shell/UsersShell.php:62
+msgid "Reset the password for all users"
+msgstr "Zresetuj hasło dla wszystkich użytkowników"
+
+#: Shell/UsersShell.php:63
+msgid "Reset the password for an specific user"
+msgstr "Zresetuj hasło dla konkretnego użytkownika"
+
+#: Shell/UsersShell.php:98
+msgid "User added:"
+msgstr "Dodano użytkownika:"
+
+#: Shell/UsersShell.php:99;127
+msgid "Id: {0}"
+msgstr "Id: {0}"
+
+#: Shell/UsersShell.php:100;128
+msgid "Username: {0}"
+msgstr "Nazwa użytkownika: {0}"
+
+#: Shell/UsersShell.php:101;129
+msgid "Email: {0}"
+msgstr "E-mail: {0}"
+
+#: Shell/UsersShell.php:102;130
+msgid "Password: {0}"
+msgstr "Hasło: {0}"
+
+#: Shell/UsersShell.php:126
+msgid "Superuser added:"
+msgstr "Dodano super użytkownika:"
+
+#: Shell/UsersShell.php:132
+msgid "Superuser could not be added:"
+msgstr "Nie można dodać super użytkownika:"
+
+#: Shell/UsersShell.php:135
+msgid "Field: {0} Error: {1}"
+msgstr "Pole: {0} Błąd: {1}"
+
+#: Shell/UsersShell.php:153;179
+msgid "Please enter a password."
+msgstr "Podaj hasło."
+
+#: Shell/UsersShell.php:157
+msgid "Password changed for all users"
+msgstr "Zmieniono hasło dla wszystkich użytkowników"
+
+#: Shell/UsersShell.php:158;186
+msgid "New password: {0}"
+msgstr "Nowe hasło: {0}"
+
+#: Shell/UsersShell.php:176;204;282;324
+msgid "Please enter a username."
+msgstr "Podaj nazwę użytkownika."
+
+#: Shell/UsersShell.php:185
+msgid "Password changed for user: {0}"
+msgstr "Zmieniono hasło dla użytkownika: {0}"
+
+#: Shell/UsersShell.php:207
+msgid "Please enter a role."
+msgstr "Podaj rolę."
+
+#: Shell/UsersShell.php:213
+msgid "Role changed for user: {0}"
+msgstr "Zmieniono rolę dla użytkownika: {0}"
+
+#: Shell/UsersShell.php:214
+msgid "New role: {0}"
+msgstr "Nowa rola: {0}"
+
+#: Shell/UsersShell.php:229
+msgid "User was activated: {0}"
+msgstr "Użytkownik został aktywowany: {0}"
+
+#: Shell/UsersShell.php:244
+msgid "User was de-activated: {0}"
+msgstr "Użytkownik został zdeaktywowany: {0}"
+
+#: Shell/UsersShell.php:256
+msgid "Please enter a username or email."
+msgstr "Podaj nazwę użytkownika lub hasło."
+
+#: Shell/UsersShell.php:264
+msgid ""
+"Please ask the user to check the email to continue with password reset "
+"process"
+msgstr "Aby dokończyć zmianę hasła, sprawdź swoją pocztę e-mail"
+
+#: Shell/UsersShell.php:302
+msgid "The user was not found."
+msgstr "Nie odnaleziono użytkownika."
+
+#: Shell/UsersShell.php:332
+msgid "The user {0} was not deleted. Please try again"
+msgstr "Usuwanie użytkownika {0} nie powiodło się. Spróbuj ponownie"
+
+#: Shell/UsersShell.php:334
+msgid "The user {0} was deleted successfully"
+msgstr "Użytkownik {0} został usunięty"
+
+#: Template/Email/html/reset_password.ctp:21
+#: Template/Email/html/social_account_validation.ctp:14
+#: Template/Email/html/validation.ctp:21
+#: Template/Email/text/reset_password.ctp:20
+#: Template/Email/text/social_account_validation.ctp:22
+#: Template/Email/text/validation.ctp:20
+msgid "Hi {0}"
+msgstr "Witaj {0}"
+
+#: Template/Email/html/reset_password.ctp:24
+msgid "Reset your password here"
+msgstr "Kontynuuj zmianę hasła"
+
+#: Template/Email/html/reset_password.ctp:27
+#: Template/Email/html/social_account_validation.ctp:32
+#: Template/Email/html/validation.ctp:27
+msgid ""
+"If the link is not correcly displayed, please copy the following address in "
+"your web browser {0}"
+msgstr ""
+"Jeśli link nie jest wyświetlony poprawnie, skopiuj łącze do paska adresu "
+"przeglądarki {0}"
+
+#: Template/Email/html/reset_password.ctp:30
+#: Template/Email/html/social_account_validation.ctp:35
+#: Template/Email/html/validation.ctp:30
+#: Template/Email/text/reset_password.ctp:24
+#: Template/Email/text/social_account_validation.ctp:26
+#: Template/Email/text/validation.ctp:24
+msgid "Thank you"
+msgstr "Dziękujemy"
+
+#: Template/Email/html/social_account_validation.ctp:18
+msgid "Activate your social login here"
+msgstr "Aktywuj konto"
+
+#: Template/Email/html/validation.ctp:24
+msgid "Activate your account here"
+msgstr "Aktywuj konto"
+
+#: Template/Email/text/reset_password.ctp:22
+#: Template/Email/text/validation.ctp:22
+msgid "Please copy the following address in your web browser {0}"
+msgstr "Skopiuj łącze do paska adresu przeglądarki {0}"
+
+#: Template/Email/text/social_account_validation.ctp:24
+msgid ""
+"Please copy the following address in your web browser to activate your "
+"social login {0}"
+msgstr "Skopiuj łącze do paska adresu przeglądarki, aby aktywować konto {0}"
+
+#: Template/Users/add.ctp:13 Template/Users/edit.ctp:15
+#: Template/Users/index.ctp:13;26 Template/Users/view.ctp:15;79
+msgid "Actions"
+msgstr "Akcje"
+
+#: Template/Users/add.ctp:15 Template/Users/edit.ctp:26
+#: Template/Users/view.ctp:19
+msgid "List Users"
+msgstr "Użytkownicy"
+
+#: Template/Users/add.ctp:16 Template/Users/edit.ctp:27
+#: Template/Users/view.ctp:21
+msgid "List Accounts"
+msgstr "Konta"
+
+#: Template/Users/add.ctp:22 Template/Users/register.ctp:16
+msgid "Add User"
+msgstr "Dodaj użytkownika"
+
+#: Template/Users/add.ctp:24 Template/Users/edit.ctp:35
+#: Template/Users/index.ctp:22 Template/Users/profile.ctp:27
+#: Template/Users/register.ctp:18 Template/Users/view.ctp:30;70
+msgid "Username"
+msgstr "Nazwa użytkownika"
+
+#: Template/Users/add.ctp:25 Template/Users/edit.ctp:36
+#: Template/Users/index.ctp:23 Template/Users/profile.ctp:29
+#: Template/Users/register.ctp:19 Template/Users/view.ctp:32
+msgid "Email"
+msgstr "E-mail"
+
+#: Template/Users/add.ctp:26 Template/Users/edit.ctp:37
+#: Template/Users/index.ctp:24 Template/Users/register.ctp:25
+msgid "First name"
+msgstr "Imię"
+
+#: Template/Users/add.ctp:27 Template/Users/edit.ctp:38
+#: Template/Users/index.ctp:25 Template/Users/register.ctp:26
+msgid "Last name"
+msgstr "Nazwisko"
+
+#: Template/Users/add.ctp:30 Template/Users/edit.ctp:53
+#: Template/Users/view.ctp:44;75
+msgid "Active"
+msgstr "Aktywny"
+
+#: Template/Users/add.ctp:34 Template/Users/change_password.ctp:25
+#: Template/Users/edit.ctp:57 Template/Users/register.ctp:35
+#: Template/Users/request_reset_password.ctp:8
+#: Template/Users/resend_token_validation.ctp:20
+#: Template/Users/social_email.ctp:19
+msgid "Submit"
+msgstr "Wyślij"
+
+#: Template/Users/change_password.ctp:5
+msgid "Please enter the new password"
+msgstr "Podaj nowe hasło"
+
+#: Template/Users/change_password.ctp:10
+msgid "Current password"
+msgstr "Obecne hasło"
+
+#: Template/Users/change_password.ctp:16
+msgid "New password"
+msgstr "Nowe hasło"
+
+#: Template/Users/change_password.ctp:21 Template/Users/register.ctp:23
+msgid "Confirm password"
+msgstr "Potwierdź hasło"
+
+#: Template/Users/edit.ctp:20 Template/Users/index.ctp:40
+#: Template/Users/view.ctp:101
+msgid "Delete"
+msgstr "Usuń"
+
+#: Template/Users/edit.ctp:22 Template/Users/index.ctp:40
+#: Template/Users/view.ctp:18;101
+msgid "Are you sure you want to delete # {0}?"
+msgstr "Czy na pewno usunąć # {0}?"
+
+#: Template/Users/edit.ctp:33 Template/Users/view.ctp:17
+msgid "Edit User"
+msgstr "Edytuj użytkownika"
+
+#: Template/Users/edit.ctp:39 Template/Users/view.ctp:38;73
+msgid "Token"
+msgstr "Token"
+
+#: Template/Users/edit.ctp:41
+msgid "Token expires"
+msgstr "Token wygasa"
+
+#: Template/Users/edit.ctp:44
+msgid "API token"
+msgstr "API token"
+
+#: Template/Users/edit.ctp:47
+msgid "Activation date"
+msgstr "Data aktywacji"
+
+#: Template/Users/edit.ctp:50
+msgid "TOS date"
+msgstr "Data (TOS)"
+
+#: Template/Users/index.ctp:15
+msgid "New {0}"
+msgstr "Nowy {0}"
+
+#: Template/Users/index.ctp:37 Template/Users/view.ctp:97
+msgid "View"
+msgstr "Szczegóły"
+
+#: Template/Users/index.ctp:38
+msgid "Change password"
+msgstr "Zmień hasło"
+
+#: Template/Users/index.ctp:39 Template/Users/view.ctp:99
+msgid "Edit"
+msgstr "Edytuj"
+
+#: Template/Users/index.ctp:49
+msgid "previous"
+msgstr "poprzednia"
+
+#: Template/Users/index.ctp:51
+msgid "next"
+msgstr "następna"
+
+#: Template/Users/login.ctp:19
+msgid "Please enter your username and password"
+msgstr "Podaj nazwę użytkownika i hasło"
+
+#: Template/Users/login.ctp:29
+msgid "Remember me"
+msgstr "Zapamiętaj"
+
+#: Template/Users/login.ctp:37
+msgid "Register"
+msgstr "Rejestracja"
+
+#: Template/Users/login.ctp:43
+msgid "Reset Password"
+msgstr "Zresetuj hasło"
+
+#: Template/Users/login.ctp:48
+msgid "Login"
+msgstr "Zaloguj"
+
+#: Template/Users/profile.ctp:18 View/Helper/UserHelper.php:51
+msgid "{0} {1}"
+msgstr "{0} {1}"
+
+#: Template/Users/profile.ctp:24
+msgid "Change Password"
+msgstr "Zmień hasło"
+
+#: Template/Users/profile.ctp:34
+msgid "Social Accounts"
+msgstr "Konta społecznościowe"
+
+#: Template/Users/profile.ctp:38 Template/Users/view.ctp:72
+msgid "Avatar"
+msgstr "Avatar"
+
+#: Template/Users/profile.ctp:39 Template/Users/view.ctp:69
+msgid "Provider"
+msgstr "Dostawca"
+
+#: Template/Users/profile.ctp:40
+msgid "Link"
+msgstr "Link"
+
+#: Template/Users/profile.ctp:47
+msgid "Link to {0}"
+msgstr "Link do {0}"
+
+#: Template/Users/register.ctp:20
+msgid "Password"
+msgstr "Hasło"
+
+#: Template/Users/register.ctp:28
+msgid "Accept TOS conditions?"
+msgstr "Akceptuję warunki użytkowania"
+
+#: Template/Users/request_reset_password.ctp:5
+msgid "Please enter your email to reset your password"
+msgstr "W celu zmiany hasła podaj adres e-mail"
+
+#: Template/Users/resend_token_validation.ctp:15
+msgid "Resend Validation email"
+msgstr "Ponownie wyślij e-mail aktywacyjny"
+
+#: Template/Users/resend_token_validation.ctp:17
+msgid "Email or username"
+msgstr "E-mail lub nazwa użytkownika"
+
+#: Template/Users/view.ctp:18
+msgid "Delete User"
+msgstr "Usuń użytkownika"
+
+#: Template/Users/view.ctp:20
+msgid "New User"
+msgstr "Nowy użytkownik"
+
+#: Template/Users/view.ctp:28;67
+msgid "Id"
+msgstr "Id"
+
+#: Template/Users/view.ctp:34
+msgid "First Name"
+msgstr "Imię"
+
+#: Template/Users/view.ctp:36
+msgid "Last Name"
+msgstr "Nazwisko"
+
+#: Template/Users/view.ctp:40
+msgid "Api Token"
+msgstr "Api Token"
+
+#: Template/Users/view.ctp:48;74
+msgid "Token Expires"
+msgstr "Token wygasa"
+
+#: Template/Users/view.ctp:50
+msgid "Activation Date"
+msgstr "Data aktywacji"
+
+#: Template/Users/view.ctp:52
+msgid "Tos Date"
+msgstr "Data (TOS)"
+
+#: Template/Users/view.ctp:54;77
+msgid "Created"
+msgstr "Utworzono"
+
+#: Template/Users/view.ctp:56;78
+msgid "Modified"
+msgstr "Zmodyfikowano"
+
+#: Template/Users/view.ctp:63
+msgid "Related Accounts"
+msgstr "Powiązane konta"
+
+#: Template/Users/view.ctp:68
+msgid "User Id"
+msgstr "Id użytkownika"
+
+#: Template/Users/view.ctp:71
+msgid "Reference"
+msgstr "Reference"
+
+#: Template/Users/view.ctp:76
+msgid "Data"
+msgstr "Dane"
+
+#: View/Helper/UserHelper.php:46
+msgid "Sign in with"
+msgstr "Zaloguj się za pomocą"
+
+#: View/Helper/UserHelper.php:49
+msgid "fa fa-{0}"
+msgstr "fa fa-{0}"
+
+#: View/Helper/UserHelper.php:52
+msgid "btn btn-social btn-{0} "
+msgstr "btn btn-social btn-{0} "
+
+#: View/Helper/UserHelper.php:91
+msgid "Logout"
+msgstr "Wyloguj"
+
+#: View/Helper/UserHelper.php:108
+msgid "Welcome, {0}"
+msgstr "Witaj, {0}"
+
+#: View/Helper/UserHelper.php:131
+msgid "reCaptcha is not configured! Please configure Users.reCaptcha.key"
+msgstr ""
+"reCaptcha nie zostało skonfigurowane! Skonfiguruj opcję Users.reCaptcha.key"
+
+#: Model/Behavior/RegisterBehavior.php:148
+msgid "This field is required"
+msgstr "Pole wymagane"

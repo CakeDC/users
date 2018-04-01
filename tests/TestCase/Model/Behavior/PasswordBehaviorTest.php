@@ -1,26 +1,27 @@
 <?php
 /**
- * Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 namespace CakeDC\Users\Test\TestCase\Model\Behavior;
 
-use CakeDC\Users\Exception\UserAlreadyActiveException;
-use CakeDC\Users\Model\Table\UsersTable;
+use CakeDC\Users\Model\Behavior\PasswordBehavior;
+use CakeDC\Users\Test\App\Mailer\OverrideMailer;
+use Cake\Core\Configure;
 use Cake\Mailer\Email;
 use Cake\ORM\TableRegistry;
-use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use InvalidArgumentException;
 
 /**
  * Test Case
+ * @property \CakeDC\Users\Model\Behavior\PasswordBehavior Behavior
  */
 class PasswordBehaviorTest extends TestCase
 {
@@ -46,9 +47,14 @@ class PasswordBehaviorTest extends TestCase
                 ->setMethods(['sendResetPasswordEmail'])
                 ->setConstructorArgs([$this->table])
                 ->getMock();
-        $this->Behavior->Email = $this->getMockBuilder('CakeDC\Users\Email\EmailSender')
-            ->setMethods(['sendResetPasswordEmail'])
-            ->getMock();
+        Email::setConfigTransport('test', [
+            'className' => 'Debug'
+        ]);
+        //$this->configEmail = Email::getConfig('default');
+        Email::setConfig('default', [
+            'transport' => 'test',
+            'from' => 'cakedc@example.com'
+        ]);
     }
 
     /**
@@ -59,6 +65,8 @@ class PasswordBehaviorTest extends TestCase
     public function tearDown()
     {
         unset($this->table, $this->Behavior);
+        Email::drop('default');
+        Email::dropTransport('test');
         parent::tearDown();
     }
 
@@ -70,7 +78,7 @@ class PasswordBehaviorTest extends TestCase
     {
         $user = $this->table->findByUsername('user-1')->first();
         $token = $user->token;
-        $this->Behavior->Email->expects($this->never())
+        $this->Behavior->expects($this->never())
                 ->method('sendResetPasswordEmail')
                 ->with($user);
         $result = $this->Behavior->resetToken('user-1', [
@@ -91,7 +99,7 @@ class PasswordBehaviorTest extends TestCase
         $user = $this->table->findByUsername('user-1')->first();
         $token = $user->token;
         $tokenExpires = $user->token_expires;
-        $this->Behavior->Email->expects($this->once())
+        $this->Behavior->expects($this->once())
                 ->method('sendResetPasswordEmail');
         $result = $this->Behavior->resetToken('user-1', [
             'expiration' => 3600,
@@ -128,7 +136,7 @@ class PasswordBehaviorTest extends TestCase
     /**
      * Test resetToken
      *
-     * @expectedException CakeDC\Users\Exception\UserNotFoundException
+     * @expectedException \CakeDC\Users\Exception\UserNotFoundException
      */
     public function testResetTokenNotExistingUser()
     {
@@ -140,7 +148,7 @@ class PasswordBehaviorTest extends TestCase
     /**
      * Test resetToken
      *
-     * @expectedException CakeDC\Users\Exception\UserAlreadyActiveException
+     * @expectedException \CakeDC\Users\Exception\UserAlreadyActiveException
      */
     public function testResetTokenUserAlreadyActive()
     {
@@ -160,11 +168,11 @@ class PasswordBehaviorTest extends TestCase
     /**
      * Test resetToken
      *
-     * @expectedException CakeDC\Users\Exception\UserNotActiveException
+     * @expectedException \CakeDC\Users\Exception\UserNotActiveException
      */
     public function testResetTokenUserNotActive()
     {
-        $user = TableRegistry::get('CakeDC/Users.Users')->findByUsername('user-1')->first();
+        $user = $this->table->findByUsername('user-1')->first();
         $this->Behavior->resetToken('user-1', [
             'ensureActive' => true,
             'expiration' => 3600
@@ -195,5 +203,33 @@ class PasswordBehaviorTest extends TestCase
         $user->password_confirmation = 'new';
 
         $result = $this->Behavior->changePassword($user);
+    }
+
+    /**
+     * test Email Override
+     */
+    public function testEmailOverride()
+    {
+        $overrideMailer = $this->getMockBuilder(OverrideMailer::class)
+            ->setMethods(['send'])
+            ->getMock();
+        Configure::write('Users.Email.mailerClass', OverrideMailer::class);
+        $this->Behavior = $this->getMockBuilder(PasswordBehavior::class)
+            ->setConstructorArgs([$this->table])
+            ->setMethods(['getMailer'])
+            ->getMock();
+        $overrideMailer->expects($this->once())
+            ->method('send')
+            ->with('resetPassword')
+            ->willReturn(true);
+        $this->Behavior->expects($this->once())
+            ->method('getMailer')
+            ->with(OverrideMailer::class)
+            ->willReturn($overrideMailer);
+        $this->Behavior->resetToken('user-1', [
+            'expiration' => 3600,
+            'checkActive' => true,
+            'sendEmail' => true
+        ]);
     }
 }

@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -49,15 +49,13 @@ class UsersTableTest extends TestCase
         $this->Users = TableRegistry::get('CakeDC/Users.Users');
         $this->fullBaseBackup = Router::fullBaseUrl();
         Router::fullBaseUrl('http://users.test');
-        Email::configTransport('test', [
+        Email::setConfigTransport('test', [
             'className' => 'Debug'
         ]);
-        $this->configEmail = Email::config('default');
-        Email::config('default', [
+        Email::setConfig('default', [
             'transport' => 'test',
             'from' => 'cakedc@example.com'
         ]);
-        $this->Email = new Email(['from' => 'test@example.com', 'transport' => 'test']);
         Plugin::routes('CakeDC/Users');
     }
 
@@ -72,7 +70,6 @@ class UsersTableTest extends TestCase
         Router::fullBaseUrl($this->fullBaseBackup);
         Email::drop('default');
         Email::dropTransport('test');
-        Email::config('default', $this->configEmail);
 
         parent::tearDown();
     }
@@ -150,7 +147,8 @@ class UsersTableTest extends TestCase
 
     /**
      * Test register method
-    testValidateRegisterValidateEmail     */
+     * testValidateRegisterValidateEmail
+     */
     public function testValidateRegisterNoTosRequired()
     {
         $user = [
@@ -311,49 +309,5 @@ class UsersTableTest extends TestCase
         $this->assertEquals('username', $result->username);
         $this->assertEquals('First Name', $result->first_name);
         $this->assertEquals('Last Name', $result->last_name);
-    }
-
-    /**
-     * Test findActive method.
-     *
-     */
-    public function testFindActive()
-    {
-        $actual = $this->Users->find('active')->toArray();
-        $this->assertCount(8, $actual);
-        $this->assertCount(8, Hash::extract($actual, '{n}[active=1]'));
-        $this->assertCount(0, Hash::extract($actual, '{n}[active=0]'));
-    }
-
-    /**
-     * Test findAuth method.
-     *
-     * @expectedException \BadMethodCallException
-     * @expectedExceptionMessage  Missing 'username' in options data
-     */
-    public function testFindAuthBadMethodCallException()
-    {
-        $user = $this->Users->find('auth');
-    }
-
-    /**
-     * Test findAuth method.
-     *
-     * @expected
-     */
-    public function testFindAuth()
-    {
-        $user = $this->Users
-                ->find('auth', ['username' => 'not-exist@email.com'])
-                ->toArray();
-        $this->assertEmpty($user);
-
-        $user = $this->Users
-                ->find('auth', ['username' => 'user-2@test.com'])
-                ->first()
-                ->toArray();
-
-        $this->assertSame('00000000-0000-0000-0000-000000000002', Hash::get($user, 'id'));
-        $this->assertSame('user-2', Hash::get($user, 'username'));
     }
 }

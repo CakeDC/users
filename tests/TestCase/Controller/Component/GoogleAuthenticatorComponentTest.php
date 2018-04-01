@@ -1,4 +1,14 @@
 <?php
+/**
+ * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ *
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
+ */
+
 namespace CakeDC\Users\Test\TestCase\Controller\Component;
 
 use CakeDC\Users\Controller\Component\GoogleAuthenticatorComponent;
@@ -19,7 +29,6 @@ use Cake\Utility\Security;
 
 class GoogleAuthenticatorComponentTest extends TestCase
 {
-
     public $fixtures = [
         'plugin.CakeDC/Users.users'
     ];
@@ -47,7 +56,7 @@ class GoogleAuthenticatorComponentTest extends TestCase
             'action' => 'edit'
         ]);
 
-        Security::salt('YJfIxfs2guVoUubWDYhG93b0qyJfIxfs2guwvniR2G0FgaC9mi');
+        Security::setSalt('YJfIxfs2guVoUubWDYhG93b0qyJfIxfs2guwvniR2G0FgaC9mi');
         Configure::write('App.namespace', 'Users');
         Configure::write('Users.GoogleAuthenticator.login', true);
 
@@ -84,7 +93,6 @@ class GoogleAuthenticatorComponentTest extends TestCase
      */
     public function testInitialize()
     {
-        $this->Registry->unload('GoogleAuthenticator');
         $this->Controller->GoogleAuthenticator = new GoogleAuthenticatorComponent($this->Registry);
         $this->assertInstanceOf('CakeDC\Users\Controller\Component\GoogleAuthenticatorComponent', $this->Controller->GoogleAuthenticator);
     }

@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -23,7 +23,6 @@ use Cake\View\Helper;
  */
 class UserHelper extends Helper
 {
-
     public $helpers = ['Html', 'Form', 'CakeDC/Users.AuthLink'];
 
     /**
@@ -46,16 +45,16 @@ class UserHelper extends Helper
             $options['label'] = __d('CakeDC/Users', 'Sign in with');
         }
         $icon = $this->Html->tag('i', '', [
-            'class' => __d('CakeDC/Users', 'fa fa-{0}', strtolower($name)),
+            'class' => 'fa fa-' . strtolower($name),
         ]);
 
         if (isset($options['title'])) {
             $providerTitle = $options['title'];
         } else {
-            $providerTitle = __d('CakeDC/Users', '{0} {1}', Hash::get($options, 'label'), Inflector::camelize($name));
+            $providerTitle = Hash::get($options, 'label') . ' ' . Inflector::camelize($name);
         }
 
-        $providerClass = __d('CakeDC/Users', 'btn btn-social btn-{0} ' . Hash::get($options, 'class') ?: '', strtolower($name));
+        $providerClass = 'btn btn-social btn-' . strtolower($name) . ((Hash::get($options, 'class')) ? ' ' . Hash::get($options, 'class') : '');
 
         return $this->Html->link($icon . $providerTitle, "/auth/$name", [
             'escape' => false, 'class' => $providerClass
@@ -111,13 +110,13 @@ class UserHelper extends Helper
      */
     public function welcome()
     {
-        $userId = $this->request->session()->read('Auth.User.id');
+        $userId = $this->request->getSession()->read('Auth.User.id');
         if (empty($userId)) {
             return;
         }
 
         $profileUrl = Configure::read('Users.Profile.route');
-        $label = __d('CakeDC/Users', 'Welcome, {0}', $this->AuthLink->link($this->request->session()->read('Auth.User.first_name') ?: $this->request->session()->read('Auth.User.username'), $profileUrl));
+        $label = __d('CakeDC/Users', 'Welcome, {0}', $this->AuthLink->link($this->request->getSession()->read('Auth.User.first_name') ?: $this->request->getSession()->read('Auth.User.username'), $profileUrl));
 
         return $this->Html->tag('span', $label, ['class' => 'welcome']);
     }
@@ -187,5 +186,65 @@ class UserHelper extends Helper
         );
 
         return $this->AuthLink->isAuthorized($url);
+    }
+    /**
+     * Create links for all social providers enabled social link (connect)
+     *
+     * @param string $name        Provider name in lowercase
+     * @param array  $provider    Provider configuration
+     * @param bool   $isConnected User is connected with this provider
+     *
+     * @return string
+     */
+    public function socialConnectLink($name, $provider, $isConnected = false)
+    {
+        $linkClass = 'btn btn-social btn-' . strtolower($name) . ((Hash::get($provider['options'], 'class')) ? ' ' . Hash::get($provider['options'], 'class') : '');
+        if ($isConnected) {
+            $title = __d('CakeDC/Users', 'Connected with {0}', Inflector::camelize($name));
+
+            return "<a class=\"$linkClass disabled\"><span class=\"fa fa-$name\"></span> $title</a>";
+        }
+
+        $title = __d('CakeDC/Users', 'Connect with {0}', Inflector::camelize($name));
+
+        return $this->Html->link(
+            "<span class=\"fa fa-$name\"></span> $title",
+            "/link-social/$name",
+            [
+                'escape' => false,
+                'class' => $linkClass
+            ]
+        );
+    }
+
+    /**
+     * Create links for all social providers enabled social link (connect)
+     *
+     * @param array $socialAccounts All social accounts connected by a user.
+     *
+     * @return string
+     */
+    public function socialConnectLinkList($socialAccounts = [])
+    {
+        if (!Configure::read('Users.Social.login')) {
+            return "";
+        }
+        $html = "";
+        $connectedProviders = array_map(function ($item) {
+            return strtolower($item->provider);
+        }, (array)$socialAccounts);
+
+        $providers = Configure::read('OAuth.providers');
+        foreach ($providers as $name => $provider) {
+            if (!empty($provider['options']['callbackLinkSocialUri']) &&
+                !empty($provider['options']['linkSocialUri']) &&
+                !empty($provider['options']['clientId']) &&
+                !empty($provider['options']['clientSecret'])
+            ) {
+                $html .= $this->socialConnectLink($name, $provider, in_array($name, $connectedProviders));
+            }
+        }
+
+        return $html;
     }
 }
