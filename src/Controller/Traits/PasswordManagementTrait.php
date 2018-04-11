@@ -73,11 +73,12 @@ trait PasswordManagementTrait
                     $user = $this->getUsersTable()->changePassword($user);
                     if ($user) {
                         $event = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_CHANGE_PASSWORD, ['user' => $user]);
-                        if (is_array($event->result)) {
+                        if (!empty($event) && is_array($event->result)) {
+
                             return $this->redirect($event->result);
                         }
-
                         $this->Flash->success(__d('CakeDC/Users', 'Password has been changed successfully'));
+
                         return $this->redirect($redirect);
                     } else {
                         $this->Flash->error(__d('CakeDC/Users', 'Password could not be changed'));
