@@ -74,7 +74,6 @@ trait PasswordManagementTrait
                     if ($user) {
                         $event = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_CHANGE_PASSWORD, ['user' => $user]);
                         if (!empty($event) && is_array($event->result)) {
-
                             return $this->redirect($event->result);
                         }
                         $this->Flash->success(__d('CakeDC/Users', 'Password has been changed successfully'));
@@ -136,6 +135,7 @@ trait PasswordManagementTrait
                 $msg = __d('CakeDC/Users', 'The password token could not be generated. Please try again');
                 $this->Flash->error($msg);
             }
+
             return $this->redirect(['action' => 'login']);
         } catch (UserNotFoundException $exception) {
             $this->Flash->error(__d('CakeDC/Users', 'User {0} was not found', $reference));

@@ -11,9 +11,9 @@
 
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
-use Cake\Event\Event;
 use Cake\Auth\PasswordHasherFactory;
 use Cake\Core\Configure;
+use Cake\Event\Event;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
