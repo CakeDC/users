@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
+use Cake\Event\Event;
 use CakeDC\Users\Test\TestCase\Controller\Traits\BaseTraitTest;
 use Cake\Auth\PasswordHasherFactory;
 use Cake\Core\Configure;
@@ -27,7 +28,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
     public function setUp()
     {
         $this->traitClassName = 'CakeDC\Users\Controller\Traits\PasswordManagementTrait';
-        $this->traitMockMethods = ['set', 'redirect', 'validate', 'log'];
+        $this->traitMockMethods = ['set', 'redirect', 'validate', 'log', 'dispatchEvent'];
         $this->mockDefaultEmail = true;
         parent::setUp();
     }
@@ -91,6 +92,42 @@ class PasswordManagementTraitTest extends BaseTraitTest
             ->method('error')
             ->with('Password could not be changed');
         $this->Trait->changePassword();
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testChangePasswordWithAfterChangeEvent()
+    {
+        $this->assertEquals('12345', $this->table->get('00000000-0000-0000-0000-000000000001')->password);
+        $this->_mockRequestPost();
+        $this->_mockAuthLoggedIn();
+        $this->_mockFlash();
+        $this->Trait->request->expects($this->once())
+            ->method('getData')
+            ->will($this->returnValue([
+                'password' => 'new',
+                'password_confirm' => 'new',
+            ]));
+        $event = new Event('event');
+        $event->result = [
+            'action' => 'newAction',
+        ];
+        $this->Trait->expects($this->once())
+            ->method('dispatchEvent')
+            ->will($this->returnValue($event));
+        $this->Trait->expects($this->once())
+            ->method('redirect')
+            ->with(['action' => 'newAction']);
+        $this->Trait->Flash->expects($this->any())
+            ->method('success')
+            ->with('Password has been changed successfully');
+        $this->Trait->changePassword();
+        $hasher = PasswordHasherFactory::build('Default');
+        $this->assertTrue($hasher->check('new', $this->table->get('00000000-0000-0000-0000-000000000001')->password));
+
     }
 
     /**
