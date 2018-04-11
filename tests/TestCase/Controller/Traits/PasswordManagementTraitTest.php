@@ -12,7 +12,6 @@
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
 use Cake\Event\Event;
-use CakeDC\Users\Test\TestCase\Controller\Traits\BaseTraitTest;
 use Cake\Auth\PasswordHasherFactory;
 use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
@@ -127,7 +126,6 @@ class PasswordManagementTraitTest extends BaseTraitTest
         $this->Trait->changePassword();
         $hasher = PasswordHasherFactory::build('Default');
         $this->assertTrue($hasher->check('new', $this->table->get('00000000-0000-0000-0000-000000000001')->password));
-
     }
 
     /**
