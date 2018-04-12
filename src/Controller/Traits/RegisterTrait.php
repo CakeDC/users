@@ -63,8 +63,15 @@ trait RegisterTrait
         ]);
 
         if ($event->result instanceof EntityInterface) {
-            if ($userSaved = $usersTable->register($user, $event->result->toArray(), $options)) {
+            $data = $event->result->toArray();
+            $data['password'] = $requestData['password']; //since password is a hidden property
+            if ($userSaved = $usersTable->register($user, $data, $options)) {
                 return $this->_afterRegister($userSaved);
+            } else {
+                $this->set(compact('user'));
+                $this->Flash->error(__d('CakeDC/Users', 'The user could not be saved'));
+
+                return;
             }
         }
         if ($event->isStopped()) {

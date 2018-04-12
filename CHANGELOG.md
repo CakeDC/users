@@ -4,6 +4,15 @@ Changelog
 Releases for CakePHP 3
 -------------
 
+* 6.0.0
+  * Removed deprecations and orWhere usage
+  * Amazon login implemented
+  * Fixed issues with login via twitter
+  * Updated Facebook Graph version to 2.8
+  * Fixed flash error messages on logic
+  * Added link social account feature for twitter
+  * Switched to codecov  
+
 * 5.2.0
   * Compatible with 3.5, deprecations will be removed in next major version of the plugin
   * Username is now custom in SocialBehavior

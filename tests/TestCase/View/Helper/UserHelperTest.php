@@ -227,10 +227,10 @@ class UserHelperTest extends TestCase
     public function testSocialLoginLink()
     {
         $result = $this->User->socialLogin('facebook');
-        $this->assertEquals('<a href="/auth/facebook" class="btn btn-social btn-facebook "><i class="fa fa-facebook"></i>Sign in with Facebook</a>', $result);
+        $this->assertEquals('<a href="/auth/facebook" class="btn btn-social btn-facebook"><i class="fa fa-facebook"></i>Sign in with Facebook</a>', $result);
 
         $result = $this->User->socialLogin('twitter', ['label' => 'Register with']);
-        $this->assertEquals('<a href="/auth/twitter" class="btn btn-social btn-twitter "><i class="fa fa-twitter"></i>Register with Twitter</a>', $result);
+        $this->assertEquals('<a href="/auth/twitter" class="btn btn-social btn-twitter"><i class="fa fa-twitter"></i>Register with Twitter</a>', $result);
     }
 
     /**
