@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Controller\Traits;
 
+use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Exception\UserNotFoundException;
 use CakeDC\Users\Exception\WrongPasswordException;
@@ -71,6 +72,10 @@ trait PasswordManagementTrait
                 } else {
                     $user = $this->getUsersTable()->changePassword($user);
                     if ($user) {
+                        $event = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_CHANGE_PASSWORD, ['user' => $user]);
+                        if (!empty($event) && is_array($event->result)) {
+                            return $this->redirect($event->result);
+                        }
                         $this->Flash->success(__d('CakeDC/Users', 'Password has been changed successfully'));
 
                         return $this->redirect($redirect);

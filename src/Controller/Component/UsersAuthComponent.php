@@ -33,6 +33,7 @@ class UsersAuthComponent extends Component
     const EVENT_BEFORE_LOGOUT = 'Users.Component.UsersAuth.beforeLogout';
     const EVENT_AFTER_LOGOUT = 'Users.Component.UsersAuth.afterLogout';
     const EVENT_BEFORE_SOCIAL_LOGIN_USER_CREATE = 'Users.Component.UsersAuth.beforeSocialLoginUserCreate';
+    const EVENT_AFTER_CHANGE_PASSWORD = 'Users.Component.UsersAuth.afterResetPassword';
 
     /**
      * Initialize method, setup Auth if not already done passing the $config provided and
