@@ -43,7 +43,7 @@ class SocialAccountsTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->SocialAccounts = TableRegistry::get('CakeDC/Users.SocialAccounts');
+        $this->SocialAccounts = TableRegistry::getTableLocator()->get('CakeDC/Users.SocialAccounts');
     }
 
     /**
@@ -69,6 +69,6 @@ class SocialAccountsTableTest extends TestCase
             'data' => 'test-data',
         ];
         $entity = $this->SocialAccounts->newEntity($data);
-        $this->assertEmpty($entity->errors());
+        $this->assertEmpty($entity->getErrors());
     }
 }

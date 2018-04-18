@@ -42,7 +42,7 @@ class SocialAccountBehaviorTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->Table = TableRegistry::get('CakeDC/Users.SocialAccounts');
+        $this->Table = TableRegistry::getTableLocator()->get('CakeDC/Users.SocialAccounts');
         $this->Behavior = $this->Table->behaviors()->SocialAccount;
     }
 

@@ -117,8 +117,8 @@ class UsersAuthComponent extends Component
         }
 
         list($plugin, $controller) = pluginSplit(Configure::read('Users.controller'));
-        if ($this->getController()->request->getParam('plugin', null) === $plugin &&
-            $this->getController()->request->getParam('controller') === $controller
+        if ($this->getController()->getRequest()->getParam('plugin', null) === $plugin &&
+            $this->getController()->getRequest()->getParam('controller') === $controller
         ) {
             $this->getController()->Auth->allow([
                 // LoginTrait
@@ -151,7 +151,7 @@ class UsersAuthComponent extends Component
      */
     public function isUrlAuthorized(Event $event)
     {
-        $url = Hash::get((array)$event->data, 'url');
+        $url = Hash::get((array)$event->getData(), 'url');
         if (empty($url)) {
             return false;
         }
@@ -186,7 +186,7 @@ class UsersAuthComponent extends Component
         }
 
         $request = new ServerRequest($requestUrl);
-        $request = $request->addParams($requestParams);
+        $request = $request->withAttribute('params', $requestParams);
 
         $isAuthorized = $this->getController()->Auth->isAuthorized(null, $request);
 
@@ -221,7 +221,7 @@ class UsersAuthComponent extends Component
         if (empty($requestParams['action'])) {
             return false;
         }
-        if (!empty($requestParams['controller']) && $requestParams['controller'] !== $this->getController()->name) {
+        if (!empty($requestParams['controller']) && $requestParams['controller'] !== $this->getController()->getName()) {
             return false;
         }
         $action = strtolower($requestParams['action']);

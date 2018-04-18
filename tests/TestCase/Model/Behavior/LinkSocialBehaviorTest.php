@@ -48,7 +48,7 @@ class LinkSocialBehaviorTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->Table = TableRegistry::get('CakeDC/Users.Users');
+        $this->Table = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
         $this->Behavior = new LinkSocialBehavior($this->Table);
     }
 
@@ -174,7 +174,7 @@ class LinkSocialBehaviorTest extends TestCase
         $actual = $resultUser->social_accounts[0];
         $this->assertInstanceOf('\CakeDC\Users\Model\Entity\SocialAccount', $actual);
 
-        $actual = $user->errors();
+        $actual = $user->getErrors();
 
         $expected = [
             'social_accounts' => [
@@ -187,7 +187,7 @@ class LinkSocialBehaviorTest extends TestCase
         ];
         $this->assertEquals($expected, $actual);
 
-        $error = $user->errors('social_accounts');
+        $error = $user->getErrors('social_accounts');
         $error = $error ? reset($error) : $message;
     }
 
@@ -274,7 +274,7 @@ class LinkSocialBehaviorTest extends TestCase
                 '_existsIn' => __d('CakeDC/Users', 'Social account already associated to another user')
             ]
         ];
-        $actual = $user->errors();
+        $actual = $user->getErrors();
         $this->assertEquals($expected, $actual);
 
         //Se for o usuário que já esta associado então okay
@@ -288,7 +288,7 @@ class LinkSocialBehaviorTest extends TestCase
         ]);
         $resultUser = $this->Behavior->linkSocialAccount($userBase, $data);
         $this->assertInstanceOf('\CakeDC\Users\Model\Entity\User', $resultUser);
-        $this->assertEquals([], $userBase->errors());
+        $this->assertEquals([], $userBase->getErrors());
 
         $actual = $resultUser->social_accounts[0];
 

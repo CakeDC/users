@@ -268,8 +268,8 @@ class SocialAuthenticate extends BaseAuthenticate
      * application.
      *
      * @param \Cake\Http\ServerRequest $request Request object.
-     * @param \Cake\Network\Response $response Response object.
-     * @return \Cake\Network\Response|null
+     * @param \Cake\Http\Response $response Response object.
+     * @return \Cake\Http\Response|null
      */
     public function unauthenticated(ServerRequest $request, Response $response)
     {
@@ -480,7 +480,7 @@ class SocialAuthenticate extends BaseAuthenticate
         ];
 
         $userModel = Configure::read('Users.table');
-        $User = TableRegistry::get($userModel);
+        $User = TableRegistry::getTableLocator()->get($userModel);
         $user = $User->socialLogin($data, $options);
 
         return $user;

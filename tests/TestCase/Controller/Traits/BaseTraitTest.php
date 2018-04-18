@@ -47,7 +47,7 @@ abstract class BaseTraitTest extends TestCase
     {
         parent::setUp();
         $traitMockMethods = array_unique(array_merge(['getUsersTable'], $this->traitMockMethods));
-        $this->table = TableRegistry::get('CakeDC/Users.Users');
+        $this->table = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
         try {
             $this->Trait = $this->getMockBuilder($this->traitClassName)
                     ->setMethods($traitMockMethods)
@@ -96,7 +96,7 @@ abstract class BaseTraitTest extends TestCase
      */
     protected function _mockSession($attributes)
     {
-        $session = new \Cake\Network\Session();
+        $session = new \Cake\Http\Session();
 
         foreach ($attributes as $field => $value) {
             $session->write($field, $value);

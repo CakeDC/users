@@ -13,7 +13,7 @@ namespace CakeDC\Users\Controller\Traits;
 
 use CakeDC\Users\Model\Table\SocialAccountsTable;
 use Cake\Core\Configure;
-use Cake\Network\Exception\NotFoundException;
+use Cake\Http\Exception\NotFoundException;
 use League\OAuth1\Client\Server\Twitter;
 
 /**
@@ -27,8 +27,8 @@ trait LinkSocialTrait
      *
      * @param string $alias of the provider.
      *
-     * @throws \Cake\Network\Exception\NotFoundException Quando o provider informado não existe
-     * @return  \Cake\Network\Response Redirects on successful
+     * @throws \Cake\Http\Exception\NotFoundException Quando o provider informado não existe
+     * @return  \Cake\Http\Response Redirects on successful
      */
     public function linkSocial($alias = null)
     {
@@ -52,8 +52,8 @@ trait LinkSocialTrait
      *
      * @param string $alias of the provider.
      *
-     * @throws \Cake\Network\Exception\NotFoundException Quando o provider informado não existe
-     * @return  \Cake\Network\Response Redirects to profile if okay or error
+     * @throws \Cake\Http\Exception\NotFoundException Quando o provider informado não existe
+     * @return  \Cake\Http\Response Redirects to profile if okay or error
      */
     public function callbackLinkSocial($alias = null)
     {
@@ -117,7 +117,7 @@ trait LinkSocialTrait
 
             $this->getUsersTable()->linkSocialAccount($user, $data);
 
-            if ($user->errors()) {
+            if ($user->getErrors()) {
                 $this->Flash->error($message);
             } else {
                 $this->Flash->success(__d('CakeDC/Users', 'Social account was associated.'));
@@ -161,7 +161,7 @@ trait LinkSocialTrait
      *
      * @param string $alias of the provider.
      *
-     * @throws \Cake\Network\Exception\NotFoundException
+     * @throws \Cake\Http\Exception\NotFoundException
      * @return \League\OAuth2\Client\Provider\AbstractProvider|\League\OAuth1\Client\Server\Twitter
      */
     protected function _getSocialProvider($alias)
@@ -184,7 +184,7 @@ trait LinkSocialTrait
      * @param array $config for social provider.
      * @param string $alias provider alias
      *
-     * @throws \Cake\Network\Exception\NotFoundException
+     * @throws \Cake\Http\Exception\NotFoundException
      * @return \League\OAuth2\Client\Provider\AbstractProvider|\League\OAuth1\Client\Server\Twitter
      */
     protected function _createSocialProvider($config, $alias = null)

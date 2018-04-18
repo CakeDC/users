@@ -131,7 +131,7 @@ class UserHelperTest extends TestCase
      */
     public function testWelcome()
     {
-        $session = $this->getMockBuilder('Cake\Network\Session')
+        $session = $this->getMockBuilder('Cake\Http\Session')
                 ->setMethods(['read'])
                 ->getMock();
         $session->expects($this->at(0))
@@ -163,7 +163,7 @@ class UserHelperTest extends TestCase
      */
     public function testWelcomeNotLoggedInUser()
     {
-        $session = $this->getMockBuilder('Cake\Network\Session')
+        $session = $this->getMockBuilder('Cake\Http\Session')
                 ->setMethods(['read'])
                 ->getMock();
         $session->expects($this->at(0))
