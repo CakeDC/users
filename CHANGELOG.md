@@ -6,6 +6,7 @@ Releases for CakePHP 3
 
 * 7.0.0
   * Removed deprecations for CakePHP 3.6
+  * Added a new `UsersAuthComponent::EVENT_AFTER_CHANGE_PASSWORD`
   * Updated docs
 
 * 6.0.0
