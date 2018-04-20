@@ -108,7 +108,7 @@ trait UserValidationTrait
                 'expiration' => Configure::read('Users.Token.expiration'),
                 'checkActive' => true,
                 'sendEmail' => true,
-                'emailTemplate' => 'CakeDC/Users.validation'
+                'type' => 'email'
             ])) {
                 $event = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_RESEND_TOKEN_VALIDATION);
                 if (!empty($event) && is_array($event->result)) {
