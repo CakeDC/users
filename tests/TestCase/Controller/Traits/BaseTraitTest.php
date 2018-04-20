@@ -121,7 +121,7 @@ abstract class BaseTraitTest extends TestCase
             $methods[] = 'session';
         }
 
-        $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
+        $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
                 ->setMethods($methods)
                 ->getMock();
         $this->Trait->request->expects($this->any())
@@ -151,7 +151,7 @@ abstract class BaseTraitTest extends TestCase
      */
     protected function _mockRequestPost($with = 'post')
     {
-        $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
+        $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
                 ->setMethods(['is', 'getData', 'allow'])
                 ->getMock();
         $this->Trait->request->expects($this->any())

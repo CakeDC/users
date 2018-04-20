@@ -12,7 +12,10 @@
 namespace CakeDC\Users\Controller\Traits;
 
 use CakeDC\Users\Controller\Component\UsersAuthComponent;
+<<<<<<< HEAD
 use Cake\Event\Event;
+=======
+>>>>>>> Adding new events
 use CakeDC\Users\Exception\TokenExpiredException;
 use CakeDC\Users\Exception\UserAlreadyActiveException;
 use CakeDC\Users\Exception\UserNotFoundException;
@@ -77,6 +80,10 @@ trait UserValidationTrait
         } catch (UserNotFoundException $ex) {
             $this->Flash->error(__d('CakeDC/Users', 'Invalid token or user account already validated'));
         } catch (TokenExpiredException $ex) {
+            $event = $this->dispatchEvent(UsersAuthComponent::EVENT_ON_EXPIRED_TOKEN, ['type' => $type]);
+            if (!empty($event) && is_array($event->result)) {
+                return $this->redirect($event->result);
+            }
             $this->Flash->error(__d('CakeDC/Users', 'Token already expired'));
         }
 
@@ -103,6 +110,10 @@ trait UserValidationTrait
                 'sendEmail' => true,
                 'emailTemplate' => 'CakeDC/Users.validation'
             ])) {
+                $event = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_RESEND_TOKEN_VALIDATION);
+                if (!empty($event) && is_array($event->result)) {
+                    return $this->redirect($event->result);
+                }
                 $this->Flash->success(__d(
                     'CakeDC/Users',
                     'Token has been reset successfully. Please check your email.'
