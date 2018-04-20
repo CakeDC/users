@@ -92,7 +92,7 @@ trait UserValidationTrait
                 'expiration' => Configure::read('Users.Token.expiration'),
                 'checkActive' => true,
                 'sendEmail' => true,
-                'emailTemplate' => 'CakeDC/Users.validation'
+                'type' => 'email'
             ])) {
                 $this->Flash->success(__d(
                     'CakeDC/Users',
