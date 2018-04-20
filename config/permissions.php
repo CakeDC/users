@@ -50,7 +50,7 @@
  */
 
 return [
-    'Users.SimpleRbac.permissions' => [
+    'CakeDC/Auth.permissions' => [
         //admin role allowed to all the things
         [
             'role' => 'admin',
@@ -84,7 +84,6 @@ return [
         //all roles allowed to Pages/display
         [
             'role' => '*',
-            //'plugin' => null,
             'controller' => 'Pages',
             'action' => 'display',
         ],

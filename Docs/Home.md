@@ -27,5 +27,6 @@ Migration guides
 ----------------
 
 * [4.x to 5.0](Documentation/Migration/4.x-5.0.md)
+* [6.x to 7.0](Documentation/Migration/6.x-7.0.md)
 
 

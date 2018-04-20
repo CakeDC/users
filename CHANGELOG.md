@@ -4,6 +4,10 @@ Changelog
 Releases for CakePHP 3
 -------------
 
+* 7.0.0
+  * Removed deprecations for CakePHP 3.6
+  * Updated docs
+
 * 6.0.0
   * Removed deprecations and orWhere usage
   * Amazon login implemented
