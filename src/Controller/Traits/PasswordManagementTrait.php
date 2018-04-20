@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Controller\Traits;
 
+use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Exception\UserNotFoundException;
 use CakeDC\Users\Exception\WrongPasswordException;
@@ -47,12 +48,12 @@ trait PasswordManagementTrait
             $validatePassword = false;
             if (!$user->id) {
                 $this->Flash->error(__d('CakeDC/Users', 'User was not found'));
-                $this->redirect($this->Auth->config('loginAction'));
+                $this->redirect($this->Auth->getConfig('loginAction'));
 
                 return;
             }
             //@todo add to the documentation: list of routes used
-            $redirect = $this->Auth->config('loginAction');
+            $redirect = $this->Auth->getConfig('loginAction');
         }
         $this->set('validatePassword', $validatePassword);
         if ($this->request->is('post')) {
@@ -66,11 +67,15 @@ trait PasswordManagementTrait
                     $this->request->getData(),
                     ['validate' => $validator]
                 );
-                if ($user->errors()) {
+                if ($user->getErrors()) {
                     $this->Flash->error(__d('CakeDC/Users', 'Password could not be changed'));
                 } else {
                     $user = $this->getUsersTable()->changePassword($user);
                     if ($user) {
+                        $event = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_CHANGE_PASSWORD, ['user' => $user]);
+                        if (!empty($event) && is_array($event->result)) {
+                            return $this->redirect($event->result);
+                        }
                         $this->Flash->success(__d('CakeDC/Users', 'Password has been changed successfully'));
 
                         return $this->redirect($redirect);
@@ -105,7 +110,7 @@ trait PasswordManagementTrait
     /**
      * Reset password
      *
-     * @return void|\Cake\Network\Response
+     * @return void|\Cake\Http\Response
      */
     public function requestResetPassword()
     {

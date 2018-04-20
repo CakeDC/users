@@ -39,12 +39,12 @@ class UsersMailerTest extends TestCase
     {
         parent::setUp();
         $this->Email = $this->getMockBuilder('Cake\Mailer\Email')
-            ->setMethods(['to', 'setSubject', 'setViewVars', 'setTemplate'])
+            ->setMethods(['setTo', 'setSubject', 'setViewVars', 'setTemplate'])
             ->getMock();
 
         $this->UsersMailer = $this->getMockBuilder('CakeDC\Users\Mailer\UsersMailer')
             ->setConstructorArgs([$this->Email])
-            ->setMethods(['to', 'setSubject', 'setViewVars', 'setTemplate'])
+            ->setMethods(['setTo', 'setSubject', 'setViewVars', 'setTemplate'])
             ->getMock();
     }
 
@@ -67,7 +67,7 @@ class UsersMailerTest extends TestCase
      */
     public function testValidation()
     {
-        $table = TableRegistry::get('CakeDC/Users.Users');
+        $table = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
         $data = [
             'first_name' => 'FirstName',
             'email' => 'test@example.com',
@@ -75,7 +75,7 @@ class UsersMailerTest extends TestCase
         ];
         $user = $table->newEntity($data);
         $this->UsersMailer->expects($this->once())
-            ->method('to')
+            ->method('setTo')
             ->with($user['email'])
             ->will($this->returnValue($this->Email));
 
@@ -99,11 +99,11 @@ class UsersMailerTest extends TestCase
      */
     public function testSocialAccountValidation()
     {
-        $social = TableRegistry::get('CakeDC/Users.SocialAccounts')
+        $social = TableRegistry::getTableLocator()->get('CakeDC/Users.SocialAccounts')
             ->get('00000000-0000-0000-0000-000000000001', ['contain' => 'Users']);
 
         $this->UsersMailer->expects($this->once())
-            ->method('to')
+            ->method('setTo')
             ->with('user-1@test.com')
             ->will($this->returnValue($this->Email));
 
@@ -127,7 +127,7 @@ class UsersMailerTest extends TestCase
      */
     public function testResetPassword()
     {
-        $table = TableRegistry::get('CakeDC/Users.Users');
+        $table = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
         $data = [
             'first_name' => 'FirstName',
             'email' => 'test@example.com',
@@ -135,7 +135,7 @@ class UsersMailerTest extends TestCase
         ];
         $user = $table->newEntity($data);
         $this->UsersMailer->expects($this->once())
-            ->method('to')
+            ->method('setTo')
             ->with($user['email'])
             ->will($this->returnValue($this->Email));
 

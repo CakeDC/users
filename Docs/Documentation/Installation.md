@@ -106,7 +106,10 @@ Load the Component in your src/Controller/AppController.php, and use the passed 
     public function initialize()
     {
         parent::initialize();
-        $this->loadComponent('Flash');
+
+        // Important: add the 'enableBeforeRedirect' config or or disable deprecation warnings
+        $this->loadComponent('RequestHandler', ['enableBeforeRedirect' => false]);
+        $this->loadComponent('Flash');                
         $this->loadComponent('CakeDC/Users.UsersAuth');
     }
 ```

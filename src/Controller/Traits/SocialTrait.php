@@ -12,7 +12,7 @@
 namespace CakeDC\Users\Controller\Traits;
 
 use Cake\Core\Configure;
-use Cake\Network\Exception\NotFoundException;
+use Cake\Http\Exception\NotFoundException;
 
 /**
  * Covers registration features and email token validation

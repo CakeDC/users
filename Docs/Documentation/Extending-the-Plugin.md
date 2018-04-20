@@ -151,7 +151,7 @@ You could use a new Trait. For example, you want to add an 'impersonate' feature
 namespace App\Controller\Traits;
 
 use Cake\Datasource\Exception\RecordNotFoundException;
-use Cake\Network\Exception\NotFoundException;
+use Cake\Http\Exception\NotFoundException;
 
 /**
  * Impersonate Trait

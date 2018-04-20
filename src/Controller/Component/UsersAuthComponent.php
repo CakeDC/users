@@ -33,6 +33,7 @@ class UsersAuthComponent extends Component
     const EVENT_BEFORE_LOGOUT = 'Users.Component.UsersAuth.beforeLogout';
     const EVENT_AFTER_LOGOUT = 'Users.Component.UsersAuth.afterLogout';
     const EVENT_BEFORE_SOCIAL_LOGIN_USER_CREATE = 'Users.Component.UsersAuth.beforeSocialLoginUserCreate';
+    const EVENT_AFTER_CHANGE_PASSWORD = 'Users.Component.UsersAuth.afterResetPassword';
 
     /**
      * Initialize method, setup Auth if not already done passing the $config provided and
@@ -116,8 +117,8 @@ class UsersAuthComponent extends Component
         }
 
         list($plugin, $controller) = pluginSplit(Configure::read('Users.controller'));
-        if ($this->getController()->request->getParam('plugin', null) === $plugin &&
-            $this->getController()->request->getParam('controller') === $controller
+        if ($this->getController()->getRequest()->getParam('plugin', null) === $plugin &&
+            $this->getController()->getRequest()->getParam('controller') === $controller
         ) {
             $this->getController()->Auth->allow([
                 // LoginTrait
@@ -150,7 +151,7 @@ class UsersAuthComponent extends Component
      */
     public function isUrlAuthorized(Event $event)
     {
-        $url = Hash::get((array)$event->data, 'url');
+        $url = Hash::get((array)$event->getData(), 'url');
         if (empty($url)) {
             return false;
         }
@@ -185,7 +186,7 @@ class UsersAuthComponent extends Component
         }
 
         $request = new ServerRequest($requestUrl);
-        $request = $request->addParams($requestParams);
+        $request = $request->withAttribute('params', $requestParams);
 
         $isAuthorized = $this->getController()->Auth->isAuthorized(null, $request);
 
@@ -220,7 +221,7 @@ class UsersAuthComponent extends Component
         if (empty($requestParams['action'])) {
             return false;
         }
-        if (!empty($requestParams['controller']) && $requestParams['controller'] !== $this->getController()->name) {
+        if (!empty($requestParams['controller']) && $requestParams['controller'] !== $this->getController()->getName()) {
             return false;
         }
         $action = strtolower($requestParams['action']);

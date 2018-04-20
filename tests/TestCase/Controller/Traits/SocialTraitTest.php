@@ -45,7 +45,7 @@ class SocialTraitTest extends TestCase
      */
     public function testSocialEmail()
     {
-        $session = $this->getMockBuilder('Cake\Network\Session')
+        $session = $this->getMockBuilder('Cake\Http\Session')
                 ->setMethods(['check', 'delete'])
                 ->getMock();
         $session->expects($this->at(0))
@@ -70,11 +70,11 @@ class SocialTraitTest extends TestCase
     /**
      * Test socialEmail
      *
-     * @expectedException \Cake\Network\Exception\NotFoundException
+     * @expectedException \Cake\Http\Exception\NotFoundException
      */
     public function testSocialEmailInvalid()
     {
-        $session = $this->getMockBuilder('Cake\Network\Session')
+        $session = $this->getMockBuilder('Cake\Http\Session')
                 ->setMethods(['check'])
                 ->getMock();
         $session->expects($this->once())
@@ -94,7 +94,7 @@ class SocialTraitTest extends TestCase
 
     public function testSocialEmailPostValidateFalse()
     {
-        $session = $this->getMockBuilder('Cake\Network\Session')
+        $session = $this->getMockBuilder('Cake\Http\Session')
                 ->setMethods(['check', 'delete'])
                 ->getMock();
         $session->expects($this->any())
@@ -136,7 +136,7 @@ class SocialTraitTest extends TestCase
 
     public function testSocialEmailPostValidateTrue()
     {
-        $session = $this->getMockBuilder('Cake\Network\Session')
+        $session = $this->getMockBuilder('Cake\Http\Session')
                 ->setMethods(['check', 'delete'])
                 ->getMock();
         $session->expects($this->any())

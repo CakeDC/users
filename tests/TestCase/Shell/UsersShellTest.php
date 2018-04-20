@@ -39,7 +39,7 @@ class UsersShellTest extends TestCase
         parent::setUp();
         $this->out = new ConsoleOutput();
         $this->io = $this->getMockBuilder('Cake\Console\ConsoleIo')->getMock();
-        $this->Users = TableRegistry::get('CakeDC/Users.Users');
+        $this->Users = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
 
         $this->Shell = $this->getMockBuilder('CakeDC\Users\Shell\UsersShell')
             ->setMethods(['in', 'out', '_stop', 'clear', '_usernameSeed', '_generateRandomPassword',

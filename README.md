@@ -12,8 +12,9 @@ Versions and branches
 
 | CakePHP | CakeDC Users Plugin | Tag   | Notes |
 | :-------------: | :------------------------: | :--:  | :---- |
-| ^3.5             | [master](https://github.com/cakedc/users/tree/master)                      | 6.0.1 | stable |
-| ^3.5             | [develop](https://github.com/cakedc/users/tree/develop)                      | - | unstable |
+| ^3.6             | [master](https://github.com/cakedc/users/tree/master)                      | 7.0.0 | stable |
+| ^3.6             | [develop](https://github.com/cakedc/users/tree/develop)                      | - | unstable |
+| 3.5             | [6.x](https://github.com/cakedc/users/tree/6.x)                      | 6.0.1 | stable |
 | 3.4             | [5.x](https://github.com/cakedc/users/tree/5.x)                      | 5.2.0 | stable |
 | 3.3             | [4.x](https://github.com/cakedc/users/tree/4.x)                      | 4.2.0 | stable |
 | 2.x             | [2.x](https://github.com/cakedc/users/tree/2.x)                     | 2.2.0 |stable |
@@ -45,7 +46,7 @@ Another decision made was limiting the plugin dependencies on other packages as 
 Requirements
 ------------
 
-* CakePHP 3.4.0+
+* CakePHP 3.6.0+
 * PHP 5.6+
 
 Documentation
