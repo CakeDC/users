@@ -44,7 +44,7 @@ class PasswordBehaviorTest extends TestCase
         parent::setUp();
         $this->table = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
         $this->Behavior = $this->getMockBuilder('CakeDC\Users\Model\Behavior\PasswordBehavior')
-                ->setMethods(['sendResetPasswordEmail'])
+                ->setMethods(['_sendResetPasswordEmail'])
                 ->setConstructorArgs([$this->table])
                 ->getMock();
         Email::setConfigTransport('test', [
@@ -79,7 +79,7 @@ class PasswordBehaviorTest extends TestCase
         $user = $this->table->findByUsername('user-1')->first();
         $token = $user->token;
         $this->Behavior->expects($this->never())
-                ->method('sendResetPasswordEmail')
+                ->method('_sendResetPasswordEmail')
                 ->with($user);
         $result = $this->Behavior->resetToken('user-1', [
             'expiration' => 3600,
@@ -100,11 +100,12 @@ class PasswordBehaviorTest extends TestCase
         $token = $user->token;
         $tokenExpires = $user->token_expires;
         $this->Behavior->expects($this->once())
-                ->method('sendResetPasswordEmail');
+                ->method('_sendResetPasswordEmail');
         $result = $this->Behavior->resetToken('user-1', [
             'expiration' => 3600,
             'checkActive' => true,
-            'sendEmail' => true
+            'sendEmail' => true,
+            'type' => 'password'
         ]);
         $this->assertNotEquals($token, $result->token);
         $this->assertNotEquals($tokenExpires, $result->token_expires);
@@ -158,7 +159,7 @@ class PasswordBehaviorTest extends TestCase
         $this->table->expects($this->never())
                 ->method('save');
         $this->Behavior->expects($this->never())
-                ->method('sendResetPasswordEmail');
+                ->method('_sendResetPasswordEmail');
         $this->Behavior->resetToken('user-4', [
             'expiration' => 3600,
             'checkActive' => true,
@@ -229,7 +230,8 @@ class PasswordBehaviorTest extends TestCase
         $this->Behavior->resetToken('user-1', [
             'expiration' => 3600,
             'checkActive' => true,
-            'sendEmail' => true
+            'sendEmail' => true,
+            'type' => 'password'
         ]);
     }
 }
