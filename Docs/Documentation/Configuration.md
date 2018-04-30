@@ -120,7 +120,7 @@ NOTE: SOME keys were hidden in this doc page, please refer to `vendor/cakedc/use
             'all' => [
                 'finder' => 'active',
             ],
-            'CakeDC/Users.RememberMe',
+            'CakeDC/Auth.RememberMe',
             'Form',
         ],
         'authorize' => [
