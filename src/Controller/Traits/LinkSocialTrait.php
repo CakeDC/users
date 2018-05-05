@@ -11,9 +11,11 @@
 
 namespace CakeDC\Users\Controller\Traits;
 
+use Cake\Utility\Hash;
 use CakeDC\Users\Model\Table\SocialAccountsTable;
 use Cake\Core\Configure;
 use Cake\Http\Exception\NotFoundException;
+use CakeDC\Users\Social\Service\ServiceFactory;
 use League\OAuth1\Client\Server\Twitter;
 
 /**
@@ -32,19 +34,12 @@ trait LinkSocialTrait
      */
     public function linkSocial($alias = null)
     {
-        $provider = $this->_getSocialProvider($alias);
-
-        $temporaryCredentials = [];
-        if (ucfirst($alias) === SocialAccountsTable::PROVIDER_TWITTER) {
-            $temporaryCredentials = $provider->getTemporaryCredentials();
-            $this->request->getSession()->write('temporary_credentials', $temporaryCredentials);
-        }
-        $authUrl = $provider->getAuthorizationUrl($temporaryCredentials);
-        if (empty($temporaryCredentials)) {
-            $this->request->session()->write('SocialLink.oauth2state', $provider->getState());
-        }
-
-        return $this->redirect($authUrl);
+        return $this->redirect(
+            (new ServiceFactory())
+                ->setRedirectUriField('callbackLinkSocialUri')
+                ->createFromProvider($alias)
+                ->getAuthorizationUrl($this->request)
+        );
     }
 
     /**
@@ -58,62 +53,20 @@ trait LinkSocialTrait
     public function callbackLinkSocial($alias = null)
     {
         $message = __d('CakeDC/Users', 'Could not associate account, please try again.');
-        $provider = $this->_getSocialProvider($alias);
-        $error = false;
-        if (ucfirst($alias) === SocialAccountsTable::PROVIDER_TWITTER) {
-            $server = new Twitter([
-                'identifier' => Configure::read('OAuth.providers.twitter.options.clientId'),
-                'secret' => Configure::read('OAuth.providers.twitter.options.clientSecret'),
-                'callbackUri' => Configure::read('OAuth.providers.twitter.options.callbackLinkSocialUri'),
-            ]);
-            $oauthToken = $this->request->getQuery('oauth_token');
-            $oauthVerifier = $this->request->getQuery('oauth_verifier');
-            if (!empty($oauthToken) && !empty($oauthVerifier)) {
-                $temporaryCredentials = $this->request->getSession()->read('temporary_credentials');
-                try {
-                    $tokenCredentials = $server->getTokenCredentials($temporaryCredentials, $oauthToken, $oauthVerifier);
-                    $data = (array)$server->getUserDetails($tokenCredentials);
-                    $data['token'] = [
-                        'accessToken' => $tokenCredentials->getIdentifier(),
-                        'tokenSecret' => $tokenCredentials->getSecret(),
-                    ];
-                } catch (\Exception $e) {
-                    $error = $e;
-                }
-            }
-        } else {
-            if (!$this->_validateCallbackSocialLink()) {
+        try {
+            $server = (new ServiceFactory())
+                ->setRedirectUriField('callbackLinkSocialUri')
+                ->createFromProvider($alias);
+
+            if (!$server->isGetUserStep($this->request)) {
                 $this->Flash->error($message);
 
                 return $this->redirect(['action' => 'profile']);
             }
-            $code = $this->request->getQuery('code');
-            try {
-                $token = $provider->getAccessToken('authorization_code', compact('code'));
-
-                $data = compact('token') + $provider->getResourceOwner($token)->toArray();
-            } catch (\Exception $e) {
-                $error = $e;
-            }
-        }
-
-        if (!empty($error) || empty($data)) {
-            $log = sprintf(
-                "Error getting an access token. Error message: %s %s",
-                $error->getMessage(),
-                $error
-            );
-            $this->log($log);
-
-            $this->Flash->error($message);
-
-            return $this->redirect(['action' => 'profile']);
-        }
-
-        try {
+            $data = $server->getUser($this->request);
             $data = $this->_mapSocialUser($alias, $data);
-
-            $user = $this->getUsersTable()->get($this->Auth->user('id'));
+            $userId = Hash::get($this->request->getAttribute('identity') ?? [], 'id');
+            $user = $this->getUsersTable()->get($userId);
 
             $this->getUsersTable()->linkSocialAccount($user, $data);
 
@@ -124,7 +77,7 @@ trait LinkSocialTrait
             }
         } catch (\Exception $e) {
             $log = sprintf(
-                "Error retrieving the authorized user's profile data. Error message: %s %s",
+                "Error linking social account: %s %s",
                 $e->getMessage(),
                 $e
             );
@@ -154,84 +107,5 @@ trait LinkSocialTrait
         $user['provider'] = $alias;
 
         return $user;
-    }
-
-    /**
-     * Instantiates provider object.
-     *
-     * @param string $alias of the provider.
-     *
-     * @throws \Cake\Http\Exception\NotFoundException
-     * @return \League\OAuth2\Client\Provider\AbstractProvider|\League\OAuth1\Client\Server\Twitter
-     */
-    protected function _getSocialProvider($alias)
-    {
-        $config = Configure::read('OAuth.providers.' . $alias);
-        if (!$config || !isset($config['options'], $config['options']['callbackLinkSocialUri'])) {
-            throw new NotFoundException;
-        }
-
-        if (!isset($config['options']['clientId'], $config['options']['clientSecret'])) {
-            throw new NotFoundException;
-        }
-
-        return $this->_createSocialProvider($config, ucfirst($alias));
-    }
-
-    /**
-     * Instantiates provider object.
-     *
-     * @param array $config for social provider.
-     * @param string $alias provider alias
-     *
-     * @throws \Cake\Http\Exception\NotFoundException
-     * @return \League\OAuth2\Client\Provider\AbstractProvider|\League\OAuth1\Client\Server\Twitter
-     */
-    protected function _createSocialProvider($config, $alias = null)
-    {
-        if ($alias === SocialAccountsTable::PROVIDER_TWITTER) {
-            $server = new Twitter([
-                'identifier' => Configure::read('OAuth.providers.twitter.options.clientId'),
-                'secret' => Configure::read('OAuth.providers.twitter.options.clientSecret'),
-                'callback_uri' => Configure::read('OAuth.providers.twitter.options.callbackLinkSocialUri'),
-            ]);
-
-            return $server;
-        }
-        $class = $config['className'];
-        $redirectUri = $config['options']['callbackLinkSocialUri'];
-
-        unset($config['options']['callbackLinkSocialUri'], $config['options']['linkSocialUri']);
-
-        $config['options']['redirectUri'] = $redirectUri;
-
-        return new $class($config['options'], []);
-    }
-
-    /**
-     * Validates OAuth2 request.
-     *
-     * @return bool
-     */
-    protected function _validateCallbackSocialLink()
-    {
-        $queryParams = $this->request->getQueryParams();
-
-        if (isset($queryParams['error']) && !empty($queryParams['error'])) {
-            $this->log('Got error in _validateCallbackSocialLink: ' . htmlspecialchars($queryParams['error'], ENT_QUOTES, 'UTF-8'));
-
-            return false;
-        }
-
-        if (!array_key_exists('code', $queryParams)) {
-            return false;
-        }
-
-        $sessionKey = 'SocialLink.oauth2state';
-        $oauth2state = $this->request->session()->read($sessionKey);
-        $this->request->session()->delete($sessionKey);
-        $state = $queryParams['state'];
-
-        return $oauth2state === $state;
     }
 }

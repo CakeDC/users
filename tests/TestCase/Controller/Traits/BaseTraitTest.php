@@ -11,11 +11,13 @@
 
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
+use Authentication\Identity;
 use Cake\Event\Event;
 use Cake\Mailer\Email;
 use Cake\ORM\Entity;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use CakeDC\Users\Model\Entity\User;
 use PHPUnit_Framework_MockObject_RuntimeException;
 
 abstract class BaseTraitTest extends TestCase
@@ -182,6 +184,22 @@ abstract class BaseTraitTest extends TestCase
             ->method('user')
             ->with('id')
             ->will($this->returnValue($user['id']));
+    }
+
+    /**
+     * Mock Auth and retur user id 1
+     *
+     * @return void
+     */
+    protected function _setAuthenticationIdentity($user = [])
+    {
+        $user += [
+            'id' => '00000000-0000-0000-0000-000000000001',
+            'password' => '12345',
+        ];
+
+        $identity = new Identity(new User($user));
+        $this->Trait->request = $this->Trait->request->withAttribute('identity', $identity);
     }
 
     /**
