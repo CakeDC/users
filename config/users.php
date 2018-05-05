@@ -127,30 +127,57 @@ $config = [
     ],
     // default configuration used to auto-load the Auth Component, override to change the way Auth works
     'Auth' => [
-        'loginAction' => [
-            'plugin' => 'CakeDC/Users',
-            'controller' => 'Users',
-            'action' => 'login',
-            'prefix' => false
+        'AuthenticationComponent' => [
+            'loginAction' => '/login',
+            'logoutRedirect' => '/login',
+            'loginRedirect' => '/',
+            'requireIdentity' => false
         ],
-        'authenticate' => [
-            'all' => [
-                'finder' => 'auth',
+        'Authenticators' => [
+            'Authentication.Session' => [
+                'skipGoogleVerify' => true,
+                'sessionKey' => 'Auth',
             ],
-            'CakeDC/Auth.ApiKey',
-            'CakeDC/Auth.RememberMe',
-            'Form',
+            'CakeDC/Users.Form' => [
+                'loginUrl' => '/login'
+            ],
+            'Authentication.Token' => [
+                'skipGoogleVerify' => true,
+                'header' => null,
+                'queryParam' => 'api_key',
+                'tokenPrefix' => null,
+            ],
+            'CakeDC/Users.Cookie' => [
+                'skipGoogleVerify' => true,
+                'rememberMeField' => 'remember_me',
+                'cookie' => [
+                    'expires' => '1 month',
+                    'httpOnly' => true,
+                ],
+                'loginUrl' => '/login'
+            ],
         ],
-        'authorize' => [
-            'CakeDC/Auth.Superuser',
-            'CakeDC/Auth.SimpleRbac',
+        'Identifiers' => [
+            'Authentication.Password',
+            'Authentication.Token' => [
+                'tokenField' => 'api_token'
+            ]
         ],
+    ],
+    'SocialAuthMiddleware' => [
+        'sessionAuthKey' => 'Auth',
+        'locator' => [
+            'usernameField' => 'username',
+            'finder' => 'all',
+        ]
     ],
     'OAuth' => [
         'path' => ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'socialLogin', 'prefix' => null],
         'providers' => [
             'facebook' => [
+                'service' => 'CakeDC\Users\Social\Service\OAuth2Service',
                 'className' => 'League\OAuth2\Client\Provider\Facebook',
+                'mapper' => 'CakeDC\Users\Auth\Social\Mapper\Facebook',
                 'options' => [
                     'graphApiVersion' => 'v2.8', //bio field was deprecated on >= v2.8
                     'redirectUri' => Router::fullBaseUrl() . '/auth/facebook',
@@ -159,6 +186,9 @@ $config = [
                 ]
             ],
             'twitter' => [
+                'service' => 'CakeDC\Users\Social\Service\OAuth1Service',
+                'className' => 'League\OAuth1\Client\Server\Twitter',
+                'mapper' => 'CakeDC\Users\Auth\Social\Mapper\Twitter',
                 'options' => [
                     'redirectUri' => Router::fullBaseUrl() . '/auth/twitter',
                     'linkSocialUri' => Router::fullBaseUrl() . '/link-social/twitter',
@@ -166,7 +196,9 @@ $config = [
                 ]
             ],
             'linkedIn' => [
+                'service' => 'CakeDC\Users\Social\Service\OAuth2Service',
                 'className' => 'League\OAuth2\Client\Provider\LinkedIn',
+                'mapper' => 'CakeDC\Users\Auth\Social\Mapper\LinkedIn',
                 'options' => [
                     'redirectUri' => Router::fullBaseUrl() . '/auth/linkedIn',
                     'linkSocialUri' => Router::fullBaseUrl() . '/link-social/linkedIn',
@@ -174,7 +206,9 @@ $config = [
                 ]
             ],
             'instagram' => [
+                'service' => 'CakeDC\Users\Social\Service\OAuth2Service',
                 'className' => 'League\OAuth2\Client\Provider\Instagram',
+                'mapper' => 'CakeDC\Users\Auth\Social\Mapper\Instagram',
                 'options' => [
                     'redirectUri' => Router::fullBaseUrl() . '/auth/instagram',
                     'linkSocialUri' => Router::fullBaseUrl() . '/link-social/instagram',
@@ -182,7 +216,9 @@ $config = [
                 ]
             ],
             'google' => [
+                'service' => 'CakeDC\Users\Social\Service\OAuth2Service',
                 'className' => 'League\OAuth2\Client\Provider\Google',
+                'mapper' => 'CakeDC\Users\Auth\Social\Mapper\Google',
                 'options' => [
                     'userFields' => ['url', 'aboutMe'],
                     'redirectUri' => Router::fullBaseUrl() . '/auth/google',
@@ -191,7 +227,9 @@ $config = [
                 ]
             ],
             'amazon' => [
+                'service' => 'CakeDC\Users\Social\Service\OAuth2Service',
                 'className' => 'Luchianenco\OAuth2\Client\Provider\Amazon',
+                'mapper' => 'CakeDC\Users\Auth\Social\Mapper\Amazon',
                 'options' => [
                     'redirectUri' => Router::fullBaseUrl() . '/auth/amazon',
                     'linkSocialUri' => Router::fullBaseUrl() . '/link-social/amazon',

@@ -12,10 +12,7 @@
 namespace CakeDC\Users\Controller\Traits;
 
 use CakeDC\Users\Controller\Component\UsersAuthComponent;
-<<<<<<< HEAD
 use Cake\Event\Event;
-=======
->>>>>>> Adding new events
 use CakeDC\Users\Exception\TokenExpiredException;
 use CakeDC\Users\Exception\UserAlreadyActiveException;
 use CakeDC\Users\Exception\UserNotFoundException;

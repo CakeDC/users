@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Controller\Traits;
 
+use Cake\Utility\Hash;
 use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
@@ -38,7 +39,7 @@ trait RegisterTrait
             throw new NotFoundException();
         }
 
-        $userId = $this->Auth->user('id');
+        $userId = Hash::get($this->request->getAttribute('identity') ?? [], 'id');
         if (!empty($userId) && !Configure::read('Users.Registration.allowLoggedIn')) {
             $this->Flash->error(__d('CakeDC/Users', 'You must log out to register a new user account'));
 
