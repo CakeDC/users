@@ -51,6 +51,42 @@
 
 return [
     'CakeDC/Auth.permissions' => [
+        //all bypass
+        [
+            'prefix' => false,
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+            'action' => [
+                // LoginTrait
+                'socialLogin',
+                'login',
+                'socialEmail',
+                'verify',
+                // RegisterTrait
+                'register',
+                'validateEmail',
+                // PasswordManagementTrait used in RegisterTrait
+                'changePassword',
+                'resetPassword',
+                'requestResetPassword',
+                // UserValidationTrait used in PasswordManagementTrait
+                'resendTokenValidation',
+                // Social
+                'endpoint',
+                'authenticated',
+            ],
+            'bypassAuth' => true,
+        ],
+        [
+            'prefix' => false,
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'SocialAccounts',
+            'action' => [
+                'validateAccount',
+                'resendValidation',
+            ],
+            'bypassAuth' => true,
+        ],
         //admin role allowed to all the things
         [
             'role' => 'admin',

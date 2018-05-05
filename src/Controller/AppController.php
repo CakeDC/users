@@ -12,6 +12,7 @@
 namespace CakeDC\Users\Controller;
 
 use App\Controller\AppController as BaseController;
+use Cake\Core\Configure;
 
 /**
  * AppController for Users Plugin
@@ -31,6 +32,10 @@ class AppController extends BaseController
         if ($this->request->getParam('_csrfToken') === false) {
             $this->loadComponent('Csrf');
         }
-        $this->loadComponent('CakeDC/Users.UsersAuth');
+        $this->loadComponent('Authentication.Authentication', Configure::read('Auth.AuthenticationComponent'));
+
+        if (Configure::read('Users.GoogleAuthenticator.login')) {
+            $this->loadComponent('CakeDC/Users.GoogleAuthenticator');
+        }
     }
 }

@@ -31,7 +31,7 @@ trait ProfileTrait
      */
     public function profile($id = null)
     {
-        $loggedUserId = $this->Auth->user('id');
+        $loggedUserId = Hash::get($this->request->getAttribute('identity') ?? [], 'id');
         $isCurrentUser = false;
         if (!Configure::read('Users.Profile.viewOthers') || empty($id)) {
             $id = $loggedUserId;
