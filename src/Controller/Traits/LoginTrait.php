@@ -118,7 +118,9 @@ trait LoginTrait
         $result = $this->request->getAttribute('authentication')->getResult();
 
         if ($result->isValid()) {
-            return $this->redirect($this->Authentication->getConfig('loginRedirect'));
+            $user = $this->request->getAttribute('identity')->getOriginalData();
+
+            return $this->_afterIdentifyUser($user, false);
         }
 
         $service = $this->request->getAttribute('authentication');
@@ -126,6 +128,10 @@ trait LoginTrait
 
         if (empty($message) && $this->request->is('post')) {
             $message = __d('CakeDC/Users', 'Username or password is incorrect');
+        }
+
+        if ($message) {
+            $this->Flash->error($message, 'default', [], 'auth');
         }
     }
 
@@ -247,7 +253,8 @@ trait LoginTrait
     }
 
     /**
-     * Update remember me and determine redirect url after user identified
+     * Determine redirect url after user identified
+     *
      * @param array $user user data after identified
      * @param bool $socialLogin is social login
      * @return array
@@ -270,16 +277,14 @@ trait LoginTrait
                 return $this->redirect($event->result);
             }
 
-            $url = $this->Auth->redirectUrl();
-
-            return $this->redirect($url);
+            return $this->redirect($this->Authentication->getConfig('loginRedirect'));
         } else {
             if (!$socialLogin) {
                 $message = __d('CakeDC/Users', 'Username or password is incorrect');
                 $this->Flash->error($message, 'default', [], 'auth');
             }
 
-            return $this->redirect(Configure::read('Auth.loginAction'));
+            return $this->redirect($this->Authentication->getConfig('loginAction'));
         }
     }
 
@@ -306,26 +311,5 @@ trait LoginTrait
         }
 
         return $this->redirect($this->Authentication->logout());
-    }
-
-    /**
-     * Check if we are doing a social login
-     *
-     * @return bool true if social login is enabled and we are processing the social login
-     * data in the request
-     */
-    protected function _isSocialLogin()
-    {
-        return Configure::read('Users.Social.login') &&
-            $this->request->getSession()->check(Configure::read('Users.Key.Session.social'));
-    }
-
-    /**
-     * Check if we doing Google Authenticator Two Factor auth
-     * @return bool true if Google Authenticator is enabled
-     */
-    protected function _isGoogleAuthenticator()
-    {
-        return Configure::read('Users.GoogleAuthenticator.login');
     }
 }
