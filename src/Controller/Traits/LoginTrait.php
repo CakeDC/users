@@ -129,11 +129,6 @@ trait LoginTrait
         }
     }
 
-        if (!empty($message)) {
-            $this->Flash->error($message, 'default', [], 'auth');
-        }
-    }
-
     /**
      * Get the list of login error message map by status
      *
