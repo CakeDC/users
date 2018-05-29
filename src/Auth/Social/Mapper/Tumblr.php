@@ -36,7 +36,6 @@ class Tumblr extends AbstractMapper
         'link' => 'extra.blogs.0.url'
     ];
 
-
     /**
      * @return string
      */
