@@ -219,6 +219,11 @@ trait LoginTrait
         }
 
         $temporarySession = $this->request->getSession()->read('temporarySession');
+        if (empty($temporarySession)) {
+            $this->Flash->error(__d('CakeDC/Users', 'Invalid request.'), 'default', [], 'auth');
+
+            return $this->redirect(Configure::read('Auth.loginAction'));
+        }
 
         if (array_key_exists('secret', $temporarySession)) {
             $secret = $temporarySession['secret'];
