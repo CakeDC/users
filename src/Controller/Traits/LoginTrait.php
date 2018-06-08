@@ -218,14 +218,7 @@ trait LoginTrait
             return $this->redirect(Configure::read('Auth.loginAction'));
         }
 
-        // storing user's session in the temporary one
-        // until the GA verification is checked
-        $temporarySession = $this->Auth->user();
-        $this->request->getSession()->delete('Auth.User');
-
-        if (!empty($temporarySession)) {
-            $this->request->getSession()->write('temporarySession', $temporarySession);
-        }
+        $temporarySession = $this->request->getSession()->read('temporarySession');
 
         if (array_key_exists('secret', $temporarySession)) {
             $secret = $temporarySession['secret'];
@@ -322,14 +315,17 @@ trait LoginTrait
     protected function _afterIdentifyUser($user, $socialLogin = false, $googleAuthenticatorLogin = false)
     {
         if (!empty($user)) {
-            $this->Auth->setUser($user);
 
             if ($googleAuthenticatorLogin) {
+                // storing user's session in the temporary one
+                // until the GA verification is checked
+                $this->request->getSession()->write('temporarySession', $user);
                 $url = Configure::read('GoogleAuthenticator.verifyAction');
 
                 return $this->redirect($url);
             }
 
+            $this->Auth->setUser($user);
             $event = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_LOGIN, ['user' => $user]);
             if (is_array($event->result)) {
                 return $this->redirect($event->result);
