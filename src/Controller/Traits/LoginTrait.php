@@ -315,7 +315,6 @@ trait LoginTrait
     protected function _afterIdentifyUser($user, $socialLogin = false, $googleAuthenticatorLogin = false)
     {
         if (!empty($user)) {
-
             if ($googleAuthenticatorLogin) {
                 // storing user's session in the temporary one
                 // until the GA verification is checked
