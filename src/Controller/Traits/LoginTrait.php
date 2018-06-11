@@ -219,17 +219,14 @@ trait LoginTrait
         }
 
         $temporarySession = $this->request->getSession()->read('temporarySession');
-        if (empty($temporarySession)) {
+        if (!is_array($temporarySession) || empty($temporarySession)) {
             $this->Flash->error(__d('CakeDC/Users', 'Invalid request.'), 'default', [], 'auth');
 
             return $this->redirect(Configure::read('Auth.loginAction'));
         }
 
-        if (array_key_exists('secret', $temporarySession)) {
-            $secret = $temporarySession['secret'];
-        }
-
-        $secretVerified = Hash::get((array)$temporarySession, 'secret_verified');
+        $secret = Hash::get($temporarySession, 'secret');
+        $secretVerified = Hash::get($temporarySession, 'secret_verified');
 
         // showing QR-code until shared secret is verified
         if (!$secretVerified) {
