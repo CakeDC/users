@@ -391,24 +391,43 @@ class LoginTraitTest extends BaseTraitTest
     public function testVerifyHappy()
     {
         Configure::write('Users.GoogleAuthenticator.login', true);
-        $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
-            ->setMethods(['user', ])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $user = [
-            'id' => 1,
-            'secret_verified' => 1,
-        ];
-        $this->Trait->Auth->expects($this->at(0))
-            ->method('user')
-            ->will($this->returnValue($user));
+
         $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
-            ->setMethods(['is', 'getData', 'allow'])
+            ->setMethods(['is', 'getData', 'allow', 'getSession'])
             ->getMock();
-        $this->Trait->request->expects($this->at(0))
+        $this->Trait->request->expects($this->once())
             ->method('is')
             ->with('post')
             ->will($this->returnValue(false));
+
+        $this->_mockSession([
+            'temporarySession' => [
+                'id' => 1,
+                'secret_verified' => 1,
+            ]
+        ]);
+        $this->Trait->verify();
+    }
+
+    /**
+     * testVerifyNoUser
+     *
+     */
+    public function testVerifyNoUser()
+    {
+        Configure::write('Users.GoogleAuthenticator.login', true);
+
+        $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
+            ->setMethods(['is', 'getData', 'allow', 'getSession'])
+            ->getMock();
+        $this->Trait->request->expects($this->never())
+            ->method('is')
+            ->with('post');
+        $this->_mockSession([]);
+        $this->_mockFlash();
+        $this->Trait->Flash->expects($this->once())
+            ->method('error')
+            ->with('Invalid request.');
         $this->Trait->verify();
     }
 
@@ -433,30 +452,26 @@ class LoginTraitTest extends BaseTraitTest
     public function testVerifyGetShowQR()
     {
         Configure::write('Users.GoogleAuthenticator.login', true);
-        $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
-            ->setMethods(['user', ])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $user = [
-            'id' => '00000000-0000-0000-0000-000000000001',
-            'email' => 'email@example.com',
-            'secret_verified' => 0,
-        ];
-        $this->Trait->Auth->expects($this->at(0))
-            ->method('user')
-            ->will($this->returnValue($user));
+
         $this->Trait->GoogleAuthenticator = $this->getMockBuilder(GoogleAuthenticatorComponent::class)
             ->disableOriginalConstructor()
             ->setMethods(['createSecret', 'getQRCodeImageAsDataUri'])
             ->getMock();
 
         $this->Trait->request = $this->getMockBuilder(ServerRequest::class)
-            ->setMethods(['is', 'getData', 'allow'])
+            ->setMethods(['is', 'getData', 'allow', 'getSession'])
             ->getMock();
-        $this->Trait->request->expects($this->at(0))
+        $this->Trait->request->expects($this->once())
             ->method('is')
             ->with('post')
             ->will($this->returnValue(false));
+        $this->_mockSession([
+            'temporarySession' => [
+                'id' => '00000000-0000-0000-0000-000000000001',
+                'email' => 'email@example.com',
+                'secret_verified' => 0,
+            ]
+        ]);
         $this->Trait->GoogleAuthenticator->expects($this->at(0))
             ->method('createSecret')
             ->will($this->returnValue('newSecret'));
@@ -468,5 +483,24 @@ class LoginTraitTest extends BaseTraitTest
             ->method('set')
             ->with(['secretDataUri' => 'newDataUriGenerated']);
         $this->Trait->verify();
+    }
+
+    /**
+     * Mock session and mock session attributes
+     *
+     * @return void
+     */
+    protected function _mockSession($attributes)
+    {
+        $session = new \Cake\Http\Session();
+
+        foreach ($attributes as $field => $value) {
+            $session->write($field, $value);
+        }
+
+        $this->Trait->request
+            ->expects($this->any())
+            ->method('getSession')
+            ->willReturn($session);
     }
 }
