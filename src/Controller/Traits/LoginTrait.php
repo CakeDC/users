@@ -275,10 +275,12 @@ trait LoginTrait
                         ->set(['secret_verified' => true])
                         ->where(['id' => $user['id']])
                         ->execute();
+
+                    $user['secret_verified'] = true;
                 }
 
                 $this->request->getSession()->delete('temporarySession');
-                $this->request->getSession()->write('Auth.User', $user);
+                $this->Auth->setUser($user);
                 $url = $this->Auth->redirectUrl();
 
                 return $this->redirect($url);
