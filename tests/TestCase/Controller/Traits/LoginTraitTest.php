@@ -598,6 +598,181 @@ class LoginTraitTest extends BaseTraitTest
     }
 
     /**
+     * Tests that posting a valid code causes verification to succeed.
+     */
+    public function testVerifyPostValidCode()
+    {
+        Configure::write('Users.GoogleAuthenticator.login', true);
+
+        $this->Trait->GoogleAuthenticator = $this->getMockBuilder(GoogleAuthenticatorComponent::class)
+             ->disableOriginalConstructor()
+             ->setMethods(['createSecret', 'verifyCode', 'getQRCodeImageAsDataUri'])
+             ->getMock();
+
+        $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
+              ->setMethods(['setUser', 'redirectUrl'])
+              ->disableOriginalConstructor()
+              ->getMock();
+
+        $this->Trait->request = $this->getMockBuilder(ServerRequest::class)
+             ->setMethods(['is', 'getData', 'allow', 'getSession'])
+             ->getMock();
+        $this->Trait->request->expects($this->once())
+             ->method('is')
+             ->with('post')
+             ->will($this->returnValue(true));
+        $this->Trait->request->expects($this->once())
+             ->method('getData')
+             ->with('code')
+             ->will($this->returnValue('123456'));
+
+        $this->Trait->GoogleAuthenticator
+            ->expects($this->never())
+            ->method('createSecret');
+        $this->Trait->GoogleAuthenticator
+            ->expects($this->at(0))
+            ->method('getQRCodeImageAsDataUri')
+            ->with('email@example.com', 'yyy')
+            ->will($this->returnValue('newDataUriGenerated'));
+        $this->Trait->GoogleAuthenticator
+            ->expects($this->at(1))
+             ->method('verifyCode')
+             ->with('yyy', '123456')
+             ->will($this->returnValue(true));
+
+        $this->Trait->Auth
+            ->expects($this->at(0))
+            ->method('setUser')
+            ->with([
+                'id' => '00000000-0000-0000-0000-000000000001',
+                'email' => 'email@example.com',
+                'secret_verified' => true
+            ]);
+        $this->Trait->Auth
+            ->expects($this->at(1))
+            ->method('redirectUrl')
+            ->will($this->returnValue('/'));
+
+        $this->assertFalse($this->table->exists([
+            'id' => '00000000-0000-0000-0000-000000000001',
+            'secret_verified' => true
+        ]));
+
+        $session = $this->_mockSession([
+            'temporarySession' => [
+                'id' => '00000000-0000-0000-0000-000000000001',
+                'email' => 'email@example.com',
+                'secret_verified' => false,
+                'secret' => 'yyy'
+            ]
+        ]);
+        $this->Trait->verify();
+
+        $this->assertTrue($this->table->exists([
+            'id' => '00000000-0000-0000-0000-000000000001',
+            'secret_verified' => true
+        ]));
+
+        $this->assertEmpty($session->read());
+    }
+
+    /**
+     * Tests that posting and invalid code causes verification to fail.
+     */
+    public function testVerifyPostInvalidCode()
+    {
+        Configure::write('Users.GoogleAuthenticator.login', true);
+
+        $this->Trait->GoogleAuthenticator = $this
+            ->getMockBuilder(GoogleAuthenticatorComponent::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['createSecret', 'verifyCode', 'getQRCodeImageAsDataUri'])
+            ->getMock();
+
+        $this->Trait->Auth = $this
+            ->getMockBuilder('Cake\Controller\Component\AuthComponent')
+            ->setMethods(['setUser'])
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->Trait->Flash = $this
+            ->getMockBuilder('Cake\Controller\Component\FlashComponent')
+            ->setMethods(['error'])
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->Trait->request = $this
+            ->getMockBuilder(ServerRequest::class)
+            ->setMethods(['is', 'getData', 'allow', 'getSession'])
+            ->getMock();
+        $this->Trait->request
+            ->expects($this->once())
+            ->method('is')
+            ->with('post')
+            ->will($this->returnValue(true));
+        $this->Trait->request
+            ->expects($this->once())
+            ->method('getData')
+            ->with('code')
+            ->will($this->returnValue('invalid'));
+
+        $this->Trait->GoogleAuthenticator
+            ->expects($this->never())
+            ->method('createSecret');
+        $this->Trait->GoogleAuthenticator
+            ->expects($this->at(0))
+            ->method('getQRCodeImageAsDataUri')
+            ->with('email@example.com', 'yyy')
+            ->will($this->returnValue('newDataUriGenerated'));
+        $this->Trait->GoogleAuthenticator
+            ->expects($this->at(1))
+            ->method('verifyCode')
+            ->with('yyy', 'invalid')
+            ->will($this->returnValue(false));
+
+        $this->Trait->Auth
+            ->expects($this->never())
+            ->method('setUser');
+
+        $this->Trait->Flash
+            ->expects($this->once())
+            ->method('error')
+            ->with('Verification code is invalid. Try again', 'default', [], 'auth');
+
+        $this->Trait
+            ->expects($this->once())
+            ->method('redirect')
+            ->with([
+                'plugin' => 'CakeDC/Users',
+                'controller' => 'Users',
+                'action' => 'login',
+                'prefix' => false
+            ]);
+
+        $this->assertFalse($this->table->exists([
+            'id' => '00000000-0000-0000-0000-000000000001',
+            'secret_verified' => true
+        ]));
+
+        $session = $this->_mockSession([
+            'temporarySession' => [
+                'id' => '00000000-0000-0000-0000-000000000001',
+                'email' => 'email@example.com',
+                'secret_verified' => false,
+                'secret' => 'yyy'
+            ]
+        ]);
+        $this->Trait->verify();
+
+        $this->assertFalse($this->table->exists([
+            'id' => '00000000-0000-0000-0000-000000000001',
+            'secret_verified' => true
+        ]));
+
+        $this->assertEmpty($session->read());
+    }
+
+    /**
      * Mock session and mock session attributes
      *
      * @return \Cake\Http\Session
