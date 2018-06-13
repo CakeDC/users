@@ -31,8 +31,6 @@ class RegisterTraitTest extends BaseTraitTest
         $this->traitMockMethods = ['validate', 'dispatchEvent', 'set', 'validateReCaptcha', 'redirect'];
         $this->mockDefaultEmail = true;
         parent::setUp();
-
-        Plugin::routes('CakeDC/Users');
     }
 
     /**
