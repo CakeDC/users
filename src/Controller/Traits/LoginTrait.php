@@ -240,6 +240,8 @@ trait LoginTrait
                         ->set(['secret' => $secret])
                         ->where(['id' => $temporarySession['id']]);
                     $query->execute();
+
+                    $this->request->getSession()->write('temporarySession.secret', $secret);
                 } catch (\Exception $e) {
                     $this->request->getSession()->destroy();
                     $message = $e->getMessage();
