@@ -116,6 +116,15 @@ class RegisterBehavior extends BaseTokenBehavior
         $user->active = true;
         $result = $this->_table->save($user);
 
+        $event = $this->dispatchEvent(static::EVENT_AFTER_ACTIVATION, [
+            'activationSaveResult' => $result,
+            'userEntity' => $user,
+        ]);
+
+        if ($event->result instanceof EntityInterface) {
+            return $event->result;
+        }
+
         return $result;
     }
 
