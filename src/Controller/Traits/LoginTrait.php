@@ -240,6 +240,8 @@ trait LoginTrait
                         ->set(['secret' => $secret])
                         ->where(['id' => $temporarySession['id']]);
                     $query->execute();
+
+                    $this->request->getSession()->write('temporarySession.secret', $secret);
                 } catch (\Exception $e) {
                     $this->request->getSession()->destroy();
                     $message = $e->getMessage();
@@ -273,10 +275,12 @@ trait LoginTrait
                         ->set(['secret_verified' => true])
                         ->where(['id' => $user['id']])
                         ->execute();
+
+                    $user['secret_verified'] = true;
                 }
 
                 $this->request->getSession()->delete('temporarySession');
-                $this->request->getSession()->write('Auth.User', $user);
+                $this->Auth->setUser($user);
                 $url = $this->Auth->redirectUrl();
 
                 return $this->redirect($url);
