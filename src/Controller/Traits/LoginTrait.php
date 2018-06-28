@@ -95,7 +95,7 @@ trait LoginTrait
         if ($status === SocialAuthMiddleware::AUTH_SUCCESS) {
             $user = $this->request->getAttribute('identity')->getOriginalData();
 
-            return $this->_afterIdentifyUser($user, true);
+            return $this->_afterIdentifyUser($user);
         }
         $socialProvider = $this->request->getParam('provider');
 
@@ -120,7 +120,7 @@ trait LoginTrait
         if ($result->isValid()) {
             $user = $this->request->getAttribute('identity')->getOriginalData();
 
-            return $this->_afterIdentifyUser($user, false);
+            return $this->_afterIdentifyUser($user);
         }
 
         $service = $this->request->getAttribute('authentication');
@@ -256,10 +256,9 @@ trait LoginTrait
      * Determine redirect url after user identified
      *
      * @param array $user user data after identified
-     * @param bool $socialLogin is social login
      * @return array
      */
-    protected function _afterIdentifyUser($user, $socialLogin = false)
+    protected function _afterIdentifyUser($user)
     {
         if (!empty($user)) {
             if ($googleAuthenticatorLogin) {
@@ -286,6 +285,8 @@ trait LoginTrait
 
             return $this->redirect($this->Authentication->getConfig('loginAction'));
         }
+
+        return $this->redirect($this->Authentication->getConfig('loginRedirect'));
     }
 
     /**
