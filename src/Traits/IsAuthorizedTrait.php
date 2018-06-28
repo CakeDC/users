@@ -66,8 +66,7 @@ trait IsAuthorizedTrait
         $user = $this->request->getAttribute('identity');
         $userData = [];
         if ($user) {
-            $userData = Hash::get($user, 'User', []);
-            $userData = is_object($userData) ? $userData->toArray() : $userData;
+            $userData = $user->getOriginalData()->toArray();
         }
 
         return $Rbac->checkPermissions($userData, $targetRequest);

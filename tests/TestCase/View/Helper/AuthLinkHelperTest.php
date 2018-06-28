@@ -11,6 +11,9 @@
 
 namespace CakeDC\Users\Test\TestCase\View\Helper;
 
+use Authentication\Identity;
+use CakeDC\Auth\Rbac\Rbac;
+use CakeDC\Users\Model\Entity\User;
 use CakeDC\Users\View\Helper\AuthLinkHelper;
 use CakeDC\Users\View\Helper\UserHelper;
 use Cake\Event\Event;
@@ -62,7 +65,7 @@ class AuthLinkHelperTest extends TestCase
      */
     public function testLinkFalse()
     {
-        $link = $this->AuthLink->link('title', ['controller' => 'noaccess']);
+        $link = $this->AuthLink->link('title', ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile']);
         $this->assertSame(false, $link);
     }
 
@@ -71,22 +74,53 @@ class AuthLinkHelperTest extends TestCase
      *
      * @return void
      */
-    public function testLinkAuthorized()
+    public function testLinkFalseWithMock()
     {
-        $view = new View();
-        $eventManagerMock = $this->getMockBuilder('Cake\Event\EventManager')
-            ->setMethods(['dispatch'])
-            ->getMock();
-        EventManager::instance($eventManagerMock);
-        $this->AuthLink = new AuthLinkHelper($view);
-        $result = new Event('dispatch-result');
-        $result->result = true;
-        $eventManagerMock->expects($this->once())
-            ->method('dispatch')
-            ->will($this->returnValue($result));
+        $user = new User([
+            'id' => '00000000-0000-0000-0000-000000000001',
+            'password' => '12345'
+        ]);
+        $identity = new Identity($user);
+        $this->AuthLink->request = $this->AuthLink->request->withAttribute('identity', $identity);
+        $rbac = $this->getMockBuilder(Rbac::class)->setMethods(['checkPermissions'])->getMock();
+        $rbac->expects($this->once())
+            ->method('checkPermissions')
+            ->with($identity->getOriginalData()->toArray())
+            ->will($this->returnValue(false));
+        $this->AuthLink->request = $this->AuthLink->request->withAttribute('rbac', $rbac);
+        $result = $this->AuthLink->link(
+            'title',
+            ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile'],
+            ['before' => 'before_', 'after' => '_after', 'class' => 'link-class']
+        );
+        $this->assertFalse($result);
+    }
 
-        $link = $this->AuthLink->link('title', '/', ['before' => 'before_', 'after' => '_after', 'class' => 'link-class']);
-        $this->assertSame('before_<a href="/" class="link-class">title</a>_after', $link);
+    /**
+     * Test link
+     *
+     * @return void
+     */
+    public function testLinkAuthorizedHappy()
+    {
+        $user = new User([
+            'id' => '00000000-0000-0000-0000-000000000001',
+            'password' => '12345'
+        ]);
+        $identity = new Identity($user);
+        $this->AuthLink->request = $this->AuthLink->request->withAttribute('identity', $identity);
+        $rbac = $this->getMockBuilder(Rbac::class)->setMethods(['checkPermissions'])->getMock();
+        $rbac->expects($this->once())
+            ->method('checkPermissions')
+            ->with($identity->getOriginalData()->toArray())
+            ->will($this->returnValue(true));
+        $this->AuthLink->request = $this->AuthLink->request->withAttribute('rbac', $rbac);
+        $link = $this->AuthLink->link(
+            'title',
+            ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile'],
+            ['before' => 'before_', 'after' => '_after', 'class' => 'link-class']
+        );
+        $this->assertSame('before_<a href="/profile" class="link-class">title</a>_after', $link);
     }
 
     /**
@@ -96,17 +130,6 @@ class AuthLinkHelperTest extends TestCase
      */
     public function testLinkAuthorizedAllowedTrue()
     {
-        $view = new View();
-        $eventManagerMock = $this->getMockBuilder('Cake\Event\EventManager')
-            ->setMethods(['dispatch'])
-            ->getMock();
-        EventManager::instance($eventManagerMock);
-        $this->AuthLink = new AuthLinkHelper($view);
-        $result = new Event('dispatch-result');
-        $result->result = true;
-        $eventManagerMock->expects($this->never())
-            ->method('dispatch');
-
         $link = $this->AuthLink->link('title', '/', ['allowed' => true, 'before' => 'before_', 'after' => '_after', 'class' => 'link-class']);
         $this->assertSame('before_<a href="/" class="link-class">title</a>_after', $link);
     }
@@ -118,15 +141,6 @@ class AuthLinkHelperTest extends TestCase
      */
     public function testLinkAuthorizedAllowedFalse()
     {
-        $view = new View();
-        $eventManagerMock = $this->getMockBuilder('Cake\Event\EventManager')
-            ->setMethods(['dispatch'])
-            ->getMock();
-        $view->getEventManager($eventManagerMock);
-        $this->AuthLink = new AuthLinkHelper($view);
-        $result = new Event('dispatch-result');
-        $eventManagerMock->expects($this->never())
-            ->method('dispatch');
         $link = $this->AuthLink->link('title', '/', ['allowed' => false, 'before' => 'before_', 'after' => '_after', 'class' => 'link-class']);
         $this->assertFalse($link);
     }
@@ -138,19 +152,41 @@ class AuthLinkHelperTest extends TestCase
      */
     public function testIsAuthorized()
     {
-        $view = new View();
-        $eventManagerMock = $this->getMockBuilder('Cake\Event\EventManager')
-            ->setMethods(['dispatch'])
-            ->getMock();
-        EventManager::instance($eventManagerMock);
-        $this->AuthLink = new AuthLinkHelper($view);
-        $result = new Event('dispatch-result');
-        $result->result = true;
-        $eventManagerMock->expects($this->once())
-            ->method('dispatch')
-            ->will($this->returnValue($result));
-
-        $result = $this->AuthLink->isAuthorized(['controller' => 'MyController', 'action' => 'myAction']);
+        $user = new User([
+            'id' => '00000000-0000-0000-0000-000000000001',
+            'password' => '12345'
+        ]);
+        $identity = new Identity($user);
+        $this->AuthLink->request = $this->AuthLink->request->withAttribute('identity', $identity);
+        $rbac = $this->getMockBuilder(Rbac::class)->setMethods(['checkPermissions'])->getMock();
+        $rbac->expects($this->once())
+            ->method('checkPermissions')
+            ->with($identity->getOriginalData()->toArray())
+            ->will($this->returnValue(true));
+        $this->AuthLink->request = $this->AuthLink->request->withAttribute('rbac', $rbac);
+        $result = $this->AuthLink->isAuthorized(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile']);
         $this->assertTrue($result);
+    }
+    /**
+     * Test isAuthorized
+     *
+     * @return void
+     */
+    public function testIsAuthorizedFalse()
+    {
+        $user = new User([
+            'id' => '00000000-0000-0000-0000-000000000001',
+            'password' => '12345'
+        ]);
+        $identity = new Identity($user);
+        $this->AuthLink->request = $this->AuthLink->request->withAttribute('identity', $identity);
+        $rbac = $this->getMockBuilder(Rbac::class)->setMethods(['checkPermissions'])->getMock();
+        $rbac->expects($this->once())
+            ->method('checkPermissions')
+            ->with($identity->getOriginalData()->toArray())
+            ->will($this->returnValue(false));
+        $this->AuthLink->request = $this->AuthLink->request->withAttribute('rbac', $rbac);
+        $result = $this->AuthLink->isAuthorized(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile']);
+        $this->assertFalse($result);
     }
 }
