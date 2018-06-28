@@ -11,7 +11,12 @@
 
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
+use Authentication\AuthenticationService;
+use Authentication\Authenticator\Result;
+use Authentication\Controller\Component\AuthenticationComponent;
 use Authentication\Identity;
+use Cake\Controller\ComponentRegistry;
+use Cake\Controller\Controller;
 use Cake\Event\Event;
 use Cake\Mailer\Email;
 use Cake\ORM\Entity;
@@ -39,6 +44,8 @@ abstract class BaseTraitTest extends TestCase
     public $traitClassName = '';
     public $traitMockMethods = [];
     public $mockDefaultEmail = false;
+
+    public $successLoginRedirect = '/home';
 
     /**
      * SetUp and create Trait
@@ -214,6 +221,51 @@ abstract class BaseTraitTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
     }
+
+    /**
+     * Mock the Authentication service
+     *
+     * @param array $user
+     * @return void
+     */
+    protected function _mockAuthentication($user = null)
+    {
+        $config = [
+            'identifiers' => [
+                'Authentication.Password'
+            ],
+            'authenticators' => [
+                'Authentication.Session',
+                'Authentication.Form'
+            ]
+        ];
+        $authentication = $this->getMockBuilder(AuthenticationService::class)->setConstructorArgs([$config])->setMethods([
+            'getResult'
+        ])->getMock();
+
+        if ($user) {
+            $user = new User($user);
+            $identity = new Identity($user);
+            $result = new Result($user, Result::SUCCESS);
+            $this->Trait->request = $this->Trait->request->withAttribute('identity', $identity);
+        } else {
+            $result = new Result($user, Result::FAILURE_CREDENTIALS_MISSING);
+        }
+
+        $authentication->expects($this->any())
+            ->method('getResult')
+            ->will($this->returnValue($result));
+
+        $this->Trait->request = $this->Trait->request->withAttribute('authentication', $authentication);
+
+        $controller = new Controller($this->Trait->request);
+        $registry = new ComponentRegistry($controller);
+        $this->Trait->Authentication = new AuthenticationComponent($registry, [
+            'loginRedirect' => $this->successLoginRedirect
+        ]);;
+    }
+
+
 
     /**
      * mock utility
