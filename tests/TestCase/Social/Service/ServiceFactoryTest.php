@@ -5,11 +5,12 @@ namespace CakeDC\Users\Test\TestCase\Social\Service;
 use Cake\Core\Configure;
 use Cake\Http\ServerRequestFactory;
 use Cake\Network\Exception\NotFoundException;
+use Cake\TestSuite\TestCase;
 use CakeDC\Users\Social\Service\OAuth1Service;
 use CakeDC\Users\Social\Service\OAuth2Service;
 use CakeDC\Users\Social\Service\ServiceFactory;
 
-class ServiceFactoryTest extends \PHPUnit_Framework_TestCase
+class ServiceFactoryTest extends TestCase
 {
 
     /**
