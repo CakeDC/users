@@ -12,169 +12,128 @@
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
 use Cake\Core\Configure;
+use Cake\Http\Response;
+use Cake\Http\ServerRequest;
 use Cake\TestSuite\TestCase;
+use CakeDC\Users\Middleware\SocialAuthMiddleware;
 
-class SocialTraitTest extends TestCase
+class SocialTraitTest extends BaseTraitTest
 {
+    /**
+     * setup
+     *
+     * @return void
+     */
     public function setUp()
     {
-        parent::setUp();
-        $this->controller = $this->getMockBuilder('Cake\Controller\Controller')
-            ->setMethods(['header', 'redirect', 'render', '_stop'])
-            ->getMock();
+        $this->traitClassName = 'CakeDC\Users\Controller\Traits\SocialTrait';
+        $this->traitMockMethods = ['dispatchEvent', 'isStopped', 'redirect', 'getUsersTable', 'set', '_afterIdentifyUser'];
 
-        $this->controller->Trait = $this->getMockForTrait(
-            'CakeDC\Users\Controller\Traits\SocialTrait',
-            [],
-            '',
-            true,
-            true,
-            true,
-            ['_getOpauthInstance', 'redirect', '_generateOpauthCompleteUrl', '_afterIdentifyUser', '_validateRegisterPost']
-        );
+        parent::setUp();
+        $request = new ServerRequest();
+        $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\Traits\SocialTrait')
+            ->setMethods(['dispatchEvent', 'redirect', 'set', '_afterIdentifyUser'])
+            ->getMockForTrait();
+
+        $this->Trait->request = $request;
     }
 
+    /**
+     * tearDown
+     *
+     * @return void
+     */
     public function tearDown()
     {
         parent::tearDown();
     }
 
     /**
+     * Test socialEmail get
+     *
+     */
+    public function testSocialEmailHappyGet()
+    {
+        $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
+            ->setMethods(['is'])
+            ->getMock();
+        $this->Trait->request->expects($this->any())
+            ->method('is')
+            ->with('post')
+            ->will($this->returnValue(false));
+        $this->_mockAuthentication();
+        $this->Trait->Flash = $this->getMockBuilder('Cake\Controller\Component\FlashComponent')
+            ->setMethods(['error'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->Trait->Flash->expects($this->never())
+            ->method('error');
+        $this->Trait->expects($this->never())
+            ->method('_afterIdentifyUser');
+        $this->Trait->expects($this->never())
+            ->method('redirect');
+
+        $this->Trait->socialEmail();
+    }
+    /**
      * Test socialEmail
      *
      */
-    public function testSocialEmail()
+    public function testSocialEmailHappy()
     {
-        $session = $this->getMockBuilder('Cake\Http\Session')
-                ->setMethods(['check', 'delete'])
-                ->getMock();
-        $session->expects($this->at(0))
-            ->method('check')
-            ->with('Users.social')
-            ->will($this->returnValue('social_key'));
+        $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
+            ->setMethods(['is'])
+            ->getMock();
+        $this->Trait->request->expects($this->any())
+            ->method('is')
+            ->with('post')
+            ->will($this->returnValue(true));
+        $this->_mockAuthentication([
+            'id' => 1
+        ]);
+        $this->Trait->Flash = $this->getMockBuilder('Cake\Controller\Component\FlashComponent')
+            ->setMethods(['error'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->Trait->Flash->expects($this->never())
+            ->method('error');
+        $user = $this->Trait->request->getAttribute('identity')->getOriginalData();
+        $response = new Response();
+        $response->withStringBody("testSocialEmailHappy");
+        $this->Trait->expects($this->once())
+            ->method('_afterIdentifyUser')
+            ->with($user)
+            ->will($this->returnValue($response));
 
-        $session->expects($this->at(1))
-            ->method('delete')
-            ->with('Flash.auth');
-
-        $this->controller->Trait->request = $this->getMockBuilder('Cake\Network\Request')
-                ->setMethods(['getSession'])
-                ->getMock();
-        $this->controller->Trait->request->expects($this->any())
-            ->method('getSession')
-            ->will($this->returnValue($session));
-
-        $this->controller->Trait->socialEmail();
+        $this->assertSame($response, $this->Trait->socialEmail());
     }
 
     /**
      * Test socialEmail
      *
-     * @expectedException \Cake\Http\Exception\NotFoundException
      */
-    public function testSocialEmailInvalid()
+    public function testSocialEmailInvalidRecaptcha()
     {
-        $session = $this->getMockBuilder('Cake\Http\Session')
-                ->setMethods(['check'])
-                ->getMock();
-        $session->expects($this->once())
-            ->method('check')
-            ->with('Users.social')
-            ->will($this->returnValue(null));
-
-        $this->controller->Trait->request = $this->getMockBuilder('Cake\Network\Request')
-                ->setMethods(['getSession'])
-                ->getMock();
-        $this->controller->Trait->request->expects($this->once())
-            ->method('getSession')
-            ->will($this->returnValue($session));
-
-        $this->controller->Trait->socialEmail();
-    }
-
-    public function testSocialEmailPostValidateFalse()
-    {
-        $session = $this->getMockBuilder('Cake\Http\Session')
-                ->setMethods(['check', 'delete'])
-                ->getMock();
-        $session->expects($this->any())
-            ->method('check')
-            ->with('Users.social')
-            ->will($this->returnValue(true));
-
-        $session->expects($this->once())
-            ->method('delete')
-            ->with('Flash.auth');
-
-        $this->controller->Trait->request = $this->getMockBuilder('Cake\Network\Request')
-                ->setMethods(['getSession', 'is'])
-                ->getMock();
-        $this->controller->Trait->request->expects($this->any())
-            ->method('getSession')
-            ->will($this->returnValue($session));
-
-        $this->controller->Trait->request->expects($this->once())
+        $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
+            ->setMethods(['is'])
+            ->getMock();
+        $this->Trait->request->expects($this->any())
             ->method('is')
             ->with('post')
             ->will($this->returnValue(true));
-
-        $this->controller->Trait->expects($this->once())
-            ->method('_validateRegisterPost')
-            ->will($this->returnValue(false));
-
-        $this->controller->Trait->Flash = $this->getMockBuilder('Cake\Controller\Component\FlashComponent')
+        $this->_mockAuthentication();
+        $this->Trait->request = $this->Trait->request->withAttribute('socialAuthStatus', SocialAuthMiddleware::AUTH_ERROR_INVALID_RECAPTCHA);
+        $this->Trait->Flash = $this->getMockBuilder('Cake\Controller\Component\FlashComponent')
             ->setMethods(['error'])
             ->disableOriginalConstructor()
             ->getMock();
-
-        $this->controller->Trait->Flash->expects($this->once())
+        $this->Trait->Flash->expects($this->once())
             ->method('error')
             ->with('The reCaptcha could not be validated');
 
-        $this->controller->Trait->socialEmail();
-    }
-
-    public function testSocialEmailPostValidateTrue()
-    {
-        $session = $this->getMockBuilder('Cake\Http\Session')
-                ->setMethods(['check', 'delete'])
-                ->getMock();
-        $session->expects($this->any())
-            ->method('check')
-            ->with('Users.social')
-            ->will($this->returnValue(true));
-
-        $session->expects($this->once())
-            ->method('delete')
-            ->with('Flash.auth');
-
-        $this->controller->Trait->request = $this->getMockBuilder('Cake\Network\Request')
-                ->setMethods(['getSession', 'is'])
-                ->getMock();
-        $this->controller->Trait->request->expects($this->any())
-            ->method('getSession')
-            ->will($this->returnValue($session));
-
-        $this->controller->Trait->request->expects($this->once())
-            ->method('is')
-            ->with('post')
-            ->will($this->returnValue(true));
-
-        $this->controller->Trait->expects($this->once())
-            ->method('_validateRegisterPost')
-            ->will($this->returnValue(true));
-
-        $this->controller->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
-            ->setMethods(['identify'])
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->controller->Trait->Auth->expects($this->once())
-            ->method('identify');
-
-        $this->controller->Trait->expects($this->once())
+        $this->Trait->expects($this->never())
             ->method('_afterIdentifyUser');
 
-        $this->controller->Trait->socialEmail();
+        $this->Trait->socialEmail();
     }
 }
