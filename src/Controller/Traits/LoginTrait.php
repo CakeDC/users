@@ -95,7 +95,7 @@ trait LoginTrait
         if ($status === SocialAuthMiddleware::AUTH_SUCCESS) {
             $user = $this->request->getAttribute('identity')->getOriginalData();
 
-            return $this->_afterIdentifyUser($user, true);
+            return $this->_afterIdentifyUser($user);
         }
         $socialProvider = $this->request->getParam('provider');
 
@@ -120,7 +120,7 @@ trait LoginTrait
         if ($result->isValid()) {
             $user = $this->request->getAttribute('identity')->getOriginalData();
 
-            return $this->_afterIdentifyUser($user, false);
+            return $this->_afterIdentifyUser($user);
         }
 
         $service = $this->request->getAttribute('authentication');
@@ -179,26 +179,16 @@ trait LoginTrait
      * Determine redirect url after user identified
      *
      * @param array $user user data after identified
-     * @param bool $socialLogin is social login
      * @return array
      */
-    protected function _afterIdentifyUser($user, $socialLogin = false)
+    protected function _afterIdentifyUser($user)
     {
-        if (!empty($user)) {
-            $event = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_LOGIN, ['user' => $user]);
-            if (is_array($event->result)) {
-                return $this->redirect($event->result);
-            }
-
-            return $this->redirect($this->Authentication->getConfig('loginRedirect'));
-        } else {
-            if (!$socialLogin) {
-                $message = __d('CakeDC/Users', 'Username or password is incorrect');
-                $this->Flash->error($message, 'default', [], 'auth');
-            }
-
-            return $this->redirect($this->Authentication->getConfig('loginAction'));
+        $event = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_LOGIN, ['user' => $user]);
+        if (is_array($event->result)) {
+            return $this->redirect($event->result);
         }
+
+        return $this->redirect($this->Authentication->getConfig('loginRedirect'));
     }
 
     /**

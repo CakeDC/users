@@ -47,6 +47,8 @@ abstract class BaseTraitTest extends TestCase
 
     public $successLoginRedirect = '/home';
 
+    public $logoutRedirect = '/login?fromlogout=1';
+
     /**
      * SetUp and create Trait
      *
@@ -113,7 +115,7 @@ abstract class BaseTraitTest extends TestCase
 
         $this->Trait->request
             ->expects($this->any())
-            ->method('session')
+            ->method('getSession')
             ->willReturn($session);
     }
 
@@ -261,7 +263,8 @@ abstract class BaseTraitTest extends TestCase
         $controller = new Controller($this->Trait->request);
         $registry = new ComponentRegistry($controller);
         $this->Trait->Authentication = new AuthenticationComponent($registry, [
-            'loginRedirect' => $this->successLoginRedirect
+            'loginRedirect' => $this->successLoginRedirect,
+            'logoutRedirect' => $this->logoutRedirect
         ]);;
     }
 

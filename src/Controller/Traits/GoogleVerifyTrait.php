@@ -24,13 +24,13 @@ trait GoogleVerifyTrait
 
         $temporarySession = $this->request->getSession()->read('temporarySession');
         $secretVerified = $temporarySession['secret_verified'];
-
         // showing QR-code until shared secret is verified
         if (!$secretVerified) {
             $secret = $this->onVerifyGetSecret($temporarySession);
             if (empty($secret)) {
                 return $this->redirect($loginAction);
             }
+
             $secretDataUri = $this->GoogleAuthenticator->getQRCodeImageAsDataUri(
                 $temporarySession['email'],
                 $secret
@@ -79,7 +79,7 @@ trait GoogleVerifyTrait
      */
     protected function onVerifyGetSecret($user)
     {
-        if ($user['secret']) {
+        if (isset($user['secret']) && $user['secret']) {
             return $user['secret'];
         }
 

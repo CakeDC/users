@@ -42,7 +42,7 @@ trait SocialTrait
             if ($result->isValid()) {
                 $user = $this->request->getAttribute('identity')->getOriginalData();
 
-                return $this->_afterIdentifyUser($user, true);
+                return $this->_afterIdentifyUser($user);
             }
         }
     }
