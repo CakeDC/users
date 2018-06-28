@@ -11,6 +11,7 @@ use CakeDC\Users\Middleware\SocialEmailMiddleware;
 
 class Plugin extends BasePlugin
 {
+    const EVENT_AFTER_CHANGE_PASSWORD = 'Users.Managment.afterResetPassword';
     /**
      * load authenticators and identifiers
      *

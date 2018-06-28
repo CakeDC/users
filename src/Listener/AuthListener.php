@@ -10,6 +10,8 @@ class AuthListener implements EventListenerInterface
 
     const EVENT_AFTER_SOCIAL_REGISTER = 'Users.SocialAuth.afterRegister';
 
+
+
     /**
      * All implemented events are declared
      *

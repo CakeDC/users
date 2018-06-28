@@ -18,6 +18,8 @@ use CakeDC\Users\Exception\WrongPasswordException;
 use Cake\Core\Configure;
 use Cake\Log\Log;
 use Cake\Validation\Validator;
+use CakeDC\Users\Listener\AuthListener;
+use CakeDC\Users\Plugin;
 use Exception;
 
 /**
@@ -37,7 +39,8 @@ trait PasswordManagementTrait
     public function changePassword()
     {
         $user = $this->getUsersTable()->newEntity();
-        $id = Hash::get($this->request->getAttribute('identity') ?? [], 'User.id');
+        $id = Hash::get($this->request->getAttribute('identity') ?? [], 'id');
+
         if (!empty($id)) {
             $user->id = Hash::get($this->request->getAttribute('identity') ?? [], 'id');
             $validatePassword = true;
@@ -67,12 +70,14 @@ trait PasswordManagementTrait
                     $this->request->getData(),
                     ['validate' => $validator]
                 );
+
                 if ($user->getErrors()) {
                     $this->Flash->error(__d('CakeDC/Users', 'Password could not be changed'));
                 } else {
                     $user = $this->getUsersTable()->changePassword($user);
+
                     if ($user) {
-                        $event = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_CHANGE_PASSWORD, ['user' => $user]);
+                        $event = $this->dispatchEvent(Plugin::EVENT_AFTER_CHANGE_PASSWORD, ['user' => $user]);
                         if (!empty($event) && is_array($event->result)) {
                             return $this->redirect($event->result);
                         }

@@ -254,7 +254,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
     public function testChangePasswordGetNotLoggedInInsideResetPasswordFlow()
     {
         $this->_mockRequestGet(true);
-        $this->_mockAuth();
+        $this->_mockAuthentication();
         $this->_mockFlash();
         $this->_mockSession([
             Configure::read('Users.Key.Session.resetPasswordUserId') => '00000000-0000-0000-0000-000000000001'
@@ -277,7 +277,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
     public function testChangePasswordGetNotLoggedInOutsideResetPasswordFlow()
     {
         $this->_mockRequestGet();
-        $this->_mockAuth();
+        $this->_mockAuthentication();
         $this->_mockFlash();
         $this->Trait->Flash->expects($this->once())
             ->method('error')

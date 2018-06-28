@@ -48,7 +48,7 @@ class ProfileTraitTest extends BaseTraitTest
     {
         $userId = '00000000-0000-0000-0000-000000000000'; //not found
         $this->_mockRequestGet();
-        $this->_mockAuth();
+        $this->_mockAuthentication();
         $this->_mockFlash();
         $this->Trait->Flash->expects($this->once())
             ->method('error')
@@ -81,7 +81,7 @@ class ProfileTraitTest extends BaseTraitTest
     public function testProfileGetNotLoggedInEmptyId()
     {
         $this->_mockRequestGet();
-        $this->_mockAuth();
+        $this->_mockAuthentication();
         $this->_mockFlash();
         $this->Trait->Flash->expects($this->once())
             ->method('error')
