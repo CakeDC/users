@@ -131,7 +131,7 @@ class LinkSocialTraitTest extends BaseTraitTest
             'provider' => 'facebook'
         ]);
 
-        $this->_setAuthenticationIdentity();
+        $this->_mockAuthLoggedIn();
         $this->_mockDispatchEvent(new Event('event'));
         $this->_mockFlash();
 
@@ -254,7 +254,7 @@ class LinkSocialTraitTest extends BaseTraitTest
             ->method('getUsersTable')
             ->will($this->returnValue($Table));
 
-        $this->_setAuthenticationIdentity();
+        $this->_mockAuthLoggedIn();
         $this->_mockDispatchEvent(new Event('event'));
         $this->_mockFlash();
         $this->Trait->Flash->expects($this->never())
@@ -400,7 +400,7 @@ class LinkSocialTraitTest extends BaseTraitTest
             'provider' => 'facebook'
         ]);
 
-        $this->_setAuthenticationIdentity();
+        $this->_mockAuthLoggedIn();
         $this->_mockDispatchEvent(new Event('event'));
         $this->_mockFlash();
         $this->Trait->Flash->expects($this->once())
@@ -464,7 +464,7 @@ class LinkSocialTraitTest extends BaseTraitTest
                 'action' => 'profile'
             ]))
             ->will($this->returnValue(new Response()));
-        $this->_setAuthenticationIdentity();
+        $this->_mockAuthLoggedIn();
         $this->_mockDispatchEvent(new Event('event'));
         $this->_mockFlash();
         $this->Trait->Flash->expects($this->never())
@@ -527,7 +527,7 @@ class LinkSocialTraitTest extends BaseTraitTest
                 'action' => 'profile'
             ]))
             ->will($this->returnValue(new Response()));
-        $this->_setAuthenticationIdentity();
+        $this->_mockAuthLoggedIn();
         $this->_mockDispatchEvent(new Event('event'));
         $this->_mockFlash();
         $this->Trait->Flash->expects($this->never())

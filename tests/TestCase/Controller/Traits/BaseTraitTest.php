@@ -49,6 +49,8 @@ abstract class BaseTraitTest extends TestCase
 
     public $logoutRedirect = '/login?fromlogout=1';
 
+    public $loginAction = '/login-page';
+
     /**
      * SetUp and create Trait
      *
@@ -129,7 +131,7 @@ abstract class BaseTraitTest extends TestCase
         $methods = ['is', 'referer', 'getData'];
 
         if ($withSession) {
-            $methods[] = 'session';
+            $methods[] = 'getSession';
         }
 
         $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
@@ -178,50 +180,12 @@ abstract class BaseTraitTest extends TestCase
      */
     protected function _mockAuthLoggedIn($user = [])
     {
-        $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
-            ->setMethods(['user', 'identify', 'setUser', 'redirectUrl'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $user += [
-            'id' => '00000000-0000-0000-0000-000000000001',
-            'password' => '12345',
-        ];
-        $this->Trait->Auth->expects($this->any())
-            ->method('identify')
-            ->will($this->returnValue($user));
-        $this->Trait->Auth->expects($this->any())
-            ->method('user')
-            ->with('id')
-            ->will($this->returnValue($user['id']));
-    }
-
-    /**
-     * Mock Auth and retur user id 1
-     *
-     * @return void
-     */
-    protected function _setAuthenticationIdentity($user = [])
-    {
         $user += [
             'id' => '00000000-0000-0000-0000-000000000001',
             'password' => '12345',
         ];
 
-        $identity = new Identity(new User($user));
-        $this->Trait->request = $this->Trait->request->withAttribute('identity', $identity);
-    }
-
-    /**
-     * Mock the Auth component
-     *
-     * @return void
-     */
-    protected function _mockAuth()
-    {
-        $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
-            ->setMethods(['user', 'identify', 'setUser', 'redirectUrl'])
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->_mockAuthentication($user);
     }
 
     /**
@@ -264,7 +228,8 @@ abstract class BaseTraitTest extends TestCase
         $registry = new ComponentRegistry($controller);
         $this->Trait->Authentication = new AuthenticationComponent($registry, [
             'loginRedirect' => $this->successLoginRedirect,
-            'logoutRedirect' => $this->logoutRedirect
+            'logoutRedirect' => $this->logoutRedirect,
+            'loginAction' => $this->loginAction
         ]);;
     }
 
