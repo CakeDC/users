@@ -1,25 +1,42 @@
 <?php
 namespace CakeDC\Users;
 
+use Authentication\AuthenticationService;
 use Authentication\AuthenticationServiceInterface;
+use Authentication\AuthenticationServiceProviderInterface;
 use Authentication\Middleware\AuthenticationMiddleware;
 use Cake\Core\BasePlugin;
 use Cake\Core\Configure;
 use CakeDC\Auth\Middleware\RbacMiddleware;
 use CakeDC\Users\Middleware\SocialAuthMiddleware;
 use CakeDC\Users\Middleware\SocialEmailMiddleware;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
-class Plugin extends BasePlugin
+class Plugin extends BasePlugin implements AuthenticationServiceProviderInterface
 {
     const EVENT_AFTER_CHANGE_PASSWORD = 'Users.Managment.afterResetPassword';
+
+    /**
+     * Returns an authentication service instance.
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request Request
+     * @param \Psr\Http\Message\ResponseInterface $response Response
+     * @return \Authentication\AuthenticationServiceInterface
+     */
+    public function getAuthenticationService(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        return $this->authentication();
+    }
+
     /**
      * load authenticators and identifiers
      *
-     * @param AuthenticationServiceInterface $service Base authentication service
      * @return AuthenticationServiceInterface
      */
-    public function authentication(AuthenticationServiceInterface $service)
+    public function authentication()
     {
+        $service = new AuthenticationService();
         $authenticators = Configure::read('Auth.Authenticators');
         $identifiers = Configure::read('Auth.Identifiers');
 
