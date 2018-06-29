@@ -122,4 +122,16 @@ class FormAuthenticator implements AuthenticatorInterface, AuthenticatorFeedback
 
         return $this->lastResult = new Result(null, self::FAILURE_INVALID_RECAPTCHA);
     }
+
+    /**
+     * Call base authenticator methods
+     *
+     * @param string $name
+     * @param array $arguments
+     * @return mixed
+     */
+    public function __call($name, $arguments)
+    {
+        return $this->getBaseAuthenticator()->$name(...$arguments);
+    }
 }
