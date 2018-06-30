@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Controller\Traits;
 
+use Cake\Core\Configure;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
 use Cake\Utility\Inflector;
@@ -74,11 +75,11 @@ trait SimpleCrudTrait
         $entity = $table->patchEntity($entity, $this->request->getData());
         $singular = Inflector::singularize(Inflector::humanize($tableAlias));
         if ($table->save($entity)) {
-            $this->Flash->success(__d('CakeDC/Users', 'The {0} has been saved', $singular));
+            $this->Flash->success(__d('CakeDC/Users', Configure::read('Messages.simpleCrud.saved'), $singular));
 
             return $this->redirect(['action' => 'index']);
         }
-        $this->Flash->error(__d('CakeDC/Users', 'The {0} could not be saved', $singular));
+        $this->Flash->error(__d('CakeDC/Users', Configure::read('Messages.simpleCrud.failSave'), $singular));
     }
 
     /**
@@ -104,11 +105,11 @@ trait SimpleCrudTrait
         $entity = $table->patchEntity($entity, $this->request->getData());
         $singular = Inflector::singularize(Inflector::humanize($tableAlias));
         if ($table->save($entity)) {
-            $this->Flash->success(__d('CakeDC/Users', 'The {0} has been saved', $singular));
+            $this->Flash->success(__d('CakeDC/Users', Configure::read('Messages.simpleCrud.saved'), $singular));
 
             return $this->redirect(['action' => 'index']);
         }
-        $this->Flash->error(__d('CakeDC/Users', 'The {0} could not be saved', $singular));
+        $this->Flash->error(__d('CakeDC/Users', Configure::read('Messages.simpleCrud.failSave'), $singular));
     }
 
     /**
@@ -128,9 +129,9 @@ trait SimpleCrudTrait
         ]);
         $singular = Inflector::singularize(Inflector::humanize($tableAlias));
         if ($table->delete($entity)) {
-            $this->Flash->success(__d('CakeDC/Users', 'The {0} has been deleted', $singular));
+            $this->Flash->success(__d('CakeDC/Users', Configure::read('Messages.simpleCrud.deleted'), $singular));
         } else {
-            $this->Flash->error(__d('CakeDC/Users', 'The {0} could not be deleted', $singular));
+            $this->Flash->error(__d('CakeDC/Users', Configure::read('Messages.simpleCrud.failDelete'), $singular));
         }
 
         return $this->redirect(['action' => 'index']);

@@ -47,7 +47,7 @@ trait PasswordManagementTrait
             $user->id = $this->request->getSession()->read(Configure::read('Users.Key.Session.resetPasswordUserId'));
             $validatePassword = false;
             if (!$user->id) {
-                $this->Flash->error(__d('CakeDC/Users', 'User was not found'));
+                $this->Flash->error(__d('CakeDC/Users', Configure::read('Messages.passwordManagement.userNotFound')));
                 $this->redirect($this->Auth->getConfig('loginAction'));
 
                 return;
@@ -68,7 +68,7 @@ trait PasswordManagementTrait
                     ['validate' => $validator]
                 );
                 if ($user->getErrors()) {
-                    $this->Flash->error(__d('CakeDC/Users', 'Password could not be changed'));
+                    $this->Flash->error(__d('CakeDC/Users', Configure::read('Messages.passwordManagement.failPasswordChange')));
                 } else {
                     $user = $this->getUsersTable()->changePassword($user);
                     if ($user) {
@@ -76,19 +76,19 @@ trait PasswordManagementTrait
                         if (!empty($event) && is_array($event->result)) {
                             return $this->redirect($event->result);
                         }
-                        $this->Flash->success(__d('CakeDC/Users', 'Password has been changed successfully'));
+                        $this->Flash->success(__d('CakeDC/Users', Configure::read('Messages.passwordManagement.passwordChanged')));
 
                         return $this->redirect($redirect);
                     } else {
-                        $this->Flash->error(__d('CakeDC/Users', 'Password could not be changed'));
+                        $this->Flash->error(__d('CakeDC/Users', Configure::read('Messages.passwordManagement.failPasswordChange')));
                     }
                 }
             } catch (UserNotFoundException $exception) {
-                $this->Flash->error(__d('CakeDC/Users', 'User was not found'));
+                $this->Flash->error(__d('CakeDC/Users', Configure::read('Messages.passwordManagement.userNotFound')));
             } catch (WrongPasswordException $wpe) {
                 $this->Flash->error($wpe->getMessage());
             } catch (Exception $exception) {
-                $this->Flash->error(__d('CakeDC/Users', 'Password could not be changed'));
+                $this->Flash->error(__d('CakeDC/Users', Configure::read('Messages.passwordManagement.failPasswordChange')));
                 $this->log($exception->getMessage());
             }
         }
@@ -130,20 +130,20 @@ trait PasswordManagementTrait
                 'type' => 'password'
             ]);
             if ($resetUser) {
-                $msg = __d('CakeDC/Users', 'Please check your email to continue with password reset process');
+                $msg = __d('CakeDC/Users', Configure::read('Messages.passwordManagement.passwordResetEmail'));
                 $this->Flash->success($msg);
             } else {
-                $msg = __d('CakeDC/Users', 'The password token could not be generated. Please try again');
+                $msg = __d('CakeDC/Users', Configure::read('Messages.passwordManagement.failPasswordToken'));
                 $this->Flash->error($msg);
             }
 
             return $this->redirect(['action' => 'login']);
         } catch (UserNotFoundException $exception) {
-            $this->Flash->error(__d('CakeDC/Users', 'User {0} was not found', $reference));
+            $this->Flash->error(__d('CakeDC/Users', Configure::read('Messages.passwordManagement.userSpecifyNotFound'), $reference));
         } catch (UserNotActiveException $exception) {
-            $this->Flash->error(__d('CakeDC/Users', 'The user is not active'));
+            $this->Flash->error(__d('CakeDC/Users', Configure::read('Messages.passwordManagement.userNotActive')));
         } catch (Exception $exception) {
-            $this->Flash->error(__d('CakeDC/Users', 'Token could not be reset'));
+            $this->Flash->error(__d('CakeDC/Users', Configure::read('Messages.passwordManagement.failTokenReset')));
             $this->log($exception->getMessage());
         }
     }
@@ -167,7 +167,7 @@ trait PasswordManagementTrait
                     ->where(['id' => $id]);
                 $query->execute();
 
-                $message = __d('CakeDC/Users', 'Google Authenticator token was successfully reset');
+                $message = __d('CakeDC/Users', Configure::read('Messages.passwordManagement.googleAuthenticatorTokenReset'));
                 $this->Flash->success($message, 'default');
             } catch (\Exception $e) {
                 $message = $e->getMessage();

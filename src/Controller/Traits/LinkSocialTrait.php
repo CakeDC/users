@@ -57,7 +57,7 @@ trait LinkSocialTrait
      */
     public function callbackLinkSocial($alias = null)
     {
-        $message = __d('CakeDC/Users', 'Could not associate account, please try again.');
+        $message = __d('CakeDC/Users', Configure::read('Messages.linkSocial.failAssociate'));
         $provider = $this->_getSocialProvider($alias);
         $error = false;
         if (ucfirst($alias) === SocialAccountsTable::PROVIDER_TWITTER) {
@@ -99,7 +99,7 @@ trait LinkSocialTrait
 
         if (!empty($error) || empty($data)) {
             $log = sprintf(
-                "Error getting an access token. Error message: %s %s",
+                Configure::read('Messages.linkSocial.errorToken'),
                 $error->getMessage(),
                 $error
             );
@@ -120,11 +120,11 @@ trait LinkSocialTrait
             if ($user->getErrors()) {
                 $this->Flash->error($message);
             } else {
-                $this->Flash->success(__d('CakeDC/Users', 'Social account was associated.'));
+                $this->Flash->success(__d('CakeDC/Users', Configure::read('Messages.linkSocial.successAssociate')));
             }
         } catch (\Exception $e) {
             $log = sprintf(
-                "Error retrieving the authorized user's profile data. Error message: %s %s",
+                Configure::read('Messages.linkSocial.errorProfile'),
                 $e->getMessage(),
                 $e
             );

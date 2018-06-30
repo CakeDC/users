@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Model\Table;
 
+use Cake\Core\Configure;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -78,7 +79,7 @@ class UsersTable extends Table
             ->add('password', [
                 'password_confirm_check' => [
                     'rule' => ['compareWith', 'password_confirm'],
-                    'message' => __d('CakeDC/Users', 'Your password does not match your confirm password. Please try again'),
+                    'message' => __d('CakeDC/Users', Configure::read('Messages.users.passwordMistmatch')),
                     'allowEmpty' => false
                 ]]);
 
@@ -170,13 +171,13 @@ class UsersTable extends Table
     {
         $rules->add($rules->isUnique(['username']), '_isUnique', [
             'errorField' => 'username',
-            'message' => __d('CakeDC/Users', 'Username already exists')
+            'message' => __d('CakeDC/Users', Configure::read('Messages.users.usernameExists'))
         ]);
 
         if ($this->isValidateEmail) {
             $rules->add($rules->isUnique(['email']), '_isUnique', [
                 'errorField' => 'email',
-                'message' => __d('CakeDC/Users', 'Email already exists')
+                'message' => __d('CakeDC/Users', Configure::read('Messages.users.emailExists'))
             ]);
         }
 

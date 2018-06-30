@@ -41,18 +41,18 @@ trait UserValidationTrait
                     try {
                         $result = $this->getUsersTable()->validate($token, 'activateUser');
                         if ($result) {
-                            $this->Flash->success(__d('CakeDC/Users', 'User account validated successfully'));
+                            $this->Flash->success(__d('CakeDC/Users', Configure::read('Messages.userValidation.accountValidated')));
                         } else {
-                            $this->Flash->error(__d('CakeDC/Users', 'User account could not be validated'));
+                            $this->Flash->error(__d('CakeDC/Users', Configure::read('Messages.userValidation.failValidate')));
                         }
                     } catch (UserAlreadyActiveException $exception) {
-                        $this->Flash->error(__d('CakeDC/Users', 'User already active'));
+                        $this->Flash->error(__d('CakeDC/Users', Configure::read('Messages.userValidation.alreadyActive')));
                     }
                     break;
                 case 'password':
                     $result = $this->getUsersTable()->validate($token);
                     if (!empty($result)) {
-                        $this->Flash->success(__d('CakeDC/Users', 'Reset password token was validated successfully'));
+                        $this->Flash->success(__d('CakeDC/Users', Configure::read('Messages.userValidation.tokenValidated')));
                         $this->request->getSession()->write(
                             Configure::read('Users.Key.Session.resetPasswordUserId'),
                             $result->id
@@ -60,20 +60,20 @@ trait UserValidationTrait
 
                         return $this->redirect(['action' => 'changePassword']);
                     } else {
-                        $this->Flash->error(__d('CakeDC/Users', 'Reset password token could not be validated'));
+                        $this->Flash->error(__d('CakeDC/Users', Configure::read('Messages.userValidation.failTokenValidate')));
                     }
                     break;
                 default:
-                    $this->Flash->error(__d('CakeDC/Users', 'Invalid validation type'));
+                    $this->Flash->error(__d('CakeDC/Users', Configure::read('Messages.userValidation.invalidValidation')));
             }
         } catch (UserNotFoundException $ex) {
-            $this->Flash->error(__d('CakeDC/Users', 'Invalid token or user account already validated'));
+            $this->Flash->error(__d('CakeDC/Users', Configure::read('Messages.userValidation.tokenOrUserExist')));
         } catch (TokenExpiredException $ex) {
             $event = $this->dispatchEvent(UsersAuthComponent::EVENT_ON_EXPIRED_TOKEN, ['type' => $type]);
             if (!empty($event) && is_array($event->result)) {
                 return $this->redirect($event->result);
             }
-            $this->Flash->error(__d('CakeDC/Users', 'Token already expired'));
+            $this->Flash->error(__d('CakeDC/Users', Configure::read('Messages.userValidation.expiredToken')));
         }
 
         return $this->redirect(['action' => 'login']);
@@ -105,19 +105,19 @@ trait UserValidationTrait
                 }
                 $this->Flash->success(__d(
                     'CakeDC/Users',
-                    'Token has been reset successfully. Please check your email.'
+                    Configure::read('Messages.userValidation.tokenReset')
                 ));
             } else {
-                $this->Flash->error(__d('CakeDC/Users', 'Token could not be reset'));
+                $this->Flash->error(__d('CakeDC/Users', Configure::read('Messages.userValidation.failTokenReset')));
             }
 
             return $this->redirect(['action' => 'login']);
         } catch (UserNotFoundException $ex) {
-            $this->Flash->error(__d('CakeDC/Users', 'User {0} was not found', $reference));
+            $this->Flash->error(__d('CakeDC/Users', Configure::read('Messages.userValidation.userNotFound'), $reference));
         } catch (UserAlreadyActiveException $ex) {
-            $this->Flash->error(__d('CakeDC/Users', 'User {0} is already active', $reference));
+            $this->Flash->error(__d('CakeDC/Users', Configure::read('Messages.userValidation.userAlreadyActive'), $reference));
         } catch (Exception $ex) {
-            $this->Flash->error(__d('CakeDC/Users', 'Token could not be reset'));
+            $this->Flash->error(__d('CakeDC/Users', Configure::read('Messages.userValidation.failTokenReset')));
         }
     }
 }
