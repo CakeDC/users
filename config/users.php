@@ -199,6 +199,87 @@ $config = [
                 ]
             ],
         ],
+    ],
+    // Customize returned messages
+    'Messages' => [
+        'linkSocial' => [
+            'successAssociate' => 'Social account was associated.',
+            'failAssociate' => 'Could not associate account, please try again.',
+            'errorToken' => "Error getting an access token. Error message: %s %s",
+            'errorProfile' => "Error retrieving the authorized user's profile data. Error message: %s %s",
+            'alreadyAssociated' => 'Social account already associated to another user'
+        ],
+        'login' => [
+            'failSocialLogin' => 'Issues trying to log in with your social account',
+            'missingEmail' => 'Please enter your email',
+            'notValidated' => 'Your user has not been validated yet. Please check your inbox for instructions',
+            'alreadyLoggedIn' => 'You are already logged in',
+            'disabledGoogleAuthenticator' => 'Please enable Google Authenticator first.',
+            'invalidVerificationCode' => 'Verification code is invalid. Try again',
+            'invalidDetails' => 'Username or password is incorrect',
+            'loggedOut' => 'You\'ve successfully logged out'
+        ],
+        'passwordManagement' => [
+            'userNotFound' => 'User was not found',
+            'failPasswordChange' => 'Password could not be changed',
+            'passwordChanged' => 'Password has been changed successfully',
+            'passwordResetEmail' => 'Please check your email to continue with password reset process',
+            'failPasswordToken' => 'The password token could not be generated. Please try again',
+            'userSpecifyNotFound' => 'User {0} was not found',
+            'userNotActive' => 'The user is not active',
+            'failTokenReset' => 'Token could not be reset',
+            'googleAuthenticatorTokenReset' => 'Google Authenticator token was successfully reset'
+        ],
+        'profile' => [
+            'userNotFound' => 'User was not found',
+            'notAuthorized' => 'Not authorized, please login first'
+        ],
+        'register' => [
+            'logoutRegister' => 'You must log out to register a new user account',
+            'failSaveUser' => 'The user could not be saved',
+            'invalidRecaptcha' => 'Invalid reCaptcha',
+            'successRegister' => 'You have registered successfully, please log in',
+            'validateBeforeLogin' => 'Please validate your account before log in'
+        ],
+        'simpleCrud' => [
+            'saved' => 'The {0} has been saved',
+            'failSave' => 'The {0} could not be saved',
+            'deleted' => 'The {0} has been deleted',
+            'failDelete' => 'The {0} could not be deleted'
+        ],
+        'social' => [
+            'invalidRecaptcha' => 'The reCaptcha could not be validated'
+        ],
+        'userValidation' => [
+            'accountValidated' => 'User account validated successfully',
+            'failValidate' => 'User account could not be validated',
+            'alreadyActive' => 'User already active',
+            'tokenValidated' => 'Reset password token was validated successfully',
+            'failTokenValidate' => 'Reset password token could not be validated',
+            'invalidValidation' => 'Invalid validation type',
+            'tokenOrUserExist' => 'Invalid token or user account already validated',
+            'expiredToken' => 'Token already expired',
+            'tokenReset' => 'Token has been reset successfully. Please check your email.',
+            'failTokenReset' => 'Token could not be reset',
+            'userNotFound' => 'User {0} was not found',
+            'userAlreadyActive' => 'User {0} is already active'
+        ],
+        'socialAccounts' => [
+            'accountValidated' => 'Account validated successfully',
+            'failValidate' => 'Account could not be validated',
+            'invalidToken' => 'Invalid token and/or social account',
+            'socialAlreadyActive' => 'Social Account already active',
+            'failSocialValidate' => 'Social Account could not be validated',
+            'emailSent' => 'Email sent successfully',
+            'failEmailSend' => 'Email could not be sent',
+            'invalidAccount' => 'Invalid account',
+            'failEmailResend' => 'Email could not be resent'
+        ],
+        'users' => [
+            'passwordMistmatch' => 'Your password does not match your confirm password. Please try again',
+            'usernameExists' => 'Username already exists',
+            'emailExists' => 'Email already exists'
+        ]
     ]
 ];
 

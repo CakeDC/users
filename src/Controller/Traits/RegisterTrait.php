@@ -40,7 +40,7 @@ trait RegisterTrait
 
         $userId = $this->Auth->user('id');
         if (!empty($userId) && !Configure::read('Users.Registration.allowLoggedIn')) {
-            $this->Flash->error(__d('CakeDC/Users', 'You must log out to register a new user account'));
+            $this->Flash->error(__d('CakeDC/Users', Configure::read('Messages.register.logoutRegister')));
 
             return $this->redirect(Configure::read('Users.Profile.route'));
         }
@@ -69,7 +69,7 @@ trait RegisterTrait
                 return $this->_afterRegister($userSaved);
             } else {
                 $this->set(compact('user'));
-                $this->Flash->error(__d('CakeDC/Users', 'The user could not be saved'));
+                $this->Flash->error(__d('CakeDC/Users', Configure::read('Messages.register.failSaveUser')));
 
                 return;
             }
@@ -86,14 +86,14 @@ trait RegisterTrait
         }
 
         if (!$this->_validateRegisterPost()) {
-            $this->Flash->error(__d('CakeDC/Users', 'Invalid reCaptcha'));
+            $this->Flash->error(__d('CakeDC/Users', Configure::read('Messages.register.invalidRecaptcha')));
 
             return;
         }
 
         $userSaved = $usersTable->register($user, $requestData, $options);
         if (!$userSaved) {
-            $this->Flash->error(__d('CakeDC/Users', 'The user could not be saved'));
+            $this->Flash->error(__d('CakeDC/Users', Configure::read('Messages.register.failSaveUser')));
 
             return;
         }
@@ -127,9 +127,9 @@ trait RegisterTrait
     protected function _afterRegister(EntityInterface $userSaved)
     {
         $validateEmail = (bool)Configure::read('Users.Email.validate');
-        $message = __d('CakeDC/Users', 'You have registered successfully, please log in');
+        $message = __d('CakeDC/Users', Configure::read('Messages.register.successRegister'));
         if ($validateEmail) {
-            $message = __d('CakeDC/Users', 'Please validate your account before log in');
+            $message = __d('CakeDC/Users', Configure::read('Messages.register.validateBeforeLogin'));
         }
         $event = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_REGISTER, [
             'user' => $userSaved

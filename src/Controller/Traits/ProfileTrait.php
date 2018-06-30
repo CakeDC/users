@@ -47,11 +47,11 @@ trait ProfileTrait
                 $isCurrentUser = true;
             }
         } catch (RecordNotFoundException $ex) {
-            $this->Flash->error(__d('CakeDC/Users', 'User was not found'));
+            $this->Flash->error(__d('CakeDC/Users', Configure::read('Messages.profile.userNotFound')));
 
             return $this->redirect($this->request->referer());
         } catch (InvalidPrimaryKeyException $ex) {
-            $this->Flash->error(__d('CakeDC/Users', 'Not authorized, please login first'));
+            $this->Flash->error(__d('CakeDC/Users', Configure::read('Messages.profile.notAuthorized')));
 
             return $this->redirect($this->request->referer());
         }

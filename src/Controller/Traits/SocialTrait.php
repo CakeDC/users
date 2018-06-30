@@ -37,7 +37,7 @@ trait SocialTrait
         if ($this->request->is('post')) {
             $validPost = $this->_validateRegisterPost();
             if (!$validPost) {
-                $this->Flash->error(__d('CakeDC/Users', 'The reCaptcha could not be validated'));
+                $this->Flash->error(__d('CakeDC/Users', Configure::read('Messages.social.invalidRecaptcha')));
 
                 return;
             }

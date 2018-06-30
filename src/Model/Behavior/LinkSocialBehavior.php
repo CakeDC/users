@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Model\Behavior;
 
+use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
 use Cake\I18n\Time;
 use Cake\ORM\Behavior;
@@ -50,7 +51,7 @@ class LinkSocialBehavior extends Behavior
         if ($socialAccount && $user->id !== $socialAccount->user_id) {
             $user->setErrors([
                 'social_accounts' => [
-                    '_existsIn' => __d('CakeDC/Users', 'Social account already associated to another user')
+                    '_existsIn' => __d('CakeDC/Users', Configure::read('Messages.linkSocial.alreadyAssociated'))
                 ]
             ]);
 
