@@ -115,6 +115,7 @@ trait LoginTrait
      */
     public function login()
     {
+        $this->request->getSession()->delete('temporarySession');
         $result = $this->request->getAttribute('authentication')->getResult();
 
         if ($result->isValid()) {

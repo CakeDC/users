@@ -1,13 +1,14 @@
 <?php
 namespace CakeDC\Users;
 
-use Authentication\AuthenticationService;
 use Authentication\AuthenticationServiceInterface;
 use Authentication\AuthenticationServiceProviderInterface;
 use Authentication\Middleware\AuthenticationMiddleware;
 use Cake\Core\BasePlugin;
 use Cake\Core\Configure;
 use CakeDC\Auth\Middleware\RbacMiddleware;
+use CakeDC\Users\Authentication\AuthenticationService;
+use CakeDC\Users\Middleware\GoogleAuthenticatorMiddleware;
 use CakeDC\Users\Middleware\SocialAuthMiddleware;
 use CakeDC\Users\Middleware\SocialEmailMiddleware;
 use Psr\Http\Message\ResponseInterface;
@@ -80,8 +81,9 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
 
         $authentication = new AuthenticationMiddleware($this);
         $middlewareQueue->add($authentication);
+
         if (Configure::read('Users.GoogleAuthenticator.login')) {
-            $middlewareQueue->add('CakeDC\Users\Middleware\GoogleAuthenticatorMiddleware');
+            $middlewareQueue->add(GoogleAuthenticatorMiddleware::class);
         }
 
         $middlewareQueue->add(new RbacMiddleware(null, [
