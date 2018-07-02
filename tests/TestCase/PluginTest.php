@@ -2,7 +2,6 @@
 
 namespace CakeDC\Users\Test\TestCase;
 
-use Authentication\AuthenticationService;
 use Authentication\Authenticator\SessionAuthenticator;
 use Authentication\Authenticator\TokenAuthenticator;
 use Authentication\Identifier\JwtSubjectIdentifier;
@@ -14,6 +13,7 @@ use Cake\Http\MiddlewareQueue;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 use CakeDC\Auth\Middleware\RbacMiddleware;
+use CakeDC\Users\Authentication\AuthenticationService as CakeDCAuthenticationService;
 use CakeDC\Users\Authenticator\FormAuthenticator;
 use CakeDC\Users\Authenticator\GoogleTwoFactorAuthenticator;
 use CakeDC\Users\Middleware\GoogleAuthenticatorMiddleware;
@@ -106,6 +106,7 @@ class PluginTest extends IntegrationTestCase
         $this->assertInstanceOf(RbacMiddleware::class, $middleware->get(1));
     }
 
+
     /**
      * testGetAuthenticationService
      *
@@ -147,7 +148,7 @@ class PluginTest extends IntegrationTestCase
 
         $plugin = new Plugin();
         $service = $plugin->getAuthenticationService(new ServerRequest(), new Response());
-        $this->assertInstanceOf(AuthenticationService::class, $service);
+        $this->assertInstanceOf(CakeDCAuthenticationService::class, $service);
 
         /**
          * @var \Authentication\Authenticator\AuthenticatorCollection $authenticators
@@ -246,7 +247,7 @@ class PluginTest extends IntegrationTestCase
 
         $plugin = new Plugin();
         $service = $plugin->getAuthenticationService(new ServerRequest(), new Response());
-        $this->assertInstanceOf(AuthenticationService::class, $service);
+        $this->assertInstanceOf(CakeDCAuthenticationService::class, $service);
 
         /**
          * @var \Authentication\Authenticator\AuthenticatorCollection $authenticators
