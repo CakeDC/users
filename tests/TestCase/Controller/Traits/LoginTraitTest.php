@@ -246,7 +246,6 @@ class LoginTraitTest extends BaseTraitTest
             ->method('redirect')
             ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
 
-<<<<<<< HEAD
         $this->Trait->failedSocialLogin(null, $event->data['rawData'], true);
     }
 
@@ -349,8 +348,5 @@ class LoginTraitTest extends BaseTraitTest
             ->method('set')
             ->with(['secretDataUri' => 'newDataUriGenerated']);
         $this->Trait->verify();
-=======
-        $this->Trait->failedSocialLogin(null, $data, true);
->>>>>>> Fixing traits unit tests
     }
 }
