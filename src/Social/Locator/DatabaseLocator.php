@@ -72,7 +72,7 @@ class DatabaseLocator implements LocatorInterface
     protected function findUser($user)
     {
         $userModel = $this->getConfig('userModel');
-        $table = TableRegistry::get($userModel);
+        $table = TableRegistry::getTableLocator()->get($userModel);
         $finder = $this->getConfig('finder');
 
         $primaryKey = (array)$table->getPrimaryKey();
@@ -98,7 +98,7 @@ class DatabaseLocator implements LocatorInterface
         ];
 
         $userModel = Configure::read('Users.table');
-        $User = TableRegistry::get($userModel);
+        $User = TableRegistry::getTableLocator()->get($userModel);
         $user = $User->socialLogin($data, $options);
 
         return $user;
