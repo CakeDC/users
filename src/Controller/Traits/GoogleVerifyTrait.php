@@ -73,7 +73,7 @@ trait GoogleVerifyTrait
     /**
      * Get the Google Authenticator secret of user, if not exists try to create one and save
      *
-     * @param User $user user data present on session
+     * @param \CakeDC\Users\Model\Entity\User $user user data present on session
      *
      * @return string if empty the creation has failed
      */
@@ -138,7 +138,7 @@ trait GoogleVerifyTrait
      * Handle the part of action when user post the form with valid code
      *
      * @param array $loginAction url to login page used in redirect
-     * @param User $user user data present on session
+     * @param \CakeDC\Users\Model\Entity\User $user user data present on session
      *
      * @return \Cake\Http\Response
      */

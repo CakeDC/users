@@ -3,6 +3,7 @@
 namespace CakeDC\Users\Middleware;
 
 use Cake\Core\InstanceConfigTrait;
+use Cake\Datasource\Exception\RecordNotFoundException;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\UserNotActiveException;

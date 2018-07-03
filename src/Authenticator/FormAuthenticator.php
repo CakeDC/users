@@ -33,7 +33,9 @@ class FormAuthenticator implements AuthenticatorInterface, AuthenticatorFeedback
     protected $identifier;
 
     /**
-     * @var settings for base authenticator
+     * Settings for base authenticator
+     *
+     * @var array
      */
     protected $config;
 

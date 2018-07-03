@@ -12,7 +12,6 @@
 namespace CakeDC\Users\Controller\Traits;
 
 use Cake\Utility\Hash;
-use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
 use Cake\Http\Exception\NotFoundException;

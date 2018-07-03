@@ -91,7 +91,6 @@ trait LinkSocialTrait
      * @param string $alias of the provider.
      * @param array $data User data.
      *
-     * @throws MissingProviderException
      * @return array
      */
     protected function _mapSocialUser($alias, $data)
