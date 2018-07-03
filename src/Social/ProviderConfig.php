@@ -3,7 +3,6 @@ namespace CakeDC\Users\Social;
 
 
 use Cake\Core\Configure;
-use Cake\Core\InstanceConfigTrait;
 use Cake\Utility\Hash;
 use CakeDC\Users\Auth\Exception\InvalidProviderException;
 use CakeDC\Users\Auth\Exception\InvalidSettingsException;

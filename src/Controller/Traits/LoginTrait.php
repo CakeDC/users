@@ -16,18 +16,10 @@ use Authentication\Authenticator\Result;
 use CakeDC\Users\Authenticator\AuthenticatorFeedbackInterface;
 use CakeDC\Users\Authenticator\FormAuthenticator;
 use CakeDC\Users\Controller\Component\UsersAuthComponent;
-use CakeDC\Users\Exception\AccountNotActiveException;
-use CakeDC\Users\Exception\MissingEmailException;
-use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Middleware\SocialAuthMiddleware;
-use CakeDC\Users\Model\Table\SocialAccountsTable;
 use Cake\Core\Configure;
-use Cake\Core\Exception\Exception;
-use Cake\Event\Event;
 use Cake\Http\Exception\NotFoundException;
-use Cake\Utility\Hash;
 use CakeDC\Users\Plugin;
-use League\OAuth1\Client\Server\Twitter;
 
 /**
  * Covers the login, logout and social login

@@ -4,7 +4,6 @@ namespace CakeDC\Users\Authenticator;
 
 use Authentication\Authenticator\AbstractAuthenticator;
 use Authentication\Authenticator\Result;
-use Authentication\Identifier\IdentifierInterface;
 use Authentication\UrlChecker\UrlCheckerTrait;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

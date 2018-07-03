@@ -16,9 +16,7 @@ use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Exception\UserNotFoundException;
 use CakeDC\Users\Exception\WrongPasswordException;
 use Cake\Core\Configure;
-use Cake\Log\Log;
 use Cake\Validation\Validator;
-use CakeDC\Users\Listener\AuthListener;
 use CakeDC\Users\Plugin;
 use Exception;
 

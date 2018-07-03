@@ -12,11 +12,7 @@
 namespace CakeDC\Users\Controller\Traits;
 
 use Cake\Utility\Hash;
-use CakeDC\Users\Model\Table\SocialAccountsTable;
-use Cake\Core\Configure;
-use Cake\Http\Exception\NotFoundException;
 use CakeDC\Users\Social\Service\ServiceFactory;
-use League\OAuth1\Client\Server\Twitter;
 
 /**
  * Ações para "linkar" contas sociais

@@ -13,9 +13,6 @@ namespace CakeDC\Users\Controller\Component;
 
 use Cake\Controller\Component;
 use Cake\Core\Configure;
-use Cake\Event\Event;
-use Cake\Utility\Security;
-use InvalidArgumentException;
 use RobThree\Auth\TwoFactorAuth;
 
 /**
