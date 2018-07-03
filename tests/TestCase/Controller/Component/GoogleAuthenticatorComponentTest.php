@@ -59,7 +59,7 @@ class GoogleAuthenticatorComponentTest extends TestCase
         Configure::write('App.namespace', 'Users');
         Configure::write('Users.GoogleAuthenticator.login', true);
 
-        $this->request = $this->getMockBuilder('Cake\Network\Request')
+        $this->request = $this->getMockBuilder('Cake\Http\ServerRequest')
                 ->setMethods(['is', 'method'])
                 ->getMock();
         $this->request->expects($this->any())->method('is')->will($this->returnValue(true));
