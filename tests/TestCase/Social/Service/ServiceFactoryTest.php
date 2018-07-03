@@ -68,7 +68,7 @@ class ServiceFactoryTest extends TestCase
             'code' => 'ZPO9972j3092304230',
             'state' => '__TEST_STATE__'
         ]);
-        $request = $request->addParams([
+        $request = $request->withAttribute('params', [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'socialLogin',
@@ -141,7 +141,7 @@ class ServiceFactoryTest extends TestCase
             'code' => 'ZPO9972j3092304230',
             'state' => '__TEST_STATE__'
         ]);
-        $request = $request->addParams([
+        $request = $request->withAttribute('params', [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'socialLogin',
@@ -209,7 +209,7 @@ class ServiceFactoryTest extends TestCase
         Configure::write('OAuth.providers.twitter', $config);
 
         $request = ServerRequestFactory::fromGlobals();
-        $request = $request->addParams([
+        $request = $request->withAttribute('params', [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'socialLogin',
@@ -233,7 +233,7 @@ class ServiceFactoryTest extends TestCase
             'code' => 'ZPO9972j3092304230',
             'state' => '__TEST_STATE__'
         ]);
-        $request = $request->addParams([
+        $request = $request->withAttribute('params', [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'socialLogin',

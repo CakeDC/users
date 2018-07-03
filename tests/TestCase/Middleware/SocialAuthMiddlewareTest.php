@@ -114,7 +114,7 @@ class SocialAuthMiddlewareTest extends TestCase
         $uri = new Uri('/auth/facebook');
         $this->Request = $this->Request->withUri($uri);
 
-        $this->Request = $this->Request->addParams([
+        $this->Request = $this->Request->withAttribute('params',[
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'socialLogin',
@@ -164,7 +164,7 @@ class SocialAuthMiddlewareTest extends TestCase
             'code' => 'ZPO9972j3092304230',
             'state' => '__TEST_STATE__'
         ]);
-        $this->Request = $this->Request->addParams([
+        $this->Request = $this->Request->withAttribute('params',[
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'socialLogin',
@@ -259,7 +259,7 @@ class SocialAuthMiddlewareTest extends TestCase
             'code' => 'ZPO9972j3092304230',
             'state' => '__TEST_STATE__'
         ]);
-        $this->Request = $this->Request->addParams([
+        $this->Request = $this->Request->withAttribute('params',[
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'socialLogin',
