@@ -7,8 +7,8 @@ use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Event\EventDispatcherTrait;
 use Cake\ORM\TableRegistry;
 use CakeDC\Users\Auth\Exception\InvalidSettingsException;
-use CakeDC\Users\Listener\AuthListener;
 use CakeDC\Users\Model\Entity\User;
+use CakeDC\Users\Plugin;
 
 class DatabaseLocator implements LocatorInterface
 {
@@ -54,7 +54,7 @@ class DatabaseLocator implements LocatorInterface
         }
         // If new SocialAccount was created $user is returned containing it
         if ($user->get('social_accounts')) {
-            $this->dispatchEvent(AuthListener::EVENT_AFTER_SOCIAL_REGISTER, compact('user'));
+            $this->dispatchEvent(Plugin::EVENT_AFTER_SOCIAL_REGISTER, compact('user'));
         }
 
         $user = $this->findUser($user)->firstOrFail();

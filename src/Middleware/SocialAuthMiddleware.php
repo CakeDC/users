@@ -6,11 +6,11 @@ use Cake\Core\InstanceConfigTrait;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\UserNotActiveException;
-use CakeDC\Users\Listener\AuthListener;
 use Cake\Core\Configure;
 use Cake\Event\EventDispatcherTrait;
 use Cake\Http\ServerRequest;
 use Cake\Log\LogTrait;
+use CakeDC\Users\Plugin;
 use CakeDC\Users\Social\Locator\DatabaseLocator;
 use CakeDC\Users\Social\Service\ServiceFactory;
 use Psr\Http\Message\ResponseInterface;
@@ -162,7 +162,7 @@ class SocialAuthMiddleware
         }
 
         $args = ['exception' => $exception, 'rawData' => $data];
-        $this->dispatchEvent( AuthListener::EVENT_FAILED_SOCIAL_LOGIN, $args);
+        $this->dispatchEvent(Plugin::EVENT_FAILED_SOCIAL_LOGIN, $args);
 
         return false;
     }
