@@ -11,7 +11,6 @@
 
 namespace CakeDC\Users\View\Helper;
 
-use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use Cake\Core\Configure;
 use Cake\Utility\Hash;
 use Cake\Utility\Inflector;

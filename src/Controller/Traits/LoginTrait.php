@@ -15,7 +15,6 @@ use Authentication\AuthenticationService;
 use Authentication\Authenticator\Result;
 use CakeDC\Users\Authenticator\AuthenticatorFeedbackInterface;
 use CakeDC\Users\Authenticator\FormAuthenticator;
-use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Middleware\SocialAuthMiddleware;
 use Cake\Core\Configure;
 use Cake\Http\Exception\NotFoundException;
