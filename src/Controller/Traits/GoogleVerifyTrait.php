@@ -92,6 +92,8 @@ trait GoogleVerifyTrait
                 ->set(['secret' => $secret])
                 ->where(['id' => $user['id']]);
             $query->execute();
+            $user['secret'] = $secret;
+            $this->request->getSession()->write('temporarySession', $user);
         } catch (\Exception $e) {
             $this->request->getSession()->destroy();
             $message = $e->getMessage();

@@ -152,4 +152,122 @@ class GoogleVerifyTest extends BaseTraitTest
         $user = $this->Trait->getUsersTable()->findById('00000000-0000-0000-0000-000000000001')->firstOrFail();
         $this->assertEquals('newSecret', $user->secret);
     }
+
+    /**
+     * Tests that a GET request causes a a new secret to be generated in case it's
+     * not already present in the session.
+     */
+    public function testVerifyGetGeneratesNewSecret()
+    {
+        Configure::write('Users.GoogleAuthenticator.login', true);
+
+        $this->Trait->GoogleAuthenticator = $this
+            ->getMockBuilder(GoogleAuthenticatorComponent::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['createSecret', 'getQRCodeImageAsDataUri'])
+            ->getMock();
+
+        $this->Trait->request = $this
+            ->getMockBuilder(ServerRequest::class)
+            ->setMethods(['is', 'getData', 'allow', 'getSession'])
+            ->getMock();
+        $this->Trait->request
+            ->expects($this->once())
+            ->method('is')
+            ->with('post')
+            ->will($this->returnValue(false));
+
+        $this->Trait->GoogleAuthenticator
+            ->expects($this->at(0))
+            ->method('createSecret')
+            ->will($this->returnValue('newSecret'));
+        $this->Trait->GoogleAuthenticator
+            ->expects($this->at(1))
+            ->method('getQRCodeImageAsDataUri')
+            ->with('email@example.com', 'newSecret')
+            ->will($this->returnValue('newDataUriGenerated'));
+
+        $session = $this->_mockSession([
+            'temporarySession' => [
+                'id' => '00000000-0000-0000-0000-000000000001',
+                'email' => 'email@example.com',
+                'secret_verified' => false,
+            ]
+        ]);
+        $this->Trait->expects($this->any())
+            ->method('getUsersTable')
+            ->will($this->returnValue(TableRegistry::getTableLocator()->get('CakeDC/Users.Users')));
+        $this->Trait->verify();
+
+        $this->assertEquals(
+            [
+                'temporarySession' => [
+                    'id' => '00000000-0000-0000-0000-000000000001',
+                    'email' => 'email@example.com',
+                    'secret_verified' => false,
+                    'secret' => 'newSecret'
+                ]
+            ],
+            $session->read()
+        );
+    }
+
+    /**
+     * Tests that a GET request does not cause a new secret to be generated in case
+     * it's already present in the session.
+     */
+    public function testVerifyGetDoesNotGenerateNewSecret()
+    {
+        Configure::write('Users.GoogleAuthenticator.login', true);
+
+        $this->Trait->GoogleAuthenticator = $this
+            ->getMockBuilder(GoogleAuthenticatorComponent::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['createSecret', 'getQRCodeImageAsDataUri'])
+            ->getMock();
+
+        $this->Trait->request = $this
+            ->getMockBuilder(ServerRequest::class)
+            ->setMethods(['is', 'getData', 'allow', 'getSession'])
+            ->getMock();
+        $this->Trait->request
+            ->expects($this->once())
+            ->method('is')
+            ->with('post')
+            ->will($this->returnValue(false));
+
+        $this->Trait->GoogleAuthenticator
+            ->expects($this->never())
+            ->method('createSecret');
+        $this->Trait->GoogleAuthenticator
+            ->expects($this->at(0))
+            ->method('getQRCodeImageAsDataUri')
+            ->with('email@example.com', 'alreadyPresentSecret')
+            ->will($this->returnValue('newDataUriGenerated'));
+
+        $session = $this->_mockSession([
+            'temporarySession' => [
+                'id' => '00000000-0000-0000-0000-000000000001',
+                'email' => 'email@example.com',
+                'secret_verified' => false,
+                'secret' => 'alreadyPresentSecret'
+            ]
+        ]);
+        $this->Trait->expects($this->any())
+            ->method('getUsersTable')
+            ->will($this->returnValue(TableRegistry::getTableLocator()->get('CakeDC/Users.Users')));
+        $this->Trait->verify();
+
+        $this->assertEquals(
+            [
+                'temporarySession' => [
+                    'id' => '00000000-0000-0000-0000-000000000001',
+                    'email' => 'email@example.com',
+                    'secret_verified' => false,
+                    'secret' => 'alreadyPresentSecret'
+                ]
+            ],
+            $session->read()
+        );
+    }
 }

@@ -105,7 +105,7 @@ abstract class BaseTraitTest extends TestCase
     /**
      * Mock session and mock session attributes
      *
-     * @return void
+     * @return \Cake\Http\Session
      */
     protected function _mockSession($attributes)
     {
@@ -119,6 +119,8 @@ abstract class BaseTraitTest extends TestCase
             ->expects($this->any())
             ->method('getSession')
             ->willReturn($session);
+
+        return $session;
     }
 
     /**
