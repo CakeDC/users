@@ -6,7 +6,6 @@ use Cake\Http\ServerRequest;
 use Cake\Routing\Exception\MissingRouteException;
 use Cake\Routing\Router;
 use CakeDC\Auth\Rbac\Rbac;
-use Cake\Utility\Hash;
 use Zend\Diactoros\Uri;
 
 trait IsAuthorizedTrait

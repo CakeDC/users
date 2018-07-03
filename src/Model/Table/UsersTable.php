@@ -11,10 +11,8 @@
 
 namespace CakeDC\Users\Model\Table;
 
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
-use Cake\Utility\Hash;
 use Cake\Validation\Validator;
 
 /**

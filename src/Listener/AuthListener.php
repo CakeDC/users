@@ -1,7 +1,6 @@
 <?php
 namespace CakeDC\Users\Listener;
 
-use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 
 class AuthListener implements EventListenerInterface

@@ -6,7 +6,6 @@ use Authentication\Middleware\AuthenticationMiddleware;
 use Cake\Core\Configure;
 use Cake\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Http\BaseApplication as CakeBaseApplication;
-use Cake\Log\Log;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
 use CakeDC\Auth\Middleware\RbacMiddleware;

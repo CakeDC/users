@@ -11,7 +11,6 @@
 
 namespace CakeDC\Users\Model\Table;
 
-use Cake\Core\Configure;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;

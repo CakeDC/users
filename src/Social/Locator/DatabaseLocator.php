@@ -5,12 +5,8 @@ use Cake\Core\Configure;
 use Cake\Core\InstanceConfigTrait;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Event\EventDispatcherTrait;
-use Cake\ORM\Exception\PersistenceFailedException;
 use Cake\ORM\TableRegistry;
 use CakeDC\Users\Auth\Exception\InvalidSettingsException;
-use CakeDC\Users\Exception\AccountNotActiveException;
-use CakeDC\Users\Exception\MissingEmailException;
-use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Listener\AuthListener;
 use CakeDC\Users\Model\Entity\User;
 
