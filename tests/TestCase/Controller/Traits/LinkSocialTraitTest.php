@@ -124,7 +124,7 @@ class LinkSocialTraitTest extends BaseTraitTest
             'code' => 'ZPO9972j3092304230',
             'state' => '__TEST_STATE__'
         ]);
-        $this->Trait->request = $this->Trait->request->addParams([
+        $this->Trait->request = $this->Trait->request->withAttribute('params',[
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'linkSocial',
@@ -243,7 +243,7 @@ class LinkSocialTraitTest extends BaseTraitTest
             'code' => 'ZPO9972j3092304230',
             'state' => '__TEST_STATE__'
         ]);
-        $this->Trait->request = $this->Trait->request->addParams([
+        $this->Trait->request = $this->Trait->request->withAttribute('params',[
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'linkSocial',
@@ -393,7 +393,7 @@ class LinkSocialTraitTest extends BaseTraitTest
             'code' => 'ZPO9972j3092304230',
             'state' => '__TEST_STATE__'
         ]);
-        $this->Trait->request = $this->Trait->request->addParams([
+        $this->Trait->request = $this->Trait->request->withAttribute('params',[
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'linkSocial',
@@ -448,7 +448,7 @@ class LinkSocialTraitTest extends BaseTraitTest
         $uri = new Uri('/callback-link-social/facebook');
 
         $this->Trait->request = $this->Trait->request->withUri($uri);
-        $this->Trait->request = $this->Trait->request->addParams([
+        $this->Trait->request = $this->Trait->request->withAttribute('params',[
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'linkSocial',
@@ -511,7 +511,7 @@ class LinkSocialTraitTest extends BaseTraitTest
         $uri = new Uri('/callback-link-social/facebook');
 
         $this->Trait->request = $this->Trait->request->withUri($uri);
-        $this->Trait->request = $this->Trait->request->addParams([
+        $this->Trait->request = $this->Trait->request->withAttribute('params',[
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'linkSocial',

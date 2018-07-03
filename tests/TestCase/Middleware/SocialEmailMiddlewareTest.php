@@ -132,7 +132,7 @@ class SocialEmailMiddlewareTest extends TestCase
 
         $uri = new Uri('/auth/facebook');
         $this->Request = $this->Request->withUri($uri);
-        $this->Request = $this->Request->addParams([
+        $this->Request = $this->Request->withAttribute('params',[
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'socialEmail',
@@ -166,7 +166,7 @@ class SocialEmailMiddlewareTest extends TestCase
             'email' => 'example@example.com'
         ]);
         $this->Request = $this->Request->withMethod('POST');
-        $this->Request = $this->Request->addParams([
+        $this->Request = $this->Request->withAttribute('params',[
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'socialEmail',
@@ -242,7 +242,7 @@ class SocialEmailMiddlewareTest extends TestCase
             'email' => 'example@example.com'
         ]);
         $this->Request = $this->Request->withMethod('POST');
-        $this->Request = $this->Request->addParams([
+        $this->Request = $this->Request->withAttribute('params',[
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'socialEmail',
@@ -322,7 +322,7 @@ class SocialEmailMiddlewareTest extends TestCase
         $uri = new Uri('/auth/facebook');
         $this->Request = $this->Request->withUri($uri);
         $this->Request = $this->Request->withMethod('POST');
-        $this->Request = $this->Request->addParams([
+        $this->Request = $this->Request->withAttribute('params',[
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'socialEmail',
