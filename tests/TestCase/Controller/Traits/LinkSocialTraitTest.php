@@ -167,7 +167,7 @@ class LinkSocialTraitTest extends BaseTraitTest
         Configure::write('OAuth.providers.facebook.options.clientId', 'testclientidtestclientid');
         Configure::write('OAuth.providers.facebook.options.clientSecret', 'testclientsecrettestclientsecret');
 
-        $Table = TableRegistry::get('CakeDC/Users.Users');
+        $Table = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
 
         $Token = new \League\OAuth2\Client\Token\AccessToken([
             'access_token' => 'test-token',
@@ -298,7 +298,7 @@ class LinkSocialTraitTest extends BaseTraitTest
     {
         Configure::write('OAuth.providers.facebook.options.clientId', 'testclientidtestclientid');
         Configure::write('OAuth.providers.facebook.options.clientSecret', 'testclientsecrettestclientsecret');
-        $user = TableRegistry::get('akeDC/Users.Users')->get('00000000-0000-0000-0000-000000000001');
+        $user = TableRegistry::getTableLocator()->get('akeDC/Users.Users')->get('00000000-0000-0000-0000-000000000001');
         $user->setErrors([
             'social_accounts' => [
                 '_existsIn' => __d('CakeDC/Users', 'Social account already associated to another user')
@@ -425,7 +425,7 @@ class LinkSocialTraitTest extends BaseTraitTest
         Configure::write('OAuth.providers.facebook.options.clientId', 'testclientidtestclientid');
         Configure::write('OAuth.providers.facebook.options.clientSecret', 'testclientsecrettestclientsecret');
 
-        $Table = TableRegistry::get('CakeDC/Users.Users');
+        $Table = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
 
         $this->Provider->expects($this->never())
             ->method('getAuthorizationUrl');
@@ -488,7 +488,7 @@ class LinkSocialTraitTest extends BaseTraitTest
         Configure::write('OAuth.providers.facebook.options.clientId', 'testclientidtestclientid');
         Configure::write('OAuth.providers.facebook.options.clientSecret', 'testclientsecrettestclientsecret');
 
-        $Table = TableRegistry::get('CakeDC/Users.Users');
+        $Table = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
 
         $this->Provider->expects($this->never())
             ->method('getAuthorizationUrl');
