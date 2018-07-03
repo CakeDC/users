@@ -16,7 +16,14 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class Plugin extends BasePlugin implements AuthenticationServiceProviderInterface
 {
+    const EVENT_AFTER_LOGIN = 'Users.Authentication.afterLogin';
+    const EVENT_BEFORE_LOGOUT = 'Users.Authentication.beforeLogout';
+    const EVENT_AFTER_LOGOUT = 'Users.Authentication.afterLogout';
+
+    const EVENT_BEFORE_REGISTER = 'Users.Managment.beforeRegister';
+    const EVENT_AFTER_REGISTER = 'Users.Managment.afterRegister';
     const EVENT_AFTER_CHANGE_PASSWORD = 'Users.Managment.afterResetPassword';
+    const EVENT_BEFORE_SOCIAL_LOGIN_USER_CREATE = 'Users.Managment.beforeSocialLoginUserCreate';
 
     /**
      * Returns an authentication service instance.

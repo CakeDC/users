@@ -26,6 +26,7 @@ use Cake\Core\Exception\Exception;
 use Cake\Event\Event;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Utility\Hash;
+use CakeDC\Users\Plugin;
 use League\OAuth1\Client\Server\Twitter;
 
 /**
@@ -184,7 +185,7 @@ trait LoginTrait
      */
     protected function _afterIdentifyUser($user)
     {
-        $event = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_LOGIN, ['user' => $user]);
+        $event = $this->dispatchEvent(Plugin::EVENT_AFTER_LOGIN, ['user' => $user]);
         if (is_array($event->result)) {
             return $this->redirect($event->result);
         }
@@ -201,7 +202,7 @@ trait LoginTrait
     {
         $user = $this->request->getAttribute('identity') ?? [];
 
-        $eventBefore = $this->dispatchEvent(UsersAuthComponent::EVENT_BEFORE_LOGOUT, ['user' => $user]);
+        $eventBefore = $this->dispatchEvent(Plugin::EVENT_BEFORE_LOGOUT, ['user' => $user]);
         if (is_array($eventBefore->result)) {
             return $this->redirect($eventBefore->result);
         }
@@ -209,7 +210,7 @@ trait LoginTrait
         $this->request->getSession()->destroy();
         $this->Flash->success(__d('CakeDC/Users', 'You\'ve successfully logged out'));
 
-        $eventAfter = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_LOGOUT, ['user' => $user]);
+        $eventAfter = $this->dispatchEvent(Plugin::EVENT_AFTER_LOGOUT, ['user' => $user]);
         if (is_array($eventAfter->result)) {
             return $this->redirect($eventAfter->result);
         }

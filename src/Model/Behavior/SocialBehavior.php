@@ -15,6 +15,7 @@ use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\UserNotActiveException;
+use CakeDC\Users\Plugin;
 use CakeDC\Users\Traits\RandomStringTrait;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\EventDispatcherTrait;
@@ -127,7 +128,7 @@ class SocialBehavior extends BaseTokenBehavior
 
         $user = $this->_populateUser($data, $existingUser, $useEmail, $validateEmail, $tokenExpiration);
 
-        $event = $this->dispatchEvent(UsersAuthComponent::EVENT_BEFORE_SOCIAL_LOGIN_USER_CREATE, [
+        $event = $this->dispatchEvent(Plugin::EVENT_BEFORE_SOCIAL_LOGIN_USER_CREATE, [
             'userEntity' => $user,
         ]);
         if ($event->result instanceof EntityInterface) {
