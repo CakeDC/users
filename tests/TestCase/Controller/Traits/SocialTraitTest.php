@@ -54,7 +54,7 @@ class SocialTraitTest extends BaseTraitTest
      */
     public function testSocialEmailHappyGet()
     {
-        $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
+        $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->setMethods(['is'])
             ->getMock();
         $this->Trait->request->expects($this->any())
@@ -81,7 +81,7 @@ class SocialTraitTest extends BaseTraitTest
      */
     public function testSocialEmailHappy()
     {
-        $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
+        $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->setMethods(['is'])
             ->getMock();
         $this->Trait->request->expects($this->any())
@@ -114,7 +114,7 @@ class SocialTraitTest extends BaseTraitTest
      */
     public function testSocialEmailInvalidRecaptcha()
     {
-        $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
+        $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->setMethods(['is'])
             ->getMock();
         $this->Trait->request->expects($this->any())
