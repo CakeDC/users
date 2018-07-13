@@ -16,6 +16,7 @@ use CakeDC\Users\Exception\UserAlreadyActiveException;
 use CakeDC\Users\Exception\UserNotFoundException;
 use Cake\Core\Configure;
 use Cake\Http\Response;
+use CakeDC\Users\Controller\Traits\RegisterTrait;
 use Exception;
 
 /**
@@ -40,6 +41,9 @@ trait UserValidationTrait
                     try {
                         $result = $this->getUsersTable()->validate($token, 'activateUser');
                         if ($result) {
+                            $event = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_REGISTER_CONFIRM, [
+                                'user' => $result
+                            ]);
                             $this->Flash->success(__d('CakeDC/Users', 'User account validated successfully'));
                         } else {
                             $this->Flash->error(__d('CakeDC/Users', 'User account could not be validated'));
