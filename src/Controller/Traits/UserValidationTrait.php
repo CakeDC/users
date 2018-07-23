@@ -11,6 +11,8 @@
 
 namespace CakeDC\Users\Controller\Traits;
 
+use CakeDC\Users\Controller\Component\UsersAuthComponent;
+use Cake\Event\Event;
 use CakeDC\Users\Exception\TokenExpiredException;
 use CakeDC\Users\Exception\UserAlreadyActiveException;
 use CakeDC\Users\Exception\UserNotFoundException;
@@ -39,7 +41,14 @@ trait UserValidationTrait
                 case 'email':
                     try {
                         $result = $this->getUsersTable()->validate($token, 'activateUser');
+
                         if ($result) {
+                            $event = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_REGISTER, [
+                                'user' => $result
+                            ]);
+                            if ($event->result instanceof Response) {
+                                return $this->redirect(['action' => 'login']);
+                            }
                             $this->Flash->success(__d('CakeDC/Users', 'User account validated successfully'));
                         } else {
                             $this->Flash->error(__d('CakeDC/Users', 'User account could not be validated'));

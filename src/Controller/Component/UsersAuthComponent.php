@@ -30,6 +30,7 @@ class UsersAuthComponent extends Component
     const EVENT_AFTER_COOKIE_LOGIN = 'Users.Component.UsersAuth.afterCookieLogin';
     const EVENT_BEFORE_REGISTER = 'Users.Component.UsersAuth.beforeRegister';
     const EVENT_AFTER_REGISTER = 'Users.Component.UsersAuth.afterRegister';
+    const EVENT_AFTER_REGISTER_CONFIRM = 'Users.Component.UsersAuth.afterRegister.confirm';
     const EVENT_BEFORE_LOGOUT = 'Users.Component.UsersAuth.beforeLogout';
     const EVENT_AFTER_LOGOUT = 'Users.Component.UsersAuth.afterLogout';
     const EVENT_BEFORE_SOCIAL_LOGIN_USER_CREATE = 'Users.Component.UsersAuth.beforeSocialLoginUserCreate';
