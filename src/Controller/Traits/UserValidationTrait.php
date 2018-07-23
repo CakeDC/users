@@ -43,7 +43,7 @@ trait UserValidationTrait
                         $result = $this->getUsersTable()->validate($token, 'activateUser');
 
                         if ($result) {
-                            $event = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_REGISTER, [
+                            $event = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_REGISTER_CONFIRM, [
                                 'user' => $result
                             ]);
                             if ($event->result instanceof Response) {
