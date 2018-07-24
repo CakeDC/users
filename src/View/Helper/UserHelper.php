@@ -146,7 +146,10 @@ class UserHelper extends Helper
 
         return $this->Html->tag('div', '', [
             'class' => 'g-recaptcha',
-            'data-sitekey' => Configure::read('Users.reCaptcha.key')
+            'data-sitekey' => Configure::read('Users.reCaptcha.key'),
+            'data-theme' => Configure::read('Users.reCaptcha.theme') ?: 'light',
+            'data-size' => Configure::read('Users.reCaptcha.size') ?: 'normal',
+            'data-tabindex' => Configure::read('Users.reCaptcha.tabindex') ?: '3',
         ]);
     }
 
