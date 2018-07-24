@@ -55,7 +55,7 @@ class UserHelper extends Helper
         $providerClass = 'btn btn-social btn-' . strtolower($name) . ((Hash::get($options, 'class')) ? ' ' . Hash::get($options, 'class') : '');
 
         return $this->Html->link($icon . $providerTitle, "/auth/$name", [
-            'escape' => false, 'class' => $providerClass
+            'escape' => false, 'class' => $providerClass,
         ]);
     }
 
@@ -98,7 +98,7 @@ class UserHelper extends Helper
     public function logout($message = null, $options = [])
     {
         return $this->AuthLink->link(empty($message) ? __d('CakeDC/Users', 'Logout') : $message, [
-            'plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'logout'
+            'plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'logout',
         ], $options);
     }
 
@@ -213,7 +213,7 @@ class UserHelper extends Helper
             "/link-social/$name",
             [
                 'escape' => false,
-                'class' => $linkClass
+                'class' => $linkClass,
             ]
         );
     }
@@ -233,7 +233,7 @@ class UserHelper extends Helper
         $html = "";
         $connectedProviders = array_map(function ($item) {
             return strtolower($item->provider);
-        }, (array)$socialAccounts);
+        }, (array) $socialAccounts);
 
         $providers = Configure::read('OAuth.providers');
         foreach ($providers as $name => $provider) {
