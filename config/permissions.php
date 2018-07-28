@@ -71,9 +71,6 @@ return [
                 'requestResetPassword',
                 // UserValidationTrait used in PasswordManagementTrait
                 'resendTokenValidation',
-                // Social
-                'endpoint',
-                'authenticated',
             ],
             'bypassAuth' => true,
         ],
