@@ -1,8 +1,8 @@
 <?php
 namespace CakeDC\Users\Social;
 
-use CakeDC\Users\Auth\Exception\InvalidProviderException;
-use CakeDC\Users\Auth\Exception\InvalidSettingsException;
+use CakeDC\Users\Exception\InvalidProviderException;
+use CakeDC\Users\Exception\InvalidSettingsException;
 use Cake\Core\Configure;
 use Cake\Utility\Hash;
 
@@ -91,8 +91,8 @@ class ProviderConfig
      * @param mixed $value Value.
      * @param string $key Key.
      * @return void
-     * @throws \CakeDC\Users\Auth\Exception\InvalidProviderException
-     * @throws \CakeDC\Users\Auth\Exception\InvalidSettingsException
+     * @throws \CakeDC\Users\Exception\InvalidProviderException
+     * @throws \CakeDC\Users\Exception\InvalidSettingsException
      */
     protected function _validateConfig(&$value, $key)
     {

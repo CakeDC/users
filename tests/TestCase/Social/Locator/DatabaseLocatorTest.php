@@ -2,7 +2,7 @@
 
 namespace CakeDC\Users\Test\TestCase\Social\Locator;
 
-use CakeDC\Users\Auth\Exception\InvalidSettingsException;
+use CakeDC\Users\Exception\InvalidSettingsException;
 use CakeDC\Users\Social\Locator\DatabaseLocator;
 use CakeDC\Users\Social\Mapper\Facebook;
 use Cake\Datasource\Exception\RecordNotFoundException;
