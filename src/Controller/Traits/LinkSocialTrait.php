@@ -41,7 +41,7 @@ trait LinkSocialTrait
         }
         $authUrl = $provider->getAuthorizationUrl($temporaryCredentials);
         if (empty($temporaryCredentials)) {
-            $this->request->session()->write('SocialLink.oauth2state', $provider->getState());
+            $this->request->getSession()->write('SocialLink.oauth2state', $provider->getState());
         }
 
         return $this->redirect($authUrl);
@@ -228,8 +228,8 @@ trait LinkSocialTrait
         }
 
         $sessionKey = 'SocialLink.oauth2state';
-        $oauth2state = $this->request->session()->read($sessionKey);
-        $this->request->session()->delete($sessionKey);
+        $oauth2state = $this->request->getSession()->read($sessionKey);
+        $this->request->getSession()->delete($sessionKey);
         $state = $queryParams['state'];
 
         return $oauth2state === $state;
