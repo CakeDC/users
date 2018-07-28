@@ -41,7 +41,7 @@ class ServiceFactoryTest extends TestCase
         $config = [
             'service' => 'CakeDC\Users\Social\Service\OAuth2Service',
             'className' => 'League\OAuth2\Client\Provider\Facebook',
-            'mapper' => 'CakeDC\Users\Auth\Social\Mapper\Facebook',
+            'mapper' => 'CakeDC\Users\Social\Mapper\Facebook',
             'options' => [
                 'state' => '__TEST_STATE__',
                 'graphApiVersion' => 'v2.8',
@@ -82,7 +82,7 @@ class ServiceFactoryTest extends TestCase
         $expected = [
             'service' => 'CakeDC\Users\Social\Service\OAuth2Service',
             'className' => 'League\OAuth2\Client\Provider\Facebook',
-            'mapper' => 'CakeDC\Users\Auth\Social\Mapper\Facebook',
+            'mapper' => 'CakeDC\Users\Social\Mapper\Facebook',
             'options' => [
                 'state' => '__TEST_STATE__',
                 'graphApiVersion' => 'v2.8',
@@ -114,7 +114,7 @@ class ServiceFactoryTest extends TestCase
         $config = [
             'service' => 'CakeDC\Users\Social\Service\OAuth2Service',
             'className' => 'League\OAuth2\Client\Provider\Facebook',
-            'mapper' => 'CakeDC\Users\Auth\Social\Mapper\Facebook',
+            'mapper' => 'CakeDC\Users\Social\Mapper\Facebook',
             'options' => [
                 'state' => '__TEST_STATE__',
                 'graphApiVersion' => 'v2.8',
@@ -156,7 +156,7 @@ class ServiceFactoryTest extends TestCase
         $expected = [
             'service' => 'CakeDC\Users\Social\Service\OAuth2Service',
             'className' => 'League\OAuth2\Client\Provider\Facebook',
-            'mapper' => 'CakeDC\Users\Auth\Social\Mapper\Facebook',
+            'mapper' => 'CakeDC\Users\Social\Mapper\Facebook',
             'options' => [
                 'state' => '__TEST_STATE__',
                 'graphApiVersion' => 'v2.8',
@@ -188,7 +188,7 @@ class ServiceFactoryTest extends TestCase
         $config = [
             'service' => 'CakeDC\Users\Social\Service\OAuth1Service',
             'className' => 'League\OAuth1\Client\Server\Twitter',
-            'mapper' => 'CakeDC\Users\Auth\Social\Mapper\Twitter',
+            'mapper' => 'CakeDC\Users\Social\Mapper\Twitter',
             'options' => [
                 'redirectUri' => '/auth/twitter',
                 'linkSocialUri' => '/link-social/twitter',

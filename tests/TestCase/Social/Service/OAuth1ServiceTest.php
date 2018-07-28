@@ -15,7 +15,7 @@ namespace CakeDC\Users\Test\TestCase\Social\Service;
 use Cake\Core\Configure;
 use Cake\Http\ServerRequest;
 use Cake\Http\ServerRequestFactory;
-use Cake\Network\Session;
+use Cake\Http\Session;
 use Cake\TestSuite\TestCase;
 use CakeDC\Users\Social\Service\OAuth1Service;
 use CakeDC\Users\Social\Service\ServiceInterface;
@@ -67,7 +67,7 @@ class OAuth1ServiceTest extends TestCase
         $config = [
             'service' => 'CakeDC\Users\Social\Service\OAuth1Service',
             'className' => $this->Provider,
-            'mapper' => 'CakeDC\Users\Auth\Social\Mapper\Twitter',
+            'mapper' => 'CakeDC\Users\Social\Mapper\Twitter',
             'options' => [],
             'collaborators' => [],
             'signature' => null,
@@ -107,7 +107,7 @@ class OAuth1ServiceTest extends TestCase
 
         $service = new OAuth1Service([
             'className' => 'League\OAuth1\Client\Server\Twitter',
-            'mapper' => 'CakeDC\Users\Auth\Social\Mapper\Twitter',
+            'mapper' => 'CakeDC\Users\Social\Mapper\Twitter',
             'options' => [
                 'redirectUri' => '/auth/twitter',
                 'linkSocialUri' => '/link-social/twitter',

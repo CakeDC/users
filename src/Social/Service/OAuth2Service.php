@@ -2,8 +2,8 @@
 
 namespace CakeDC\Users\Social\Service;
 
+use Cake\Http\Exception\BadRequestException;
 use Cake\Http\ServerRequest;
-use Cake\Network\Exception\BadRequestException;
 use League\OAuth2\Client\Provider\AbstractProvider;
 
 class OAuth2Service extends OAuthServiceAbstract

@@ -9,9 +9,9 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace CakeDC\Users\Test\TestCase\Auth\Social\Mapper;
+namespace CakeDC\Users\Test\TestCase\Social\Mapper;
 
-use CakeDC\Users\Auth\Social\Mapper\Facebook;
+use CakeDC\Users\Social\Mapper\Facebook;
 use Cake\TestSuite\TestCase;
 
 class FacebookTest extends TestCase

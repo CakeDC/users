@@ -9,7 +9,7 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace CakeDC\Users\Auth\Social\Util;
+namespace CakeDC\Users\Social\Util;
 
 use League\OAuth2\Client\Provider\AbstractProvider;
 use ReflectionClass;
