@@ -8,6 +8,8 @@ use Authentication\Identifier\JwtSubjectIdentifier;
 use Authentication\Identifier\PasswordIdentifier;
 use Authentication\Identifier\TokenIdentifier;
 use Authentication\Middleware\AuthenticationMiddleware;
+use Authorization\AuthorizationService;
+use Authorization\Middleware\AuthorizationMiddleware;
 use Cake\Core\Configure;
 use Cake\Http\MiddlewareQueue;
 use Cake\Http\Response;
@@ -37,6 +39,63 @@ class PluginTest extends IntegrationTestCase
     {
         Configure::write('Users.Social.login', true);
         Configure::write('Users.GoogleAuthenticator.login', true);
+        Configure::write('Auth.Authorization.enable', true);
+        Configure::write('Auth.Authorization.loadAuthorizationMiddleware', true);
+        Configure::write('Auth.Authorization.loadRbacMiddleware', false);
+
+        $plugin = new Plugin();
+
+        $middleware = new MiddlewareQueue();
+
+        $middleware = $plugin->middleware($middleware);
+        $this->assertInstanceOf(SocialAuthMiddleware::class, $middleware->get(0));
+        $this->assertInstanceOf(SocialEmailMiddleware::class, $middleware->get(1));
+        $this->assertInstanceOf(AuthenticationMiddleware::class, $middleware->get(2));
+        $this->assertInstanceOf(GoogleAuthenticatorMiddleware::class, $middleware->get(3));
+        $this->assertInstanceOf(AuthorizationMiddleware::class, $middleware->get(4));
+        $this->assertEquals(5, $middleware->count());
+    }
+
+    /**
+     * testMiddleware
+     *
+     * @return void
+     */
+    public function testMiddlewareAuthorizationMiddlewareAndRbacMiddleware()
+    {
+        Configure::write('Users.Social.login', true);
+        Configure::write('Users.GoogleAuthenticator.login', true);
+        Configure::write('Auth.Authorization.enable', true);
+        Configure::write('Auth.Authorization.loadAuthorizationMiddleware', true);
+        Configure::write('Auth.Authorization.loadRbacMiddleware', true);
+
+        $plugin = new Plugin();
+
+        $middleware = new MiddlewareQueue();
+
+        $middleware = $plugin->middleware($middleware);
+        $this->assertInstanceOf(SocialAuthMiddleware::class, $middleware->get(0));
+        $this->assertInstanceOf(SocialEmailMiddleware::class, $middleware->get(1));
+        $this->assertInstanceOf(AuthenticationMiddleware::class, $middleware->get(2));
+        $this->assertInstanceOf(GoogleAuthenticatorMiddleware::class, $middleware->get(3));
+        $this->assertInstanceOf(AuthorizationMiddleware::class, $middleware->get(4));
+        $this->assertInstanceOf(RbacMiddleware::class, $middleware->get(5));
+        $this->assertEquals(6, $middleware->count());
+    }
+
+    /**
+     * testMiddleware
+     *
+     * @return void
+     */
+    public function testMiddlewareAuthorizationOnlyRbacMiddleware()
+    {
+        Configure::write('Users.Social.login', true);
+        Configure::write('Users.GoogleAuthenticator.login', true);
+        Configure::write('Auth.Authorization.enable', true);
+        Configure::write('Auth.Authorization.loadAuthorizationMiddleware', false);
+        Configure::write('Auth.Authorization.loadRbacMiddleware', true);
+
         $plugin = new Plugin();
 
         $middleware = new MiddlewareQueue();
@@ -47,6 +106,32 @@ class PluginTest extends IntegrationTestCase
         $this->assertInstanceOf(AuthenticationMiddleware::class, $middleware->get(2));
         $this->assertInstanceOf(GoogleAuthenticatorMiddleware::class, $middleware->get(3));
         $this->assertInstanceOf(RbacMiddleware::class, $middleware->get(4));
+        $this->assertEquals(5, $middleware->count());
+    }
+
+    /**
+     * testMiddleware without authorization
+     *
+     * @return void
+     */
+    public function testMiddlewareWithoutAuhorization()
+    {
+        Configure::write('Users.Social.login', true);
+        Configure::write('Users.GoogleAuthenticator.login', true);
+        Configure::write('Auth.Authorization.enable', false);
+        Configure::write('Auth.Authorization.loadAuthorizationMiddleware', true);//ignore
+        Configure::write('Auth.Authorization.loadRbacMiddleware', true);//ignore
+
+        $plugin = new Plugin();
+
+        $middleware = new MiddlewareQueue();
+
+        $middleware = $plugin->middleware($middleware);
+        $this->assertInstanceOf(SocialAuthMiddleware::class, $middleware->get(0));
+        $this->assertInstanceOf(SocialEmailMiddleware::class, $middleware->get(1));
+        $this->assertInstanceOf(AuthenticationMiddleware::class, $middleware->get(2));
+        $this->assertInstanceOf(GoogleAuthenticatorMiddleware::class, $middleware->get(3));
+        $this->assertEquals(4, $middleware->count());
     }
 
     /**
@@ -58,6 +143,9 @@ class PluginTest extends IntegrationTestCase
     {
         Configure::write('Users.Social.login', false);
         Configure::write('Users.GoogleAuthenticator.login', true);
+        Configure::write('Auth.Authorization.enable', true);
+        Configure::write('Auth.Authorization.loadAuthorizationMiddleware', true);
+        Configure::write('Auth.Authorization.loadRbacMiddleware', false);
         $plugin = new Plugin();
 
         $middleware = new MiddlewareQueue();
@@ -65,7 +153,7 @@ class PluginTest extends IntegrationTestCase
         $middleware = $plugin->middleware($middleware);
         $this->assertInstanceOf(AuthenticationMiddleware::class, $middleware->get(0));
         $this->assertInstanceOf(GoogleAuthenticatorMiddleware::class, $middleware->get(1));
-        $this->assertInstanceOf(RbacMiddleware::class, $middleware->get(2));
+        $this->assertInstanceOf(AuthorizationMiddleware::class, $middleware->get(2));
     }
 
     /**
@@ -77,6 +165,9 @@ class PluginTest extends IntegrationTestCase
     {
         Configure::write('Users.Social.login', true);
         Configure::write('Users.GoogleAuthenticator.login', false);
+        Configure::write('Auth.Authorization.enable', true);
+        Configure::write('Auth.Authorization.loadAuthorizationMiddleware', true);
+        Configure::write('Auth.Authorization.loadRbacMiddleware', false);
         $plugin = new Plugin();
 
         $middleware = new MiddlewareQueue();
@@ -85,7 +176,7 @@ class PluginTest extends IntegrationTestCase
         $this->assertInstanceOf(SocialAuthMiddleware::class, $middleware->get(0));
         $this->assertInstanceOf(SocialEmailMiddleware::class, $middleware->get(1));
         $this->assertInstanceOf(AuthenticationMiddleware::class, $middleware->get(2));
-        $this->assertInstanceOf(RbacMiddleware::class, $middleware->get(3));
+        $this->assertInstanceOf(AuthorizationMiddleware::class, $middleware->get(3));
     }
 
     /**
@@ -97,13 +188,16 @@ class PluginTest extends IntegrationTestCase
     {
         Configure::write('Users.Social.login', false);
         Configure::write('Users.GoogleAuthenticator.login', false);
+        Configure::write('Auth.Authorization.enable', true);
+        Configure::write('Auth.Authorization.loadAuthorizationMiddleware', true);
+        Configure::write('Auth.Authorization.loadRbacMiddleware', false);
         $plugin = new Plugin();
 
         $middleware = new MiddlewareQueue();
 
         $middleware = $plugin->middleware($middleware);
         $this->assertInstanceOf(AuthenticationMiddleware::class, $middleware->get(0));
-        $this->assertInstanceOf(RbacMiddleware::class, $middleware->get(1));
+        $this->assertInstanceOf(AuthorizationMiddleware::class, $middleware->get(1));
     }
 
 
@@ -273,5 +367,17 @@ class PluginTest extends IntegrationTestCase
                 'skipGoogleVerify' => true
             ]
         ];
+    }
+
+    /**
+     * testGetAuthorizationService
+     *
+     * @return void
+     */
+    public function testGetAuthorizationService()
+    {
+        $plugin = new Plugin();
+        $service = $plugin->getAuthorizationService(new ServerRequest(), new Response());
+        $this->assertInstanceOf(AuthorizationService::class, $service);
     }
 }

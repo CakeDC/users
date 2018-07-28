@@ -4,8 +4,13 @@ namespace CakeDC\Users;
 use Authentication\AuthenticationServiceInterface;
 use Authentication\AuthenticationServiceProviderInterface;
 use Authentication\Middleware\AuthenticationMiddleware;
+use Authorization\AuthorizationService;
+use Authorization\AuthorizationServiceProviderInterface;
+use Authorization\Middleware\AuthorizationMiddleware;
+use Authorization\Policy\OrmResolver;
 use Cake\Core\BasePlugin;
 use Cake\Core\Configure;
+use Cake\Http\MiddlewareQueue;
 use CakeDC\Auth\Middleware\RbacMiddleware;
 use CakeDC\Users\Authentication\AuthenticationService;
 use CakeDC\Users\Middleware\GoogleAuthenticatorMiddleware;
@@ -14,7 +19,7 @@ use CakeDC\Users\Middleware\SocialEmailMiddleware;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-class Plugin extends BasePlugin implements AuthenticationServiceProviderInterface
+class Plugin extends BasePlugin implements AuthenticationServiceProviderInterface, AuthorizationServiceProviderInterface
 {
     const EVENT_AFTER_LOGIN = 'Users.Authentication.afterLogin';
     const EVENT_BEFORE_LOGOUT = 'Users.Authentication.beforeLogout';
@@ -38,6 +43,17 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
     {
         return $this->authentication();
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAuthorizationService(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        $resolver = new OrmResolver();
+
+        return new AuthorizationService($resolver);
+    }
+
 
     /**
      * load authenticators and identifiers
@@ -95,14 +111,37 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
             $middlewareQueue->add(GoogleAuthenticatorMiddleware::class);
         }
 
-        $middlewareQueue->add(new RbacMiddleware(null, [
-            'unauthorizedRedirect' => [
-                'prefix' => false,
-                'plugin' => 'CakeDC/Users',
-                'controller' => 'Users',
-                'action' => 'login',
-            ]
-        ]));
+        $middlewareQueue = $this->addAuthorizationMiddleware($middlewareQueue);
+
+        return $middlewareQueue;
+    }
+
+    /**
+     * Add authorization middleware based on Auth.Authorization
+     *
+     * @param MiddlewareQueue $middlewareQueue
+     * @return MiddlewareQueue
+     */
+    protected function addAuthorizationMiddleware(MiddlewareQueue $middlewareQueue)
+    {
+        if (Configure::read('Auth.Authorization.enable') === false) {
+            return $middlewareQueue;
+        }
+
+        if (Configure::read('Auth.Authorization.loadAuthorizationMiddleware') !== false) {
+            $middlewareQueue->add(new AuthorizationMiddleware($this));
+        }
+
+        if (Configure::read('Auth.Authorization.loadRbacMiddleware') !== false) {
+            $middlewareQueue->add(new RbacMiddleware(null, [
+                'unauthorizedRedirect' => [
+                    'prefix' => false,
+                    'plugin' => 'CakeDC/Users',
+                    'controller' => 'Users',
+                    'action' => 'login',
+                ]
+            ]));
+        }
 
         return $middlewareQueue;
     }

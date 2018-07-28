@@ -125,7 +125,6 @@ $config = [
             'prefix' => false,
         ],
     ],
-    // default configuration used to auto-load the Auth Component, override to change the way Auth works
     'Auth' => [
         'AuthenticationComponent' => [
             'loginAction' => '/login',
@@ -163,6 +162,14 @@ $config = [
                 'tokenField' => 'api_token'
             ]
         ],
+        "Authorization" => [
+            'enable' => true,
+            'loadAuthorizationMiddleware' => true,
+            'loadRbacMiddleware' => false,
+        ],
+        'AuthorizationComponent' => [
+            'enabled' => true,
+        ]
     ],
     'SocialAuthMiddleware' => [
         'sessionAuthKey' => 'Auth',
