@@ -15,9 +15,6 @@ use Authentication\Identity;
 use CakeDC\Auth\Rbac\Rbac;
 use CakeDC\Users\Model\Entity\User;
 use CakeDC\Users\View\Helper\AuthLinkHelper;
-use CakeDC\Users\View\Helper\UserHelper;
-use Cake\Event\Event;
-use Cake\Event\EventManager;
 use Cake\TestSuite\TestCase;
 use Cake\View\View;
 

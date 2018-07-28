@@ -12,17 +12,8 @@
 namespace CakeDC\Users\Test\TestCase\Controller\Component;
 
 use CakeDC\Users\Controller\Component\GoogleAuthenticatorComponent;
-use CakeDC\Users\Exception\MissingEmailException;
-use CakeDC\Users\Exception\UserNotFoundException;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
-use Cake\Core\Plugin;
-use Cake\Database\Exception;
-use Cake\Event\Event;
-use Cake\Http\Session;
-use Cake\Network\Request;
-use Cake\ORM\Entity;
-use Cake\Routing\Exception\MissingRouteException;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Security;

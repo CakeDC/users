@@ -11,7 +11,6 @@
 use Cake\Core\Configure;
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
-use CakeDC\Users\Middleware\SocialAuthMiddleware;
 
 Router::plugin('CakeDC/Users', ['path' => '/users'], function (RouteBuilder $routes) {
     $routes->fallbacks('DashedRoute');
