@@ -171,6 +171,7 @@ $config = [
             'unauthorizedHandler' => [
                 'exceptions' => [
                     'MissingIdentityException' => 'Authorization\Exception\MissingIdentityException',
+                    'ForbiddenException' => 'Authorization\Exception\ForbiddenException',
                 ],
                 'className' => 'Authorization.CakeRedirect',
                 'url' => [
