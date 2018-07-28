@@ -18,7 +18,6 @@ use Cake\Core\Configure;
 use Cake\Event\EventManager;
 use Cake\Http\ServerRequest;
 use Cake\Mailer\Email;
-use Cake\Network\Request;
 use Cake\TestSuite\TestCase;
 
 class SocialAccountsControllerTest extends TestCase

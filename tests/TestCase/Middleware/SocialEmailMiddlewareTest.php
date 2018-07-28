@@ -3,9 +3,9 @@
 namespace CakeDC\Users\Test\TestCase\Middleware;
 
 use Cake\Core\Configure;
+use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
 use Cake\Http\ServerRequestFactory;
-use Cake\Network\Exception\NotFoundException;
 use Cake\TestSuite\TestCase;
 use CakeDC\Users\Social\Mapper\Facebook;
 use CakeDC\Users\Middleware\SocialEmailMiddleware;

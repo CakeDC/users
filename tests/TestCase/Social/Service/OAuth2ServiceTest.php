@@ -3,10 +3,10 @@
 namespace CakeDC\Users\Test\TestCase\Social\Service;
 
 use Cake\Core\Configure;
+use Cake\Http\Exception\BadRequestException;
 use Cake\Http\ServerRequest;
 use Cake\Http\ServerRequestFactory;
-use Cake\Network\Exception\BadRequestException;
-use Cake\Network\Session;
+use Cake\Http\Session;
 use Cake\TestSuite\TestCase;
 use CakeDC\Users\Social\Service\OAuth2Service;
 use CakeDC\Users\Social\Service\ServiceInterface;
