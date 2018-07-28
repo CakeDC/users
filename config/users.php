@@ -167,6 +167,19 @@ $config = [
             'loadAuthorizationMiddleware' => true,
             'loadRbacMiddleware' => false,
         ],
+        'AuthorizationMiddleware' => [
+            'unauthorizedHandler' => [
+                'exceptions' => [
+                    'MissingIdentityException' => 'Authorization\Exception\MissingIdentityException',
+                ],
+                'className' => 'Authorization.CakeRedirect',
+                'url' => [
+                    'plugin' => 'CakeDC/Users',
+                    'controller' => 'Users',
+                    'action' => 'login',
+                ]
+            ]
+        ],
         'AuthorizationComponent' => [
             'enabled' => true,
         ]
