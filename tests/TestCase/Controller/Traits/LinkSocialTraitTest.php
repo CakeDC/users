@@ -283,7 +283,6 @@ class LinkSocialTraitTest extends BaseTraitTest
             'active' => true
         ];
         foreach ($expected as $property => $value) {
-            $check = $actual->$property;
             $this->assertEquals($value, $actual->$property);
         }
         $this->assertEquals($tokenExpires, $actual->token_expires->format('Y-m-d H:i:s'));
@@ -487,8 +486,6 @@ class LinkSocialTraitTest extends BaseTraitTest
     {
         Configure::write('OAuth.providers.facebook.options.clientId', 'testclientidtestclientid');
         Configure::write('OAuth.providers.facebook.options.clientSecret', 'testclientsecrettestclientsecret');
-
-        $Table = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
 
         $this->Provider->expects($this->never())
             ->method('getAuthorizationUrl');

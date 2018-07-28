@@ -197,7 +197,6 @@ class LoginTraitTest extends BaseTraitTest
      */
     public function testFailedSocialUserAccountNotActive()
     {
-        $event = new Entity();
         $data = [
             'id' => 111111,
             'username' => 'user-1'
@@ -222,7 +221,6 @@ class LoginTraitTest extends BaseTraitTest
      */
     public function testFailedSocialUserAccount()
     {
-        $event = new Entity();
         $data = [
             'id' => 111111,
             'username' => 'user-1'

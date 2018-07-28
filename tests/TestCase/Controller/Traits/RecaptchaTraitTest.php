@@ -117,7 +117,25 @@ class ReCaptchaTraitTest extends TestCase
 
     public function testValidateReCaptchaFalse()
     {
-        $trait = $this->getMockBuilder('CakeDC\Users\Controller\Traits\ReCaptchaTrait')->getMockForTrait();
+        $ReCaptcha = $this->getMockBuilder('ReCaptcha\ReCaptcha')
+            ->setMethods(['verify'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $Response = $this->getMockBuilder('ReCaptcha\Response')
+            ->setMethods(['isSuccess'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $Response->expects($this->once())
+            ->method('isSuccess')
+            ->will($this->returnValue(false));
+        $ReCaptcha->expects($this->once())
+            ->method('verify')
+            ->with('value')
+            ->will($this->returnValue($Response));
+        $this->Trait->expects($this->once())
+            ->method('_getReCaptchaInstance')
+            ->will($this->returnValue($ReCaptcha));
+
         $this->assertFalse($this->Trait->validateReCaptcha('value', '255.255.255.255'));
     }
 }

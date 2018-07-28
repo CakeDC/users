@@ -279,6 +279,11 @@ class PluginTest extends IntegrationTestCase
                 'skipGoogleVerify' => true
             ]
         ];
+        $actual = [];
+        foreach ($authenticators as $key => $value) {
+            $actual[get_class($value)] = $value->getConfig();
+        }
+        $this->assertEquals($expected, $actual);
 
         /**
          * @var \Authentication\Authenticator\AuthenticatorCollection $authenticators
@@ -373,6 +378,11 @@ class PluginTest extends IntegrationTestCase
                 'skipGoogleVerify' => true
             ]
         ];
+        $actual = [];
+        foreach ($authenticators as $key => $value) {
+            $actual[get_class($value)] = $value->getConfig();
+        }
+        $this->assertEquals($expected, $actual);
     }
 
     /**
