@@ -9,9 +9,9 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace CakeDC\Users\Test\TestCase\Auth\Exception;
+namespace CakeDC\Users\Test\TestCase\Exception;
 
-use CakeDC\Users\Auth\Exception\MissingEventListenerException;
+use CakeDC\Users\Exception\MissingEventListenerException;
 use Cake\TestSuite\TestCase;
 
 class MissingEventListenerExceptionTest extends TestCase

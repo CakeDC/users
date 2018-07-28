@@ -9,14 +9,14 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace CakeDC\Users\Test\TestCase\Auth\Exception;
+namespace CakeDC\Users\Test\TestCase\Exception;
 
-use CakeDC\Users\Auth\Exception\InvalidProviderException;
+use CakeDC\Users\Exception\InvalidSettingsException;
 use Cake\TestSuite\TestCase;
 
-class InvalidProviderExceptionTest extends TestCase
+class MissingProviderConfigurationExceptionTest extends TestCase
 {
-    protected $_messageTemplate = 'Invalid provider or missing class (%s)';
+    protected $_messageTemplate = 'No OAuth providers configured.';
     protected $code = 500;
 
     /**
@@ -40,7 +40,7 @@ class InvalidProviderExceptionTest extends TestCase
      */
     public function testConstruct()
     {
-        $exception = new InvalidProviderException('message');
+        $exception = new InvalidSettingsException('message');
         $this->assertEquals('message', $exception->getMessage());
     }
 }

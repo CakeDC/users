@@ -9,9 +9,9 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace CakeDC\Users\Test\TestCase\Auth\Exception;
+namespace CakeDC\Users\Test\TestCase\Exception;
 
-use CakeDC\Users\Auth\Exception\InvalidSettingsException;
+use CakeDC\Users\Exception\InvalidSettingsException;
 use Cake\TestSuite\TestCase;
 
 class InvalidSettingsExceptionTest extends TestCase

@@ -9,7 +9,7 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace CakeDC\Users\Auth\Exception;
+namespace CakeDC\Users\Exception;
 
 use Cake\Core\Exception\Exception;
 

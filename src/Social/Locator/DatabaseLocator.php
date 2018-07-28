@@ -1,7 +1,7 @@
 <?php
 namespace CakeDC\Users\Social\Locator;
 
-use CakeDC\Users\Auth\Exception\InvalidSettingsException;
+use CakeDC\Users\Exception\InvalidSettingsException;
 use CakeDC\Users\Model\Entity\User;
 use CakeDC\Users\Plugin;
 use Cake\Core\Configure;
