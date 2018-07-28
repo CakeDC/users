@@ -60,6 +60,7 @@ return [
                 // LoginTrait
                 'socialLogin',
                 'login',
+                'logout',
                 'socialEmail',
                 'verify',
                 // RegisterTrait
@@ -71,6 +72,7 @@ return [
                 'requestResetPassword',
                 // UserValidationTrait used in PasswordManagementTrait
                 'resendTokenValidation',
+                'linkSocial'
             ],
             'bypassAuth' => true,
         ],
