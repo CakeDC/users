@@ -9,7 +9,7 @@ class RbacPolicy
     /**
      * Check rbac permission
      *
-     * @param \Authorization\IdentityInterface|null $identity
+     * @param \Authorization\IdentityInterface|null $identity user identity
      * @param ServerRequestInterface $resource server request
      * @return bool
      */

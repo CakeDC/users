@@ -9,16 +9,15 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-
 namespace CakeDC\Users\Test\TestCase\Social\Service;
 
+use CakeDC\Users\Social\Service\OAuth1Service;
+use CakeDC\Users\Social\Service\ServiceInterface;
 use Cake\Core\Configure;
 use Cake\Http\ServerRequest;
 use Cake\Http\ServerRequestFactory;
 use Cake\Http\Session;
 use Cake\TestSuite\TestCase;
-use CakeDC\Users\Social\Service\OAuth1Service;
-use CakeDC\Users\Social\Service\ServiceInterface;
 use League\OAuth1\Client\Credentials\TemporaryCredentials;
 use League\OAuth1\Client\Credentials\TokenCredentials;
 use League\OAuth1\Client\Server\User;
@@ -58,7 +57,7 @@ class OAuth1ServiceTest extends TestCase
                 'linkSocialUri' => '/link-social/twitter',
                 'callback_uri' => '/callback-link-social/twitter',
                 'identifier' => '20003030300303',
-                'secret' => 'weakpassword','identifier' => 'clientId',
+                'secret' => 'weakpassword', 'identifier' => 'clientId',
             ],
         ])->setMethods([
             'getTemporaryCredentials', 'getAuthorizationUrl', 'getTokenCredentials', 'getUserDetails'
@@ -104,7 +103,6 @@ class OAuth1ServiceTest extends TestCase
      */
     public function testConstruct()
     {
-
         $service = new OAuth1Service([
             'className' => 'League\OAuth1\Client\Server\Twitter',
             'mapper' => 'CakeDC\Users\Social\Mapper\Twitter',
@@ -209,7 +207,6 @@ class OAuth1ServiceTest extends TestCase
 
         $result = $this->Service->isGetUserStep($this->Request);
         $this->assertFalse($result);
-
     }
 
     /**
@@ -219,7 +216,6 @@ class OAuth1ServiceTest extends TestCase
      */
     public function testIsGetUserStepWhenOauthTokenEmpty()
     {
-
         $uri = new Uri('/login');
 
         $sessionConfig = (array)Configure::read('Session') + [
@@ -246,7 +242,6 @@ class OAuth1ServiceTest extends TestCase
      */
     public function testIsGetUserStepWhenOauthVerifierEmpty()
     {
-
         $uri = new Uri('/login');
 
         $sessionConfig = (array)Configure::read('Session') + [
@@ -273,7 +268,6 @@ class OAuth1ServiceTest extends TestCase
      */
     public function testIsGetUserStepWhenOauthKeysNotPresent()
     {
-
         $uri = new Uri('/login');
 
         $sessionConfig = (array)Configure::read('Session') + [
@@ -284,7 +278,6 @@ class OAuth1ServiceTest extends TestCase
             'uri' => $uri,
             'session' => $session,
         ]);
-
 
         $result = $this->Service->isGetUserStep($this->Request);
         $this->assertFalse($result);

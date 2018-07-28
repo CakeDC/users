@@ -11,8 +11,8 @@
 
 namespace CakeDC\Users\Controller\Traits;
 
-use Cake\Utility\Hash;
 use CakeDC\Users\Social\Service\ServiceFactory;
+use Cake\Utility\Hash;
 
 /**
  * Ações para "linkar" contas sociais

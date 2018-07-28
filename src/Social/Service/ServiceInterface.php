@@ -1,7 +1,6 @@
 <?php
 namespace CakeDC\Users\Social\Service;
 
-
 use Cake\Http\ServerRequest;
 
 interface ServiceInterface
@@ -54,5 +53,4 @@ interface ServiceInterface
      * @return mixed Config value being read.
      */
     public function getConfig($key = null, $default = null);
-
 }

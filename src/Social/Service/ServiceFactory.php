@@ -2,9 +2,9 @@
 
 namespace CakeDC\Users\Social\Service;
 
+use CakeDC\Users\Social\ProviderConfig;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\ServerRequest;
-use CakeDC\Users\Social\ProviderConfig;
 
 class ServiceFactory
 {
@@ -12,7 +12,7 @@ class ServiceFactory
     protected $redirectUriField = 'redirectUri';
 
     /**
-     * @param string $redirectUriField
+     * @param string $redirectUriField field used for redirect uri
      *
      * @return self
      */

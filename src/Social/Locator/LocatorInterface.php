@@ -2,7 +2,6 @@
 
 namespace CakeDC\Users\Social\Locator;
 
-
 use CakeDC\Users\Model\Entity\User;
 
 interface LocatorInterface

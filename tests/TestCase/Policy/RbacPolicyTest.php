@@ -3,11 +3,11 @@
 namespace CakeDC\Users\Test\TestCase\Policy;
 
 use Authentication\Identity;
-use Cake\Http\ServerRequestFactory;
-use Cake\TestSuite\TestCase;
 use CakeDC\Auth\Rbac\Rbac;
 use CakeDC\Users\Model\Entity\User;
 use CakeDC\Users\Policy\RbacPolicy;
+use Cake\Http\ServerRequestFactory;
+use Cake\TestSuite\TestCase;
 
 class RbacPolicyTest extends TestCase
 {

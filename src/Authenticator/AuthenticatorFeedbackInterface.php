@@ -2,7 +2,6 @@
 
 namespace CakeDC\Users\Authenticator;
 
-
 use Authentication\Authenticator\Result;
 
 interface AuthenticatorFeedbackInterface
@@ -13,5 +12,4 @@ interface AuthenticatorFeedbackInterface
      * @return Result|null
      */
     public function getLastResult();
-
 }

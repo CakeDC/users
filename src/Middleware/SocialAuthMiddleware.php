@@ -2,18 +2,18 @@
 
 namespace CakeDC\Users\Middleware;
 
-use Cake\Core\InstanceConfigTrait;
-use Cake\Datasource\Exception\RecordNotFoundException;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\UserNotActiveException;
-use Cake\Core\Configure;
-use Cake\Event\EventDispatcherTrait;
-use Cake\Http\ServerRequest;
-use Cake\Log\LogTrait;
 use CakeDC\Users\Plugin;
 use CakeDC\Users\Social\Locator\DatabaseLocator;
 use CakeDC\Users\Social\Service\ServiceFactory;
+use Cake\Core\Configure;
+use Cake\Core\InstanceConfigTrait;
+use Cake\Datasource\Exception\RecordNotFoundException;
+use Cake\Event\EventDispatcherTrait;
+use Cake\Http\ServerRequest;
+use Cake\Log\LogTrait;
 use Psr\Http\Message\ResponseInterface;
 
 class SocialAuthMiddleware
@@ -95,7 +95,6 @@ class SocialAuthMiddleware
      * Get a user based on information in the request.
      *
      * @param \Cake\Http\ServerRequest $request Request object.
-     * @param \Cake\Http\Response $response Response object
      * @return bool
      * @throws \RuntimeException If the `CakeDC/Users/OAuth2.newUser` event is missing or returns empty.
      */
@@ -157,7 +156,7 @@ class SocialAuthMiddleware
         } catch (MissingEmailException $ex) {
             $this->authStatus = self::AUTH_ERROR_MISSING_EMAIL;
             $exception = $ex;
-        } catch(RecordNotFoundException $ex) {
+        } catch (RecordNotFoundException $ex) {
             $this->authStatus = self::AUTH_ERROR_FIND_USER;
             $exception = $ex;
         }

@@ -11,16 +11,16 @@
 
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
-use Cake\ORM\TableRegistry;
 use CakeDC\Users\Controller\Component\GoogleAuthenticatorComponent;
 use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Controller\Traits\GoogleVerify;
 use Cake\Core\Configure;
 use Cake\Http\ServerRequest;
+use Cake\ORM\TableRegistry;
 
 class GoogleVerifyTest extends BaseTraitTest
 {
-    protected  $loginPage = '/login-page';
+    protected $loginPage = '/login-page';
     /**
      * setup
      *

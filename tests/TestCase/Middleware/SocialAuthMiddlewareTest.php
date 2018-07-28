@@ -8,12 +8,12 @@
 
 namespace CakeDC\Users\Test\TestCase\Middleware;
 
+use CakeDC\Users\Middleware\SocialAuthMiddleware;
+use CakeDC\Users\Model\Entity\User;
 use Cake\Core\Configure;
 use Cake\Http\Response;
 use Cake\Http\ServerRequestFactory;
 use Cake\TestSuite\TestCase;
-use CakeDC\Users\Middleware\SocialAuthMiddleware;
-use CakeDC\Users\Model\Entity\User;
 use League\OAuth2\Client\Provider\FacebookUser;
 use Zend\Diactoros\Uri;
 
@@ -34,7 +34,6 @@ class SocialAuthMiddlewareTest extends TestCase
      * @var \Cake\Http\ServerRequest
      */
     public $Request;
-
 
     /**
      * Setup the test case, backup the static object values so they can be restored.
@@ -111,7 +110,7 @@ class SocialAuthMiddlewareTest extends TestCase
         $uri = new Uri('/auth/facebook');
         $this->Request = $this->Request->withUri($uri);
 
-        $this->Request = $this->Request->withAttribute('params',[
+        $this->Request = $this->Request->withAttribute('params', [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'socialLogin',
@@ -125,7 +124,6 @@ class SocialAuthMiddlewareTest extends TestCase
         $this->Provider->expects($this->any())
             ->method('getAuthorizationUrl')
             ->will($this->returnValue('http://facebook.com/redirect/url'));
-
 
         $Middleware = new SocialAuthMiddleware();
         $response = new Response();
@@ -161,13 +159,13 @@ class SocialAuthMiddlewareTest extends TestCase
             'code' => 'ZPO9972j3092304230',
             'state' => '__TEST_STATE__'
         ]);
-        $this->Request = $this->Request->withAttribute('params',[
+        $this->Request = $this->Request->withAttribute('params', [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'socialLogin',
             'provider' => 'facebook'
         ]);
-        $this->Request->getSession()->write('oauth2state','__TEST_STATE__');
+        $this->Request->getSession()->write('oauth2state', '__TEST_STATE__');
 
         $Token = new \League\OAuth2\Client\Token\AccessToken([
             'access_token' => 'test-token',
@@ -256,13 +254,13 @@ class SocialAuthMiddlewareTest extends TestCase
             'code' => 'ZPO9972j3092304230',
             'state' => '__TEST_STATE__'
         ]);
-        $this->Request = $this->Request->withAttribute('params',[
+        $this->Request = $this->Request->withAttribute('params', [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'socialLogin',
             'provider' => 'facebook'
         ]);
-        $this->Request->getSession()->write('oauth2state','__TEST_STATE__');
+        $this->Request->getSession()->write('oauth2state', '__TEST_STATE__');
 
         $Token = new \League\OAuth2\Client\Token\AccessToken([
             'access_token' => 'test-token',

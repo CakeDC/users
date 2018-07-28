@@ -11,12 +11,11 @@
 
 namespace CakeDC\Users\Test\TestCase\Social;
 
-use Cake\Core\Configure;
-use Cake\TestSuite\TestCase;
 use CakeDC\Users\Auth\Exception\InvalidProviderException;
 use CakeDC\Users\Auth\Exception\InvalidSettingsException;
 use CakeDC\Users\Social\ProviderConfig;
-
+use Cake\Core\Configure;
+use Cake\TestSuite\TestCase;
 
 /**
  * Users\Social\ProviderConfig Test Case

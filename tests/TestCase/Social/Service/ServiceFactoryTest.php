@@ -2,13 +2,13 @@
 
 namespace CakeDC\Users\Test\TestCase\Social\Service;
 
+use CakeDC\Users\Social\Service\OAuth1Service;
+use CakeDC\Users\Social\Service\OAuth2Service;
+use CakeDC\Users\Social\Service\ServiceFactory;
 use Cake\Core\Configure;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\ServerRequestFactory;
 use Cake\TestSuite\TestCase;
-use CakeDC\Users\Social\Service\OAuth1Service;
-use CakeDC\Users\Social\Service\OAuth2Service;
-use CakeDC\Users\Social\Service\ServiceFactory;
 
 class ServiceFactoryTest extends TestCase
 {

@@ -12,10 +12,9 @@
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
 use CakeDC\Users\Controller\Component\UsersAuthComponent;
+use CakeDC\Users\Middleware\SocialAuthMiddleware;
 use Cake\Event\Event;
 use Cake\Http\ServerRequest;
-use Cake\ORM\Entity;
-use CakeDC\Users\Middleware\SocialAuthMiddleware;
 
 class LoginTraitTest extends BaseTraitTest
 {

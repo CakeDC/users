@@ -11,9 +11,9 @@
 
 namespace CakeDC\Users\View\Helper;
 
+use CakeDC\Users\Traits\IsAuthorizedTrait;
 use Cake\Utility\Hash;
 use Cake\View\Helper\HtmlHelper;
-use CakeDC\Users\Traits\IsAuthorizedTrait;
 
 /**
  * AuthLink helper

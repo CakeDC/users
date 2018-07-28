@@ -2,11 +2,10 @@
 
 namespace CakeDC\Users\Authenticator;
 
+use Authentication\Authenticator\CookieAuthenticator as BaseAuthenticator;
 use Authentication\Authenticator\PersistenceInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-
-use Authentication\Authenticator\CookieAuthenticator as BaseAuthenticator;
 
 /**
  * Cookie Authenticator

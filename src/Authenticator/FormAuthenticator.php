@@ -6,8 +6,8 @@ use Authentication\Authenticator\AuthenticatorInterface;
 use Authentication\Authenticator\FormAuthenticator as BaseFormAuthenticator;
 use Authentication\Authenticator\Result;
 use Authentication\Identifier\IdentifierInterface;
-use Cake\Core\Configure;
 use CakeDC\Users\Controller\Traits\ReCaptchaTrait;
+use Cake\Core\Configure;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -113,7 +113,7 @@ class FormAuthenticator implements AuthenticatorInterface, AuthenticatorFeedback
         $data = $request->getParsedBody();
         $captcha = $data['g-recaptcha-response'] ? $data['g-recaptcha-response'] : null;
 
-        $valid =  $this->validateReCaptcha(
+        $valid = $this->validateReCaptcha(
             $captcha,
             $request->clientIp()
         );
@@ -128,8 +128,8 @@ class FormAuthenticator implements AuthenticatorInterface, AuthenticatorFeedback
     /**
      * Call base authenticator methods
      *
-     * @param string $name
-     * @param array $arguments
+     * @param string $name base authentication method name
+     * @param array $arguments used in base authenticator method
      * @return mixed
      */
     public function __call($name, $arguments)

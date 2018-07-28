@@ -2,7 +2,7 @@
 
 namespace CakeDC\Users\Authentication;
 
-use \Authentication\AuthenticationService as BaseService;
+use Authentication\AuthenticationService as BaseService;
 use Authentication\Authenticator\Result;
 use Authentication\Authenticator\ResultInterface;
 use Authentication\Authenticator\StatelessInterface;
@@ -21,6 +21,7 @@ class AuthenticationService extends BaseService
      * @param ServerRequestInterface $request response to manipulate
      * @param ResponseInterface $response base response to manipulate
      * @param ResultInterface $result valid result
+     * @return array with result, request and response keys
      */
     protected function proceedToGoogleVerify(ServerRequestInterface $request, ResponseInterface $response, ResultInterface $result)
     {
@@ -88,5 +89,4 @@ class AuthenticationService extends BaseService
             'response' => $response
         ];
     }
-
 }

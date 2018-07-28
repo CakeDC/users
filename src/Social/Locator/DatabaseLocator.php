@@ -1,14 +1,14 @@
 <?php
 namespace CakeDC\Users\Social\Locator;
 
+use CakeDC\Users\Auth\Exception\InvalidSettingsException;
+use CakeDC\Users\Model\Entity\User;
+use CakeDC\Users\Plugin;
 use Cake\Core\Configure;
 use Cake\Core\InstanceConfigTrait;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Event\EventDispatcherTrait;
 use Cake\ORM\TableRegistry;
-use CakeDC\Users\Auth\Exception\InvalidSettingsException;
-use CakeDC\Users\Model\Entity\User;
-use CakeDC\Users\Plugin;
 
 class DatabaseLocator implements LocatorInterface
 {
@@ -27,7 +27,7 @@ class DatabaseLocator implements LocatorInterface
     /**
      * DatabaseLocator constructor.
      *
-     * @param array $config
+     * @param array $config optional config
      */
     public function __construct(array $config = [])
     {
@@ -103,5 +103,4 @@ class DatabaseLocator implements LocatorInterface
 
         return $user;
     }
-
 }

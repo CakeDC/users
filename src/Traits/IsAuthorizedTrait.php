@@ -2,10 +2,10 @@
 
 namespace CakeDC\Users\Traits;
 
+use CakeDC\Auth\Rbac\Rbac;
 use Cake\Http\ServerRequest;
 use Cake\Routing\Exception\MissingRouteException;
 use Cake\Routing\Router;
-use CakeDC\Auth\Rbac\Rbac;
 use Zend\Diactoros\Uri;
 
 trait IsAuthorizedTrait
@@ -60,7 +60,7 @@ trait IsAuthorizedTrait
             'uri' => $uri
         ]);
         $params = Router::parseRequest($targetRequest);
-        $targetRequest = $targetRequest->withAttribute('params',  $params);
+        $targetRequest = $targetRequest->withAttribute('params', $params);
 
         $user = $this->request->getAttribute('identity');
         $userData = [];
@@ -70,5 +70,4 @@ trait IsAuthorizedTrait
 
         return $Rbac->checkPermissions($userData, $targetRequest);
     }
-
 }
