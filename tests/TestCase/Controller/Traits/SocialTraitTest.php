@@ -11,10 +11,8 @@
 
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
-use Cake\Core\Configure;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
-use Cake\TestSuite\TestCase;
 use CakeDC\Users\Middleware\SocialAuthMiddleware;
 
 class SocialTraitTest extends BaseTraitTest

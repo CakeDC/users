@@ -11,12 +11,9 @@ namespace CakeDC\Users\Test\TestCase\Middleware;
 use Cake\Core\Configure;
 use Cake\Http\Response;
 use Cake\Http\ServerRequestFactory;
-use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
-use CakeDC\Users\Social\Mapper\Facebook;
 use CakeDC\Users\Middleware\SocialAuthMiddleware;
 use CakeDC\Users\Model\Entity\User;
-use CakeDC\Users\Social\Service\OAuth2Service;
 use League\OAuth2\Client\Provider\FacebookUser;
 use Zend\Diactoros\Uri;
 

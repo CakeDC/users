@@ -14,7 +14,6 @@ namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 use Cake\Auth\PasswordHasherFactory;
 use Cake\Core\Configure;
 use Cake\Event\Event;
-use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 class PasswordManagementTraitTest extends BaseTraitTest

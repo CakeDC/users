@@ -12,7 +12,6 @@
 namespace CakeDC\Users\Test\TestCase\Model\Behavior;
 
 use CakeDC\Users\Model\Behavior\LinkSocialBehavior;
-use CakeDC\Users\Model\Table\UsersTable;
 use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;

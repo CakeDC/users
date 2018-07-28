@@ -13,17 +13,10 @@ namespace CakeDC\Users\Test\TestCase\View\Helper;
 
 use CakeDC\Users\Model\Entity\SocialAccount;
 use CakeDC\Users\View\Helper\UserHelper;
-use Cake\Core\App;
 use Cake\Core\Configure;
-use Cake\Core\Plugin;
-use Cake\Event\Event;
 use Cake\Http\ServerRequest;
 use Cake\I18n\I18n;
-use Cake\Network\Request;
-use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
-use Cake\View\Helper\HtmlHelper;
-use Cake\View\View;
 
 /**
  * Users\View\Helper\UserHelper Test Case

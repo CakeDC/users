@@ -10,9 +10,7 @@
  */
 namespace CakeDC\Users\Test\TestCase\Email;
 
-use Cake\Mailer\Email;
 use Cake\ORM\TableRegistry;
-use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 
 /**

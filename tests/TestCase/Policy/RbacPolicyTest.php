@@ -3,7 +3,6 @@
 namespace CakeDC\Users\Test\TestCase\Policy;
 
 use Authentication\Identity;
-use Authorization\Policy\BeforePolicyInterface;
 use Cake\Http\ServerRequestFactory;
 use Cake\TestSuite\TestCase;
 use CakeDC\Auth\Rbac\Rbac;

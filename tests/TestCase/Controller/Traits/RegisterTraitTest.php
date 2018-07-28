@@ -11,12 +11,8 @@
 
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
-use CakeDC\Users\Test\TestCase\Controller\Traits\BaseTraitTest;
 use Cake\Core\Configure;
-use Cake\Core\Plugin;
 use Cake\Event\Event;
-use Cake\Mailer\Email;
-use Cake\ORM\TableRegistry;
 
 class RegisterTraitTest extends BaseTraitTest
 {

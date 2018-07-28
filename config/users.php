@@ -9,7 +9,7 @@
  * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
-use Cake\Core\Configure;
+
 use Cake\Routing\Router;
 
 $config = [
