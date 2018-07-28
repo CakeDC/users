@@ -73,7 +73,7 @@ class AuthFinderBehaviorTest extends TestCase
      */
     public function testFindAuthBadMethodCallException()
     {
-        $user = $this->table->find('auth');
+        $this->table->find('auth');
     }
 
     /**

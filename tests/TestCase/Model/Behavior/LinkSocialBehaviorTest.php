@@ -185,9 +185,6 @@ class LinkSocialBehaviorTest extends TestCase
             ]
         ];
         $this->assertEquals($expected, $actual);
-
-        $error = $user->getErrors('social_accounts');
-        $error = $error ? reset($error) : $message;
     }
 
     /**
@@ -277,7 +274,7 @@ class LinkSocialBehaviorTest extends TestCase
         $this->assertEquals($expected, $actual);
 
         //Se for o usuário que já esta associado então okay
-        $socialAccount = $this->Table->SocialAccounts->find()->where([
+        $this->Table->SocialAccounts->find()->where([
             'reference' => $data['id'],
             'provider' => $data['provider']
         ])->firstOrFail();

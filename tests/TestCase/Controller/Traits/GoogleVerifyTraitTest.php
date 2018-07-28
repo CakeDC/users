@@ -84,7 +84,6 @@ class GoogleVerifyTest extends BaseTraitTest
      */
     public function testVerifyNotEnabled()
     {
-        $loginAction = Configure::read('Auth.AuthenticationComponent.loginAction');
         $this->_mockFlash();
         Configure::write('Users.GoogleAuthenticator.login', false);
         $this->Trait->Flash->expects($this->once())
@@ -95,7 +94,6 @@ class GoogleVerifyTest extends BaseTraitTest
             ->with($this->loginPage);
 
         $this->Trait->verify();
-
     }
 
     /**
