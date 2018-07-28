@@ -7,7 +7,7 @@ use Cake\Http\Response;
 use Cake\Http\ServerRequestFactory;
 use Cake\Network\Exception\NotFoundException;
 use Cake\TestSuite\TestCase;
-use CakeDC\Users\Auth\Social\Mapper\Facebook;
+use CakeDC\Users\Social\Mapper\Facebook;
 use CakeDC\Users\Middleware\SocialEmailMiddleware;
 use CakeDC\Users\Model\Entity\User;
 use League\OAuth2\Client\Provider\FacebookUser;
@@ -38,7 +38,7 @@ class SocialEmailMiddlewareTest extends TestCase
 
         $config = [
             'service' => 'CakeDC\Users\Social\Service\OAuth2Service',
-            'mapper' => 'CakeDC\Users\Auth\Social\Mapper\Facebook',
+            'mapper' => 'CakeDC\Users\Social\Mapper\Facebook',
             'options' => [
                 'state' => '__TEST_STATE__',
                 'graphApiVersion' => 'v2.8',

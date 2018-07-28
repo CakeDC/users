@@ -2,7 +2,7 @@
 
 namespace CakeDC\Users\Middleware;
 
-use Cake\Network\Exception\NotFoundException;
+use Cake\Http\Exception\NotFoundException;
 use CakeDC\Users\Controller\Traits\ReCaptchaTrait;
 use Cake\Core\Configure;
 use Cake\Http\ServerRequest;

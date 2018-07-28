@@ -2,8 +2,8 @@
 
 namespace CakeDC\Users\Social\Service;
 
+use Cake\Http\Exception\NotFoundException;
 use Cake\Http\ServerRequest;
-use Cake\Network\Exception\NotFoundException;
 use CakeDC\Users\Social\ProviderConfig;
 
 class ServiceFactory

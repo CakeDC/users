@@ -9,35 +9,36 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace CakeDC\Users\Auth\Social\Mapper;
+namespace CakeDC\Users\Social\Mapper;
 
 use Cake\Utility\Hash;
 
 /**
- * Google Mapper
+ * Facebook Mapper
  *
  */
-class Google extends AbstractMapper
+class Facebook extends AbstractMapper
 {
+
+    /**
+     * Url constants
+     */
+    const FB_GRAPH_BASE_URL = 'https://graph.facebook.com/';
+
     /**
      * Map for provider fields
      * @var
      */
     protected $_mapFields = [
-        'avatar' => 'image.url',
-        'full_name' => 'displayName',
-        'email' => 'emails.0.value',
-        'first_name' => 'name.givenName',
-        'last_name' => 'name.familyName',
-        'bio' => 'aboutMe',
-        'link' => 'url'
+        'full_name' => 'name',
     ];
 
     /**
+     * Get avatar url
      * @return string
      */
-    protected function _link()
+    protected function _avatar()
     {
-        return Hash::get($this->_rawData, $this->_mapFields['link']) ?: '#';
+        return self::FB_GRAPH_BASE_URL . Hash::get($this->_rawData, 'id') . '/picture?type=large';
     }
 }

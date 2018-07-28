@@ -9,7 +9,7 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace CakeDC\Users\Auth\Social\Mapper;
+namespace CakeDC\Users\Social\Mapper;
 
 use Cake\Utility\Hash;
 

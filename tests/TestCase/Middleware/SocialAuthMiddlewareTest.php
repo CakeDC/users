@@ -13,7 +13,7 @@ use Cake\Http\Response;
 use Cake\Http\ServerRequestFactory;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
-use CakeDC\Users\Auth\Social\Mapper\Facebook;
+use CakeDC\Users\Social\Mapper\Facebook;
 use CakeDC\Users\Middleware\SocialAuthMiddleware;
 use CakeDC\Users\Model\Entity\User;
 use CakeDC\Users\Social\Service\OAuth2Service;
@@ -67,7 +67,7 @@ class SocialAuthMiddlewareTest extends TestCase
         $config = [
             'service' => 'CakeDC\Users\Social\Service\OAuth2Service',
             'className' => $this->Provider,
-            'mapper' => 'CakeDC\Users\Auth\Social\Mapper\Facebook',
+            'mapper' => 'CakeDC\Users\Social\Mapper\Facebook',
             'options' => [
                 'state' => '__TEST_STATE__',
                 'graphApiVersion' => 'v2.8',

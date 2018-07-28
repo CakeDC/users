@@ -9,12 +9,12 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace CakeDC\Users\Test\TestCase\Auth\Social\Mapper;
+namespace CakeDC\Users\Test\TestCase\Social\Mapper;
 
-use CakeDC\Users\Auth\Social\Mapper\LinkedIn;
+use CakeDC\Users\Social\Mapper\Google;
 use Cake\TestSuite\TestCase;
 
-class LinkedInTest extends TestCase
+class GoogleTest extends TestCase
 {
     public function setUp()
     {
@@ -34,34 +34,32 @@ class LinkedInTest extends TestCase
         ]);
         $rawData = [
             'token' => $token,
-            'emailAddress' => 'test@gmail.com',
-            'firstName' => 'Test',
-            'headline' => 'The best test user in the world.',
+            'emails' => [['value' => 'test@gmail.com']],
             'id' => '1',
-            'industry' => 'Computer Software',
-            'lastName' => 'User',
-            'location' => [
-                'country' => [
-                    'code' => 'es'
-                ],
-                'name' => 'Spain'
+            'displayName' => 'Test User',
+            'name' => [
+                'familyName' => 'User',
+                'givenName' => 'Test'
             ],
-            'pictureUrl' => 'https://media.licdn.com/mpr/mprx/test.jpg',
-            'publicProfileUrl' => 'https://www.linkedin.com/in/test'
+            'aboutMe' => '<span>I am the best test user in the world.</span>',
+            'url' => 'https://plus.google.com/+TestUser',
+            'image' => [
+                'url' => 'https://lh3.googleusercontent.com/photo.jpg'
+            ]
         ];
-        $providerMapper = new LinkedIn($rawData);
+        $providerMapper = new Google($rawData);
         $user = $providerMapper();
         $this->assertEquals([
             'id' => '1',
             'username' => null,
-            'full_name' => null,
+            'full_name' => 'Test User',
             'first_name' => 'Test',
             'last_name' => 'User',
             'email' => 'test@gmail.com',
-            'avatar' => 'https://media.licdn.com/mpr/mprx/test.jpg',
+            'avatar' => 'https://lh3.googleusercontent.com/photo.jpg',
             'gender' => null,
-            'link' => 'https://www.linkedin.com/in/test',
-            'bio' => 'The best test user in the world.',
+            'link' => 'https://plus.google.com/+TestUser',
+            'bio' => '<span>I am the best test user in the world.</span>',
             'locale' => null,
             'validated' => true,
             'credentials' => [

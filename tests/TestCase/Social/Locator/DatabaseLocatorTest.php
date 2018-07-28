@@ -5,7 +5,7 @@ namespace CakeDC\Users\Test\TestCase\Social\Locator;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\TestSuite\TestCase;
 use CakeDC\Users\Auth\Exception\InvalidSettingsException;
-use CakeDC\Users\Auth\Social\Mapper\Facebook;
+use CakeDC\Users\Social\Mapper\Facebook;
 use CakeDC\Users\Social\Locator\DatabaseLocator;
 
 class DatabaseLocatorTest extends TestCase

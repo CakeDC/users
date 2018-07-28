@@ -9,9 +9,9 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace CakeDC\Users\Test\TestCase\Auth\Social\Mapper;
+namespace CakeDC\Users\Test\TestCase\Social\Mapper;
 
-use CakeDC\Users\Auth\Social\Mapper\Twitter;
+use CakeDC\Users\Social\Mapper\Twitter;
 use Cake\TestSuite\TestCase;
 
 class TwitterTest extends TestCase

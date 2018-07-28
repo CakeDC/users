@@ -62,7 +62,7 @@ class ProviderConfigTest extends TestCase
     {
         Configure::write('OAuth.providers.facebook.options.clientId', '10003030300303');
         Configure::write('OAuth.providers.facebook.options.clientSecret', 'secretpassword');
-        Configure::write('OAuth.providers.facebook.mapper', 'CakeDC\Users\Auth\Social\Mapper\InvalidFacebook');
+        Configure::write('OAuth.providers.facebook.mapper', 'CakeDC\Users\Social\Mapper\InvalidFacebook');
 
         $this->expectException(InvalidProviderException::class);
         new ProviderConfig();
@@ -87,7 +87,7 @@ class ProviderConfigTest extends TestCase
                 'facebook' => [
                     'service' => 'CakeDC\Users\Social\Service\OAuth2Service',
                     'className' => 'League\OAuth2\Client\Provider\Facebook',
-                    'mapper' => 'CakeDC\Users\Auth\Social\Mapper\Facebook',
+                    'mapper' => 'CakeDC\Users\Social\Mapper\Facebook',
                     'options' => 'invalid options'
                 ],
             ]
@@ -132,7 +132,7 @@ class ProviderConfigTest extends TestCase
         $expected = [
             'service' => 'CakeDC\Users\Social\Service\OAuth2Service',
             'className' => 'League\OAuth2\Client\Provider\Facebook',
-            'mapper' => 'CakeDC\Users\Auth\Social\Mapper\Facebook',
+            'mapper' => 'CakeDC\Users\Social\Mapper\Facebook',
             'options' => [
                 'customOption' => 'hello',
                 'graphApiVersion' => 'v2.8',
@@ -174,7 +174,7 @@ class ProviderConfigTest extends TestCase
         $expected = [
             'service' => 'CakeDC\Users\Social\Service\OAuth2Service',
             'className' => 'League\OAuth2\Client\Provider\Facebook',
-            'mapper' => 'CakeDC\Users\Auth\Social\Mapper\Facebook',
+            'mapper' => 'CakeDC\Users\Social\Mapper\Facebook',
             'options' => [
                 'graphApiVersion' => 'v2.8',
                 'redirectUri' => '/auth/facebook',
@@ -200,7 +200,7 @@ class ProviderConfigTest extends TestCase
         $expected = [
             'service' => 'CakeDC\Users\Social\Service\OAuth1Service',
             'className' => 'League\OAuth1\Client\Server\Twitter',
-            'mapper' => 'CakeDC\Users\Auth\Social\Mapper\Twitter',
+            'mapper' => 'CakeDC\Users\Social\Mapper\Twitter',
             'options' => [
                 'redirectUri' => '/auth/twitter',
                 'linkSocialUri' => '/link-social/twitter',
@@ -224,7 +224,7 @@ class ProviderConfigTest extends TestCase
         $expected = [
             'service' => 'CakeDC\Users\Social\Service\OAuth2Service',
             'className' => 'Luchianenco\OAuth2\Client\Provider\Amazon',
-            'mapper' => 'CakeDC\Users\Auth\Social\Mapper\Amazon',
+            'mapper' => 'CakeDC\Users\Social\Mapper\Amazon',
             'options' => [
                 'redirectUri' => '/auth/amazon',
                 'linkSocialUri' => '/link-social/amazon',
