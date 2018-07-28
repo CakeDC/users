@@ -11,10 +11,6 @@ use Authentication\Middleware\AuthenticationMiddleware;
 use Authorization\AuthorizationService;
 use Authorization\Middleware\AuthorizationMiddleware;
 use Authorization\Middleware\RequestAuthorizationMiddleware;
-use Cake\Core\Configure;
-use Cake\Http\MiddlewareQueue;
-use Cake\Http\Response;
-use Cake\Http\ServerRequest;
 use CakeDC\Auth\Middleware\RbacMiddleware;
 use CakeDC\Users\Authentication\AuthenticationService as CakeDCAuthenticationService;
 use CakeDC\Users\Authenticator\FormAuthenticator;
@@ -23,6 +19,10 @@ use CakeDC\Users\Middleware\GoogleAuthenticatorMiddleware;
 use CakeDC\Users\Middleware\SocialAuthMiddleware;
 use CakeDC\Users\Middleware\SocialEmailMiddleware;
 use CakeDC\Users\Plugin;
+use Cake\Core\Configure;
+use Cake\Http\MiddlewareQueue;
+use Cake\Http\Response;
+use Cake\Http\ServerRequest;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
@@ -205,7 +205,6 @@ class PluginTest extends IntegrationTestCase
         $this->assertInstanceOf(AuthorizationMiddleware::class, $middleware->get(1));
         $this->assertInstanceOf(RequestAuthorizationMiddleware::class, $middleware->get(2));
     }
-
 
     /**
      * testGetAuthenticationService

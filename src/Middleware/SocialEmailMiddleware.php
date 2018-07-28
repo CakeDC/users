@@ -2,13 +2,13 @@
 
 namespace CakeDC\Users\Middleware;
 
-use Cake\Http\Exception\NotFoundException;
 use CakeDC\Users\Controller\Traits\ReCaptchaTrait;
 use Cake\Core\Configure;
+use Cake\Http\Exception\NotFoundException;
 use Cake\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-class SocialEmailMiddleware extends  SocialAuthMiddleware
+class SocialEmailMiddleware extends SocialAuthMiddleware
 {
     use ReCaptchaTrait;
 
@@ -35,10 +35,9 @@ class SocialEmailMiddleware extends  SocialAuthMiddleware
     /**
      * Handle social email step post.
      *
-     * @param int $result authentication result
-     * @param \Psr\Http\Message\ServerRequestInterface $request The request.
-     * @param \Psr\Http\Message\ResponseInterface $response The response.
-     * @param callable $next Callback to invoke the next middleware.
+     * @param int $request authentication result
+     * @param \Psr\Http\Message\ServerRequestInterface $response The request.
+     * @param \Psr\Http\Message\ResponseInterface $next The response.
      * @return \Psr\Http\Message\ResponseInterface A response
      */
     private function handleAction(ServerRequest $request, ResponseInterface $response, $next)

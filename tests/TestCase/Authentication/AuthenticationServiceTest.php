@@ -1,13 +1,13 @@
 <?php
 
 use Authentication\Authenticator\Result;
+use CakeDC\Users\Authentication\AuthenticationService;
+use CakeDC\Users\Authenticator\FormAuthenticator;
 use Cake\Core\Configure;
 use Cake\Http\Client\Response;
 use Cake\Http\ServerRequestFactory;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
-use CakeDC\Users\Authentication\AuthenticationService;
-use CakeDC\Users\Authenticator\FormAuthenticator;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -164,6 +164,5 @@ class AuthenticationServiceTest extends TestCase
         );
         $this->assertEmpty($response->getHeaderLine('Location'));
         $this->assertNull($response->getStatusCode());
-
     }
 }

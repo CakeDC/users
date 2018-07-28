@@ -11,13 +11,13 @@
 
 namespace CakeDC\Users\Controller\Traits;
 
-use Cake\Utility\Hash;
 use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Exception\UserNotFoundException;
 use CakeDC\Users\Exception\WrongPasswordException;
-use Cake\Core\Configure;
-use Cake\Validation\Validator;
 use CakeDC\Users\Plugin;
+use Cake\Core\Configure;
+use Cake\Utility\Hash;
+use Cake\Validation\Validator;
 use Exception;
 
 /**

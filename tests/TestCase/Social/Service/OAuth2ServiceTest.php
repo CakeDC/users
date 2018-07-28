@@ -2,14 +2,14 @@
 
 namespace CakeDC\Users\Test\TestCase\Social\Service;
 
+use CakeDC\Users\Social\Service\OAuth2Service;
+use CakeDC\Users\Social\Service\ServiceInterface;
 use Cake\Core\Configure;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\ServerRequest;
 use Cake\Http\ServerRequestFactory;
 use Cake\Http\Session;
 use Cake\TestSuite\TestCase;
-use CakeDC\Users\Social\Service\OAuth2Service;
-use CakeDC\Users\Social\Service\ServiceInterface;
 use League\OAuth2\Client\Provider\FacebookUser;
 use Zend\Diactoros\Uri;
 
@@ -29,7 +29,6 @@ class OAuth2ServiceTest extends TestCase
      * @var \Cake\Http\ServerRequest
      */
     public $Request;
-
 
     /**
      * Setup the test case, backup the static object values so they can be restored.
@@ -98,7 +97,6 @@ class OAuth2ServiceTest extends TestCase
      */
     public function testConstruct()
     {
-
         $service = new OAuth2Service([
             'className' => 'League\OAuth2\Client\Provider\Facebook',
             'mapper' => 'CakeDC\Users\Social\Mapper\Facebook',
@@ -172,7 +170,6 @@ class OAuth2ServiceTest extends TestCase
 
         $result = $this->Service->isGetUserStep($this->Request);
         $this->assertFalse($result);
-
     }
 
     /**
@@ -195,7 +192,6 @@ class OAuth2ServiceTest extends TestCase
 
         $result = $this->Service->isGetUserStep($this->Request);
         $this->assertFalse($result);
-
     }
 
     /**
@@ -220,7 +216,6 @@ class OAuth2ServiceTest extends TestCase
         $actual = $this->Request->getSession()->read('oauth2state');
         $expected = '_NEW_STATE_';
         $this->assertEquals($expected, $actual);
-
     }
 
     /**
@@ -234,13 +229,12 @@ class OAuth2ServiceTest extends TestCase
             'code' => 'ZPO9972j3092304230',
             'state' => '__TEST_STATE__'
         ]);
-        $this->Request->getSession()->write('oauth2state','__TEST_STATE__');
+        $this->Request->getSession()->write('oauth2state', '__TEST_STATE__');
 
         $Token = new \League\OAuth2\Client\Token\AccessToken([
             'access_token' => 'test-token',
             'expires' => 1490988496
         ]);
-
 
         $user = new FacebookUser([
             'id' => '1',
@@ -346,8 +340,7 @@ class OAuth2ServiceTest extends TestCase
             'code' => 'ZPO9972j3092304230',
             'state' => '__Unknown_State__'
         ]);
-        $this->Request->getSession()->write('oauth2state','__TEST_STATE__');
-
+        $this->Request->getSession()->write('oauth2state', '__TEST_STATE__');
 
         $this->Provider->expects($this->never())
             ->method('getAuthorizationUrl');
@@ -375,7 +368,7 @@ class OAuth2ServiceTest extends TestCase
         $this->Request = $this->Request->withQueryParams([
             'state' => '__TEST_STATE__'
         ]);
-        $this->Request->getSession()->write('oauth2state','__TEST_STATE__');
+        $this->Request->getSession()->write('oauth2state', '__TEST_STATE__');
 
         $this->Provider->expects($this->never())
             ->method('getAuthorizationUrl');

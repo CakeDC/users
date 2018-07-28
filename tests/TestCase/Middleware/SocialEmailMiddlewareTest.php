@@ -2,14 +2,14 @@
 
 namespace CakeDC\Users\Test\TestCase\Middleware;
 
+use CakeDC\Users\Middleware\SocialEmailMiddleware;
+use CakeDC\Users\Model\Entity\User;
+use CakeDC\Users\Social\Mapper\Facebook;
 use Cake\Core\Configure;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
 use Cake\Http\ServerRequestFactory;
 use Cake\TestSuite\TestCase;
-use CakeDC\Users\Social\Mapper\Facebook;
-use CakeDC\Users\Middleware\SocialEmailMiddleware;
-use CakeDC\Users\Model\Entity\User;
 use League\OAuth2\Client\Provider\FacebookUser;
 use Zend\Diactoros\Uri;
 
@@ -60,7 +60,6 @@ class SocialEmailMiddlewareTest extends TestCase
         ];
         Configure::write('OAuth.providers.facebook', $config);
 
-
         $this->Request = ServerRequestFactory::fromGlobals();
     }
 
@@ -77,10 +76,10 @@ class SocialEmailMiddlewareTest extends TestCase
     }
 
     /**
-    * Test when action with get request
-    *
-    * @return void
-    */
+     * Test when action with get request
+     *
+     * @return void
+     */
     public function testWithGetRquest()
     {
         $Token = new \League\OAuth2\Client\Token\AccessToken([
@@ -132,7 +131,7 @@ class SocialEmailMiddlewareTest extends TestCase
 
         $uri = new Uri('/auth/facebook');
         $this->Request = $this->Request->withUri($uri);
-        $this->Request = $this->Request->withAttribute('params',[
+        $this->Request = $this->Request->withAttribute('params', [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'socialEmail',
@@ -166,7 +165,7 @@ class SocialEmailMiddlewareTest extends TestCase
             'email' => 'example@example.com'
         ]);
         $this->Request = $this->Request->withMethod('POST');
-        $this->Request = $this->Request->withAttribute('params',[
+        $this->Request = $this->Request->withAttribute('params', [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'socialEmail',
@@ -242,7 +241,7 @@ class SocialEmailMiddlewareTest extends TestCase
             'email' => 'example@example.com'
         ]);
         $this->Request = $this->Request->withMethod('POST');
-        $this->Request = $this->Request->withAttribute('params',[
+        $this->Request = $this->Request->withAttribute('params', [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'socialEmail',
@@ -322,7 +321,7 @@ class SocialEmailMiddlewareTest extends TestCase
         $uri = new Uri('/auth/facebook');
         $this->Request = $this->Request->withUri($uri);
         $this->Request = $this->Request->withMethod('POST');
-        $this->Request = $this->Request->withAttribute('params',[
+        $this->Request = $this->Request->withAttribute('params', [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'socialEmail',
@@ -363,5 +362,4 @@ class SocialEmailMiddlewareTest extends TestCase
         $this->assertSame($response, $result['response']);
         $this->assertSame($this->Request, $result['request']);
     }
-
 }

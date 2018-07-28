@@ -2,11 +2,11 @@
 
 namespace CakeDC\Users\Test\TestCase\Social\Locator;
 
+use CakeDC\Users\Auth\Exception\InvalidSettingsException;
+use CakeDC\Users\Social\Locator\DatabaseLocator;
+use CakeDC\Users\Social\Mapper\Facebook;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\TestSuite\TestCase;
-use CakeDC\Users\Auth\Exception\InvalidSettingsException;
-use CakeDC\Users\Social\Mapper\Facebook;
-use CakeDC\Users\Social\Locator\DatabaseLocator;
 
 class DatabaseLocatorTest extends TestCase
 {
@@ -166,6 +166,5 @@ class DatabaseLocatorTest extends TestCase
 
         $this->expectException(InvalidSettingsException::class);
         $this->Locator->getOrCreate($user);
-
     }
 }

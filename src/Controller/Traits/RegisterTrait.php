@@ -11,12 +11,12 @@
 
 namespace CakeDC\Users\Controller\Traits;
 
-use Cake\Utility\Hash;
+use CakeDC\Users\Plugin;
 use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
-use CakeDC\Users\Plugin;
+use Cake\Utility\Hash;
 
 /**
  * Covers registration features and email token validation

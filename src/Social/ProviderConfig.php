@@ -1,11 +1,10 @@
 <?php
 namespace CakeDC\Users\Social;
 
-
-use Cake\Core\Configure;
-use Cake\Utility\Hash;
 use CakeDC\Users\Auth\Exception\InvalidProviderException;
 use CakeDC\Users\Auth\Exception\InvalidSettingsException;
+use Cake\Core\Configure;
+use Cake\Utility\Hash;
 
 class ProviderConfig
 {
@@ -32,7 +31,6 @@ class ProviderConfig
         $oauthConfig['providers'] = $providers;
 
         $this->providers = $this->normalizeConfig(Hash::merge($config, $oauthConfig))['providers'];
-
     }
 
     /**
@@ -111,7 +109,7 @@ class ProviderConfig
      * @param array $options array of options by provider
      * @return bool
      */
-    public function _isProviderEnabled($options)
+    protected function _isProviderEnabled($options)
     {
         return !empty($options['options']['redirectUri']) && !empty($options['options']['clientId']) &&
             !empty($options['options']['clientSecret']);
@@ -127,5 +125,4 @@ class ProviderConfig
     {
         return Hash::get($this->providers, $alias, []);
     }
-
 }

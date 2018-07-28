@@ -2,9 +2,9 @@
 
 namespace CakeDC\Users\Middleware;
 
+use CakeDC\Users\Authentication\AuthenticationService;
 use Cake\Http\ServerRequest;
 use Cake\Routing\Router;
-use CakeDC\Users\Authentication\AuthenticationService;
 use Psr\Http\Message\ResponseInterface;
 
 class GoogleAuthenticatorMiddleware
@@ -39,5 +39,4 @@ class GoogleAuthenticatorMiddleware
             ->withHeader('Location', $url)
             ->withStatus(302);
     }
-
 }

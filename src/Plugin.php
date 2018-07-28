@@ -11,16 +11,16 @@ use Authorization\Middleware\RequestAuthorizationMiddleware;
 use Authorization\Policy\MapResolver;
 use Authorization\Policy\OrmResolver;
 use Authorization\Policy\ResolverCollection;
-use Cake\Core\BasePlugin;
-use Cake\Core\Configure;
-use Cake\Http\MiddlewareQueue;
-use Cake\Http\ServerRequest;
 use CakeDC\Auth\Middleware\RbacMiddleware;
 use CakeDC\Users\Authentication\AuthenticationService;
 use CakeDC\Users\Middleware\GoogleAuthenticatorMiddleware;
 use CakeDC\Users\Middleware\SocialAuthMiddleware;
 use CakeDC\Users\Middleware\SocialEmailMiddleware;
 use CakeDC\Users\Policy\RbacPolicy;
+use Cake\Core\BasePlugin;
+use Cake\Core\Configure;
+use Cake\Http\MiddlewareQueue;
+use Cake\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -63,9 +63,9 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
             $map,
             $orm
         ]);
+
         return new AuthorizationService($resolver);
     }
-
 
     /**
      * load authenticators and identifiers
@@ -78,7 +78,7 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
         $authenticators = Configure::read('Auth.Authenticators');
         $identifiers = Configure::read('Auth.Identifiers');
 
-        foreach($identifiers as $identifier => $options) {
+        foreach ($identifiers as $identifier => $options) {
             if (is_numeric($identifier)) {
                 $identifier = $options;
                 $options = [];
@@ -87,7 +87,7 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
             $service->loadIdentifier($identifier, $options);
         }
 
-        foreach($authenticators as $authenticator => $options) {
+        foreach ($authenticators as $authenticator => $options) {
             if (is_numeric($authenticator)) {
                 $authenticator = $options;
                 $options = [];
@@ -131,7 +131,7 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
     /**
      * Add authorization middleware based on Auth.Authorization
      *
-     * @param MiddlewareQueue $middlewareQueue
+     * @param MiddlewareQueue $middlewareQueue queue of middleware
      * @return MiddlewareQueue
      */
     protected function addAuthorizationMiddleware(MiddlewareQueue $middlewareQueue)

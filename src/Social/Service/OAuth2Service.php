@@ -96,7 +96,6 @@ class OAuth2Service extends OAuthServiceAbstract
         return true;
     }
 
-
     /**
      * Instantiates provider object.
      *

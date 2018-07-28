@@ -3,11 +3,11 @@
 use Authentication\Authenticator\Result;
 use Authentication\Identifier\IdentifierCollection;
 use Authentication\Identifier\IdentifierInterface;
+use CakeDC\Users\Authenticator\FormAuthenticator;
 use Cake\Core\Configure;
 use Cake\Http\Client\Response;
 use Cake\Http\ServerRequestFactory;
 use Cake\TestSuite\TestCase;
-use CakeDC\Users\Authenticator\FormAuthenticator;
 
 class FormAuthenticatorTest extends TestCase
 {
@@ -18,7 +18,6 @@ class FormAuthenticatorTest extends TestCase
      */
     public function testAuthenticateBaseFailed()
     {
-
         $identifiers = new IdentifierCollection([
             'Authentication.Password'
         ]);
@@ -83,7 +82,6 @@ class FormAuthenticatorTest extends TestCase
      */
     public function testAuthenticate()
     {
-
         $identifiers = new IdentifierCollection([
             'Authentication.Password'
         ]);
@@ -156,7 +154,6 @@ class FormAuthenticatorTest extends TestCase
      */
     public function testAuthenticateNotRequiredReCaptcha()
     {
-
         $identifiers = new IdentifierCollection([
             'Authentication.Password'
         ]);
@@ -225,7 +222,6 @@ class FormAuthenticatorTest extends TestCase
      */
     public function testAuthenticateInvalidRecaptcha()
     {
-
         $identifiers = new IdentifierCollection([
             'Authentication.Password'
         ]);

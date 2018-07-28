@@ -15,6 +15,7 @@ use Authentication\AuthenticationService;
 use Authentication\Authenticator\Result;
 use Authentication\Controller\Component\AuthenticationComponent;
 use Authentication\Identity;
+use CakeDC\Users\Model\Entity\User;
 use Cake\Controller\ComponentRegistry;
 use Cake\Controller\Controller;
 use Cake\Event\Event;
@@ -22,7 +23,6 @@ use Cake\Mailer\Email;
 use Cake\ORM\Entity;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
-use CakeDC\Users\Model\Entity\User;
 use PHPUnit_Framework_MockObject_RuntimeException;
 
 abstract class BaseTraitTest extends TestCase
@@ -232,10 +232,9 @@ abstract class BaseTraitTest extends TestCase
             'loginRedirect' => $this->successLoginRedirect,
             'logoutRedirect' => $this->logoutRedirect,
             'loginAction' => $this->loginAction
-        ]);;
+        ]);
+        ;
     }
-
-
 
     /**
      * mock utility

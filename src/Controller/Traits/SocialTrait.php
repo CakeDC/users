@@ -11,8 +11,8 @@
 
 namespace CakeDC\Users\Controller\Traits;
 
-use Cake\Http\Exception\NotFoundException;
 use CakeDC\Users\Middleware\SocialAuthMiddleware;
+use Cake\Http\Exception\NotFoundException;
 
 /**
  * Covers registration features and email token validation

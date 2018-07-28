@@ -31,7 +31,6 @@ class GoogleTwoFactorAuthenticator extends AbstractAuthenticator
         'urlChecker' => 'Authentication.Default',
     ];
 
-
     /**
      * Prepares the error object for a login URL error
      *
