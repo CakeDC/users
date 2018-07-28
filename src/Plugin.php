@@ -7,15 +7,20 @@ use Authentication\Middleware\AuthenticationMiddleware;
 use Authorization\AuthorizationService;
 use Authorization\AuthorizationServiceProviderInterface;
 use Authorization\Middleware\AuthorizationMiddleware;
+use Authorization\Middleware\RequestAuthorizationMiddleware;
+use Authorization\Policy\MapResolver;
 use Authorization\Policy\OrmResolver;
+use Authorization\Policy\ResolverCollection;
 use Cake\Core\BasePlugin;
 use Cake\Core\Configure;
 use Cake\Http\MiddlewareQueue;
+use Cake\Http\ServerRequest;
 use CakeDC\Auth\Middleware\RbacMiddleware;
 use CakeDC\Users\Authentication\AuthenticationService;
 use CakeDC\Users\Middleware\GoogleAuthenticatorMiddleware;
 use CakeDC\Users\Middleware\SocialAuthMiddleware;
 use CakeDC\Users\Middleware\SocialEmailMiddleware;
+use CakeDC\Users\Policy\RbacPolicy;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -49,8 +54,15 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
      */
     public function getAuthorizationService(ServerRequestInterface $request, ResponseInterface $response)
     {
-        $resolver = new OrmResolver();
+        $map = new MapResolver();
+        $map->map(ServerRequest::class, RbacPolicy::class);
 
+        $orm = new OrmResolver();
+
+        $resolver = new ResolverCollection([
+            $map,
+            $orm
+        ]);
         return new AuthorizationService($resolver);
     }
 
@@ -129,7 +141,9 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
         }
 
         if (Configure::read('Auth.Authorization.loadAuthorizationMiddleware') !== false) {
-            $middlewareQueue->add(new AuthorizationMiddleware($this));
+            $config = Configure::read('Auth.AuthorizationMiddleware');
+            $middlewareQueue->add(new AuthorizationMiddleware($this, Configure::read('Auth.AuthorizationMiddleware')));
+            $middlewareQueue->add(new RequestAuthorizationMiddleware());
         }
 
         if (Configure::read('Auth.Authorization.loadRbacMiddleware') !== false) {

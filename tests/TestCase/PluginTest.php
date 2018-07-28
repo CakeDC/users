@@ -10,6 +10,7 @@ use Authentication\Identifier\TokenIdentifier;
 use Authentication\Middleware\AuthenticationMiddleware;
 use Authorization\AuthorizationService;
 use Authorization\Middleware\AuthorizationMiddleware;
+use Authorization\Middleware\RequestAuthorizationMiddleware;
 use Cake\Core\Configure;
 use Cake\Http\MiddlewareQueue;
 use Cake\Http\Response;
@@ -53,7 +54,8 @@ class PluginTest extends IntegrationTestCase
         $this->assertInstanceOf(AuthenticationMiddleware::class, $middleware->get(2));
         $this->assertInstanceOf(GoogleAuthenticatorMiddleware::class, $middleware->get(3));
         $this->assertInstanceOf(AuthorizationMiddleware::class, $middleware->get(4));
-        $this->assertEquals(5, $middleware->count());
+        $this->assertInstanceOf(RequestAuthorizationMiddleware::class, $middleware->get(5));
+        $this->assertEquals(6, $middleware->count());
     }
 
     /**
@@ -79,8 +81,9 @@ class PluginTest extends IntegrationTestCase
         $this->assertInstanceOf(AuthenticationMiddleware::class, $middleware->get(2));
         $this->assertInstanceOf(GoogleAuthenticatorMiddleware::class, $middleware->get(3));
         $this->assertInstanceOf(AuthorizationMiddleware::class, $middleware->get(4));
-        $this->assertInstanceOf(RbacMiddleware::class, $middleware->get(5));
-        $this->assertEquals(6, $middleware->count());
+        $this->assertInstanceOf(RequestAuthorizationMiddleware::class, $middleware->get(5));
+        $this->assertInstanceOf(RbacMiddleware::class, $middleware->get(6));
+        $this->assertEquals(7, $middleware->count());
     }
 
     /**
@@ -154,6 +157,7 @@ class PluginTest extends IntegrationTestCase
         $this->assertInstanceOf(AuthenticationMiddleware::class, $middleware->get(0));
         $this->assertInstanceOf(GoogleAuthenticatorMiddleware::class, $middleware->get(1));
         $this->assertInstanceOf(AuthorizationMiddleware::class, $middleware->get(2));
+        $this->assertInstanceOf(RequestAuthorizationMiddleware::class, $middleware->get(3));
     }
 
     /**
@@ -177,6 +181,7 @@ class PluginTest extends IntegrationTestCase
         $this->assertInstanceOf(SocialEmailMiddleware::class, $middleware->get(1));
         $this->assertInstanceOf(AuthenticationMiddleware::class, $middleware->get(2));
         $this->assertInstanceOf(AuthorizationMiddleware::class, $middleware->get(3));
+        $this->assertInstanceOf(RequestAuthorizationMiddleware::class, $middleware->get(4));
     }
 
     /**
@@ -198,6 +203,7 @@ class PluginTest extends IntegrationTestCase
         $middleware = $plugin->middleware($middleware);
         $this->assertInstanceOf(AuthenticationMiddleware::class, $middleware->get(0));
         $this->assertInstanceOf(AuthorizationMiddleware::class, $middleware->get(1));
+        $this->assertInstanceOf(RequestAuthorizationMiddleware::class, $middleware->get(2));
     }
 
 
