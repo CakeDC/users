@@ -129,7 +129,7 @@ class SocialAuthMiddlewareTest extends TestCase
 
         $Middleware = new SocialAuthMiddleware();
         $response = new Response();
-        $next = function ($request, $response) {
+        $next = function () {
             $this->fail('Should not call $next');
         };
 
