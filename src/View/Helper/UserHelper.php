@@ -231,9 +231,12 @@ class UserHelper extends Helper
             return "";
         }
         $html = "";
-        $connectedProviders = array_map(function ($item) {
-            return strtolower($item->provider);
-        }, (array) $socialAccounts);
+        $connectedProviders = array_map(
+            function ($item) {
+                return strtolower($item->provider);
+            },
+            (array)$socialAccounts
+        );
 
         $providers = Configure::read('OAuth.providers');
         foreach ($providers as $name => $provider) {
