@@ -53,7 +53,6 @@ class UsersAuthComponentTest extends TestCase
         $this->backupUsersConfig = Configure::read('Users');
 
         Router::reload();
-        Plugin::routes('CakeDC/Users');
         Router::connect('/route/*', [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',

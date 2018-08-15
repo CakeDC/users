@@ -57,7 +57,6 @@ class UserHelperTest extends TestCase
         }
 
         parent::setUp();
-        Plugin::routes('CakeDC/Users');
         $this->View = $this->getMockBuilder('Cake\View\View')
                 ->setMethods(['append'])
                 ->getMock();

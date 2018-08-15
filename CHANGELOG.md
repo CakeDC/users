@@ -4,6 +4,14 @@ Changelog
 Releases for CakePHP 3
 -------------
 
+* 7.0.1 
+  * Fixed an issue with 2FA only working on the second try
+
+* 7.0.1 
+  * Fixed a security issue in 2 factor authentication, reported by @ndm2
+  * Updated to cakedc/auth ^3.0
+  * Documentation fixes
+  
 * 7.0.0
   * Removed deprecations for CakePHP 3.6
   * Added a new `UsersAuthComponent::EVENT_AFTER_CHANGE_PASSWORD`

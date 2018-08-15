@@ -56,7 +56,6 @@ class UsersTableTest extends TestCase
             'transport' => 'test',
             'from' => 'cakedc@example.com'
         ]);
-        Plugin::routes('CakeDC/Users');
     }
 
     /**
