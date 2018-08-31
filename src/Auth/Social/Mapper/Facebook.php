@@ -41,4 +41,12 @@ class Facebook extends AbstractMapper
     {
         return self::FB_GRAPH_BASE_URL . Hash::get($this->_rawData, 'id') . '/picture?type=large';
     }
+
+    /**
+     * @return string
+     */
+    protected function _link()
+    {
+        return Hash::get($this->_rawData, 'link') ?: '#';
+    }
 }
