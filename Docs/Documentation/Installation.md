@@ -46,6 +46,15 @@ NOTE: you'll need to enable `Users.GoogleAuthenticator.login`
 Configure::write('Users.GoogleAuthenticator.login', true);
 ```
 
+Load the Plugin
+-----------
+
+Ensure the Users Plugin is loaded in your config/bootstrap.php file
+
+```
+Plugin::load('CakeDC/Users', ['routes' => true, 'bootstrap' => true]);
+```
+
 Creating Required Tables
 ------------------------
 If you want to use the Users tables to store your users and social accounts:
@@ -57,15 +66,6 @@ bin/cake migrations migrate -p CakeDC/Users
 Note you don't need to use the provided tables, you could customize the table names, fields etc in your
 application and then use the plugin configuration to use your own tables instead. Please refer to the [Extending the Plugin](Extending-the-Plugin.md)
 section to check all the customization options
-
-Load the Plugin
------------
-
-Ensure the Users Plugin is loaded in your config/bootstrap.php file
-
-```
-Plugin::load('CakeDC/Users', ['routes' => true, 'bootstrap' => true]);
-```
 
 Customization
 ----------
