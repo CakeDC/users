@@ -24,6 +24,7 @@ class SetupComponent extends Component
     public function initialize(array $config)
     {
         parent::initialize($config);
+        $this->getController()->loadComponent('CakeDC/Users.UsersAuth');
         list($plugin, $controller) = pluginSplit(Configure::read('Users.controller'));
         if ($this->getController()->getRequest()->getParam('plugin', null) === $plugin &&
             $this->getController()->getRequest()->getParam('controller') === $controller
