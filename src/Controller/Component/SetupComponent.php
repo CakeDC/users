@@ -13,6 +13,7 @@ namespace CakeDC\Users\Controller\Component;
 
 
 use Cake\Controller\Component;
+use Cake\Core\Configure;
 
 class SetupComponent extends Component
 {
@@ -23,8 +24,12 @@ class SetupComponent extends Component
     public function initialize(array $config)
     {
         parent::initialize($config);
-        $this->getController()->loadComponent('CakeDC/Users.UsersAuth');
-        $this->getController()->Auth->deny();
-        $this->getController()->Auth->allow(['display', 'login']);
+        list($plugin, $controller) = pluginSplit(Configure::read('Users.controller'));
+        if ($this->getController()->getRequest()->getParam('plugin', null) === $plugin &&
+            $this->getController()->getRequest()->getParam('controller') === $controller
+        ) {
+
+            $this->getController()->Auth->allow(['login']);
+        }
     }
 }
