@@ -15,6 +15,7 @@ class AuthenticationService extends BaseService
 {
     const NEED_GOOGLE_VERIFY = 'NEED_GOOGLE_VERIFY';
 
+    const GOOGLE_VERIFY_SESSION_KEY = 'temporarySession';
     /**
      * Proceed to google verify action after a valid result result
      *
@@ -25,7 +26,7 @@ class AuthenticationService extends BaseService
      */
     protected function proceedToGoogleVerify(ServerRequestInterface $request, ResponseInterface $response, ResultInterface $result)
     {
-        $request->getSession()->write('temporarySession', $result->getData());
+        $request->getSession()->write(self::GOOGLE_VERIFY_SESSION_KEY, $result->getData());
 
         $result = new Result(null, self::NEED_GOOGLE_VERIFY);
 
