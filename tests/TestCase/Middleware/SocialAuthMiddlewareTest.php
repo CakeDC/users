@@ -235,8 +235,8 @@ class SocialAuthMiddlewareTest extends TestCase
 
         $result = $Middleware($this->Request, $response, $next);
         $this->assertEquals(SocialAuthMiddleware::AUTH_SUCCESS, $result['request']->getAttribute('socialAuthStatus'));
-        $this->assertNotEmpty($result['request']->getAttribute('socialRawData'));
-        $this->assertNotEmpty($result['request']->getAttribute('socialRawData')['id']);
+        $this->assertNotEmpty($result['request']->getAttribute(SocialAuthMiddleware::ATTRIBUTE_NAME_SOCIAL_RAW_DATA));
+        $this->assertNotEmpty($result['request']->getAttribute(SocialAuthMiddleware::ATTRIBUTE_NAME_SOCIAL_RAW_DATA)['id']);
         $this->assertInstanceOf(User::class, $this->Request->getSession()->read('Auth'));
         $this->assertEquals(200, $result['response']->getStatusCode());
     }
@@ -294,7 +294,7 @@ class SocialAuthMiddlewareTest extends TestCase
 
         $result = $Middleware($this->Request, $response, $next);
         $this->assertEquals(0, $result['request']->getAttribute('socialAuthStatus'));
-        $this->assertEmpty($result['request']->getAttribute('socialRawData'));
+        $this->assertEmpty($result['request']->getAttribute(SocialAuthMiddleware::ATTRIBUTE_NAME_SOCIAL_RAW_DATA));
         $this->assertEmpty($this->Request->getSession()->read('Auth'));
         $this->assertEquals(200, $result['response']->getStatusCode());
     }
