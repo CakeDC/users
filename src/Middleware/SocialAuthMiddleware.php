@@ -29,6 +29,9 @@ class SocialAuthMiddleware
     const AUTH_ERROR_FIND_USER = 50;
     const AUTH_SUCCESS = 100;
 
+    const ATTRIBUTE_NAME_SOCIAL_RAW_DATA = 'socialRawData';
+    const ATTRIBUTE_NAME_SOCIAL_AUTH_STATUS = 'socialAuthStatus';
+
     protected $_defaultConfig = [];
     protected $authStatus = 0;
     protected $rawData = [];
@@ -86,7 +89,7 @@ class SocialAuthMiddleware
         }
 
         $request = $request->withAttribute('socialAuthStatus', $this->authStatus);
-        $request = $request->withAttribute('socialRawData', $this->rawData);
+        $request = $request->withAttribute(self::ATTRIBUTE_NAME_SOCIAL_RAW_DATA, $this->rawData);
 
         return $next($request, $response);
     }

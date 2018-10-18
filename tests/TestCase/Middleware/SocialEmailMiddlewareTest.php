@@ -2,6 +2,7 @@
 
 namespace CakeDC\Users\Test\TestCase\Middleware;
 
+use CakeDC\Users\Middleware\SocialAuthMiddleware;
 use CakeDC\Users\Middleware\SocialEmailMiddleware;
 use CakeDC\Users\Model\Entity\User;
 use CakeDC\Users\Social\Mapper\Facebook;
@@ -147,7 +148,7 @@ class SocialEmailMiddlewareTest extends TestCase
         $this->assertTrue(is_array($result));
 
         $this->assertEquals(null, $result['request']->getAttribute('socialAuthStatus'));
-        $this->assertEmpty($result['request']->getAttribute('socialRawData'));
+        $this->assertEmpty($result['request']->getAttribute(SocialAuthMiddleware::ATTRIBUTE_NAME_SOCIAL_RAW_DATA));
         $this->assertEmpty($this->Request->getSession()->read('Auth'));
         $this->assertEmpty($this->Request->getSession()->read('Users.successSocialLogin'));
     }

@@ -94,7 +94,7 @@ trait LoginTrait
             throw new NotFoundException();
         }
 
-        $data = $this->request->getAttribute('socialRawData');
+        $data = $this->request->getAttribute(SocialAuthMiddleware::ATTRIBUTE_NAME_SOCIAL_RAW_DATA);
 
         return $this->failedSocialLogin($status, $data);
     }
