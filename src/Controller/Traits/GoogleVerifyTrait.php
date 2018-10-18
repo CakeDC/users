@@ -3,6 +3,7 @@
 namespace CakeDC\Users\Controller\Traits;
 
 use Cake\Core\Configure;
+use CakeDC\Users\Authentication\AuthenticationService;
 
 trait GoogleVerifyTrait
 {
@@ -22,7 +23,7 @@ trait GoogleVerifyTrait
             return $this->redirect($loginAction);
         }
 
-        $temporarySession = $this->request->getSession()->read('temporarySession');
+        $temporarySession = $this->request->getSession()->read(AuthenticationService::GOOGLE_VERIFY_SESSION_KEY);
         $secretVerified = $temporarySession['secret_verified'];
         // showing QR-code until shared secret is verified
         if (!$secretVerified) {
@@ -58,7 +59,7 @@ trait GoogleVerifyTrait
             return true;
         }
 
-        $temporarySession = $this->request->getSession()->read('temporarySession');
+        $temporarySession = $this->request->getSession()->read(AuthenticationService::GOOGLE_VERIFY_SESSION_KEY);
 
         if (empty($temporarySession)) {
             $message = __d('CakeDC/Users', 'Could not find user data');
@@ -114,7 +115,7 @@ trait GoogleVerifyTrait
     {
         $codeVerified = false;
         $verificationCode = $this->request->getData('code');
-        $user = $this->request->getSession()->read('temporarySession');
+        $user = $this->request->getSession()->read(AuthenticationService::GOOGLE_VERIFY_SESSION_KEY);
         $entity = $this->getUsersTable()->get($user['id']);
 
         if (!empty($entity['secret'])) {
@@ -151,7 +152,7 @@ trait GoogleVerifyTrait
                 ->execute();
         }
 
-        $this->request->getSession()->delete('temporarySession');
+        $this->request->getSession()->delete(AuthenticationService::GOOGLE_VERIFY_SESSION_KEY);
         $this->request->getSession()->write('GoogleTwoFactor.User', $user);
 
         return $this->redirect($loginAction);

@@ -11,10 +11,10 @@
 
 namespace CakeDC\Users\Controller\Traits;
 
-use Authentication\AuthenticationService;
 use Authentication\Authenticator\Result;
 use CakeDC\Users\Authenticator\AuthenticatorFeedbackInterface;
 use CakeDC\Users\Authenticator\FormAuthenticator;
+use CakeDC\Users\Authentication\AuthenticationService;
 use CakeDC\Users\Middleware\SocialAuthMiddleware;
 use CakeDC\Users\Plugin;
 use Cake\Core\Configure;
@@ -106,7 +106,7 @@ trait LoginTrait
      */
     public function login()
     {
-        $this->request->getSession()->delete('temporarySession');
+        $this->request->getSession()->delete(AuthenticationService::GOOGLE_VERIFY_SESSION_KEY);
         $result = $this->request->getAttribute('authentication')->getResult();
 
         if ($result->isValid()) {
