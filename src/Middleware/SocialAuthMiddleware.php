@@ -88,7 +88,7 @@ class SocialAuthMiddleware
             $request->getSession()->write('Users.successSocialLogin', true);
         }
 
-        $request = $request->withAttribute('socialAuthStatus', $this->authStatus);
+        $request = $request->withAttribute(self::ATTRIBUTE_NAME_SOCIAL_AUTH_STATUS, $this->authStatus);
         $request = $request->withAttribute(self::ATTRIBUTE_NAME_SOCIAL_RAW_DATA, $this->rawData);
 
         return $next($request, $response);

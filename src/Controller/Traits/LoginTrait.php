@@ -82,7 +82,7 @@ trait LoginTrait
      */
     public function socialLogin()
     {
-        $status = $this->request->getAttribute('socialAuthStatus');
+        $status = $this->request->getAttribute(SocialAuthMiddleware::ATTRIBUTE_NAME_SOCIAL_AUTH_STATUS);
         if ($status === SocialAuthMiddleware::AUTH_SUCCESS) {
             $user = $this->request->getAttribute('identity')->getOriginalData();
 

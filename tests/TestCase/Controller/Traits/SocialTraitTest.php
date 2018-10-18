@@ -120,7 +120,7 @@ class SocialTraitTest extends BaseTraitTest
             ->with('post')
             ->will($this->returnValue(true));
         $this->_mockAuthentication();
-        $this->Trait->request = $this->Trait->request->withAttribute('socialAuthStatus', SocialAuthMiddleware::AUTH_ERROR_INVALID_RECAPTCHA);
+        $this->Trait->request = $this->Trait->request->withAttribute(SocialAuthMiddleware::ATTRIBUTE_NAME_SOCIAL_AUTH_STATUS, SocialAuthMiddleware::AUTH_ERROR_INVALID_RECAPTCHA);
         $this->Trait->Flash = $this->getMockBuilder('Cake\Controller\Component\FlashComponent')
             ->setMethods(['error'])
             ->disableOriginalConstructor()
