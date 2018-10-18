@@ -30,7 +30,7 @@ trait SocialTrait
     public function socialEmail()
     {
         if ($this->request->is('post')) {
-            $status = $this->request->getAttribute('socialAuthStatus');
+            $status = $this->request->getAttribute(SocialAuthMiddleware::ATTRIBUTE_NAME_SOCIAL_AUTH_STATUS);
             if ($status === SocialAuthMiddleware::AUTH_ERROR_INVALID_RECAPTCHA) {
                 $this->Flash->error(__d('CakeDC/Users', 'The reCaptcha could not be validated'));
 

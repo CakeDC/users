@@ -147,7 +147,7 @@ class SocialEmailMiddlewareTest extends TestCase
         $result = $Middleware($this->Request, $response, $next);
         $this->assertTrue(is_array($result));
 
-        $this->assertEquals(null, $result['request']->getAttribute('socialAuthStatus'));
+        $this->assertEquals(null, $result['request']->getAttribute(SocialAuthMiddleware::ATTRIBUTE_NAME_SOCIAL_AUTH_STATUS));
         $this->assertEmpty($result['request']->getAttribute(SocialAuthMiddleware::ATTRIBUTE_NAME_SOCIAL_RAW_DATA));
         $this->assertEmpty($this->Request->getSession()->read('Auth'));
         $this->assertEmpty($this->Request->getSession()->read('Users.successSocialLogin'));
@@ -258,7 +258,7 @@ class SocialEmailMiddlewareTest extends TestCase
         $this->assertTrue(is_array($result));
 
         $this->assertEquals(200, $result['response']->getStatusCode());
-        $this->assertEquals(SocialEmailMiddleware::AUTH_SUCCESS, $result['request']->getAttribute('socialAuthStatus'));
+        $this->assertEquals(SocialEmailMiddleware::AUTH_SUCCESS, $result['request']->getAttribute(SocialAuthMiddleware::ATTRIBUTE_NAME_SOCIAL_AUTH_STATUS));
         $this->assertNotEmpty($result['request']->getAttribute(SocialAuthMiddleware::ATTRIBUTE_NAME_SOCIAL_RAW_DATA));
         $this->assertNotEmpty($result['request']->getAttribute(SocialAuthMiddleware::ATTRIBUTE_NAME_SOCIAL_RAW_DATA)['id']);
         $this->assertInstanceOf(User::class, $this->Request->getSession()->read('Auth'));
@@ -338,7 +338,7 @@ class SocialEmailMiddlewareTest extends TestCase
         $this->assertTrue(is_array($result));
 
         $this->assertEquals(200, $result['response']->getStatusCode());
-        $this->assertEquals(0, $result['request']->getAttribute('socialAuthStatus'));
+        $this->assertEquals(0, $result['request']->getAttribute(SocialAuthMiddleware::ATTRIBUTE_NAME_SOCIAL_AUTH_STATUS));
         $this->assertEmpty($result['request']->getAttribute(SocialAuthMiddleware::ATTRIBUTE_NAME_SOCIAL_RAW_DATA));
         $this->assertEmpty($this->Request->getSession()->read('Auth'));
     }
