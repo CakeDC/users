@@ -136,7 +136,7 @@ $config = [
             'logoutRedirect' => [
                 'plugin' => 'CakeDC/Users',
                 'controller' => 'Users',
-                'action' => 'login',
+                'action' => 'logout',
                 'prefix' => false,
             ],
             'loginRedirect' => '/',
