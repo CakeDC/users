@@ -21,10 +21,9 @@ collection((array)Configure::read('Users.config'))->each(function ($file) {
 TableRegistry::getTableLocator()->setConfig('Users', ['className' => Configure::read('Users.table')]);
 TableRegistry::getTableLocator()->setConfig('CakeDC/Users.Users', ['className' => Configure::read('Users.table')]);
 
-if (Configure::check('Users.auth')) {
-    Configure::write('Auth.authenticate.all.userModel', Configure::read('Users.table'));
+if (Configure::check('Auth.authenticate') || Configure::check('Auth.authorize')) {
+    trigger_error("Users plugin configurations keys Auth.authenticate and Auth.authorize was removed, please check what have changed at migration guide https://github.com/CakeDC/users/blob/master/Docs/Documentation/MigrationGuide.md'");
 }
-
 $oauthPath = Configure::read('OAuth.path');
 if (is_array($oauthPath)) {
     Router::scope('/auth', function ($routes) use ($oauthPath) {
