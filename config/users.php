@@ -127,8 +127,18 @@ $config = [
     ],
     'Auth' => [
         'AuthenticationComponent' => [
-            'loginAction' => '/login',
-            'logoutRedirect' => '/login',
+            'loginAction' => [
+                'plugin' => 'CakeDC/Users',
+                'controller' => 'Users',
+                'action' => 'login',
+                'prefix' => false,
+            ],
+            'logoutRedirect' => [
+                'plugin' => 'CakeDC/Users',
+                'controller' => 'Users',
+                'action' => 'login',
+                'prefix' => false,
+            ],
             'loginRedirect' => '/',
             'requireIdentity' => false
         ],
@@ -138,7 +148,13 @@ $config = [
                 'sessionKey' => 'Auth',
             ],
             'CakeDC/Users.Form' => [
-                'loginUrl' => '/login'
+                'urlChecker' => 'Authentication.CakeRouter',
+                'loginUrl' => [
+                    'plugin' => 'CakeDC/Users',
+                    'controller' => 'Users',
+                    'action' => 'login',
+                    'prefix' => false,
+                ]
             ],
             'Authentication.Token' => [
                 'skipGoogleVerify' => true,
@@ -153,7 +169,13 @@ $config = [
                     'expires' => '1 month',
                     'httpOnly' => true,
                 ],
-                'loginUrl' => '/login'
+                'urlChecker' => 'Authentication.CakeRouter',
+                'loginUrl' => [
+                    'plugin' => 'CakeDC/Users',
+                    'controller' => 'Users',
+                    'action' => 'login',
+                    'prefix' => false,
+                ]
             ],
         ],
         'Identifiers' => [
