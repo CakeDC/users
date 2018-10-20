@@ -272,7 +272,7 @@ class LinkSocialTraitTest extends BaseTraitTest
         $tokenExpires = $expiresTime->setTimestamp($Token->getExpires())->format('Y-m-d H:i:s');
 
         $expected = [
-            'provider' => 'Facebook',
+            'provider' => 'facebook',
             'username' => 'mock_username',
             'reference' => '9999911112255',
             'avatar' => 'https://graph.facebook.com/9999911112255/picture?type=large',

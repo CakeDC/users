@@ -7,6 +7,7 @@ use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Plugin;
 use CakeDC\Users\Social\Locator\DatabaseLocator;
+use CakeDC\Users\Social\MapUser;
 use CakeDC\Users\Social\Service\ServiceFactory;
 use Cake\Core\Configure;
 use Cake\Core\InstanceConfigTrait;
@@ -124,8 +125,7 @@ class SocialAuthMiddleware
     {
         try {
             $rawData = $this->service->getUser($request);
-
-            return $this->_mapUser($rawData);
+            return (new MapUser())($this->service, $rawData);
         } catch (\Exception $e) {
             $message = sprintf(
                 "Error getting an access token / retrieving the authorized user's profile data. Error message: %s %s",
@@ -168,24 +168,5 @@ class SocialAuthMiddleware
         $this->dispatchEvent(Plugin::EVENT_FAILED_SOCIAL_LOGIN, $args);
 
         return false;
-    }
-
-    /**
-     * Map userdata with mapper defined at $providerConfig
-     *
-     * @param array $data User data
-     * @return mixed Either false or an array of user information
-     */
-    protected function _mapUser($data)
-    {
-        $providerMapperClass = $this->service->getConfig('mapper');
-        if (!class_exists($providerMapperClass)) {
-            throw new \InvalidArgumentException(__("Provider mapper class {0} does not exist", $providerMapperClass));
-        }
-        $providerMapper = new $providerMapperClass();
-        $user = $providerMapper($data);
-        $user['provider'] = $this->service->getProviderName();
-
-        return $user;
     }
 }
