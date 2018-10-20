@@ -97,8 +97,8 @@ trait GoogleVerifyTrait
             $this->request->getSession()->write(AuthenticationService::GOOGLE_VERIFY_SESSION_KEY, $user);
         } catch (\Exception $e) {
             $this->request->getSession()->destroy();
-            $message = $e->getMessage();
-            $this->Flash->error($message, 'default', [], 'auth');
+            $this->log($e);
+            $this->Flash->error(__('Could not verify, please try again'), 'default', [], 'auth');
 
             return '';
         }
