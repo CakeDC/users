@@ -64,7 +64,7 @@ class DatabaseLocatorTest extends TestCase
             'cover_photo_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg'
         ];
 
-        $user = (new Facebook($data))();
+        $user = (new Facebook())($data);
         $user['provider'] = 'facebook';
 
         $this->Locator = new DatabaseLocator();
@@ -116,7 +116,7 @@ class DatabaseLocatorTest extends TestCase
             'cover_photo_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg'
         ];
 
-        $user = (new Facebook($data))();
+        $user = (new Facebook())($data);
         $user['provider'] = 'facebook';
 
         $this->expectException(RecordNotFoundException::class);
@@ -161,7 +161,7 @@ class DatabaseLocatorTest extends TestCase
         $this->Locator = new DatabaseLocator([
             'userModel' => false
         ]);
-        $user = (new Facebook($data))();
+        $user = (new Facebook())($data);
         $user['provider'] = 'facebook';
 
         $this->expectException(InvalidSettingsException::class);
