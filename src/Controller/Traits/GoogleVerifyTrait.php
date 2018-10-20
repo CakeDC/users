@@ -95,8 +95,8 @@ trait GoogleVerifyTrait
             $query->execute();
         } catch (\Exception $e) {
             $this->request->getSession()->destroy();
-            $message = $e->getMessage();
-            $this->Flash->error($message, 'default', [], 'auth');
+            $this->log($e);
+            $this->Flash->error(__('Could not verify, please try again'), 'default', [], 'auth');
 
             return '';
         }
