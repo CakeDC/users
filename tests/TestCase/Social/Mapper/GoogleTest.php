@@ -47,8 +47,8 @@ class GoogleTest extends TestCase
                 'url' => 'https://lh3.googleusercontent.com/photo.jpg'
             ]
         ];
-        $providerMapper = new Google($rawData);
-        $user = $providerMapper();
+        $providerMapper = new Google();
+        $user = $providerMapper($rawData);
         $this->assertEquals([
             'id' => '1',
             'username' => null,

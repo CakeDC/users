@@ -45,8 +45,8 @@ class TwitterTest extends TestCase
                 'tokenSecret' => 'test-secret'
             ]
         ];
-        $providerMapper = new Twitter($rawData);
-        $user = $providerMapper();
+        $providerMapper = new Twitter();
+        $user = $providerMapper($rawData);
         $this->assertEquals([
             'id' => '1',
             'username' => 'test',
