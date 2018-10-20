@@ -87,7 +87,7 @@ class FormAuthenticator implements AuthenticatorInterface, AuthenticatorFeedback
         $className = $config['baseClassName'];
         unset($config['baseClassName']);
         if (!class_exists($className)) {
-            throw new \InvalidArgumentException(__("Base class for FormAuthenticator {0} does not exists", $className));
+            throw new \InvalidArgumentException(__("Base class for FormAuthenticator {0} does not exist", $className));
         }
 
         return new $className($identifier, $config);
