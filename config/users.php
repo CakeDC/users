@@ -211,7 +211,7 @@ $config = [
         'sessionAuthKey' => 'Auth',
         'locator' => [
             'usernameField' => 'username',
-            'finder' => 'all',
+            'authFinder' => 'all',
         ]
     ],
     'OAuth' => [

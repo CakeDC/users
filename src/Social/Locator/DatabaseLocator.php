@@ -21,7 +21,7 @@ class DatabaseLocator implements LocatorInterface
     const ERROR_INVALID_RECAPTCHA = 40;
 
     protected $_defaultConfig = [
-        'finder' => 'all',
+        'authFinder' => 'all',
     ];
 
     /**
@@ -73,7 +73,7 @@ class DatabaseLocator implements LocatorInterface
     {
         $userModel = $this->getConfig('userModel');
         $table = TableRegistry::getTableLocator()->get($userModel);
-        $finder = $this->getConfig('finder');
+        $finder = $this->getConfig('authFinder');
 
         $primaryKey = (array)$table->getPrimaryKey();
 
