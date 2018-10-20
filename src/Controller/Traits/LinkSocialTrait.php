@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Controller\Traits;
 
+use CakeDC\Users\Social\MapUser;
 use CakeDC\Users\Social\Service\ServiceFactory;
 use Cake\Utility\Hash;
 
@@ -60,7 +61,7 @@ trait LinkSocialTrait
                 return $this->redirect(['action' => 'profile']);
             }
             $data = $server->getUser($this->request);
-            $data = $this->_mapSocialUser($alias, $data);
+            $data = (new MapUser())($server, $data);
             $userId = Hash::get($this->request->getAttribute('identity') ?? [], 'id');
             $user = $this->getUsersTable()->get($userId);
 
@@ -83,24 +84,5 @@ trait LinkSocialTrait
         }
 
         return $this->redirect(['action' => 'profile']);
-    }
-
-    /**
-     * Get the provider name based on the request or on the provider set.
-     *
-     * @param string $alias of the provider.
-     * @param array $data User data.
-     *
-     * @return array
-     */
-    protected function _mapSocialUser($alias, $data)
-    {
-        $alias = ucfirst($alias);
-        $providerMapperClass = "\\CakeDC\\Users\\Social\\Mapper\\$alias";
-        $providerMapper = new $providerMapperClass();
-        $user = $providerMapper($data);
-        $user['provider'] = $alias;
-
-        return $user;
     }
 }
