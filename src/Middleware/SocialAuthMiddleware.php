@@ -179,6 +179,9 @@ class SocialAuthMiddleware
     protected function _mapUser($data)
     {
         $providerMapperClass = $this->service->getConfig('mapper');
+        if (!class_exists($providerMapperClass)) {
+            throw new \InvalidArgumentException(__("Provider mapper class {0} does not exist", $providerMapperClass));
+        }
         $providerMapper = new $providerMapperClass($data);
         $user = $providerMapper();
         $user['provider'] = $this->service->getProviderName();
