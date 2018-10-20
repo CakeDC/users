@@ -125,6 +125,7 @@ class SocialAuthMiddleware
     {
         try {
             $rawData = $this->service->getUser($request);
+
             return (new MapUser())($this->service, $rawData);
         } catch (\Exception $e) {
             $message = sprintf(
