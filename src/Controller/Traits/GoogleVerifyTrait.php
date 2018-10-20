@@ -2,8 +2,8 @@
 
 namespace CakeDC\Users\Controller\Traits;
 
-use Cake\Core\Configure;
 use CakeDC\Users\Authentication\AuthenticationService;
+use Cake\Core\Configure;
 
 trait GoogleVerifyTrait
 {

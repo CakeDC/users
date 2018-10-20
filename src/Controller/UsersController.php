@@ -11,7 +11,6 @@
 
 namespace CakeDC\Users\Controller;
 
-use Cake\Core\Configure;
 use CakeDC\Users\Controller\Traits\GoogleVerifyTrait;
 use CakeDC\Users\Controller\Traits\LinkSocialTrait;
 use CakeDC\Users\Controller\Traits\LoginTrait;
@@ -21,6 +20,7 @@ use CakeDC\Users\Controller\Traits\RegisterTrait;
 use CakeDC\Users\Controller\Traits\SimpleCrudTrait;
 use CakeDC\Users\Controller\Traits\SocialTrait;
 use CakeDC\Users\Model\Table\UsersTable;
+use Cake\Core\Configure;
 
 /**
  * Users Controller

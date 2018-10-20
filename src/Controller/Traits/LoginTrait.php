@@ -12,9 +12,9 @@
 namespace CakeDC\Users\Controller\Traits;
 
 use Authentication\Authenticator\Result;
+use CakeDC\Users\Authentication\AuthenticationService;
 use CakeDC\Users\Authenticator\AuthenticatorFeedbackInterface;
 use CakeDC\Users\Authenticator\FormAuthenticator;
-use CakeDC\Users\Authentication\AuthenticationService;
 use CakeDC\Users\Middleware\SocialAuthMiddleware;
 use CakeDC\Users\Plugin;
 use Cake\Core\Configure;
