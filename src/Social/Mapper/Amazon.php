@@ -27,17 +27,22 @@ class Amazon extends AbstractMapper
 
     /**
      * Map for provider fields
-     * @var
+     *
+     * @var array
      */
     protected $_mapFields = [
         'id' => 'user_id'
     ];
 
     /**
+     * Get link property value
+     *
+     * @param mixed $rawData raw data
+     *
      * @return string
      */
-    protected function _link()
+    protected function _link($rawData)
     {
-        return self::AMAZON_BASE_URL . Hash::get($this->_rawData, $this->_mapFields['id']);
+        return self::AMAZON_BASE_URL . Hash::get($rawData, $this->_mapFields['id']);
     }
 }

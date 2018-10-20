@@ -35,10 +35,13 @@ class Facebook extends AbstractMapper
 
     /**
      * Get avatar url
+     *
+     * @param mixed $rawData raw data
+     *
      * @return string
      */
-    protected function _avatar()
+    protected function _avatar($rawData)
     {
-        return self::FB_GRAPH_BASE_URL . Hash::get($this->_rawData, 'id') . '/picture?type=large';
+        return self::FB_GRAPH_BASE_URL . Hash::get($rawData, 'id') . '/picture?type=large';
     }
 }
