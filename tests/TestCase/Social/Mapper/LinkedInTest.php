@@ -49,8 +49,8 @@ class LinkedInTest extends TestCase
             'pictureUrl' => 'https://media.licdn.com/mpr/mprx/test.jpg',
             'publicProfileUrl' => 'https://www.linkedin.com/in/test'
         ];
-        $providerMapper = new LinkedIn($rawData);
-        $user = $providerMapper();
+        $providerMapper = new LinkedIn();
+        $user = $providerMapper($rawData);
         $this->assertEquals([
             'id' => '1',
             'username' => null,

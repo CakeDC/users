@@ -46,8 +46,8 @@ class InstagramTest extends TestCase
             ],
             'bio' => ''
         ];
-        $providerMapper = new Instagram($rawData);
-        $user = $providerMapper();
+        $providerMapper = new Instagram();
+        $user = $providerMapper($rawData);
         $this->assertEquals([
             'id' => '1',
             'username' => 'test',

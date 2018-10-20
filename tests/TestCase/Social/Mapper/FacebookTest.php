@@ -65,8 +65,8 @@ class FacebookTest extends TestCase
             'is_silhouette' => false,
             'cover_photo_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg'
         ];
-        $providerMapper = new Facebook($rawData);
-        $user = $providerMapper();
+        $providerMapper = new Facebook();
+        $user = $providerMapper($rawData);
         $this->assertEquals([
             'id' => '1',
             'username' => null,
