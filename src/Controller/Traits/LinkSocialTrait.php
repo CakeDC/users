@@ -97,8 +97,8 @@ trait LinkSocialTrait
     {
         $alias = ucfirst($alias);
         $providerMapperClass = "\\CakeDC\\Users\\Social\\Mapper\\$alias";
-        $providerMapper = new $providerMapperClass($data);
-        $user = $providerMapper();
+        $providerMapper = new $providerMapperClass();
+        $user = $providerMapper($data);
         $user['provider'] = $alias;
 
         return $user;
