@@ -19,7 +19,7 @@ trait GoogleVerifyTrait
     public function verify()
     {
         $loginAction = Configure::read('Auth.AuthenticationComponent.loginAction');
-        if ($this->isVerifyAllowed()) {
+        if (!$this->isVerifyAllowed()) {
             return $this->redirect($loginAction);
         }
 
@@ -56,19 +56,19 @@ trait GoogleVerifyTrait
             $message = __d('CakeDC/Users', 'Please enable Google Authenticator first.');
             $this->Flash->error($message, 'default', [], 'auth');
 
-            return true;
+            return false;
         }
 
         $temporarySession = $this->request->getSession()->read(AuthenticationService::GOOGLE_VERIFY_SESSION_KEY);
 
-        if (empty($temporarySession)) {
+        if (empty($temporarySession) || !isset($temporarySession['id'])) {
             $message = __d('CakeDC/Users', 'Could not find user data');
             $this->Flash->error($message, 'default', [], 'auth');
 
-            return true;
+            return false;
         }
 
-        return false;
+        return true;
     }
 
     /**
