@@ -76,11 +76,21 @@ class FormAuthenticator implements AuthenticatorInterface, AuthenticatorFeedback
      * @param \Authentication\Identifier\IdentifierInterface $identifier Identifier or identifiers collection.
      * @param array $config Configuration settings.
      *
-     * @return \Authentication\Authenticator\FormAuthenticator
+     * @return \Authentication\Authenticator\AuthenticatorInterface
      */
     protected function createBaseAuthenticator(IdentifierInterface $identifier, array $config = [])
     {
-        return new BaseFormAuthenticator($identifier, $config);
+        if (!isset($config['baseClassName'])) {
+            return new BaseFormAuthenticator($identifier, $config);
+        }
+
+        $className = $config['baseClassName'];
+        unset($config['baseClassName']);
+        if (!class_exists($className)) {
+            throw new \InvalidArgumentException(__("Base class for FormAuthenticator {0} does not exists", $className));
+        }
+
+        return new $className($identifier, $config);
     }
 
     /**
