@@ -147,14 +147,7 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
         }
 
         if (Configure::read('Auth.Authorization.loadRbacMiddleware') !== false) {
-            $middlewareQueue->add(new RbacMiddleware(null, [
-                'unauthorizedRedirect' => [
-                    'prefix' => false,
-                    'plugin' => 'CakeDC/Users',
-                    'controller' => 'Users',
-                    'action' => 'login',
-                ]
-            ]));
+            $middlewareQueue->add(new RbacMiddleware(null, Configure::read('Auth.RbacMiddleware')));
         }
 
         return $middlewareQueue;

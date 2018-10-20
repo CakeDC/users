@@ -205,6 +205,14 @@ $config = [
         ],
         'AuthorizationComponent' => [
             'enabled' => true,
+        ],
+        'RbacMiddleware' => [
+            'unauthorizedRedirect' => [
+                'prefix' => false,
+                'plugin' => 'CakeDC/Users',
+                'controller' => 'Users',
+                'action' => 'login',
+            ]
         ]
     ],
     'SocialAuthMiddleware' => [
