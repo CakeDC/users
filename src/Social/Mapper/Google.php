@@ -34,10 +34,14 @@ class Google extends AbstractMapper
     ];
 
     /**
+     * Get link property value
+     *
+     * @param mixed $rawData raw data
+     *
      * @return string
      */
-    protected function _link()
+    protected function _link($rawData)
     {
-        return Hash::get($this->_rawData, $this->_mapFields['link']) ?: '#';
+        return Hash::get($rawData, $this->_mapFields['link']) ?: '#';
     }
 }

@@ -34,10 +34,14 @@ class Instagram extends AbstractMapper
     ];
 
     /**
+     * Get link property value
+     *
+     * @param mixed $rawData raw data
+     *
      * @return string
      */
-    protected function _link()
+    protected function _link($rawData)
     {
-        return self::INSTAGRAM_BASE_URL . Hash::get($this->_rawData, $this->_mapFields['username']);
+        return self::INSTAGRAM_BASE_URL . Hash::get($rawData, $this->_mapFields['username']);
     }
 }

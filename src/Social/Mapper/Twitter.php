@@ -42,18 +42,26 @@ class Twitter extends AbstractMapper
     ];
 
     /**
+     * Get link property value
+     *
+     * @param mixed $rawData raw data
+     *
      * @return string
      */
-    protected function _link()
+    protected function _link($rawData)
     {
-        return self::TWITTER_BASE_URL . Hash::get($this->_rawData, $this->_mapFields['username']);
+        return self::TWITTER_BASE_URL . Hash::get($rawData, $this->_mapFields['username']);
     }
 
     /**
+     * Get avatar url
+     *
+     * @param mixed $rawData raw data
+     *
      * @return string
      */
-    protected function _avatar()
+    protected function _avatar($rawData)
     {
-        return str_replace('normal', 'bigger', Hash::get($this->_rawData, $this->_mapFields['avatar']));
+        return str_replace('normal', 'bigger', Hash::get($rawData, $this->_mapFields['avatar']));
     }
 }
