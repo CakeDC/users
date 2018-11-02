@@ -6,6 +6,7 @@ use CakeDC\Users\Controller\Traits\ReCaptchaTrait;
 use Cake\Core\Configure;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\ServerRequest;
+use CakeDC\Users\Exception\SocialAuthenticationException;
 use Psr\Http\Message\ResponseInterface;
 
 class SocialEmailMiddleware extends SocialAuthMiddleware
@@ -22,12 +23,13 @@ class SocialEmailMiddleware extends SocialAuthMiddleware
      */
     public function __invoke(ServerRequest $request, ResponseInterface $response, $next)
     {
+        if ($request->getAttribute('identity')) {
+            $request->getSession()->delete(Configure::read('Users.Key.Session.social'));
+        }
         $action = $request->getParam('action');
         if ($action !== 'socialEmail' || $request->getParam('plugin') !== 'CakeDC/Users') {
             return $next($request, $response);
         }
-
-        $this->setConfig(Configure::read('SocialAuthMiddleware'));
 
         return $this->handleAction($request, $response, $next);
     }
@@ -37,7 +39,7 @@ class SocialEmailMiddleware extends SocialAuthMiddleware
      *
      * @param int $request authentication result
      * @param \Psr\Http\Message\ServerRequestInterface $response The request.
-     * @param \Psr\Http\Message\ResponseInterface $next The response.
+     * @param callable $next The response.
      * @return \Psr\Http\Message\ResponseInterface A response
      */
     private function handleAction(ServerRequest $request, ResponseInterface $response, $next)
@@ -45,61 +47,10 @@ class SocialEmailMiddleware extends SocialAuthMiddleware
         if (!$request->getSession()->check(Configure::read('Users.Key.Session.social'))) {
             throw new NotFoundException();
         }
-        $request->getSession()->delete('Flash.auth');
-        $result = false;
-
-        if (!$request->is('post')) {
-            return $this->finishWithResult($result, $request, $response, $next);
+        try {
+            return $next($request, $response);
+        } catch (SocialAuthenticationException $exception) {
+            return $this->onAuthenticationException($request, $response, $exception);
         }
-
-        if (!$this->_validateRegisterPost($request)) {
-            $this->authStatus = self::AUTH_ERROR_INVALID_RECAPTCHA;
-        } else {
-            $result = $this->authenticate($request);
-        }
-
-        return $this->finishWithResult($result, $request, $response, $next);
-    }
-
-    /**
-     * Check the POST and validate it for registration, for now we check the reCaptcha
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request The request.
-     * @return bool
-     */
-    private function _validateRegisterPost($request)
-    {
-        if (!Configure::read('Users.reCaptcha.registration')) {
-            return true;
-        }
-
-        return $this->validateReCaptcha(
-            $request->getData('g-recaptcha-response'),
-            $request->clientIp()
-        );
-    }
-
-    /**
-     * Authenticates with Session data (from SocialAuthMiddleware) and form email.
-     * config: Users.Key.Session.social,
-     * form input name: email
-     *
-     * @param \Cake\Http\ServerRequest $request Request object.
-     * @return array|bool
-     */
-    protected function getUser(ServerRequest $request)
-    {
-        $data = $request->getSession()->read(Configure::read('Users.Key.Session.social'));
-        $requestDataEmail = $request->getData('email');
-        if (!empty($data) && empty($data['uid']) && (!empty($data['email']) || !empty($requestDataEmail))) {
-            if (!empty($requestDataEmail)) {
-                $data['email'] = $requestDataEmail;
-            }
-            $request->getSession()->delete(Configure::read('Users.Key.Session.social'));
-
-            return $data;
-        }
-
-        return false;
     }
 }
