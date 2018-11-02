@@ -65,7 +65,15 @@ class SocialAuthenticator extends AbstractAuthenticator
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request The request that contains login information.
      * @param \Psr\Http\Message\ResponseInterface $response Unused response object.
+     * @throws \Exception
+     * @throws SocialAuthenticationException
      * @return \Authentication\Authenticator\ResultInterface
+     */
+    /**
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @return Result|\Authentication\Authenticator\ResultInterface
+     * @throws \Exception
      */
     public function authenticate(ServerRequestInterface $request, ResponseInterface $response)
     {
@@ -87,13 +95,17 @@ class SocialAuthenticator extends AbstractAuthenticator
 
             return new Result(null, Result::FAILURE_IDENTITY_NOT_FOUND);
 
-        } catch (
-            UserNotActiveException |
-            AccountNotActiveException |
-            MissingEmailException $exception
-        ) {
+        } catch (\Exception $exception) {
+            $list = [
+                UserNotActiveException::class,
+                AccountNotActiveException::class,
+                MissingEmailException::class
+            ];
+            $this->throwIfNotInlist($exception, $list);
+
             throw new SocialAuthenticationException(compact('rawData'), null, $exception);
         }
+
     }
 
     /**
@@ -101,25 +113,44 @@ class SocialAuthenticator extends AbstractAuthenticator
      *
      * @param ServerRequestInterface $request request object
      * @param ServiceInterface $service social service
-     *
+     * @throws \Exception
      * @return array|null
      */
-    protected function getRawData(ServerRequestInterface $request, ServiceInterface $service)
+    private function getRawData(ServerRequestInterface $request, ServiceInterface $service)
     {
         $rawData = null;
         try {
             $rawData = $service->getUser($request);
 
             return (new MapUser())($service, $rawData);
-        } catch (BadRequestException | \UnexpectedValueException $e) {
+        } catch (\Exception $exception) {
+            $list = [BadRequestException::class,  \UnexpectedValueException::class];
+            $this->throwIfNotInlist($exception, $list);
             $message = sprintf(
                 "Error getting an access token / retrieving the authorized user's profile data. Error message: %s %s",
-                $e->getMessage(),
-                $e
+                $exception->getMessage(),
+                $exception
             );
             $this->log($message);
 
             return null;
+
+        }
+    }
+
+    /**
+     * Throw the exception if not in the list
+     *
+     * @param \Exception $exception exception thrown
+     * @param array $allowed list of allowed exception classes
+     * @throws \Exception
+     * @return void
+     */
+    private function throwIfNotInlist(\Exception $exception, array $list)
+    {
+        $className = get_class($exception);
+        if (!in_array($className, $list)) {
+            throw $exception;
         }
     }
 }
