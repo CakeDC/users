@@ -23,8 +23,9 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 class SocialAuthenticator extends AbstractAuthenticator
 {
-    use UrlCheckerTrait;
     use LogTrait;
+    use SocialAuthTrait;
+    use UrlCheckerTrait;
 
     const SOCIAL_SERVICE_ATTRIBUTE = 'socialService';
 
@@ -92,21 +93,7 @@ class SocialAuthenticator extends AbstractAuthenticator
             return new Result(null, Result::FAILURE_IDENTITY_NOT_FOUND);
         }
 
-        try {
-            $user = $this->getIdentifier()->identify(['socialAuthUser' => $rawData]);
-            if (!empty($user)) {
-                return new Result($user, Result::SUCCESS);
-            }
-
-            return new Result(null, Result::FAILURE_IDENTITY_NOT_FOUND);
-
-        } catch(AccountNotActiveException $e) {
-            return new Result(null, self::FAILURE_ACCOUNT_NOT_ACTIVE);
-        } catch(UserNotActiveException $e) {
-            return new Result(null, self::FAILURE_USER_NOT_ACTIVE);
-        } catch (MissingEmailException $exception) {
-            throw new SocialAuthenticationException(compact('rawData'), null, $exception);
-        }
+        return $this->identify($rawData);
     }
 
     /**
