@@ -26,6 +26,11 @@ class SocialAuthenticator extends AbstractAuthenticator
     use UrlCheckerTrait;
     use LogTrait;
 
+    const SOCIAL_SERVICE_ATTRIBUTE = 'socialService';
+
+    const FAILURE_ACCOUNT_NOT_ACTIVE = 'FAILURE_ACCOUNT_NOT_ACTIVE';
+
+    const FAILURE_USER_NOT_ACTIVE = 'FAILURE_USER_NOT_ACTIVE';
     /**
      * Default config for this object.
      * - `fields` The fields to use to identify a user by.
@@ -77,7 +82,7 @@ class SocialAuthenticator extends AbstractAuthenticator
      */
     public function authenticate(ServerRequestInterface $request, ResponseInterface $response)
     {
-        $service = $request->getAttribute('socialService');
+        $service = $request->getAttribute(self::SOCIAL_SERVICE_ATTRIBUTE);
         if ($service === null) {
             return new Result(null, Result::FAILURE_CREDENTIALS_MISSING);
         }
@@ -95,17 +100,13 @@ class SocialAuthenticator extends AbstractAuthenticator
 
             return new Result(null, Result::FAILURE_IDENTITY_NOT_FOUND);
 
-        } catch (\Exception $exception) {
-            $list = [
-                UserNotActiveException::class,
-                AccountNotActiveException::class,
-                MissingEmailException::class
-            ];
-            $this->throwIfNotInlist($exception, $list);
-
+        } catch(AccountNotActiveException $e) {
+            return new Result(null, self::FAILURE_ACCOUNT_NOT_ACTIVE);
+        } catch(UserNotActiveException $e) {
+            return new Result(null, self::FAILURE_USER_NOT_ACTIVE);
+        } catch (MissingEmailException $exception) {
             throw new SocialAuthenticationException(compact('rawData'), null, $exception);
         }
-
     }
 
     /**
