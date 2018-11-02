@@ -2,22 +2,16 @@
 
 namespace CakeDC\Users\Middleware;
 
-use Cake\Routing\Router;
 use CakeDC\Users\Authenticator\SocialAuthenticator;
-use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\SocialAuthenticationException;
-use CakeDC\Users\Exception\UserNotActiveException;
-use CakeDC\Users\Plugin;
-use CakeDC\Users\Social\Locator\DatabaseLocator;
-use CakeDC\Users\Social\MapUser;
 use CakeDC\Users\Social\Service\ServiceFactory;
 use Cake\Core\Configure;
 use Cake\Core\InstanceConfigTrait;
-use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Event\EventDispatcherTrait;
 use Cake\Http\ServerRequest;
 use Cake\Log\LogTrait;
+use Cake\Routing\Router;
 use Psr\Http\Message\ResponseInterface;
 
 class SocialAuthMiddleware
