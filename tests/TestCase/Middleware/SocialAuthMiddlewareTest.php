@@ -8,12 +8,21 @@
 
 namespace CakeDC\Users\Test\TestCase\Middleware;
 
+use Cake\Http\ServerRequest;
+use CakeDC\Users\Exception\AccountNotActiveException;
+use CakeDC\Users\Exception\MissingEmailException;
+use CakeDC\Users\Exception\SocialAuthenticationException;
+use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Middleware\SocialAuthMiddleware;
 use CakeDC\Users\Model\Entity\User;
 use Cake\Core\Configure;
 use Cake\Http\Response;
 use Cake\Http\ServerRequestFactory;
 use Cake\TestSuite\TestCase;
+use CakeDC\Users\Social\MapUser;
+use CakeDC\Users\Social\Service\OAuth2Service;
+use CakeDC\Users\Social\Service\ServiceFactory;
+use Doctrine\Instantiator\Exception\UnexpectedValueException;
 use League\OAuth2\Client\Provider\FacebookUser;
 use Zend\Diactoros\Uri;
 
@@ -147,7 +156,7 @@ class SocialAuthMiddlewareTest extends TestCase
     }
 
     /**
-     * Test when user successfully authenticated
+     * Test when user is on get user step
      *
      * @return void
      */
@@ -205,48 +214,75 @@ class SocialAuthMiddlewareTest extends TestCase
             'cover_photo_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg'
         ]);
 
-        $this->Provider->expects($this->never())
-            ->method('getAuthorizationUrl');
-
-        $this->Provider->expects($this->never())
-            ->method('getState');
-
-        $this->Provider->expects($this->any())
-            ->method('getAccessToken')
-            ->with(
-                $this->equalTo('authorization_code'),
-                $this->equalTo(['code' => 'ZPO9972j3092304230'])
-            )
-            ->will($this->returnValue($Token));
-
-        $this->Provider->expects($this->any())
-            ->method('getResourceOwner')
-            ->with(
-                $this->equalTo($Token)
-            )
-            ->will($this->returnValue($user));
-
         $Middleware = new SocialAuthMiddleware();
 
-        $response = new Response();
-        $next = function ($request, $response) {
-            return compact('request', 'response');
-        };
+        $ResponseOriginal = new Response();
+        $checked = false;
+        $next = function (ServerRequest $request, Response $response) use ($ResponseOriginal, &$checked) {
+            /**
+             * @var OAuth2Service $service
+             */
+            $service = $request->getAttribute('socialService');
+            $this->assertInstanceOf(OAuth2Service::class, $service);
+            $this->assertEquals('facebook', $service->getProviderName());
+            $this->assertTrue($service->isGetUserStep($request));
+            $this->assertSame($response, $ResponseOriginal);
+            $checked = true;
 
-        $result = $Middleware($this->Request, $response, $next);
-        $this->assertEquals(SocialAuthMiddleware::AUTH_SUCCESS, $result['request']->getAttribute(SocialAuthMiddleware::ATTRIBUTE_NAME_SOCIAL_AUTH_STATUS));
-        $this->assertNotEmpty($result['request']->getAttribute(SocialAuthMiddleware::ATTRIBUTE_NAME_SOCIAL_RAW_DATA));
-        $this->assertNotEmpty($result['request']->getAttribute(SocialAuthMiddleware::ATTRIBUTE_NAME_SOCIAL_RAW_DATA)['id']);
-        $this->assertInstanceOf(User::class, $this->Request->getSession()->read('Auth'));
-        $this->assertEquals(200, $result['response']->getStatusCode());
+            return $response;
+        };
+        $result = $Middleware($this->Request, $ResponseOriginal, $next);
+        $this->assertSame($result, $ResponseOriginal);
+        $this->assertTrue($checked);
+    }
+
+    /**
+     * Data provider for testSocialAuthenticationException
+     *
+     * @return array
+     */
+    public function dataProviderSocialAuthenticationException()
+    {
+        $missingEmail = [
+            new MissingEmailException("Missing email"),
+            [
+                'key' => 'flash',
+                'element' => 'error',
+                'params' => [],
+                __d('CakeDC/Users', 'Please enter your email')
+            ],
+            '/users/users/social-email',
+            true,
+        ];
+        $unknown = [
+            new UnexpectedValueException("User not active"),
+            [
+                'key' => 'flash',
+                'element' => 'error',
+                'params' => [],
+                __d('CakeDC/Users', 'Could not identify your account, please try again')
+            ],
+            '/login',
+            false
+        ];
+
+        return [
+            $missingEmail,
+            $unknown
+        ];
     }
 
     /**
      * Test when has error getting user
      *
+     * @param \Exception $previousException previous exception used on SocialAuthenticationException
+     * @param array $flash flash that should be on session
+     * @param array $location value of location header that should be on request
+     * @param bool $keepSocialUser should keed a raw data of social user
+     * @dataProvider dataProviderSocialAuthenticationException
      * @return void
      */
-    public function testErrorGetUser()
+    public function testSocialAuthenticationException($previousException, $flash, $location, $keepSocialUser)
     {
         $uri = new Uri('/auth/facebook');
         $this->Request = $this->Request->withUri($uri);
@@ -262,41 +298,88 @@ class SocialAuthMiddlewareTest extends TestCase
         ]);
         $this->Request->getSession()->write('oauth2state', '__TEST_STATE__');
 
+        $Middleware = new SocialAuthMiddleware();
+
+        $ResponseOriginal = new Response();
+        $checked = false;
+
+        $service = (new ServiceFactory())->createFromProvider('facebook');
         $Token = new \League\OAuth2\Client\Token\AccessToken([
             'access_token' => 'test-token',
             'expires' => 1490988496
         ]);
+        $user = new FacebookUser([
+            'id' => '1',
+            'name' => 'Test User',
+            'first_name' => 'Test',
+            'last_name' => 'User',
+            'email' => 'test@gmail.com',
+            'hometown' => [
+                'id' => '108226049197930',
+                'name' => 'Madrid'
+            ],
+            'picture' => [
+                'data' => [
+                    'url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
+                    'is_silhouette' => false
+                ]
+            ],
+            'cover' => [
+                'source' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
+                'id' => '1'
+            ],
+            'gender' => 'male',
+            'locale' => 'en_US',
+            'link' => 'https://www.facebook.com/app_scoped_user_id/1/',
+            'timezone' => -5,
+            'age_range' => [
+                'min' => 21
+            ],
+            'bio' => 'I am the best test user in the world.',
+            'picture_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
+            'is_silhouette' => false,
+            'cover_photo_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg'
+        ]);
+        $user = ['token' => $Token] + $user->toArray();
+        $rawData = (new MapUser())($service, $user);
+        $next = function (ServerRequest $request, Response $response) use ($previousException, $ResponseOriginal, &$checked, $rawData) {
+            /**
+             * @var OAuth2Service $service
+             */
+            $service = $request->getAttribute('socialService');
+            $this->assertInstanceOf(OAuth2Service::class, $service);
+            $this->assertEquals('facebook', $service->getProviderName());
+            $this->assertTrue($service->isGetUserStep($request));
+            $this->assertSame($response, $ResponseOriginal);
+            $checked = true;
 
-        $this->Provider->expects($this->never())
-            ->method('getAuthorizationUrl');
-
-        $this->Provider->expects($this->never())
-            ->method('getState');
-
-        $this->Provider->expects($this->any())
-            ->method('getAccessToken')
-            ->with(
-                $this->equalTo('authorization_code'),
-                $this->equalTo(['code' => 'ZPO9972j3092304230'])
-            )
-            ->will($this->returnValue($Token));
-
-        $this->Provider->expects($this->any())
-            ->method('getResourceOwner')
-            ->will($this->throwException(new \Exception('Test error')));
-
-        $Middleware = new SocialAuthMiddleware();
-
-        $response = new Response();
-        $next = function ($request, $response) {
-            return compact('request', 'response');
+            throw new SocialAuthenticationException(
+                [
+                    'rawData' => $rawData
+                ],
+                null,
+                $previousException
+            );
         };
+        /**
+         * @var Response $result
+         */
+        $result = $Middleware($this->Request, $ResponseOriginal, $next);
+        $this->assertInstanceOf(Response::class, $result);
+        $actual = $result->getHeader('Location');
+        $expected = [$location];
+        $this->assertEquals($expected, $actual);
+        $expected = [
+            $flash
+        ];
+        $actual = $this->Request->getSession()->read('Flash.flash');
+        $this->assertEquals($expected, $actual);
 
-        $result = $Middleware($this->Request, $response, $next);
-        $this->assertEquals(0, $result['request']->getAttribute(SocialAuthMiddleware::ATTRIBUTE_NAME_SOCIAL_AUTH_STATUS));
-        $this->assertEmpty($result['request']->getAttribute(SocialAuthMiddleware::ATTRIBUTE_NAME_SOCIAL_RAW_DATA));
-        $this->assertEmpty($this->Request->getSession()->read('Auth'));
-        $this->assertEquals(200, $result['response']->getStatusCode());
+        if ($keepSocialUser) {
+            $actual = $this->Request->getSession()->read(Configure::read('Users.Key.Session.social'));
+            $expected = (new MapUser())($service, $user);
+            $this->assertEquals($expected, $actual);
+        }
     }
 
     /**
