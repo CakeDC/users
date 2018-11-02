@@ -2,7 +2,6 @@
 
 namespace CakeDC\Users\Middleware;
 
-use CakeDC\Users\Controller\Traits\ReCaptchaTrait;
 use Cake\Core\Configure;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\ServerRequest;
@@ -11,8 +10,6 @@ use Psr\Http\Message\ResponseInterface;
 
 class SocialEmailMiddleware extends SocialAuthMiddleware
 {
-    use ReCaptchaTrait;
-
     /**
      * Complete social auth with user without social e-mail
      *
