@@ -2,8 +2,11 @@
 
 namespace CakeDC\Users\Middleware;
 
+use Cake\Routing\Router;
+use CakeDC\Users\Authenticator\SocialAuthenticator;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
+use CakeDC\Users\Exception\SocialAuthenticationException;
 use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Plugin;
 use CakeDC\Users\Social\Locator\DatabaseLocator;
@@ -42,6 +45,12 @@ class SocialAuthMiddleware
      */
     protected $service;
 
+    protected $params = [
+        'plugin' => 'CakeDC/Users',
+        'controller' => 'Users',
+        'action' => 'socialLogin'
+    ];
+
     /**
      * Perform social auth
      *
@@ -57,117 +66,78 @@ class SocialAuthMiddleware
             return $next($request, $response);
         }
 
-        $this->setConfig(Configure::read('SocialAuthMiddleware'));
-
-        $this->service = (new ServiceFactory())->createFromRequest($request);
-        if (!$this->service->isGetUserStep($request)) {
-            return $response->withLocation($this->service->getAuthorizationUrl($request));
+        $service = (new ServiceFactory())->createFromRequest($request);
+        if (!$service->isGetUserStep($request)) {
+            return $response->withLocation($service->getAuthorizationUrl($request));
         }
+        $request = $request->withAttribute(SocialAuthenticator::SOCIAL_SERVICE_ATTRIBUTE, $service);
 
-        return $this->finishWithResult($this->authenticate($request), $request, $response, $next);
+        try {
+            return $next($request, $response);
+        } catch (SocialAuthenticationException $exception) {
+            return $this->onAuthenticationException($request, $response, $exception);
+        }
     }
 
     /**
-     * finish middleware process.
+     * Handle SocialAuthenticationException
      *
-     * @param int $result authentication result
      * @param \Psr\Http\Message\ServerRequestInterface $request The request.
      * @param \Psr\Http\Message\ResponseInterface $response The response.
-     * @param callable $next Callback to invoke the next middleware.
+     * @param \CakeDC\Users\Exception\SocialAuthenticationException $exception Exception thrown
+     *
      * @return \Psr\Http\Message\ResponseInterface A response
      */
-    protected function finishWithResult($result, ServerRequest $request, ResponseInterface $response, $next)
+    protected function onAuthenticationException(ServerRequest $request, ResponseInterface $response, $exception)
     {
-        if ($result) {
-            $this->authStatus = self::AUTH_SUCCESS;
+        $baseClassName = get_class($exception->getPrevious());
+        if ($baseClassName === MissingEmailException::class) {
+            $this->setErrorMessage($request, __d('CakeDC/Users', 'Please enter your email'));
+
             $request->getSession()->write(
-                $this->getConfig('sessionAuthKey'),
-                $result
+                Configure::read('Users.Key.Session.social'),
+                $exception->getAttributes()['rawData']
             );
 
-            $request->getSession()->delete(Configure::read('Users.Key.Session.social'));
-            $request->getSession()->write('Users.successSocialLogin', true);
+            return $this->responseWithActionLocation($response, 'socialEmail');
         }
 
-        $request = $request->withAttribute(self::ATTRIBUTE_NAME_SOCIAL_AUTH_STATUS, $this->authStatus);
-        $request = $request->withAttribute(self::ATTRIBUTE_NAME_SOCIAL_RAW_DATA, $this->rawData);
+        $this->setErrorMessage($request, __d('CakeDC/Users', 'Could not identify your account, please try again'));
 
-        return $next($request, $response);
+        return $this->responseWithActionLocation($response, 'login');
     }
 
     /**
-     * Get a user based on information in the request.
+     * Set request error message
      *
-     * @param \Cake\Http\ServerRequest $request Request object.
-     * @return bool
-     * @throws \RuntimeException If the `CakeDC/Users/OAuth2.newUser` event is missing or returns empty.
+     * @param ServerRequest $request the request with session attribute
+     * @param string $message the message
+     *
+     * @return void
      */
-    protected function authenticate(ServerRequest $request)
+    private function setErrorMessage(ServerRequest $request, $message)
     {
-        $user = $this->getUser($request);
-        if (!$user) {
-            return false;
-        }
-
-        $this->rawData = $user;
-
-        return $this->_touch($user);
+        $messages = (array)$request->getSession()->read('Flash.flash');
+        $messages[] = [
+            'key' => 'flash',
+            'element' => 'error',
+            'params' => [],
+            $message
+        ];
+        $request->getSession()->write('Flash.flash', $messages);
     }
 
     /**
-     * Authenticates with OAuth provider by getting an access token and
-     * retrieving the authorized user's profile data.
+     * Set location header to response using the string action
      *
-     * @param \Cake\Http\ServerRequest $request Request object.
-     * @return array|bool
+     * @param ResponseInterface $response to set location header
+     * @param string $action action at users controller
+     * @return ResponseInterface
      */
-    protected function getUser(ServerRequest $request)
+    protected function responseWithActionLocation(ResponseInterface $response, $action)
     {
-        try {
-            $rawData = $this->service->getUser($request);
+        $url = Router::url(compact('action') + $this->params);
 
-            return (new MapUser())($this->service, $rawData);
-        } catch (\Exception $e) {
-            $message = sprintf(
-                "Error getting an access token / retrieving the authorized user's profile data. Error message: %s %s",
-                $e->getMessage(),
-                $e
-            );
-            $this->log($message);
-
-            return false;
-        }
-    }
-
-    /**
-     * Find or create local user
-     *
-     * @param array $data data
-     * @return array|bool|mixed
-     * @throws MissingEmailException
-     */
-    protected function _touch(array $data)
-    {
-        $locator = new DatabaseLocator($this->getConfig('locator'));
-        try {
-            return $locator->getOrCreate($data);
-        } catch (UserNotActiveException $ex) {
-            $this->authStatus = self::AUTH_ERROR_USER_NOT_ACTIVE;
-            $exception = $ex;
-        } catch (AccountNotActiveException $ex) {
-            $this->authStatus = self::AUTH_ERROR_ACCOUNT_NOT_ACTIVE;
-            $exception = $ex;
-        } catch (MissingEmailException $ex) {
-            $this->authStatus = self::AUTH_ERROR_MISSING_EMAIL;
-            $exception = $ex;
-        } catch (RecordNotFoundException $ex) {
-            $this->authStatus = self::AUTH_ERROR_FIND_USER;
-            $exception = $ex;
-        }
-
-        $args = ['exception' => $exception, 'rawData' => $data];
-        $this->dispatchEvent(Plugin::EVENT_FAILED_SOCIAL_LOGIN, $args);
-
-        return false;
+        return $response->withLocation($url);
     }
 }
