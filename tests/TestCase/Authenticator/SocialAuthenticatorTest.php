@@ -17,8 +17,10 @@ use Cake\Http\Response;
 use Cake\Http\ServerRequestFactory;
 use Cake\TestSuite\TestCase;
 use CakeDC\Users\Authenticator\SocialAuthenticator;
+use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\SocialAuthenticationException;
+use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Model\Entity\User;
 use CakeDC\Users\Social\Mapper\Facebook;
 use CakeDC\Users\Social\MapUser;
@@ -517,6 +519,123 @@ class SocialAuthenticatorTest extends TestCase
         $result = $Authenticator->authenticate($this->Request, $Response);
         $this->assertInstanceOf(Result::class, $result);
         $this->assertEquals(Result::FAILURE_IDENTITY_NOT_FOUND, $result->getStatus());
+        $actual = $result->getData();
+        $this->assertEmpty($actual);
+    }
+
+    /**
+     * Data provider for testAuthenticateErrorException
+     * @return array
+     */
+    public function dataProviderAuthenticateErrorException()
+    {
+        return [
+            [
+                new AccountNotActiveException('Not Active'),
+                SocialAuthenticator::FAILURE_ACCOUNT_NOT_ACTIVE
+            ],
+            [
+                new UserNotActiveException('Not Active'),
+                SocialAuthenticator::FAILURE_USER_NOT_ACTIVE
+            ]
+        ];
+    }
+    /**
+     * Test authenticate method with successfull authentication
+     *
+     * @param \Exception $exception thrown exception
+     * @param string $status expected status from Result object
+     *
+     * @dataProvider dataProviderAuthenticateErrorException
+     * @return void
+     */
+    public function testAuthenticateErrorException($exception, $status)
+    {
+        $uri = new Uri('/auth/facebook');
+        $this->Request = $this->Request->withUri($uri);
+        $this->Request = $this->Request->withQueryParams([
+            'code' => 'ZPO9972j3092304230',
+            'state' => '__TEST_STATE__'
+        ]);
+        $this->Request = $this->Request->withAttribute('params', [
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+            'action' => 'socialLogin',
+            'provider' => 'facebook'
+        ]);
+        $this->Request->getSession()->write('oauth2state', '__TEST_STATE__');
+
+        $Token = new \League\OAuth2\Client\Token\AccessToken([
+            'access_token' => 'test-token',
+            'expires' => 1490988496
+        ]);
+
+        $user = new FacebookUser([
+            'id' => '1',
+            'name' => 'Test User',
+            'first_name' => 'Test',
+            'last_name' => 'User',
+            'email' => 'test@gmail.com',
+            'hometown' => [
+                'id' => '108226049197930',
+                'name' => 'Madrid'
+            ],
+            'picture' => [
+                'data' => [
+                    'url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
+                    'is_silhouette' => false
+                ]
+            ],
+            'cover' => [
+                'source' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
+                'id' => '1'
+            ],
+            'gender' => 'male',
+            'locale' => 'en_US',
+            'link' => 'https://www.facebook.com/app_scoped_user_id/1/',
+            'timezone' => -5,
+            'age_range' => [
+                'min' => 21
+            ],
+            'bio' => 'I am the best test user in the world.',
+            'picture_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
+            'is_silhouette' => false,
+            'cover_photo_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg'
+        ]);
+
+        $this->Provider->expects($this->never())
+            ->method('getAuthorizationUrl');
+
+        $this->Provider->expects($this->never())
+            ->method('getState');
+
+        $this->Provider->expects($this->any())
+            ->method('getAccessToken')
+            ->with(
+                $this->equalTo('authorization_code'),
+                $this->equalTo(['code' => 'ZPO9972j3092304230'])
+            )
+            ->will($this->returnValue($Token));
+
+        $this->Provider->expects($this->any())
+            ->method('getResourceOwner')
+            ->with(
+                $this->equalTo($Token)
+            )
+            ->will($this->returnValue($user));
+
+        $service = (new ServiceFactory())->createFromProvider('facebook');
+        $this->Request = $this->Request->withAttribute('socialService', $service);
+        $identifiers = $this->getMockBuilder(IdentifierCollection::class, ['identify'])->getMock();
+        $identifiers->expects($this->once())
+            ->method('identify')
+            ->will($this->throwException($exception));
+
+        $Authenticator = new SocialAuthenticator($identifiers);
+        $Response = new Response();
+        $result = $Authenticator->authenticate($this->Request, $Response);
+        $this->assertInstanceOf(Result::class, $result);
+        $this->assertEquals($status, $result->getStatus());
         $actual = $result->getData();
         $this->assertEmpty($actual);
     }
