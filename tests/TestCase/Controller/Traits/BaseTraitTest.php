@@ -233,7 +233,6 @@ abstract class BaseTraitTest extends TestCase
             'logoutRedirect' => $this->logoutRedirect,
             'loginAction' => $this->loginAction
         ]);
-        ;
     }
 
     /**

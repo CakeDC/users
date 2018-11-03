@@ -16,6 +16,13 @@ class AuthenticationService extends BaseService
     const NEED_GOOGLE_VERIFY = 'NEED_GOOGLE_VERIFY';
 
     const GOOGLE_VERIFY_SESSION_KEY = 'temporarySession';
+
+    /**
+     * All failures authenticators
+     *
+     * @var Failure[]
+     */
+    protected $failures = [];
     /**
      * Proceed to google verify action after a valid result result
      *
@@ -51,6 +58,7 @@ class AuthenticationService extends BaseService
 
         $googleVerify = Configure::read('Users.GoogleAuthenticator.login');
 
+        $this->failures = [];
         $result = null;
         foreach ($this->authenticators() as $authenticator) {
             $result = $authenticator->authenticate($request, $response);
@@ -74,6 +82,8 @@ class AuthenticationService extends BaseService
                     'request' => $request,
                     'response' => $response
                 ];
+            } else {
+                $this->failures[] = new Failure($authenticator, $result);
             }
 
             if (!$result->isValid() && $authenticator instanceof StatelessInterface) {
@@ -89,5 +99,15 @@ class AuthenticationService extends BaseService
             'request' => $request,
             'response' => $response
         ];
+    }
+
+    /**
+     * Get list the list of failures processed
+     *
+     * @return Failure[]
+     */
+    public function getFailures()
+    {
+        return $this->failures;
     }
 }
