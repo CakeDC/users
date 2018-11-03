@@ -177,9 +177,16 @@ $config = [
                     'prefix' => false,
                 ]
             ],
+            'CakeDC/Users.Social' => [
+                'skipGoogleVerify' => true,
+            ],
+            'CakeDC/Users.SocialPendingEmail' => [
+                'skipGoogleVerify' => true,
+            ]
         ],
         'Identifiers' => [
             'Authentication.Password',
+            "CakeDC/Users.Social",
             'Authentication.Token' => [
                 'tokenField' => 'api_token'
             ]

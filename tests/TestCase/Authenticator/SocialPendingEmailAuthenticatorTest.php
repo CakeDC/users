@@ -64,7 +64,7 @@ class SocialPendingEmailAuthenticatorTest extends TestCase
         $request = ServerRequestFactory::fromGlobals(
             ['REQUEST_URI' => '/users/users/social-email'],
             [],
-            ['email' => 'testAuthenticateBaseFailed@example.com', 'g-recaptcha-response' => 'BD-S2333-156465897897']
+            ['email' => 'testAuthenticateBaseFailed@example.com']
         );
         $requestNoEmail = ServerRequestFactory::fromGlobals(
             ['REQUEST_URI' => '/users/users/social-email'],
@@ -83,16 +83,7 @@ class SocialPendingEmailAuthenticatorTest extends TestCase
         $this->assertInstanceOf(Result::class, $result);
         $this->assertEquals(Result::FAILURE_CREDENTIALS_MISSING, $result->getStatus());
 
-        $Authenticator = $this->getMockBuilder(SocialPendingEmailAuthenticator::class)->setConstructorArgs([
-            $identifiers
-        ])->setMethods(['validateReCaptcha'])->getMock();
-
-        $Authenticator->expects($this->once())
-            ->method('validateReCaptcha')
-            ->with(
-                $this->equalTo('BD-S2333-156465897897')
-            )
-            ->will($this->returnValue(true));
+        $Authenticator = new SocialPendingEmailAuthenticator($identifiers);
         $result = $Authenticator->authenticate($request, $Response);
 
         $this->assertInstanceOf(Result::class, $result);
@@ -100,45 +91,6 @@ class SocialPendingEmailAuthenticatorTest extends TestCase
         $data = $result->getData();
         $this->assertInstanceOf(User::class, $data);
         $this->assertEquals('testAuthenticateBaseFailed@example.com', $data['email']);
-    }
-
-    /**
-     * testAuthenticate
-     *
-     * @return void
-     */
-    public function testAuthenticateInvalidRecaptcha()
-    {
-        $identifiers = new IdentifierCollection([
-            'Authentication.Password'
-        ]);
-
-        $request = ServerRequestFactory::fromGlobals(
-            ['REQUEST_URI' => '/users/users/social-email'],
-            [],
-            ['email' => 'testAuthenticateBaseFailed@example.com', 'g-recaptcha-response' => 'BD-S2333-156465897897']
-        );
-        $response = new Response();
-
-        $Authenticator = $this->getMockBuilder(SocialPendingEmailAuthenticator::class)->setConstructorArgs([
-            $identifiers
-        ])->setMethods(['validateReCaptcha'])->getMock();
-
-        $Authenticator->expects($this->once())
-            ->method('validateReCaptcha')
-            ->with(
-                $this->equalTo('BD-S2333-156465897897')
-            )
-            ->will($this->returnValue(false));
-
-        $user = $this->getUserData();
-        Configure::write('Users.reCaptcha.login', true);
-        Configure::write('Users.Email.validate', false);
-        $request->getSession()->write(Configure::read('Users.Key.Session.social'), $user);
-        $result = $Authenticator->authenticate($request, $response);
-        $this->assertInstanceOf(Result::class, $result);
-        $this->assertEquals(SocialPendingEmailAuthenticator::FAILURE_INVALID_RECAPTCHA, $result->getStatus());
-        $this->assertNull($result->getData());
     }
 
     /**

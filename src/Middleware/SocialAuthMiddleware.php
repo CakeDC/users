@@ -110,9 +110,9 @@ class SocialAuthMiddleware
         $messages = (array)$request->getSession()->read('Flash.flash');
         $messages[] = [
             'key' => 'flash',
-            'element' => 'error',
+            'element' => 'Flash/error',
             'params' => [],
-            $message
+            'message' => $message
         ];
         $request->getSession()->write('Flash.flash', $messages);
     }

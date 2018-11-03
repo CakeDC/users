@@ -87,14 +87,10 @@ class SocialPendingEmailAuthenticator extends AbstractAuthenticator
         $rawData = $request->getSession()->read(Configure::read('Users.Key.Session.social'));
         $body = $request->getParsedBody();
         $email = Hash::get($body, 'email');
+
         if (empty($rawData) || empty($email)) {
             return new Result(null, Result::FAILURE_CREDENTIALS_MISSING);
         }
-        $captcha = Hash::get($body, 'g-recaptcha-response');
-        if (!$this->validateReCaptcha($captcha, $request->clientIp())) {
-            return new Result(null, self::FAILURE_INVALID_RECAPTCHA);
-        }
-
         $rawData['email'] = $email;
 
         return $this->identify($rawData);
