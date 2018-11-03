@@ -185,7 +185,7 @@ $config = [
             ]
         ],
         'Identifiers' => [
-            'Authentication.Password',
+            'Authentication.Password' => [],
             "CakeDC/Users.Social" => [
                 'authFinder' => 'all'
             ],
