@@ -66,11 +66,7 @@ class SocialAuthMiddleware
         }
         $request = $request->withAttribute(SocialAuthenticator::SOCIAL_SERVICE_ATTRIBUTE, $service);
 
-        try {
-            return $next($request, $response);
-        } catch (SocialAuthenticationException $exception) {
-            return $this->onAuthenticationException($request, $response, $exception);
-        }
+        return $this->goNext($request, $response, $next);
     }
 
     /**
@@ -133,5 +129,22 @@ class SocialAuthMiddleware
         $url = Router::url(compact('action') + $this->params);
 
         return $response->withLocation($url);
+    }
+
+    /**
+     * Go to next handling SocialAuthenticationException
+     *
+     * @param ServerRequest $request The request
+     * @param ResponseInterface $response The response
+     * @param callable $next next middleware
+     * @return ResponseInterface
+     */
+    protected function goNext(ServerRequest $request, ResponseInterface $response, $next)
+    {
+        try {
+            return $next($request, $response);
+        } catch (SocialAuthenticationException $exception) {
+            return $this->onAuthenticationException($request, $response, $exception);
+        }
     }
 }

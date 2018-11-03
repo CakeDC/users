@@ -187,7 +187,7 @@ class SocialEmailMiddlewareTest extends TestCase
      *
      * @return void
      */
-    public function testSuccessfullyAuthenticated()
+    public function testWithUser()
     {
         $Token = new \League\OAuth2\Client\Token\AccessToken([
             'access_token' => 'test-token',
@@ -258,11 +258,8 @@ class SocialEmailMiddlewareTest extends TestCase
         $this->assertTrue(is_array($result));
 
         $this->assertEquals(200, $result['response']->getStatusCode());
-        $this->assertEquals(SocialEmailMiddleware::AUTH_SUCCESS, $result['request']->getAttribute(SocialAuthMiddleware::ATTRIBUTE_NAME_SOCIAL_AUTH_STATUS));
-        $this->assertNotEmpty($result['request']->getAttribute(SocialAuthMiddleware::ATTRIBUTE_NAME_SOCIAL_RAW_DATA));
-        $this->assertNotEmpty($result['request']->getAttribute(SocialAuthMiddleware::ATTRIBUTE_NAME_SOCIAL_RAW_DATA)['id']);
-        $this->assertInstanceOf(User::class, $this->Request->getSession()->read('Auth'));
-        $this->assertTrue($this->Request->getSession()->read('Users.successSocialLogin'));
+        $actual = $this->Request->getSession()->read(Configure::read('Users.Key.Session.social'));
+        $this->assertSame($user, $actual);
     }
 
     /**
