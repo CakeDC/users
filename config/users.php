@@ -186,7 +186,9 @@ $config = [
         ],
         'Identifiers' => [
             'Authentication.Password',
-            "CakeDC/Users.Social",
+            "CakeDC/Users.Social" => [
+                'authFinder' => 'all'
+            ],
             'Authentication.Token' => [
                 'tokenField' => 'api_token'
             ]
