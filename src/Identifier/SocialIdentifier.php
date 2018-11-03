@@ -27,7 +27,6 @@ class SocialIdentifier extends AbstractIdentifier
      * @var array
      */
     protected $_defaultConfig = [
-        'resolver' => 'Authentication.Orm',
         'authFinder' => 'all'
     ];
 
