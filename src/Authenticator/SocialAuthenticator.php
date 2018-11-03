@@ -40,29 +40,7 @@ class SocialAuthenticator extends AbstractAuthenticator
      *
      * @var array
      */
-    protected $_defaultConfig = [
-        'loginUrl' => null,
-        'urlChecker' => 'Authentication.Default',
-    ];
-
-    /**
-     * Prepares the error object for a login URL error
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request The request that contains login information.
-     * @return \Authentication\Authenticator\ResultInterface
-     */
-    protected function _buildLoginUrlErrorResult($request)
-    {
-        $errors = [
-            sprintf(
-                'Login URL `%s` did not match `%s`.',
-                (string)$request->getUri(),
-                implode('` or `', (array)$this->getConfig('loginUrl'))
-            )
-        ];
-
-        return new Result(null, Result::FAILURE_OTHER, $errors);
-    }
+    protected $_defaultConfig = [];
 
     /**
      * Authenticates the identity contained in a request. Will use the `config.userModel`, and `config.fields`
