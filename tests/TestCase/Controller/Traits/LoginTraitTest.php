@@ -11,6 +11,15 @@
 
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
+use Authentication\Authenticator\Result;
+use Authentication\Authenticator\SessionAuthenticator;
+use Authentication\Identifier\IdentifierCollection;
+use Cake\Controller\ComponentRegistry;
+use Cake\Http\Response;
+use CakeDC\Users\Authentication\Failure;
+use CakeDC\Users\Authenticator\FormAuthenticator;
+use CakeDC\Users\Authenticator\SocialAuthenticator;
+use CakeDC\Users\Controller\Component\LoginComponent;
 use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Middleware\SocialAuthMiddleware;
 use Cake\Event\Event;
@@ -31,7 +40,7 @@ class LoginTraitTest extends BaseTraitTest
         parent::setUp();
         $request = new ServerRequest();
         $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\Traits\LoginTrait')
-            ->setMethods(['dispatchEvent', 'redirect', 'set'])
+            ->setMethods(['dispatchEvent', 'redirect', 'set', 'loadComponent', 'getRequest'])
             ->getMockForTrait();
 
         $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
@@ -59,6 +68,15 @@ class LoginTraitTest extends BaseTraitTest
      */
     public function testLoginHappy()
     {
+        $identifiers = new IdentifierCollection();
+        $SessionAuth = new SessionAuthenticator($identifiers);
+
+        $sessionFailure = new Failure(
+            $SessionAuth,
+            new Result(null, Result::FAILURE_IDENTITY_NOT_FOUND)
+        );
+        $failures = [$sessionFailure];
+
         $this->_mockDispatchEvent(new Event('event'));
         $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->setMethods(['is'])
@@ -67,20 +85,46 @@ class LoginTraitTest extends BaseTraitTest
             ->method('is')
             ->with('post')
             ->will($this->returnValue(true));
-        $this->_mockAuthentication([
-            'id' => 1
-        ]);
-        $this->Trait->Flash = $this->getMockBuilder('Cake\Controller\Component\FlashComponent')
-            ->setMethods(['error'])
-            ->disableOriginalConstructor()
-            ->getMock();
+
+        $this->_mockFlash();
+        $this->_mockAuthentication(['id' => 1], $failures);
         $this->Trait->Flash->expects($this->never())
             ->method('error');
-
         $this->Trait->expects($this->once())
             ->method('redirect')
-            ->with($this->successLoginRedirect);
-        $this->Trait->login();
+            ->with($this->successLoginRedirect)
+            ->will($this->returnValue(new Response()));
+        $this->Trait->expects($this->any())
+            ->method('getRequest')
+            ->will($this->returnValue($this->Trait->request));
+
+        $registry = new ComponentRegistry();
+        $config = [
+            'component' => 'CakeDC/Users.Login',
+            'defaultMessage' => __d('CakeDC/Users', 'Username or password is incorrect'),
+            'messages' => [
+                FormAuthenticator::FAILURE_INVALID_RECAPTCHA => __d('CakeDC/Users', 'Invalid reCaptcha')
+            ],
+            'targetAuthenticator' => FormAuthenticator::class
+        ];
+        $Login = $this->getMockBuilder(LoginComponent::class)
+            ->setMethods(['getController'])
+            ->setConstructorArgs([$registry, $config])
+            ->getMock();
+
+        $Login->expects($this->any())
+            ->method('getController')
+            ->will($this->returnValue($this->Trait));
+        $this->Trait->expects($this->any())
+            ->method('loadComponent')
+            ->with(
+                $this->equalTo('CakeDC/Users.Login'),
+                $this->equalTo($config)
+            )
+            ->will($this->returnValue($Login));
+
+        $result = $this->Trait->login();
+        $this->assertInstanceOf(Response::class, $result);
     }
 
     /**
@@ -110,6 +154,35 @@ class LoginTraitTest extends BaseTraitTest
             ->method('redirect');
 
         $this->_mockAuthentication();
+
+        $registry = new ComponentRegistry();
+        $config = [
+            'component' => 'CakeDC/Users.Login',
+            'defaultMessage' => __d('CakeDC/Users', 'Username or password is incorrect'),
+            'messages' => [
+                FormAuthenticator::FAILURE_INVALID_RECAPTCHA => __d('CakeDC/Users', 'Invalid reCaptcha')
+            ],
+            'targetAuthenticator' => FormAuthenticator::class
+        ];
+        $Login = $this->getMockBuilder(LoginComponent::class)
+            ->setMethods(['getController'])
+            ->setConstructorArgs([$registry, $config])
+            ->getMock();
+
+        $Login->expects($this->any())
+            ->method('getController')
+            ->will($this->returnValue($this->Trait));
+        $this->Trait->expects($this->any())
+            ->method('getRequest')
+            ->will($this->returnValue($this->Trait->request));
+        $this->Trait->expects($this->any())
+            ->method('loadComponent')
+            ->with(
+                $this->equalTo('CakeDC/Users.Login'),
+                $this->equalTo($config)
+            )
+            ->will($this->returnValue($Login));
+
         $this->Trait->login();
     }
 
@@ -142,97 +215,228 @@ class LoginTraitTest extends BaseTraitTest
     }
 
     /**
-     * test
+     * Data provider for testLogin
+     */
+    public function dataProviderLogin()
+    {
+        $socialLoginConfig = [
+            'component' => 'CakeDC/Users.Login',
+            'defaultMessage' => __d('CakeDC/Users', 'Could not proceed with social account. Please try again'),
+            'messages' => [
+                SocialAuthenticator::FAILURE_USER_NOT_ACTIVE => __d(
+                    'CakeDC/Users',
+                    'Your user has not been validated yet. Please check your inbox for instructions'
+                ),
+                SocialAuthenticator::FAILURE_ACCOUNT_NOT_ACTIVE => __d(
+                    'CakeDC/Users',
+                    'Your social account has not been validated yet. Please check your inbox for instructions'
+                )
+            ],
+            'targetAuthenticator' => SocialAuthenticator::class
+        ];
+        $loginConfig = [
+            'component' => 'CakeDC/Users.Login',
+            'defaultMessage' => __d('CakeDC/Users', 'Username or password is incorrect'),
+            'messages' => [
+                FormAuthenticator::FAILURE_INVALID_RECAPTCHA => __d('CakeDC/Users', 'Invalid reCaptcha'),
+            ],
+            'targetAuthenticator' => FormAuthenticator::class
+        ];
+        return [
+            [
+                SocialAuthenticator::class,
+                SocialAuthenticator::FAILURE_USER_NOT_ACTIVE,
+                'Your user has not been validated yet. Please check your inbox for instructions',
+                'socialLogin',
+                $socialLoginConfig
+            ],
+            [
+                SocialAuthenticator::class,
+                SocialAuthenticator::FAILURE_ACCOUNT_NOT_ACTIVE,
+                'Your social account has not been validated yet. Please check your inbox for instructions',
+                'socialLogin',
+                $socialLoginConfig
+            ],
+            [
+                SocialAuthenticator::class,
+                Result::FAILURE_IDENTITY_NOT_FOUND,
+                'Could not proceed with social account. Please try again',
+                'socialLogin',
+                $socialLoginConfig
+            ],
+            [
+                FormAuthenticator::class,
+                Result::FAILURE_IDENTITY_NOT_FOUND,
+                'Username or password is incorrect',
+                'login',
+                $loginConfig
+            ],
+            [
+                FormAuthenticator::class,
+                FormAuthenticator::FAILURE_INVALID_RECAPTCHA,
+                'Invalid reCaptcha',
+                'login',
+                $loginConfig
+            ]
+        ];
+    }
+    /**
+     * test socialLogin/login failure
      *
+     * @dataProvider dataProviderLogin
      * @return void
      */
-    public function testFailedSocialLoginMissingEmail()
+    public function testLogin($AuthClass, $resultStatus, $message, $method, $failureConfig)
     {
-        $data = [
-            'id' => 11111,
-            'username' => 'user-1'
-        ];
+        $identifiers = new IdentifierCollection([
+            'CakeDC/Users.Social'
+        ]);
+        $FormAuth = new FormAuthenticator($identifiers);
+        $SessionAuth = new SessionAuthenticator($identifiers);
+        $SocialAuth = new $AuthClass($identifiers);
+
+        $sessionFailure = new Failure(
+            $SessionAuth,
+            new Result(null, Result::FAILURE_IDENTITY_NOT_FOUND)
+        );
+        $formFailure = new Failure(
+            $FormAuth,
+            new Result(null, $resultStatus, [
+                'Password' => []
+            ])
+        );
+        $socialFailure = new Failure(
+            $SocialAuth,
+            new Result(null, $resultStatus)
+        );
+        $failures = [$sessionFailure, $formFailure, $socialFailure];
+
+        $this->_mockDispatchEvent(new Event('event'));
+        $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
+            ->setMethods(['is'])
+            ->getMock();
+        $this->Trait->request->expects($this->any())
+            ->method('is')
+            ->with('post')
+            ->will($this->returnValue(true));
         $this->_mockFlash();
-        $this->_mockAuthentication();
+        $this->_mockAuthentication(null, $failures);
         $this->Trait->Flash->expects($this->once())
-            ->method('success')
-            ->with('Please enter your email');
+            ->method('error')
+            ->with($message);
+        $this->Trait->expects($this->any())
+            ->method('getRequest')
+            ->will($this->returnValue($this->Trait->request));
 
-        $this->Trait->expects($this->once())
-            ->method('redirect')
-            ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'socialEmail']);
+        $registry = new ComponentRegistry();
+        $Login = $this->getMockBuilder(LoginComponent::class)
+            ->setMethods(['getController'])
+            ->setConstructorArgs([$registry, $failureConfig])
+            ->getMock();
 
-        $this->Trait->failedSocialLogin(SocialAuthMiddleware::AUTH_ERROR_MISSING_EMAIL, $data, true);
+        $Login->expects($this->any())
+            ->method('getController')
+            ->will($this->returnValue($this->Trait));
+        $this->Trait->expects($this->any())
+            ->method('loadComponent')
+            ->with(
+                $this->equalTo('CakeDC/Users.Login'),
+                $this->equalTo($failureConfig)
+            )
+            ->will($this->returnValue($Login));
+
+        if ($method === 'login') {
+            $this->Trait->expects($this->never())
+                ->method('redirect');
+            $result = $this->Trait->$method();
+            $this->assertNull($result);
+        } else {
+            $this->Trait->expects($this->once())
+                ->method('redirect')
+                ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login'])
+                ->will($this->returnValue(new Response()));
+            $result = $this->Trait->$method();
+            $this->assertInstanceOf(Response::class, $result);
+        }
     }
 
     /**
-     * test
+     * test socialLogin success
      *
      * @return void
      */
-    public function testFailedSocialUserNotActive()
+    public function testSocialLoginSuccess()
     {
-        $data = [
-            'id' => 111111,
-            'username' => 'user-1'
-        ];
-        $this->_mockFlash();
-        $this->_mockAuthentication();
-        $this->Trait->Flash->expects($this->once())
-            ->method('success')
-            ->with('Your user has not been validated yet. Please check your inbox for instructions');
+        $identifiers = new IdentifierCollection([
+            'CakeDC/Users.Social'
+        ]);
+        $FormAuth = new FormAuthenticator($identifiers);
+        $SessionAuth = new SessionAuthenticator($identifiers);
 
+        $sessionFailure = new Failure(
+            $SessionAuth,
+            new Result(null, Result::FAILURE_IDENTITY_NOT_FOUND)
+        );
+        $formFailure = new Failure(
+            $FormAuth,
+            new Result(null, Result::FAILURE_CREDENTIALS_MISSING, [
+                'Password' => []
+            ])
+        );
+        $failures = [$sessionFailure, $formFailure];
+
+        $this->_mockDispatchEvent(new Event('event'));
+        $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
+            ->setMethods(['is'])
+            ->getMock();
+        $this->Trait->request->expects($this->any())
+            ->method('is')
+            ->with('post')
+            ->will($this->returnValue(true));
+
+        $this->_mockFlash();
+        $this->_mockAuthentication(['id' => 1], $failures);
+        $this->Trait->Flash->expects($this->never())
+            ->method('error');
         $this->Trait->expects($this->once())
             ->method('redirect')
-            ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
+            ->with($this->successLoginRedirect)
+            ->will($this->returnValue(new Response()));
+        $this->Trait->expects($this->any())
+            ->method('getRequest')
+            ->will($this->returnValue($this->Trait->request));
 
-        $this->Trait->failedSocialLogin(SocialAuthMiddleware::AUTH_ERROR_USER_NOT_ACTIVE, $data, true);
-    }
-
-    /**
-     * test
-     *
-     * @return void
-     */
-    public function testFailedSocialUserAccountNotActive()
-    {
-        $data = [
-            'id' => 111111,
-            'username' => 'user-1'
+        $registry = new ComponentRegistry();
+        $config = [
+            'component' => 'CakeDC/Users.Login',
+            'defaultMessage' => __d('CakeDC/Users', 'Could not proceed with social account. Please try again'),
+            'messages' => [
+                SocialAuthenticator::FAILURE_USER_NOT_ACTIVE => __d(
+                    'CakeDC/Users',
+                    'Your user has not been validated yet. Please check your inbox for instructions'
+                ),
+                SocialAuthenticator::FAILURE_ACCOUNT_NOT_ACTIVE => __d(
+                    'CakeDC/Users',
+                    'Your social account has not been validated yet. Please check your inbox for instructions'
+                )
+            ],
+            'targetAuthenticator' => SocialAuthenticator::class
         ];
-        $this->_mockFlash();
-        $this->_mockAuthentication();
-        $this->Trait->Flash->expects($this->once())
-            ->method('success')
-            ->with('Your social account has not been validated yet. Please check your inbox for instructions');
+        $Login = $this->getMockBuilder(LoginComponent::class)
+            ->setMethods(['getController'])
+            ->setConstructorArgs([$registry, $config])
+            ->getMock();
 
-        $this->Trait->expects($this->once())
-            ->method('redirect')
-            ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
-
-        $this->Trait->failedSocialLogin(SocialAuthMiddleware::AUTH_ERROR_ACCOUNT_NOT_ACTIVE, $data, true);
-    }
-
-    /**
-     * test
-     *
-     * @return void
-     */
-    public function testFailedSocialUserAccount()
-    {
-        $data = [
-            'id' => 111111,
-            'username' => 'user-1'
-        ];
-        $this->_mockFlash();
-        $this->_mockAuthentication();
-        $this->Trait->Flash->expects($this->once())
-            ->method('success')
-            ->with('Issues trying to log in with your social account');
-
-        $this->Trait->expects($this->once())
-            ->method('redirect')
-            ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
+        $Login->expects($this->any())
+            ->method('getController')
+            ->will($this->returnValue($this->Trait));
+        $this->Trait->expects($this->any())
+            ->method('loadComponent')
+            ->with(
+                $this->equalTo('CakeDC/Users.Login'),
+                $this->equalTo($config)
+            )
+            ->will($this->returnValue($Login));
 
         $this->Trait->failedSocialLogin(null, $event->data['rawData'], true);
     }

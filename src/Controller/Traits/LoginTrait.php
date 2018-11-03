@@ -15,6 +15,7 @@ use Authentication\Authenticator\Result;
 use CakeDC\Users\Authentication\AuthenticationService;
 use CakeDC\Users\Authenticator\AuthenticatorFeedbackInterface;
 use CakeDC\Users\Authenticator\FormAuthenticator;
+use CakeDC\Users\Authenticator\SocialAuthenticator;
 use CakeDC\Users\Middleware\SocialAuthMiddleware;
 use CakeDC\Users\Plugin;
 use Cake\Core\Configure;
@@ -31,50 +32,6 @@ trait LoginTrait
     use CustomUsersTableTrait;
 
     /**
-     * @param int $error auth error
-     * @param mixed $data data
-     * @param bool|false $flash flash
-     * @return mixed
-     */
-    public function failedSocialLogin($error, $data, $flash = false)
-    {
-        $msg = __d('CakeDC/Users', 'Issues trying to log in with your social account');
-
-        switch ($error) {
-            case SocialAuthMiddleware::AUTH_ERROR_MISSING_EMAIL:
-                if ($flash) {
-                    $this->Flash->success(__d('CakeDC/Users', 'Please enter your email'), ['clear' => true]);
-                }
-                $this->request->getSession()->write(Configure::read('Users.Key.Session.social'), $data);
-
-                return $this->redirect([
-                    'plugin' => 'CakeDC/Users',
-                    'controller' => 'Users',
-                    'action' => 'socialEmail'
-                ]);
-            case SocialAuthMiddleware::AUTH_ERROR_USER_NOT_ACTIVE:
-                $msg = __d(
-                    'CakeDC/Users',
-                    'Your user has not been validated yet. Please check your inbox for instructions'
-                );
-                break;
-            case SocialAuthMiddleware::AUTH_ERROR_ACCOUNT_NOT_ACTIVE:
-                $msg = __d(
-                    'CakeDC/Users',
-                    'Your social account has not been validated yet. Please check your inbox for instructions'
-                );
-                break;
-        }
-
-        if ($flash) {
-            $this->request->getSession()->delete(Configure::read('Users.Key.Session.social'));
-            $this->Flash->success($msg, ['clear' => true]);
-        }
-
-        return $this->redirect(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
-    }
-
-    /**
      * Social login
      *
      * @throws NotFoundException
@@ -82,21 +39,13 @@ trait LoginTrait
      */
     public function socialLogin()
     {
-        $status = $this->request->getAttribute(SocialAuthMiddleware::ATTRIBUTE_NAME_SOCIAL_AUTH_STATUS);
-        if ($status === SocialAuthMiddleware::AUTH_SUCCESS) {
-            $user = $this->request->getAttribute('identity')->getOriginalData();
+        $config = Configure::read('Auth.SocialLoginFailure');
+        /**
+         * @var \CakeDC\Users\Controller\Component\LoginComponent $Login
+         */
+        $Login = $this->loadComponent($config['component'], $config);
 
-            return $this->_afterIdentifyUser($user);
-        }
-        $socialProvider = $this->request->getParam('provider');
-
-        if (empty($socialProvider)) {
-            throw new NotFoundException();
-        }
-
-        $data = $this->request->getAttribute(SocialAuthMiddleware::ATTRIBUTE_NAME_SOCIAL_RAW_DATA);
-
-        return $this->failedSocialLogin($status, $data);
+        return $Login->handleLogin(false, true);
     }
 
     /**
@@ -241,7 +190,7 @@ trait LoginTrait
             }
         }
 
-        return $message;
+        return $Login->handleLogin(true, false);
     }
 
     /**
