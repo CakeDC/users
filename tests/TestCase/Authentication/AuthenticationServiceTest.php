@@ -2,6 +2,7 @@
 
 use Authentication\Authenticator\Result;
 use CakeDC\Users\Authentication\AuthenticationService;
+use CakeDC\Users\Authentication\Failure;
 use CakeDC\Users\Authenticator\FormAuthenticator;
 use Cake\Core\Configure;
 use Cake\Http\Client\Response;
@@ -22,6 +23,62 @@ class AuthenticationServiceTest extends TestCase
         'plugin.CakeDC/Users.users',
         'plugin.CakeDC/Users.social_accounts'
     ];
+
+    /**
+     * testAuthenticate
+     *
+     * @return void
+     */
+    public function testAuthenticateFail()
+    {
+        $Table = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
+        $entity = $Table->get('00000000-0000-0000-0000-000000000001');
+        $entity->password = 'password';
+        $this->assertTrue((bool)$Table->save($entity));
+        $request = ServerRequestFactory::fromGlobals(
+            ['REQUEST_URI' => '/testpath'],
+            [],
+            ['username' => 'user-not-found', 'password' => 'password']
+        );
+        $response = new Response();
+
+        $service = new AuthenticationService([
+            'identifiers' => [
+                'Authentication.Password'
+            ],
+            'authenticators' => [
+                'Authentication.Session',
+                'CakeDC/Users.Form'
+            ]
+        ]);
+
+        $result = $service->authenticate($request, $response);
+        $this->assertInstanceOf(Result::class, $result['result']);
+        $this->assertInstanceOf(ServerRequestInterface::class, $result['request']);
+        $this->assertInstanceOf(ResponseInterface::class, $result['response']);
+        $this->assertFalse($result['result']->isValid());
+        $result = $service->getAuthenticationProvider();
+        $this->assertNull($result);
+        $this->assertNull(
+            $request->getAttribute('session')->read('Auth')
+        );
+        $this->assertEmpty($response->getHeaderLine('Location'));
+        $this->assertNull($response->getStatusCode());
+
+        $sessionFailure = new Failure(
+            $service->authenticators()->get('Session'),
+            new Result(null, Result::FAILURE_IDENTITY_NOT_FOUND)
+        );
+        $formFailure = new Failure(
+            $service->authenticators()->get('Form'),
+            new Result(null, Result::FAILURE_IDENTITY_NOT_FOUND, [
+                'Password' => []
+            ])
+        );
+        $expected = [$sessionFailure, $formFailure];
+        $actual = $service->getFailures();
+        $this->assertEquals($expected, $actual);
+    }
 
     /**
      * testAuthenticate
@@ -67,6 +124,14 @@ class AuthenticationServiceTest extends TestCase
         );
         $this->assertEmpty($response->getHeaderLine('Location'));
         $this->assertNull($response->getStatusCode());
+
+        $sessionFailure = new Failure(
+            $service->authenticators()->get('Session'),
+            new Result(null, Result::FAILURE_IDENTITY_NOT_FOUND)
+        );
+        $expected = [$sessionFailure];
+        $actual = $service->getFailures();
+        $this->assertEquals($expected, $actual);
     }
 
     /**
@@ -113,6 +178,13 @@ class AuthenticationServiceTest extends TestCase
             'user-1',
             $request->getAttribute('session')->read('temporarySession.username')
         );
+        $sessionFailure = new Failure(
+            $service->authenticators()->get('Session'),
+            new Result(null, Result::FAILURE_IDENTITY_NOT_FOUND)
+        );
+        $expected = [$sessionFailure];
+        $actual = $service->getFailures();
+        $this->assertEquals($expected, $actual);
     }
 
     /**
@@ -164,5 +236,12 @@ class AuthenticationServiceTest extends TestCase
         );
         $this->assertEmpty($response->getHeaderLine('Location'));
         $this->assertNull($response->getStatusCode());
+        $sessionFailure = new Failure(
+            $service->authenticators()->get('Session'),
+            new Result(null, Result::FAILURE_IDENTITY_NOT_FOUND)
+        );
+        $expected = [$sessionFailure];
+        $actual = $service->getFailures();
+        $this->assertEquals($expected, $actual);
     }
 }
