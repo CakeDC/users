@@ -194,9 +194,10 @@ abstract class BaseTraitTest extends TestCase
      * Mock the Authentication service
      *
      * @param array $user
+     * @param array $failures
      * @return void
      */
-    protected function _mockAuthentication($user = null)
+    protected function _mockAuthentication($user = null, $failures = [])
     {
         $config = [
             'identifiers' => [
@@ -208,7 +209,8 @@ abstract class BaseTraitTest extends TestCase
             ]
         ];
         $authentication = $this->getMockBuilder(AuthenticationService::class)->setConstructorArgs([$config])->setMethods([
-            'getResult'
+            'getResult',
+            'getFailures'
         ])->getMock();
 
         if ($user) {
@@ -223,6 +225,10 @@ abstract class BaseTraitTest extends TestCase
         $authentication->expects($this->any())
             ->method('getResult')
             ->will($this->returnValue($result));
+
+        $authentication->expects($this->any())
+            ->method('getFailures')
+            ->will($this->returnValue($failures));
 
         $this->Trait->request = $this->Trait->request->withAttribute('authentication', $authentication);
 

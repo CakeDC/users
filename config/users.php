@@ -213,6 +213,29 @@ $config = [
                 'controller' => 'Users',
                 'action' => 'login',
             ]
+        ],
+        'SocialLoginFailure' => [
+            'component' => 'CakeDC/Users.Login',
+            'defaultMessage' => __d('CakeDC/Users', 'Could not proceed with social account. Please try again'),
+            'messages' => [
+                'FAILURE_USER_NOT_ACTIVE' => __d(
+                    'CakeDC/Users',
+                    'Your user has not been validated yet. Please check your inbox for instructions'
+                ),
+                'FAILURE_ACCOUNT_NOT_ACTIVE' => __d(
+                    'CakeDC/Users',
+                    'Your social account has not been validated yet. Please check your inbox for instructions'
+                )
+            ],
+            'targetAuthenticator' => 'CakeDC\Users\Authenticator\SocialAuthenticator'
+        ],
+        'FormLoginFailure' => [
+            'component' => 'CakeDC/Users.Login',
+            'defaultMessage' => __d('CakeDC/Users', 'Username or password is incorrect'),
+            'messages' => [
+                'FAILURE_INVALID_RECAPTCHA' => __d('CakeDC/Users', 'Invalid reCaptcha'),
+            ],
+            'targetAuthenticator' => 'CakeDC\Users\Authenticator\FormAuthenticator'
         ]
     ],
     'SocialAuthMiddleware' => [
