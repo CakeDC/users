@@ -19,6 +19,8 @@ class SocialIdentifier extends AbstractIdentifier
 {
     use LocatorAwareTrait;
 
+    const CREDENTIAL_KEY = 'socialAuthUser';
+
     /**
      * Default configuration.
      * - `usersTable` name of usersTable to use:
@@ -38,11 +40,11 @@ class SocialIdentifier extends AbstractIdentifier
      */
     public function identify(array $credentials)
     {
-        if (!isset($credentials['socialAuthUser'])) {
+        if (!isset($credentials[self::CREDENTIAL_KEY])) {
             return null;
         }
 
-        $user = $this->createOrGetUser($credentials['socialAuthUser']);
+        $user = $this->createOrGetUser($credentials[self::CREDENTIAL_KEY]);
 
         if (!$user) {
             return null;

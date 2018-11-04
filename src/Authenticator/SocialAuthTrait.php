@@ -17,6 +17,7 @@ use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\SocialAuthenticationException;
 use CakeDC\Users\Exception\UserNotActiveException;
+use CakeDC\Users\Identifier\SocialIdentifier;
 
 trait SocialAuthTrait
 {
@@ -28,7 +29,7 @@ trait SocialAuthTrait
     protected function identify($rawData)
     {
         try {
-            $user = $this->getIdentifier()->identify(['socialAuthUser' => $rawData]);
+            $user = $this->getIdentifier()->identify([SocialIdentifier::CREDENTIAL_KEY => $rawData]);
             if (!empty($user)) {
                 return new Result($user, Result::SUCCESS);
             }
