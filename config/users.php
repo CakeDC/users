@@ -57,8 +57,6 @@ $config = [
         'Social' => [
             // enable social login
             'login' => false,
-            // enable social login
-            'authenticator' => 'CakeDC/Users.Social',
         ],
         'GoogleAuthenticator' => [
             // enable Google Authenticator
