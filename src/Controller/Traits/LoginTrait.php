@@ -66,22 +66,6 @@ trait LoginTrait
     }
 
     /**
-     * Determine redirect url after user identified
-     *
-     * @param array $user user data after identified
-     * @return array
-     */
-    protected function _afterIdentifyUser($user)
-    {
-        $event = $this->dispatchEvent(Plugin::EVENT_AFTER_LOGIN, ['user' => $user]);
-        if (is_array($event->result)) {
-            return $this->redirect($event->result);
-        }
-
-        return $this->redirect($this->Authentication->getConfig('loginRedirect'));
-    }
-
-    /**
      * Logout
      *
      * @return mixed
