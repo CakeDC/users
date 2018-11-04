@@ -247,9 +247,9 @@ class SocialAuthMiddlewareTest extends TestCase
             new MissingEmailException("Missing email"),
             [
                 'key' => 'flash',
-                'element' => 'error',
+                'element' => 'Flash/error',
                 'params' => [],
-                __d('CakeDC/Users', 'Please enter your email')
+                'message' => __d('CakeDC/Users', 'Please enter your email')
             ],
             '/users/users/social-email',
             true,
@@ -258,9 +258,9 @@ class SocialAuthMiddlewareTest extends TestCase
             new UnexpectedValueException("User not active"),
             [
                 'key' => 'flash',
-                'element' => 'error',
+                'element' => 'Flash/error',
                 'params' => [],
-                __d('CakeDC/Users', 'Could not identify your account, please try again')
+                'message' => __d('CakeDC/Users', 'Could not identify your account, please try again')
             ],
             '/login',
             false
