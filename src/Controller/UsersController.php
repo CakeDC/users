@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Controller;
 
+use Cake\Utility\Hash;
 use CakeDC\Users\Controller\Traits\GoogleVerifyTrait;
 use CakeDC\Users\Controller\Traits\LinkSocialTrait;
 use CakeDC\Users\Controller\Traits\LoginTrait;
@@ -57,7 +58,11 @@ class UsersController extends AppController
      */
     protected function loadAuthComponents()
     {
-        $this->loadComponent('Authentication.Authentication', Configure::read('Auth.AuthenticationComponent'));
+        $authenticationConfig = Configure::read('Auth.AuthenticationComponent');
+        if (Hash::get($authenticationConfig, 'load')) {
+            unset($authenticationConfig['config']);
+            $this->loadComponent('Authentication.Authentication', $authenticationConfig);
+        }
 
         if (Configure::read('Auth.AuthorizationComponent.enable') !== false) {
             $config = (array)Configure::read('Auth.AuthorizationComponent');

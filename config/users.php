@@ -18,8 +18,6 @@ $config = [
         'table' => 'CakeDC/Users.Users',
         // Controller used to manage users plugin features & actions
         'controller' => 'CakeDC/Users.Users',
-        // configure Auth component
-        'auth' => true,
         // Password Hasher
         'passwordHasher' => '\Cake\Auth\DefaultPasswordHasher',
         // token expiration, 1 hour
@@ -127,6 +125,7 @@ $config = [
     ],
     'Auth' => [
         'AuthenticationComponent' => [
+            'load' => true,
             'loginAction' => [
                 'plugin' => 'CakeDC/Users',
                 'controller' => 'Users',
