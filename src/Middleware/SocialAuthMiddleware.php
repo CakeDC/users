@@ -10,19 +10,12 @@ use Cake\Core\Configure;
 use Cake\Http\ServerRequest;
 use Cake\Log\LogTrait;
 use Cake\Routing\Router;
+use CakeDC\Users\Utility\UsersUrl;
 use Psr\Http\Message\ResponseInterface;
 
 class SocialAuthMiddleware
 {
     use LogTrait;
-
-    protected $_defaultConfig = [];
-
-    protected $params = [
-        'plugin' => 'CakeDC/Users',
-        'controller' => 'Users',
-        'action' => 'socialLogin'
-    ];
 
     /**
      * Perform social auth
@@ -34,8 +27,7 @@ class SocialAuthMiddleware
      */
     public function __invoke(ServerRequest $request, ResponseInterface $response, $next)
     {
-        $action = $request->getParam('action');
-        if ($action !== 'socialLogin' || $request->getParam('plugin') !== 'CakeDC/Users') {
+        if (!(new UsersUrl())->checkActionOnRequest('socialLogin', $request)) {
             return $next($request, $response);
         }
 
@@ -105,7 +97,7 @@ class SocialAuthMiddleware
      */
     protected function responseWithActionLocation(ResponseInterface $response, $action)
     {
-        $url = Router::url(compact('action') + $this->params);
+        $url = Router::url((new UsersUrl())->actionUrl($action));
 
         return $response->withLocation($url);
     }
