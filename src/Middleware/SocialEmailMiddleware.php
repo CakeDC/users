@@ -5,6 +5,7 @@ namespace CakeDC\Users\Middleware;
 use Cake\Core\Configure;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\ServerRequest;
+use CakeDC\Users\Utility\UsersUrl;
 use Psr\Http\Message\ResponseInterface;
 
 class SocialEmailMiddleware extends SocialAuthMiddleware
@@ -19,8 +20,7 @@ class SocialEmailMiddleware extends SocialAuthMiddleware
      */
     public function __invoke(ServerRequest $request, ResponseInterface $response, $next)
     {
-        $action = $request->getParam('action');
-        if ($action !== 'socialEmail' || $request->getParam('plugin') !== 'CakeDC/Users') {
+        if (!(new UsersUrl())->checkActionOnRequest('socialEmail', $request)) {
             $request->getSession()->delete(Configure::read('Users.Key.Session.social'));
 
             return $next($request, $response);
