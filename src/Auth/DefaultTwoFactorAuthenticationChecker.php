@@ -30,7 +30,7 @@ class DefaultTwoFactorAuthenticationChecker implements TwoFactorAuthenticationCh
      */
     public function isRequired(array $user = null)
     {
-        return empty($user) && $this->isEnabled();
+        return !empty($user) && $this->isEnabled();
     }
 
 }

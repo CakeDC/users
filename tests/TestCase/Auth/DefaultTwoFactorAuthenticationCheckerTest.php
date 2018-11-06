@@ -30,7 +30,7 @@ class DefaultTwoFactorAuthenticationCheckerTest extends TestCase
 
         Configure::delete('Users.GoogleAuthenticator.login');
         $Checker = new DefaultTwoFactorAuthenticationChecker();
-        $this->assertFalse($Checker->isEnabled());
+        $this->assertTrue($Checker->isEnabled());
     }
 
     /**
@@ -50,7 +50,7 @@ class DefaultTwoFactorAuthenticationCheckerTest extends TestCase
 
         Configure::delete('Users.GoogleAuthenticator.login');
         $Checker = new DefaultTwoFactorAuthenticationChecker();
-        $this->assertFalse($Checker->isRequired(['id' => 10]));
+        $this->assertTrue($Checker->isRequired(['id' => 10]));
 
         $Checker = new DefaultTwoFactorAuthenticationChecker();
         $this->assertFalse($Checker->isRequired([]));
