@@ -171,7 +171,6 @@ trait LoginTrait
         }
 
         $socialLogin = $this->_isSocialLogin();
-        $googleAuthenticatorLogin = $this->_isGoogleAuthenticator();
 
         if ($this->request->is('post')) {
             if (!$this->_checkReCaptcha()) {
@@ -181,6 +180,7 @@ trait LoginTrait
             }
             $user = $this->Auth->identify();
 
+            $googleAuthenticatorLogin = $this->GoogleAuthenticator->getChecker()->isRequired($user);
             return $this->_afterIdentifyUser($user, $socialLogin, $googleAuthenticatorLogin);
         }
 
@@ -211,7 +211,7 @@ trait LoginTrait
      */
     public function verify()
     {
-        if (!Configure::read('Users.GoogleAuthenticator.login')) {
+        if (!$this->GoogleAuthenticator->getChecker()->isEnabled()) {
             $message = __d('CakeDC/Users', 'Please enable Google Authenticator first.');
             $this->Flash->error($message, 'default', [], 'auth');
 
@@ -383,14 +383,5 @@ trait LoginTrait
     {
         return Configure::read('Users.Social.login') &&
             $this->request->getSession()->check(Configure::read('Users.Key.Session.social'));
-    }
-
-    /**
-     * Check if we doing Google Authenticator Two Factor auth
-     * @return bool true if Google Authenticator is enabled
-     */
-    protected function _isGoogleAuthenticator()
-    {
-        return Configure::read('Users.GoogleAuthenticator.login');
     }
 }

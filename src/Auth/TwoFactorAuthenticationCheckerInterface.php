@@ -19,5 +19,5 @@ interface TwoFactorAuthenticationCheckerInterface
      *
      * @return bool
      */
-    public function isRequired(array $user);
+    public function isRequired(array $user = null);
 }

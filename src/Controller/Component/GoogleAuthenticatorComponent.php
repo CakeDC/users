@@ -30,6 +30,11 @@ class GoogleAuthenticatorComponent extends Component
     public $tfa;
 
     /**
+     * @var \CakeDC\Users\Auth\TwoFactorAuthenticationCheckerInterface
+     */
+    private $checker;
+
+    /**
      * initialize method
      * @param array $config The config data
      * @return void
@@ -89,15 +94,19 @@ class GoogleAuthenticatorComponent extends Component
      */
     public function getChecker()
     {
+        if ($this->checker !== null) {
+            return $this->checker;
+        }
         $className = Configure::read('GoogleAuthenticator.checker');
 
         $interfaces = class_implements($className);
         $required = 'CakeDC\Users\Auth\TwoFactorAuthenticationCheckerInterface';
 
         if (in_array($required, $interfaces)) {
-            return new $className();
-        }
+            $this->checker = new $className();
 
+            return $this->checker;
+        }
         throw new InvalidArgumentException("Invalid config for 'GoogleAuthenticator.checker', '$className' does not implement '$required'");
     }
 }
