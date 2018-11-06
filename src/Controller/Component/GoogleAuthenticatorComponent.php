@@ -77,4 +77,23 @@ class GoogleAuthenticatorComponent extends Component
     {
         return $this->tfa->getQRCodeImageAsDataUri($issuer, $secret);
     }
+
+    /**
+     * Get the two factor authentication checker
+     *
+     * @return TwoFactorAuthenticationCheckerInterface
+     */
+    public function getChecker()
+    {
+        $className = Configure::read('GoogleAuthenticator.checker');
+
+        $interfaces = class_implements($className);
+        $required = 'CakeDC\Users\Auth\TwoFactorAuthenticationCheckerInterface';
+
+        if (in_array($required, $interfaces)) {
+            return new $className();
+        }
+
+        throw new InvalidArgumentException("Invalid config for 'GoogleAuthenticator.checker', '$className' does not implement '$required'");
+    }
 }

@@ -32,6 +32,7 @@ class GoogleAuthenticatorComponentTest extends TestCase
     public function setUp()
     {
         parent::setUp();
+        Configure::write('Error.errorLevel', E_ALL & ~E_DEPRECATED);
         $this->backupUsersConfig = Configure::read('Users');
 
         Router::reload();
@@ -122,5 +123,29 @@ class GoogleAuthenticatorComponentTest extends TestCase
 
         $verified = $this->Controller->GoogleAuthenticator->verifyCode($secret, $verificationCode);
         $this->assertTrue($verified);
+    }
+
+    /**
+     * Test getChecker method
+     *
+     * @return void
+     */
+    public function testGetChecker()
+    {
+        $result = $this->Controller->GoogleAuthenticator->getChecker();
+        $this->assertInstanceOf(DefaultTwoFactorAuthenticationChecker::class, $result);
+    }
+
+    /**
+     * Test getChecker method
+     *
+     * @return void
+     */
+    public function testGetCheckerInvalidInterface()
+    {
+        Configure::write('GoogleAuthenticator.checker', 'stdClass');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage("Invalid config for 'GoogleAuthenticator.checker', 'stdClass' does not implement 'CakeDC\Users\Auth\TwoFactorAuthenticationCheckerInterface'");
+        $this->Controller->GoogleAuthenticator->getChecker();
     }
 }

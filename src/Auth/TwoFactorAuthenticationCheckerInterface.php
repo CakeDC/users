@@ -9,7 +9,7 @@ interface TwoFactorAuthenticationCheckerInterface
      *
      * @return bool
      */
-    public function isEnable();
+    public function isEnabled();
 
 
     /**
