@@ -32,5 +32,4 @@ class TwoFactorAuthenticationCheckerFactoryTest extends TestCase
         $this->expectExceptionMessage("Invalid config for 'GoogleAuthenticator.checker', 'stdClass' does not implement 'CakeDC\Users\Auth\TwoFactorAuthenticationCheckerInterface'");
         $result = (new TwoFactorAuthenticationCheckerFactory())->build();
     }
-
 }
