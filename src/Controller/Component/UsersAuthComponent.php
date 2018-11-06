@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Controller\Component;
 
+use CakeDC\Users\Auth\TwoFactorAuthenticationCheckerFactory;
 use CakeDC\Users\Exception\BadConfigurationException;
 use Cake\Controller\Component;
 use Cake\Core\Configure;
@@ -55,7 +56,7 @@ class UsersAuthComponent extends Component
             $this->_loadRememberMe();
         }
 
-        if (Configure::read('Users.GoogleAuthenticator.login')) {
+        if ((new TwoFactorAuthenticationCheckerFactory())->build()->isEnabled()) {
             $this->_loadGoogleAuthenticator();
         }
 

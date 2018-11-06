@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Controller\Traits;
 
+use CakeDC\Users\Auth\TwoFactorAuthenticationCheckerFactory;
 use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
@@ -179,8 +180,8 @@ trait LoginTrait
                 return;
             }
             $user = $this->Auth->identify();
+            $googleAuthenticatorLogin = (new TwoFactorAuthenticationCheckerFactory())->build()->isRequired($user);
 
-            $googleAuthenticatorLogin = $this->GoogleAuthenticator->getChecker()->isRequired($user);
             return $this->_afterIdentifyUser($user, $socialLogin, $googleAuthenticatorLogin);
         }
 
@@ -211,7 +212,7 @@ trait LoginTrait
      */
     public function verify()
     {
-        if (!$this->GoogleAuthenticator->getChecker()->isEnabled()) {
+        if (!(new TwoFactorAuthenticationCheckerFactory())->build()->isEnabled()) {
             $message = __d('CakeDC/Users', 'Please enable Google Authenticator first.');
             $this->Flash->error($message, 'default', [], 'auth');
 
