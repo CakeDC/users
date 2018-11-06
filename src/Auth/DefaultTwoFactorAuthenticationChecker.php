@@ -41,5 +41,4 @@ class DefaultTwoFactorAuthenticationChecker implements TwoFactorAuthenticationCh
     {
         return !empty($user) && $this->isEnabled();
     }
-
 }
