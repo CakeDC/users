@@ -51,18 +51,8 @@ class DefaultTwoFactorAuthenticationCheckerTest extends TestCase
         Configure::delete('Users.GoogleAuthenticator.login');
         $Checker = new DefaultTwoFactorAuthenticationChecker();
         $this->assertFalse($Checker->isRequired(['id' => 10]));
-    }
 
-    /**
-     * Test isRequired method
-     *
-     * @return void
-     */
-    public function testIsRequiredEmptyUser()
-    {
-        $this->expectException(BadRequestException::class);
-        Configure::write('Users.GoogleAuthenticator.login');
         $Checker = new DefaultTwoFactorAuthenticationChecker();
-        $Checker->isRequired([]);
+        $this->assertFalse($Checker->isRequired([]));
     }
 }

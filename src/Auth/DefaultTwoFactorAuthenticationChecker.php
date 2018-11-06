@@ -18,7 +18,7 @@ class DefaultTwoFactorAuthenticationChecker implements TwoFactorAuthenticationCh
      */
     public function isEnabled()
     {
-        return (bool)Configure::read('Users.GoogleAuthenticator.login');
+        return Configure::read('Users.GoogleAuthenticator.login') !== false;
     }
 
     /**
@@ -28,13 +28,9 @@ class DefaultTwoFactorAuthenticationChecker implements TwoFactorAuthenticationCh
      *
      * @return bool
      */
-    public function isRequired(array $user)
+    public function isRequired(array $user = null)
     {
-        if (empty($user)) {
-            throw new BadRequestException("User data can't be empty");
-        }
-
-        return $this->isEnabled();
+        return empty($user) && $this->isEnabled();
     }
 
 }
