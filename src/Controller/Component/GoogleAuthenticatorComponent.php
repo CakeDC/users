@@ -14,12 +14,6 @@ namespace CakeDC\Users\Controller\Component;
 use CakeDC\Users\Auth\TwoFactorAuthenticationCheckerInterface;
 use Cake\Controller\Component;
 use Cake\Core\Configure;
-<<<<<<< HEAD
-=======
-use Cake\Event\Event;
-use Cake\Utility\Security;
-use InvalidArgumentException;
->>>>>>> using 2fa checker at login action with a factory
 use RobThree\Auth\TwoFactorAuth;
 
 /**
