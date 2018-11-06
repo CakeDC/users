@@ -118,6 +118,7 @@ $config = [
         ],
     ],
     'GoogleAuthenticator' => [
+        'checker' => 'CakeDC\Users\Auth\DefaultTwoFactorAuthenticationChecker',
         'verifyAction' => [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',

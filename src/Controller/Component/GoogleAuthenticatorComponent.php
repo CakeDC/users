@@ -15,6 +15,7 @@ use Cake\Controller\Component;
 use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Utility\Security;
+use CakeDC\Users\Auth\TwoFactorAuthenticationCheckerInterface;
 use InvalidArgumentException;
 use RobThree\Auth\TwoFactorAuth;
 
@@ -79,5 +80,24 @@ class GoogleAuthenticatorComponent extends Component
     public function getQRCodeImageAsDataUri($issuer, $secret)
     {
         return $this->tfa->getQRCodeImageAsDataUri($issuer, $secret);
+    }
+
+    /**
+     * Get the two factor authentication checker
+     *
+     * @return TwoFactorAuthenticationCheckerInterface
+     */
+    public function getChecker()
+    {
+        $className = Configure::read('GoogleAuthenticator.checker');
+
+        $interfaces = class_implements($className);
+        $required = 'CakeDC\Users\Auth\TwoFactorAuthenticationCheckerInterface';
+
+        if (in_array($required, $interfaces)) {
+            return new $className();
+        }
+
+        throw new InvalidArgumentException("Invalid config for 'GoogleAuthenticator.checker', '$className' does not implement '$required'");
     }
 }
