@@ -83,7 +83,7 @@ trait LoginTrait
      */
     protected function _getLoginErrorMessageMap()
     {
-        if (!(new TwoFactorAuthenticationCheckerFactory())->build()->isEnabled()) {
+        if (!$this->getTwoFactorAuthenticationChecker()->isEnabled()) {
             $message = __d('CakeDC/Users', 'Please enable Google Authenticator first.');
             $this->Flash->error($message, 'default', [], 'auth');
 
@@ -253,5 +253,15 @@ trait LoginTrait
         }
 
         return $this->redirect($this->Authentication->logout());
+    }
+
+    /**
+     * Get the configured two factory authentication
+     *
+     * @return \CakeDC\Users\Auth\TwoFactorAuthenticationCheckerInterface
+     */
+    protected function getTwoFactorAuthenticationChecker()
+    {
+        return (new TwoFactorAuthenticationCheckerFactory())->build();
     }
 }
