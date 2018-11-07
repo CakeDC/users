@@ -96,6 +96,10 @@ class LoginTraitTest extends BaseTraitTest
         $this->Trait->expects($this->once())
             ->method('redirect')
             ->with($redirectLoginOK);
+        $this->Trait->GoogleAuthenticator = $this->getMockBuilder(GoogleAuthenticatorComponent::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['createSecret', 'getQRCodeImageAsDataUri'])
+            ->getMock();
         $this->Trait->login();
     }
 
@@ -129,6 +133,10 @@ class LoginTraitTest extends BaseTraitTest
         $this->Trait->Flash->expects($this->once())
             ->method('error')
             ->with('Username or password is incorrect', 'default', [], 'auth');
+        $this->Trait->GoogleAuthenticator = $this->getMockBuilder(GoogleAuthenticatorComponent::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['createSecret', 'getQRCodeImageAsDataUri'])
+            ->getMock();
         $this->Trait->login();
     }
 
@@ -428,6 +436,10 @@ class LoginTraitTest extends BaseTraitTest
         $this->Trait->Flash->expects($this->once())
             ->method('error')
             ->with('Invalid request.');
+        $this->Trait->GoogleAuthenticator = $this->getMockBuilder(GoogleAuthenticatorComponent::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['createSecret', 'getQRCodeImageAsDataUri'])
+            ->getMock();
         $this->Trait->verify();
     }
 
@@ -439,6 +451,10 @@ class LoginTraitTest extends BaseTraitTest
     {
         $this->_mockFlash();
         Configure::write('Users.GoogleAuthenticator.login', false);
+        $this->Trait->GoogleAuthenticator = $this->getMockBuilder(GoogleAuthenticatorComponent::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['createSecret', 'getQRCodeImageAsDataUri'])
+            ->getMock();
         $this->Trait->Flash->expects($this->once())
             ->method('error')
             ->with('Please enable Google Authenticator first.');

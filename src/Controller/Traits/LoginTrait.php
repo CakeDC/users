@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Controller\Traits;
 
+use CakeDC\Users\Auth\TwoFactorAuthenticationCheckerFactory;
 use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
@@ -171,7 +172,6 @@ trait LoginTrait
         }
 
         $socialLogin = $this->_isSocialLogin();
-        $googleAuthenticatorLogin = $this->_isGoogleAuthenticator();
 
         if ($this->request->is('post')) {
             if (!$this->_checkReCaptcha()) {
@@ -181,7 +181,11 @@ trait LoginTrait
             }
             $user = $this->Auth->identify();
 
-            return $this->_afterIdentifyUser($user, $socialLogin, $googleAuthenticatorLogin);
+            return $this->_afterIdentifyUser(
+                $user,
+                $socialLogin,
+                $this->getTwoFactorAuthenticationChecker()->isRequired($user)
+            );
         }
 
         if (!$this->request->is('post') && !$socialLogin) {
@@ -211,7 +215,7 @@ trait LoginTrait
      */
     public function verify()
     {
-        if (!Configure::read('Users.GoogleAuthenticator.login')) {
+        if (!$this->getTwoFactorAuthenticationChecker()->isEnabled()) {
             $message = __d('CakeDC/Users', 'Please enable Google Authenticator first.');
             $this->Flash->error($message, 'default', [], 'auth');
 
@@ -387,11 +391,12 @@ trait LoginTrait
     }
 
     /**
-     * Check if we doing Google Authenticator Two Factor auth
-     * @return bool true if Google Authenticator is enabled
+     * Get the configured two factory authentication
+     *
+     * @return \CakeDC\Users\Auth\TwoFactorAuthenticationCheckerInterface
      */
-    protected function _isGoogleAuthenticator()
+    protected function getTwoFactorAuthenticationChecker()
     {
-        return Configure::read('Users.GoogleAuthenticator.login');
+        return (new TwoFactorAuthenticationCheckerFactory())->build();
     }
 }
