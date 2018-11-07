@@ -620,6 +620,7 @@ class LoginTraitTest extends BaseTraitTest
     {
         Configure::write('Users.GoogleAuthenticator.login', true);
 
+        $this->_mockDispatchEvent(new Event('event'));
         $this->Trait->GoogleAuthenticator = $this->getMockBuilder(GoogleAuthenticatorComponent::class)
              ->disableOriginalConstructor()
              ->setMethods(['createSecret', 'verifyCode', 'getQRCodeImageAsDataUri'])
