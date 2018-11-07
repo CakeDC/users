@@ -180,9 +180,12 @@ trait LoginTrait
                 return;
             }
             $user = $this->Auth->identify();
-            $googleAuthenticatorLogin = (new TwoFactorAuthenticationCheckerFactory())->build()->isRequired($user);
 
-            return $this->_afterIdentifyUser($user, $socialLogin, $googleAuthenticatorLogin);
+            return $this->_afterIdentifyUser(
+                $user,
+                $socialLogin,
+                $this->getTwoFactorAuthenticationChecker()->isRequired($user)
+            );
         }
 
         if (!$this->request->is('post') && !$socialLogin) {
@@ -212,7 +215,7 @@ trait LoginTrait
      */
     public function verify()
     {
-        if (!(new TwoFactorAuthenticationCheckerFactory())->build()->isEnabled()) {
+        if (!$this->getTwoFactorAuthenticationChecker()->isEnabled()) {
             $message = __d('CakeDC/Users', 'Please enable Google Authenticator first.');
             $this->Flash->error($message, 'default', [], 'auth');
 
@@ -384,5 +387,15 @@ trait LoginTrait
     {
         return Configure::read('Users.Social.login') &&
             $this->request->getSession()->check(Configure::read('Users.Key.Session.social'));
+    }
+
+    /**
+     * Get the configured two factory authentication
+     *
+     * @return \CakeDC\Users\Auth\TwoFactorAuthenticationCheckerInterface
+     */
+    protected function getTwoFactorAuthenticationChecker()
+    {
+        return (new TwoFactorAuthenticationCheckerFactory())->build();
     }
 }
