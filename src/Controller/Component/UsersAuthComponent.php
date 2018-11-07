@@ -56,7 +56,7 @@ class UsersAuthComponent extends Component
             $this->_loadRememberMe();
         }
 
-        if ((new TwoFactorAuthenticationCheckerFactory())->build()->isEnabled()) {
+        if ($this->getTwoFactorAuthenticationChecker()->isEnabled()) {
             $this->_loadGoogleAuthenticator();
         }
 
@@ -231,5 +231,15 @@ class UsersAuthComponent extends Component
         }
 
         return false;
+    }
+
+    /**
+     * Get the configured two factory authentication
+     *
+     * @return \CakeDC\Users\Auth\TwoFactorAuthenticationCheckerInterface
+     */
+    protected function getTwoFactorAuthenticationChecker()
+    {
+        return (new TwoFactorAuthenticationCheckerFactory())->build();
     }
 }
