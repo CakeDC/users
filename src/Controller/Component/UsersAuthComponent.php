@@ -50,4 +50,14 @@ class UsersAuthComponent extends Component
     {
         parent::initialize($config);
     }
+
+    /**
+     * Get the configured two factory authentication
+     *
+     * @return \CakeDC\Users\Auth\TwoFactorAuthenticationCheckerInterface
+     */
+    protected function getTwoFactorAuthenticationChecker()
+    {
+        return (new TwoFactorAuthenticationCheckerFactory())->build();
+    }
 }
