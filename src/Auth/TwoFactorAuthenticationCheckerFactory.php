@@ -29,7 +29,7 @@ class TwoFactorAuthenticationCheckerFactory
     {
         $className = Configure::read('GoogleAuthenticator.checker');
         $interfaces = class_implements($className);
-        $required = 'CakeDC\Users\Auth\TwoFactorAuthenticationCheckerInterface';
+        $required = TwoFactorAuthenticationCheckerInterface::class;
 
         if (in_array($required, $interfaces)) {
             return new $className();
