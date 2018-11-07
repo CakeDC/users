@@ -42,7 +42,6 @@ class GoogleAuthenticatorComponentTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        Configure::write('Error.errorLevel', E_ALL & ~E_DEPRECATED);
         $this->backupUsersConfig = Configure::read('Users');
 
         Router::reload();
