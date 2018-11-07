@@ -153,6 +153,10 @@ trait LoginTrait
 
                 $this->request->getSession()->delete('temporarySession');
                 $this->Auth->setUser($user);
+                $event = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_LOGIN, ['user' => $user]);
+                if (is_array($event->result)) {
+                    return $this->redirect($event->result);
+                }
                 $url = $this->Auth->redirectUrl();
 
                 return $this->redirect($url);
