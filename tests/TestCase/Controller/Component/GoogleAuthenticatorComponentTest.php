@@ -11,10 +11,10 @@
 
 namespace CakeDC\Users\Test\TestCase\Controller\Component;
 
+use CakeDC\Users\Auth\DefaultTwoFactorAuthenticationChecker;
 use CakeDC\Users\Controller\Component\GoogleAuthenticatorComponent;
 use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\UserNotFoundException;
-use CakeDC\Users\Auth\DefaultTwoFactorAuthenticationChecker;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Core\Plugin;
