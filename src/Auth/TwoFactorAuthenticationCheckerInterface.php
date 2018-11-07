@@ -19,7 +19,6 @@ interface TwoFactorAuthenticationCheckerInterface
      */
     public function isEnabled();
 
-
     /**
      * Check if two factor authentication is required for a user
      *

@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Test\TestCase\Controller\Component;
 
+use CakeDC\Users\Auth\DefaultTwoFactorAuthenticationChecker;
 use CakeDC\Users\Controller\Component\GoogleAuthenticatorComponent;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
