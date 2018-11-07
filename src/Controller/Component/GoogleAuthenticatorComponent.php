@@ -30,11 +30,6 @@ class GoogleAuthenticatorComponent extends Component
     public $tfa;
 
     /**
-     * @var \CakeDC\Users\Auth\TwoFactorAuthenticationCheckerInterface
-     */
-    private $checker;
-
-    /**
      * initialize method
      * @param array $config The config data
      * @return void
