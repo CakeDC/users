@@ -8,9 +8,7 @@
  * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
-
 namespace CakeDC\Users\Controller\Component;
-
 
 use Cake\Controller\Component;
 use Cake\Core\Configure;
@@ -18,7 +16,7 @@ use Cake\Core\Configure;
 class SetupComponent extends Component
 {
     /**
-     * @param array $config
+     * @param array $config component configuration
      * @throws \Exception
      */
     public function initialize(array $config)
@@ -29,7 +27,6 @@ class SetupComponent extends Component
         if ($this->getController()->getRequest()->getParam('plugin', null) === $plugin &&
             $this->getController()->getRequest()->getParam('controller') === $controller
         ) {
-
             $this->getController()->Auth->allow(['login']);
         }
     }
