@@ -70,9 +70,9 @@ trait PasswordManagementTrait
                 if ($user->errors()) {
                     $this->Flash->error(__d('CakeDC/Users', 'Password could not be changed'));
                 } else {
-                    $user = $this->getUsersTable()->changePassword($user);
-                    if ($user) {
-                        $event = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_CHANGE_PASSWORD, ['user' => $user]);
+                    $result = $this->getUsersTable()->changePassword($user);
+                    if ($result) {
+                        $event = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_CHANGE_PASSWORD, ['user' => $result]);
                         if (!empty($event) && is_array($event->result)) {
                             return $this->redirect($event->result);
                         }
