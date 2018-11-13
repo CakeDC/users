@@ -12,6 +12,7 @@
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
 use CakeDC\Users\Test\TestCase\Controller\Traits\BaseTraitTest;
+use Cake\Event\Event;
 use Cake\Network\Request;
 
 class UserValidationTraitTest extends BaseTraitTest
@@ -89,6 +90,26 @@ class UserValidationTraitTest extends BaseTraitTest
      *
      * @return void
      */
+    public function testValidateTokenExpiredWithOnExpiredEvent()
+    {
+        $event = new Event('event');
+        $event->result = [
+            'action' => 'newAction',
+        ];
+        $this->Trait->expects($this->once())
+            ->method('dispatchEvent')
+            ->will($this->returnValue($event));
+        $this->Trait->expects($this->once())
+            ->method('redirect')
+            ->with(['action' => 'newAction']);
+        $this->Trait->validate('email', '6614f65816754310a5f0553436dd89e9');
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
     public function testValidateInvalidOp()
     {
         $this->_mockFlash();
@@ -143,6 +164,34 @@ class UserValidationTraitTest extends BaseTraitTest
         $this->Trait->expects($this->once())
                 ->method('redirect')
                 ->with(['action' => 'login']);
+        $this->Trait->resendTokenValidation();
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testResendTokenValidationWithAfterResendTokenValidationEvent()
+    {
+        $this->_mockRequestPost();
+        $this->_mockFlash();
+        $this->Trait->request->expects($this->once())
+            ->method('getData')
+            ->with('reference')
+            ->will($this->returnValue('user-3'));
+
+        $event = new Event('event');
+        $event->result = [
+            'action' => 'newAction',
+        ];
+        $this->Trait->expects($this->once())
+            ->method('dispatchEvent')
+            ->will($this->returnValue($event));
+        $this->Trait->expects($this->once())
+            ->method('redirect')
+            ->with(['action' => 'newAction']);
+
         $this->Trait->resendTokenValidation();
     }
 

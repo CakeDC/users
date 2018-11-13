@@ -102,7 +102,11 @@ abstract class AbstractMapper
             }
             $result[$field] = $value;
         });
+
         $token = Hash::get($this->_rawData, 'token');
+        if (empty($token) || !(is_array($token) || $token instanceof \League\OAuth2\Client\Token\AccessToken)) {
+            return false;
+        }
         $result['credentials'] = [
             'token' => is_array($token) ? Hash::get($token, 'accessToken') : $token->getToken(),
             'secret' => is_array($token) ? Hash::get($token, 'tokenSecret') : null,

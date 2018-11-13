@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Controller\Component;
 
+use CakeDC\Users\Auth\TwoFactorAuthenticationCheckerFactory;
 use CakeDC\Users\Exception\BadConfigurationException;
 use Cake\Controller\Component;
 use Cake\Core\Configure;
@@ -34,6 +35,8 @@ class UsersAuthComponent extends Component
     const EVENT_AFTER_LOGOUT = 'Users.Component.UsersAuth.afterLogout';
     const EVENT_BEFORE_SOCIAL_LOGIN_USER_CREATE = 'Users.Component.UsersAuth.beforeSocialLoginUserCreate';
     const EVENT_AFTER_CHANGE_PASSWORD = 'Users.Component.UsersAuth.afterResetPassword';
+    const EVENT_ON_EXPIRED_TOKEN = 'Users.Component.UsersAuth.onExpiredToken';
+    const EVENT_AFTER_RESEND_TOKEN_VALIDATION = 'Users.Component.UsersAuth.afterResendTokenValidation';
 
     /**
      * Initialize method, setup Auth if not already done passing the $config provided and
@@ -55,7 +58,7 @@ class UsersAuthComponent extends Component
             $this->_loadRememberMe();
         }
 
-        if (Configure::read('Users.GoogleAuthenticator.login')) {
+        if ($this->getTwoFactorAuthenticationChecker()->isEnabled()) {
             $this->_loadGoogleAuthenticator();
         }
 
@@ -230,5 +233,15 @@ class UsersAuthComponent extends Component
         }
 
         return false;
+    }
+
+    /**
+     * Get the configured two factory authentication
+     *
+     * @return \CakeDC\Users\Auth\TwoFactorAuthenticationCheckerInterface
+     */
+    protected function getTwoFactorAuthenticationChecker()
+    {
+        return (new TwoFactorAuthenticationCheckerFactory())->build();
     }
 }
