@@ -184,7 +184,7 @@ trait LoginTrait
             return $this->_afterIdentifyUser(
                 $user,
                 $socialLogin,
-                $this->getTwoFactorAuthenticationChecker()->isRequired($user)
+                $user && $this->getTwoFactorAuthenticationChecker()->isRequired($user)
             );
         }
 
