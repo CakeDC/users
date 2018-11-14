@@ -763,7 +763,8 @@ class LoginTraitTest extends BaseTraitTest
                 'plugin' => 'CakeDC/Users',
                 'controller' => 'Users',
                 'action' => 'login',
-                'prefix' => false
+                'prefix' => false,
+                '?' => []
             ]);
 
         $this->assertFalse($this->table->exists([
