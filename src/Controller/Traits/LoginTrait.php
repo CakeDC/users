@@ -220,6 +220,7 @@ trait LoginTrait
                 $url = array_merge($url, [
                     '?' => $this->request->getQueryParams()
                 ]);
+
                 return $this->redirect($url);
             }
 
