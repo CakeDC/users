@@ -4,6 +4,9 @@ Changelog
 Releases for CakePHP 3
 -------------
 
+* 8.0.1
+  * Fixed 2fa link preserve querystring
+
 * 8.0.0
   * Added new events `Users.Component.UsersAuth.onExpiredToken` and `Users.Component.UsersAuth.afterResendTokenValidation`
   * Added 2 factor authentication checkers to allow customization
