@@ -21,7 +21,7 @@ use Cake\Event\EventDispatcherTrait;
 use Cake\Utility\Hash;
 use DateTime;
 use InvalidArgumentException;
-
+use Cake\Core\Configure;
 /**
  * Covers social features
  *
@@ -229,7 +229,7 @@ class SocialBehavior extends BaseTokenBehavior
         //ensure provider is present in Entity
         $socialAccount['provider'] = Hash::get($data, 'provider');
         $user['social_accounts'] = [$socialAccount];
-
+        $user['role'] = Configure::read('Users.Registration.defaultRole') ?: 'user';
         return $user;
     }
 
