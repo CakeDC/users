@@ -16,6 +16,7 @@ Documentation
 * [SimpleRbacAuthorize](https://github.com/CakeDC/auth/blob/master/Docs/Documentation/SimpleRbacAuthorize.md)
 * [SuperuserAuthorize](https://github.com/CakeDC/auth/blob/master/Docs/Documentation/SuperuserAuthorize.md)
 * [ApiKeyAuthenticate](https://github.com/CakeDC/auth/blob/master/Docs/Documentation/ApiKeyAuthenticate.md)
+* [Intercept Login Action](Documentation/InterceptLoginAction.md)
 * [SocialAuthenticate](Documentation/SocialAuthenticate.md)
 * [Google Authenticator](Documentation/Two-Factor-Authenticator.md)
 * [UserHelper](Documentation/UserHelper.md)
