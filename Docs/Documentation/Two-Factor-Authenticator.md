@@ -12,7 +12,7 @@ composer require robthree/twofactorauth
 Setup
 -----
 
-Enable google authenticator in your bootstrap.php file:
+Enable one-time password authenticator in your bootstrap.php file:
 
 Config/bootstrap.php
 ```
