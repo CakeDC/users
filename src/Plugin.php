@@ -141,7 +141,6 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
         }
 
         if (Configure::read('Auth.Authorization.loadAuthorizationMiddleware') !== false) {
-            $config = Configure::read('Auth.AuthorizationMiddleware');
             $middlewareQueue->add(new AuthorizationMiddleware($this, Configure::read('Auth.AuthorizationMiddleware')));
             $middlewareQueue->add(new RequestAuthorizationMiddleware());
         }
