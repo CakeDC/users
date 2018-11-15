@@ -58,7 +58,7 @@ $config = [
             // enable social login
             'login' => false,
         ],
-        'GoogleAuthenticator' => [
+        'OneTimePasswordAuthenticator' => [
             // enable Google Authenticator
             'login' => false,
             'issuer' => null,

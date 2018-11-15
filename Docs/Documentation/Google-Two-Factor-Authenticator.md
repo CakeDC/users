@@ -16,7 +16,7 @@ Enable google authenticator in your bootstrap.php file:
 
 Config/bootstrap.php
 ```
-Configure::write('Users.GoogleAuthenticator.login', true);
+Configure::write('Users.OneTimePasswordAuthenticator.login', true);
 ```
 
 How does it work
@@ -28,9 +28,9 @@ the QR code shown (image 1).
 
 1) Validation code page
 
-<img src="GoogleAuthenticator/FirstLogin.png?raw=true" width="300"/>
+<img src="OneTimePasswordAuthenticator/FirstLogin.png?raw=true" width="300"/>
 
 2) Google Authentation app
 
-<img src="GoogleAuthenticator/App.png?raw=true" width="300"/>
+<img src="OneTimePasswordAuthenticator/App.png?raw=true" width="300"/>
 

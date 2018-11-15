@@ -17,11 +17,11 @@ use Cake\Core\Configure;
 use RobThree\Auth\TwoFactorAuth;
 
 /**
- * GoogleAuthenticator Component.
+ * OneTimePasswordAuthenticator Component.
  *
  * @link https://github.com/RobThree/TwoFactorAuth
  */
-class GoogleAuthenticatorComponent extends Component
+class OneTimePasswordAuthenticatorComponent extends Component
 {
     /** @var \RobThree\Auth\TwoFactorAuth $tfa */
     public $tfa;
@@ -35,14 +35,14 @@ class GoogleAuthenticatorComponent extends Component
     {
         parent::initialize($config);
 
-        if (Configure::read('Users.GoogleAuthenticator.login')) {
+        if (Configure::read('Users.OneTimePasswordAuthenticator.login')) {
             $this->tfa = new TwoFactorAuth(
-                Configure::read('Users.GoogleAuthenticator.issuer'),
-                Configure::read('Users.GoogleAuthenticator.digits'),
-                Configure::read('Users.GoogleAuthenticator.period'),
-                Configure::read('Users.GoogleAuthenticator.algorithm'),
-                Configure::read('Users.GoogleAuthenticator.qrcodeprovider'),
-                Configure::read('Users.GoogleAuthenticator.rngprovider')
+                Configure::read('Users.OneTimePasswordAuthenticator.issuer'),
+                Configure::read('Users.OneTimePasswordAuthenticator.digits'),
+                Configure::read('Users.OneTimePasswordAuthenticator.period'),
+                Configure::read('Users.OneTimePasswordAuthenticator.algorithm'),
+                Configure::read('Users.OneTimePasswordAuthenticator.qrcodeprovider'),
+                Configure::read('Users.OneTimePasswordAuthenticator.rngprovider')
             );
         }
     }

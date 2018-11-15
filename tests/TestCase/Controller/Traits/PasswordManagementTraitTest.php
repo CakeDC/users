@@ -419,7 +419,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
     }
 
     /**
-     * @dataProvider ensureGoogleAuthenticatorResets
+     * @dataProvider ensureOneTimePasswordAuthenticatorResets
      *
      * @return void
      */
@@ -443,10 +443,10 @@ class PasswordManagementTraitTest extends BaseTraitTest
             ->method($method)
             ->with($msg);
 
-        $this->Trait->resetGoogleAuthenticator($entityId);
+        $this->Trait->resetOneTimePasswordAuthenticator($entityId);
     }
 
-    public function ensureGoogleAuthenticatorResets()
+    public function ensureOneTimePasswordAuthenticatorResets()
     {
         $error = 'error';
         $success = 'success';

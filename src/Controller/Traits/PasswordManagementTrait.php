@@ -152,7 +152,7 @@ trait PasswordManagementTrait
     }
 
     /**
-     * resetGoogleAuthenticator
+     * resetOneTimePasswordAuthenticator
      *
      * Resets Google Authenticator token by setting secret_verified
      * to false.
@@ -160,7 +160,7 @@ trait PasswordManagementTrait
      * @param mixed $id of the user record.
      * @return mixed.
      */
-    public function resetGoogleAuthenticator($id = null)
+    public function resetOneTimePasswordAuthenticator($id = null)
     {
         if ($this->request->is('post')) {
             try {

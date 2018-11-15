@@ -40,10 +40,10 @@ If you want to use Google Authenticator features...
 composer require robthree/twofactorauth:"^1.5.2"
 ```
 
-NOTE: you'll need to enable `Users.GoogleAuthenticator.login`
+NOTE: you'll need to enable `Users.OneTimePasswordAuthenticator.login`
 
 ```
-Configure::write('Users.GoogleAuthenticator.login', true);
+Configure::write('Users.OneTimePasswordAuthenticator.login', true);
 ```
 
 Load the Plugin
