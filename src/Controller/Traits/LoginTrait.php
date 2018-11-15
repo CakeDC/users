@@ -184,7 +184,7 @@ trait LoginTrait
             return $this->_afterIdentifyUser(
                 $user,
                 $socialLogin,
-                $this->getTwoFactorAuthenticationChecker()->isRequired($user)
+                $user && $this->getTwoFactorAuthenticationChecker()->isRequired($user)
             );
         }
 
@@ -215,18 +215,24 @@ trait LoginTrait
      */
     public function verify()
     {
+        $loginUrl = array_merge(
+            Configure::read('Auth.loginAction'),
+            [
+                '?' => $this->request->getQueryParams()
+            ]
+        );
         if (!$this->getTwoFactorAuthenticationChecker()->isEnabled()) {
             $message = __d('CakeDC/Users', 'Please enable Google Authenticator first.');
             $this->Flash->error($message, 'default', [], 'auth');
 
-            return $this->redirect(Configure::read('Auth.loginAction'));
+            return $this->redirect($loginUrl);
         }
 
         $temporarySession = $this->request->getSession()->read('temporarySession');
         if (!is_array($temporarySession) || empty($temporarySession)) {
             $this->Flash->error(__d('CakeDC/Users', 'Invalid request.'), 'default', [], 'auth');
 
-            return $this->redirect(Configure::read('Auth.loginAction'));
+            return $this->redirect($loginUrl);
         }
 
         $secret = Hash::get($temporarySession, 'secret');
@@ -251,7 +257,7 @@ trait LoginTrait
                     $message = $e->getMessage();
                     $this->Flash->error($message, 'default', [], 'auth');
 
-                    return $this->redirect(Configure::read('Auth.loginAction'));
+                    return $this->redirect($loginUrl);
                 }
             }
             $secretDataUri = $this->GoogleAuthenticator->getQRCodeImageAsDataUri(
@@ -297,7 +303,7 @@ trait LoginTrait
                 $message = __d('CakeDC/Users', 'Verification code is invalid. Try again');
                 $this->Flash->error($message, 'default', [], 'auth');
 
-                return $this->redirect(Configure::read('Auth.loginAction'));
+                return $this->redirect($loginUrl);
             }
         }
     }
@@ -334,6 +340,9 @@ trait LoginTrait
                 // until the GA verification is checked
                 $this->request->getSession()->write('temporarySession', $user);
                 $url = Configure::read('GoogleAuthenticator.verifyAction');
+                $url = array_merge($url, [
+                    '?' => $this->request->getQueryParams()
+                ]);
 
                 return $this->redirect($url);
             }
