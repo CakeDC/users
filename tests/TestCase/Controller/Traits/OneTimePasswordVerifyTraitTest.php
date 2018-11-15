@@ -11,14 +11,14 @@
 
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
-use CakeDC\Users\Controller\Component\GoogleAuthenticatorComponent;
+use CakeDC\Users\Controller\Component\OneTimePasswordAuthenticatorComponent;
 use CakeDC\Users\Controller\Component\UsersAuthComponent;
-use CakeDC\Users\Controller\Traits\GoogleVerify;
+use CakeDC\Users\Controller\Traits\OneTimePasswordVerifyTrait;
 use Cake\Core\Configure;
 use Cake\Http\ServerRequest;
 use Cake\ORM\TableRegistry;
 
-class GoogleVerifyTest extends BaseTraitTest
+class OneTimePasswordVerifyTraitTest extends BaseTraitTest
 {
     protected $loginPage = '/login-page';
     /**
@@ -28,12 +28,12 @@ class GoogleVerifyTest extends BaseTraitTest
      */
     public function setUp()
     {
-        $this->traitClassName = 'CakeDC\Users\Controller\Traits\GoogleVerifyTrait';
+        $this->traitClassName = 'CakeDC\Users\Controller\Traits\OneTimePasswordVerifyTrait';
         $this->traitMockMethods = ['dispatchEvent', 'isStopped', 'redirect', 'getUsersTable', 'set'];
 
         parent::setUp();
         $request = new ServerRequest();
-        $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\Traits\GoogleVerifyTrait')
+        $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\Traits\OneTimePasswordVerifyTrait')
             ->setMethods(['dispatchEvent', 'redirect', 'set', 'getUsersTable'])
             ->getMockForTrait();
 
@@ -57,7 +57,7 @@ class GoogleVerifyTest extends BaseTraitTest
      */
     public function testVerifyHappy()
     {
-        Configure::write('Users.GoogleAuthenticator.login', true);
+        Configure::write('Users.OneTimePasswordAuthenticator.login', true);
         $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->setMethods(['is', 'getData', 'allow', 'getSession'])
             ->getMock();
@@ -85,7 +85,7 @@ class GoogleVerifyTest extends BaseTraitTest
     public function testVerifyNotEnabled()
     {
         $this->_mockFlash();
-        Configure::write('Users.GoogleAuthenticator.login', false);
+        Configure::write('Users.OneTimePasswordAuthenticator.login', false);
         $this->Trait->Flash->expects($this->once())
             ->method('error')
             ->with('Please enable Google Authenticator first.');
@@ -102,8 +102,8 @@ class GoogleVerifyTest extends BaseTraitTest
      */
     public function testVerifyGetShowQR()
     {
-        Configure::write('Users.GoogleAuthenticator.login', true);
-        $this->Trait->GoogleAuthenticator = $this->getMockBuilder(GoogleAuthenticatorComponent::class)
+        Configure::write('Users.OneTimePasswordAuthenticator.login', true);
+        $this->Trait->OneTimePasswordAuthenticator = $this->getMockBuilder(OneTimePasswordAuthenticatorComponent::class)
             ->disableOriginalConstructor()
             ->setMethods(['createSecret', 'getQRCodeImageAsDataUri'])
             ->getMock();
@@ -126,10 +126,10 @@ class GoogleVerifyTest extends BaseTraitTest
             ->method('is')
             ->with('post')
             ->will($this->returnValue(false));
-        $this->Trait->GoogleAuthenticator->expects($this->at(0))
+        $this->Trait->OneTimePasswordAuthenticator->expects($this->at(0))
             ->method('createSecret')
             ->will($this->returnValue('newSecret'));
-        $this->Trait->GoogleAuthenticator->expects($this->at(1))
+        $this->Trait->OneTimePasswordAuthenticator->expects($this->at(1))
             ->method('getQRCodeImageAsDataUri')
             ->with('email@example.com', 'newSecret')
             ->will($this->returnValue('newDataUriGenerated'));
@@ -148,10 +148,10 @@ class GoogleVerifyTest extends BaseTraitTest
      */
     public function testVerifyGetGeneratesNewSecret()
     {
-        Configure::write('Users.GoogleAuthenticator.login', true);
+        Configure::write('Users.OneTimePasswordAuthenticator.login', true);
 
-        $this->Trait->GoogleAuthenticator = $this
-            ->getMockBuilder(GoogleAuthenticatorComponent::class)
+        $this->Trait->OneTimePasswordAuthenticator = $this
+            ->getMockBuilder(OneTimePasswordAuthenticatorComponent::class)
             ->disableOriginalConstructor()
             ->setMethods(['createSecret', 'getQRCodeImageAsDataUri'])
             ->getMock();
@@ -166,11 +166,11 @@ class GoogleVerifyTest extends BaseTraitTest
             ->with('post')
             ->will($this->returnValue(false));
 
-        $this->Trait->GoogleAuthenticator
+        $this->Trait->OneTimePasswordAuthenticator
             ->expects($this->at(0))
             ->method('createSecret')
             ->will($this->returnValue('newSecret'));
-        $this->Trait->GoogleAuthenticator
+        $this->Trait->OneTimePasswordAuthenticator
             ->expects($this->at(1))
             ->method('getQRCodeImageAsDataUri')
             ->with('email@example.com', 'newSecret')
@@ -207,10 +207,10 @@ class GoogleVerifyTest extends BaseTraitTest
      */
     public function testVerifyGetDoesNotGenerateNewSecret()
     {
-        Configure::write('Users.GoogleAuthenticator.login', true);
+        Configure::write('Users.OneTimePasswordAuthenticator.login', true);
 
-        $this->Trait->GoogleAuthenticator = $this
-            ->getMockBuilder(GoogleAuthenticatorComponent::class)
+        $this->Trait->OneTimePasswordAuthenticator = $this
+            ->getMockBuilder(OneTimePasswordAuthenticatorComponent::class)
             ->disableOriginalConstructor()
             ->setMethods(['createSecret', 'getQRCodeImageAsDataUri'])
             ->getMock();
@@ -225,10 +225,10 @@ class GoogleVerifyTest extends BaseTraitTest
             ->with('post')
             ->will($this->returnValue(false));
 
-        $this->Trait->GoogleAuthenticator
+        $this->Trait->OneTimePasswordAuthenticator
             ->expects($this->never())
             ->method('createSecret');
-        $this->Trait->GoogleAuthenticator
+        $this->Trait->OneTimePasswordAuthenticator
             ->expects($this->at(0))
             ->method('getQRCodeImageAsDataUri')
             ->with('email@example.com', 'alreadyPresentSecret')

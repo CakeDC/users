@@ -5,7 +5,7 @@ namespace CakeDC\Users\Controller\Traits;
 use CakeDC\Users\Authentication\AuthenticationService;
 use Cake\Core\Configure;
 
-trait GoogleVerifyTrait
+trait OneTimePasswordVerifyTrait
 {
     /**
      * Verify for Google Authenticator
@@ -32,7 +32,7 @@ trait GoogleVerifyTrait
                 return $this->redirect($loginAction);
             }
 
-            $secretDataUri = $this->GoogleAuthenticator->getQRCodeImageAsDataUri(
+            $secretDataUri = $this->OneTimePasswordAuthenticator->getQRCodeImageAsDataUri(
                 $temporarySession['email'],
                 $secret
             );
@@ -52,7 +52,7 @@ trait GoogleVerifyTrait
      */
     protected function isVerifyAllowed()
     {
-        if (!Configure::read('Users.GoogleAuthenticator.login')) {
+        if (!Configure::read('Users.OneTimePasswordAuthenticator.login')) {
             $message = __d('CakeDC/Users', 'Please enable Google Authenticator first.');
             $this->Flash->error($message, 'default', [], 'auth');
 
@@ -84,7 +84,7 @@ trait GoogleVerifyTrait
             return $user['secret'];
         }
 
-        $secret = $this->GoogleAuthenticator->createSecret();
+        $secret = $this->OneTimePasswordAuthenticator->createSecret();
 
         // catching sql exception in case of any sql inconsistencies
         try {
@@ -121,7 +121,7 @@ trait GoogleVerifyTrait
         $entity = $this->getUsersTable()->get($user['id']);
 
         if (!empty($entity['secret'])) {
-            $codeVerified = $this->GoogleAuthenticator->verifyCode($entity['secret'], $verificationCode);
+            $codeVerified = $this->OneTimePasswordAuthenticator->verifyCode($entity['secret'], $verificationCode);
         }
 
         if (!$codeVerified) {

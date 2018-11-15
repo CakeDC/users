@@ -57,14 +57,14 @@ $Users = ${$tableAlias};
     </fieldset>
     <?= $this->Form->button(__d('CakeDC/Users', 'Submit')) ?>
     <?= $this->Form->end() ?>
-    <?php if (Configure::read('Users.GoogleAuthenticator.login')) : ?>
+    <?php if (Configure::read('Users.OneTimePasswordAuthenticator.login')) : ?>
         <fieldset>
             <legend>Reset Google Authenticator</legend>
             <?= $this->Form->postLink(
                 __d('CakeDC/Users', 'Reset Google Authenticator Token'), [
                 'plugin' => 'CakeDC/Users',
                 'controller' => 'Users',
-                'action' => 'resetGoogleAuthenticator', $Users->id
+                'action' => 'resetOneTimePasswordAuthenticator', $Users->id
             ], [
                 'class' => 'btn btn-danger',
                 'confirm' => __d(

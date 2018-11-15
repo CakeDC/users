@@ -7,7 +7,7 @@ use Cake\Http\ServerRequest;
 use Cake\Routing\Router;
 use Psr\Http\Message\ResponseInterface;
 
-class GoogleAuthenticatorMiddleware
+class OneTimePasswordAuthenticatorMiddleware
 {
     /**
      * Proceed to second step of two factor authentication. See CakeDC\Users\Controller\Traits\verify

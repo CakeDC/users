@@ -11,14 +11,14 @@
 
 namespace CakeDC\Users\Test\TestCase\Controller\Component;
 
-use CakeDC\Users\Controller\Component\GoogleAuthenticatorComponent;
+use CakeDC\Users\Controller\Component\OneTimePasswordAuthenticatorComponent;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Security;
 
-class GoogleAuthenticatorComponentTest extends TestCase
+class OneTimePasswordAuthenticatorComponentTest extends TestCase
 {
     public $fixtures = [
         'plugin.CakeDC/Users.users'
@@ -48,7 +48,7 @@ class GoogleAuthenticatorComponentTest extends TestCase
 
         Security::setSalt('YJfIxfs2guVoUubWDYhG93b0qyJfIxfs2guwvniR2G0FgaC9mi');
         Configure::write('App.namespace', 'Users');
-        Configure::write('Users.GoogleAuthenticator.login', true);
+        Configure::write('Users.OneTimePasswordAuthenticator.login', true);
 
         $this->request = $this->getMockBuilder('Cake\Http\ServerRequest')
                 ->setMethods(['is', 'method'])
@@ -59,7 +59,7 @@ class GoogleAuthenticatorComponentTest extends TestCase
                 ->getMock();
         $this->Controller = new Controller($this->request, $this->response);
         $this->Registry = $this->Controller->components();
-        $this->Controller->GoogleAuthenticator = new GoogleAuthenticatorComponent($this->Registry);
+        $this->Controller->OneTimePasswordAuthenticator = new OneTimePasswordAuthenticatorComponent($this->Registry);
     }
 
     /**
@@ -72,9 +72,9 @@ class GoogleAuthenticatorComponentTest extends TestCase
         parent::tearDown();
 
         $_SESSION = [];
-        unset($this->Controller, $this->GoogleAuthenticator);
+        unset($this->Controller, $this->OneTimePasswordAuthenticator);
         Configure::write('Users', $this->backupUsersConfig);
-        Configure::write('Users.GoogleAuthenticator.login', false);
+        Configure::write('Users.OneTimePasswordAuthenticator.login', false);
     }
 
     /**
@@ -83,8 +83,8 @@ class GoogleAuthenticatorComponentTest extends TestCase
      */
     public function testInitialize()
     {
-        $this->Controller->GoogleAuthenticator = new GoogleAuthenticatorComponent($this->Registry);
-        $this->assertInstanceOf('CakeDC\Users\Controller\Component\GoogleAuthenticatorComponent', $this->Controller->GoogleAuthenticator);
+        $this->Controller->OneTimePasswordAuthenticator = new OneTimePasswordAuthenticatorComponent($this->Registry);
+        $this->assertInstanceOf('CakeDC\Users\Controller\Component\OneTimePasswordAuthenticatorComponent', $this->Controller->OneTimePasswordAuthenticator);
     }
 
     /**
@@ -93,8 +93,8 @@ class GoogleAuthenticatorComponentTest extends TestCase
      */
     public function testgetQRCodeImageAsDataUri()
     {
-        $this->Controller->GoogleAuthenticator->initialize([]);
-        $result = $this->Controller->GoogleAuthenticator->getQRCodeImageAsDataUri('test@localhost.com', '123123');
+        $this->Controller->OneTimePasswordAuthenticator->initialize([]);
+        $result = $this->Controller->OneTimePasswordAuthenticator->getQRCodeImageAsDataUri('test@localhost.com', '123123');
 
         $this->assertContains('data:image/png;base64', $result);
     }
@@ -105,8 +105,8 @@ class GoogleAuthenticatorComponentTest extends TestCase
      */
     public function testCreateSecret()
     {
-        $this->Controller->GoogleAuthenticator->initialize([]);
-        $result = $this->Controller->GoogleAuthenticator->createSecret();
+        $this->Controller->OneTimePasswordAuthenticator->initialize([]);
+        $result = $this->Controller->OneTimePasswordAuthenticator->createSecret();
         $this->assertNotEmpty($result);
     }
 
@@ -116,11 +116,11 @@ class GoogleAuthenticatorComponentTest extends TestCase
      */
     public function testVerifyCode()
     {
-        $this->Controller->GoogleAuthenticator->initialize([]);
-        $secret = $this->Controller->GoogleAuthenticator->createSecret();
-        $verificationCode = $this->Controller->GoogleAuthenticator->tfa->getCode($secret);
+        $this->Controller->OneTimePasswordAuthenticator->initialize([]);
+        $secret = $this->Controller->OneTimePasswordAuthenticator->createSecret();
+        $verificationCode = $this->Controller->OneTimePasswordAuthenticator->tfa->getCode($secret);
 
-        $verified = $this->Controller->GoogleAuthenticator->verifyCode($secret, $verificationCode);
+        $verified = $this->Controller->OneTimePasswordAuthenticator->verifyCode($secret, $verificationCode);
         $this->assertTrue($verified);
     }
 }

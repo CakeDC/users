@@ -56,7 +56,7 @@ class AuthenticationService extends BaseService
             );
         }
 
-        $googleVerify = Configure::read('Users.GoogleAuthenticator.login');
+        $googleVerify = Configure::read('Users.OneTimePasswordAuthenticator.login');
 
         $this->failures = [];
         $result = null;

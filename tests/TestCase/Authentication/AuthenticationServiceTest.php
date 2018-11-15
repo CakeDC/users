@@ -141,7 +141,7 @@ class AuthenticationServiceTest extends TestCase
      */
     public function testAuthenticateShouldDoGoogleVerifyEnabled()
     {
-        Configure::write('Users.GoogleAuthenticator.login', true);
+        Configure::write('Users.OneTimePasswordAuthenticator.login', true);
         $Table = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
         $entity = $Table->get('00000000-0000-0000-0000-000000000001');
         $entity->password = 'password';
@@ -194,7 +194,7 @@ class AuthenticationServiceTest extends TestCase
      */
     public function testAuthenticateShouldDoGoogleVerifyDisabled()
     {
-        Configure::write('Users.GoogleAuthenticator.login', false);
+        Configure::write('Users.OneTimePasswordAuthenticator.login', false);
         $Table = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
         $entity = $Table->get('00000000-0000-0000-0000-000000000001');
         $entity->password = 'password';

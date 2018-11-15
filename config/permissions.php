@@ -106,7 +106,7 @@ return [
             'role' => '*',
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
-            'action' => 'resetGoogleAuthenticator',
+            'action' => 'resetOneTimePasswordAuthenticator',
             'allowed' => function (array $user, $role, \Cake\Http\ServerRequest $request) {
                 $userId = \Cake\Utility\Hash::get($request->getAttribute('params'), 'pass.0');
                 if (!empty($userId) && !empty($user)) {

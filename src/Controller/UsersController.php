@@ -12,7 +12,7 @@
 namespace CakeDC\Users\Controller;
 
 use Cake\Utility\Hash;
-use CakeDC\Users\Controller\Traits\GoogleVerifyTrait;
+use CakeDC\Users\Controller\Traits\OneTimePasswordVerifyTrait;
 use CakeDC\Users\Controller\Traits\LinkSocialTrait;
 use CakeDC\Users\Controller\Traits\LoginTrait;
 use CakeDC\Users\Controller\Traits\ProfileTrait;
@@ -30,9 +30,9 @@ use Cake\Core\Configure;
  */
 class UsersController extends AppController
 {
-    use GoogleVerifyTrait;
     use LinkSocialTrait;
     use LoginTrait;
+    use OneTimePasswordVerifyTrait;
     use ProfileTrait;
     use ReCaptchaTrait;
     use RegisterTrait;
@@ -52,7 +52,7 @@ class UsersController extends AppController
     }
 
     /**
-     * Load all auth components needed: Authentication.Authentication, Authorization.Authorization and CakeDC/Users.GoogleAuthenticator
+     * Load all auth components needed: Authentication.Authentication, Authorization.Authorization and CakeDC/Users.OneTimePasswordAuthenticator
      *
      * @return void
      */
@@ -69,8 +69,8 @@ class UsersController extends AppController
             $this->loadComponent('Authorization.Authorization', $config);
         }
 
-        if (Configure::read('Users.GoogleAuthenticator.login') !== false) {
-            $this->loadComponent('CakeDC/Users.GoogleAuthenticator');
+        if (Configure::read('Users.OneTimePasswordAuthenticator.login') !== false) {
+            $this->loadComponent('CakeDC/Users.OneTimePasswordAuthenticator');
         }
     }
 }
