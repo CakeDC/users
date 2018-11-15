@@ -4,7 +4,18 @@ Changelog
 Releases for CakePHP 3
 -------------
 
-* 7.0.1 
+* 8.0.1
+  * Fixed 2fa link preserve querystring
+
+* 8.0.0
+  * Added new events `Users.Component.UsersAuth.onExpiredToken` and `Users.Component.UsersAuth.afterResendTokenValidation`
+  * Added 2 factor authentication checkers to allow customization
+  * Added Mapper classes to social auth services as a way to generalize url/avatar retrieval
+  * Fix issues with recent changes in Facebook API
+  * Added new translations
+  * Improved customization options for recaptcha integration
+
+* 7.0.2 
   * Fixed an issue with 2FA only working on the second try
 
 * 7.0.1 

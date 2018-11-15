@@ -70,7 +70,14 @@ class PasswordBehavior extends BaseTokenBehavior
         $user->updateToken($expiration);
         $saveResult = $this->_table->save($user);
         if (Hash::get($options, 'sendEmail')) {
-            $this->sendResetPasswordEmail($user);
+            switch (Hash::get($options, 'type')) {
+                case 'email':
+                    $this->_sendValidationEmail($user);
+                    break;
+                case 'password':
+                    $this->_sendResetPasswordEmail($user);
+                    break;
+            }
         }
 
         return $saveResult;
@@ -82,11 +89,25 @@ class PasswordBehavior extends BaseTokenBehavior
      * @param EntityInterface $user user
      * @return void
      */
-    protected function sendResetPasswordEmail($user)
+    protected function _sendResetPasswordEmail($user)
     {
         $this
             ->getMailer(Configure::read('Users.Email.mailerClass') ?: 'CakeDC/Users.Users')
             ->send('resetPassword', [$user]);
+    }
+
+    /**
+     * Wrapper for mailer
+     *
+     * @param EntityInterface $user user
+     * @return void
+     */
+    protected function _sendValidationEmail($user)
+    {
+        $mailer = Configure::read('Users.Email.mailerClass') ?: 'CakeDC/Users.Users';
+        $this
+            ->getMailer($mailer)
+            ->send('validation', [$user]);
     }
 
     /**
