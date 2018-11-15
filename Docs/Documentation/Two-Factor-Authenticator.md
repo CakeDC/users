@@ -1,4 +1,4 @@
-Google Two Factor Authenticator
+Two Factor Authenticator
 ===============================
 
 Installation
