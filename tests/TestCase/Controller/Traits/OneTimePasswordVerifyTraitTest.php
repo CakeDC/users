@@ -12,6 +12,7 @@
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
 use CakeDC\Users\Controller\Component\OneTimePasswordAuthenticatorComponent;
+
 use CakeDC\Users\Controller\Traits\OneTimePasswordVerifyTrait;
 use Cake\Core\Configure;
 use Cake\Http\ServerRequest;
@@ -19,7 +20,13 @@ use Cake\ORM\TableRegistry;
 
 class OneTimePasswordVerifyTraitTest extends BaseTraitTest
 {
-    protected $loginPage = '/login-page';
+    protected $loginPage = [
+        'plugin' => 'CakeDC/Users',
+        'prefix' => false,
+        'controller' => 'users',
+        'action' => 'login'
+    ];
+
     /**
      * setup
      *
@@ -85,12 +92,13 @@ class OneTimePasswordVerifyTraitTest extends BaseTraitTest
     {
         $this->_mockFlash();
         Configure::write('Users.OneTimePasswordAuthenticator.login', false);
+        $this->Trait->request = $this->Trait->request->withQueryParams(['redirect' => 'dashboard/list']);
         $this->Trait->Flash->expects($this->once())
             ->method('error')
             ->with('Please enable Google Authenticator first.');
         $this->Trait->expects($this->once())
             ->method('redirect')
-            ->with($this->loginPage);
+            ->with($this->loginPage + ['?' => ['redirect' => 'dashboard/list']]);
 
         $this->Trait->verify();
     }
