@@ -6,7 +6,7 @@ use Authentication\AuthenticationService as BaseService;
 use Authentication\Authenticator\Result;
 use Authentication\Authenticator\ResultInterface;
 use Authentication\Authenticator\StatelessInterface;
-use Cake\Core\Configure;
+use CakeDC\Users\Auth\TwoFactorAuthenticationCheckerFactory;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use RuntimeException;
@@ -44,6 +44,16 @@ class AuthenticationService extends BaseService
     }
 
     /**
+     * Get the configured two factory authentication
+     *
+     * @return \CakeDC\Users\Auth\TwoFactorAuthenticationCheckerInterface
+     */
+    protected function getTwoFactorAuthenticationChecker()
+    {
+        return (new TwoFactorAuthenticationCheckerFactory())->build();
+    }
+
+    /**
      * {@inheritDoc}
      *
      * @throws \RuntimeException Throws a runtime exception when no authenticators are loaded.
@@ -56,15 +66,15 @@ class AuthenticationService extends BaseService
             );
         }
 
-        $googleVerify = Configure::read('Users.OneTimePasswordAuthenticator.login');
-
+        $twoFaCheck = $this->getTwoFactorAuthenticationChecker();
         $this->failures = [];
         $result = null;
         foreach ($this->authenticators() as $authenticator) {
             $result = $authenticator->authenticate($request, $response);
 
             if ($result->isValid()) {
-                if ($googleVerify !== false && $authenticator->getConfig('skipGoogleVerify') !== true) {
+                $twoFaRequired = $twoFaCheck->isRequired($result->getData()->toArray());
+                if ($twoFaRequired && $authenticator->getConfig('skipGoogleVerify') !== true) {
                     return $this->proceedToGoogleVerify($request, $response, $result);
                 }
 
