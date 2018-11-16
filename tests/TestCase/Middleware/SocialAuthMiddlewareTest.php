@@ -172,45 +172,6 @@ class SocialAuthMiddlewareTest extends TestCase
             'provider' => 'facebook'
         ]);
         $this->Request->getSession()->write('oauth2state', '__TEST_STATE__');
-
-        $Token = new \League\OAuth2\Client\Token\AccessToken([
-            'access_token' => 'test-token',
-            'expires' => 1490988496
-        ]);
-
-        $user = new FacebookUser([
-            'id' => '1',
-            'name' => 'Test User',
-            'first_name' => 'Test',
-            'last_name' => 'User',
-            'email' => 'test@gmail.com',
-            'hometown' => [
-                'id' => '108226049197930',
-                'name' => 'Madrid'
-            ],
-            'picture' => [
-                'data' => [
-                    'url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
-                    'is_silhouette' => false
-                ]
-            ],
-            'cover' => [
-                'source' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
-                'id' => '1'
-            ],
-            'gender' => 'male',
-            'locale' => 'en_US',
-            'link' => 'https://www.facebook.com/app_scoped_user_id/1/',
-            'timezone' => -5,
-            'age_range' => [
-                'min' => 21
-            ],
-            'bio' => 'I am the best test user in the world.',
-            'picture_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
-            'is_silhouette' => false,
-            'cover_photo_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg'
-        ]);
-
         $Middleware = new SocialAuthMiddleware();
 
         $ResponseOriginal = new Response();

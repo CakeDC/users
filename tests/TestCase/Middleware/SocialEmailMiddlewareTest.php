@@ -2,9 +2,7 @@
 
 namespace CakeDC\Users\Test\TestCase\Middleware;
 
-use CakeDC\Users\Middleware\SocialAuthMiddleware;
 use CakeDC\Users\Middleware\SocialEmailMiddleware;
-use CakeDC\Users\Model\Entity\User;
 use CakeDC\Users\Social\Mapper\Facebook;
 use Cake\Core\Configure;
 use Cake\Http\Exception\NotFoundException;

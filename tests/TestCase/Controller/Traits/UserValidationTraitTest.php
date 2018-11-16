@@ -11,9 +11,7 @@
 
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
-use CakeDC\Users\Test\TestCase\Controller\Traits\BaseTraitTest;
 use Cake\Event\Event;
-use Cake\Network\Request;
 
 class UserValidationTraitTest extends BaseTraitTest
 {

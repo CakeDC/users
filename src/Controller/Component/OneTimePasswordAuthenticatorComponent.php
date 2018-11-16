@@ -11,7 +11,6 @@
 
 namespace CakeDC\Users\Controller\Component;
 
-use CakeDC\Users\Auth\TwoFactorAuthenticationCheckerInterface;
 use Cake\Controller\Component;
 use Cake\Core\Configure;
 use RobThree\Auth\TwoFactorAuth;

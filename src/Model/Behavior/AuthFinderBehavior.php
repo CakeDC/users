@@ -24,10 +24,9 @@ class AuthFinderBehavior extends Behavior
      * Custom finder to filter active users
      *
      * @param Query $query Query object to modify
-     * @param array $options Query options
      * @return Query
      */
-    public function findActive(Query $query, array $options = [])
+    public function findActive(Query $query)
     {
         $query->where([$this->_table->aliasField('active') => 1]);
 
