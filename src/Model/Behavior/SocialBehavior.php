@@ -16,12 +16,12 @@ use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Plugin;
 use CakeDC\Users\Traits\RandomStringTrait;
-use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\EventDispatcherTrait;
 use Cake\Utility\Hash;
 use DateTime;
 use InvalidArgumentException;
+use Cake\Core\Configure;
 
 /**
  * Covers social features
@@ -231,7 +231,7 @@ class SocialBehavior extends BaseTokenBehavior
         $socialAccount['provider'] = Hash::get($data, 'provider');
         $user['social_accounts'] = [$socialAccount];
         $user['role'] = Configure::read('Users.Registration.defaultRole') ?: 'user';
-        
+
         return $user;
     }
 
