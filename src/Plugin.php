@@ -36,6 +36,9 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
     const EVENT_AFTER_REGISTER = 'Users.Managment.afterRegister';
     const EVENT_AFTER_CHANGE_PASSWORD = 'Users.Managment.afterResetPassword';
     const EVENT_BEFORE_SOCIAL_LOGIN_USER_CREATE = 'Users.Managment.beforeSocialLoginUserCreate';
+    const EVENT_ON_EXPIRED_TOKEN = 'Users.Managment.onExpiredToken';
+    const EVENT_AFTER_RESEND_TOKEN_VALIDATION = 'Users.Managment.afterResendTokenValidation';
+
 
     /**
      * Returns an authentication service instance.
