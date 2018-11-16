@@ -116,8 +116,12 @@ class LoginComponent extends Component
             return $this->getController()->redirect($event->result);
         }
 
-        return $this->getController()->redirect(
-            $this->getController()->Authentication->getConfig('loginRedirect')
-        );
+        $query = $this->getController()->request->getQueryParams();
+        $redirectUrl = $this->getController()->Authentication->getConfig('loginRedirect');
+        if (isset($query['redirect'])) {
+            $redirectUrl = $query['redirect'];
+        }
+
+        return $this->getController()->redirect($redirectUrl);
     }
 }
