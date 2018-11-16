@@ -11,8 +11,8 @@
 
 namespace CakeDC\Users\Controller\Traits;
 
-use Cake\Core\Configure;
 use CakeDC\Users\Middleware\SocialAuthMiddleware;
+use Cake\Core\Configure;
 use Cake\Http\Exception\NotFoundException;
 
 /**

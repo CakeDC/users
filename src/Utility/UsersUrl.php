@@ -32,7 +32,7 @@ class UsersUrl
         list($plugin, $controller) = pluginSplit($controller);
         $plugin = $plugin ? $plugin : false;
 
-        return compact('prefix','plugin', 'controller', 'action') + $extra;
+        return compact('prefix', 'plugin', 'controller', 'action') + $extra;
     }
 
     /**

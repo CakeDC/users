@@ -8,20 +8,17 @@
 
 namespace CakeDC\Users\Test\TestCase\Middleware;
 
-use Cake\Http\ServerRequest;
-use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\SocialAuthenticationException;
-use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Middleware\SocialAuthMiddleware;
-use CakeDC\Users\Model\Entity\User;
-use Cake\Core\Configure;
-use Cake\Http\Response;
-use Cake\Http\ServerRequestFactory;
-use Cake\TestSuite\TestCase;
 use CakeDC\Users\Social\MapUser;
 use CakeDC\Users\Social\Service\OAuth2Service;
 use CakeDC\Users\Social\Service\ServiceFactory;
+use Cake\Core\Configure;
+use Cake\Http\Response;
+use Cake\Http\ServerRequest;
+use Cake\Http\ServerRequestFactory;
+use Cake\TestSuite\TestCase;
 use Doctrine\Instantiator\Exception\UnexpectedValueException;
 use League\OAuth2\Client\Provider\FacebookUser;
 use Zend\Diactoros\Uri;

@@ -11,7 +11,6 @@
 
 namespace CakeDC\Users\Authenticator;
 
-
 use Authentication\Authenticator\Result;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
@@ -35,14 +34,12 @@ trait SocialAuthTrait
             }
 
             return new Result(null, Result::FAILURE_IDENTITY_NOT_FOUND);
-
-        } catch(AccountNotActiveException $e) {
+        } catch (AccountNotActiveException $e) {
             return new Result(null, self::FAILURE_ACCOUNT_NOT_ACTIVE);
-        } catch(UserNotActiveException $e) {
+        } catch (UserNotActiveException $e) {
             return new Result(null, self::FAILURE_USER_NOT_ACTIVE);
         } catch (MissingEmailException $exception) {
             throw new SocialAuthenticationException(compact('rawData'), null, $exception);
         }
     }
-
 }

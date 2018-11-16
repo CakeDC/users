@@ -12,10 +12,6 @@ namespace CakeDC\Users\Test\TestCase\Authenticator;
 
 use Authentication\Authenticator\Result;
 use Authentication\Identifier\IdentifierCollection;
-use Cake\Core\Configure;
-use Cake\Http\Response;
-use Cake\Http\ServerRequestFactory;
-use Cake\TestSuite\TestCase;
 use CakeDC\Users\Authenticator\SocialAuthenticator;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
@@ -26,6 +22,10 @@ use CakeDC\Users\Social\Mapper\Facebook;
 use CakeDC\Users\Social\MapUser;
 use CakeDC\Users\Social\Service\OAuth2Service;
 use CakeDC\Users\Social\Service\ServiceFactory;
+use Cake\Core\Configure;
+use Cake\Http\Response;
+use Cake\Http\ServerRequestFactory;
+use Cake\TestSuite\TestCase;
 use League\OAuth2\Client\Provider\FacebookUser;
 use Zend\Diactoros\Uri;
 

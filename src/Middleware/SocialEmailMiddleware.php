@@ -2,10 +2,10 @@
 
 namespace CakeDC\Users\Middleware;
 
+use CakeDC\Users\Utility\UsersUrl;
 use Cake\Core\Configure;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\ServerRequest;
-use CakeDC\Users\Utility\UsersUrl;
 use Psr\Http\Message\ResponseInterface;
 
 class SocialEmailMiddleware extends SocialAuthMiddleware

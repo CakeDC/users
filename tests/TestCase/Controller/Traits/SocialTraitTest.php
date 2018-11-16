@@ -14,13 +14,13 @@ namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 use Authentication\Authenticator\Result;
 use Authentication\Authenticator\SessionAuthenticator;
 use Authentication\Identifier\IdentifierCollection;
-use Cake\Controller\ComponentRegistry;
-use Cake\Event\Event;
 use CakeDC\Users\Authentication\Failure;
 use CakeDC\Users\Authenticator\FormAuthenticator;
 use CakeDC\Users\Authenticator\SocialAuthenticator;
 use CakeDC\Users\Controller\Component\LoginComponent;
 use CakeDC\Users\Middleware\SocialAuthMiddleware;
+use Cake\Controller\ComponentRegistry;
+use Cake\Event\Event;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 

@@ -14,9 +14,9 @@ namespace CakeDC\Users\Authenticator;
 use Authentication\Authenticator\AbstractAuthenticator;
 use Authentication\Authenticator\Result;
 use Authentication\UrlChecker\UrlCheckerTrait;
+use CakeDC\Users\Controller\Traits\ReCaptchaTrait;
 use Cake\Core\Configure;
 use Cake\Utility\Hash;
-use CakeDC\Users\Controller\Traits\ReCaptchaTrait;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
