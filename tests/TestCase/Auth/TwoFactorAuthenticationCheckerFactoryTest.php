@@ -36,9 +36,9 @@ class TwoFactorAuthenticationCheckerFactoryTest extends TestCase
      */
     public function testGetCheckerInvalidInterface()
     {
-        Configure::write('GoogleAuthenticator.checker', 'stdClass');
+        Configure::write('OneTimePasswordAuthenticator.checker', 'stdClass');
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage("Invalid config for 'GoogleAuthenticator.checker', 'stdClass' does not implement 'CakeDC\Users\Auth\TwoFactorAuthenticationCheckerInterface'");
+        $this->expectExceptionMessage("Invalid config for 'OneTimePasswordAuthenticator.checker', 'stdClass' does not implement 'CakeDC\Users\Auth\TwoFactorAuthenticationCheckerInterface'");
         $result = (new TwoFactorAuthenticationCheckerFactory())->build();
     }
 }

@@ -27,13 +27,13 @@ class TwoFactorAuthenticationCheckerFactory
      */
     public function build()
     {
-        $className = Configure::read('GoogleAuthenticator.checker');
+        $className = Configure::read('OneTimePasswordAuthenticator.checker');
         $interfaces = class_implements($className);
         $required = TwoFactorAuthenticationCheckerInterface::class;
 
         if (in_array($required, $interfaces)) {
             return new $className();
         }
-        throw new \InvalidArgumentException("Invalid config for 'GoogleAuthenticator.checker', '$className' does not implement '$required'");
+        throw new \InvalidArgumentException("Invalid config for 'OneTimePasswordAuthenticator.checker', '$className' does not implement '$required'");
     }
 }
