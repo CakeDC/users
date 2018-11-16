@@ -18,7 +18,6 @@ use CakeDC\Users\Authentication\Failure;
 use CakeDC\Users\Authenticator\FormAuthenticator;
 use CakeDC\Users\Authenticator\SocialAuthenticator;
 use CakeDC\Users\Controller\Component\LoginComponent;
-use CakeDC\Users\Middleware\SocialAuthMiddleware;
 use Cake\Controller\ComponentRegistry;
 use Cake\Event\Event;
 use Cake\Http\Response;

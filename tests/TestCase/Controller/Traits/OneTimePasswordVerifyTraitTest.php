@@ -12,8 +12,6 @@
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
 use CakeDC\Users\Controller\Component\OneTimePasswordAuthenticatorComponent;
-
-use CakeDC\Users\Controller\Traits\OneTimePasswordVerifyTrait;
 use Cake\Core\Configure;
 use Cake\Http\ServerRequest;
 use Cake\ORM\TableRegistry;

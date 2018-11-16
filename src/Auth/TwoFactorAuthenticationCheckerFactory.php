@@ -11,7 +11,6 @@
 namespace CakeDC\Users\Auth;
 
 use Cake\Core\Configure;
-use Cake\Network\Exception\BadRequestException;
 
 /**
  * Factory for two authentication checker

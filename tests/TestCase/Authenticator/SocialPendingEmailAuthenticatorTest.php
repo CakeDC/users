@@ -12,11 +12,9 @@ namespace CakeDC\Users\Test\TestCase\Authenticator;
 
 use Authentication\Authenticator\Result;
 use Authentication\Identifier\IdentifierCollection;
-
 use CakeDC\Users\Authenticator\SocialPendingEmailAuthenticator;
 use CakeDC\Users\Model\Entity\User;
 use CakeDC\Users\Social\Mapper\Facebook;
-use CakeDC\Users\Social\MapUser;
 use Cake\Core\Configure;
 use Cake\Http\Client\Response;
 use Cake\Http\ServerRequestFactory;
