@@ -29,15 +29,15 @@ class DefaultTwoFactorAuthenticationCheckerTest extends TestCase
      */
     public function testIsEnabled()
     {
-        Configure::write('Users.GoogleAuthenticator.login', false);
+        Configure::write('Users.OneTimePasswordAuthenticator.login', false);
         $Checker = new DefaultTwoFactorAuthenticationChecker();
         $this->assertFalse($Checker->isEnabled());
 
-        Configure::write('Users.GoogleAuthenticator.login', true);
+        Configure::write('Users.OneTimePasswordAuthenticator.login', true);
         $Checker = new DefaultTwoFactorAuthenticationChecker();
         $this->assertTrue($Checker->isEnabled());
 
-        Configure::delete('Users.GoogleAuthenticator.login');
+        Configure::delete('Users.OneTimePasswordAuthenticator.login');
         $Checker = new DefaultTwoFactorAuthenticationChecker();
         $this->assertTrue($Checker->isEnabled());
     }
@@ -49,15 +49,15 @@ class DefaultTwoFactorAuthenticationCheckerTest extends TestCase
      */
     public function testIsRequired()
     {
-        Configure::write('Users.GoogleAuthenticator.login', false);
+        Configure::write('Users.OneTimePasswordAuthenticator.login', false);
         $Checker = new DefaultTwoFactorAuthenticationChecker();
         $this->assertFalse($Checker->isRequired(['id' => 10]));
 
-        Configure::write('Users.GoogleAuthenticator.login', true);
+        Configure::write('Users.OneTimePasswordAuthenticator.login', true);
         $Checker = new DefaultTwoFactorAuthenticationChecker();
         $this->assertTrue($Checker->isRequired(['id' => 10]));
 
-        Configure::delete('Users.GoogleAuthenticator.login');
+        Configure::delete('Users.OneTimePasswordAuthenticator.login');
         $Checker = new DefaultTwoFactorAuthenticationChecker();
         $this->assertTrue($Checker->isRequired(['id' => 10]));
 

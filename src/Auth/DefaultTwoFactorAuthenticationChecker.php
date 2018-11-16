@@ -27,7 +27,7 @@ class DefaultTwoFactorAuthenticationChecker implements TwoFactorAuthenticationCh
      */
     public function isEnabled()
     {
-        return Configure::read('Users.GoogleAuthenticator.login') !== false;
+        return Configure::read('Users.OneTimePasswordAuthenticator.login') !== false;
     }
 
     /**
