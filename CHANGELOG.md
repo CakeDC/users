@@ -4,6 +4,9 @@ Changelog
 Releases for CakePHP 3
 -------------
 
+* 8.0.2
+  * Add default role for users registered via social login
+
 * 8.0.1
   * Fixed 2fa link preserve querystring
 
