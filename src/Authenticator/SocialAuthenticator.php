@@ -5,17 +5,18 @@ namespace CakeDC\Users\Authenticator;
 use Authentication\Authenticator\AbstractAuthenticator;
 use Authentication\Authenticator\Result;
 use Authentication\UrlChecker\UrlCheckerTrait;
-use Cake\Datasource\Exception\RecordNotFoundException;
-use Cake\Http\Exception\BadRequestException;
-use Cake\Log\LogTrait;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\SocialAuthenticationException;
 use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Social\MapUser;
 use CakeDC\Users\Social\Service\ServiceInterface;
+use Cake\Datasource\Exception\RecordNotFoundException;
+use Cake\Http\Exception\BadRequestException;
+use Cake\Log\LogTrait;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+
 /**
  * Social authenticator
  *
@@ -54,8 +55,8 @@ class SocialAuthenticator extends AbstractAuthenticator
      * @return \Authentication\Authenticator\ResultInterface
      */
     /**
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
+     * @param ServerRequestInterface $request the cake request.
+     * @param ResponseInterface $response the cake response.
      * @return Result|\Authentication\Authenticator\ResultInterface
      * @throws \Exception
      */
@@ -90,7 +91,7 @@ class SocialAuthenticator extends AbstractAuthenticator
 
             return (new MapUser())($service, $rawData);
         } catch (\Exception $exception) {
-            $list = [BadRequestException::class,  \UnexpectedValueException::class];
+            $list = [BadRequestException::class, \UnexpectedValueException::class];
             $this->throwIfNotInlist($exception, $list);
             $message = sprintf(
                 "Error getting an access token / retrieving the authorized user's profile data. Error message: %s %s",
@@ -100,7 +101,6 @@ class SocialAuthenticator extends AbstractAuthenticator
             $this->log($message);
 
             return null;
-
         }
     }
 
@@ -108,7 +108,7 @@ class SocialAuthenticator extends AbstractAuthenticator
      * Throw the exception if not in the list
      *
      * @param \Exception $exception exception thrown
-     * @param array $allowed list of allowed exception classes
+     * @param array $list list of allowed exception classes
      * @throws \Exception
      * @return void
      */

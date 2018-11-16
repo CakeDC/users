@@ -2,9 +2,9 @@
 namespace CakeDC\Users\Controller\Component;
 
 use Authentication\Authenticator\ResultInterface;
-use Cake\Controller\Component;
 use CakeDC\Users\Authentication\AuthenticationService;
 use CakeDC\Users\Plugin;
+use Cake\Controller\Component;
 
 /**
  * LoginFailure component
@@ -26,7 +26,7 @@ class LoginComponent extends Component
     /**
      * Handle login, if success redirect to 'AuthenticationComponent.loginRedirect' or show error
      *
-     * @param bool $failureOnlyPost should handle failure only on post request
+     * @param bool $errorOnlyPost should handle failure only on post request
      * @param bool $redirectFailure should redirect on failure?
      * @return \Cake\Http\Response|null
      */
@@ -47,7 +47,7 @@ class LoginComponent extends Component
     /**
      * Handle login failure
      *
-     * @param boolean $redirect should redirect?
+     * @param bool $redirect should redirect?
      *
      * @return \Cake\Http\Response|null
      */

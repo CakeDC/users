@@ -39,7 +39,6 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
     const EVENT_ON_EXPIRED_TOKEN = 'Users.Managment.onExpiredToken';
     const EVENT_AFTER_RESEND_TOKEN_VALIDATION = 'Users.Managment.afterResendTokenValidation';
 
-
     /**
      * Returns an authentication service instance.
      *
