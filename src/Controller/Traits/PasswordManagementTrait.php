@@ -72,10 +72,9 @@ trait PasswordManagementTrait
                 if ($user->getErrors()) {
                     $this->Flash->error(__d('CakeDC/Users', 'Password could not be changed'));
                 } else {
-                    $user = $this->getUsersTable()->changePassword($user);
-
-                    if ($user) {
-                        $event = $this->dispatchEvent(Plugin::EVENT_AFTER_CHANGE_PASSWORD, ['user' => $user]);
+                    $result = $this->getUsersTable()->changePassword($user);
+                    if ($result) {
+                        $event = $this->dispatchEvent(Plugin::EVENT_AFTER_CHANGE_PASSWORD, ['user' => $result]);
                         if (!empty($event) && is_array($event->result)) {
                             return $this->redirect($event->result);
                         }
@@ -129,7 +128,8 @@ trait PasswordManagementTrait
                 'expiration' => Configure::read('Users.Token.expiration'),
                 'checkActive' => false,
                 'sendEmail' => true,
-                'ensureActive' => Configure::read('Users.Registration.ensureActive')
+                'ensureActive' => Configure::read('Users.Registration.ensureActive'),
+                'type' => 'password'
             ]);
             if ($resetUser) {
                 $msg = __d('CakeDC/Users', 'Please check your email to continue with password reset process');

@@ -55,7 +55,7 @@ class UserHelper extends Helper
         $providerClass = 'btn btn-social btn-' . strtolower($name) . ((Hash::get($options, 'class')) ? ' ' . Hash::get($options, 'class') : '');
 
         return $this->Html->link($icon . $providerTitle, "/auth/$name", [
-            'escape' => false, 'class' => $providerClass
+            'escape' => false, 'class' => $providerClass,
         ]);
     }
 
@@ -98,7 +98,7 @@ class UserHelper extends Helper
     public function logout($message = null, $options = [])
     {
         return $this->AuthLink->link(empty($message) ? __d('CakeDC/Users', 'Logout') : $message, [
-            'plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'logout'
+            'plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'logout',
         ], $options);
     }
 
@@ -144,7 +144,10 @@ class UserHelper extends Helper
 
         return $this->Html->tag('div', '', [
             'class' => 'g-recaptcha',
-            'data-sitekey' => Configure::read('Users.reCaptcha.key')
+            'data-sitekey' => Configure::read('Users.reCaptcha.key'),
+            'data-theme' => Configure::read('Users.reCaptcha.theme') ?: 'light',
+            'data-size' => Configure::read('Users.reCaptcha.size') ?: 'normal',
+            'data-tabindex' => Configure::read('Users.reCaptcha.tabindex') ?: '3',
         ]);
     }
 
@@ -210,7 +213,7 @@ class UserHelper extends Helper
             "/link-social/$name",
             [
                 'escape' => false,
-                'class' => $linkClass
+                'class' => $linkClass,
             ]
         );
     }
@@ -228,9 +231,12 @@ class UserHelper extends Helper
             return "";
         }
         $html = "";
-        $connectedProviders = array_map(function ($item) {
-            return strtolower($item->provider);
-        }, (array)$socialAccounts);
+        $connectedProviders = array_map(
+            function ($item) {
+                return strtolower($item->provider);
+            },
+            (array)$socialAccounts
+        );
 
         $providers = Configure::read('OAuth.providers');
         foreach ($providers as $name => $provider) {
