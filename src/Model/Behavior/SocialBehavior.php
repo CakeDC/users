@@ -16,12 +16,12 @@ use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Traits\RandomStringTrait;
+use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\EventDispatcherTrait;
 use Cake\Utility\Hash;
 use DateTime;
 use InvalidArgumentException;
-use Cake\Core\Configure;
 
 /**
  * Covers social features
