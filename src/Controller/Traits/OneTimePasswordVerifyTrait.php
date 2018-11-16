@@ -18,7 +18,12 @@ trait OneTimePasswordVerifyTrait
      */
     public function verify()
     {
-        $loginAction = Configure::read('Auth.AuthenticationComponent.loginAction');
+        $loginAction = array_merge(
+            Configure::read('Auth.AuthenticationComponent.loginAction'),
+            [
+                '?' => $this->request->getQueryParams()
+            ]
+        );
         if (!$this->isVerifyAllowed()) {
             return $this->redirect($loginAction);
         }
