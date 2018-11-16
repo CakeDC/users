@@ -1,17 +1,15 @@
 <?php
 /**
- * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * @copyright Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace CakeDC\Users\Auth\Social\Mapper;
-
-use Cake\Utility\Hash;
+namespace CakeDC\Users\Social\Mapper;
 
 /**
  * Tumblr Mapper
@@ -37,10 +35,14 @@ class Tumblr extends AbstractMapper
     ];
 
     /**
+     * Get id property value
+     *
+     * @param mixed $rawData raw data
+     *
      * @return string
      */
-    protected function _id()
+    protected function _id($rawData)
     {
-        return crc32($this->_rawData['nickname']);
+        return crc32($rawData['nickname']);
     }
 }
