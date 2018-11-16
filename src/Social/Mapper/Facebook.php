@@ -46,10 +46,14 @@ class Facebook extends AbstractMapper
     }
 
     /**
+     * Get link property value
+     *
+     * @param mixed $rawData raw data
+     *
      * @return string
      */
-    protected function _link()
+    protected function _link($rawData)
     {
-        return Hash::get($this->_rawData, 'link') ?: '#';
+        return Hash::get($rawData, 'link') ?: '#';
     }
 }
