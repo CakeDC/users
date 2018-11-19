@@ -48,6 +48,11 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
      */
     public function getAuthenticationService(ServerRequestInterface $request, ResponseInterface $response)
     {
+        $serviceLoader = Configure::read('Auth.Authentication.service');
+        if ($serviceLoader !== null) {
+            return $serviceLoader($request, $response);
+        }
+
         return $this->authentication();
     }
 
@@ -56,6 +61,11 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
      */
     public function getAuthorizationService(ServerRequestInterface $request, ResponseInterface $response)
     {
+        $serviceLoader = Configure::read('Auth.Authorization.service');
+        if ($serviceLoader !== null) {
+            return $serviceLoader($request, $response);
+        }
+
         $map = new MapResolver();
         $map->map(ServerRequest::class, RbacPolicy::class);
 
