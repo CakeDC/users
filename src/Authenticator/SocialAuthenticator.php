@@ -5,9 +5,9 @@ namespace CakeDC\Users\Authenticator;
 use Authentication\Authenticator\AbstractAuthenticator;
 use Authentication\Authenticator\Result;
 use Authentication\UrlChecker\UrlCheckerTrait;
+use CakeDC\Auth\Social\MapUser;
+use CakeDC\Auth\Social\Service\ServiceInterface;
 use CakeDC\Users\Exception\SocialAuthenticationException;
-use CakeDC\Users\Social\MapUser;
-use CakeDC\Users\Social\Service\ServiceInterface;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Log\LogTrait;
 use Psr\Http\Message\ResponseInterface;
@@ -16,7 +16,7 @@ use Psr\Http\Message\ServerRequestInterface;
 /**
  * Social authenticator
  *
- * Authenticates an identity based on request attribute socialService (CakeDC\Users\Social\Service\ServiceInterface)
+ * Authenticates an identity based on request attribute socialService (CakeDC\Auth\Social\Service\ServiceInterface)
  */
 class SocialAuthenticator extends AbstractAuthenticator
 {

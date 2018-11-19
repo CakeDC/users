@@ -12,10 +12,8 @@ use Authorization\AuthorizationService;
 use Authorization\Middleware\AuthorizationMiddleware;
 use Authorization\Middleware\RequestAuthorizationMiddleware;
 use Authorization\Policy\ResolverCollection;
-use Cake\Http\ServerRequestFactory;
 use CakeDC\Auth\Middleware\RbacMiddleware;
 use CakeDC\Users\Authentication\AuthenticationService as CakeDCAuthenticationService;
-use CakeDC\Users\Authentication\AuthenticationService;
 use CakeDC\Users\Authenticator\FormAuthenticator;
 use CakeDC\Users\Authenticator\GoogleTwoFactorAuthenticator;
 use CakeDC\Users\Middleware\OneTimePasswordAuthenticatorMiddleware;
@@ -26,6 +24,7 @@ use Cake\Core\Configure;
 use Cake\Http\MiddlewareQueue;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
+use Cake\Http\ServerRequestFactory;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
@@ -219,12 +218,12 @@ class PluginTest extends IntegrationTestCase
         $request = ServerRequestFactory::fromGlobals();
         $request->withQueryParams(['method' => __METHOD__]);
         $response = new Response(['body' => __METHOD__]);
-        $service = new AuthenticationService([
+        $service = new CakeDCAuthenticationService([
             'identifiers' => [
                 'Authentication.Password'
             ]
         ]);
-        Configure::write('Auth.Authentication.service', function($aRequest, $aResponse) use ($request, $response, $service) {
+        Configure::write('Auth.Authentication.service', function ($aRequest, $aResponse) use ($request, $response, $service) {
             $this->assertSame($request, $aRequest);
             $this->assertSame($response, $aResponse);
 
@@ -436,7 +435,7 @@ class PluginTest extends IntegrationTestCase
         $request->withQueryParams(['method' => __METHOD__]);
         $response = new Response(['body' => __METHOD__]);
         $service = new AuthorizationService(new ResolverCollection());
-        Configure::write('Auth.Authorization.service', function($aRequest, $aResponse) use ($request, $response, $service) {
+        Configure::write('Auth.Authorization.service', function ($aRequest, $aResponse) use ($request, $response, $service) {
             $this->assertSame($request, $aRequest);
             $this->assertSame($response, $aResponse);
 

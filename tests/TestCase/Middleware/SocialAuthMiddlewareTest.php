@@ -8,12 +8,12 @@
 
 namespace CakeDC\Users\Test\TestCase\Middleware;
 
+use CakeDC\Auth\Social\MapUser;
+use CakeDC\Auth\Social\Service\OAuth2Service;
+use CakeDC\Auth\Social\Service\ServiceFactory;
 use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\SocialAuthenticationException;
 use CakeDC\Users\Middleware\SocialAuthMiddleware;
-use CakeDC\Users\Social\MapUser;
-use CakeDC\Users\Social\Service\OAuth2Service;
-use CakeDC\Users\Social\Service\ServiceFactory;
 use Cake\Core\Configure;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
@@ -67,9 +67,9 @@ class SocialAuthMiddlewareTest extends TestCase
         ])->getMock();
 
         $config = [
-            'service' => 'CakeDC\Users\Social\Service\OAuth2Service',
+            'service' => 'CakeDC\Auth\Social\Service\OAuth2Service',
             'className' => $this->Provider,
-            'mapper' => 'CakeDC\Users\Social\Mapper\Facebook',
+            'mapper' => 'CakeDC\Auth\Social\Mapper\Facebook',
             'options' => [
                 'state' => '__TEST_STATE__',
                 'graphApiVersion' => 'v2.8',

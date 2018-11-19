@@ -2,10 +2,10 @@
 
 namespace CakeDC\Users\Middleware;
 
+use CakeDC\Auth\Social\Service\ServiceFactory;
 use CakeDC\Users\Authenticator\SocialAuthenticator;
 use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\SocialAuthenticationException;
-use CakeDC\Users\Social\Service\ServiceFactory;
 use CakeDC\Users\Utility\UsersUrl;
 use Cake\Core\Configure;
 use Cake\Http\ServerRequest;
