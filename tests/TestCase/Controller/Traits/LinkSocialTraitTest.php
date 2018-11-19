@@ -76,9 +76,9 @@ class LinkSocialTraitTest extends BaseTraitTest
         ])->getMock();
 
         $config = [
-            'service' => 'CakeDC\Users\Social\Service\OAuth2Service',
+            'service' => 'CakeDC\Auth\Social\Service\OAuth2Service',
             'className' => $this->Provider,
-            'mapper' => 'CakeDC\Users\Social\Mapper\Facebook',
+            'mapper' => 'CakeDC\Auth\Social\Mapper\Facebook',
             'options' => [
                 'state' => '__TEST_STATE__',
                 'graphApiVersion' => 'v2.8',

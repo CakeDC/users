@@ -2,8 +2,8 @@
 
 namespace CakeDC\Users\Test\TestCase\Middleware;
 
+use CakeDC\Auth\Social\Mapper\Facebook;
 use CakeDC\Users\Middleware\SocialEmailMiddleware;
-use CakeDC\Users\Social\Mapper\Facebook;
 use Cake\Core\Configure;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
@@ -36,8 +36,8 @@ class SocialEmailMiddlewareTest extends TestCase
         parent::setUp();
 
         $config = [
-            'service' => 'CakeDC\Users\Social\Service\OAuth2Service',
-            'mapper' => 'CakeDC\Users\Social\Mapper\Facebook',
+            'service' => 'CakeDC\Auth\Social\Service\OAuth2Service',
+            'mapper' => 'CakeDC\Auth\Social\Mapper\Facebook',
             'options' => [
                 'state' => '__TEST_STATE__',
                 'graphApiVersion' => 'v2.8',

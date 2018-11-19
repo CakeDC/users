@@ -11,8 +11,8 @@
 
 namespace CakeDC\Users\Controller\Traits;
 
-use CakeDC\Users\Social\MapUser;
-use CakeDC\Users\Social\Service\ServiceFactory;
+use CakeDC\Auth\Social\MapUser;
+use CakeDC\Auth\Social\Service\ServiceFactory;
 use Cake\Utility\Hash;
 
 /**
