@@ -108,7 +108,7 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
             $service->loadAuthenticator($authenticator, $options);
         }
 
-        if (Configure::read('Users.OneTimePasswordAuthenticator.login')) {
+        if (Configure::read('OneTimePasswordAuthenticator.login')) {
             $service->loadAuthenticator('CakeDC/Auth.TwoFactor', [
                 'skipGoogleVerify' => true,
             ]);
@@ -131,7 +131,7 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
         $authentication = new AuthenticationMiddleware($this);
         $middlewareQueue->add($authentication);
 
-        if (Configure::read('Users.OneTimePasswordAuthenticator.login')) {
+        if (Configure::read('OneTimePasswordAuthenticator.login')) {
             $middlewareQueue->add(OneTimePasswordAuthenticatorMiddleware::class);
         }
 

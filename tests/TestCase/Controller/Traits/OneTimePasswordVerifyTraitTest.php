@@ -11,7 +11,7 @@
 
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
-use CakeDC\Users\Controller\Component\OneTimePasswordAuthenticatorComponent;
+use CakeDC\Auth\Controller\Component\OneTimePasswordAuthenticatorComponent;
 use Cake\Core\Configure;
 use Cake\Http\ServerRequest;
 use Cake\ORM\TableRegistry;
@@ -61,7 +61,7 @@ class OneTimePasswordVerifyTraitTest extends BaseTraitTest
      */
     public function testVerifyHappy()
     {
-        Configure::write('Users.OneTimePasswordAuthenticator.login', true);
+        Configure::write('OneTimePasswordAuthenticator.login', true);
         $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->setMethods(['is', 'getData', 'allow', 'getSession'])
             ->getMock();
@@ -89,7 +89,7 @@ class OneTimePasswordVerifyTraitTest extends BaseTraitTest
     public function testVerifyNotEnabled()
     {
         $this->_mockFlash();
-        Configure::write('Users.OneTimePasswordAuthenticator.login', false);
+        Configure::write('OneTimePasswordAuthenticator.login', false);
         $this->Trait->request = $this->Trait->request->withQueryParams(['redirect' => 'dashboard/list']);
         $this->Trait->Flash->expects($this->once())
             ->method('error')
@@ -107,7 +107,7 @@ class OneTimePasswordVerifyTraitTest extends BaseTraitTest
      */
     public function testVerifyGetShowQR()
     {
-        Configure::write('Users.OneTimePasswordAuthenticator.login', true);
+        Configure::write('OneTimePasswordAuthenticator.login', true);
         $this->Trait->OneTimePasswordAuthenticator = $this->getMockBuilder(OneTimePasswordAuthenticatorComponent::class)
             ->disableOriginalConstructor()
             ->setMethods(['createSecret', 'getQRCodeImageAsDataUri'])
@@ -153,7 +153,7 @@ class OneTimePasswordVerifyTraitTest extends BaseTraitTest
      */
     public function testVerifyGetGeneratesNewSecret()
     {
-        Configure::write('Users.OneTimePasswordAuthenticator.login', true);
+        Configure::write('OneTimePasswordAuthenticator.login', true);
 
         $this->Trait->OneTimePasswordAuthenticator = $this
             ->getMockBuilder(OneTimePasswordAuthenticatorComponent::class)
@@ -212,7 +212,7 @@ class OneTimePasswordVerifyTraitTest extends BaseTraitTest
      */
     public function testVerifyGetDoesNotGenerateNewSecret()
     {
-        Configure::write('Users.OneTimePasswordAuthenticator.login', true);
+        Configure::write('OneTimePasswordAuthenticator.login', true);
 
         $this->Trait->OneTimePasswordAuthenticator = $this
             ->getMockBuilder(OneTimePasswordAuthenticatorComponent::class)

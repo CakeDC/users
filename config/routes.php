@@ -22,7 +22,7 @@ Router::connect('/accounts/validate/*', [
     'action' => 'validate'
 ]);
 // Google Authenticator related routes
-if (Configure::read('Users.OneTimePasswordAuthenticator.login')) {
+if (Configure::read('OneTimePasswordAuthenticator.login')) {
     Router::connect('/verify', ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'verify']);
 
     Router::connect('/resetOneTimePasswordAuthenticator', [

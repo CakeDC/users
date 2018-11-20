@@ -16,7 +16,7 @@ Enable one-time password authenticator in your bootstrap.php file:
 
 Config/bootstrap.php
 ```
-Configure::write('Users.OneTimePasswordAuthenticator.login', true);
+Configure::write('OneTimePasswordAuthenticator.login', true);
 ```
 
 How does it work

@@ -57,7 +57,7 @@ trait OneTimePasswordVerifyTrait
      */
     protected function isVerifyAllowed()
     {
-        if (!Configure::read('Users.OneTimePasswordAuthenticator.login')) {
+        if (!Configure::read('OneTimePasswordAuthenticator.login')) {
             $message = __d('CakeDC/Users', 'Please enable Google Authenticator first.');
             $this->Flash->error($message, 'default', [], 'auth');
 

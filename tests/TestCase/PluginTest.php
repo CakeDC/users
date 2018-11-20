@@ -41,7 +41,7 @@ class PluginTest extends IntegrationTestCase
     public function testMiddleware()
     {
         Configure::write('Users.Social.login', true);
-        Configure::write('Users.OneTimePasswordAuthenticator.login', true);
+        Configure::write('OneTimePasswordAuthenticator.login', true);
         Configure::write('Auth.Authorization.enable', true);
         Configure::write('Auth.Authorization.loadAuthorizationMiddleware', true);
         Configure::write('Auth.Authorization.loadRbacMiddleware', false);
@@ -68,7 +68,7 @@ class PluginTest extends IntegrationTestCase
     public function testMiddlewareAuthorizationMiddlewareAndRbacMiddleware()
     {
         Configure::write('Users.Social.login', true);
-        Configure::write('Users.OneTimePasswordAuthenticator.login', true);
+        Configure::write('OneTimePasswordAuthenticator.login', true);
         Configure::write('Auth.Authorization.enable', true);
         Configure::write('Auth.Authorization.loadAuthorizationMiddleware', true);
         Configure::write('Auth.Authorization.loadRbacMiddleware', true);
@@ -96,7 +96,7 @@ class PluginTest extends IntegrationTestCase
     public function testMiddlewareAuthorizationOnlyRbacMiddleware()
     {
         Configure::write('Users.Social.login', true);
-        Configure::write('Users.OneTimePasswordAuthenticator.login', true);
+        Configure::write('OneTimePasswordAuthenticator.login', true);
         Configure::write('Auth.Authorization.enable', true);
         Configure::write('Auth.Authorization.loadAuthorizationMiddleware', false);
         Configure::write('Auth.Authorization.loadRbacMiddleware', true);
@@ -122,7 +122,7 @@ class PluginTest extends IntegrationTestCase
     public function testMiddlewareWithoutAuhorization()
     {
         Configure::write('Users.Social.login', true);
-        Configure::write('Users.OneTimePasswordAuthenticator.login', true);
+        Configure::write('OneTimePasswordAuthenticator.login', true);
         Configure::write('Auth.Authorization.enable', false);
         Configure::write('Auth.Authorization.loadAuthorizationMiddleware', true);//ignore
         Configure::write('Auth.Authorization.loadRbacMiddleware', true);//ignore
@@ -147,7 +147,7 @@ class PluginTest extends IntegrationTestCase
     public function testMiddlewareNotSocial()
     {
         Configure::write('Users.Social.login', false);
-        Configure::write('Users.OneTimePasswordAuthenticator.login', true);
+        Configure::write('OneTimePasswordAuthenticator.login', true);
         Configure::write('Auth.Authorization.enable', true);
         Configure::write('Auth.Authorization.loadAuthorizationMiddleware', true);
         Configure::write('Auth.Authorization.loadRbacMiddleware', false);
@@ -170,7 +170,7 @@ class PluginTest extends IntegrationTestCase
     public function testMiddlewareNotOneTimePasswordAuthenticator()
     {
         Configure::write('Users.Social.login', true);
-        Configure::write('Users.OneTimePasswordAuthenticator.login', false);
+        Configure::write('OneTimePasswordAuthenticator.login', false);
         Configure::write('Auth.Authorization.enable', true);
         Configure::write('Auth.Authorization.loadAuthorizationMiddleware', true);
         Configure::write('Auth.Authorization.loadRbacMiddleware', false);
@@ -194,7 +194,7 @@ class PluginTest extends IntegrationTestCase
     public function testMiddlewareNotGoogleAuthenticationAndNotSocial()
     {
         Configure::write('Users.Social.login', false);
-        Configure::write('Users.OneTimePasswordAuthenticator.login', false);
+        Configure::write('OneTimePasswordAuthenticator.login', false);
         Configure::write('Auth.Authorization.enable', true);
         Configure::write('Auth.Authorization.loadAuthorizationMiddleware', true);
         Configure::write('Auth.Authorization.loadRbacMiddleware', false);
@@ -271,7 +271,7 @@ class PluginTest extends IntegrationTestCase
             ],
             'Authentication.JwtSubject'
         ]);
-        Configure::write('Users.OneTimePasswordAuthenticator.login', true);
+        Configure::write('OneTimePasswordAuthenticator.login', true);
 
         $plugin = new Plugin();
         $service = $plugin->getAuthenticationService(new ServerRequest(), new Response());
@@ -375,7 +375,7 @@ class PluginTest extends IntegrationTestCase
             ],
             'Authentication.JwtSubject'
         ]);
-        Configure::write('Users.OneTimePasswordAuthenticator.login', false);
+        Configure::write('OneTimePasswordAuthenticator.login', false);
 
         $plugin = new Plugin();
         $service = $plugin->getAuthenticationService(new ServerRequest(), new Response());

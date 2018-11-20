@@ -52,7 +52,7 @@ class UsersController extends AppController
     }
 
     /**
-     * Load all auth components needed: Authentication.Authentication, Authorization.Authorization and CakeDC/Users.OneTimePasswordAuthenticator
+     * Load all auth components needed: Authentication.Authentication, Authorization.Authorization and CakeDC/OneTimePasswordAuthenticator
      *
      * @return void
      */
@@ -69,8 +69,8 @@ class UsersController extends AppController
             $this->loadComponent('Authorization.Authorization', $config);
         }
 
-        if (Configure::read('Users.OneTimePasswordAuthenticator.login') !== false) {
-            $this->loadComponent('CakeDC/Users.OneTimePasswordAuthenticator');
+        if (Configure::read('OneTimePasswordAuthenticator.login') !== false) {
+            $this->loadComponent('CakeDC/Auth.OneTimePasswordAuthenticator');
         }
     }
 }

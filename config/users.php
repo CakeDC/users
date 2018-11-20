@@ -58,21 +58,6 @@ $config = [
             // enable social login
             'login' => false,
         ],
-        'OneTimePasswordAuthenticator' => [
-            // enable Google Authenticator
-            'login' => false,
-            'issuer' => null,
-            // The number of digits the resulting codes will be
-            'digits' => 6,
-            // The number of seconds a code will be valid
-            'period' => 30,
-            // The algorithm used
-            'algorithm' => 'sha1',
-            // QR-code provider (more on this later)
-            'qrcodeprovider' => null,
-            // Random Number Generator provider (more on this later)
-            'rngprovider' => null
-        ],
         'Profile' => [
             // Allow view other users profiles
             'viewOthers' => true,
@@ -121,6 +106,18 @@ $config = [
             'action' => 'verify',
             'prefix' => false,
         ],
+        'login' => false,
+        'issuer' => null,
+        // The number of digits the resulting codes will be
+        'digits' => 6,
+        // The number of seconds a code will be valid
+        'period' => 30,
+        // The algorithm used
+        'algorithm' => 'sha1',
+        // QR-code provider (more on this later)
+        'qrcodeprovider' => null,
+        // Random Number Generator provider (more on this later)
+        'rngprovider' => null
     ],
     'Auth' => [
         'AuthenticationComponent' => [
