@@ -2,7 +2,7 @@
 namespace CakeDC\Users\Controller\Component;
 
 use Authentication\Authenticator\ResultInterface;
-use CakeDC\Users\Authentication\AuthenticationService;
+use CakeDC\Auth\Authentication\AuthenticationService;
 use CakeDC\Users\Plugin;
 use Cake\Controller\Component;
 

@@ -11,10 +11,10 @@ use Authorization\Middleware\RequestAuthorizationMiddleware;
 use Authorization\Policy\MapResolver;
 use Authorization\Policy\OrmResolver;
 use Authorization\Policy\ResolverCollection;
+use CakeDC\Auth\Authentication\AuthenticationService;
+use CakeDC\Auth\Middleware\OneTimePasswordAuthenticatorMiddleware;
 use CakeDC\Auth\Middleware\RbacMiddleware;
 use CakeDC\Auth\Policy\RbacPolicy;
-use CakeDC\Users\Authentication\AuthenticationService;
-use CakeDC\Users\Middleware\OneTimePasswordAuthenticatorMiddleware;
 use CakeDC\Users\Middleware\SocialAuthMiddleware;
 use CakeDC\Users\Middleware\SocialEmailMiddleware;
 use Cake\Core\BasePlugin;
@@ -109,7 +109,7 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
         }
 
         if (Configure::read('Users.OneTimePasswordAuthenticator.login')) {
-            $service->loadAuthenticator('CakeDC/Users.GoogleTwoFactor', [
+            $service->loadAuthenticator('CakeDC/Auth.TwoFactor', [
                 'skipGoogleVerify' => true,
             ]);
         }
