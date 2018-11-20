@@ -29,7 +29,8 @@
     "require": {
         "cakephp/cakephp": "^3.6",
         "cakedc/auth": "^3.0",
-        "cakephp/authentication": "^1.0@RC"
+        "cakephp/authentication": "^1.0",
+        "cakephp/authorization": "^1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^5.0",
