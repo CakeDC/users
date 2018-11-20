@@ -12,11 +12,11 @@ use Authorization\AuthorizationService;
 use Authorization\Middleware\AuthorizationMiddleware;
 use Authorization\Middleware\RequestAuthorizationMiddleware;
 use Authorization\Policy\ResolverCollection;
+use CakeDC\Auth\Authentication\AuthenticationService as CakeDCAuthenticationService;
+use CakeDC\Auth\Authenticator\FormAuthenticator;
+use CakeDC\Auth\Authenticator\TwoFactorAuthenticator;
+use CakeDC\Auth\Middleware\OneTimePasswordAuthenticatorMiddleware;
 use CakeDC\Auth\Middleware\RbacMiddleware;
-use CakeDC\Users\Authentication\AuthenticationService as CakeDCAuthenticationService;
-use CakeDC\Users\Authenticator\FormAuthenticator;
-use CakeDC\Users\Authenticator\GoogleTwoFactorAuthenticator;
-use CakeDC\Users\Middleware\OneTimePasswordAuthenticatorMiddleware;
 use CakeDC\Users\Middleware\SocialAuthMiddleware;
 use CakeDC\Users\Middleware\SocialEmailMiddleware;
 use CakeDC\Users\Plugin;
@@ -248,7 +248,7 @@ class PluginTest extends IntegrationTestCase
                 'fields' => ['username' => 'email'],
                 'identify' => true,
             ],
-            'CakeDC/Users.Form' => [
+            'CakeDC/Auth.Form' => [
                 'loginUrl' => '/login',
                 'fields' => ['username' => 'email', 'password' => 'alt_password'],
             ],
@@ -291,7 +291,7 @@ class PluginTest extends IntegrationTestCase
             ],
             FormAuthenticator::class => [
                 'loginUrl' => '/login',
-                'urlChecker' => 'Authentication.Default',
+                'keyCheckEnabledRecaptcha' => 'Users.reCaptcha.login',
                 'fields' => ['username' => 'email', 'password' => 'alt_password']
             ],
             TokenAuthenticator::class => [
@@ -300,7 +300,7 @@ class PluginTest extends IntegrationTestCase
                 'tokenPrefix' => null,
                 'skipGoogleVerify' => true
             ],
-            GoogleTwoFactorAuthenticator::class => [
+            TwoFactorAuthenticator::class => [
                 'loginUrl' => null,
                 'urlChecker' => 'Authentication.Default',
                 'skipGoogleVerify' => true
@@ -357,7 +357,7 @@ class PluginTest extends IntegrationTestCase
                 'fields' => ['username' => 'email'],
                 'identify' => true,
             ],
-            'CakeDC/Users.Form' => [
+            'CakeDC/Auth.Form' => [
                 'loginUrl' => '/login',
                 'fields' => ['username' => 'email', 'password' => 'alt_password'],
             ],
@@ -395,8 +395,8 @@ class PluginTest extends IntegrationTestCase
             ],
             FormAuthenticator::class => [
                 'loginUrl' => '/login',
-                'urlChecker' => 'Authentication.Default',
-                'fields' => ['username' => 'email', 'password' => 'alt_password']
+                'fields' => ['username' => 'email', 'password' => 'alt_password'],
+                'keyCheckEnabledRecaptcha' => 'Users.reCaptcha.login'
             ],
             TokenAuthenticator::class => [
                 'header' => null,

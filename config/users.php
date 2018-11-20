@@ -145,7 +145,7 @@ $config = [
                 'skipGoogleVerify' => true,
                 'sessionKey' => 'Auth',
             ],
-            'CakeDC/Users.Form' => [
+            'CakeDC/Auth.Form' => [
                 'urlChecker' => 'Authentication.CakeRouter',
                 'loginUrl' => [
                     'plugin' => 'CakeDC/Users',
@@ -160,7 +160,7 @@ $config = [
                 'queryParam' => 'api_key',
                 'tokenPrefix' => null,
             ],
-            'CakeDC/Users.Cookie' => [
+            'CakeDC/Auth.Cookie' => [
                 'skipGoogleVerify' => true,
                 'rememberMeField' => 'remember_me',
                 'cookie' => [
@@ -242,7 +242,7 @@ $config = [
             'messages' => [
                 'FAILURE_INVALID_RECAPTCHA' => __d('CakeDC/Users', 'Invalid reCaptcha'),
             ],
-            'targetAuthenticator' => 'CakeDC\Users\Authenticator\FormAuthenticator'
+            'targetAuthenticator' => 'CakeDC\Auth\Authenticator\FormAuthenticator'
         ]
     ],
     'SocialAuthMiddleware' => [

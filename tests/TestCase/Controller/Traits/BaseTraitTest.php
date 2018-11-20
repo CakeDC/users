@@ -14,7 +14,7 @@ namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 use Authentication\Authenticator\Result;
 use Authentication\Controller\Component\AuthenticationComponent;
 use Authentication\Identity;
-use CakeDC\Users\Authentication\AuthenticationService;
+use CakeDC\Auth\Authentication\AuthenticationService;
 use CakeDC\Users\Model\Entity\User;
 use Cake\Controller\ComponentRegistry;
 use Cake\Controller\Controller;

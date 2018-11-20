@@ -2,7 +2,7 @@
 
 namespace CakeDC\Users\Controller\Traits;
 
-use CakeDC\Users\Authentication\AuthenticationService;
+use CakeDC\Auth\Authentication\AuthenticationService;
 use Cake\Core\Configure;
 
 trait OneTimePasswordVerifyTrait

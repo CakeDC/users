@@ -11,7 +11,7 @@
 
 namespace CakeDC\Users\Controller\Traits;
 
-use CakeDC\Users\Authentication\AuthenticationService;
+use CakeDC\Auth\Authentication\AuthenticationService;
 use CakeDC\Users\Plugin;
 use Cake\Core\Configure;
 use Cake\Http\Exception\NotFoundException;
