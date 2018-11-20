@@ -62,7 +62,9 @@ trait LinkSocialTrait
             }
             $data = $server->getUser($this->request);
             $data = (new MapUser())($server, $data);
-            $userId = Hash::get($this->request->getAttribute('identity') ?? [], 'id');
+            $identity = $this->request->getAttribute('identity');
+            $identity = isset($identity) ? $identity : [];
+            $userId = Hash::get($identity, 'id');
             $user = $this->getUsersTable()->get($userId);
 
             $this->getUsersTable()->linkSocialAccount($user, $data);

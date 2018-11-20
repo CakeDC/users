@@ -117,7 +117,6 @@ class UsersFixture extends TestFixture
             'is_superuser' => true,
             'tos_date' => '2015-06-24 17:33:54',
             'active' => false,
-            'is_superuser' => true,
             'role' => 'admin',
             'created' => '2015-06-24 17:33:54',
             'modified' => '2015-06-24 17:33:54'
@@ -138,7 +137,6 @@ class UsersFixture extends TestFixture
             'is_superuser' => false,
             'tos_date' => '2015-06-24 17:33:54',
             'active' => true,
-            'is_superuser' => false,
             'role' => 'Lorem ipsum dolor sit amet',
             'created' => '2015-06-24 17:33:54',
             'modified' => '2015-06-24 17:33:54'
