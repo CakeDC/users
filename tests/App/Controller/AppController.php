@@ -27,7 +27,6 @@ class AppController extends Controller
     {
         parent::initialize();
         $this->loadComponent('Flash');
-        // $this->loadComponent('CakeDC/Users.UsersAuth');
         $this->loadComponent('RequestHandler');
     }
 }

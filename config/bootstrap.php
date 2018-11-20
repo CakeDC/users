@@ -10,10 +10,6 @@
  */
 
 use Cake\Core\Configure;
-use Cake\Core\Exception\MissingPluginException;
-use Cake\Core\Plugin;
-use Cake\Event\EventManager;
-use Cake\Log\Log;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 
@@ -25,18 +21,9 @@ collection((array)Configure::read('Users.config'))->each(function ($file) {
 TableRegistry::getTableLocator()->setConfig('Users', ['className' => Configure::read('Users.table')]);
 TableRegistry::getTableLocator()->setConfig('CakeDC/Users.Users', ['className' => Configure::read('Users.table')]);
 
-if (Configure::check('Users.auth')) {
-    Configure::write('Auth.authenticate.all.userModel', Configure::read('Users.table'));
+if (Configure::check('Auth.authenticate') || Configure::check('Auth.authorize')) {
+    trigger_error("Users plugin configurations keys Auth.authenticate and Auth.authorize was removed, please check what have changed at migration guide https://github.com/CakeDC/users/blob/master/Docs/Documentation/MigrationGuide.md'");
 }
-
-if (Configure::read('Users.Social.login') && php_sapi_name() != 'cli') {
-    try {
-        EventManager::instance()->on(\CakeDC\Users\Controller\Component\UsersAuthComponent::EVENT_FAILED_SOCIAL_LOGIN, [new \CakeDC\Users\Controller\UsersController(), 'failedSocialLoginListener']);
-    } catch (MissingPluginException $e) {
-        Log::error($e->getMessage());
-    }
-}
-
 $oauthPath = Configure::read('OAuth.path');
 if (is_array($oauthPath)) {
     Router::scope('/auth', function ($routes) use ($oauthPath) {

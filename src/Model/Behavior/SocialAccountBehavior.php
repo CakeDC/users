@@ -24,7 +24,6 @@ use Cake\ORM\Entity;
 
 /**
  * Covers social account features
- *
  */
 class SocialAccountBehavior extends Behavior
 {

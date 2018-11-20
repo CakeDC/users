@@ -9,7 +9,7 @@
  * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
-use Cake\Core\Configure;
+
 use Cake\Routing\Router;
 
 $config = [
@@ -18,8 +18,6 @@ $config = [
         'table' => 'CakeDC/Users.Users',
         // Controller used to manage users plugin features & actions
         'controller' => 'CakeDC/Users.Users',
-        // configure Auth component
-        'auth' => true,
         // Password Hasher
         'passwordHasher' => '\Cake\Auth\DefaultPasswordHasher',
         // token expiration, 1 hour
@@ -59,23 +57,6 @@ $config = [
         'Social' => [
             // enable social login
             'login' => false,
-            // enable social login
-            'authenticator' => 'CakeDC/Users.Social',
-        ],
-        'GoogleAuthenticator' => [
-            // enable Google Authenticator
-            'login' => false,
-            'issuer' => null,
-            // The number of digits the resulting codes will be
-            'digits' => 6,
-            // The number of seconds a code will be valid
-            'period' => 30,
-            // The algorithm used
-            'algorithm' => 'sha1',
-            // QR-code provider (more on this later)
-            'qrcodeprovider' => null,
-            // Random Number Generator provider (more on this later)
-            'rngprovider' => null
         ],
         'Profile' => [
             // Allow view other users profiles
@@ -117,41 +98,164 @@ $config = [
             ]
         ],
     ],
-    'GoogleAuthenticator' => [
-        'checker' => \CakeDC\Users\Auth\DefaultTwoFactorAuthenticationChecker::class,
+    'OneTimePasswordAuthenticator' => [
+        'checker' => \CakeDC\Auth\Authentication\DefaultTwoFactorAuthenticationChecker::class,
         'verifyAction' => [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'verify',
             'prefix' => false,
         ],
+        'login' => false,
+        'issuer' => null,
+        // The number of digits the resulting codes will be
+        'digits' => 6,
+        // The number of seconds a code will be valid
+        'period' => 30,
+        // The algorithm used
+        'algorithm' => 'sha1',
+        // QR-code provider (more on this later)
+        'qrcodeprovider' => null,
+        // Random Number Generator provider (more on this later)
+        'rngprovider' => null
     ],
-    // default configuration used to auto-load the Auth Component, override to change the way Auth works
     'Auth' => [
-        'loginAction' => [
-            'plugin' => 'CakeDC/Users',
-            'controller' => 'Users',
-            'action' => 'login',
-            'prefix' => false
-        ],
-        'authenticate' => [
-            'all' => [
-                'finder' => 'auth',
+        'AuthenticationComponent' => [
+            'load' => true,
+            'loginAction' => [
+                'plugin' => 'CakeDC/Users',
+                'controller' => 'Users',
+                'action' => 'login',
+                'prefix' => false,
             ],
-            'CakeDC/Auth.ApiKey',
-            'CakeDC/Auth.RememberMe',
-            'Form',
+            'logoutRedirect' => [
+                'plugin' => 'CakeDC/Users',
+                'controller' => 'Users',
+                'action' => 'login',
+                'prefix' => false,
+            ],
+            'loginRedirect' => '/',
+            'requireIdentity' => false
         ],
-        'authorize' => [
-            'CakeDC/Auth.Superuser',
-            'CakeDC/Auth.SimpleRbac',
+        'Authenticators' => [
+            'Authentication.Session' => [
+                'skipGoogleVerify' => true,
+                'sessionKey' => 'Auth',
+            ],
+            'CakeDC/Auth.Form' => [
+                'urlChecker' => 'Authentication.CakeRouter',
+                'loginUrl' => [
+                    'plugin' => 'CakeDC/Users',
+                    'controller' => 'Users',
+                    'action' => 'login',
+                    'prefix' => false,
+                ]
+            ],
+            'Authentication.Token' => [
+                'skipGoogleVerify' => true,
+                'header' => null,
+                'queryParam' => 'api_key',
+                'tokenPrefix' => null,
+            ],
+            'CakeDC/Auth.Cookie' => [
+                'skipGoogleVerify' => true,
+                'rememberMeField' => 'remember_me',
+                'cookie' => [
+                    'expires' => '1 month',
+                    'httpOnly' => true,
+                ],
+                'urlChecker' => 'Authentication.CakeRouter',
+                'loginUrl' => [
+                    'plugin' => 'CakeDC/Users',
+                    'controller' => 'Users',
+                    'action' => 'login',
+                    'prefix' => false,
+                ]
+            ],
+            'CakeDC/Users.Social' => [
+                'skipGoogleVerify' => true,
+            ],
+            'CakeDC/Users.SocialPendingEmail' => [
+                'skipGoogleVerify' => true,
+            ]
         ],
+        'Identifiers' => [
+            'Authentication.Password' => [],
+            "CakeDC/Users.Social" => [
+                'authFinder' => 'all'
+            ],
+            'Authentication.Token' => [
+                'tokenField' => 'api_token'
+            ]
+        ],
+        "Authorization" => [
+            'enable' => true,
+            'loadAuthorizationMiddleware' => true,
+            'loadRbacMiddleware' => false,
+        ],
+        'AuthorizationMiddleware' => [
+            'unauthorizedHandler' => [
+                'exceptions' => [
+                    'MissingIdentityException' => 'Authorization\Exception\MissingIdentityException',
+                    'ForbiddenException' => 'Authorization\Exception\ForbiddenException',
+                ],
+                'className' => 'Authorization.CakeRedirect',
+                'url' => [
+                    'plugin' => 'CakeDC/Users',
+                    'controller' => 'Users',
+                    'action' => 'login',
+                ]
+            ]
+        ],
+        'AuthorizationComponent' => [
+            'enabled' => true,
+        ],
+        'RbacMiddleware' => [
+            'unauthorizedRedirect' => [
+                'prefix' => false,
+                'plugin' => 'CakeDC/Users',
+                'controller' => 'Users',
+                'action' => 'login',
+            ]
+        ],
+        'SocialLoginFailure' => [
+            'component' => 'CakeDC/Users.Login',
+            'defaultMessage' => __d('CakeDC/Users', 'Could not proceed with social account. Please try again'),
+            'messages' => [
+                'FAILURE_USER_NOT_ACTIVE' => __d(
+                    'CakeDC/Users',
+                    'Your user has not been validated yet. Please check your inbox for instructions'
+                ),
+                'FAILURE_ACCOUNT_NOT_ACTIVE' => __d(
+                    'CakeDC/Users',
+                    'Your social account has not been validated yet. Please check your inbox for instructions'
+                )
+            ],
+            'targetAuthenticator' => 'CakeDC\Users\Authenticator\SocialAuthenticator'
+        ],
+        'FormLoginFailure' => [
+            'component' => 'CakeDC/Users.Login',
+            'defaultMessage' => __d('CakeDC/Users', 'Username or password is incorrect'),
+            'messages' => [
+                'FAILURE_INVALID_RECAPTCHA' => __d('CakeDC/Users', 'Invalid reCaptcha'),
+            ],
+            'targetAuthenticator' => 'CakeDC\Auth\Authenticator\FormAuthenticator'
+        ]
+    ],
+    'SocialAuthMiddleware' => [
+        'sessionAuthKey' => 'Auth',
+        'locator' => [
+            'usernameField' => 'username',
+            'authFinder' => 'all',
+        ]
     ],
     'OAuth' => [
         'path' => ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'socialLogin', 'prefix' => null],
         'providers' => [
             'facebook' => [
+                'service' => 'CakeDC\Auth\Social\Service\OAuth2Service',
                 'className' => 'League\OAuth2\Client\Provider\Facebook',
+                'mapper' => 'CakeDC\Auth\Social\Mapper\Facebook',
                 'options' => [
                     'graphApiVersion' => 'v2.8', //bio field was deprecated on >= v2.8
                     'redirectUri' => Router::fullBaseUrl() . '/auth/facebook',
@@ -160,6 +264,9 @@ $config = [
                 ]
             ],
             'twitter' => [
+                'service' => 'CakeDC\Auth\Social\Service\OAuth1Service',
+                'className' => 'League\OAuth1\Client\Server\Twitter',
+                'mapper' => 'CakeDC\Auth\Social\Mapper\Twitter',
                 'options' => [
                     'redirectUri' => Router::fullBaseUrl() . '/auth/twitter',
                     'linkSocialUri' => Router::fullBaseUrl() . '/link-social/twitter',
@@ -167,7 +274,9 @@ $config = [
                 ]
             ],
             'linkedIn' => [
+                'service' => 'CakeDC\Auth\Social\Service\OAuth2Service',
                 'className' => 'League\OAuth2\Client\Provider\LinkedIn',
+                'mapper' => 'CakeDC\Auth\Social\Mapper\LinkedIn',
                 'options' => [
                     'redirectUri' => Router::fullBaseUrl() . '/auth/linkedIn',
                     'linkSocialUri' => Router::fullBaseUrl() . '/link-social/linkedIn',
@@ -175,7 +284,9 @@ $config = [
                 ]
             ],
             'instagram' => [
+                'service' => 'CakeDC\Auth\Social\Service\OAuth2Service',
                 'className' => 'League\OAuth2\Client\Provider\Instagram',
+                'mapper' => 'CakeDC\Auth\Social\Mapper\Instagram',
                 'options' => [
                     'redirectUri' => Router::fullBaseUrl() . '/auth/instagram',
                     'linkSocialUri' => Router::fullBaseUrl() . '/link-social/instagram',
@@ -183,7 +294,9 @@ $config = [
                 ]
             ],
             'google' => [
+                'service' => 'CakeDC\Auth\Social\Service\OAuth2Service',
                 'className' => 'League\OAuth2\Client\Provider\Google',
+                'mapper' => 'CakeDC\Auth\Social\Mapper\Google',
                 'options' => [
                     'userFields' => ['url', 'aboutMe'],
                     'redirectUri' => Router::fullBaseUrl() . '/auth/google',
@@ -192,7 +305,9 @@ $config = [
                 ]
             ],
             'amazon' => [
+                'service' => 'CakeDC\Auth\Social\Service\OAuth2Service',
                 'className' => 'Luchianenco\OAuth2\Client\Provider\Amazon',
+                'mapper' => 'CakeDC\Auth\Social\Mapper\Amazon',
                 'options' => [
                     'redirectUri' => Router::fullBaseUrl() . '/auth/amazon',
                     'linkSocialUri' => Router::fullBaseUrl() . '/link-social/amazon',

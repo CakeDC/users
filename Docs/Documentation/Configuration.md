@@ -145,6 +145,23 @@ Using the UsersAuthComponent default initialization, the component will load the
   * 'CakeDC/Auth.Superuser' check [SuperuserAuthorize](https://github.com/CakeDC/auth/blob/master/Docs/Documentation/SuperuserAuthorize.md) for configuration options
   * 'CakeDC/Auth.SimpleRbac' check [SimpleRbacAuthorize](https://github.com/CakeDC/auth/blob/master/Docs/Documentation/SimpleRbacAuthorize.md) for configuration options
 
+Default Authorization Behavior
+------------------------------
+For authorization process this plugin loads two cakephp/authorization midlewares, 
+**AuthorizationMiddleware** and **RequestAuthorizationMiddleware** (used with **RbacPolicy**). 
+
+#### Configure AuthorizationMiddleware
+
+You can configure AuthorizationMiddleware by setting 'Auth.AuthorizationMiddleware' config,
+check available options at https://github.com/cakephp/authorization/blob/master/docs/Middleware.md
+
+#### Additional configurations
+
+* **Auth.Authorization.enable:** defaults to true, enable authorization and try to load needed middlewares
+* **Auth.Authorization.loadAuthorizationMiddleware:** defaults to true, load AuthorizationMiddleware and RequestAuthorizationMiddleware (used with RbacPolicy)
+* **Auth.Authorization.loadRbacMiddleware:** defaults to false, if you don't want to use cakephp/authorization but want to 
+use Rbac permissions, set this config to true. 
+
 ## Using the user's email to login
 
 You need to configure 2 things:

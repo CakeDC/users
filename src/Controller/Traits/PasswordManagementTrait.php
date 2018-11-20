@@ -11,12 +11,12 @@
 
 namespace CakeDC\Users\Controller\Traits;
 
-use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Exception\UserNotFoundException;
 use CakeDC\Users\Exception\WrongPasswordException;
+use CakeDC\Users\Plugin;
 use Cake\Core\Configure;
-use Cake\Log\Log;
+use Cake\Utility\Hash;
 use Cake\Validation\Validator;
 use Exception;
 
@@ -37,9 +37,12 @@ trait PasswordManagementTrait
     public function changePassword()
     {
         $user = $this->getUsersTable()->newEntity();
-        $id = $this->Auth->user('id');
+        $identity = $this->request->getAttribute('identity');
+        $identity = isset($identity) ? $identity : [];
+        $id = Hash::get($identity, 'id');
+
         if (!empty($id)) {
-            $user->id = $this->Auth->user('id');
+            $user->id = $id;
             $validatePassword = true;
             //@todo add to the documentation: list of routes used
             $redirect = Configure::read('Users.Profile.route');
@@ -48,12 +51,12 @@ trait PasswordManagementTrait
             $validatePassword = false;
             if (!$user->id) {
                 $this->Flash->error(__d('CakeDC/Users', 'User was not found'));
-                $this->redirect($this->Auth->getConfig('loginAction'));
+                $this->redirect($this->Authentication->getConfig('loginAction'));
 
                 return;
             }
             //@todo add to the documentation: list of routes used
-            $redirect = $this->Auth->getConfig('loginAction');
+            $redirect = $this->Authentication->getConfig('loginAction');
         }
         $this->set('validatePassword', $validatePassword);
         if ($this->request->is('post')) {
@@ -67,12 +70,13 @@ trait PasswordManagementTrait
                     $this->request->getData(),
                     ['validate' => $validator]
                 );
+
                 if ($user->getErrors()) {
                     $this->Flash->error(__d('CakeDC/Users', 'Password could not be changed'));
                 } else {
                     $result = $this->getUsersTable()->changePassword($user);
                     if ($result) {
-                        $event = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_CHANGE_PASSWORD, ['user' => $result]);
+                        $event = $this->dispatchEvent(Plugin::EVENT_AFTER_CHANGE_PASSWORD, ['user' => $result]);
                         if (!empty($event) && is_array($event->result)) {
                             return $this->redirect($event->result);
                         }
@@ -149,7 +153,7 @@ trait PasswordManagementTrait
     }
 
     /**
-     * resetGoogleAuthenticator
+     * resetOneTimePasswordAuthenticator
      *
      * Resets Google Authenticator token by setting secret_verified
      * to false.
@@ -157,7 +161,7 @@ trait PasswordManagementTrait
      * @param mixed $id of the user record.
      * @return mixed.
      */
-    public function resetGoogleAuthenticator($id = null)
+    public function resetOneTimePasswordAuthenticator($id = null)
     {
         if ($this->request->is('post')) {
             try {

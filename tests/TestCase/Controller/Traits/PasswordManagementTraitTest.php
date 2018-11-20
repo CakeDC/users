@@ -14,7 +14,6 @@ namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 use Cake\Auth\PasswordHasherFactory;
 use Cake\Core\Configure;
 use Cake\Event\Event;
-use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 class PasswordManagementTraitTest extends BaseTraitTest
@@ -254,7 +253,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
     public function testChangePasswordGetNotLoggedInInsideResetPasswordFlow()
     {
         $this->_mockRequestGet(true);
-        $this->_mockAuth();
+        $this->_mockAuthentication();
         $this->_mockFlash();
         $this->_mockSession([
             Configure::read('Users.Key.Session.resetPasswordUserId') => '00000000-0000-0000-0000-000000000001'
@@ -277,7 +276,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
     public function testChangePasswordGetNotLoggedInOutsideResetPasswordFlow()
     {
         $this->_mockRequestGet();
-        $this->_mockAuth();
+        $this->_mockAuthentication();
         $this->_mockFlash();
         $this->Trait->Flash->expects($this->once())
             ->method('error')
@@ -420,7 +419,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
     }
 
     /**
-     * @dataProvider ensureGoogleAuthenticatorResets
+     * @dataProvider ensureOneTimePasswordAuthenticatorResets
      *
      * @return void
      */
@@ -444,10 +443,10 @@ class PasswordManagementTraitTest extends BaseTraitTest
             ->method($method)
             ->with($msg);
 
-        $this->Trait->resetGoogleAuthenticator($entityId);
+        $this->Trait->resetOneTimePasswordAuthenticator($entityId);
     }
 
-    public function ensureGoogleAuthenticatorResets()
+    public function ensureOneTimePasswordAuthenticatorResets()
     {
         $error = 'error';
         $success = 'success';

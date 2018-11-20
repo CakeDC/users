@@ -11,6 +11,13 @@
 
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
+use Authentication\Authenticator\Result;
+use Authentication\Controller\Component\AuthenticationComponent;
+use Authentication\Identity;
+use CakeDC\Auth\Authentication\AuthenticationService;
+use CakeDC\Users\Model\Entity\User;
+use Cake\Controller\ComponentRegistry;
+use Cake\Controller\Controller;
 use Cake\Event\Event;
 use Cake\Mailer\Email;
 use Cake\ORM\Entity;
@@ -37,6 +44,12 @@ abstract class BaseTraitTest extends TestCase
     public $traitClassName = '';
     public $traitMockMethods = [];
     public $mockDefaultEmail = false;
+
+    public $successLoginRedirect = '/home';
+
+    public $logoutRedirect = '/login?fromlogout=1';
+
+    public $loginAction = '/login-page';
 
     /**
      * SetUp and create Trait
@@ -92,7 +105,7 @@ abstract class BaseTraitTest extends TestCase
     /**
      * Mock session and mock session attributes
      *
-     * @return void
+     * @return \Cake\Http\Session
      */
     protected function _mockSession($attributes)
     {
@@ -104,8 +117,10 @@ abstract class BaseTraitTest extends TestCase
 
         $this->Trait->request
             ->expects($this->any())
-            ->method('session')
+            ->method('getSession')
             ->willReturn($session);
+
+        return $session;
     }
 
     /**
@@ -118,7 +133,7 @@ abstract class BaseTraitTest extends TestCase
         $methods = ['is', 'referer', 'getData'];
 
         if ($withSession) {
-            $methods[] = 'session';
+            $methods[] = 'getSession';
         }
 
         $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
@@ -167,34 +182,63 @@ abstract class BaseTraitTest extends TestCase
      */
     protected function _mockAuthLoggedIn($user = [])
     {
-        $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
-            ->setMethods(['user', 'identify', 'setUser', 'redirectUrl'])
-            ->disableOriginalConstructor()
-            ->getMock();
         $user += [
             'id' => '00000000-0000-0000-0000-000000000001',
             'password' => '12345',
         ];
-        $this->Trait->Auth->expects($this->any())
-            ->method('identify')
-            ->will($this->returnValue($user));
-        $this->Trait->Auth->expects($this->any())
-            ->method('user')
-            ->with('id')
-            ->will($this->returnValue($user['id']));
+
+        $this->_mockAuthentication($user);
     }
 
     /**
-     * Mock the Auth component
+     * Mock the Authentication service
      *
+     * @param array $user
+     * @param array $failures
      * @return void
      */
-    protected function _mockAuth()
+    protected function _mockAuthentication($user = null, $failures = [])
     {
-        $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
-            ->setMethods(['user', 'identify', 'setUser', 'redirectUrl'])
-            ->disableOriginalConstructor()
-            ->getMock();
+        $config = [
+            'identifiers' => [
+                'Authentication.Password'
+            ],
+            'authenticators' => [
+                'Authentication.Session',
+                'Authentication.Form'
+            ]
+        ];
+        $authentication = $this->getMockBuilder(AuthenticationService::class)->setConstructorArgs([$config])->setMethods([
+            'getResult',
+            'getFailures'
+        ])->getMock();
+
+        if ($user) {
+            $user = new User($user);
+            $identity = new Identity($user);
+            $result = new Result($user, Result::SUCCESS);
+            $this->Trait->request = $this->Trait->request->withAttribute('identity', $identity);
+        } else {
+            $result = new Result($user, Result::FAILURE_CREDENTIALS_MISSING);
+        }
+
+        $authentication->expects($this->any())
+            ->method('getResult')
+            ->will($this->returnValue($result));
+
+        $authentication->expects($this->any())
+            ->method('getFailures')
+            ->will($this->returnValue($failures));
+
+        $this->Trait->request = $this->Trait->request->withAttribute('authentication', $authentication);
+
+        $controller = new Controller($this->Trait->request);
+        $registry = new ComponentRegistry($controller);
+        $this->Trait->Authentication = new AuthenticationComponent($registry, [
+            'loginRedirect' => $this->successLoginRedirect,
+            'logoutRedirect' => $this->logoutRedirect,
+            'loginAction' => $this->loginAction
+        ]);
     }
 
     /**

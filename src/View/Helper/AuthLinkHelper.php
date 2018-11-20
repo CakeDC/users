@@ -1,21 +1,18 @@
 <?php
 /**
- * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * @copyright Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 namespace CakeDC\Users\View\Helper;
 
-use CakeDC\Users\Controller\Component\UsersAuthComponent;
-use Cake\Event\Event;
-use Cake\Event\EventManager;
+use CakeDC\Auth\Traits\IsAuthorizedTrait;
 use Cake\Utility\Hash;
-use Cake\View\Helper;
 use Cake\View\Helper\HtmlHelper;
 
 /**
@@ -23,6 +20,8 @@ use Cake\View\Helper\HtmlHelper;
  */
 class AuthLinkHelper extends HtmlHelper
 {
+
+    use IsAuthorizedTrait;
 
     /**
      * Generate a link if the target url is authorized for the logged in user
@@ -50,19 +49,5 @@ class AuthLinkHelper extends HtmlHelper
         }
 
         return false;
-    }
-
-    /**
-     * Returns true if the target url is authorized for the logged in user
-     *
-     * @param string|array|null $url url that the user is making request.
-     * @return bool
-     */
-    public function isAuthorized($url = null)
-    {
-        $event = new Event(UsersAuthComponent::EVENT_IS_AUTHORIZED, $this, ['url' => $url]);
-        $result = EventManager::instance()->dispatch($event);
-
-        return $result->result;
     }
 }

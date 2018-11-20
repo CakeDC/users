@@ -29,21 +29,12 @@ trait SocialTrait
      */
     public function socialEmail()
     {
-        if (!$this->request->getSession()->check(Configure::read('Users.Key.Session.social'))) {
-            throw new NotFoundException();
-        }
-        $this->request->getSession()->delete('Flash.auth');
+        $config = Configure::read('Auth.SocialLoginFailure');
+        /**
+         * @var \CakeDC\Users\Controller\Component\LoginComponent $Login
+         */
+        $Login = $this->loadComponent($config['component'], $config);
 
-        if ($this->request->is('post')) {
-            $validPost = $this->_validateRegisterPost();
-            if (!$validPost) {
-                $this->Flash->error(__d('CakeDC/Users', 'The reCaptcha could not be validated'));
-
-                return;
-            }
-            $user = $this->Auth->identify();
-
-            return $this->_afterIdentifyUser($user, true);
-        }
+        return $Login->handleLogin(true, false);
     }
 }

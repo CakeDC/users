@@ -15,6 +15,7 @@ use Cake\Controller\Component\AuthComponent;
 use Cake\Core\Configure;
 use Cake\Datasource\Exception\InvalidPrimaryKeyException;
 use Cake\Datasource\Exception\RecordNotFoundException;
+use Cake\Utility\Hash;
 
 /**
  * Covers the profile action
@@ -31,7 +32,9 @@ trait ProfileTrait
      */
     public function profile($id = null)
     {
-        $loggedUserId = $this->Auth->user('id');
+        $identity = $this->request->getAttribute('identity');
+        $identity = isset($identity) ? $identity : [];
+        $loggedUserId = Hash::get($identity, 'id');
         $isCurrentUser = false;
         if (!Configure::read('Users.Profile.viewOthers') || empty($id)) {
             $id = $loggedUserId;

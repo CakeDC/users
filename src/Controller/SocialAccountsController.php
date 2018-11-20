@@ -11,7 +11,6 @@
 
 namespace CakeDC\Users\Controller;
 
-use CakeDC\Users\Controller\AppController;
 use CakeDC\Users\Exception\AccountAlreadyActiveException;
 use CakeDC\Users\Model\Table\SocialAccountsTable;
 use Cake\Datasource\Exception\RecordNotFoundException;
@@ -33,7 +32,6 @@ class SocialAccountsController extends AppController
     public function initialize()
     {
         parent::initialize();
-        $this->Auth->allow(['validateAccount', 'resendValidation']);
     }
 
     /**

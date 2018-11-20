@@ -12,7 +12,6 @@
 namespace CakeDC\Users\Test\TestCase\Model\Behavior;
 
 use CakeDC\Users\Model\Behavior\LinkSocialBehavior;
-use CakeDC\Users\Model\Table\UsersTable;
 use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
@@ -160,13 +159,12 @@ class LinkSocialBehaviorTest extends TestCase
      *
      * @param array  $data   Test input data
      * @param string $userId User id to add social account
-     * @param array  $result Expected result
      *
      * @author Marcelo Rocha <marcelo@promosapiens.com.br>
      * @return void
      * @dataProvider providerFacebookLinkSocialAccountErrorSaving
      */
-    public function testlinkSocialAccountErrorSavingFacebookProvider($data, $userId, $result)
+    public function testlinkSocialAccountErrorSavingFacebookProvider($data, $userId)
     {
         $user = $this->Table->get($userId);
         $resultUser = $this->Behavior->linkSocialAccount($user, $data);
@@ -186,9 +184,6 @@ class LinkSocialBehaviorTest extends TestCase
             ]
         ];
         $this->assertEquals($expected, $actual);
-
-        $error = $user->getErrors('social_accounts');
-        $error = $error ? reset($error) : $message;
     }
 
     /**
@@ -278,7 +273,7 @@ class LinkSocialBehaviorTest extends TestCase
         $this->assertEquals($expected, $actual);
 
         //Se for o usuário que já esta associado então okay
-        $socialAccount = $this->Table->SocialAccounts->find()->where([
+        $this->Table->SocialAccounts->find()->where([
             'reference' => $data['id'],
             'provider' => $data['provider']
         ])->firstOrFail();
