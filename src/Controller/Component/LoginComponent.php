@@ -58,7 +58,7 @@ class LoginComponent extends Component
 
         $service = $request->getAttribute('authentication');
         $result = $this->getTargetAuthenticatorResult($service);
-        $controller->Flash->error($this->getErrorMessage($result), 'default', [], 'auth');
+        $controller->Flash->error($this->getErrorMessage($result), ['element' => 'default', 'key' => 'auth']);
 
         if (!$redirect) {
             return null;
