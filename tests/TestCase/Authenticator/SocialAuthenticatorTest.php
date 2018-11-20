@@ -591,7 +591,7 @@ class SocialAuthenticatorTest extends TestCase
 
         $service = (new ServiceFactory())->createFromProvider('facebook');
         $this->Request = $this->Request->withAttribute('socialService', $service);
-        $identifiers = $this->getMockBuilder(IdentifierCollection::class, ['identify'])->getMock();
+        $identifiers = $this->getMockBuilder(IdentifierCollection::class)->getMock();
         $identifiers->expects($this->once())
             ->method('identify')
             ->will($this->throwException($exception));
