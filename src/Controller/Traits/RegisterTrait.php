@@ -39,7 +39,9 @@ trait RegisterTrait
             throw new NotFoundException();
         }
 
-        $userId = Hash::get($this->request->getAttribute('identity') ?? [], 'id');
+        $identity = $this->request->getAttribute('identity');
+        $identity = isset($identity) ? $identity : [];
+        $userId = Hash::get($identity, 'id');
         if (!empty($userId) && !Configure::read('Users.Registration.allowLoggedIn')) {
             $this->Flash->error(__d('CakeDC/Users', 'You must log out to register a new user account'));
 

@@ -37,10 +37,12 @@ trait PasswordManagementTrait
     public function changePassword()
     {
         $user = $this->getUsersTable()->newEntity();
-        $id = Hash::get($this->request->getAttribute('identity') ?? [], 'id');
+        $identity = $this->request->getAttribute('identity');
+        $identity = isset($identity) ? $identity : [];
+        $id = Hash::get($identity, 'id');
 
         if (!empty($id)) {
-            $user->id = Hash::get($this->request->getAttribute('identity') ?? [], 'id');
+            $user->id = $id;
             $validatePassword = true;
             //@todo add to the documentation: list of routes used
             $redirect = Configure::read('Users.Profile.route');

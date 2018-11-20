@@ -67,7 +67,8 @@ trait LoginTrait
      */
     public function logout()
     {
-        $user = $this->request->getAttribute('identity') ?? [];
+        $user = $this->request->getAttribute('identity');
+        $user = isset($user) ? $user : [];
 
         $eventBefore = $this->dispatchEvent(Plugin::EVENT_BEFORE_LOGOUT, ['user' => $user]);
         if (is_array($eventBefore->result)) {
