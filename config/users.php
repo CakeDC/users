@@ -114,7 +114,7 @@ $config = [
         ],
     ],
     'OneTimePasswordAuthenticator' => [
-        'checker' => \CakeDC\Users\Auth\DefaultTwoFactorAuthenticationChecker::class,
+        'checker' => \CakeDC\Auth\Authentication\DefaultTwoFactorAuthenticationChecker::class,
         'verifyAction' => [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
