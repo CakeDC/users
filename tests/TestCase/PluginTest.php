@@ -444,7 +444,7 @@ class PluginTest extends IntegrationTestCase
         $request->withQueryParams(['method' => __METHOD__]);
         $response = new Response(['body' => __METHOD__]);
         $service = new AuthorizationService(new ResolverCollection());
-        Configure::write('Auth.Authorization.service', function ($aRequest, $aResponse) use ($request, $response, $service) {
+        Configure::write('Auth.Authorization.serviceLoader', function ($aRequest, $aResponse) use ($request, $response, $service) {
             $this->assertSame($request, $aRequest);
             $this->assertSame($response, $aResponse);
 
