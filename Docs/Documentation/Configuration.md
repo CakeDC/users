@@ -62,16 +62,21 @@ Configuration options
 The plugin is configured via the Configure class. Check the `vendor/cakedc/users/config/users.php`
 for a complete list of all the configuration keys.
 
-Loading the UsersAuthComponent and using the right configuration values will setup the Users plugin,
-the AuthComponent and the OAuth component for your application.
+Loading the plugin and using the right configuration values will setup the Users plugin,
+with authentication service, authorization service, and the OAuth components for your application.
 
-If you prefer to setup AuthComponent by yourself, you'll need to load AuthComponent before UsersAuthComponent
-and set
+This plugin uses by default the new [cakephp/authentication](https://github.com/cakephp/authentication)
+and [cakephp/authorization](https://github.com/cakephp/authorization) plugins we suggest you to take a look
+into their documentation for more information.
+
+Most authentication/authorization configuration is defined at 'Auth' key, for example
+if you don't want the plugin to autoload the authorization service, you could do:
+
 ```
-Configure::write('Users.auth', false);
+Configure::write('Auth.Authorization.enable', false)
 ```
 
-Interesting UsersAuthComponent options and defaults
+Interesting Users options and defaults
 
 NOTE: SOME keys were hidden in this doc page, please refer to `vendor/cakedc/users/config/users.php` for the complete list
 
@@ -81,8 +86,6 @@ NOTE: SOME keys were hidden in this doc page, please refer to `vendor/cakedc/use
         'table' => 'CakeDC/Users.Users',
         // Controller used to manage users plugin features & actions
         'controller' => 'CakeDC/Users.Users',
-        // configure Auth component
-        'auth' => true,
         'Email' => [
             // determines if the user should include email
             'required' => true,
@@ -114,20 +117,28 @@ NOTE: SOME keys were hidden in this doc page, please refer to `vendor/cakedc/use
             'active' => true,
         ],
     ],
-// default configuration used to auto-load the Auth Component, override to change the way Auth works
+    //Default authentication/authorization setup
     'Auth' => [
-        'authenticate' => [
-            'all' => [
-                'finder' => 'active',
-            ],
-            'CakeDC/Auth.RememberMe',
-            'Form',
+        'Authentication' => [
+            'serviceLoader' => \CakeDC\Users\Loader\AuthenticationServiceLoader::class
         ],
-        'authorize' => [
-            'CakeDC/Auth.Superuser',
-            'CakeDC/Auth.SimpleRbac',
+        'AuthenticationComponent' => [...],
+        'Authenticators' => [...],
+        'Identifiers' => [...],
+        "Authorization" => [
+            'enable' => true,
+            'loadAuthorizationMiddleware' => true,
+            'loadRbacMiddleware' => false,
+            'serviceLoader' => \CakeDC\Users\Loader\AuthorizationServiceLoader::class
         ],
+        'AuthorizationMiddleware' => [...],
+        'AuthorizationComponent' => [...],
+        'RbacMiddleware' => [...],
+        'SocialLoginFailure' => [...],
+        'FormLoginFailure' => [...]
     ],
+    'SocialAuthMiddleware' => [...],
+    'OAuth' => [...]
 ];
 
 ```
