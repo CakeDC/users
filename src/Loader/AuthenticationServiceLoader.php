@@ -68,6 +68,7 @@ class AuthenticationServiceLoader
     protected function loadAuthenticators($service)
     {
         $authenticators = Configure::read('Auth.Authenticators');
+
         foreach ($authenticators as $authenticator => $options) {
             if (is_numeric($authenticator)) {
                 $authenticator = $options;
