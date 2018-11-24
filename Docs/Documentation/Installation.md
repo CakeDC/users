@@ -49,10 +49,18 @@ Configure::write('OneTimePasswordAuthenticator.login', true);
 Load the Plugin
 -----------
 
-Ensure the Users Plugin is loaded in your config/bootstrap.php file
+Ensure the Users Plugin is loaded in your src/Application.php file
 
 ```
-Plugin::load('CakeDC/Users', ['routes' => true, 'bootstrap' => true]);
+    /**
+     * {@inheritdoc}
+     */
+    public function bootstrap()
+    {
+        parent::bootstrap();
+
+        $this->addPlugin(\CakeDC\Users\Plugin::class);
+    }
 ```
 
 Creating Required Tables
