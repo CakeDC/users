@@ -80,3 +80,27 @@ the two factor flow**
 
 
 See the full Auth.Authenticators at config/users.php
+
+Identifiers
+-----------
+The identifies are defined to work correctly with the default authenticators, we are using these identifiers:
+
+- Authentication.Password, for Form authenticator
+- CakeDC/Users.Social, for Social and SocialPendingEmail authenticators
+- Authentication.Token, for TokenAuthenticator
+
+As you add more authenticators you may need to add identifiers, please check identifiers available at 
+[official documentation](https://github.com/cakephp/authentication/blob/master/docs/Identifiers.md)
+
+The default value for Auth.Identifiers is:
+```
+[
+    'Authentication.Password' => [],
+    "CakeDC/Users.Social" => [
+        'authFinder' => 'all'
+    ],
+    'Authentication.Token' => [
+        'tokenField' => 'api_token'
+    ]
+]
+```
