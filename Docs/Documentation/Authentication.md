@@ -110,3 +110,43 @@ The default value for Auth.Identifiers is:
 The identifiers are loaded by \CakeDC\Users\Loader\AuthenticationServiceLoader class at load authentication
 service method from plugin object.
 
+Authentication Service Loader 
+-----------------------------
+To make integration with cakephp/authentication easier we load the the authenticators and identifiers
+defined at Auth configuration and other components to work with social provider, two-factor authentication.
+
+If the configuration is not enough for your project you may create a custom loader extending the 
+default provided.
+
+- Create file src/Loader/AppAuthenticationServiceLoader.php
+
+```
+<?php
+namespace App\Loader;
+ 
+use \CakeDC\Users\Loader\AuthenticationServiceLoader;
+ 
+class AppAuthenticationServiceLoader extends AuthenticationServiceLoader
+{
+    /**
+     * Load the authenticators with my custom condition
+     *
+     * @param \CakeDC\Auth\Authentication\AuthenticationService $service Authentication service to load identifiers
+     *
+     * @return void
+     */
+    protected function loadAuthenticators($service)
+    {
+        parent::loadAuthenticators($service);
+
+        if (\Cake\Core\Configure::read('MyApp.enabledCustom')) {
+            $service->loadAuthenticator('MyCustom', []);
+        }
+    }
+}
+```
+- Change the authentication service loader:
+
+```
+Configure::write('Authentication.serviceLoader', \CakeDC\Users\Loader\AuthenticationServiceLoader::class);
+```
