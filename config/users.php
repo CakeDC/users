@@ -120,6 +120,9 @@ $config = [
         'rngprovider' => null
     ],
     'Auth' => [
+        'Authentication' => [
+            'serviceLoader' => \CakeDC\Users\Loader\AuthenticationServiceLoader::class
+        ],
         'AuthenticationComponent' => [
             'load' => true,
             'loginAction' => [

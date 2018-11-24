@@ -58,12 +58,8 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
      */
     public function getAuthenticationService(ServerRequestInterface $request, ResponseInterface $response)
     {
-        $serviceLoader = Configure::read('Auth.Authentication.service');
-        if ($serviceLoader !== null) {
-            return $serviceLoader($request, $response);
-        }
-
-        return $this->authentication();
+        $key = 'Auth.Authentication.serviceLoader';
+        return $this->loadService($request, $response, $key);
     }
 
     /**
@@ -71,50 +67,8 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
      */
     public function getAuthorizationService(ServerRequestInterface $request, ResponseInterface $response)
     {
-        $serviceLoader = Configure::read('Auth.Authorization.serviceLoader');
-        if (is_string($serviceLoader)) {
-            $serviceLoader = new $serviceLoader();
-        }
-
-        return $serviceLoader($request, $response);
-    }
-
-    /**
-     * load authenticators and identifiers
-     *
-     * @return AuthenticationServiceInterface
-     */
-    public function authentication()
-    {
-        $service = new AuthenticationService();
-        $authenticators = Configure::read('Auth.Authenticators');
-        $identifiers = Configure::read('Auth.Identifiers');
-
-        foreach ($identifiers as $identifier => $options) {
-            if (is_numeric($identifier)) {
-                $identifier = $options;
-                $options = [];
-            }
-
-            $service->loadIdentifier($identifier, $options);
-        }
-
-        foreach ($authenticators as $authenticator => $options) {
-            if (is_numeric($authenticator)) {
-                $authenticator = $options;
-                $options = [];
-            }
-
-            $service->loadAuthenticator($authenticator, $options);
-        }
-
-        if (Configure::read('OneTimePasswordAuthenticator.login')) {
-            $service->loadAuthenticator('CakeDC/Auth.TwoFactor', [
-                'skipGoogleVerify' => true,
-            ]);
-        }
-
-        return $service;
+        $key = 'Auth.Authorization.serviceLoader';
+        return $this->loadService($request, $response, $key);
     }
 
     /**
@@ -162,5 +116,24 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
         }
 
         return $middlewareQueue;
+    }
+
+    /**
+     * Load a service defined in configuration $loaderKey
+     *
+     * @param ServerRequestInterface $request The request.
+     * @param ResponseInterface $response The response.
+     * @param string $loaderKey service loader key
+     *
+     * @return mixed
+     */
+    protected function loadService(ServerRequestInterface $request, ResponseInterface $response, $loaderKey)
+    {
+        $serviceLoader = Configure::read($loaderKey);
+        if (is_string($serviceLoader)) {
+            $serviceLoader = new $serviceLoader();
+        }
+
+        return $serviceLoader($request, $response);
     }
 }
