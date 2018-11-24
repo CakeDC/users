@@ -148,16 +148,7 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
             return $middlewareQueue;
         }
 
-        if (Configure::read('Auth.Authorization.loadAuthorizationMiddleware') !== false) {
-            $middlewareQueue->add(new AuthorizationMiddleware($this, Configure::read('Auth.AuthorizationMiddleware')));
-            $middlewareQueue->add(new RequestAuthorizationMiddleware());
-        }
-
-        if (Configure::read('Auth.Authorization.loadRbacMiddleware') !== false) {
-            $middlewareQueue->add(new RbacMiddleware(null, Configure::read('Auth.RbacMiddleware')));
-        }
-
-        return $middlewareQueue;
+        return $loader($middlewareQueue, $this);
     }
 
     /**
@@ -171,11 +162,24 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
      */
     protected function loadService(ServerRequestInterface $request, ResponseInterface $response, $loaderKey)
     {
+        $serviceLoader = $this->getLoader($loaderKey);
+
+        return $serviceLoader($request, $response);
+    }
+
+    /**
+     * Get the loader callable
+     *
+     * @param string $loaderKey loader configuration key
+     * @return callable
+     */
+    protected function getLoader($loaderKey)
+    {
         $serviceLoader = Configure::read($loaderKey);
         if (is_string($serviceLoader)) {
             $serviceLoader = new $serviceLoader();
         }
 
-        return $serviceLoader($request, $response);
+        return $serviceLoader;
     }
 }
