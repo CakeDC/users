@@ -76,46 +76,9 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
      */
     public function middleware($middlewareQueue)
     {
-        if (Configure::read('Users.Social.login')) {
-            $middlewareQueue
-                ->add(SocialAuthMiddleware::class)
-                ->add(SocialEmailMiddleware::class);
-        }
+        $loader = $this->getLoader('Users.middlewareQueueLoader');
 
-        $authentication = new AuthenticationMiddleware($this);
-        $middlewareQueue->add($authentication);
-
-        if (Configure::read('OneTimePasswordAuthenticator.login')) {
-            $middlewareQueue->add(OneTimePasswordAuthenticatorMiddleware::class);
-        }
-
-        $middlewareQueue = $this->addAuthorizationMiddleware($middlewareQueue);
-
-        return $middlewareQueue;
-    }
-
-    /**
-     * Add authorization middleware based on Auth.Authorization
-     *
-     * @param MiddlewareQueue $middlewareQueue queue of middleware
-     * @return MiddlewareQueue
-     */
-    protected function addAuthorizationMiddleware(MiddlewareQueue $middlewareQueue)
-    {
-        if (Configure::read('Auth.Authorization.enable') === false) {
-            return $middlewareQueue;
-        }
-
-        if (Configure::read('Auth.Authorization.loadAuthorizationMiddleware') !== false) {
-            $middlewareQueue->add(new AuthorizationMiddleware($this, Configure::read('Auth.AuthorizationMiddleware')));
-            $middlewareQueue->add(new RequestAuthorizationMiddleware());
-        }
-
-        if (Configure::read('Auth.Authorization.loadRbacMiddleware') !== false) {
-            $middlewareQueue->add(new RbacMiddleware(null, Configure::read('Auth.RbacMiddleware')));
-        }
-
-        return $middlewareQueue;
+        return $loader($middlewareQueue, $this);
     }
 
     /**
@@ -129,11 +92,24 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
      */
     protected function loadService(ServerRequestInterface $request, ResponseInterface $response, $loaderKey)
     {
+        $serviceLoader = $this->getLoader($loaderKey);
+
+        return $serviceLoader($request, $response);
+    }
+
+    /**
+     * Get the loader callable
+     *
+     * @param string $loaderKey loader configuration key
+     * @return callable
+     */
+    protected function getLoader($loaderKey)
+    {
         $serviceLoader = Configure::read($loaderKey);
         if (is_string($serviceLoader)) {
             $serviceLoader = new $serviceLoader();
         }
 
-        return $serviceLoader($request, $response);
+        return $serviceLoader;
     }
 }

@@ -20,6 +20,7 @@ $config = [
         'controller' => 'CakeDC/Users.Users',
         // Password Hasher
         'passwordHasher' => '\Cake\Auth\DefaultPasswordHasher',
+        'middlewareQueueLoader' => \CakeDC\Users\Loader\MiddlewareQueueLoader::class,
         // token expiration, 1 hour
         'Token' => ['expiration' => 3600],
         'Email' => [
