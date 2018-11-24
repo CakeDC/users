@@ -1,12 +1,12 @@
 Authentication
 ==============
 This component uses the new plugin for authentication [cakephp/authentication](https://github.com/cakephp/authentication/)
-instead of CakePHP Authentication component, but the default configuration should be enough for your
+instead of CakePHP Authentication component, but don't worry, the default configuration should be enough for your
 projects. We tried to allow you to start quickly without the need to configure a lot of thing and also
 allow you to configure as much as possible.
 
 Authentication Component
--------------------------------
+------------------------
 
 The default behavior is to load the authentication component at users controller, 
 defining the default urls for loginAction, loginRedirect, logoutRedirect but not requiring 
