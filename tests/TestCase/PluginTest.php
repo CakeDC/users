@@ -232,7 +232,7 @@ class PluginTest extends IntegrationTestCase
                 'Authentication.Password'
             ]
         ]);
-        Configure::write('Auth.Authentication.service', function ($aRequest, $aResponse) use ($request, $response, $service) {
+        Configure::write('Auth.Authentication.serviceLoader', function ($aRequest, $aResponse) use ($request, $response, $service) {
             $this->assertSame($request, $aRequest);
             $this->assertSame($response, $aResponse);
 

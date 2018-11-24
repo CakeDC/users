@@ -58,12 +58,8 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
      */
     public function getAuthenticationService(ServerRequestInterface $request, ResponseInterface $response)
     {
-        $serviceLoader = Configure::read('Auth.Authentication.service');
-        if ($serviceLoader !== null) {
-            return $serviceLoader($request, $response);
-        }
-
-        return $this->authentication();
+        $key = 'Auth.Authentication.serviceLoader';
+        return $this->loadService($request, $response, $key);
     }
 
     /**
@@ -162,5 +158,24 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
         }
 
         return $middlewareQueue;
+    }
+
+    /**
+     * Load a service defined in configuration $loaderKey
+     *
+     * @param ServerRequestInterface $request The request.
+     * @param ResponseInterface $response The response.
+     * @param string $loaderKey service loader key
+     *
+     * @return mixed
+     */
+    protected function loadService(ServerRequestInterface $request, ResponseInterface $response, $loaderKey)
+    {
+        $serviceLoader = Configure::read($loaderKey);
+        if (is_string($serviceLoader)) {
+            $serviceLoader = new $serviceLoader();
+        }
+
+        return $serviceLoader($request, $response);
     }
 }
