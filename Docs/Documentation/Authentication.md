@@ -78,7 +78,9 @@ Configure::write('Auth.Authenticators', $authenticators);
 **You may have noticed the 'skipGoogleVerify' option, this option is used to identify if a authenticator should skip
 the two factor flow**
 
-
+The authenticators are loaded by \CakeDC\Users\Loader\AuthenticationServiceLoader class at bootstrap step 
+of this plugin.
+ 
 See the full Auth.Authenticators at config/users.php
 
 Identifiers
@@ -104,3 +106,5 @@ The default value for Auth.Identifiers is:
     ]
 ]
 ```
+The identifiers are loaded by \CakeDC\Users\Loader\AuthenticationServiceLoader class at bootstrap step 
+of this plugin.
