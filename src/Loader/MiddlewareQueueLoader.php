@@ -110,14 +110,8 @@ class MiddlewareQueueLoader
             return $middlewareQueue;
         }
 
-        if (Configure::read('Auth.Authorization.loadAuthorizationMiddleware') !== false) {
-            $middlewareQueue->add(new AuthorizationMiddleware($plugin, Configure::read('Auth.AuthorizationMiddleware')));
-            $middlewareQueue->add(new RequestAuthorizationMiddleware());
-        }
-
-        if (Configure::read('Auth.Authorization.loadRbacMiddleware') !== false) {
-            $middlewareQueue->add(new RbacMiddleware(null, Configure::read('Auth.RbacMiddleware')));
-        }
+        $middlewareQueue->add(new AuthorizationMiddleware($plugin, Configure::read('Auth.AuthorizationMiddleware')));
+        $middlewareQueue->add(new RequestAuthorizationMiddleware());
 
         return $middlewareQueue;
     }
