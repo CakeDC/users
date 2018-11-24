@@ -78,8 +78,8 @@ Configure::write('Auth.Authenticators', $authenticators);
 **You may have noticed the 'skipGoogleVerify' option, this option is used to identify if a authenticator should skip
 the two factor flow**
 
-The authenticators are loaded by \CakeDC\Users\Loader\AuthenticationServiceLoader class at bootstrap step 
-of this plugin.
+The authenticators are loaded by \CakeDC\Users\Loader\AuthenticationServiceLoader class at load authentication
+service method from plugin object.
  
 See the full Auth.Authenticators at config/users.php
 
@@ -100,11 +100,13 @@ The default value for Auth.Identifiers is:
     'Authentication.Password' => [],
     "CakeDC/Users.Social" => [
         'authFinder' => 'all'
-    ],
+    ], at load authentication
+      service step method from plugin object
     'Authentication.Token' => [
         'tokenField' => 'api_token'
     ]
 ]
 ```
-The identifiers are loaded by \CakeDC\Users\Loader\AuthenticationServiceLoader class at bootstrap step 
-of this plugin.
+The identifiers are loaded by \CakeDC\Users\Loader\AuthenticationServiceLoader class at load authentication
+service method from plugin object.
+
