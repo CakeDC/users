@@ -195,6 +195,7 @@ $config = [
             'enable' => true,
             'loadAuthorizationMiddleware' => true,
             'loadRbacMiddleware' => false,
+            'serviceLoader' => \CakeDC\Users\Loader\AuthorizationServiceLoader::class
         ],
         'AuthorizationMiddleware' => [
             'unauthorizedHandler' => [
