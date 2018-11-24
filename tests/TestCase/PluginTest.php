@@ -25,7 +25,6 @@ use CakeDC\Auth\Authentication\AuthenticationService as CakeDCAuthenticationServ
 use CakeDC\Auth\Authenticator\FormAuthenticator;
 use CakeDC\Auth\Authenticator\TwoFactorAuthenticator;
 use CakeDC\Auth\Middleware\OneTimePasswordAuthenticatorMiddleware;
-use CakeDC\Auth\Middleware\RbacMiddleware;
 use CakeDC\Users\Middleware\SocialAuthMiddleware;
 use CakeDC\Users\Middleware\SocialEmailMiddleware;
 use CakeDC\Users\Plugin;
@@ -52,8 +51,6 @@ class PluginTest extends IntegrationTestCase
         Configure::write('Users.Social.login', true);
         Configure::write('Users.OneTimePasswordAuthenticator.login', true);
         Configure::write('Auth.Authorization.enable', true);
-        Configure::write('Auth.Authorization.loadAuthorizationMiddleware', true);
-        Configure::write('Auth.Authorization.loadRbacMiddleware', false);
 
         $plugin = new Plugin();
 
@@ -79,8 +76,6 @@ class PluginTest extends IntegrationTestCase
         Configure::write('Users.Social.login', true);
         Configure::write('Users.OneTimePasswordAuthenticator.login', true);
         Configure::write('Auth.Authorization.enable', true);
-        Configure::write('Auth.Authorization.loadAuthorizationMiddleware', true);
-        Configure::write('Auth.Authorization.loadRbacMiddleware', true);
 
         $plugin = new Plugin();
 
@@ -133,8 +128,6 @@ class PluginTest extends IntegrationTestCase
         Configure::write('Users.Social.login', true);
         Configure::write('Users.OneTimePasswordAuthenticator.login', true);
         Configure::write('Auth.Authorization.enable', false);
-        Configure::write('Auth.Authorization.loadAuthorizationMiddleware', true);//ignore
-        Configure::write('Auth.Authorization.loadRbacMiddleware', true);//ignore
 
         $plugin = new Plugin();
 
@@ -158,8 +151,6 @@ class PluginTest extends IntegrationTestCase
         Configure::write('Users.Social.login', false);
         Configure::write('Users.OneTimePasswordAuthenticator.login', true);
         Configure::write('Auth.Authorization.enable', true);
-        Configure::write('Auth.Authorization.loadAuthorizationMiddleware', true);
-        Configure::write('Auth.Authorization.loadRbacMiddleware', false);
         $plugin = new Plugin();
 
         $middleware = new MiddlewareQueue();
@@ -181,8 +172,6 @@ class PluginTest extends IntegrationTestCase
         Configure::write('Users.Social.login', true);
         Configure::write('Users.OneTimePasswordAuthenticator.login', false);
         Configure::write('Auth.Authorization.enable', true);
-        Configure::write('Auth.Authorization.loadAuthorizationMiddleware', true);
-        Configure::write('Auth.Authorization.loadRbacMiddleware', false);
         $plugin = new Plugin();
 
         $middleware = new MiddlewareQueue();
@@ -205,8 +194,6 @@ class PluginTest extends IntegrationTestCase
         Configure::write('Users.Social.login', false);
         Configure::write('Users.OneTimePasswordAuthenticator.login', false);
         Configure::write('Auth.Authorization.enable', true);
-        Configure::write('Auth.Authorization.loadAuthorizationMiddleware', true);
-        Configure::write('Auth.Authorization.loadRbacMiddleware', false);
         $plugin = new Plugin();
 
         $middleware = new MiddlewareQueue();
