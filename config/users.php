@@ -240,13 +240,6 @@ $config = [
             'targetAuthenticator' => 'CakeDC\Auth\Authenticator\FormAuthenticator'
         ]
     ],
-    'SocialAuthMiddleware' => [
-        'sessionAuthKey' => 'Auth',
-        'locator' => [
-            'usernameField' => 'username',
-            'authFinder' => 'all',
-        ]
-    ],
     'OAuth' => [
         'path' => ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'socialLogin', 'prefix' => null],
         'providers' => [

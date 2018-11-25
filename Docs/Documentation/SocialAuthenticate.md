@@ -1,5 +1,5 @@
-SocialAuthenticate
-=============
+SocialAuthentication
+====================
 
 We currently support the following providers to perform login as well as to link an existing account:
 
@@ -95,3 +95,31 @@ $this->addBehavior('CakeDC.Users/Social', [
 ```
 
 By default it will use `username` field.
+
+
+Social Middlewares
+------------------
+We provide two middleware to help us the integration with social providers, the SocialAuthMiddleware is
+the main one, it is responsible to redirect the user to the social provider site and setup information
+needed by the CakeDC/Users.Social authenticator. The second one SocialEmailMiddleware is used when social provider does
+not returns user email.
+
+Social Authenticators
+---------------------
+The social authentication works with cakephp/authentication, we have two authenticators they work
+in combination with the two social middlewares:
+ - CakeDC/Users.Social, works with SocialAuthMiddleware
+ - CakeDC/Users.SocialPendingEmai, works with SocialEmailMiddleware
+
+
+Social Indentifier
+------------------
+The social identifier "CakeDC/Users.Social", works with data provider by both social authenticator,
+it is responsible to find or create a user registry for the request social user data.
+By default it fetch user data with finder 'all', but you can use a one if you need. Add this to your
+Application class, after CakeDC/Users Plugin is loaded.
+```
+    $identifiers = Configure::read('Auth.Identifiers');
+    $identifiers['CakeDC/Users.Social']['authFinder'] = 'customSocialAuth';
+    Configure::write('Auth.Identifiers', $identifiers);
+```
