@@ -114,6 +114,53 @@ The default value for Auth.Identifiers is:
 The identifiers are loaded by \CakeDC\Users\Loader\AuthenticationServiceLoader class at load authentication
 service method from plugin object.
 
+
+Handling Login Result
+---------------------
+For both form login and social login we use a base component 'CakeDC/Users.Login' to handle login,
+it check the result of authentication service to redirect user to a internal page or show an authentication
+error. It provide some error messages for specific authentication result status, please check the config/users.php file.
+
+To use a custom component to handle the login you could do:
+```
+Configure::write('Auth.SocialLoginFailure.component', 'MyLoginA');
+Configure::write('Auth.FormLoginFailure.component', 'MyLoginB');
+``` 
+
+The default configuration are:
+```
+[
+    ...
+    'Auth' => [
+        ...
+        'SocialLoginFailure' => [
+            'component' => 'CakeDC/Users.Login',
+            'defaultMessage' => __d('CakeDC/Users', 'Could not proceed with social account. Please try again'),
+            'messages' => [
+                'FAILURE_USER_NOT_ACTIVE' => __d(
+                    'CakeDC/Users',
+                    'Your user has not been validated yet. Please check your inbox for instructions'
+                ),
+                'FAILURE_ACCOUNT_NOT_ACTIVE' => __d(
+                    'CakeDC/Users',
+                    'Your social account has not been validated yet. Please check your inbox for instructions'
+                )
+            ],
+            'targetAuthenticator' => 'CakeDC\Users\Authenticator\SocialAuthenticator'
+        ],
+        'FormLoginFailure' => [
+            'component' => 'CakeDC/Users.Login',
+            'defaultMessage' => __d('CakeDC/Users', 'Username or password is incorrect'),
+            'messages' => [
+                'FAILURE_INVALID_RECAPTCHA' => __d('CakeDC/Users', 'Invalid reCaptcha'),
+            ],
+            'targetAuthenticator' => 'CakeDC\Auth\Authenticator\FormAuthenticator'
+        ]
+        ...
+    ]
+]
+``` 
+
 Authentication Service Loader 
 -----------------------------
 To make integration with cakephp/authentication easier we load the the authenticators and identifiers
