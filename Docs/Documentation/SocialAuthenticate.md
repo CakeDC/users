@@ -1,5 +1,5 @@
-SocialAuthentication
-====================
+Social Authentication
+=====================
 
 We currently support the following providers to perform login as well as to link an existing account:
 
@@ -11,6 +11,8 @@ We currently support the following providers to perform login as well as to link
 * Amazon
 
 Please [contact us](https://cakedc.com/contact) if you need to support another provider.
+
+The main source code for social integration is provided by ['CakeDC/auth' plugin](https://github.com/cakedc/auth) 
 
 Setup
 ---------------------
