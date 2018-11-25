@@ -216,14 +216,6 @@ $config = [
         'AuthorizationComponent' => [
             'enabled' => true,
         ],
-        'RbacMiddleware' => [
-            'unauthorizedRedirect' => [
-                'prefix' => false,
-                'plugin' => 'CakeDC/Users',
-                'controller' => 'Users',
-                'action' => 'login',
-            ]
-        ],
         'SocialLoginFailure' => [
             'component' => 'CakeDC/Users.Login',
             'defaultMessage' => __d('CakeDC/Users', 'Could not proceed with social account. Please try again'),
