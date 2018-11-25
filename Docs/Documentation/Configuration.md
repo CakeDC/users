@@ -153,10 +153,13 @@ To learn more about it please check the configurations for [Authentication](Auth
 ## Using the user's email to login
 
 You need to configure 2 things:
-* Change the Auth.authenticate.Form.fields configuration to let AuthComponent use the email instead of the username for user identify. Add this line to your bootstrap.php file, after CakeDC/Users Plugin is loaded
+
+* Change the Password identifier fields configuration to let it use the email instead of the username for user identify. Add this to your Application class, after CakeDC/Users Plugin is loaded.
 
 ```php
-Configure::write('Auth.authenticate.Form.fields.username', 'email');
+    $identifiers = Configure::read('Auth.Identifiers');
+    $identifiers['Authentication.Password']['fields']['username'] = 'email';
+    Configure::write('Auth.Identifiers', $identifiers);
 ```
 
 * Override the login.ctp template to change the Form->control to "email". Add (or copy from the https://github.com/CakeDC/users/blob/master/src/Template/Users/login.ctp) the file login.ctp to path /src/Template/Plugin/CakeDC/Users/Users/login.ctp and ensure it has the following content
