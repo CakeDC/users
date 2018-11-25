@@ -127,13 +127,10 @@ NOTE: SOME keys were hidden in this doc page, please refer to `vendor/cakedc/use
         'Identifiers' => [...],
         "Authorization" => [
             'enable' => true,
-            'loadAuthorizationMiddleware' => true,
-            'loadRbacMiddleware' => false,
             'serviceLoader' => \CakeDC\Users\Loader\AuthorizationServiceLoader::class
         ],
         'AuthorizationMiddleware' => [...],
         'AuthorizationComponent' => [...],
-        'RbacMiddleware' => [...],
         'SocialLoginFailure' => [...],
         'FormLoginFailure' => [...]
     ],
@@ -143,35 +140,15 @@ NOTE: SOME keys were hidden in this doc page, please refer to `vendor/cakedc/use
 
 ```
 
-Default Authenticate and Authorize Objects used
-------------------------
+Authentication and Authorization
+--------------------------------
 
-Using the UsersAuthComponent default initialization, the component will load the following objects into AuthComponent:
-* Authenticate
-  * 'Form'
-  * 'CakeDC/Users.Social' check [SocialAuthenticate](SocialAuthenticate.md) for configuration options
-  * 'CakeDC/Auth.RememberMe' check [RememberMeAuthenticate](https://github.com/CakeDC/auth/blob/master/src/RememberMeAuthenticate.php) for configuration options
-  * 'CakeDC/Auth.ApiKey' check [ApiKeyAuthenticate](https://github.com/CakeDC/auth/blob/master/Docs/Documentation/ApiKeyAuthenticate.md) for configuration options
-* Authorize
-  * 'CakeDC/Auth.Superuser' check [SuperuserAuthorize](https://github.com/CakeDC/auth/blob/master/Docs/Documentation/SuperuserAuthorize.md) for configuration options
-  * 'CakeDC/Auth.SimpleRbac' check [SimpleRbacAuthorize](https://github.com/CakeDC/auth/blob/master/Docs/Documentation/SimpleRbacAuthorize.md) for configuration options
+This plugin uses the two new plugins cakephp/authentication and cakephp/authorization instead of
+CakePHP Authentication component, but don't worry, the default configuration should be enough for your
+projects. We tried to allow you to start quickly without the need to configure a lot of thing and also
+allow you to configure as much as possible.
 
-Default Authorization Behavior
-------------------------------
-For authorization process this plugin loads two cakephp/authorization midlewares, 
-**AuthorizationMiddleware** and **RequestAuthorizationMiddleware** (used with **RbacPolicy**). 
-
-#### Configure AuthorizationMiddleware
-
-You can configure AuthorizationMiddleware by setting 'Auth.AuthorizationMiddleware' config,
-check available options at https://github.com/cakephp/authorization/blob/master/docs/Middleware.md
-
-#### Additional configurations
-
-* **Auth.Authorization.enable:** defaults to true, enable authorization and try to load needed middlewares
-* **Auth.Authorization.loadAuthorizationMiddleware:** defaults to true, load AuthorizationMiddleware and RequestAuthorizationMiddleware (used with RbacPolicy)
-* **Auth.Authorization.loadRbacMiddleware:** defaults to false, if you don't want to use cakephp/authorization but want to 
-use Rbac permissions, set this config to true. 
+To learn more about it please check the configurations for [Authentication](Authentication.md) and [Authorization](Authorization.md)
 
 ## Using the user's email to login
 
