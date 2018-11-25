@@ -125,3 +125,42 @@ Application class, after CakeDC/Users Plugin is loaded.
     $identifiers['CakeDC/Users.Social']['authFinder'] = 'customSocialAuth';
     Configure::write('Auth.Identifiers', $identifiers);
 ```
+
+
+Handling Social Login Result
+----------------------------
+We use a base component 'CakeDC/Users.Login' to handle tlogin, it check the result of authentication
+service to redirect user to a internal page or show an authentication error. It provide some error messages for social login.
+There are two custom message (Auth.SocialLoginFailure.messages) and one default message (Auth.SocialLoginFailure.defaultMessage).
+
+
+To use a custom component to handle the login you could do:
+```
+Configure::write('Auth.SocialLoginFailure.component', 'MyLoginA');
+``` 
+
+The default configurations are:
+```
+[
+    ...
+    'Auth' => [
+        ...
+        'SocialLoginFailure' => [
+            'component' => 'CakeDC/Users.Login',
+            'defaultMessage' => __d('CakeDC/Users', 'Could not proceed with social account. Please try again'),
+            'messages' => [
+                'FAILURE_USER_NOT_ACTIVE' => __d(
+                    'CakeDC/Users',
+                    'Your user has not been validated yet. Please check your inbox for instructions'
+                ),
+                'FAILURE_ACCOUNT_NOT_ACTIVE' => __d(
+                    'CakeDC/Users',
+                    'Your social account has not been validated yet. Please check your inbox for instructions'
+                )
+            ],
+            'targetAuthenticator' => 'CakeDC\Users\Authenticator\SocialAuthenticator'
+        ],
+        ...
+    ]
+]
+``` 
