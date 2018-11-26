@@ -52,7 +52,7 @@ The default configuration for Auth.AuthenticationComponent is:
 Authenticators
 --------------
 
-The cakephp/authentication plugin provider the main structure for the authenticators used in this plugin,
+The cakephp/authentication plugin provides the main structure for the authenticators used in this plugin,
 we also use some custom authenticators to work with social providers, reCaptcha and cookie. The default
 list of authenticators includes:
 
