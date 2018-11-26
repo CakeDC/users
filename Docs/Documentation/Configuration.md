@@ -62,16 +62,21 @@ Configuration options
 The plugin is configured via the Configure class. Check the `vendor/cakedc/users/config/users.php`
 for a complete list of all the configuration keys.
 
-Loading the UsersAuthComponent and using the right configuration values will setup the Users plugin,
-the AuthComponent and the OAuth component for your application.
+Loading the plugin and using the right configuration values will setup the Users plugin,
+with authentication service, authorization service, and the OAuth components for your application.
 
-If you prefer to setup AuthComponent by yourself, you'll need to load AuthComponent before UsersAuthComponent
-and set
+This plugin uses by default the new [cakephp/authentication](https://github.com/cakephp/authentication)
+and [cakephp/authorization](https://github.com/cakephp/authorization) plugins we suggest you to take a look
+into their documentation for more information.
+
+Most authentication/authorization configuration is defined at 'Auth' key, for example
+if you don't want the plugin to autoload the authorization service, you could do:
+
 ```
-Configure::write('Users.auth', false);
+Configure::write('Auth.Authorization.enable', false)
 ```
 
-Interesting UsersAuthComponent options and defaults
+Interesting Users options and defaults
 
 NOTE: SOME keys were hidden in this doc page, please refer to `vendor/cakedc/users/config/users.php` for the complete list
 
@@ -81,8 +86,6 @@ NOTE: SOME keys were hidden in this doc page, please refer to `vendor/cakedc/use
         'table' => 'CakeDC/Users.Users',
         // Controller used to manage users plugin features & actions
         'controller' => 'CakeDC/Users.Users',
-        // configure Auth component
-        'auth' => true,
         'Email' => [
             // determines if the user should include email
             'required' => true,
@@ -114,61 +117,49 @@ NOTE: SOME keys were hidden in this doc page, please refer to `vendor/cakedc/use
             'active' => true,
         ],
     ],
-// default configuration used to auto-load the Auth Component, override to change the way Auth works
+    //Default authentication/authorization setup
     'Auth' => [
-        'authenticate' => [
-            'all' => [
-                'finder' => 'active',
-            ],
-            'CakeDC/Auth.RememberMe',
-            'Form',
+        'Authentication' => [
+            'serviceLoader' => \CakeDC\Users\Loader\AuthenticationServiceLoader::class
         ],
-        'authorize' => [
-            'CakeDC/Auth.Superuser',
-            'CakeDC/Auth.SimpleRbac',
+        'AuthenticationComponent' => [...],
+        'Authenticators' => [...],
+        'Identifiers' => [...],
+        "Authorization" => [
+            'enable' => true,
+            'serviceLoader' => \CakeDC\Users\Loader\AuthorizationServiceLoader::class
         ],
+        'AuthorizationMiddleware' => [...],
+        'AuthorizationComponent' => [...],
+        'SocialLoginFailure' => [...],
+        'FormLoginFailure' => [...]
     ],
+    'SocialAuthMiddleware' => [...],
+    'OAuth' => [...]
 ];
 
 ```
 
-Default Authenticate and Authorize Objects used
-------------------------
+Authentication and Authorization
+--------------------------------
 
-Using the UsersAuthComponent default initialization, the component will load the following objects into AuthComponent:
-* Authenticate
-  * 'Form'
-  * 'CakeDC/Users.Social' check [SocialAuthenticate](SocialAuthenticate.md) for configuration options
-  * 'CakeDC/Auth.RememberMe' check [RememberMeAuthenticate](https://github.com/CakeDC/auth/blob/master/src/RememberMeAuthenticate.php) for configuration options
-  * 'CakeDC/Auth.ApiKey' check [ApiKeyAuthenticate](https://github.com/CakeDC/auth/blob/master/Docs/Documentation/ApiKeyAuthenticate.md) for configuration options
-* Authorize
-  * 'CakeDC/Auth.Superuser' check [SuperuserAuthorize](https://github.com/CakeDC/auth/blob/master/Docs/Documentation/SuperuserAuthorize.md) for configuration options
-  * 'CakeDC/Auth.SimpleRbac' check [SimpleRbacAuthorize](https://github.com/CakeDC/auth/blob/master/Docs/Documentation/SimpleRbacAuthorize.md) for configuration options
+This plugin uses the two new plugins cakephp/authentication and cakephp/authorization instead of
+CakePHP Authentication component, but don't worry, the default configuration should be enough for your
+projects. We tried to allow you to start quickly without the need to configure a lot of thing and also
+allow you to configure as much as possible.
 
-Default Authorization Behavior
-------------------------------
-For authorization process this plugin loads two cakephp/authorization midlewares, 
-**AuthorizationMiddleware** and **RequestAuthorizationMiddleware** (used with **RbacPolicy**). 
-
-#### Configure AuthorizationMiddleware
-
-You can configure AuthorizationMiddleware by setting 'Auth.AuthorizationMiddleware' config,
-check available options at https://github.com/cakephp/authorization/blob/master/docs/Middleware.md
-
-#### Additional configurations
-
-* **Auth.Authorization.enable:** defaults to true, enable authorization and try to load needed middlewares
-* **Auth.Authorization.loadAuthorizationMiddleware:** defaults to true, load AuthorizationMiddleware and RequestAuthorizationMiddleware (used with RbacPolicy)
-* **Auth.Authorization.loadRbacMiddleware:** defaults to false, if you don't want to use cakephp/authorization but want to 
-use Rbac permissions, set this config to true. 
+To learn more about it please check the configurations for [Authentication](Authentication.md) and [Authorization](Authorization.md)
 
 ## Using the user's email to login
 
 You need to configure 2 things:
-* Change the Auth.authenticate.Form.fields configuration to let AuthComponent use the email instead of the username for user identify. Add this line to your bootstrap.php file, after CakeDC/Users Plugin is loaded
+
+* Change the Password identifier fields configuration to let it use the email instead of the username for user identify. Add this to your Application class, after CakeDC/Users Plugin is loaded.
 
 ```php
-Configure::write('Auth.authenticate.Form.fields.username', 'email');
+    $identifiers = Configure::read('Auth.Identifiers');
+    $identifiers['Authentication.Password']['fields']['username'] = 'email';
+    Configure::write('Auth.Identifiers', $identifiers);
 ```
 
 * Override the login.ctp template to change the Form->control to "email". Add (or copy from the https://github.com/CakeDC/users/blob/master/src/Template/Users/login.ctp) the file login.ctp to path /src/Template/Plugin/CakeDC/Users/Users/login.ctp and ensure it has the following content

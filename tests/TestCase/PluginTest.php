@@ -25,7 +25,6 @@ use CakeDC\Auth\Authentication\AuthenticationService as CakeDCAuthenticationServ
 use CakeDC\Auth\Authenticator\FormAuthenticator;
 use CakeDC\Auth\Authenticator\TwoFactorAuthenticator;
 use CakeDC\Auth\Middleware\OneTimePasswordAuthenticatorMiddleware;
-use CakeDC\Auth\Middleware\RbacMiddleware;
 use CakeDC\Users\Middleware\SocialAuthMiddleware;
 use CakeDC\Users\Middleware\SocialEmailMiddleware;
 use CakeDC\Users\Plugin;
@@ -52,8 +51,6 @@ class PluginTest extends IntegrationTestCase
         Configure::write('Users.Social.login', true);
         Configure::write('OneTimePasswordAuthenticator.login', true);
         Configure::write('Auth.Authorization.enable', true);
-        Configure::write('Auth.Authorization.loadAuthorizationMiddleware', true);
-        Configure::write('Auth.Authorization.loadRbacMiddleware', false);
 
         $plugin = new Plugin();
 
@@ -79,8 +76,6 @@ class PluginTest extends IntegrationTestCase
         Configure::write('Users.Social.login', true);
         Configure::write('OneTimePasswordAuthenticator.login', true);
         Configure::write('Auth.Authorization.enable', true);
-        Configure::write('Auth.Authorization.loadAuthorizationMiddleware', true);
-        Configure::write('Auth.Authorization.loadRbacMiddleware', true);
 
         $plugin = new Plugin();
 
@@ -93,34 +88,7 @@ class PluginTest extends IntegrationTestCase
         $this->assertInstanceOf(OneTimePasswordAuthenticatorMiddleware::class, $middleware->get(3));
         $this->assertInstanceOf(AuthorizationMiddleware::class, $middleware->get(4));
         $this->assertInstanceOf(RequestAuthorizationMiddleware::class, $middleware->get(5));
-        $this->assertInstanceOf(RbacMiddleware::class, $middleware->get(6));
-        $this->assertEquals(7, $middleware->count());
-    }
-
-    /**
-     * testMiddleware
-     *
-     * @return void
-     */
-    public function testMiddlewareAuthorizationOnlyRbacMiddleware()
-    {
-        Configure::write('Users.Social.login', true);
-        Configure::write('OneTimePasswordAuthenticator.login', true);
-        Configure::write('Auth.Authorization.enable', true);
-        Configure::write('Auth.Authorization.loadAuthorizationMiddleware', false);
-        Configure::write('Auth.Authorization.loadRbacMiddleware', true);
-
-        $plugin = new Plugin();
-
-        $middleware = new MiddlewareQueue();
-
-        $middleware = $plugin->middleware($middleware);
-        $this->assertInstanceOf(SocialAuthMiddleware::class, $middleware->get(0));
-        $this->assertInstanceOf(SocialEmailMiddleware::class, $middleware->get(1));
-        $this->assertInstanceOf(AuthenticationMiddleware::class, $middleware->get(2));
-        $this->assertInstanceOf(OneTimePasswordAuthenticatorMiddleware::class, $middleware->get(3));
-        $this->assertInstanceOf(RbacMiddleware::class, $middleware->get(4));
-        $this->assertEquals(5, $middleware->count());
+        $this->assertEquals(6, $middleware->count());
     }
 
     /**
@@ -133,8 +101,6 @@ class PluginTest extends IntegrationTestCase
         Configure::write('Users.Social.login', true);
         Configure::write('OneTimePasswordAuthenticator.login', true);
         Configure::write('Auth.Authorization.enable', false);
-        Configure::write('Auth.Authorization.loadAuthorizationMiddleware', true);//ignore
-        Configure::write('Auth.Authorization.loadRbacMiddleware', true);//ignore
 
         $plugin = new Plugin();
 
@@ -158,8 +124,6 @@ class PluginTest extends IntegrationTestCase
         Configure::write('Users.Social.login', false);
         Configure::write('OneTimePasswordAuthenticator.login', true);
         Configure::write('Auth.Authorization.enable', true);
-        Configure::write('Auth.Authorization.loadAuthorizationMiddleware', true);
-        Configure::write('Auth.Authorization.loadRbacMiddleware', false);
         $plugin = new Plugin();
 
         $middleware = new MiddlewareQueue();
@@ -181,8 +145,6 @@ class PluginTest extends IntegrationTestCase
         Configure::write('Users.Social.login', true);
         Configure::write('OneTimePasswordAuthenticator.login', false);
         Configure::write('Auth.Authorization.enable', true);
-        Configure::write('Auth.Authorization.loadAuthorizationMiddleware', true);
-        Configure::write('Auth.Authorization.loadRbacMiddleware', false);
         $plugin = new Plugin();
 
         $middleware = new MiddlewareQueue();
@@ -205,8 +167,6 @@ class PluginTest extends IntegrationTestCase
         Configure::write('Users.Social.login', false);
         Configure::write('OneTimePasswordAuthenticator.login', false);
         Configure::write('Auth.Authorization.enable', true);
-        Configure::write('Auth.Authorization.loadAuthorizationMiddleware', true);
-        Configure::write('Auth.Authorization.loadRbacMiddleware', false);
         $plugin = new Plugin();
 
         $middleware = new MiddlewareQueue();
@@ -232,7 +192,7 @@ class PluginTest extends IntegrationTestCase
                 'Authentication.Password'
             ]
         ]);
-        Configure::write('Auth.Authentication.service', function ($aRequest, $aResponse) use ($request, $response, $service) {
+        Configure::write('Auth.Authentication.serviceLoader', function ($aRequest, $aResponse) use ($request, $response, $service) {
             $this->assertSame($request, $aRequest);
             $this->assertSame($response, $aResponse);
 
@@ -444,7 +404,7 @@ class PluginTest extends IntegrationTestCase
         $request->withQueryParams(['method' => __METHOD__]);
         $response = new Response(['body' => __METHOD__]);
         $service = new AuthorizationService(new ResolverCollection());
-        Configure::write('Auth.Authorization.service', function ($aRequest, $aResponse) use ($request, $response, $service) {
+        Configure::write('Auth.Authorization.serviceLoader', function ($aRequest, $aResponse) use ($request, $response, $service) {
             $this->assertSame($request, $aRequest);
             $this->assertSame($response, $aResponse);
 

@@ -20,6 +20,7 @@ $config = [
         'controller' => 'CakeDC/Users.Users',
         // Password Hasher
         'passwordHasher' => '\Cake\Auth\DefaultPasswordHasher',
+        'middlewareQueueLoader' => \CakeDC\Users\Loader\MiddlewareQueueLoader::class,
         // token expiration, 1 hour
         'Token' => ['expiration' => 3600],
         'Email' => [
@@ -120,6 +121,9 @@ $config = [
         'rngprovider' => null
     ],
     'Auth' => [
+        'Authentication' => [
+            'serviceLoader' => \CakeDC\Users\Loader\AuthenticationServiceLoader::class
+        ],
         'AuthenticationComponent' => [
             'load' => true,
             'loginAction' => [
@@ -190,8 +194,7 @@ $config = [
         ],
         "Authorization" => [
             'enable' => true,
-            'loadAuthorizationMiddleware' => true,
-            'loadRbacMiddleware' => false,
+            'serviceLoader' => \CakeDC\Users\Loader\AuthorizationServiceLoader::class
         ],
         'AuthorizationMiddleware' => [
             'unauthorizedHandler' => [
@@ -209,14 +212,6 @@ $config = [
         ],
         'AuthorizationComponent' => [
             'enabled' => true,
-        ],
-        'RbacMiddleware' => [
-            'unauthorizedRedirect' => [
-                'prefix' => false,
-                'plugin' => 'CakeDC/Users',
-                'controller' => 'Users',
-                'action' => 'login',
-            ]
         ],
         'SocialLoginFailure' => [
             'component' => 'CakeDC/Users.Login',
@@ -240,13 +235,6 @@ $config = [
                 'FAILURE_INVALID_RECAPTCHA' => __d('CakeDC/Users', 'Invalid reCaptcha'),
             ],
             'targetAuthenticator' => 'CakeDC\Auth\Authenticator\FormAuthenticator'
-        ]
-    ],
-    'SocialAuthMiddleware' => [
-        'sessionAuthKey' => 'Auth',
-        'locator' => [
-            'usernameField' => 'username',
-            'authFinder' => 'all',
         ]
     ],
     'OAuth' => [

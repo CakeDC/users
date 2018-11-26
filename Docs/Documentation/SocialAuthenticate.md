@@ -1,5 +1,5 @@
-SocialAuthenticate
-=============
+Social Authentication
+=====================
 
 We currently support the following providers to perform login as well as to link an existing account:
 
@@ -11,6 +11,8 @@ We currently support the following providers to perform login as well as to link
 * Amazon
 
 Please [contact us](https://cakedc.com/contact) if you need to support another provider.
+
+The main source code for social integration is provided by ['CakeDC/auth' plugin](https://github.com/cakedc/auth) 
 
 Setup
 ---------------------
@@ -95,3 +97,70 @@ $this->addBehavior('CakeDC.Users/Social', [
 ```
 
 By default it will use `username` field.
+
+
+Social Middlewares
+------------------
+We provide two middleware to help us the integration with social providers, the SocialAuthMiddleware is
+the main one, it is responsible to redirect the user to the social provider site and setup information
+needed by the CakeDC/Users.Social authenticator. The second one SocialEmailMiddleware is used when social provider does
+not returns user email.
+
+Social Authenticators
+---------------------
+The social authentication works with cakephp/authentication, we have two authenticators they work
+in combination with the two social middlewares:
+ - CakeDC/Users.Social, works with SocialAuthMiddleware
+ - CakeDC/Users.SocialPendingEmai, works with SocialEmailMiddleware
+
+
+Social Indentifier
+------------------
+The social identifier "CakeDC/Users.Social", works with data provider by both social authenticator,
+it is responsible to find or create a user registry for the request social user data.
+By default it fetch user data with finder 'all', but you can use a one if you need. Add this to your
+Application class, after CakeDC/Users Plugin is loaded.
+```
+    $identifiers = Configure::read('Auth.Identifiers');
+    $identifiers['CakeDC/Users.Social']['authFinder'] = 'customSocialAuth';
+    Configure::write('Auth.Identifiers', $identifiers);
+```
+
+
+Handling Social Login Result
+----------------------------
+We use a base component 'CakeDC/Users.Login' to handle tlogin, it check the result of authentication
+service to redirect user to a internal page or show an authentication error. It provide some error messages for social login.
+There are two custom message (Auth.SocialLoginFailure.messages) and one default message (Auth.SocialLoginFailure.defaultMessage).
+
+
+To use a custom component to handle the login you could do:
+```
+Configure::write('Auth.SocialLoginFailure.component', 'MyLoginA');
+``` 
+
+The default configurations are:
+```
+[
+    ...
+    'Auth' => [
+        ...
+        'SocialLoginFailure' => [
+            'component' => 'CakeDC/Users.Login',
+            'defaultMessage' => __d('CakeDC/Users', 'Could not proceed with social account. Please try again'),
+            'messages' => [
+                'FAILURE_USER_NOT_ACTIVE' => __d(
+                    'CakeDC/Users',
+                    'Your user has not been validated yet. Please check your inbox for instructions'
+                ),
+                'FAILURE_ACCOUNT_NOT_ACTIVE' => __d(
+                    'CakeDC/Users',
+                    'Your social account has not been validated yet. Please check your inbox for instructions'
+                )
+            ],
+            'targetAuthenticator' => 'CakeDC\Users\Authenticator\SocialAuthenticator'
+        ],
+        ...
+    ]
+]
+``` 

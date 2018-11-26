@@ -58,12 +58,8 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
      */
     public function getAuthenticationService(ServerRequestInterface $request, ResponseInterface $response)
     {
-        $serviceLoader = Configure::read('Auth.Authentication.service');
-        if ($serviceLoader !== null) {
-            return $serviceLoader($request, $response);
-        }
-
-        return $this->authentication();
+        $key = 'Auth.Authentication.serviceLoader';
+        return $this->loadService($request, $response, $key);
     }
 
     /**
@@ -71,60 +67,8 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
      */
     public function getAuthorizationService(ServerRequestInterface $request, ResponseInterface $response)
     {
-        $serviceLoader = Configure::read('Auth.Authorization.service');
-        if ($serviceLoader !== null) {
-            return $serviceLoader($request, $response);
-        }
-
-        $map = new MapResolver();
-        $map->map(ServerRequest::class, RbacPolicy::class);
-
-        $orm = new OrmResolver();
-
-        $resolver = new ResolverCollection([
-            $map,
-            $orm
-        ]);
-
-        return new AuthorizationService($resolver);
-    }
-
-    /**
-     * load authenticators and identifiers
-     *
-     * @return AuthenticationServiceInterface
-     */
-    public function authentication()
-    {
-        $service = new AuthenticationService();
-        $authenticators = Configure::read('Auth.Authenticators');
-        $identifiers = Configure::read('Auth.Identifiers');
-
-        foreach ($identifiers as $identifier => $options) {
-            if (is_numeric($identifier)) {
-                $identifier = $options;
-                $options = [];
-            }
-
-            $service->loadIdentifier($identifier, $options);
-        }
-
-        foreach ($authenticators as $authenticator => $options) {
-            if (is_numeric($authenticator)) {
-                $authenticator = $options;
-                $options = [];
-            }
-
-            $service->loadAuthenticator($authenticator, $options);
-        }
-
-        if (Configure::read('OneTimePasswordAuthenticator.login')) {
-            $service->loadAuthenticator('CakeDC/Auth.TwoFactor', [
-                'skipGoogleVerify' => true,
-            ]);
-        }
-
-        return $service;
+        $key = 'Auth.Authorization.serviceLoader';
+        return $this->loadService($request, $response, $key);
     }
 
     /**
@@ -132,45 +76,40 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
      */
     public function middleware($middlewareQueue)
     {
-        if (Configure::read('Users.Social.login')) {
-            $middlewareQueue
-                ->add(SocialAuthMiddleware::class)
-                ->add(SocialEmailMiddleware::class);
-        }
+        $loader = $this->getLoader('Users.middlewareQueueLoader');
 
-        $authentication = new AuthenticationMiddleware($this);
-        $middlewareQueue->add($authentication);
-
-        if (Configure::read('OneTimePasswordAuthenticator.login')) {
-            $middlewareQueue->add(OneTimePasswordAuthenticatorMiddleware::class);
-        }
-
-        $middlewareQueue = $this->addAuthorizationMiddleware($middlewareQueue);
-
-        return $middlewareQueue;
+        return $loader($middlewareQueue, $this);
     }
 
     /**
-     * Add authorization middleware based on Auth.Authorization
+     * Load a service defined in configuration $loaderKey
      *
-     * @param MiddlewareQueue $middlewareQueue queue of middleware
-     * @return MiddlewareQueue
+     * @param ServerRequestInterface $request The request.
+     * @param ResponseInterface $response The response.
+     * @param string $loaderKey service loader key
+     *
+     * @return mixed
      */
-    protected function addAuthorizationMiddleware(MiddlewareQueue $middlewareQueue)
+    protected function loadService(ServerRequestInterface $request, ResponseInterface $response, $loaderKey)
     {
-        if (Configure::read('Auth.Authorization.enable') === false) {
-            return $middlewareQueue;
+        $serviceLoader = $this->getLoader($loaderKey);
+
+        return $serviceLoader($request, $response);
+    }
+
+    /**
+     * Get the loader callable
+     *
+     * @param string $loaderKey loader configuration key
+     * @return callable
+     */
+    protected function getLoader($loaderKey)
+    {
+        $serviceLoader = Configure::read($loaderKey);
+        if (is_string($serviceLoader)) {
+            $serviceLoader = new $serviceLoader();
         }
 
-        if (Configure::read('Auth.Authorization.loadAuthorizationMiddleware') !== false) {
-            $middlewareQueue->add(new AuthorizationMiddleware($this, Configure::read('Auth.AuthorizationMiddleware')));
-            $middlewareQueue->add(new RequestAuthorizationMiddleware());
-        }
-
-        if (Configure::read('Auth.Authorization.loadRbacMiddleware') !== false) {
-            $middlewareQueue->add(new RbacMiddleware(null, Configure::read('Auth.RbacMiddleware')));
-        }
-
-        return $middlewareQueue;
+        return $serviceLoader;
     }
 }
