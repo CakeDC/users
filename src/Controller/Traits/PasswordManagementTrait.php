@@ -59,7 +59,7 @@ trait PasswordManagementTrait
             $redirect = $this->Authentication->getConfig('loginAction');
         }
         $this->set('validatePassword', $validatePassword);
-        if ($this->request->is('post')) {
+        if ($this->request->is(['post', 'put'])) {
             try {
                 $validator = $this->getUsersTable()->validationPasswordConfirm(new Validator());
                 if (!empty($id)) {
