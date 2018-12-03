@@ -50,7 +50,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
     public function testChangePasswordHappy()
     {
         $this->assertEquals('12345', $this->table->get('00000000-0000-0000-0000-000000000001')->password);
-        $this->_mockRequestPost();
+        $this->_mockRequestPost(['post', 'put']);
         $this->_mockAuthLoggedIn();
         $this->_mockFlash();
         $this->Trait->request->expects($this->once())
@@ -78,7 +78,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
     public function testChangePasswordWithError()
     {
         $this->assertEquals('12345', $this->table->get('00000000-0000-0000-0000-000000000001')->password);
-        $this->_mockRequestPost();
+        $this->_mockRequestPost(['post', 'put']);
         $this->_mockAuthLoggedIn();
         $this->_mockFlash();
         $this->Trait->request->expects($this->once())
@@ -101,7 +101,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
     public function testChangePasswordWithAfterChangeEvent()
     {
         $this->assertEquals('12345', $this->table->get('00000000-0000-0000-0000-000000000001')->password);
-        $this->_mockRequestPost();
+        $this->_mockRequestPost(['post', 'put']);
         $this->_mockAuthLoggedIn();
         $this->_mockFlash();
         $this->Trait->request->expects($this->once())
@@ -139,7 +139,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
             '$2y$10$IPPgJNSfvATsMBLbv/2r8OtpyTBibyM1g5GDxD4PivW9qBRwRkRbC',
             $this->table->get('00000000-0000-0000-0000-000000000006')->password
         );
-        $this->_mockRequestPost();
+        $this->_mockRequestPost(['post', 'put']);
         $this->_mockAuthLoggedIn(['id' => '00000000-0000-0000-0000-000000000006', 'password' => '$2y$10$IPPgJNSfvATsMBLbv/2r8OtpyTBibyM1g5GDxD4PivW9qBRwRkRbC']);
         $this->_mockFlash();
         $this->Trait->request->expects($this->once())
@@ -162,7 +162,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
      */
     public function testChangePasswordWithEmptyCurrentPassword()
     {
-        $this->_mockRequestPost();
+        $this->_mockRequestPost(['post', 'put']);
         $this->_mockAuthLoggedIn(['id' => '00000000-0000-0000-0000-000000000006', 'password' => '$2y$10$IPPgJNSfvATsMBLbv/2r8OtpyTBibyM1g5GDxD4PivW9qBRwRkRbC']);
         $this->_mockFlash();
         $this->Trait->request->expects($this->once())
@@ -189,7 +189,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
             '$2y$10$IPPgJNSfvATsMBLbv/2r8OtpyTBibyM1g5GDxD4PivW9qBRwRkRbC',
             $this->table->get('00000000-0000-0000-0000-000000000006')->password
         );
-        $this->_mockRequestPost();
+        $this->_mockRequestPost(['post', 'put']);
         $this->_mockAuthLoggedIn(['id' => '00000000-0000-0000-0000-000000000006', 'password' => '$2y$10$IPPgJNSfvATsMBLbv/2r8OtpyTBibyM1g5GDxD4PivW9qBRwRkRbC']);
         $this->_mockFlash();
         $this->Trait->request->expects($this->once())
@@ -212,7 +212,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
      */
     public function testChangePasswordWithInvalidUser()
     {
-        $this->_mockRequestPost();
+        $this->_mockRequestPost(['post', 'put']);
         $this->_mockAuthLoggedIn(['id' => '12312312-0000-0000-0000-000000000002', 'password' => 'invalid-pass']);
         $this->_mockFlash();
         $this->Trait->request->expects($this->once())
@@ -234,7 +234,13 @@ class PasswordManagementTraitTest extends BaseTraitTest
      */
     public function testChangePasswordGetLoggedIn()
     {
-        $this->_mockRequestGet();
+        $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
+            ->setMethods(['is', 'referer', 'getData'])
+            ->getMock();
+        $this->Trait->request->expects($this->any())
+            ->method('is')
+            ->with(['post', 'put'])
+            ->will($this->returnValue(false));
         $this->_mockAuthLoggedIn();
         $this->Trait->expects($this->any())
                 ->method('set')
