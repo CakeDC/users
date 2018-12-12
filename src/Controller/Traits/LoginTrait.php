@@ -288,6 +288,14 @@ trait LoginTrait
 
                     $user['secret_verified'] = true;
                 }
+                
+                // Push the remember me value to post data
+                // for after login event auth
+                $hasRememberMe = $this->request->getSession()->read('hasRememberMe');
+                if ($hasRememberMe) {
+                    $this->request->data(Configure::read('Users.RememberMe.Cookie.name'), $hasRememberMe);
+                    $this->request->getSession()->delete('hasRememberMe');
+                }
 
                 $this->request->getSession()->delete('temporarySession');
                 $this->Auth->setUser($user);
@@ -339,6 +347,13 @@ trait LoginTrait
                 // storing user's session in the temporary one
                 // until the GA verification is checked
                 $this->request->getSession()->write('temporarySession', $user);
+                
+                // store the remember me value from login into session temporarily
+                // to pass the value to verify action
+                if (Configure::read('Users.RememberMe.active')) {
+                    $this->request->getSession()->write('hasRememberMe', $this->request->getData(Configure::read('Users.RememberMe.Cookie.name')));
+                }
+                
                 $url = Configure::read('GoogleAuthenticator.verifyAction');
                 $url = array_merge($url, [
                     '?' => $this->request->getQueryParams()
