@@ -15,8 +15,10 @@ use Authorization\AuthorizationService;
 use Authorization\Policy\MapResolver;
 use Authorization\Policy\OrmResolver;
 use Authorization\Policy\ResolverCollection;
+use CakeDC\Auth\Policy\CollectionPolicy;
 use CakeDC\Auth\Policy\RbacPolicy;
 use Cake\Http\ServerRequest;
+use CakeDC\Auth\Policy\SuperuserPolicy;
 use Psr\Http\Message\ServerRequestInterface;
 
 class AuthorizationServiceLoader
@@ -30,7 +32,13 @@ class AuthorizationServiceLoader
     public function __invoke(ServerRequestInterface $request)
     {
         $map = new MapResolver();
-        $map->map(ServerRequest::class, RbacPolicy::class);
+        $map->map(
+            ServerRequest::class,
+            new CollectionPolicy([
+                SuperuserPolicy::class,
+                RbacPolicy::class
+            ])
+        );
 
         $orm = new OrmResolver();
 
