@@ -163,7 +163,7 @@ The default configuration are:
 
 Authentication Service Loader 
 -----------------------------
-To make integration with cakephp/authentication easier we load the the authenticators and identifiers
+To make the integration with cakephp/authentication easier we load the authenticators and identifiers
 defined at Auth configuration and other components to work with social provider, two-factor authentication.
 
 If the configuration is not enough for your project you may create a custom loader extending the 
@@ -199,5 +199,5 @@ class AppAuthenticationServiceLoader extends AuthenticationServiceLoader
 - Change the authentication service loader:
 
 ```
-Configure::write('Authentication.serviceLoader', \CakeDC\Users\Loader\AuthenticationServiceLoader::class);
+Configure::write('Authentication.serviceLoader', \App\Loader\AuthenticationServiceLoader::class);
 ```
