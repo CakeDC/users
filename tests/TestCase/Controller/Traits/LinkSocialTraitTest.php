@@ -262,7 +262,7 @@ class LinkSocialTraitTest extends BaseTraitTest
 
         $this->Trait->Flash->expects($this->once())
             ->method('success')
-            ->with(__d('CakeDC/Users', 'Social account was associated.'));
+            ->with(__d('cake_d_c/users', 'Social account was associated.'));
 
         $this->Trait->callbackLinkSocial('facebook');
 
@@ -300,7 +300,7 @@ class LinkSocialTraitTest extends BaseTraitTest
         $user = TableRegistry::getTableLocator()->get('CakeDC/Users.Users')->get('00000000-0000-0000-0000-000000000001');
         $user->setErrors([
             'social_accounts' => [
-                '_existsIn' => __d('CakeDC/Users', 'Social account already associated to another user')
+                '_existsIn' => __d('cake_d_c/users', 'Social account already associated to another user')
             ]
         ]);
         $Table = $this->getMockForModel('CakeDC/Users.Users', ['linkSocialAccount', 'get']);
@@ -471,7 +471,7 @@ class LinkSocialTraitTest extends BaseTraitTest
 
         $this->Trait->Flash->expects($this->once())
             ->method('error')
-            ->with(__d('CakeDC/Users', 'Could not associate account, please try again.'));
+            ->with(__d('cake_d_c/users', 'Could not associate account, please try again.'));
 
         $result = $this->Trait->callbackLinkSocial('facebook');
         $this->assertInstanceOf(Response::class, $result);
@@ -532,7 +532,7 @@ class LinkSocialTraitTest extends BaseTraitTest
 
         $this->Trait->Flash->expects($this->once())
             ->method('error')
-            ->with(__d('CakeDC/Users', 'Could not associate account, please try again.'));
+            ->with(__d('cake_d_c/users', 'Could not associate account, please try again.'));
 
         $result = $this->Trait->callbackLinkSocial('unknown');
         $this->assertInstanceOf(Response::class, $result);

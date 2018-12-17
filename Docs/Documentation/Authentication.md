@@ -135,7 +135,7 @@ The default configuration are:
         ...
         'SocialLoginFailure' => [
             'component' => 'CakeDC/Users.Login',
-            'defaultMessage' => __d('CakeDC/Users', 'Could not proceed with social account. Please try again'),
+            'defaultMessage' => __d('cake_d_c/users', 'Could not proceed with social account. Please try again'),
             'messages' => [
                 'FAILURE_USER_NOT_ACTIVE' => __d(
                     'CakeDC/Users',
@@ -150,9 +150,9 @@ The default configuration are:
         ],
         'FormLoginFailure' => [
             'component' => 'CakeDC/Users.Login',
-            'defaultMessage' => __d('CakeDC/Users', 'Username or password is incorrect'),
+            'defaultMessage' => __d('cake_d_c/users', 'Username or password is incorrect'),
             'messages' => [
-                'FAILURE_INVALID_RECAPTCHA' => __d('CakeDC/Users', 'Invalid reCaptcha'),
+                'FAILURE_INVALID_RECAPTCHA' => __d('cake_d_c/users', 'Invalid reCaptcha'),
             ],
             'targetAuthenticator' => 'CakeDC\Auth\Authenticator\FormAuthenticator'
         ]

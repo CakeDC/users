@@ -266,7 +266,7 @@ class LinkSocialBehaviorTest extends TestCase
         $this->assertFalse($resultUser->has('social_accounts'));
         $expected = [
             'social_accounts' => [
-                '_existsIn' => __d('CakeDC/Users', 'Social account already associated to another user')
+                '_existsIn' => __d('cake_d_c/users', 'Social account already associated to another user')
             ]
         ];
         $actual = $user->getErrors();

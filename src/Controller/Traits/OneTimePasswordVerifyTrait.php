@@ -76,7 +76,7 @@ trait OneTimePasswordVerifyTrait
         $temporarySession = $this->request->getSession()->read(AuthenticationService::GOOGLE_VERIFY_SESSION_KEY);
 
         if (empty($temporarySession) || !isset($temporarySession['id'])) {
-            $message = __d('CakeDC/Users', 'Could not find user data');
+            $message = __d('cake_d_c/users', 'Could not find user data');
             $this->Flash->error($message, 'default', [], 'auth');
 
             return false;
@@ -138,7 +138,7 @@ trait OneTimePasswordVerifyTrait
 
         if (!$codeVerified) {
             $this->request->getSession()->destroy();
-            $message = __d('CakeDC/Users', 'Verification code is invalid. Try again');
+            $message = __d('cake_d_c/users', 'Verification code is invalid. Try again');
             $this->Flash->error($message, 'default', [], 'auth');
 
             return $this->redirect($loginAction);

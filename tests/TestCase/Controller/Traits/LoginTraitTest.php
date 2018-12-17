@@ -99,9 +99,9 @@ class LoginTraitTest extends BaseTraitTest
         $registry = new ComponentRegistry();
         $config = [
             'component' => 'CakeDC/Users.Login',
-            'defaultMessage' => __d('CakeDC/Users', 'Username or password is incorrect'),
+            'defaultMessage' => __d('cake_d_c/users', 'Username or password is incorrect'),
             'messages' => [
-                FormAuthenticator::FAILURE_INVALID_RECAPTCHA => __d('CakeDC/Users', 'Invalid reCaptcha')
+                FormAuthenticator::FAILURE_INVALID_RECAPTCHA => __d('cake_d_c/users', 'Invalid reCaptcha')
             ],
             'targetAuthenticator' => FormAuthenticator::class
         ];
@@ -156,9 +156,9 @@ class LoginTraitTest extends BaseTraitTest
         $registry = new ComponentRegistry();
         $config = [
             'component' => 'CakeDC/Users.Login',
-            'defaultMessage' => __d('CakeDC/Users', 'Username or password is incorrect'),
+            'defaultMessage' => __d('cake_d_c/users', 'Username or password is incorrect'),
             'messages' => [
-                FormAuthenticator::FAILURE_INVALID_RECAPTCHA => __d('CakeDC/Users', 'Invalid reCaptcha')
+                FormAuthenticator::FAILURE_INVALID_RECAPTCHA => __d('cake_d_c/users', 'Invalid reCaptcha')
             ],
             'targetAuthenticator' => FormAuthenticator::class
         ];
@@ -219,7 +219,7 @@ class LoginTraitTest extends BaseTraitTest
     {
         $socialLoginConfig = [
             'component' => 'CakeDC/Users.Login',
-            'defaultMessage' => __d('CakeDC/Users', 'Could not proceed with social account. Please try again'),
+            'defaultMessage' => __d('cake_d_c/users', 'Could not proceed with social account. Please try again'),
             'messages' => [
                 SocialAuthenticator::FAILURE_USER_NOT_ACTIVE => __d(
                     'CakeDC/Users',
@@ -234,9 +234,9 @@ class LoginTraitTest extends BaseTraitTest
         ];
         $loginConfig = [
             'component' => 'CakeDC/Users.Login',
-            'defaultMessage' => __d('CakeDC/Users', 'Username or password is incorrect'),
+            'defaultMessage' => __d('cake_d_c/users', 'Username or password is incorrect'),
             'messages' => [
-                FormAuthenticator::FAILURE_INVALID_RECAPTCHA => __d('CakeDC/Users', 'Invalid reCaptcha'),
+                FormAuthenticator::FAILURE_INVALID_RECAPTCHA => __d('cake_d_c/users', 'Invalid reCaptcha'),
             ],
             'targetAuthenticator' => FormAuthenticator::class
         ];
@@ -408,7 +408,7 @@ class LoginTraitTest extends BaseTraitTest
         $registry = new ComponentRegistry();
         $config = [
             'component' => 'CakeDC/Users.Login',
-            'defaultMessage' => __d('CakeDC/Users', 'Could not proceed with social account. Please try again'),
+            'defaultMessage' => __d('cake_d_c/users', 'Could not proceed with social account. Please try again'),
             'messages' => [
                 SocialAuthenticator::FAILURE_USER_NOT_ACTIVE => __d(
                     'CakeDC/Users',

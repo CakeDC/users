@@ -47,16 +47,16 @@ class SocialAccountsController extends AppController
         try {
             $result = $this->SocialAccounts->validateAccount($provider, $reference, $token);
             if ($result) {
-                $this->Flash->success(__d('CakeDC/Users', 'Account validated successfully'));
+                $this->Flash->success(__d('cake_d_c/users', 'Account validated successfully'));
             } else {
-                $this->Flash->error(__d('CakeDC/Users', 'Account could not be validated'));
+                $this->Flash->error(__d('cake_d_c/users', 'Account could not be validated'));
             }
         } catch (RecordNotFoundException $exception) {
-            $this->Flash->error(__d('CakeDC/Users', 'Invalid token and/or social account'));
+            $this->Flash->error(__d('cake_d_c/users', 'Invalid token and/or social account'));
         } catch (AccountAlreadyActiveException $exception) {
-            $this->Flash->error(__d('CakeDC/Users', 'Social Account already active'));
+            $this->Flash->error(__d('cake_d_c/users', 'Social Account already active'));
         } catch (\Exception $exception) {
-            $this->Flash->error(__d('CakeDC/Users', 'Social Account could not be validated'));
+            $this->Flash->error(__d('cake_d_c/users', 'Social Account could not be validated'));
         }
 
         return $this->redirect(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
@@ -75,16 +75,16 @@ class SocialAccountsController extends AppController
         try {
             $result = $this->SocialAccounts->resendValidation($provider, $reference);
             if ($result) {
-                $this->Flash->success(__d('CakeDC/Users', 'Email sent successfully'));
+                $this->Flash->success(__d('cake_d_c/users', 'Email sent successfully'));
             } else {
-                $this->Flash->error(__d('CakeDC/Users', 'Email could not be sent'));
+                $this->Flash->error(__d('cake_d_c/users', 'Email could not be sent'));
             }
         } catch (RecordNotFoundException $exception) {
-            $this->Flash->error(__d('CakeDC/Users', 'Invalid account'));
+            $this->Flash->error(__d('cake_d_c/users', 'Invalid account'));
         } catch (AccountAlreadyActiveException $exception) {
-            $this->Flash->error(__d('CakeDC/Users', 'Social Account already active'));
+            $this->Flash->error(__d('cake_d_c/users', 'Social Account already active'));
         } catch (\Exception $exception) {
-            $this->Flash->error(__d('CakeDC/Users', 'Email could not be resent'));
+            $this->Flash->error(__d('cake_d_c/users', 'Email could not be resent'));
         }
 
         return $this->redirect(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);

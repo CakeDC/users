@@ -50,11 +50,11 @@ trait ProfileTrait
                 $isCurrentUser = true;
             }
         } catch (RecordNotFoundException $ex) {
-            $this->Flash->error(__d('CakeDC/Users', 'User was not found'));
+            $this->Flash->error(__d('cake_d_c/users', 'User was not found'));
 
             return $this->redirect($this->request->referer());
         } catch (InvalidPrimaryKeyException $ex) {
-            $this->Flash->error(__d('CakeDC/Users', 'Not authorized, please login first'));
+            $this->Flash->error(__d('cake_d_c/users', 'Not authorized, please login first'));
 
             return $this->redirect($this->request->referer());
         }

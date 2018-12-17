@@ -50,7 +50,7 @@ trait PasswordManagementTrait
             $user->id = $this->request->getSession()->read(Configure::read('Users.Key.Session.resetPasswordUserId'));
             $validatePassword = false;
             if (!$user->id) {
-                $this->Flash->error(__d('CakeDC/Users', 'User was not found'));
+                $this->Flash->error(__d('cake_d_c/users', 'User was not found'));
                 $this->redirect($this->Authentication->getConfig('loginAction'));
 
                 return;
@@ -72,7 +72,7 @@ trait PasswordManagementTrait
                 );
 
                 if ($user->getErrors()) {
-                    $this->Flash->error(__d('CakeDC/Users', 'Password could not be changed'));
+                    $this->Flash->error(__d('cake_d_c/users', 'Password could not be changed'));
                 } else {
                     $user = $this->getUsersTable()->changePassword($user);
 
@@ -81,19 +81,19 @@ trait PasswordManagementTrait
                         if (!empty($event) && is_array($event->result)) {
                             return $this->redirect($event->result);
                         }
-                        $this->Flash->success(__d('CakeDC/Users', 'Password has been changed successfully'));
+                        $this->Flash->success(__d('cake_d_c/users', 'Password has been changed successfully'));
 
                         return $this->redirect($redirect);
                     } else {
-                        $this->Flash->error(__d('CakeDC/Users', 'Password could not be changed'));
+                        $this->Flash->error(__d('cake_d_c/users', 'Password could not be changed'));
                     }
                 }
             } catch (UserNotFoundException $exception) {
-                $this->Flash->error(__d('CakeDC/Users', 'User was not found'));
+                $this->Flash->error(__d('cake_d_c/users', 'User was not found'));
             } catch (WrongPasswordException $wpe) {
                 $this->Flash->error($wpe->getMessage());
             } catch (Exception $exception) {
-                $this->Flash->error(__d('CakeDC/Users', 'Password could not be changed'));
+                $this->Flash->error(__d('cake_d_c/users', 'Password could not be changed'));
                 $this->log($exception->getMessage());
             }
         }
@@ -135,20 +135,20 @@ trait PasswordManagementTrait
                 'type' => 'password'
             ]);
             if ($resetUser) {
-                $msg = __d('CakeDC/Users', 'Please check your email to continue with password reset process');
+                $msg = __d('cake_d_c/users', 'Please check your email to continue with password reset process');
                 $this->Flash->success($msg);
             } else {
-                $msg = __d('CakeDC/Users', 'The password token could not be generated. Please try again');
+                $msg = __d('cake_d_c/users', 'The password token could not be generated. Please try again');
                 $this->Flash->error($msg);
             }
 
             return $this->redirect(['action' => 'login']);
         } catch (UserNotFoundException $exception) {
-            $this->Flash->error(__d('CakeDC/Users', 'User {0} was not found', $reference));
+            $this->Flash->error(__d('cake_d_c/users', 'User {0} was not found', $reference));
         } catch (UserNotActiveException $exception) {
-            $this->Flash->error(__d('CakeDC/Users', 'The user is not active'));
+            $this->Flash->error(__d('cake_d_c/users', 'The user is not active'));
         } catch (Exception $exception) {
-            $this->Flash->error(__d('CakeDC/Users', 'Token could not be reset'));
+            $this->Flash->error(__d('cake_d_c/users', 'Token could not be reset'));
             $this->log($exception->getMessage());
         }
     }
@@ -172,7 +172,7 @@ trait PasswordManagementTrait
                     ->where(['id' => $id]);
                 $query->execute();
 
-                $message = __d('CakeDC/Users', 'Google Authenticator token was successfully reset');
+                $message = __d('cake_d_c/users', 'Google Authenticator token was successfully reset');
                 $this->Flash->success($message, 'default');
             } catch (\Exception $e) {
                 $message = $e->getMessage();
