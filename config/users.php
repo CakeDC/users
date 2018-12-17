@@ -146,7 +146,7 @@ $config = [
         ],
         'Authenticators' => [
             'Authentication.Session' => [
-                'skipGoogleVerify' => true,
+                'skipTwoFactorVerify' => true,
                 'sessionKey' => 'Auth',
             ],
             'CakeDC/Auth.Form' => [
@@ -159,13 +159,13 @@ $config = [
                 ]
             ],
             'Authentication.Token' => [
-                'skipGoogleVerify' => true,
+                'skipTwoFactorVerify' => true,
                 'header' => null,
                 'queryParam' => 'api_key',
                 'tokenPrefix' => null,
             ],
             'CakeDC/Auth.Cookie' => [
-                'skipGoogleVerify' => true,
+                'skipTwoFactorVerify' => true,
                 'rememberMeField' => 'remember_me',
                 'cookie' => [
                     'expires' => '1 month',
@@ -180,10 +180,10 @@ $config = [
                 ]
             ],
             'CakeDC/Users.Social' => [
-                'skipGoogleVerify' => true,
+                'skipTwoFactorVerify' => true,
             ],
             'CakeDC/Users.SocialPendingEmail' => [
-                'skipGoogleVerify' => true,
+                'skipTwoFactorVerify' => true,
             ]
         ],
         'Identifiers' => [

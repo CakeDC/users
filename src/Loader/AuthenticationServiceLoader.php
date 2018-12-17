@@ -90,7 +90,7 @@ class AuthenticationServiceLoader
     {
         if (Configure::read('OneTimePasswordAuthenticator.login') !== false) {
             $service->loadAuthenticator('CakeDC/Auth.TwoFactor', [
-                'skipGoogleVerify' => true,
+                'skipTwoFactorVerify' => true,
             ]);
         }
     }

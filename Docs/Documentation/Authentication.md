@@ -74,12 +74,12 @@ For example if you add JWT authenticator you can set:
 $authenticators = Configure::read('Auth.Authenticators');
 $authenticators['Authentication.Jwt'] = [
     'queryParam' => 'token',
-    'skipGoogleVerify' => true,
+    'skipTwoFactorVerify' => true,
 ]; 
 Configure::write('Auth.Authenticators', $authenticators);
 
 ``` 
-**You may have noticed the 'skipGoogleVerify' option, this option is used to identify if a authenticator should skip
+**You may have noticed the 'skipTwoFactorVerify' option, this option is used to identify if a authenticator should skip
 the two factor flow**
 
 The authenticators are loaded by \CakeDC\Users\Loader\AuthenticationServiceLoader class at load authentication
