@@ -50,7 +50,7 @@ trait LoginTrait
      */
     public function login()
     {
-        $this->request->getSession()->delete(AuthenticationService::GOOGLE_VERIFY_SESSION_KEY);
+        $this->request->getSession()->delete(AuthenticationService::TWO_FACTOR_VERIFY_SESSION_KEY);
         $config = Configure::read('Auth.FormLoginFailure');
         /**
          * @var \CakeDC\Users\Controller\Component\LoginComponent $Login
