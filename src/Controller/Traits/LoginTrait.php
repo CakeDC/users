@@ -50,6 +50,7 @@ trait LoginTrait
      */
     public function login()
     {
+<<<<<<< HEAD
         $this->request->getSession()->delete(AuthenticationService::GOOGLE_VERIFY_SESSION_KEY);
         $result = $this->request->getAttribute('authentication')->getResult();
 
@@ -194,6 +195,14 @@ trait LoginTrait
                 $message = $errorMessages[$status];
             }
         }
+=======
+        $this->request->getSession()->delete(AuthenticationService::TWO_FACTOR_VERIFY_SESSION_KEY);
+        $config = Configure::read('Auth.FormLoginFailure');
+        /**
+         * @var \CakeDC\Users\Controller\Component\LoginComponent $Login
+         */
+        $Login = $this->loadComponent($config['component'], $config);
+>>>>>>> Renamed two factor names
 
         return $Login->handleLogin(true, false);
     }

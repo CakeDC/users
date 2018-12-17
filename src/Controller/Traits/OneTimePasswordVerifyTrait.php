@@ -37,7 +37,7 @@ trait OneTimePasswordVerifyTrait
             return $this->redirect($loginAction);
         }
 
-        $temporarySession = $this->request->getSession()->read(AuthenticationService::GOOGLE_VERIFY_SESSION_KEY);
+        $temporarySession = $this->request->getSession()->read(AuthenticationService::TWO_FACTOR_VERIFY_SESSION_KEY);
         $secretVerified = $temporarySession['secret_verified'];
         // showing QR-code until shared secret is verified
         if (!$secretVerified) {
@@ -73,7 +73,7 @@ trait OneTimePasswordVerifyTrait
             return false;
         }
 
-        $temporarySession = $this->request->getSession()->read(AuthenticationService::GOOGLE_VERIFY_SESSION_KEY);
+        $temporarySession = $this->request->getSession()->read(AuthenticationService::TWO_FACTOR_VERIFY_SESSION_KEY);
 
         if (empty($temporarySession) || !isset($temporarySession['id'])) {
             $message = __d('cake_d_c/users', 'Could not find user data');
@@ -129,7 +129,7 @@ trait OneTimePasswordVerifyTrait
     {
         $codeVerified = false;
         $verificationCode = $this->request->getData('code');
-        $user = $this->request->getSession()->read(AuthenticationService::GOOGLE_VERIFY_SESSION_KEY);
+        $user = $this->request->getSession()->read(AuthenticationService::TWO_FACTOR_VERIFY_SESSION_KEY);
         $entity = $this->getUsersTable()->get($user['id']);
 
         if (!empty($entity['secret'])) {
@@ -166,7 +166,7 @@ trait OneTimePasswordVerifyTrait
                 ->execute();
         }
 
-        $this->request->getSession()->delete(AuthenticationService::GOOGLE_VERIFY_SESSION_KEY);
+        $this->request->getSession()->delete(AuthenticationService::TWO_FACTOR_VERIFY_SESSION_KEY);
         $this->request->getSession()->write('GoogleTwoFactor.User', $user);
 
         return $this->redirect($loginAction);
