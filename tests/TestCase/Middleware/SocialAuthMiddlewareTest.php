@@ -210,7 +210,7 @@ class SocialAuthMiddlewareTest extends TestCase
                 'key' => 'flash',
                 'element' => 'Flash/error',
                 'params' => [],
-                'message' => __d('CakeDC/Users', 'Please enter your email')
+                'message' => __d('cake_d_c/users', 'Please enter your email')
             ],
             '/users/users/social-email',
             true,
@@ -221,7 +221,7 @@ class SocialAuthMiddlewareTest extends TestCase
                 'key' => 'flash',
                 'element' => 'Flash/error',
                 'params' => [],
-                'message' => __d('CakeDC/Users', 'Could not identify your account, please try again')
+                'message' => __d('cake_d_c/users', 'Could not identify your account, please try again')
             ],
             '/login',
             false

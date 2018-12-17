@@ -76,7 +76,7 @@ class UsersTable extends Table
             ->add('password', [
                 'password_confirm_check' => [
                     'rule' => ['compareWith', 'password_confirm'],
-                    'message' => __d('CakeDC/Users', 'Your password does not match your confirm password. Please try again'),
+                    'message' => __d('cake_d_c/users', 'Your password does not match your confirm password. Please try again'),
                     'allowEmpty' => false
                 ]]);
 
@@ -168,13 +168,13 @@ class UsersTable extends Table
     {
         $rules->add($rules->isUnique(['username']), '_isUnique', [
             'errorField' => 'username',
-            'message' => __d('CakeDC/Users', 'Username already exists')
+            'message' => __d('cake_d_c/users', 'Username already exists')
         ]);
 
         if ($this->isValidateEmail) {
             $rules->add($rules->isUnique(['email']), '_isUnique', [
                 'errorField' => 'email',
-                'message' => __d('CakeDC/Users', 'Email already exists')
+                'message' => __d('cake_d_c/users', 'Email already exists')
             ]);
         }
 

@@ -41,18 +41,18 @@ trait UserValidationTrait
                     try {
                         $result = $this->getUsersTable()->validate($token, 'activateUser');
                         if ($result) {
-                            $this->Flash->success(__d('CakeDC/Users', 'User account validated successfully'));
+                            $this->Flash->success(__d('cake_d_c/users', 'User account validated successfully'));
                         } else {
-                            $this->Flash->error(__d('CakeDC/Users', 'User account could not be validated'));
+                            $this->Flash->error(__d('cake_d_c/users', 'User account could not be validated'));
                         }
                     } catch (UserAlreadyActiveException $exception) {
-                        $this->Flash->error(__d('CakeDC/Users', 'User already active'));
+                        $this->Flash->error(__d('cake_d_c/users', 'User already active'));
                     }
                     break;
                 case 'password':
                     $result = $this->getUsersTable()->validate($token);
                     if (!empty($result)) {
-                        $this->Flash->success(__d('CakeDC/Users', 'Reset password token was validated successfully'));
+                        $this->Flash->success(__d('cake_d_c/users', 'Reset password token was validated successfully'));
                         $this->request->getSession()->write(
                             Configure::read('Users.Key.Session.resetPasswordUserId'),
                             $result->id
@@ -60,20 +60,20 @@ trait UserValidationTrait
 
                         return $this->redirect(['action' => 'changePassword']);
                     } else {
-                        $this->Flash->error(__d('CakeDC/Users', 'Reset password token could not be validated'));
+                        $this->Flash->error(__d('cake_d_c/users', 'Reset password token could not be validated'));
                     }
                     break;
                 default:
-                    $this->Flash->error(__d('CakeDC/Users', 'Invalid validation type'));
+                    $this->Flash->error(__d('cake_d_c/users', 'Invalid validation type'));
             }
         } catch (UserNotFoundException $ex) {
-            $this->Flash->error(__d('CakeDC/Users', 'Invalid token or user account already validated'));
+            $this->Flash->error(__d('cake_d_c/users', 'Invalid token or user account already validated'));
         } catch (TokenExpiredException $ex) {
             $event = $this->dispatchEvent(Plugin::EVENT_ON_EXPIRED_TOKEN, ['type' => $type]);
             if (!empty($event) && is_array($event->result)) {
                 return $this->redirect($event->result);
             }
-            $this->Flash->error(__d('CakeDC/Users', 'Token already expired'));
+            $this->Flash->error(__d('cake_d_c/users', 'Token already expired'));
         }
 
         return $this->redirect(['action' => 'login']);
@@ -108,16 +108,16 @@ trait UserValidationTrait
                     'Token has been reset successfully. Please check your email.'
                 ));
             } else {
-                $this->Flash->error(__d('CakeDC/Users', 'Token could not be reset'));
+                $this->Flash->error(__d('cake_d_c/users', 'Token could not be reset'));
             }
 
             return $this->redirect(['action' => 'login']);
         } catch (UserNotFoundException $ex) {
-            $this->Flash->error(__d('CakeDC/Users', 'User {0} was not found', $reference));
+            $this->Flash->error(__d('cake_d_c/users', 'User {0} was not found', $reference));
         } catch (UserAlreadyActiveException $ex) {
-            $this->Flash->error(__d('CakeDC/Users', 'User {0} is already active', $reference));
+            $this->Flash->error(__d('cake_d_c/users', 'User {0} is already active', $reference));
         } catch (Exception $ex) {
-            $this->Flash->error(__d('CakeDC/Users', 'Token could not be reset'));
+            $this->Flash->error(__d('cake_d_c/users', 'Token could not be reset'));
         }
     }
 }

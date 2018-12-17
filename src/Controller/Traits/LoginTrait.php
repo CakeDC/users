@@ -76,7 +76,7 @@ trait LoginTrait
         }
 
         $this->request->getSession()->destroy();
-        $this->Flash->success(__d('CakeDC/Users', 'You\'ve successfully logged out'));
+        $this->Flash->success(__d('cake_d_c/users', 'You\'ve successfully logged out'));
 
         $eventAfter = $this->dispatchEvent(Plugin::EVENT_AFTER_LOGOUT, ['user' => $user]);
         if (is_array($eventAfter->result)) {
