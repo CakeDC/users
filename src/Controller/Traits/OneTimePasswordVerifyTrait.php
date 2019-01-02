@@ -13,6 +13,7 @@ namespace CakeDC\Users\Controller\Traits;
 
 use CakeDC\Auth\Authentication\AuthenticationService;
 use Cake\Core\Configure;
+use CakeDC\Auth\Authenticator\TwoFactorAuthenticator;
 
 trait OneTimePasswordVerifyTrait
 {
@@ -169,7 +170,7 @@ trait OneTimePasswordVerifyTrait
         }
 
         $this->request->getSession()->delete(AuthenticationService::TWO_FACTOR_VERIFY_SESSION_KEY);
-        $this->request->getSession()->write('GoogleTwoFactor.User', $user);
+        $this->request->getSession()->write(TwoFactorAuthenticator::USER_SESSION_KEY, $user);
 
         return $this->redirect($loginAction);
     }
