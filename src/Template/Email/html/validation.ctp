@@ -18,10 +18,10 @@ $activationUrl = [
 ];
 ?>
 <p>
-    <?= __d('CakeDC/Users', "Hi {0}", isset($first_name) ? $first_name : '') ?>,
+    <?= __d('cake_d_c/users', "Hi {0}", isset($first_name) ? $first_name : '') ?>,
 </p>
 <p>
-    <strong><?= $this->Html->link(__d('CakeDC/Users', 'Activate your account here'), $activationUrl) ?></strong>
+    <strong><?= $this->Html->link(__d('cake_d_c/users', 'Activate your account here'), $activationUrl) ?></strong>
 </p>
 <p>
 <?= __d(
@@ -31,5 +31,5 @@ $activationUrl = [
 ) ?>
 </p>
 <p>
-    <?= __d('CakeDC/Users', 'Thank you') ?>,
+    <?= __d('cake_d_c/users', 'Thank you') ?>,
 </p>

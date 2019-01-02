@@ -147,7 +147,7 @@ The default configurations are:
         ...
         'SocialLoginFailure' => [
             'component' => 'CakeDC/Users.Login',
-            'defaultMessage' => __d('CakeDC/Users', 'Could not proceed with social account. Please try again'),
+            'defaultMessage' => __d('cake_d_c/users', 'Could not proceed with social account. Please try again'),
             'messages' => [
                 'FAILURE_USER_NOT_ACTIVE' => __d(
                     'CakeDC/Users',

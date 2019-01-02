@@ -103,7 +103,7 @@ class SocialTraitTest extends BaseTraitTest
         $registry = new ComponentRegistry();
         $config = [
             'component' => 'CakeDC/Users.Login',
-            'defaultMessage' => __d('CakeDC/Users', 'Could not proceed with social account. Please try again'),
+            'defaultMessage' => __d('cake_d_c/users', 'Could not proceed with social account. Please try again'),
             'messages' => [
                 SocialAuthenticator::FAILURE_USER_NOT_ACTIVE => __d(
                     'CakeDC/Users',

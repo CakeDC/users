@@ -49,7 +49,7 @@ trait LinkSocialTrait
      */
     public function callbackLinkSocial($alias = null)
     {
-        $message = __d('CakeDC/Users', 'Could not associate account, please try again.');
+        $message = __d('cake_d_c/users', 'Could not associate account, please try again.');
         try {
             $server = (new ServiceFactory())
                 ->setRedirectUriField('callbackLinkSocialUri')
@@ -72,7 +72,7 @@ trait LinkSocialTrait
             if ($user->getErrors()) {
                 $this->Flash->error($message);
             } else {
-                $this->Flash->success(__d('CakeDC/Users', 'Social account was associated.'));
+                $this->Flash->success(__d('cake_d_c/users', 'Social account was associated.'));
             }
         } catch (\Exception $e) {
             $log = sprintf(
