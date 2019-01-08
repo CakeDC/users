@@ -25,7 +25,6 @@ class TestApplication extends \Cake\Http\BaseApplication
      */
     public function bootstrap()
     {
-        debug(__METHOD__);
         parent::bootstrap();
         $this->addPlugin('CakeDC/Users', [
             'path' => dirname(dirname(__FILE__)) . DS,
