@@ -14,6 +14,7 @@ namespace CakeDC\Users\Test\TestCase\Controller;
 use Cake\Core\Configure;
 use Cake\Http\ServerRequest;
 use Cake\Mailer\Email;
+use Cake\Mailer\TransportFactory;
 use Cake\TestSuite\TestCase;
 
 class SocialAccountsControllerTest extends TestCase
@@ -42,7 +43,7 @@ class SocialAccountsControllerTest extends TestCase
         Configure::write('Opauth', null);
         Configure::write('Users.RememberMe.active', false);
 
-        Email::setConfigTransport('test', [
+        TransportFactory::setConfig('test', [
             'className' => 'Debug'
         ]);
         $this->configEmail = Email::getConfig('default');
@@ -72,7 +73,7 @@ class SocialAccountsControllerTest extends TestCase
     public function tearDown()
     {
         Email::drop('default');
-        Email::dropTransport('test');
+        TransportFactory::drop('test');
         //Email::setConfig('default', $this->configEmail);
 
         Configure::write('Opauth', $this->configOpauth);

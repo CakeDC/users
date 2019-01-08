@@ -21,6 +21,8 @@ use Authorization\AuthorizationService;
 use Authorization\Middleware\AuthorizationMiddleware;
 use Authorization\Middleware\RequestAuthorizationMiddleware;
 use Authorization\Policy\ResolverCollection;
+use Cake\TestSuite\IntegrationTestTrait;
+use Cake\TestSuite\TestCase;
 use CakeDC\Auth\Authentication\AuthenticationService as CakeDCAuthenticationService;
 use CakeDC\Auth\Authenticator\FormAuthenticator;
 use CakeDC\Auth\Authenticator\TwoFactorAuthenticator;
@@ -33,13 +35,13 @@ use Cake\Http\MiddlewareQueue;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 use Cake\Http\ServerRequestFactory;
-use Cake\TestSuite\IntegrationTestCase;
 
 /**
  * PluginTest class
  */
-class PluginTest extends IntegrationTestCase
+class PluginTest extends TestCase
 {
+    use IntegrationTestTrait;
 
     /**
      * testMiddleware

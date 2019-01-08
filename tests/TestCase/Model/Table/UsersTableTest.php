@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Test\TestCase\Model\Table;
 
+use Cake\Mailer\TransportFactory;
 use CakeDC\Users\Model\Table\SocialAccountsTable;
 use Cake\Mailer\Email;
 use Cake\ORM\TableRegistry;
@@ -44,7 +45,7 @@ class UsersTableTest extends TestCase
         $this->Users = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
         $this->fullBaseBackup = Router::fullBaseUrl();
         Router::fullBaseUrl('http://users.test');
-        Email::setConfigTransport('test', [
+        TransportFactory::setConfig('test', [
             'className' => 'Debug'
         ]);
         Email::setConfig('default', [
@@ -63,7 +64,7 @@ class UsersTableTest extends TestCase
         unset($this->Users);
         Router::fullBaseUrl($this->fullBaseBackup);
         Email::drop('default');
-        Email::dropTransport('test');
+        TransportFactory::drop('test');
 
         parent::tearDown();
     }
