@@ -302,7 +302,8 @@ class SocialAuthMiddlewareTest extends TestCase
             'cover_photo_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg'
         ]);
         $user = ['token' => $Token] + $user->toArray();
-        $rawData = (new MapUser())($service, $user);
+        $mapper = new MapUser();
+        $rawData = $mapper($service, $user);
         $next = function (ServerRequest $request, Response $response) use ($previousException, $ResponseOriginal, &$checked, $rawData) {
             /**
              * @var OAuth2Service $service
@@ -338,7 +339,8 @@ class SocialAuthMiddlewareTest extends TestCase
 
         if ($keepSocialUser) {
             $actual = $this->Request->getSession()->read(Configure::read('Users.Key.Session.social'));
-            $expected = (new MapUser())($service, $user);
+            $mapper = new MapUser();
+            $expected = $mapper($service, $user);
             $this->assertEquals($expected, $actual);
         }
     }

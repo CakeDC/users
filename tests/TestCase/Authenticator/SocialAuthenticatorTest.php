@@ -383,8 +383,9 @@ class SocialAuthenticatorTest extends TestCase
             $Authenticator->authenticate($this->Request, $Response);
         } catch (SocialAuthenticationException $e) {
             $rawData = ['token' => $Token] + $user->toArray();
+            $mapper = new MapUser();
             $expected = [
-                'rawData' => (new MapUser())($service, $rawData)
+                'rawData' => $mapper($service, $rawData)
             ];
             $actual = $e->getAttributes();
             $this->assertEquals($expected, $actual);

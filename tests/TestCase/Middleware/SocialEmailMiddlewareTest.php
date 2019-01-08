@@ -131,7 +131,8 @@ class SocialEmailMiddlewareTest extends TestCase
                 'token' => $Token,
             ] + $user->toArray();
 
-        $user = (new Facebook())($user);
+        $mapper = new Facebook();
+        $user = $mapper($user);
         $user['provider'] = 'facebook';
         $user['validated'] = true;
         Configure::write('Users.Email.validate', false);
@@ -234,7 +235,8 @@ class SocialEmailMiddlewareTest extends TestCase
             'token' => $Token,
         ] + $user->toArray();
 
-        $user = (new Facebook())($user);
+        $mapper = new Facebook();
+        $user = $mapper($user);
         $user['provider'] = 'facebook';
         $user['validated'] = true;
         Configure::write('Users.Email.validate', false);
@@ -314,7 +316,8 @@ class SocialEmailMiddlewareTest extends TestCase
                 'token' => $Token,
             ] + $user->toArray();
 
-        $user = (new Facebook())($user);
+        $mapper = new Facebook();
+        $user = $mapper($user);
         $user['provider'] = 'facebook';
         $user['validated'] = true;
         Configure::write('Users.Email.validate', false);

@@ -61,7 +61,8 @@ trait LinkSocialTrait
                 return $this->redirect(['action' => 'profile']);
             }
             $data = $server->getUser($this->request);
-            $data = (new MapUser())($server, $data);
+            $mapper = new MapUser();
+            $data = $mapper($server, $data);
             $identity = $this->request->getAttribute('identity');
             $identity = isset($identity) ? $identity : [];
             $userId = Hash::get($identity, 'id');
