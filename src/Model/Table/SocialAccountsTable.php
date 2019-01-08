@@ -57,48 +57,48 @@ class SocialAccountsTable extends Table
     {
         $validator
             ->add('id', 'valid', ['rule' => 'uuid'])
-            ->allowEmpty('id', 'create');
+            ->allowEmptyString('id', 'create');
 
         $validator
             ->requirePresence('provider', 'create')
-            ->notEmpty('provider');
+            ->notBlank('provider');
 
         $validator
-            ->allowEmpty('username');
+            ->allowEmptyString('username');
 
         $validator
             ->requirePresence('reference', 'create')
-            ->notEmpty('reference');
+            ->allowEmptyString('reference');
 
         $validator
             ->requirePresence('link', 'create')
-            ->notEmpty('reference');
+            ->allowEmptyString('reference');
 
         $validator
-            ->allowEmpty('avatar');
+            ->allowEmptyString('avatar');
 
         $validator
-            ->allowEmpty('description');
+            ->allowEmptyString('description');
 
         $validator
             ->requirePresence('token', 'create')
-            ->notEmpty('token');
+            ->notBlank('token');
 
         $validator
-            ->allowEmpty('token_secret');
+            ->allowEmptyString('token_secret');
 
         $validator
             ->add('token_expires', 'valid', ['rule' => 'datetime'])
-            ->allowEmpty('token_expires');
+            ->allowEmptyString('token_expires');
 
         $validator
             ->add('active', 'valid', ['rule' => 'boolean'])
             ->requirePresence('active', 'create')
-            ->notEmpty('active');
+            ->notBlank('active');
 
         $validator
             ->requirePresence('data', 'create')
-            ->notEmpty('data');
+            ->notBlank('data');
 
         return $validator;
     }
