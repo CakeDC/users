@@ -36,8 +36,8 @@ class SocialAuthenticatorTest extends TestCase
 {
 
     public $fixtures = [
-        'plugin.CakeDC/Users.users',
-        'plugin.CakeDC/Users.social_accounts'
+        'plugin.CakeDC/Users.Users',
+        'plugin.CakeDC/Users.SocialAccounts'
     ];
 
     /**

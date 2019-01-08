@@ -34,7 +34,7 @@ abstract class BaseTraitTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.CakeDC/Users.users',
+        'plugin.CakeDC/Users.Users',
     ];
 
     /**

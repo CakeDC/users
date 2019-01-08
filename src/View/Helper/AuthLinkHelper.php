@@ -50,4 +50,14 @@ class AuthLinkHelper extends HtmlHelper
 
         return false;
     }
+
+    /**
+     * Get the current request
+     *
+     * @return \Cake\Http\ServerRequest
+     */
+    public function getRequest()
+    {
+        return $this->getView()->getRequest();
+    }
 }
