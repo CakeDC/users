@@ -35,7 +35,7 @@ class UsersMailer extends Mailer
             ->setTo($user['email'])
              ->setSubject($firstName . $subject)
              ->setViewVars($user->toArray())
-             ->setTemplate('CakeDC/Users.validation');
+             ->viewBuilder()->setTemplate('CakeDC/Users.validation');
     }
 
     /**
@@ -56,7 +56,7 @@ class UsersMailer extends Mailer
             ->setTo($user['email'])
             ->setSubject($subject)
             ->setViewVars($user->toArray())
-            ->setTemplate('CakeDC/Users.resetPassword');
+            ->viewBuilder()->setTemplate('CakeDC/Users.resetPassword');
     }
 
     /**
@@ -76,6 +76,6 @@ class UsersMailer extends Mailer
             ->setTo($user['email'])
             ->setSubject($subject)
             ->setViewVars(compact('user', 'socialAccount'))
-            ->setTemplate('CakeDC/Users.socialAccountValidation');
+            ->viewBuilder()->setTemplate('CakeDC/Users.socialAccountValidation');
     }
 }
