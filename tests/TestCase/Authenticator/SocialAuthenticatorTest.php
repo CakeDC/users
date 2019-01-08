@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
@@ -36,8 +36,8 @@ class SocialAuthenticatorTest extends TestCase
 {
 
     public $fixtures = [
-        'plugin.CakeDC/Users.users',
-        'plugin.CakeDC/Users.social_accounts'
+        'plugin.CakeDC/Users.Users',
+        'plugin.CakeDC/Users.SocialAccounts'
     ];
 
     /**
@@ -383,8 +383,9 @@ class SocialAuthenticatorTest extends TestCase
             $Authenticator->authenticate($this->Request, $Response);
         } catch (SocialAuthenticationException $e) {
             $rawData = ['token' => $Token] + $user->toArray();
+            $mapper = new MapUser();
             $expected = [
-                'rawData' => (new MapUser())($service, $rawData)
+                'rawData' => $mapper($service, $rawData)
             ];
             $actual = $e->getAttributes();
             $this->assertEquals($expected, $actual);

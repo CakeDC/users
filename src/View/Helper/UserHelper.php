@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
@@ -18,6 +18,9 @@ use Cake\View\Helper;
 
 /**
  * User helper
+ *
+ * @property \CakeDC\Users\View\Helper\AuthLinkHelper $AuthLink
+ * @property \Cake\View\Helper\HtmlHelper $Html
  */
 class UserHelper extends Helper
 {
@@ -108,13 +111,21 @@ class UserHelper extends Helper
      */
     public function welcome()
     {
-        $userId = $this->request->getSession()->read('Auth.User.id');
+        $userId = $this->getView()->getRequest()->getSession()->read('Auth.User.id');
         if (empty($userId)) {
             return;
         }
 
         $profileUrl = Configure::read('Users.Profile.route');
-        $label = __d('cake_d_c/users', 'Welcome, {0}', $this->AuthLink->link($this->request->getSession()->read('Auth.User.first_name') ?: $this->request->getSession()->read('Auth.User.username'), $profileUrl));
+        $session = $this->getView()->getRequest()->getSession();
+        $label = __d(
+            'cake_d_c/users',
+            'Welcome, {0}',
+            $this->AuthLink->link(
+                $session->read('Auth.User.first_name') ?: $session->read('Auth.User.username'),
+                $profileUrl
+            )
+        );
 
         return $this->Html->tag('span', $label, ['class' => 'welcome']);
     }

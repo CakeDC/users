@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
@@ -35,7 +35,7 @@ class UsersMailer extends Mailer
             ->setTo($user['email'])
              ->setSubject($firstName . $subject)
              ->setViewVars($user->toArray())
-             ->setTemplate('CakeDC/Users.validation');
+             ->viewBuilder()->setTemplate('CakeDC/Users.validation');
     }
 
     /**
@@ -56,7 +56,7 @@ class UsersMailer extends Mailer
             ->setTo($user['email'])
             ->setSubject($subject)
             ->setViewVars($user->toArray())
-            ->setTemplate('CakeDC/Users.resetPassword');
+            ->viewBuilder()->setTemplate('CakeDC/Users.resetPassword');
     }
 
     /**
@@ -76,6 +76,6 @@ class UsersMailer extends Mailer
             ->setTo($user['email'])
             ->setSubject($subject)
             ->setViewVars(compact('user', 'socialAccount'))
-            ->setTemplate('CakeDC/Users.socialAccountValidation');
+            ->viewBuilder()->setTemplate('CakeDC/Users.socialAccountValidation');
     }
 }

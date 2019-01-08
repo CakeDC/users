@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
@@ -59,7 +59,7 @@ trait PasswordManagementTrait
             $redirect = $this->Authentication->getConfig('loginAction');
         }
         $this->set('validatePassword', $validatePassword);
-        if ($this->request->is('post')) {
+        if ($this->request->is(['post', 'put'])) {
             try {
                 $validator = $this->getUsersTable()->validationPasswordConfirm(new Validator());
                 if (!empty($id)) {

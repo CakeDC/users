@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
@@ -23,8 +23,8 @@ use Cake\TestSuite\TestCase;
 class SocialPendingEmailAuthenticatorTest extends TestCase
 {
     public $fixtures = [
-        'plugin.CakeDC/Users.users',
-        'plugin.CakeDC/Users.social_accounts'
+        'plugin.CakeDC/Users.Users',
+        'plugin.CakeDC/Users.SocialAccounts'
     ];
 
     /**
@@ -136,7 +136,8 @@ class SocialPendingEmailAuthenticatorTest extends TestCase
             'cover_photo_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg'
         ];
 
-        $user = (new Facebook())($data);
+        $mapper = new Facebook();
+        $user = $mapper($data);
         $user['provider'] = 'facebook';
         $user['validated'] = true;
 

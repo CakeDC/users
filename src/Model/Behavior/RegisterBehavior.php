@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
@@ -148,7 +148,7 @@ class RegisterBehavior extends BaseTokenBehavior
         $this->validateEmail = $validateEmail;
         $validator
             ->add('email', 'valid', ['rule' => 'email'])
-            ->notEmpty('email', __d('Users', 'This field is required'), function ($context) {
+            ->notBlank('email', __d('Users', 'This field is required'), function ($context) {
                 return $this->validateEmail;
             });
 
@@ -165,7 +165,7 @@ class RegisterBehavior extends BaseTokenBehavior
     {
         $validator
             ->requirePresence('tos', 'create')
-            ->notEmpty('tos');
+            ->notBlank('tos');
 
         return $validator;
     }

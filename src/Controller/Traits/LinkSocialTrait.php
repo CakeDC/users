@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
@@ -61,7 +61,8 @@ trait LinkSocialTrait
                 return $this->redirect(['action' => 'profile']);
             }
             $data = $server->getUser($this->request);
-            $data = (new MapUser())($server, $data);
+            $mapper = new MapUser();
+            $data = $mapper($server, $data);
             $identity = $this->request->getAttribute('identity');
             $identity = isset($identity) ? $identity : [];
             $userId = Hash::get($identity, 'id');
