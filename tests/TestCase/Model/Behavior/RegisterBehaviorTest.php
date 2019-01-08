@@ -14,6 +14,7 @@ namespace CakeDC\Users\Test\TestCase\Model\Behavior;
 
 use Cake\Core\Configure;
 use Cake\Mailer\Email;
+use Cake\Mailer\TransportFactory;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
@@ -44,7 +45,7 @@ class RegisterBehaviorTest extends TestCase
         $table->addBehavior('CakeDC/Users/Register.Register');
         $this->Table = $table;
         $this->Behavior = $table->behaviors()->Register;
-        Email::setConfigTransport('test', [
+        TransportFactory::setConfig('test', [
             'className' => 'Debug'
         ]);
         Email::setConfig('default', [
@@ -62,7 +63,7 @@ class RegisterBehaviorTest extends TestCase
     {
         unset($this->Table, $this->Behavior);
         Email::drop('default');
-        Email::dropTransport('test');
+        TransportFactory::drop('test');
         parent::tearDown();
     }
 
