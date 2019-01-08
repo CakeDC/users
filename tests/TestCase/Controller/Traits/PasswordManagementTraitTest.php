@@ -258,7 +258,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
      */
     public function testChangePasswordGetNotLoggedInInsideResetPasswordFlow()
     {
-        $methods = ['is', 'referer', 'getData'];
+        $methods = ['is', 'referer', 'getData', 'getSession'];
         $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->setMethods($methods)
             ->getMock();
