@@ -136,7 +136,8 @@ class SocialPendingEmailAuthenticatorTest extends TestCase
             'cover_photo_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg'
         ];
 
-        $user = (new Facebook())($data);
+        $mapper = new Facebook();
+        $user = $mapper($data);
         $user['provider'] = 'facebook';
         $user['validated'] = true;
 
