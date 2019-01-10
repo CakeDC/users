@@ -13,6 +13,7 @@ namespace CakeDC\Users\Controller\Traits;
 
 use Cake\Core\Configure;
 use Cake\Http\Exception\NotFoundException;
+use CakeDC\Users\Loader\LoginComponentLoader;
 
 /**
  * Covers registration features and email token validation
@@ -29,11 +30,7 @@ trait SocialTrait
      */
     public function socialEmail()
     {
-        $config = Configure::read('Auth.SocialLoginFailure');
-        /**
-         * @var \CakeDC\Users\Controller\Component\LoginComponent $Login
-         */
-        $Login = $this->loadComponent($config['component'], $config);
+        $Login = LoginComponentLoader::forSocial($this);
 
         return $Login->handleLogin(true, false);
     }
