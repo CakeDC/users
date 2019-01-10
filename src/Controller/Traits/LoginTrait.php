@@ -12,6 +12,7 @@
 namespace CakeDC\Users\Controller\Traits;
 
 use CakeDC\Auth\Authentication\AuthenticationService;
+use CakeDC\Users\Loader\LoginComponentLoader;
 use CakeDC\Users\Plugin;
 use Cake\Core\Configure;
 use Cake\Http\Exception\NotFoundException;
@@ -34,11 +35,7 @@ trait LoginTrait
      */
     public function socialLogin()
     {
-        $config = Configure::read('Auth.SocialLoginFailure');
-        /**
-         * @var \CakeDC\Users\Controller\Component\LoginComponent $Login
-         */
-        $Login = $this->loadComponent($config['component'], $config);
+        $Login = LoginComponentLoader::forSocial($this);
 
         return $Login->handleLogin(false, true);
     }
@@ -47,15 +44,12 @@ trait LoginTrait
      * Login user
      *
      * @return mixed
+     * @throws \Exception
      */
     public function login()
     {
         $this->request->getSession()->delete(AuthenticationService::TWO_FACTOR_VERIFY_SESSION_KEY);
-        $config = Configure::read('Auth.FormLoginFailure');
-        /**
-         * @var \CakeDC\Users\Controller\Component\LoginComponent $Login
-         */
-        $Login = $this->loadComponent($config['component'], $config);
+        $Login = LoginComponentLoader::forForm($this);
 
         return $Login->handleLogin(true, false);
     }
