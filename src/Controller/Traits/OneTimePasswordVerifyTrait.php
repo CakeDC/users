@@ -111,7 +111,7 @@ trait OneTimePasswordVerifyTrait
         } catch (\Exception $e) {
             $this->request->getSession()->destroy();
             $this->log($e);
-            $this->Flash->error(__('Could not verify, please try again'), 'default', [], 'auth');
+            $this->Flash->error(__d('cake_d_c/users', 'Could not verify, please try again'), 'default', [], 'auth');
 
             return '';
         }

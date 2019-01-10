@@ -68,7 +68,7 @@ $Users = ${$tableAlias};
             ], [
                 'class' => 'btn btn-danger',
                 'confirm' => __d(
-                    'CakeDC/Users',
+                    'cake_d_c/users',
                     'Are you sure you want to reset token for user "{0}"?', $Users->username
                 )
             ]);

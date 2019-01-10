@@ -113,7 +113,7 @@ trait UserValidationTrait
                     return $this->redirect($event->result);
                 }
                 $this->Flash->success(__d(
-                    'CakeDC/Users',
+                    'cake_d_c/users',
                     'Token has been reset successfully. Please check your email.'
                 ));
             } else {

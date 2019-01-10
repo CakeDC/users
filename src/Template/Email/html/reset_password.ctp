@@ -25,7 +25,7 @@ $activationUrl = [
 </p>
 <p>
 <?= __d(
-    'CakeDC/Users',
+    'cake_d_c/users',
     "If the link is not correctly displayed, please copy the following address in your web browser {0}",
     $this->Url->build($activationUrl)
 ) ?>
