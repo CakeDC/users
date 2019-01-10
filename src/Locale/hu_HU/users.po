@@ -4,182 +4,143 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2017-10-23 16:36+0200\n"
-"PO-Revision-Date: 2017-10-23 17:17+0200\n"
-"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2019-01-10 14:38+0000\n"
+"PO-Revision-Date: 2019-01-10 13:12-0200\n"
+"Language-Team: CakeDC <contact@cakedc.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.0.1\n"
-"Last-Translator: rrd <rrd@webmania.cc>\n"
+"X-Generator: Poedit 2.2\n"
+"Last-Translator: Marcelo Rocha <contato@omarcelo.com.br>\n"
 "Language: hu_HU\n"
 
-#: Auth/SocialAuthenticate.php:456
-msgid "Provider cannot be empty"
-msgstr "A kiszolgáló nem lehet üres"
-
-#: Controller/SocialAccountsController.php:52
+#: Controller/SocialAccountsController.php:50
 msgid "Account validated successfully"
 msgstr "A fiók sikeresen ellenőrizve"
 
-#: Controller/SocialAccountsController.php:54
+#: Controller/SocialAccountsController.php:52
 msgid "Account could not be validated"
 msgstr "A fiókot nem tudtam ellenőrizni"
 
-#: Controller/SocialAccountsController.php:57
+#: Controller/SocialAccountsController.php:55
 msgid "Invalid token and/or social account"
 msgstr "Érvénytelen token és/vagy közösségi fiók"
 
-#: Controller/SocialAccountsController.php:59;87
+#: Controller/SocialAccountsController.php:57;85
 msgid "Social Account already active"
 msgstr "A közösségi fiók már aktív"
 
-#: Controller/SocialAccountsController.php:61
+#: Controller/SocialAccountsController.php:59
 msgid "Social Account could not be validated"
 msgstr "A közösségi fiók nem ellenőrizhető"
 
-#: Controller/SocialAccountsController.php:80
+#: Controller/SocialAccountsController.php:78
 msgid "Email sent successfully"
 msgstr "Az email sikeresen elküldve"
 
-#: Controller/SocialAccountsController.php:82
+#: Controller/SocialAccountsController.php:80
 msgid "Email could not be sent"
 msgstr "Az emailt nem tudtuk elküldeni"
 
-#: Controller/SocialAccountsController.php:85
+#: Controller/SocialAccountsController.php:83
 msgid "Invalid account"
 msgstr "Érvénytelen fiók"
 
-#: Controller/SocialAccountsController.php:89
+#: Controller/SocialAccountsController.php:87
 msgid "Email could not be resent"
 msgstr "Az emailt nem lehet újraküldeni"
 
-#: Controller/Component/RememberMeComponent.php:68
-msgid "Invalid app salt, app salt must be at least 256 bits (32 bytes) long"
-msgstr ""
-"Érvénytelen alkalamzás só. Az alkalmazás sónak legalább 256 bit (32 byte) "
-"hosszúnak kell lennie"
-
-#: Controller/Component/UsersAuthComponent.php:204
-msgid "You can't enable email validation workflow if use_email is false"
-msgstr "Nem tudod engedélyezni az email ellenőrzést ha a use_email false"
-
-#: Controller/Traits/LinkSocialTrait.php:54
+#: Controller/Traits/LinkSocialTrait.php:52
 msgid "Could not associate account, please try again."
 msgstr "Nem sikerült társítani a fiókot, próbáld meg még egyszer."
 
-#: Controller/Traits/LinkSocialTrait.php:77
+#: Controller/Traits/LinkSocialTrait.php:76
 msgid "Social account was associated."
 msgstr "A közösségi fiók társítva."
 
-#: Controller/Traits/LoginTrait.php:104
-msgid "Issues trying to log in with your social account"
-msgstr "Gond van a közösségi fiókkal való belépéssel."
-
-#: Controller/Traits/LoginTrait.php:109 Template/Users/social_email.ctp:16
-msgid "Please enter your email"
-msgstr "Add meg az emailedet."
-
-#: Controller/Traits/LoginTrait.php:120
-msgid ""
-"Your user has not been validated yet. Please check your inbox for "
-"instructions"
-msgstr ""
-"A felhasználód még nincs ellenőrizve. Názd meg az emailjeidet a teendőkért."
-
-#: Controller/Traits/LoginTrait.php:125
-msgid ""
-"Your social account has not been validated yet. Please check your inbox for "
-"instructions"
-msgstr ""
-"A közösségi fiókod még nincs ellenőrizve. Názd meg az emailjeidet a "
-"teendőkért."
-
-#: Controller/Traits/LoginTrait.php:180 Controller/Traits/RegisterTrait.php:82
-msgid "Invalid reCaptcha"
-msgstr "Érvénytelen reCaptcha"
-
-#: Controller/Traits/LoginTrait.php:191
-msgid "You are already logged in"
-msgstr "Már be vagy jelentkezve"
-
-#: Controller/Traits/LoginTrait.php:212
-msgid "Please enable Google Authenticator first."
-msgstr "Először engedélyezd a Google Authenticatort."
-
-#: Controller/Traits/LoginTrait.php:287
-msgid "Verification code is invalid. Try again"
-msgstr "Az ellenőrző kód érvénytelen. Próbáld meg újra"
-
-#: Controller/Traits/LoginTrait.php:340
-msgid "Username or password is incorrect"
-msgstr "A felhasználói név vagy a jelszó helytelen"
-
-#: Controller/Traits/LoginTrait.php:363
+#: Controller/Traits/LoginTrait.php:73
 msgid "You've successfully logged out"
 msgstr "Sikeresen kijelentkeztél"
 
-#: Controller/Traits/PasswordManagementTrait.php:49;82
-#: Controller/Traits/ProfileTrait.php:50
+#: Controller/Traits/OneTimePasswordVerifyTrait.php:71
+msgid "Please enable Google Authenticator first."
+msgstr "Először engedélyezd a Google Authenticatort."
+
+#: Controller/Traits/OneTimePasswordVerifyTrait.php:80
+#, fuzzy
+msgid "Could not find user data"
+msgstr "A felhasználót ne tudtuk hozzáadni:"
+
+#: Controller/Traits/OneTimePasswordVerifyTrait.php:116
+#, fuzzy
+msgid "Could not verify, please try again"
+msgstr "Nem sikerült társítani a fiókot, próbáld meg még egyszer."
+
+#: Controller/Traits/OneTimePasswordVerifyTrait.php:144
+msgid "Verification code is invalid. Try again"
+msgstr "Az ellenőrző kód érvénytelen. Próbáld meg újra"
+
+#: Controller/Traits/PasswordManagementTrait.php:53;91
+#: Controller/Traits/ProfileTrait.php:53
 msgid "User was not found"
 msgstr "A felhasználó nem található"
 
-#: Controller/Traits/PasswordManagementTrait.php:70;78;86
+#: Controller/Traits/PasswordManagementTrait.php:75;87;95
 msgid "Password could not be changed"
 msgstr "A jelszót nem tudtuk módosítani"
 
-#: Controller/Traits/PasswordManagementTrait.php:74
+#: Controller/Traits/PasswordManagementTrait.php:83
 msgid "Password has been changed successfully"
 msgstr "A jelszó siekresen módosítva"
 
-#: Controller/Traits/PasswordManagementTrait.php:84
-msgid "{0}"
-msgstr ""
-
-#: Controller/Traits/PasswordManagementTrait.php:127
+#: Controller/Traits/PasswordManagementTrait.php:137
 msgid "Please check your email to continue with password reset process"
 msgstr "Nézd meg az emailjeidet a jelszó visszaállítás folytatásához"
 
-#: Controller/Traits/PasswordManagementTrait.php:130 Shell/UsersShell.php:247
+#: Controller/Traits/PasswordManagementTrait.php:140 Shell/UsersShell.php:247
 msgid "The password token could not be generated. Please try again"
 msgstr "A jelszó token létrehozása sikertelen. Próbáld meg újra"
 
-#: Controller/Traits/PasswordManagementTrait.php:136
-#: Controller/Traits/UserValidationTrait.php:107
+#: Controller/Traits/PasswordManagementTrait.php:146
+#: Controller/Traits/UserValidationTrait.php:116
 msgid "User {0} was not found"
 msgstr "A {0} felhasználó nem található"
 
-#: Controller/Traits/PasswordManagementTrait.php:138
+#: Controller/Traits/PasswordManagementTrait.php:148
 msgid "The user is not active"
 msgstr "A felhasználó nem aktív"
 
-#: Controller/Traits/PasswordManagementTrait.php:140
-#: Controller/Traits/UserValidationTrait.php:102;111
+#: Controller/Traits/PasswordManagementTrait.php:150
+#: Controller/Traits/UserValidationTrait.php:111;120
 msgid "Token could not be reset"
 msgstr "A token nem állítható vissza"
 
-#: Controller/Traits/PasswordManagementTrait.php:164
+#: Controller/Traits/PasswordManagementTrait.php:174
 msgid "Google Authenticator token was successfully reset"
 msgstr "A Google Authenticator token sikeresen visszaállítva"
 
-#: Controller/Traits/ProfileTrait.php:54
+#: Controller/Traits/ProfileTrait.php:57
 msgid "Not authorized, please login first"
 msgstr "Még nem jelentkeztél be. Jelentkezz be"
 
-#: Controller/Traits/RegisterTrait.php:43
+#: Controller/Traits/RegisterTrait.php:46
 msgid "You must log out to register a new user account"
 msgstr "Ki kell lépned ahhoz, hogy új fiókot tudj létrehozni"
 
-#: Controller/Traits/RegisterTrait.php:89
+#: Controller/Traits/RegisterTrait.php:75;99
 msgid "The user could not be saved"
 msgstr "A felhasználót nem lehet menteni"
 
-#: Controller/Traits/RegisterTrait.php:123
+#: Controller/Traits/RegisterTrait.php:92 Loader/LoginComponentLoader.php:32
+msgid "Invalid reCaptcha"
+msgstr "Érvénytelen reCaptcha"
+
+#: Controller/Traits/RegisterTrait.php:133
 msgid "You have registered successfully, please log in"
 msgstr "Sikeresen regisztráltál, lépj be"
 
-#: Controller/Traits/RegisterTrait.php:125
+#: Controller/Traits/RegisterTrait.php:135
 msgid "Please validate your account before log in"
 msgstr "Kérlek jitelesítsd a fiókodat mielőtt belépnél"
 
@@ -199,63 +160,92 @@ msgstr "A {0} törölve"
 msgid "The {0} could not be deleted"
 msgstr "A {0} nem lett törölve"
 
-#: Controller/Traits/SocialTrait.php:40
-msgid "The reCaptcha could not be validated"
-msgstr "A reCaptcha nem ellenőrizhető"
-
-#: Controller/Traits/UserValidationTrait.php:43
+#: Controller/Traits/UserValidationTrait.php:44
 msgid "User account validated successfully"
 msgstr "A fiók sikeresen ellenőrizve"
 
-#: Controller/Traits/UserValidationTrait.php:45
+#: Controller/Traits/UserValidationTrait.php:46
 msgid "User account could not be validated"
 msgstr "A fiókot nem sikerült ellnőrizni"
 
-#: Controller/Traits/UserValidationTrait.php:48
+#: Controller/Traits/UserValidationTrait.php:49
 msgid "User already active"
 msgstr "A fiók már aktív"
 
-#: Controller/Traits/UserValidationTrait.php:54
+#: Controller/Traits/UserValidationTrait.php:55
 msgid "Reset password token was validated successfully"
 msgstr "A jelszó helyreállító token sikeresen ellenőrizve"
 
-#: Controller/Traits/UserValidationTrait.php:62
+#: Controller/Traits/UserValidationTrait.php:63
 msgid "Reset password token could not be validated"
 msgstr "A jelszó helyreállító token ellenőrzése sikertelen"
 
-#: Controller/Traits/UserValidationTrait.php:66
+#: Controller/Traits/UserValidationTrait.php:67
 msgid "Invalid validation type"
 msgstr "Helytelen ellenőrzés típus"
 
-#: Controller/Traits/UserValidationTrait.php:69
+#: Controller/Traits/UserValidationTrait.php:70
 msgid "Invalid token or user account already validated"
 msgstr "Helytelen token vagy a fiók már ellenőrizve van"
 
-#: Controller/Traits/UserValidationTrait.php:71
+#: Controller/Traits/UserValidationTrait.php:76
 msgid "Token already expired"
 msgstr "A token már lejárt"
 
-#: Controller/Traits/UserValidationTrait.php:97
+#: Controller/Traits/UserValidationTrait.php:106
 msgid "Token has been reset successfully. Please check your email."
 msgstr "A token helyreállítva. Nézd meg az emailjeidet."
 
-#: Controller/Traits/UserValidationTrait.php:109
+#: Controller/Traits/UserValidationTrait.php:118
 msgid "User {0} is already active"
 msgstr "{0} felhasználó már aktív"
 
-#: Mailer/UsersMailer.php:34
+#: Loader/LoginComponentLoader.php:30
+msgid "Username or password is incorrect"
+msgstr "A felhasználói név vagy a jelszó helytelen"
+
+#: Loader/LoginComponentLoader.php:51
+#, fuzzy
+msgid "Could not proceed with social account. Please try again"
+msgstr "Nem sikerült társítani a fiókot, próbáld meg még egyszer."
+
+#: Loader/LoginComponentLoader.php:53
+msgid ""
+"Your user has not been validated yet. Please check your inbox for "
+"instructions"
+msgstr ""
+"A felhasználód még nincs ellenőrizve. Názd meg az emailjeidet a teendőkért."
+
+#: Loader/LoginComponentLoader.php:57
+msgid ""
+"Your social account has not been validated yet. Please check your inbox for "
+"instructions"
+msgstr ""
+"A közösségi fiókod még nincs ellenőrizve. Názd meg az emailjeidet a "
+"teendőkért."
+
+#: Mailer/UsersMailer.php:33
 msgid "Your account validation link"
 msgstr "A fiókod hitelesítési linkje"
 
-#: Mailer/UsersMailer.php:52
+#: Mailer/UsersMailer.php:51
 msgid "{0}Your reset password link"
 msgstr "{0} A jelszó helyreállítás linkje"
 
-#: Mailer/UsersMailer.php:75
+#: Mailer/UsersMailer.php:74
 msgid "{0}Your social account validation link"
 msgstr "{0} A közösségi fiókod ellenőrzési linkje"
 
-#: Model/Behavior/AuthFinderBehavior.php:49
+#: Middleware/SocialAuthMiddleware.php:65 Template/Users/social_email.ctp:16
+msgid "Please enter your email"
+msgstr "Add meg az emailedet."
+
+#: Middleware/SocialAuthMiddleware.php:75
+#, fuzzy
+msgid "Could not identify your account, please try again"
+msgstr "Nem sikerült társítani a fiókot, próbáld meg még egyszer."
+
+#: Model/Behavior/AuthFinderBehavior.php:48
 msgid "Missing 'username' in options data"
 msgstr "Hiányzó 'username' az opciókban"
 
@@ -271,12 +261,12 @@ msgstr "A hivatkozás nem lehet null"
 msgid "Token expiration cannot be empty"
 msgstr "A token lejárat nme lehet üres"
 
-#: Model/Behavior/PasswordBehavior.php:56;117
+#: Model/Behavior/PasswordBehavior.php:56;138
 msgid "User not found"
 msgstr "A felhasználó nem található"
 
 #: Model/Behavior/PasswordBehavior.php:60
-#: Model/Behavior/RegisterBehavior.php:112;205
+#: Model/Behavior/RegisterBehavior.php:112
 msgid "User account already validated"
 msgstr "A felhasználói fiók már ellenőrizve van"
 
@@ -284,11 +274,11 @@ msgstr "A felhasználói fiók már ellenőrizve van"
 msgid "User not active"
 msgstr "A felhasználó nem aktív"
 
-#: Model/Behavior/PasswordBehavior.php:122
+#: Model/Behavior/PasswordBehavior.php:143
 msgid "The current password does not match"
 msgstr "A jelenlegi jelszó nem stimmel"
 
-#: Model/Behavior/PasswordBehavior.php:125
+#: Model/Behavior/PasswordBehavior.php:146
 msgid "You cannot use the current password as the new one"
 msgstr "Nem lehet az új jelszó azonos a régivel"
 
@@ -300,31 +290,36 @@ msgstr "Nem található felhasználó ehhez a tokenhez és emailhez."
 msgid "Token has already expired user with no token"
 msgstr "A token lejárt felhasználó token nélkül"
 
-#: Model/Behavior/SocialAccountBehavior.php:103;130
+#: Model/Behavior/RegisterBehavior.php:151
+#, fuzzy
+msgid "This field is required"
+msgstr "Mező: {0} Hiba: {1}"
+
+#: Model/Behavior/SocialAccountBehavior.php:102;129
 msgid "Account already validated"
 msgstr "A fiók már ellenőrizve van"
 
-#: Model/Behavior/SocialAccountBehavior.php:106;133
+#: Model/Behavior/SocialAccountBehavior.php:105;132
 msgid "Account not found for the given token and email."
 msgstr "Nem található fiók ehhez a tokenhez és emailhez."
 
-#: Model/Behavior/SocialBehavior.php:82
+#: Model/Behavior/SocialBehavior.php:83
 msgid "Unable to login user with reference {0}"
 msgstr "Nem tudom belépni a usert a {0} hivatkozással"
 
-#: Model/Behavior/SocialBehavior.php:121
+#: Model/Behavior/SocialBehavior.php:122
 msgid "Email not present"
 msgstr "Hiányzó email"
 
-#: Model/Table/UsersTable.php:81
+#: Model/Table/UsersTable.php:79
 msgid "Your password does not match your confirm password. Please try again"
 msgstr "A jelszavad és a jelszó megerősítés nem azonos. Próbáld meg újra"
 
-#: Model/Table/UsersTable.php:173
+#: Model/Table/UsersTable.php:171
 msgid "Username already exists"
 msgstr "A felhasználónév már foglalt"
 
-#: Model/Table/UsersTable.php:179
+#: Model/Table/UsersTable.php:177
 msgid "Email already exists"
 msgstr "Az email már foglalt"
 
@@ -429,16 +424,18 @@ msgid "User added:"
 msgstr "A felhasználó hozzáadva:"
 
 #: Shell/UsersShell.php:312
+#, fuzzy
 msgid "Id: {0}"
-msgstr ""
+msgstr "A {0} felhasználó nem található"
 
 #: Shell/UsersShell.php:313
 msgid "Username: {0}"
 msgstr "Felhasználónév: {0}"
 
 #: Shell/UsersShell.php:314
+#, fuzzy
 msgid "Email: {0}"
-msgstr ""
+msgstr "Az email sikeresen elküldve"
 
 #: Shell/UsersShell.php:315
 msgid "Role: {0}"
@@ -457,6 +454,7 @@ msgid "Field: {0} Error: {1}"
 msgstr "Mező: {0} Hiba: {1}"
 
 #: Shell/UsersShell.php:337
+#, fuzzy
 msgid "The user was not found."
 msgstr "A felhasználó nem található"
 
@@ -519,53 +517,56 @@ msgid ""
 msgstr ""
 "Másold be a böngésződbe ezt a címet a közösségi fiókod aktiválásához {0}"
 
-#: Template/Users/add.ctp:13 Template/Users/edit.ctp:16
+#: Template/Users/add.ctp:13 Template/Users/edit.ctp:17
 #: Template/Users/index.ctp:13;26 Template/Users/view.ctp:15
 msgid "Actions"
 msgstr "Műveletek"
 
-#: Template/Users/add.ctp:15 Template/Users/edit.ctp:27
+#: Template/Users/add.ctp:15 Template/Users/edit.ctp:28
 #: Template/Users/view.ctp:23
 msgid "List Users"
 msgstr "Felhasználók"
 
-#: Template/Users/add.ctp:21 Template/Users/register.ctp:17
+#: Template/Users/add.ctp:21 Template/Users/register.ctp:18
 msgid "Add User"
 msgstr "Új felhasználó"
 
-#: Template/Users/add.ctp:23 Template/Users/edit.ctp:35
-#: Template/Users/index.ctp:22 Template/Users/profile.ctp:30
-#: Template/Users/register.ctp:19 Template/Users/view.ctp:33
+#: Template/Users/add.ctp:23 Template/Users/edit.ctp:36
+#: Template/Users/index.ctp:22 Template/Users/login.ctp:20
+#: Template/Users/profile.ctp:30 Template/Users/register.ctp:20
+#: Template/Users/view.ctp:33
 msgid "Username"
 msgstr "Felhasználói név"
 
-#: Template/Users/add.ctp:24 Template/Users/edit.ctp:36
+#: Template/Users/add.ctp:24 Template/Users/edit.ctp:37
 #: Template/Users/index.ctp:23 Template/Users/profile.ctp:32
-#: Template/Users/register.ctp:20 Template/Users/view.ctp:35
+#: Template/Users/register.ctp:21 Template/Users/view.ctp:35
+#, fuzzy
 msgid "Email"
-msgstr ""
+msgstr "Az email sikeresen elküldve"
 
-#: Template/Users/add.ctp:25 Template/Users/register.ctp:21
+#: Template/Users/add.ctp:25 Template/Users/login.ctp:21
+#: Template/Users/register.ctp:22
 msgid "Password"
 msgstr "Jelszó"
 
-#: Template/Users/add.ctp:26 Template/Users/edit.ctp:37
-#: Template/Users/index.ctp:24 Template/Users/register.ctp:26
+#: Template/Users/add.ctp:26 Template/Users/edit.ctp:38
+#: Template/Users/index.ctp:24 Template/Users/register.ctp:27
 msgid "First name"
 msgstr "Keresztnév"
 
-#: Template/Users/add.ctp:27 Template/Users/edit.ctp:38
-#: Template/Users/index.ctp:25 Template/Users/register.ctp:27
+#: Template/Users/add.ctp:27 Template/Users/edit.ctp:39
+#: Template/Users/index.ctp:25 Template/Users/register.ctp:28
 msgid "Last name"
 msgstr "Családi név"
 
-#: Template/Users/add.ctp:30 Template/Users/edit.ctp:53
+#: Template/Users/add.ctp:30 Template/Users/edit.ctp:54
 #: Template/Users/view.ctp:49;74
 msgid "Active"
 msgstr "Aktív"
 
 #: Template/Users/add.ctp:34 Template/Users/change_password.ctp:25
-#: Template/Users/edit.ctp:57 Template/Users/register.ctp:36
+#: Template/Users/edit.ctp:58 Template/Users/register.ctp:37
 #: Template/Users/request_reset_password.ctp:8
 #: Template/Users/resend_token_validation.ctp:20
 #: Template/Users/social_email.ctp:19
@@ -584,48 +585,50 @@ msgstr "Jelenlegi jelszó"
 msgid "New password"
 msgstr "Új jelszó"
 
-#: Template/Users/change_password.ctp:21 Template/Users/register.ctp:24
+#: Template/Users/change_password.ctp:21 Template/Users/register.ctp:25
 msgid "Confirm password"
 msgstr "Jelszó megerősítése"
 
-#: Template/Users/edit.ctp:21 Template/Users/index.ctp:40
+#: Template/Users/edit.ctp:22 Template/Users/index.ctp:40
 msgid "Delete"
 msgstr "Törlés"
 
-#: Template/Users/edit.ctp:23 Template/Users/index.ctp:40
+#: Template/Users/edit.ctp:24 Template/Users/index.ctp:40
 #: Template/Users/view.ctp:21
 msgid "Are you sure you want to delete # {0}?"
 msgstr "Biztos törlöd # {0}?"
 
-#: Template/Users/edit.ctp:33 Template/Users/view.ctp:17
+#: Template/Users/edit.ctp:34 Template/Users/view.ctp:17
 msgid "Edit User"
 msgstr "Felhasználó módosítása"
 
-#: Template/Users/edit.ctp:39 Template/Users/view.ctp:43
+#: Template/Users/edit.ctp:40 Template/Users/view.ctp:43
+#, fuzzy
 msgid "Token"
-msgstr ""
+msgstr "A token lejárt felhasználó token nélkül"
 
-#: Template/Users/edit.ctp:41
+#: Template/Users/edit.ctp:42
 msgid "Token expires"
 msgstr "Token lejárat"
 
-#: Template/Users/edit.ctp:44
+#: Template/Users/edit.ctp:45
+#, fuzzy
 msgid "API token"
-msgstr ""
+msgstr "Érvénytelen token és/vagy közösségi fiók"
 
-#: Template/Users/edit.ctp:47
+#: Template/Users/edit.ctp:48
 msgid "Activation date"
 msgstr "Aktiválás dátuma"
 
-#: Template/Users/edit.ctp:50
+#: Template/Users/edit.ctp:51
 msgid "TOS date"
 msgstr "Felhasználó feltételek dátuma"
 
-#: Template/Users/edit.ctp:63
+#: Template/Users/edit.ctp:64
 msgid "Reset Google Authenticator Token"
 msgstr "Google Authenticator Token visszaállítása"
 
-#: Template/Users/edit.ctp:69
+#: Template/Users/edit.ctp:70
 msgid "Are you sure you want to reset token for user \"{0}\"?"
 msgstr ""
 "Biztos vagy benne, hogy vissza akarod állítani {0} felhasználó tokenjét?"
@@ -674,9 +677,10 @@ msgstr "Jelszó visszaállítás"
 msgid "Login"
 msgstr "Belépés"
 
-#: Template/Users/profile.ctp:21 View/Helper/UserHelper.php:54
+#: Template/Users/profile.ctp:21
+#, fuzzy
 msgid "{0} {1}"
-msgstr ""
+msgstr "Mező: {0} Hiba: {1}"
 
 #: Template/Users/profile.ctp:27
 msgid "Change Password"
@@ -695,14 +699,15 @@ msgid "Provider"
 msgstr "Kiszolgáló"
 
 #: Template/Users/profile.ctp:44
+#, fuzzy
 msgid "Link"
-msgstr ""
+msgstr "A fiókod hitelesítési linkje"
 
 #: Template/Users/profile.ctp:51
 msgid "Link to {0}"
 msgstr "Kapcsolódva: {0}"
 
-#: Template/Users/register.ctp:29
+#: Template/Users/register.ctp:30
 msgid "Accept TOS conditions?"
 msgstr "Elfogadod a felhasználó feltételeket?"
 
@@ -743,10 +748,12 @@ msgid "Id"
 msgstr ""
 
 #: Template/Users/view.ctp:37
+#, fuzzy
 msgid "First Name"
 msgstr "Keresztnév"
 
 #: Template/Users/view.ctp:39
+#, fuzzy
 msgid "Last Name"
 msgstr "Családi név"
 
@@ -755,14 +762,17 @@ msgid "Role"
 msgstr "Szerep"
 
 #: Template/Users/view.ctp:45
+#, fuzzy
 msgid "Api Token"
-msgstr ""
+msgstr "Érvénytelen token és/vagy közösségi fiók"
 
 #: Template/Users/view.ctp:53
+#, fuzzy
 msgid "Token Expires"
 msgstr "Token lejárat"
 
 #: Template/Users/view.ctp:55
+#, fuzzy
 msgid "Activation Date"
 msgstr "Aktiválás dátuma"
 
@@ -778,39 +788,27 @@ msgstr "Létrehozva"
 msgid "Modified"
 msgstr "Módosítva"
 
-#: View/Helper/UserHelper.php:45
+#: View/Helper/UserHelper.php:46
 msgid "Sign in with"
 msgstr "Belépés ezzel"
 
-#: View/Helper/UserHelper.php:48
-msgid "fa fa-{0}"
-msgstr ""
-
-#: View/Helper/UserHelper.php:57
-msgid "btn btn-social btn-{0} "
-msgstr ""
-
-#: View/Helper/UserHelper.php:106
+#: View/Helper/UserHelper.php:103
 msgid "Logout"
 msgstr "Kilép"
 
-#: View/Helper/UserHelper.php:123
+#: View/Helper/UserHelper.php:121
 msgid "Welcome, {0}"
 msgstr "Üdv {0}!"
 
-#: View/Helper/UserHelper.php:146
+#: View/Helper/UserHelper.php:151
 msgid "reCaptcha is not configured! Please configure Users.reCaptcha.key"
 msgstr ""
 "A reCaptcha nincs beállítva! Ellenőrizd a Users.reCaptcha.key beállítást"
 
-#: View/Helper/UserHelper.php:205
-msgid "btn btn-social btn-{0}"
-msgstr ""
-
-#: View/Helper/UserHelper.php:211
+#: View/Helper/UserHelper.php:215
 msgid "Connected with {0}"
 msgstr "Összekapcsolódva ezzel: {0}"
 
-#: View/Helper/UserHelper.php:216
+#: View/Helper/UserHelper.php:220
 msgid "Connect with {0}"
 msgstr "Kapcsolódás ehhez: {0} "
