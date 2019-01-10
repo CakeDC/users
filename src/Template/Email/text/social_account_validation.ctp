@@ -22,7 +22,7 @@ $activationUrl = [
 <?= __d('cake_d_c/users', "Hi {0}", $user['first_name']) ?>,
 
 <?= __d(
-    'CakeDC/Users',
+    'cake_d_c/users',
     "Please copy the following address in your web browser to activate your social login {0}",
     $this->Url->build($activationUrl)
 ) ?>

@@ -222,11 +222,11 @@ class LoginTraitTest extends BaseTraitTest
             'defaultMessage' => __d('cake_d_c/users', 'Could not proceed with social account. Please try again'),
             'messages' => [
                 SocialAuthenticator::FAILURE_USER_NOT_ACTIVE => __d(
-                    'CakeDC/Users',
+                    'cake_d_c/users',
                     'Your user has not been validated yet. Please check your inbox for instructions'
                 ),
                 SocialAuthenticator::FAILURE_ACCOUNT_NOT_ACTIVE => __d(
-                    'CakeDC/Users',
+                    'cake_d_c/users',
                     'Your social account has not been validated yet. Please check your inbox for instructions'
                 )
             ],
@@ -411,11 +411,11 @@ class LoginTraitTest extends BaseTraitTest
             'defaultMessage' => __d('cake_d_c/users', 'Could not proceed with social account. Please try again'),
             'messages' => [
                 SocialAuthenticator::FAILURE_USER_NOT_ACTIVE => __d(
-                    'CakeDC/Users',
+                    'cake_d_c/users',
                     'Your user has not been validated yet. Please check your inbox for instructions'
                 ),
                 SocialAuthenticator::FAILURE_ACCOUNT_NOT_ACTIVE => __d(
-                    'CakeDC/Users',
+                    'cake_d_c/users',
                     'Your social account has not been validated yet. Please check your inbox for instructions'
                 )
             ],
