@@ -25,7 +25,7 @@ class Google extends AbstractMapper
      */
     protected $_mapFields = [
         'id' => 'sub',
-        'avatar' => 'profile',
+        'avatar' => 'picture',
         'full_name' => 'name',
         'email' => 'email',
         'first_name' => 'given_name',
