@@ -34,18 +34,14 @@ class GoogleTest extends TestCase
         ]);
         $rawData = [
             'token' => $token,
-            'emails' => [['value' => 'test@gmail.com']],
-            'id' => '1',
-            'displayName' => 'Test User',
-            'name' => [
-                'familyName' => 'User',
-                'givenName' => 'Test'
-            ],
+            'email' => 'test@gmail.com',
+            'sub' => '1',
+            'name' => 'Test User',
+            'family_name' => 'User',
+            'given_name' => 'Test',
             'aboutMe' => '<span>I am the best test user in the world.</span>',
-            'url' => 'https://plus.google.com/+TestUser',
-            'image' => [
-                'url' => 'https://lh3.googleusercontent.com/photo.jpg'
-            ]
+            'profile' => 'https://plus.google.com/+TestUser',
+            'picture' => 'https://lh3.googleusercontent.com/photo.jpg'
         ];
         $providerMapper = new Google($rawData);
         $user = $providerMapper();

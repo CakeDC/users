@@ -24,13 +24,14 @@ class Google extends AbstractMapper
      * @var
      */
     protected $_mapFields = [
-        'avatar' => 'image.url',
-        'full_name' => 'displayName',
-        'email' => 'emails.0.value',
-        'first_name' => 'name.givenName',
-        'last_name' => 'name.familyName',
+        'id' => 'sub',
+        'avatar' => 'picture',
+        'full_name' => 'name',
+        'email' => 'email',
+        'first_name' => 'given_name',
+        'last_name' => 'family_name',
         'bio' => 'aboutMe',
-        'link' => 'url'
+        'link' => 'profile'
     ];
 
     /**
