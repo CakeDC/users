@@ -40,12 +40,12 @@ class UserHelperTest extends TestCase
     /**
      * @var \CakeDC\Users\View\Helper\UserHelper
      */
-    private  $User;
+    private $User;
 
     /**
      * @var \CakeDC\Users\View\Helper\AuthLinkHelper
      */
-    private  $AuthLink;
+    private $AuthLink;
     /**
      * setUp method
      *

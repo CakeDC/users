@@ -10,6 +10,7 @@
  */
 
 namespace CakeDC\Users\Test;
+
 /**
  * Class TestApplication
  *
