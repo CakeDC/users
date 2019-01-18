@@ -59,6 +59,7 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
     public function getAuthenticationService(ServerRequestInterface $request, ResponseInterface $response)
     {
         $key = 'Auth.Authentication.serviceLoader';
+
         return $this->loadService($request, $response, $key);
     }
 
@@ -68,6 +69,7 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
     public function getAuthorizationService(ServerRequestInterface $request, ResponseInterface $response)
     {
         $key = 'Auth.Authorization.serviceLoader';
+
         return $this->loadService($request, $response, $key);
     }
 

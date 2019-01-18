@@ -17,8 +17,8 @@ use Authorization\Policy\OrmResolver;
 use Authorization\Policy\ResolverCollection;
 use CakeDC\Auth\Policy\CollectionPolicy;
 use CakeDC\Auth\Policy\RbacPolicy;
-use Cake\Http\ServerRequest;
 use CakeDC\Auth\Policy\SuperuserPolicy;
+use Cake\Http\ServerRequest;
 use Psr\Http\Message\ServerRequestInterface;
 
 class AuthorizationServiceLoader

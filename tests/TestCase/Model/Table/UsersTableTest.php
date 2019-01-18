@@ -11,9 +11,9 @@
 
 namespace CakeDC\Users\Test\TestCase\Model\Table;
 
-use Cake\Mailer\TransportFactory;
 use CakeDC\Users\Model\Table\SocialAccountsTable;
 use Cake\Mailer\Email;
+use Cake\Mailer\TransportFactory;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
