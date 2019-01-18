@@ -3,7 +3,11 @@ Changelog
 
 Releases for CakePHP 3
 -------------
-
+* 8.0.3
+  * Updated to latest version of Google OAuth
+  * Added plugin object
+  * Fixed action changePassword to work with post or put request
+ 
 * 8.0.2
   * Add default role for users registered via social login
 
