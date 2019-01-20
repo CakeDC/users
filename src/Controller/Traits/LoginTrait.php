@@ -272,6 +272,7 @@ trait LoginTrait
             $verificationCode = $this->request->getData('code');
             $user = $this->request->getSession()->read('temporarySession');
             $entity = $this->getUsersTable()->get($user['id']);
+            $userRememberMe = $this->request->getSession()->read('Users.hasRememberMe');
 
             if (!empty($entity['secret'])) {
                 $codeVerified = $this->GoogleAuthenticator->verifyCode($entity['secret'], $verificationCode);
@@ -289,12 +290,9 @@ trait LoginTrait
                     $user['secret_verified'] = true;
                 }
                 
-                // Push the remember me value to post data
-                // for after login event auth
-                $hasRememberMe = $this->request->getSession()->read('hasRememberMe');
-                if ($hasRememberMe) {
-                    $this->request->data(Configure::read('Users.RememberMe.Cookie.name'), $hasRememberMe);
-                    $this->request->getSession()->delete('hasRememberMe');
+                if ($userRememberMe) {
+                    $this->request->data(Configure::read('Users.RememberMe.Cookie.name'), $userRememberMe);
+                    $this->request->getSession()->delete('Users.hasRememberMe');
                 }
 
                 $this->request->getSession()->delete('temporarySession');
@@ -348,10 +346,8 @@ trait LoginTrait
                 // until the GA verification is checked
                 $this->request->getSession()->write('temporarySession', $user);
                 
-                // store the remember me value from login into session temporarily
-                // to pass the value to verify action
                 if (Configure::read('Users.RememberMe.active')) {
-                    $this->request->getSession()->write('hasRememberMe', $this->request->getData(Configure::read('Users.RememberMe.Cookie.name')));
+                    $this->request->getSession()->write('Users.hasRememberMe', $this->request->getData(Configure::read('Users.RememberMe.Cookie.name')));
                 }
                 
                 $url = Configure::read('GoogleAuthenticator.verifyAction');
