@@ -104,20 +104,3 @@ IMPORTANT: Remember you'll need to configure your social login application **cal
 Note: using social authentication is not required.
 
 For more details, check the Configuration doc page
-
-Load the UsersAuth Component
----------------------
-
-Load the Component in your src/Controller/AppController.php, and use the passed Component configuration to customize the Users Plugin:
-
-```
-    public function initialize()
-    {
-        parent::initialize();
-
-        // Important: add the 'enableBeforeRedirect' config or or disable deprecation warnings
-        $this->loadComponent('RequestHandler', ['enableBeforeRedirect' => false]);
-        $this->loadComponent('Flash');                
-        $this->loadComponent('CakeDC/Users.UsersAuth');
-    }
-```
