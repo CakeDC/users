@@ -56,6 +56,30 @@ class SocialPendingEmailAuthenticatorTest extends TestCase
      *
      * @return void
      */
+    public function testAuthenticateInvalidUrl()
+    {
+        $user = $this->getUserData();
+        $requestNoEmail = ServerRequestFactory::fromGlobals(
+            ['REQUEST_URI' => '/users/users/social-email-invalid'],
+            [],
+            []
+        );
+        $requestNoEmail->getSession()->write(Configure::read('Users.Key.Session.social'), $user);
+        $Response = new Response();
+        $identifiers = new IdentifierCollection([
+            'CakeDC/Users.Social'
+        ]);
+        $Authenticator = new SocialPendingEmailAuthenticator($identifiers);
+        $result = $Authenticator->authenticate($requestNoEmail, $Response);
+        $this->assertInstanceOf(Result::class, $result);
+        $this->assertEquals(Result::FAILURE_OTHER, $result->getStatus());
+    }
+
+    /**
+     * testAuthenticate
+     *
+     * @return void
+     */
     public function testAuthenticateBaseFailed()
     {
         $user = $this->getUserData();
