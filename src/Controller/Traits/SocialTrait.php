@@ -11,9 +11,8 @@
 
 namespace CakeDC\Users\Controller\Traits;
 
-use Cake\Core\Configure;
-use Cake\Http\Exception\NotFoundException;
 use CakeDC\Users\Loader\LoginComponentLoader;
+use Cake\Http\Exception\NotFoundException;
 
 /**
  * Covers registration features and email token validation

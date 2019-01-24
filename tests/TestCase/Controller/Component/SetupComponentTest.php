@@ -1,24 +1,20 @@
 <?php
 /**
- * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
- * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
- * @link      https://cakephp.org CakePHP(tm) Project
- * @since     3.3.0
- * @license   https://opensource.org/licenses/mit-license.php MIT License
+ * @copyright Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
+ * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 namespace CakeDC\Users\Test\TestCase\Controller\Component;
 
-use Cake\Controller\Controller;
-use Cake\Core\Configure;
 use CakeDC\Users\Controller\Component\SetupComponent;
 use Cake\Controller\ComponentRegistry;
+use Cake\Controller\Controller;
+use Cake\Core\Configure;
 use Cake\TestSuite\TestCase;
 
 /**

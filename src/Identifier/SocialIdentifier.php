@@ -53,7 +53,6 @@ class SocialIdentifier extends AbstractIdentifier
             return null;
         }
 
-
         if ($user->get('social_accounts')) {
             $this->dispatchEvent(Plugin::EVENT_AFTER_REGISTER, compact('user'));
         }
