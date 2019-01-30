@@ -39,8 +39,6 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
     const EVENT_AFTER_LOGIN = 'Users.Authentication.afterLogin';
     const EVENT_BEFORE_LOGOUT = 'Users.Authentication.beforeLogout';
     const EVENT_AFTER_LOGOUT = 'Users.Authentication.afterLogout';
-    const EVENT_FAILED_SOCIAL_LOGIN = 'Users.Authentication.failedSocialLogin';
-    const EVENT_AFTER_SOCIAL_REGISTER = 'Users.Authentication.afterSocialRegister';
 
     const EVENT_BEFORE_REGISTER = 'Users.Managment.beforeRegister';
     const EVENT_AFTER_REGISTER = 'Users.Managment.afterRegister';

@@ -12,11 +12,14 @@
 namespace CakeDC\Users\Identifier;
 
 use Authentication\Identifier\AbstractIdentifier;
+use CakeDC\Users\Plugin;
 use Cake\Core\Configure;
+use Cake\Event\EventDispatcherTrait;
 use Cake\ORM\Locator\LocatorAwareTrait;
 
 class SocialIdentifier extends AbstractIdentifier
 {
+    use EventDispatcherTrait;
     use LocatorAwareTrait;
 
     const CREDENTIAL_KEY = 'socialAuthUser';
@@ -48,6 +51,10 @@ class SocialIdentifier extends AbstractIdentifier
 
         if (!$user) {
             return null;
+        }
+
+        if ($user->get('social_accounts')) {
+            $this->dispatchEvent(Plugin::EVENT_AFTER_REGISTER, compact('user'));
         }
 
         $user = $this->findUser($user)->firstOrFail();

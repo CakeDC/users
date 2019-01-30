@@ -55,7 +55,7 @@ class MiddlewareQueueLoader
     /**
      * Load social middlewares if enabled. Based on config 'Users.Social.login'
      *
-     * @param MiddlewareQueue $middlewareQueue The base middleware queue object.
+     * @param MiddlewareQueue $middlewareQueue The middleware queue to update.
      *
      * @return void
      */
