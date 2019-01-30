@@ -22,7 +22,7 @@ TableRegistry::getTableLocator()->setConfig('Users', ['className' => Configure::
 TableRegistry::getTableLocator()->setConfig('CakeDC/Users.Users', ['className' => Configure::read('Users.table')]);
 
 if (Configure::check('Auth.authenticate') || Configure::check('Auth.authorize')) {
-    trigger_error("Users plugin configurations keys Auth.authenticate and Auth.authorize was removed, please check what have changed at migration guide https://github.com/CakeDC/users/blob/master/Docs/Documentation/MigrationGuide.md'");
+    trigger_error("Users plugin configurations keys Auth.authenticate and Auth.authorize were removed, please check migration guide https://github.com/CakeDC/users/blob/master/Docs/Documentation/MigrationGuide.md'");
 }
 $oauthPath = Configure::read('OAuth.path');
 if (is_array($oauthPath)) {
