@@ -117,8 +117,8 @@ in combination with the two social middlewares:
 Social Indentifier
 ------------------
 The social identifier "CakeDC/Users.Social", works with data provider by both social authenticator,
-it is responsible to find or create a user registry for the request social user data.
-By default it fetch user data with finder 'all', but you can use a one if you need. Add this to your
+it is responsible of finding or creating a user registry for the social user data request.
+By default it'll fetch user data with finder 'all', but you can use a custom one. Add this to your
 Application class, after CakeDC/Users Plugin is loaded.
 ```
     $identifiers = Configure::read('Auth.Identifiers');
@@ -129,17 +129,17 @@ Application class, after CakeDC/Users Plugin is loaded.
 
 Handling Social Login Result
 ----------------------------
-We use a base component 'CakeDC/Users.Login' to handle tlogin, it check the result of authentication
-service to redirect user to a internal page or show an authentication error. It provide some error messages for social login.
-There are two custom message (Auth.SocialLoginFailure.messages) and one default message (Auth.SocialLoginFailure.defaultMessage).
+We use a base component 'CakeDC/Users.Login' to handle login, it checks the result of authentication
+service to redirects user to an internal page or show an authentication error. It provide some error messages for social login.
+There are two custom messages (Auth.SocialLoginFailure.messages) and one default message (Auth.SocialLoginFailure.defaultMessage).
 
 
-To use a custom component to handle the login you could do:
+To use a custom component to handle the login, do:
 ```
 Configure::write('Auth.SocialLoginFailure.component', 'MyLoginA');
 ``` 
 
-The default configurations are:
+The default configuration is:
 ```
 [
     ...
