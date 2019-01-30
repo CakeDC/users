@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
@@ -78,13 +78,13 @@ class AuthLinkHelperTest extends TestCase
             'password' => '12345'
         ]);
         $identity = new Identity($user);
-        $this->AuthLink->request = $this->AuthLink->request->withAttribute('identity', $identity);
+        $this->AuthLink->getView()->setRequest($this->AuthLink->getView()->getRequest()->withAttribute('identity', $identity));
         $rbac = $this->getMockBuilder(Rbac::class)->setMethods(['checkPermissions'])->getMock();
         $rbac->expects($this->once())
             ->method('checkPermissions')
             ->with($identity->getOriginalData()->toArray())
             ->will($this->returnValue(false));
-        $this->AuthLink->request = $this->AuthLink->request->withAttribute('rbac', $rbac);
+        $this->AuthLink->getView()->setRequest($this->AuthLink->getView()->getRequest()->withAttribute('rbac', $rbac));
         $result = $this->AuthLink->link(
             'title',
             ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile'],
@@ -105,13 +105,13 @@ class AuthLinkHelperTest extends TestCase
             'password' => '12345'
         ]);
         $identity = new Identity($user);
-        $this->AuthLink->request = $this->AuthLink->request->withAttribute('identity', $identity);
+        $this->AuthLink->getView()->setRequest($this->AuthLink->getView()->getRequest()->withAttribute('identity', $identity));
         $rbac = $this->getMockBuilder(Rbac::class)->setMethods(['checkPermissions'])->getMock();
         $rbac->expects($this->once())
             ->method('checkPermissions')
             ->with($identity->getOriginalData()->toArray())
             ->will($this->returnValue(true));
-        $this->AuthLink->request = $this->AuthLink->request->withAttribute('rbac', $rbac);
+        $this->AuthLink->getView()->setRequest($this->AuthLink->getView()->getRequest()->withAttribute('rbac', $rbac));
         $link = $this->AuthLink->link(
             'title',
             ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile'],
@@ -154,13 +154,13 @@ class AuthLinkHelperTest extends TestCase
             'password' => '12345'
         ]);
         $identity = new Identity($user);
-        $this->AuthLink->request = $this->AuthLink->request->withAttribute('identity', $identity);
+        $this->AuthLink->getView()->setRequest($this->AuthLink->getView()->getRequest()->withAttribute('identity', $identity));
         $rbac = $this->getMockBuilder(Rbac::class)->setMethods(['checkPermissions'])->getMock();
         $rbac->expects($this->once())
             ->method('checkPermissions')
             ->with($identity->getOriginalData()->toArray())
             ->will($this->returnValue(true));
-        $this->AuthLink->request = $this->AuthLink->request->withAttribute('rbac', $rbac);
+        $this->AuthLink->getView()->setRequest($this->AuthLink->getView()->getRequest()->withAttribute('rbac', $rbac));
         $result = $this->AuthLink->isAuthorized(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile']);
         $this->assertTrue($result);
     }
@@ -176,13 +176,13 @@ class AuthLinkHelperTest extends TestCase
             'password' => '12345'
         ]);
         $identity = new Identity($user);
-        $this->AuthLink->request = $this->AuthLink->request->withAttribute('identity', $identity);
+        $this->AuthLink->getView()->setRequest($this->AuthLink->getView()->getRequest()->withAttribute('identity', $identity));
         $rbac = $this->getMockBuilder(Rbac::class)->setMethods(['checkPermissions'])->getMock();
         $rbac->expects($this->once())
             ->method('checkPermissions')
             ->with($identity->getOriginalData()->toArray())
             ->will($this->returnValue(false));
-        $this->AuthLink->request = $this->AuthLink->request->withAttribute('rbac', $rbac);
+        $this->AuthLink->getView()->setRequest($this->AuthLink->getView()->getRequest()->withAttribute('rbac', $rbac));
         $result = $this->AuthLink->isAuthorized(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile']);
         $this->assertFalse($result);
     }

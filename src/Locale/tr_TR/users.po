@@ -4,185 +4,145 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2017-10-14 23:45+0000\n"
-"PO-Revision-Date: 2018-01-22 22:21+0300\n"
-"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2019-01-10 14:38+0000\n"
+"PO-Revision-Date: 2019-01-10 13:25-0200\n"
+"Language-Team: CakeDC <contact@cakedc.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.0.6\n"
-"Last-Translator: \n"
+"X-Generator: Poedit 2.2\n"
+"Last-Translator: Marcelo Rocha <contato@omarcelo.com.br>\n"
 "Language: tr_TR\n"
 
-#: Auth/SocialAuthenticate.php:456
-msgid "Provider cannot be empty"
-msgstr "Sağlayıcı boş olamaz"
-
-#: Controller/SocialAccountsController.php:52
+#: Controller/SocialAccountsController.php:50
 msgid "Account validated successfully"
 msgstr "Hesap başarıyla doğrulandı"
 
-#: Controller/SocialAccountsController.php:54
+#: Controller/SocialAccountsController.php:52
 msgid "Account could not be validated"
 msgstr "Hesap doğrulanamadı"
 
-#: Controller/SocialAccountsController.php:57
+#: Controller/SocialAccountsController.php:55
 msgid "Invalid token and/or social account"
 msgstr "Geçersiz jeton ve/veya sosyal hesap"
 
-#: Controller/SocialAccountsController.php:59;87
+#: Controller/SocialAccountsController.php:57;85
 msgid "Social Account already active"
 msgstr "Sosyal Hesap zaten aktif"
 
-#: Controller/SocialAccountsController.php:61
+#: Controller/SocialAccountsController.php:59
 msgid "Social Account could not be validated"
 msgstr "Sosyal Hesap doğrulanamadı"
 
-#: Controller/SocialAccountsController.php:80
+#: Controller/SocialAccountsController.php:78
 msgid "Email sent successfully"
 msgstr "E-posta başarıyla gönderildi"
 
-#: Controller/SocialAccountsController.php:82
+#: Controller/SocialAccountsController.php:80
 msgid "Email could not be sent"
 msgstr "E-posta gönderilemedi"
 
-#: Controller/SocialAccountsController.php:85
+#: Controller/SocialAccountsController.php:83
 msgid "Invalid account"
 msgstr "Geçersiz hesap"
 
-#: Controller/SocialAccountsController.php:89
+#: Controller/SocialAccountsController.php:87
 msgid "Email could not be resent"
 msgstr "E-posta tekrar gönderilemedi"
 
-#: Controller/Component/RememberMeComponent.php:68
-msgid "Invalid app salt, app salt must be at least 256 bits (32 bytes) long"
-msgstr ""
-"Geçersiz tuz kodu, tuz kodu en az 256 bit (32 bayt) “long” uzunluğunda olmalı"
-
-#: Controller/Component/UsersAuthComponent.php:204
-msgid "You can't enable email validation workflow if use_email is false"
-msgstr ""
-"Eğer use_email yanlışsa, e-posta doğrulama iş akışını etkinleştiremezsin"
-
-#: Controller/Traits/LinkSocialTrait.php:54
+#: Controller/Traits/LinkSocialTrait.php:52
 msgid "Could not associate account, please try again."
 msgstr "Hesap eşleştirilemedi, lütfen tekrar deneyin."
 
-#: Controller/Traits/LinkSocialTrait.php:77
+#: Controller/Traits/LinkSocialTrait.php:76
 msgid "Social account was associated."
 msgstr "Sosyal hesap zaten eşleştirilmişti."
 
-#: Controller/Traits/LoginTrait.php:104
-msgid "Issues trying to log in with your social account"
-msgstr "Sosyal hesabınız ile giriş yaparken çıkan sorunlar"
-
-#: Controller/Traits/LoginTrait.php:109 Template/Users/social_email.ctp:16
-msgid "Please enter your email"
-msgstr "Lütfen e-posta hesabınızı girin"
-
-#: Controller/Traits/LoginTrait.php:120
-msgid ""
-"Your user has not been validated yet. Please check your inbox for "
-"instructions"
-msgstr ""
-"Kullanıcınız henüz doğrulanmadı. Lütfen talimatlar için gelen kutunuzu "
-"kontrol edin"
-
-#: Controller/Traits/LoginTrait.php:125
-msgid ""
-"Your social account has not been validated yet. Please check your inbox for "
-"instructions"
-msgstr ""
-"Sosyal hesabınız henüz doğrulanmadı. Lütfen talimatlar için gelen kutunuzu "
-"kontrol edin"
-
-#: Controller/Traits/LoginTrait.php:180 Controller/Traits/RegisterTrait.php:82
-msgid "Invalid reCaptcha"
-msgstr "Geçersiz reCaptcha"
-
-#: Controller/Traits/LoginTrait.php:191
-msgid "You are already logged in"
-msgstr "Zaten giriş yapmış durumdasınız"
-
-#: Controller/Traits/LoginTrait.php:212
-msgid "Please enable Google Authenticator first."
-msgstr "Lütfen önce Google Authenticator ‘ı aktif hale getirin."
-
-#: Controller/Traits/LoginTrait.php:287
-msgid "Verification code is invalid. Try again"
-msgstr "Doğrulama kodu yanlış. Tekrar deneyin"
-
-#: Controller/Traits/LoginTrait.php:340
-msgid "Username or password is incorrect"
-msgstr "Kullanıcı adınız veya şifreniz yanlış"
-
-#: Controller/Traits/LoginTrait.php:363
+#: Controller/Traits/LoginTrait.php:73
 msgid "You've successfully logged out"
 msgstr "Başarıyla çıkış yaptınız"
 
-#: Controller/Traits/PasswordManagementTrait.php:49;82
-#: Controller/Traits/ProfileTrait.php:50
+#: Controller/Traits/OneTimePasswordVerifyTrait.php:71
+msgid "Please enable Google Authenticator first."
+msgstr "Lütfen önce Google Authenticator ‘ı aktif hale getirin."
+
+#: Controller/Traits/OneTimePasswordVerifyTrait.php:80
+#, fuzzy
+msgid "Could not find user data"
+msgstr "Kullanıcı eklenemedi:"
+
+#: Controller/Traits/OneTimePasswordVerifyTrait.php:116
+#, fuzzy
+msgid "Could not verify, please try again"
+msgstr "Hesap eşleştirilemedi, lütfen tekrar deneyin."
+
+#: Controller/Traits/OneTimePasswordVerifyTrait.php:144
+msgid "Verification code is invalid. Try again"
+msgstr "Doğrulama kodu yanlış. Tekrar deneyin"
+
+#: Controller/Traits/PasswordManagementTrait.php:53;91
+#: Controller/Traits/ProfileTrait.php:53
 msgid "User was not found"
 msgstr "Kullanıcı bulunamadı"
 
-#: Controller/Traits/PasswordManagementTrait.php:70;78;86
+#: Controller/Traits/PasswordManagementTrait.php:75;87;95
 msgid "Password could not be changed"
 msgstr "Şifre değiştirilemedi"
 
-#: Controller/Traits/PasswordManagementTrait.php:74
+#: Controller/Traits/PasswordManagementTrait.php:83
 msgid "Password has been changed successfully"
 msgstr "Şifre başarıyla değiştirildi"
 
-#: Controller/Traits/PasswordManagementTrait.php:84
-msgid "{0}"
-msgstr "{0}"
-
-#: Controller/Traits/PasswordManagementTrait.php:127
+#: Controller/Traits/PasswordManagementTrait.php:137
 msgid "Please check your email to continue with password reset process"
 msgstr ""
 "Şifre sıfırlama işleminize devam edebilmek için lütfen e-postanızı kontrol "
 "edin"
 
-#: Controller/Traits/PasswordManagementTrait.php:130 Shell/UsersShell.php:247
+#: Controller/Traits/PasswordManagementTrait.php:140 Shell/UsersShell.php:247
 msgid "The password token could not be generated. Please try again"
 msgstr "Şifre jetonu oluşturulamadı. Lütfen tekrar deneyin"
 
-#: Controller/Traits/PasswordManagementTrait.php:136
-#: Controller/Traits/UserValidationTrait.php:107
+#: Controller/Traits/PasswordManagementTrait.php:146
+#: Controller/Traits/UserValidationTrait.php:116
 msgid "User {0} was not found"
 msgstr "Kullancı {0} bulunamadı"
 
-#: Controller/Traits/PasswordManagementTrait.php:138
+#: Controller/Traits/PasswordManagementTrait.php:148
 msgid "The user is not active"
 msgstr "Kullanıcı aktif değil"
 
-#: Controller/Traits/PasswordManagementTrait.php:140
-#: Controller/Traits/UserValidationTrait.php:102;111
+#: Controller/Traits/PasswordManagementTrait.php:150
+#: Controller/Traits/UserValidationTrait.php:111;120
 msgid "Token could not be reset"
 msgstr "Jeton sıfırlanamadı"
 
-#: Controller/Traits/PasswordManagementTrait.php:164
+#: Controller/Traits/PasswordManagementTrait.php:174
 msgid "Google Authenticator token was successfully reset"
 msgstr "Google Authenticator jetonu başarıyla sıfırlandı"
 
-#: Controller/Traits/ProfileTrait.php:54
+#: Controller/Traits/ProfileTrait.php:57
 msgid "Not authorized, please login first"
 msgstr "Yetkili değil, lütfen ilk önce giriş yapın"
 
-#: Controller/Traits/RegisterTrait.php:43
+#: Controller/Traits/RegisterTrait.php:46
 msgid "You must log out to register a new user account"
 msgstr "Yeni bir hesap oluşturmak oluşturmak için önce çıkış yapmanız gerekli"
 
-#: Controller/Traits/RegisterTrait.php:89
+#: Controller/Traits/RegisterTrait.php:75;99
 msgid "The user could not be saved"
 msgstr "Kullanıcı kaydedilemedi"
 
-#: Controller/Traits/RegisterTrait.php:123
+#: Controller/Traits/RegisterTrait.php:92 Loader/LoginComponentLoader.php:32
+msgid "Invalid reCaptcha"
+msgstr "Geçersiz reCaptcha"
+
+#: Controller/Traits/RegisterTrait.php:133
 msgid "You have registered successfully, please log in"
 msgstr "Başarıyla kayıt oldunuz, lütfen giriş yapın"
 
-#: Controller/Traits/RegisterTrait.php:125
+#: Controller/Traits/RegisterTrait.php:135
 msgid "Please validate your account before log in"
 msgstr "Lütfen giriş yapmadan önce hesabınızı doğrulayın"
 
@@ -202,63 +162,93 @@ msgstr "{0} silindi"
 msgid "The {0} could not be deleted"
 msgstr "{0} silinemedi"
 
-#: Controller/Traits/SocialTrait.php:40
-msgid "The reCaptcha could not be validated"
-msgstr "reCaptcha doğrulanamadı"
-
-#: Controller/Traits/UserValidationTrait.php:43
+#: Controller/Traits/UserValidationTrait.php:44
 msgid "User account validated successfully"
 msgstr "Kullanıcı hesabı başarıyla doğrulandı"
 
-#: Controller/Traits/UserValidationTrait.php:45
+#: Controller/Traits/UserValidationTrait.php:46
 msgid "User account could not be validated"
 msgstr "Kullanıcı hesabı doğrulanamadı"
 
-#: Controller/Traits/UserValidationTrait.php:48
+#: Controller/Traits/UserValidationTrait.php:49
 msgid "User already active"
 msgstr "Kullanıcı zaten aktif"
 
-#: Controller/Traits/UserValidationTrait.php:54
+#: Controller/Traits/UserValidationTrait.php:55
 msgid "Reset password token was validated successfully"
 msgstr "Şifre sıfırlama jetonu başarıyla doğrulandı"
 
-#: Controller/Traits/UserValidationTrait.php:62
+#: Controller/Traits/UserValidationTrait.php:63
 msgid "Reset password token could not be validated"
 msgstr "Şifre sıfırlama jetonu doğrulanamadı"
 
-#: Controller/Traits/UserValidationTrait.php:66
+#: Controller/Traits/UserValidationTrait.php:67
 msgid "Invalid validation type"
 msgstr "Geçersiz doğrulama cinsi"
 
-#: Controller/Traits/UserValidationTrait.php:69
+#: Controller/Traits/UserValidationTrait.php:70
 msgid "Invalid token or user account already validated"
 msgstr "Geçersiz jeton veya kullanıcı hesabı zaten doğrulandı"
 
-#: Controller/Traits/UserValidationTrait.php:71
+#: Controller/Traits/UserValidationTrait.php:76
 msgid "Token already expired"
 msgstr "Jeton süresi zaten doldu"
 
-#: Controller/Traits/UserValidationTrait.php:97
+#: Controller/Traits/UserValidationTrait.php:106
 msgid "Token has been reset successfully. Please check your email."
 msgstr "Jeton başarıyla sıfırlandı. Lütfen e-postanızı kontrol edin."
 
-#: Controller/Traits/UserValidationTrait.php:109
+#: Controller/Traits/UserValidationTrait.php:118
 msgid "User {0} is already active"
 msgstr "Kullanıcı {0} zaten aktif"
 
-#: Mailer/UsersMailer.php:34
+#: Loader/LoginComponentLoader.php:30
+msgid "Username or password is incorrect"
+msgstr "Kullanıcı adınız veya şifreniz yanlış"
+
+#: Loader/LoginComponentLoader.php:51
+#, fuzzy
+msgid "Could not proceed with social account. Please try again"
+msgstr "Hesap eşleştirilemedi, lütfen tekrar deneyin."
+
+#: Loader/LoginComponentLoader.php:53
+msgid ""
+"Your user has not been validated yet. Please check your inbox for "
+"instructions"
+msgstr ""
+"Kullanıcınız henüz doğrulanmadı. Lütfen talimatlar için gelen kutunuzu "
+"kontrol edin"
+
+#: Loader/LoginComponentLoader.php:57
+msgid ""
+"Your social account has not been validated yet. Please check your inbox for "
+"instructions"
+msgstr ""
+"Sosyal hesabınız henüz doğrulanmadı. Lütfen talimatlar için gelen kutunuzu "
+"kontrol edin"
+
+#: Mailer/UsersMailer.php:33
 msgid "Your account validation link"
 msgstr "Hesap doğrulama bağlantısı"
 
-#: Mailer/UsersMailer.php:52
+#: Mailer/UsersMailer.php:51
 msgid "{0}Your reset password link"
 msgstr "{0} Şifre sıfırlama bağlantısı"
 
-#: Mailer/UsersMailer.php:75
+#: Mailer/UsersMailer.php:74
 msgid "{0}Your social account validation link"
 msgstr "{0} Sosyal hesap doğrulama bağlantısı"
 
-#: Model/Behavior/AuthFinderBehavior.php:49
+#: Middleware/SocialAuthMiddleware.php:65 Template/Users/social_email.ctp:16
+msgid "Please enter your email"
+msgstr "Lütfen e-posta hesabınızı girin"
+
+#: Middleware/SocialAuthMiddleware.php:75
+#, fuzzy
+msgid "Could not identify your account, please try again"
+msgstr "Hesap eşleştirilemedi, lütfen tekrar deneyin."
+
+#: Model/Behavior/AuthFinderBehavior.php:48
 msgid "Missing 'username' in options data"
 msgstr "Seçenekler verilerinde ‘kullanıcı adı’ eksik"
 
@@ -274,12 +264,12 @@ msgstr "Referans boş olamaz"
 msgid "Token expiration cannot be empty"
 msgstr "Jeton son kullanma tarihi boş olamaz"
 
-#: Model/Behavior/PasswordBehavior.php:56;117
+#: Model/Behavior/PasswordBehavior.php:56;138
 msgid "User not found"
 msgstr "Kullanıcı bulunamadı"
 
 #: Model/Behavior/PasswordBehavior.php:60
-#: Model/Behavior/RegisterBehavior.php:112;205
+#: Model/Behavior/RegisterBehavior.php:112
 msgid "User account already validated"
 msgstr "Kullanıcı hesabı zaten doğrulandı"
 
@@ -287,11 +277,11 @@ msgstr "Kullanıcı hesabı zaten doğrulandı"
 msgid "User not active"
 msgstr "Kullanıcı aktif durumda değil"
 
-#: Model/Behavior/PasswordBehavior.php:122
+#: Model/Behavior/PasswordBehavior.php:143
 msgid "The current password does not match"
 msgstr "Geçerli şifre uyuşmuyor"
 
-#: Model/Behavior/PasswordBehavior.php:125
+#: Model/Behavior/PasswordBehavior.php:146
 msgid "You cannot use the current password as the new one"
 msgstr "Geçerli şifrenizi yeni bir şifre olarak kullanamazsınız"
 
@@ -303,31 +293,36 @@ msgstr "Verilen jeton ve e-posta için kullanıcı bulunamadı."
 msgid "Token has already expired user with no token"
 msgstr "Jeton son kullanma tarihi zaten doldu, kullanıcının jetonu yok"
 
-#: Model/Behavior/SocialAccountBehavior.php:103;130
+#: Model/Behavior/RegisterBehavior.php:151
+#, fuzzy
+msgid "This field is required"
+msgstr "Alan: {0} Hata: {1}"
+
+#: Model/Behavior/SocialAccountBehavior.php:102;129
 msgid "Account already validated"
 msgstr "Hesap zaten doğrulandı"
 
-#: Model/Behavior/SocialAccountBehavior.php:106;133
+#: Model/Behavior/SocialAccountBehavior.php:105;132
 msgid "Account not found for the given token and email."
 msgstr "Verilen jeton ve e-posta için hesap bulunamadı."
 
-#: Model/Behavior/SocialBehavior.php:82
+#: Model/Behavior/SocialBehavior.php:83
 msgid "Unable to login user with reference {0}"
 msgstr "Referans {0} ile giriş başarısız"
 
-#: Model/Behavior/SocialBehavior.php:121
+#: Model/Behavior/SocialBehavior.php:122
 msgid "Email not present"
 msgstr "E-posta yok"
 
-#: Model/Table/UsersTable.php:81
+#: Model/Table/UsersTable.php:79
 msgid "Your password does not match your confirm password. Please try again"
 msgstr "Şifreniz onay şifreniz ile uyuşmuyor. Lütfen tekrar deneyin"
 
-#: Model/Table/UsersTable.php:173
+#: Model/Table/UsersTable.php:171
 msgid "Username already exists"
 msgstr "Kullanıcı adı zaten var"
 
-#: Model/Table/UsersTable.php:179
+#: Model/Table/UsersTable.php:177
 msgid "Email already exists"
 msgstr "E-posta zaten var"
 
@@ -524,53 +519,55 @@ msgstr ""
 "Lütfen sosyal girişi aktif hale getirmek için adresi internet tarayıcınıza "
 "kopyalayın {0}"
 
-#: Template/Users/add.ctp:13 Template/Users/edit.ctp:16
+#: Template/Users/add.ctp:13 Template/Users/edit.ctp:17
 #: Template/Users/index.ctp:13;26 Template/Users/view.ctp:15
 msgid "Actions"
 msgstr "Aksiyonlar"
 
-#: Template/Users/add.ctp:15 Template/Users/edit.ctp:27
+#: Template/Users/add.ctp:15 Template/Users/edit.ctp:28
 #: Template/Users/view.ctp:23
 msgid "List Users"
 msgstr "Kullanıcıları Listele"
 
-#: Template/Users/add.ctp:21 Template/Users/register.ctp:17
+#: Template/Users/add.ctp:21 Template/Users/register.ctp:18
 msgid "Add User"
 msgstr "Kullanıcı Ekle"
 
-#: Template/Users/add.ctp:23 Template/Users/edit.ctp:35
-#: Template/Users/index.ctp:22 Template/Users/profile.ctp:30
-#: Template/Users/register.ctp:19 Template/Users/view.ctp:33
+#: Template/Users/add.ctp:23 Template/Users/edit.ctp:36
+#: Template/Users/index.ctp:22 Template/Users/login.ctp:20
+#: Template/Users/profile.ctp:30 Template/Users/register.ctp:20
+#: Template/Users/view.ctp:33
 msgid "Username"
 msgstr "Kullanıcı Adı"
 
-#: Template/Users/add.ctp:24 Template/Users/edit.ctp:36
+#: Template/Users/add.ctp:24 Template/Users/edit.ctp:37
 #: Template/Users/index.ctp:23 Template/Users/profile.ctp:32
-#: Template/Users/register.ctp:20 Template/Users/view.ctp:35
+#: Template/Users/register.ctp:21 Template/Users/view.ctp:35
 msgid "Email"
 msgstr "E-posta"
 
-#: Template/Users/add.ctp:25 Template/Users/register.ctp:21
+#: Template/Users/add.ctp:25 Template/Users/login.ctp:21
+#: Template/Users/register.ctp:22
 msgid "Password"
 msgstr "Şifre"
 
-#: Template/Users/add.ctp:26 Template/Users/edit.ctp:37
-#: Template/Users/index.ctp:24 Template/Users/register.ctp:26
+#: Template/Users/add.ctp:26 Template/Users/edit.ctp:38
+#: Template/Users/index.ctp:24 Template/Users/register.ctp:27
 msgid "First name"
 msgstr "Ad"
 
-#: Template/Users/add.ctp:27 Template/Users/edit.ctp:38
-#: Template/Users/index.ctp:25 Template/Users/register.ctp:27
+#: Template/Users/add.ctp:27 Template/Users/edit.ctp:39
+#: Template/Users/index.ctp:25 Template/Users/register.ctp:28
 msgid "Last name"
 msgstr "Soyad"
 
-#: Template/Users/add.ctp:30 Template/Users/edit.ctp:53
+#: Template/Users/add.ctp:30 Template/Users/edit.ctp:54
 #: Template/Users/view.ctp:49;74
 msgid "Active"
 msgstr "Aktif"
 
 #: Template/Users/add.ctp:34 Template/Users/change_password.ctp:25
-#: Template/Users/edit.ctp:57 Template/Users/register.ctp:36
+#: Template/Users/edit.ctp:58 Template/Users/register.ctp:37
 #: Template/Users/request_reset_password.ctp:8
 #: Template/Users/resend_token_validation.ctp:20
 #: Template/Users/social_email.ctp:19
@@ -589,48 +586,48 @@ msgstr "Geçerli şifre"
 msgid "New password"
 msgstr "Yeni şifre"
 
-#: Template/Users/change_password.ctp:21 Template/Users/register.ctp:24
+#: Template/Users/change_password.ctp:21 Template/Users/register.ctp:25
 msgid "Confirm password"
 msgstr "Şifre onayla"
 
-#: Template/Users/edit.ctp:21 Template/Users/index.ctp:40
+#: Template/Users/edit.ctp:22 Template/Users/index.ctp:40
 msgid "Delete"
 msgstr "Sil"
 
-#: Template/Users/edit.ctp:23 Template/Users/index.ctp:40
+#: Template/Users/edit.ctp:24 Template/Users/index.ctp:40
 #: Template/Users/view.ctp:21
 msgid "Are you sure you want to delete # {0}?"
 msgstr "Silmek istediğine emin misin # {0}?"
 
-#: Template/Users/edit.ctp:33 Template/Users/view.ctp:17
+#: Template/Users/edit.ctp:34 Template/Users/view.ctp:17
 msgid "Edit User"
 msgstr "Kullanıcıyı düzenle"
 
-#: Template/Users/edit.ctp:39 Template/Users/view.ctp:43
+#: Template/Users/edit.ctp:40 Template/Users/view.ctp:43
 msgid "Token"
 msgstr "Jeton"
 
-#: Template/Users/edit.ctp:41
+#: Template/Users/edit.ctp:42
 msgid "Token expires"
 msgstr "Jeton Son Kullanma Tarihi"
 
-#: Template/Users/edit.ctp:44
+#: Template/Users/edit.ctp:45
 msgid "API token"
 msgstr "API jetonu"
 
-#: Template/Users/edit.ctp:47
+#: Template/Users/edit.ctp:48
 msgid "Activation date"
 msgstr "Aktivasyon tarihi"
 
-#: Template/Users/edit.ctp:50
+#: Template/Users/edit.ctp:51
 msgid "TOS date"
 msgstr "TOS tarihi"
 
-#: Template/Users/edit.ctp:63
+#: Template/Users/edit.ctp:64
 msgid "Reset Google Authenticator Token"
 msgstr "Google Authenticator Jetonunu Sıfırla"
 
-#: Template/Users/edit.ctp:69
+#: Template/Users/edit.ctp:70
 msgid "Are you sure you want to reset token for user \"{0}\"?"
 msgstr "Kullanıcı {0} için jetonu sıfırlamak istediğine emin misin?"
 
@@ -678,7 +675,7 @@ msgstr "Şifre Sıfırla"
 msgid "Login"
 msgstr "Giriş"
 
-#: Template/Users/profile.ctp:21 View/Helper/UserHelper.php:54
+#: Template/Users/profile.ctp:21
 msgid "{0} {1}"
 msgstr "{0} {1}"
 
@@ -706,7 +703,7 @@ msgstr "Bağlantı"
 msgid "Link to {0}"
 msgstr "Şuna bağlı {0}"
 
-#: Template/Users/register.ctp:29
+#: Template/Users/register.ctp:30
 msgid "Accept TOS conditions?"
 msgstr "TOS koşullarını kabul ediyor musun?"
 
@@ -746,10 +743,12 @@ msgid "Id"
 msgstr "Id"
 
 #: Template/Users/view.ctp:37
+#, fuzzy
 msgid "First Name"
 msgstr "Ad"
 
 #: Template/Users/view.ctp:39
+#, fuzzy
 msgid "Last Name"
 msgstr "Soyad"
 
@@ -781,39 +780,27 @@ msgstr "Oluşturulmuş"
 msgid "Modified"
 msgstr "Değiştirilmiş"
 
-#: View/Helper/UserHelper.php:45
+#: View/Helper/UserHelper.php:46
 msgid "Sign in with"
 msgstr "Şununla giriş yapın"
 
-#: View/Helper/UserHelper.php:48
-msgid "fa fa-{0}"
-msgstr "fa fa-{0}"
-
-#: View/Helper/UserHelper.php:57
-msgid "btn btn-social btn-{0} "
-msgstr "btn btn-social btn-{0} "
-
-#: View/Helper/UserHelper.php:106
+#: View/Helper/UserHelper.php:103
 msgid "Logout"
 msgstr "Çıkış"
 
-#: View/Helper/UserHelper.php:123
+#: View/Helper/UserHelper.php:121
 msgid "Welcome, {0}"
 msgstr "Hoşgeldiniz, {0}"
 
-#: View/Helper/UserHelper.php:146
+#: View/Helper/UserHelper.php:151
 msgid "reCaptcha is not configured! Please configure Users.reCaptcha.key"
 msgstr ""
 "reCaptcha konfigüre edilmedi! Lütfen konfigüre edin Users.reCaptcha.key"
 
-#: View/Helper/UserHelper.php:205
-msgid "btn btn-social btn-{0}"
-msgstr "btn btn-social btn-{0}"
-
-#: View/Helper/UserHelper.php:211
+#: View/Helper/UserHelper.php:215
 msgid "Connected with {0}"
 msgstr "Şununla bağlanıldı {0}"
 
-#: View/Helper/UserHelper.php:216
+#: View/Helper/UserHelper.php:220
 msgid "Connect with {0}"
 msgstr "Şununla bağlan {0}"

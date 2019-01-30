@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
@@ -99,9 +99,9 @@ class LoginTraitTest extends BaseTraitTest
         $registry = new ComponentRegistry();
         $config = [
             'component' => 'CakeDC/Users.Login',
-            'defaultMessage' => __d('CakeDC/Users', 'Username or password is incorrect'),
+            'defaultMessage' => __d('cake_d_c/users', 'Username or password is incorrect'),
             'messages' => [
-                FormAuthenticator::FAILURE_INVALID_RECAPTCHA => __d('CakeDC/Users', 'Invalid reCaptcha')
+                FormAuthenticator::FAILURE_INVALID_RECAPTCHA => __d('cake_d_c/users', 'Invalid reCaptcha')
             ],
             'targetAuthenticator' => FormAuthenticator::class
         ];
@@ -156,9 +156,9 @@ class LoginTraitTest extends BaseTraitTest
         $registry = new ComponentRegistry();
         $config = [
             'component' => 'CakeDC/Users.Login',
-            'defaultMessage' => __d('CakeDC/Users', 'Username or password is incorrect'),
+            'defaultMessage' => __d('cake_d_c/users', 'Username or password is incorrect'),
             'messages' => [
-                FormAuthenticator::FAILURE_INVALID_RECAPTCHA => __d('CakeDC/Users', 'Invalid reCaptcha')
+                FormAuthenticator::FAILURE_INVALID_RECAPTCHA => __d('cake_d_c/users', 'Invalid reCaptcha')
             ],
             'targetAuthenticator' => FormAuthenticator::class
         ];
@@ -219,14 +219,14 @@ class LoginTraitTest extends BaseTraitTest
     {
         $socialLoginConfig = [
             'component' => 'CakeDC/Users.Login',
-            'defaultMessage' => __d('CakeDC/Users', 'Could not proceed with social account. Please try again'),
+            'defaultMessage' => __d('cake_d_c/users', 'Could not proceed with social account. Please try again'),
             'messages' => [
                 SocialAuthenticator::FAILURE_USER_NOT_ACTIVE => __d(
-                    'CakeDC/Users',
+                    'cake_d_c/users',
                     'Your user has not been validated yet. Please check your inbox for instructions'
                 ),
                 SocialAuthenticator::FAILURE_ACCOUNT_NOT_ACTIVE => __d(
-                    'CakeDC/Users',
+                    'cake_d_c/users',
                     'Your social account has not been validated yet. Please check your inbox for instructions'
                 )
             ],
@@ -234,9 +234,9 @@ class LoginTraitTest extends BaseTraitTest
         ];
         $loginConfig = [
             'component' => 'CakeDC/Users.Login',
-            'defaultMessage' => __d('CakeDC/Users', 'Username or password is incorrect'),
+            'defaultMessage' => __d('cake_d_c/users', 'Username or password is incorrect'),
             'messages' => [
-                FormAuthenticator::FAILURE_INVALID_RECAPTCHA => __d('CakeDC/Users', 'Invalid reCaptcha'),
+                FormAuthenticator::FAILURE_INVALID_RECAPTCHA => __d('cake_d_c/users', 'Invalid reCaptcha'),
             ],
             'targetAuthenticator' => FormAuthenticator::class
         ];
@@ -408,14 +408,14 @@ class LoginTraitTest extends BaseTraitTest
         $registry = new ComponentRegistry();
         $config = [
             'component' => 'CakeDC/Users.Login',
-            'defaultMessage' => __d('CakeDC/Users', 'Could not proceed with social account. Please try again'),
+            'defaultMessage' => __d('cake_d_c/users', 'Could not proceed with social account. Please try again'),
             'messages' => [
                 SocialAuthenticator::FAILURE_USER_NOT_ACTIVE => __d(
-                    'CakeDC/Users',
+                    'cake_d_c/users',
                     'Your user has not been validated yet. Please check your inbox for instructions'
                 ),
                 SocialAuthenticator::FAILURE_ACCOUNT_NOT_ACTIVE => __d(
-                    'CakeDC/Users',
+                    'cake_d_c/users',
                     'Your social account has not been validated yet. Please check your inbox for instructions'
                 )
             ],

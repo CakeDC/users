@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
@@ -62,7 +62,7 @@ class SocialAuthMiddleware
     {
         $baseClassName = get_class($exception->getPrevious());
         if ($baseClassName === MissingEmailException::class) {
-            $this->setErrorMessage($request, __d('CakeDC/Users', 'Please enter your email'));
+            $this->setErrorMessage($request, __d('cake_d_c/users', 'Please enter your email'));
 
             $request->getSession()->write(
                 Configure::read('Users.Key.Session.social'),
@@ -72,7 +72,7 @@ class SocialAuthMiddleware
             return $this->responseWithActionLocation($response, 'socialEmail');
         }
 
-        $this->setErrorMessage($request, __d('CakeDC/Users', 'Could not identify your account, please try again'));
+        $this->setErrorMessage($request, __d('cake_d_c/users', 'Could not identify your account, please try again'));
 
         return $this->responseWithActionLocation($response, 'login');
     }

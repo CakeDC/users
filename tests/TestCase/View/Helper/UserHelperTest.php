@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
@@ -37,6 +37,15 @@ class UserHelperTest extends TestCase
      */
     private $socialLogin;
 
+    /**
+     * @var \CakeDC\Users\View\Helper\UserHelper
+     */
+    private $User;
+
+    /**
+     * @var \CakeDC\Users\View\Helper\AuthLinkHelper
+     */
+    private $AuthLink;
     /**
      * setUp method
      *
@@ -136,13 +145,14 @@ class UserHelperTest extends TestCase
             ->with('Auth.User.first_name')
             ->will($this->returnValue('david'));
 
-        $this->User->request = $this->getMockBuilder('Cake\Http\ServerRequest')
+        $request = $this->getMockBuilder('Cake\Http\ServerRequest')
                 ->setMethods(['getSession'])
                 ->getMock();
-        $this->User->request->expects($this->any())
+        $request->expects($this->any())
             ->method('getSession')
             ->will($this->returnValue($session));
 
+        $this->User->getView()->setRequest($request);
         $expected = '<span class="welcome">Welcome, <a href="/profile">david</a></span>';
         $result = $this->User->welcome();
         $this->assertEquals($expected, $result);
@@ -163,13 +173,14 @@ class UserHelperTest extends TestCase
             ->with('Auth.User.id')
             ->will($this->returnValue(null));
 
-        $this->User->request = $this->getMockBuilder('Cake\Http\ServerRequest')
+        $request = $this->getMockBuilder('Cake\Http\ServerRequest')
                 ->setMethods(['getSession'])
                 ->getMock();
-        $this->User->request->expects($this->any())
+        $request->expects($this->any())
             ->method('getSession')
             ->will($this->returnValue($session));
 
+        $this->User->getView()->setRequest($request);
         $result = $this->User->welcome();
         $this->assertEmpty($result);
     }

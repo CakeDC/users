@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
@@ -23,8 +23,8 @@ use Cake\TestSuite\TestCase;
 class SocialPendingEmailAuthenticatorTest extends TestCase
 {
     public $fixtures = [
-        'plugin.CakeDC/Users.users',
-        'plugin.CakeDC/Users.social_accounts'
+        'plugin.CakeDC/Users.Users',
+        'plugin.CakeDC/Users.SocialAccounts'
     ];
 
     /**
@@ -49,6 +49,30 @@ class SocialPendingEmailAuthenticatorTest extends TestCase
         parent::setUp();
 
         $this->Request = ServerRequestFactory::fromGlobals();
+    }
+
+    /**
+     * testAuthenticate
+     *
+     * @return void
+     */
+    public function testAuthenticateInvalidUrl()
+    {
+        $user = $this->getUserData();
+        $requestNoEmail = ServerRequestFactory::fromGlobals(
+            ['REQUEST_URI' => '/users/users/social-email-invalid'],
+            [],
+            []
+        );
+        $requestNoEmail->getSession()->write(Configure::read('Users.Key.Session.social'), $user);
+        $Response = new Response();
+        $identifiers = new IdentifierCollection([
+            'CakeDC/Users.Social'
+        ]);
+        $Authenticator = new SocialPendingEmailAuthenticator($identifiers);
+        $result = $Authenticator->authenticate($requestNoEmail, $Response);
+        $this->assertInstanceOf(Result::class, $result);
+        $this->assertEquals(Result::FAILURE_OTHER, $result->getStatus());
     }
 
     /**
@@ -136,7 +160,8 @@ class SocialPendingEmailAuthenticatorTest extends TestCase
             'cover_photo_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg'
         ];
 
-        $user = (new Facebook())($data);
+        $mapper = new Facebook();
+        $user = $mapper($data);
         $user['provider'] = 'facebook';
         $user['validated'] = true;
 

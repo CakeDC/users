@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
@@ -11,7 +11,7 @@
 
 namespace CakeDC\Users\Controller\Traits;
 
-use Cake\Core\Configure;
+use CakeDC\Users\Loader\LoginComponentLoader;
 use Cake\Http\Exception\NotFoundException;
 
 /**
@@ -29,11 +29,7 @@ trait SocialTrait
      */
     public function socialEmail()
     {
-        $config = Configure::read('Auth.SocialLoginFailure');
-        /**
-         * @var \CakeDC\Users\Controller\Component\LoginComponent $Login
-         */
-        $Login = $this->loadComponent($config['component'], $config);
+        $Login = LoginComponentLoader::forSocial($this);
 
         return $Login->handleLogin(true, false);
     }

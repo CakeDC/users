@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
@@ -143,7 +143,7 @@ $config = [
         ],
         'Authenticators' => [
             'Authentication.Session' => [
-                'skipGoogleVerify' => true,
+                'skipTwoFactorVerify' => true,
                 'sessionKey' => 'Auth',
             ],
             'CakeDC/Auth.Form' => [
@@ -156,13 +156,13 @@ $config = [
                 ]
             ],
             'Authentication.Token' => [
-                'skipGoogleVerify' => true,
+                'skipTwoFactorVerify' => true,
                 'header' => null,
                 'queryParam' => 'api_key',
                 'tokenPrefix' => null,
             ],
             'CakeDC/Auth.Cookie' => [
-                'skipGoogleVerify' => true,
+                'skipTwoFactorVerify' => true,
                 'rememberMeField' => 'remember_me',
                 'cookie' => [
                     'expires' => '1 month',
@@ -177,10 +177,10 @@ $config = [
                 ]
             ],
             'CakeDC/Users.Social' => [
-                'skipGoogleVerify' => true,
+                'skipTwoFactorVerify' => true,
             ],
             'CakeDC/Users.SocialPendingEmail' => [
-                'skipGoogleVerify' => true,
+                'skipTwoFactorVerify' => true,
             ]
         ],
         'Identifiers' => [
@@ -213,29 +213,6 @@ $config = [
         'AuthorizationComponent' => [
             'enabled' => true,
         ],
-        'SocialLoginFailure' => [
-            'component' => 'CakeDC/Users.Login',
-            'defaultMessage' => __d('CakeDC/Users', 'Could not proceed with social account. Please try again'),
-            'messages' => [
-                'FAILURE_USER_NOT_ACTIVE' => __d(
-                    'CakeDC/Users',
-                    'Your user has not been validated yet. Please check your inbox for instructions'
-                ),
-                'FAILURE_ACCOUNT_NOT_ACTIVE' => __d(
-                    'CakeDC/Users',
-                    'Your social account has not been validated yet. Please check your inbox for instructions'
-                )
-            ],
-            'targetAuthenticator' => 'CakeDC\Users\Authenticator\SocialAuthenticator'
-        ],
-        'FormLoginFailure' => [
-            'component' => 'CakeDC/Users.Login',
-            'defaultMessage' => __d('CakeDC/Users', 'Username or password is incorrect'),
-            'messages' => [
-                'FAILURE_INVALID_RECAPTCHA' => __d('CakeDC/Users', 'Invalid reCaptcha'),
-            ],
-            'targetAuthenticator' => 'CakeDC\Auth\Authenticator\FormAuthenticator'
-        ]
     ],
     'OAuth' => [
         'path' => ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'socialLogin', 'prefix' => null],

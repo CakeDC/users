@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
@@ -99,10 +99,10 @@ class SocialAccountBehavior extends Behavior
 
         if (!empty($socialAccount) && $socialAccount->token === $token) {
             if ($socialAccount->active) {
-                throw new AccountAlreadyActiveException(__d('CakeDC/Users', "Account already validated"));
+                throw new AccountAlreadyActiveException(__d('cake_d_c/users', "Account already validated"));
             }
         } else {
-            throw new RecordNotFoundException(__d('CakeDC/Users', "Account not found for the given token and email."));
+            throw new RecordNotFoundException(__d('cake_d_c/users', "Account not found for the given token and email."));
         }
 
         return $this->_activateAccount($socialAccount);
@@ -126,10 +126,10 @@ class SocialAccountBehavior extends Behavior
 
         if (!empty($socialAccount)) {
             if ($socialAccount->active) {
-                throw new AccountAlreadyActiveException(__d('CakeDC/Users', "Account already validated"));
+                throw new AccountAlreadyActiveException(__d('cake_d_c/users', "Account already validated"));
             }
         } else {
-            throw new RecordNotFoundException(__d('CakeDC/Users', "Account not found for the given token and email."));
+            throw new RecordNotFoundException(__d('cake_d_c/users', "Account not found for the given token and email."));
         }
 
         return $this->sendSocialValidationEmail($socialAccount, $socialAccount->user);

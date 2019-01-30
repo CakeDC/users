@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
@@ -33,13 +33,15 @@ use Cake\Http\MiddlewareQueue;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 use Cake\Http\ServerRequestFactory;
-use Cake\TestSuite\IntegrationTestCase;
+use Cake\TestSuite\IntegrationTestTrait;
+use Cake\TestSuite\TestCase;
 
 /**
  * PluginTest class
  */
-class PluginTest extends IntegrationTestCase
+class PluginTest extends TestCase
 {
+    use IntegrationTestTrait;
 
     /**
      * testMiddleware
@@ -212,7 +214,7 @@ class PluginTest extends IntegrationTestCase
     {
         Configure::write('Auth.Authenticators', [
             'Authentication.Session' => [
-                'skipGoogleVerify' => true,
+                'skipTwoFactorVerify' => true,
                 'sessionKey' => 'CustomAuth',
                 'fields' => ['username' => 'email'],
                 'identify' => true,
@@ -222,7 +224,7 @@ class PluginTest extends IntegrationTestCase
                 'fields' => ['username' => 'email', 'password' => 'alt_password'],
             ],
             'Authentication.Token' => [
-                'skipGoogleVerify' => true,
+                'skipTwoFactorVerify' => true,
                 'header' => null,
                 'queryParam' => 'api_key',
                 'tokenPrefix' => null,
@@ -256,7 +258,7 @@ class PluginTest extends IntegrationTestCase
                 'sessionKey' => 'CustomAuth',
                 'identify' => true,
                 'identityAttribute' => 'identity',
-                'skipGoogleVerify' => true
+                'skipTwoFactorVerify' => true
             ],
             FormAuthenticator::class => [
                 'loginUrl' => '/login',
@@ -267,12 +269,12 @@ class PluginTest extends IntegrationTestCase
                 'header' => null,
                 'queryParam' => 'api_key',
                 'tokenPrefix' => null,
-                'skipGoogleVerify' => true
+                'skipTwoFactorVerify' => true
             ],
             TwoFactorAuthenticator::class => [
                 'loginUrl' => null,
                 'urlChecker' => 'Authentication.Default',
-                'skipGoogleVerify' => true
+                'skipTwoFactorVerify' => true
             ]
         ];
         $actual = [];
@@ -321,7 +323,7 @@ class PluginTest extends IntegrationTestCase
     {
         Configure::write('Auth.Authenticators', [
             'Authentication.Session' => [
-                'skipGoogleVerify' => true,
+                'skipTwoFactorVerify' => true,
                 'sessionKey' => 'CustomAuth',
                 'fields' => ['username' => 'email'],
                 'identify' => true,
@@ -331,7 +333,7 @@ class PluginTest extends IntegrationTestCase
                 'fields' => ['username' => 'email', 'password' => 'alt_password'],
             ],
             'Authentication.Token' => [
-                'skipGoogleVerify' => true,
+                'skipTwoFactorVerify' => true,
                 'header' => null,
                 'queryParam' => 'api_key',
                 'tokenPrefix' => null,
@@ -360,7 +362,7 @@ class PluginTest extends IntegrationTestCase
                 'sessionKey' => 'CustomAuth',
                 'identify' => true,
                 'identityAttribute' => 'identity',
-                'skipGoogleVerify' => true
+                'skipTwoFactorVerify' => true
             ],
             FormAuthenticator::class => [
                 'loginUrl' => '/login',
@@ -371,7 +373,7 @@ class PluginTest extends IntegrationTestCase
                 'header' => null,
                 'queryParam' => 'api_key',
                 'tokenPrefix' => null,
-                'skipGoogleVerify' => true
+                'skipTwoFactorVerify' => true
             ]
         ];
         $actual = [];

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
@@ -39,8 +39,6 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
     const EVENT_AFTER_LOGIN = 'Users.Authentication.afterLogin';
     const EVENT_BEFORE_LOGOUT = 'Users.Authentication.beforeLogout';
     const EVENT_AFTER_LOGOUT = 'Users.Authentication.afterLogout';
-    const EVENT_FAILED_SOCIAL_LOGIN = 'Users.Authentication.failedSocialLogin';
-    const EVENT_AFTER_SOCIAL_REGISTER = 'Users.Authentication.afterSocialRegister';
 
     const EVENT_BEFORE_REGISTER = 'Users.Managment.beforeRegister';
     const EVENT_AFTER_REGISTER = 'Users.Managment.afterRegister';
@@ -59,6 +57,7 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
     public function getAuthenticationService(ServerRequestInterface $request, ResponseInterface $response)
     {
         $key = 'Auth.Authentication.serviceLoader';
+
         return $this->loadService($request, $response, $key);
     }
 
@@ -68,6 +67,7 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
     public function getAuthorizationService(ServerRequestInterface $request, ResponseInterface $response)
     {
         $key = 'Auth.Authorization.serviceLoader';
+
         return $this->loadService($request, $response, $key);
     }
 

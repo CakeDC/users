@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
@@ -16,6 +16,7 @@ use CakeDC\Users\Model\Entity\User;
 use CakeDC\Users\Test\App\Mailer\OverrideMailer;
 use Cake\Core\Configure;
 use Cake\Mailer\Email;
+use Cake\Mailer\TransportFactory;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use InvalidArgumentException;
@@ -32,7 +33,7 @@ class PasswordBehaviorTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.CakeDC/Users.users',
+        'plugin.CakeDC/Users.Users',
     ];
 
     /**
@@ -48,7 +49,7 @@ class PasswordBehaviorTest extends TestCase
                 ->setMethods(['_sendResetPasswordEmail'])
                 ->setConstructorArgs([$this->table])
                 ->getMock();
-        Email::setConfigTransport('test', [
+        TransportFactory::setConfig('test', [
             'className' => 'Debug'
         ]);
         //$this->configEmail = Email::getConfig('default');
@@ -67,7 +68,7 @@ class PasswordBehaviorTest extends TestCase
     {
         unset($this->table, $this->Behavior);
         Email::drop('default');
-        Email::dropTransport('test');
+        TransportFactory::drop('test');
         parent::tearDown();
     }
 

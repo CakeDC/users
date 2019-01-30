@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
@@ -20,6 +20,7 @@ use Cake\Controller\ComponentRegistry;
 use Cake\Controller\Controller;
 use Cake\Event\Event;
 use Cake\Mailer\Email;
+use Cake\Mailer\TransportFactory;
 use Cake\ORM\Entity;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
@@ -33,7 +34,7 @@ abstract class BaseTraitTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.CakeDC/Users.users',
+        'plugin.CakeDC/Users.Users',
     ];
 
     /**
@@ -74,7 +75,7 @@ abstract class BaseTraitTest extends TestCase
         }
 
         if ($this->mockDefaultEmail) {
-            Email::setConfigTransport('test', [
+            TransportFactory::setConfig('test', [
                 'className' => 'Debug'
             ]);
             $this->configEmail = Email::getConfig('default');
@@ -96,7 +97,7 @@ abstract class BaseTraitTest extends TestCase
         unset($this->table, $this->Trait);
         if ($this->mockDefaultEmail) {
             Email::drop('default');
-            Email::dropTransport('test');
+            TransportFactory::drop('test');
             //Email::setConfig('default', $this->setConfigEmail);
         }
         parent::tearDown();

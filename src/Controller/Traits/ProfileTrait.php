@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
@@ -50,11 +50,11 @@ trait ProfileTrait
                 $isCurrentUser = true;
             }
         } catch (RecordNotFoundException $ex) {
-            $this->Flash->error(__d('CakeDC/Users', 'User was not found'));
+            $this->Flash->error(__d('cake_d_c/users', 'User was not found'));
 
             return $this->redirect($this->request->referer());
         } catch (InvalidPrimaryKeyException $ex) {
-            $this->Flash->error(__d('CakeDC/Users', 'Not authorized, please login first'));
+            $this->Flash->error(__d('cake_d_c/users', 'Not authorized, please login first'));
 
             return $this->redirect($this->request->referer());
         }

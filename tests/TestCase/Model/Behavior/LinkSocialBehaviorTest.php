@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
@@ -35,8 +35,8 @@ class LinkSocialBehaviorTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.CakeDC/Users.social_accounts',
-        'plugin.CakeDC/Users.users'
+        'plugin.CakeDC/Users.SocialAccounts',
+        'plugin.CakeDC/Users.Users'
     ];
 
     /**
@@ -266,7 +266,7 @@ class LinkSocialBehaviorTest extends TestCase
         $this->assertFalse($resultUser->has('social_accounts'));
         $expected = [
             'social_accounts' => [
-                '_existsIn' => __d('CakeDC/Users', 'Social account already associated to another user')
+                '_existsIn' => __d('cake_d_c/users', 'Social account already associated to another user')
             ]
         ];
         $actual = $user->getErrors();

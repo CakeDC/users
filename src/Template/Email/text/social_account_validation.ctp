@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
@@ -19,13 +19,13 @@ $activationUrl = [
     $socialAccount['token'],
 ];
 ?>
-<?= __d('CakeDC/Users', "Hi {0}", $user['first_name']) ?>,
+<?= __d('cake_d_c/users', "Hi {0}", $user['first_name']) ?>,
 
 <?= __d(
-    'CakeDC/Users',
+    'cake_d_c/users',
     "Please copy the following address in your web browser to activate your social login {0}",
     $this->Url->build($activationUrl)
 ) ?>
 
-<?= __d('CakeDC/Users', 'Thank you') ?>,
+<?= __d('cake_d_c/users', 'Thank you') ?>,
 

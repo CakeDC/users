@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
@@ -103,14 +103,14 @@ class SocialTraitTest extends BaseTraitTest
         $registry = new ComponentRegistry();
         $config = [
             'component' => 'CakeDC/Users.Login',
-            'defaultMessage' => __d('CakeDC/Users', 'Could not proceed with social account. Please try again'),
+            'defaultMessage' => __d('cake_d_c/users', 'Could not proceed with social account. Please try again'),
             'messages' => [
                 SocialAuthenticator::FAILURE_USER_NOT_ACTIVE => __d(
-                    'CakeDC/Users',
+                    'cake_d_c/users',
                     'Your user has not been validated yet. Please check your inbox for instructions'
                 ),
                 SocialAuthenticator::FAILURE_ACCOUNT_NOT_ACTIVE => __d(
-                    'CakeDC/Users',
+                    'cake_d_c/users',
                     'Your social account has not been validated yet. Please check your inbox for instructions'
                 )
             ],

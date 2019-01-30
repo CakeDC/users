@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
@@ -12,6 +12,7 @@
 namespace CakeDC\Users\Controller\Traits;
 
 use CakeDC\Auth\Authentication\AuthenticationService;
+use CakeDC\Users\Loader\LoginComponentLoader;
 use CakeDC\Users\Plugin;
 use Cake\Core\Configure;
 use Cake\Http\Exception\NotFoundException;
@@ -34,11 +35,7 @@ trait LoginTrait
      */
     public function socialLogin()
     {
-        $config = Configure::read('Auth.SocialLoginFailure');
-        /**
-         * @var \CakeDC\Users\Controller\Component\LoginComponent $Login
-         */
-        $Login = $this->loadComponent($config['component'], $config);
+        $Login = LoginComponentLoader::forSocial($this);
 
         return $Login->handleLogin(false, true);
     }
@@ -47,15 +44,12 @@ trait LoginTrait
      * Login user
      *
      * @return mixed
+     * @throws \Exception
      */
     public function login()
     {
-        $this->request->getSession()->delete(AuthenticationService::GOOGLE_VERIFY_SESSION_KEY);
-        $config = Configure::read('Auth.FormLoginFailure');
-        /**
-         * @var \CakeDC\Users\Controller\Component\LoginComponent $Login
-         */
-        $Login = $this->loadComponent($config['component'], $config);
+        $this->request->getSession()->delete(AuthenticationService::TWO_FACTOR_VERIFY_SESSION_KEY);
+        $Login = LoginComponentLoader::forForm($this);
 
         return $Login->handleLogin(true, false);
     }
@@ -76,7 +70,7 @@ trait LoginTrait
         }
 
         $this->request->getSession()->destroy();
-        $this->Flash->success(__d('CakeDC/Users', 'You\'ve successfully logged out'));
+        $this->Flash->success(__d('cake_d_c/users', 'You\'ve successfully logged out'));
 
         $eventAfter = $this->dispatchEvent(Plugin::EVENT_AFTER_LOGOUT, ['user' => $user]);
         if (is_array($eventAfter->result)) {

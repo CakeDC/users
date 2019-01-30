@@ -52,3 +52,46 @@ Configure::write('Auth.AuthorizationComponent.enabled', false);
 
 You can check the configuration options available for authorization component at the 
 [official documentation](https://github.com/cakephp/authorization/blob/master/docs/Component.md)
+
+Authorization Service Loader 
+-----------------------------
+To make the integration with cakephp/authorization easier we load the resolvers OrmResolver and MapResolver.
+The MapResolver resolves ServerRequest request object to check access permission using Superuser and Rbac policies.
+
+If the configuration is not enough for your project you may create a custom loader extending the 
+default provided.
+
+- Create file src/Loader/AppAuthorizationServiceLoader.php
+
+```
+<?php
+namespace App\Loader;
+ 
+use \CakeDC\Users\Loader\AuthorizationServiceLoader;
+ 
+class AppAuthorizationServiceLoader
+{
+    /**
+     * Load the authorization service with OrmResolver and Map Resolver for RbacPolicy
+     *
+     * @param ServerRequestInterface $request The request.
+     * @return AuthorizationService
+     */
+    public function __invoke(ServerRequestInterface $request)
+    {
+        $orm = new OrmResolver();
+
+        $resolver = new ResolverCollection([
+            $map,
+            $orm
+        ]);
+
+        return new AuthorizationService($resolver);
+    }
+}
+```
+- Change the authorization service loader:
+
+```
+Configure::write('Authorization.serviceLoader', \App\Loader\AppAuthorizationServiceLoader::class);
+```

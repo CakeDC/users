@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
@@ -30,8 +30,8 @@ class SocialAuthMiddlewareTest extends TestCase
 {
 
     public $fixtures = [
-        'plugin.CakeDC/Users.users',
-        'plugin.CakeDC/Users.social_accounts'
+        'plugin.CakeDC/Users.Users',
+        'plugin.CakeDC/Users.SocialAccounts'
     ];
 
     /**
@@ -210,7 +210,7 @@ class SocialAuthMiddlewareTest extends TestCase
                 'key' => 'flash',
                 'element' => 'Flash/error',
                 'params' => [],
-                'message' => __d('CakeDC/Users', 'Please enter your email')
+                'message' => __d('cake_d_c/users', 'Please enter your email')
             ],
             '/users/users/social-email',
             true,
@@ -221,7 +221,7 @@ class SocialAuthMiddlewareTest extends TestCase
                 'key' => 'flash',
                 'element' => 'Flash/error',
                 'params' => [],
-                'message' => __d('CakeDC/Users', 'Could not identify your account, please try again')
+                'message' => __d('cake_d_c/users', 'Could not identify your account, please try again')
             ],
             '/login',
             false
@@ -302,7 +302,8 @@ class SocialAuthMiddlewareTest extends TestCase
             'cover_photo_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg'
         ]);
         $user = ['token' => $Token] + $user->toArray();
-        $rawData = (new MapUser())($service, $user);
+        $mapper = new MapUser();
+        $rawData = $mapper($service, $user);
         $next = function (ServerRequest $request, Response $response) use ($previousException, $ResponseOriginal, &$checked, $rawData) {
             /**
              * @var OAuth2Service $service
@@ -338,7 +339,8 @@ class SocialAuthMiddlewareTest extends TestCase
 
         if ($keepSocialUser) {
             $actual = $this->Request->getSession()->read(Configure::read('Users.Key.Session.social'));
-            $expected = (new MapUser())($service, $user);
+            $mapper = new MapUser();
+            $expected = $mapper($service, $user);
             $this->assertEquals($expected, $actual);
         }
     }

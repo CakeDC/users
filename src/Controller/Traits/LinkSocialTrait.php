@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
@@ -49,7 +49,7 @@ trait LinkSocialTrait
      */
     public function callbackLinkSocial($alias = null)
     {
-        $message = __d('CakeDC/Users', 'Could not associate account, please try again.');
+        $message = __d('cake_d_c/users', 'Could not associate account, please try again.');
         try {
             $server = (new ServiceFactory())
                 ->setRedirectUriField('callbackLinkSocialUri')
@@ -61,7 +61,8 @@ trait LinkSocialTrait
                 return $this->redirect(['action' => 'profile']);
             }
             $data = $server->getUser($this->request);
-            $data = (new MapUser())($server, $data);
+            $mapper = new MapUser();
+            $data = $mapper($server, $data);
             $identity = $this->request->getAttribute('identity');
             $identity = isset($identity) ? $identity : [];
             $userId = Hash::get($identity, 'id');
@@ -72,7 +73,7 @@ trait LinkSocialTrait
             if ($user->getErrors()) {
                 $this->Flash->error($message);
             } else {
-                $this->Flash->success(__d('CakeDC/Users', 'Social account was associated.'));
+                $this->Flash->success(__d('cake_d_c/users', 'Social account was associated.'));
             }
         } catch (\Exception $e) {
             $log = sprintf(

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
@@ -12,6 +12,7 @@
 namespace CakeDC\Users\Controller\Traits;
 
 use CakeDC\Auth\Authentication\AuthenticationService;
+use CakeDC\Auth\Authenticator\TwoFactorAuthenticator;
 use Cake\Core\Configure;
 
 trait OneTimePasswordVerifyTrait
@@ -37,7 +38,7 @@ trait OneTimePasswordVerifyTrait
             return $this->redirect($loginAction);
         }
 
-        $temporarySession = $this->request->getSession()->read(AuthenticationService::GOOGLE_VERIFY_SESSION_KEY);
+        $temporarySession = $this->request->getSession()->read(AuthenticationService::TWO_FACTOR_VERIFY_SESSION_KEY);
         $secretVerified = $temporarySession['secret_verified'];
         // showing QR-code until shared secret is verified
         if (!$secretVerified) {
@@ -67,16 +68,16 @@ trait OneTimePasswordVerifyTrait
     protected function isVerifyAllowed()
     {
         if (!Configure::read('OneTimePasswordAuthenticator.login')) {
-            $message = __d('CakeDC/Users', 'Please enable Google Authenticator first.');
+            $message = __d('cake_d_c/users', 'Please enable Google Authenticator first.');
             $this->Flash->error($message, 'default', [], 'auth');
 
             return false;
         }
 
-        $temporarySession = $this->request->getSession()->read(AuthenticationService::GOOGLE_VERIFY_SESSION_KEY);
+        $temporarySession = $this->request->getSession()->read(AuthenticationService::TWO_FACTOR_VERIFY_SESSION_KEY);
 
         if (empty($temporarySession) || !isset($temporarySession['id'])) {
-            $message = __d('CakeDC/Users', 'Could not find user data');
+            $message = __d('cake_d_c/users', 'Could not find user data');
             $this->Flash->error($message, 'default', [], 'auth');
 
             return false;
@@ -108,11 +109,11 @@ trait OneTimePasswordVerifyTrait
                 ->where(['id' => $user['id']]);
             $query->execute();
             $user['secret'] = $secret;
-            $this->request->getSession()->write(AuthenticationService::GOOGLE_VERIFY_SESSION_KEY, $user);
+            $this->request->getSession()->write(AuthenticationService::TWO_FACTOR_VERIFY_SESSION_KEY, $user);
         } catch (\Exception $e) {
             $this->request->getSession()->destroy();
             $this->log($e);
-            $this->Flash->error(__('Could not verify, please try again'), 'default', [], 'auth');
+            $this->Flash->error(__d('cake_d_c/users', 'Could not verify, please try again'), 'default', [], 'auth');
 
             return '';
         }
@@ -131,7 +132,7 @@ trait OneTimePasswordVerifyTrait
     {
         $codeVerified = false;
         $verificationCode = $this->request->getData('code');
-        $user = $this->request->getSession()->read(AuthenticationService::GOOGLE_VERIFY_SESSION_KEY);
+        $user = $this->request->getSession()->read(AuthenticationService::TWO_FACTOR_VERIFY_SESSION_KEY);
         $entity = $this->getUsersTable()->get($user['id']);
 
         if (!empty($entity['secret'])) {
@@ -140,7 +141,7 @@ trait OneTimePasswordVerifyTrait
 
         if (!$codeVerified) {
             $this->request->getSession()->destroy();
-            $message = __d('CakeDC/Users', 'Verification code is invalid. Try again');
+            $message = __d('cake_d_c/users', 'Verification code is invalid. Try again');
             $this->Flash->error($message, 'default', [], 'auth');
 
             return $this->redirect($loginAction);
@@ -168,8 +169,8 @@ trait OneTimePasswordVerifyTrait
                 ->execute();
         }
 
-        $this->request->getSession()->delete(AuthenticationService::GOOGLE_VERIFY_SESSION_KEY);
-        $this->request->getSession()->write('GoogleTwoFactor.User', $user);
+        $this->request->getSession()->delete(AuthenticationService::TWO_FACTOR_VERIFY_SESSION_KEY);
+        $this->request->getSession()->write(TwoFactorAuthenticator::USER_SESSION_KEY, $user);
 
         return $this->redirect($loginAction);
     }

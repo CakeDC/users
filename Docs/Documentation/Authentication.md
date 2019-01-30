@@ -74,12 +74,12 @@ For example if you add JWT authenticator you can set:
 $authenticators = Configure::read('Auth.Authenticators');
 $authenticators['Authentication.Jwt'] = [
     'queryParam' => 'token',
-    'skipGoogleVerify' => true,
+    'skipTwoFactorVerify' => true,
 ]; 
 Configure::write('Auth.Authenticators', $authenticators);
 
 ``` 
-**You may have noticed the 'skipGoogleVerify' option, this option is used to identify if a authenticator should skip
+**You may have noticed the 'skipTwoFactorVerify' option, this option is used to identify if a authenticator should skip
 the two factor flow**
 
 The authenticators are loaded by \CakeDC\Users\Loader\AuthenticationServiceLoader class at load authentication
@@ -135,14 +135,14 @@ The default configuration are:
         ...
         'SocialLoginFailure' => [
             'component' => 'CakeDC/Users.Login',
-            'defaultMessage' => __d('CakeDC/Users', 'Could not proceed with social account. Please try again'),
+            'defaultMessage' => __d('cake_d_c/users', 'Could not proceed with social account. Please try again'),
             'messages' => [
                 'FAILURE_USER_NOT_ACTIVE' => __d(
-                    'CakeDC/Users',
+                    'cake_d_c/users',
                     'Your user has not been validated yet. Please check your inbox for instructions'
                 ),
                 'FAILURE_ACCOUNT_NOT_ACTIVE' => __d(
-                    'CakeDC/Users',
+                    'cake_d_c/users',
                     'Your social account has not been validated yet. Please check your inbox for instructions'
                 )
             ],
@@ -150,9 +150,9 @@ The default configuration are:
         ],
         'FormLoginFailure' => [
             'component' => 'CakeDC/Users.Login',
-            'defaultMessage' => __d('CakeDC/Users', 'Username or password is incorrect'),
+            'defaultMessage' => __d('cake_d_c/users', 'Username or password is incorrect'),
             'messages' => [
-                'FAILURE_INVALID_RECAPTCHA' => __d('CakeDC/Users', 'Invalid reCaptcha'),
+                'FAILURE_INVALID_RECAPTCHA' => __d('cake_d_c/users', 'Invalid reCaptcha'),
             ],
             'targetAuthenticator' => 'CakeDC\Auth\Authenticator\FormAuthenticator'
         ]
@@ -163,7 +163,7 @@ The default configuration are:
 
 Authentication Service Loader 
 -----------------------------
-To make integration with cakephp/authentication easier we load the the authenticators and identifiers
+To make the integration with cakephp/authentication easier we load the authenticators and identifiers
 defined at Auth configuration and other components to work with social provider, two-factor authentication.
 
 If the configuration is not enough for your project you may create a custom loader extending the 
@@ -199,5 +199,5 @@ class AppAuthenticationServiceLoader extends AuthenticationServiceLoader
 - Change the authentication service loader:
 
 ```
-Configure::write('Authentication.serviceLoader', \CakeDC\Users\Loader\AuthenticationServiceLoader::class);
+Configure::write('Authentication.serviceLoader', \App\Loader\AuthenticationServiceLoader::class);
 ```
