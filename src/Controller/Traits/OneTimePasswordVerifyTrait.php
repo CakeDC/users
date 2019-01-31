@@ -14,6 +14,7 @@ namespace CakeDC\Users\Controller\Traits;
 use CakeDC\Auth\Authentication\AuthenticationService;
 use CakeDC\Auth\Authenticator\TwoFactorAuthenticator;
 use Cake\Core\Configure;
+use Cake\Utility\Hash;
 
 trait OneTimePasswordVerifyTrait
 {
@@ -39,7 +40,7 @@ trait OneTimePasswordVerifyTrait
         }
 
         $temporarySession = $this->request->getSession()->read(AuthenticationService::TWO_FACTOR_VERIFY_SESSION_KEY);
-        $secretVerified = $temporarySession['secret_verified'];
+        $secretVerified = Hash::get($temporarySession, 'secret_verified');
         // showing QR-code until shared secret is verified
         if (!$secretVerified) {
             $secret = $this->onVerifyGetSecret($temporarySession);
