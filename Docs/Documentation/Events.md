@@ -6,12 +6,12 @@ The events in this plugin follow these conventions `<Plugin><Category>.<EventNam
 * `Users.Authentication.afterLogin`
 * `Users.Authentication.beforeLogout`
 * `Users.Authentication.afterLogout`
-* `Users.Managment.beforeRegister`
-* `Users.Managment.afterRegister`
-* `Users.Managment.beforeSocialLoginUserCreate`
-* `Users.Managment.afterResetPassword`
-* `Users.Managment.onExpiredToken`
-* `Users.Managment.afterResendTokenValidation`
+* `Users.Global.beforeRegister`
+* `Users.Global.afterRegister`
+* `Users.Global.beforeSocialLoginUserCreate`
+* `Users.Global.afterResetPassword`
+* `Users.Global.onExpiredToken`
+* `Users.Global.afterResendTokenValidation`
 
 The events allow you to inject data into the plugin on the before* plugins and use the data for your
 own business, for example
