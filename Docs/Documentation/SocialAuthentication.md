@@ -15,7 +15,7 @@ Please [contact us](https://cakedc.com/contact) if you need to support another p
 The main source code for social integration is provided by ['CakeDC/auth' plugin](https://github.com/cakedc/auth) 
 
 Setup
----------------------
+-----
 
 Create the Facebook/Twitter applications you want to use and setup the configuration like this:
 
@@ -70,7 +70,7 @@ Configure::write('OAuth.providers.facebook.options.graphApiVersion', 'v2.8');
 ```
 
 User Helper
----------------------
+-----------
 
 You can use the helper included with the plugin to create Facebook/Twitter buttons:
 
