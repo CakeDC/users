@@ -43,7 +43,11 @@ class LoginComponent extends Component
     public function handleLogin($errorOnlyPost, $redirectFailure)
     {
         $request = $this->getController()->getRequest();
-        $result = $request->getAttribute('authentication')->getResult();
+        $service = $request->getAttribute('authentication');
+        if (!$service) {
+            throw new \UnexpectedValueException('Authentication service not found in this request');
+        }
+        $result = $service->getResult();
         if ($result->isValid()) {
             $user = $request->getAttribute('identity')->getOriginalData();
 
