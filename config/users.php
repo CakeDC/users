@@ -187,12 +187,25 @@ $config = [
             ]
         ],
         'Identifiers' => [
-            'Authentication.Password' => [],
+            'Authentication.Password' => [
+                'fields' => [
+                    'username' => ['username', 'email'],
+                    'password' => 'password'
+                ],
+                'resolver' => [
+                    'className' => 'Authentication.Orm',
+                    'finder' => 'active'
+                ],
+            ],
             "CakeDC/Users.Social" => [
-                'authFinder' => 'all'
+                'authFinder' => 'active'
             ],
             'Authentication.Token' => [
-                'tokenField' => 'api_token'
+                'tokenField' => 'api_token',
+                'resolver' => [
+                    'className' => 'Authentication.Orm',
+                    'finder' => 'active'
+                ],
             ]
         ],
         "Authorization" => [
