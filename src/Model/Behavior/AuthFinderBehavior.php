@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * @copyright Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -24,10 +24,9 @@ class AuthFinderBehavior extends Behavior
      * Custom finder to filter active users
      *
      * @param Query $query Query object to modify
-     * @param array $options Query options
      * @return Query
      */
-    public function findActive(Query $query, array $options = [])
+    public function findActive(Query $query)
     {
         $query->where([$this->_table->aliasField('active') => 1]);
 
@@ -46,7 +45,7 @@ class AuthFinderBehavior extends Behavior
     {
         $identifier = Hash::get($options, 'username');
         if (empty($identifier)) {
-            throw new \BadMethodCallException(__d('CakeDC/Users', 'Missing \'username\' in options data'));
+            throw new \BadMethodCallException(__d('cake_d_c/users', 'Missing \'username\' in options data'));
         }
         $where = $query->clause('where') ?: [];
         $query

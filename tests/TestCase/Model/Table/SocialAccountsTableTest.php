@@ -1,22 +1,17 @@
 <?php
 /**
- * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * @copyright Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 namespace CakeDC\Users\Test\TestCase\Model\Table;
 
-use CakeDC\Users\Model\Table\SocialAccountsTable;
-use CakeDC\Users\Model\Table\UsersTable;
-use Cake\Event\Event;
-use Cake\Mailer\Email;
 use Cake\ORM\TableRegistry;
-use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 
 /**
@@ -31,8 +26,8 @@ class SocialAccountsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.CakeDC/Users.social_accounts',
-        'plugin.CakeDC/Users.users'
+        'plugin.CakeDC/Users.SocialAccounts',
+        'plugin.CakeDC/Users.Users'
     ];
 
     /**

@@ -1,21 +1,22 @@
 <?php
 /**
- * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * @copyright Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 namespace CakeDC\Users\Controller\Traits;
 
-use CakeDC\Users\Controller\Component\UsersAuthComponent;
+use CakeDC\Users\Plugin;
 use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
+use Cake\Utility\Hash;
 
 /**
  * Covers registration features and email token validation
@@ -38,9 +39,11 @@ trait RegisterTrait
             throw new NotFoundException();
         }
 
-        $userId = $this->Auth->user('id');
+        $identity = $this->request->getAttribute('identity');
+        $identity = isset($identity) ? $identity : [];
+        $userId = Hash::get($identity, 'id');
         if (!empty($userId) && !Configure::read('Users.Registration.allowLoggedIn')) {
-            $this->Flash->error(__d('CakeDC/Users', 'You must log out to register a new user account'));
+            $this->Flash->error(__d('cake_d_c/users', 'You must log out to register a new user account'));
 
             return $this->redirect(Configure::read('Users.Profile.route'));
         }
@@ -56,7 +59,7 @@ trait RegisterTrait
             'use_tos' => $useTos
         ];
         $requestData = $this->request->getData();
-        $event = $this->dispatchEvent(UsersAuthComponent::EVENT_BEFORE_REGISTER, [
+        $event = $this->dispatchEvent(Plugin::EVENT_BEFORE_REGISTER, [
             'usersTable' => $usersTable,
             'options' => $options,
             'userEntity' => $user,
@@ -69,7 +72,7 @@ trait RegisterTrait
                 return $this->_afterRegister($userSaved);
             } else {
                 $this->set(compact('user'));
-                $this->Flash->error(__d('CakeDC/Users', 'The user could not be saved'));
+                $this->Flash->error(__d('cake_d_c/users', 'The user could not be saved'));
 
                 return;
             }
@@ -86,14 +89,14 @@ trait RegisterTrait
         }
 
         if (!$this->_validateRegisterPost()) {
-            $this->Flash->error(__d('CakeDC/Users', 'Invalid reCaptcha'));
+            $this->Flash->error(__d('cake_d_c/users', 'Invalid reCaptcha'));
 
             return;
         }
 
         $userSaved = $usersTable->register($user, $requestData, $options);
         if (!$userSaved) {
-            $this->Flash->error(__d('CakeDC/Users', 'The user could not be saved'));
+            $this->Flash->error(__d('cake_d_c/users', 'The user could not be saved'));
 
             return;
         }
@@ -127,11 +130,11 @@ trait RegisterTrait
     protected function _afterRegister(EntityInterface $userSaved)
     {
         $validateEmail = (bool)Configure::read('Users.Email.validate');
-        $message = __d('CakeDC/Users', 'You have registered successfully, please log in');
+        $message = __d('cake_d_c/users', 'You have registered successfully, please log in');
         if ($validateEmail) {
-            $message = __d('CakeDC/Users', 'Please validate your account before log in');
+            $message = __d('cake_d_c/users', 'Please validate your account before log in');
         }
-        $event = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_REGISTER, [
+        $event = $this->dispatchEvent(Plugin::EVENT_AFTER_REGISTER, [
             'user' => $userSaved
         ]);
         if ($event->result instanceof Response) {

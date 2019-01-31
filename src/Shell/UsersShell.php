@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * @copyright Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -55,33 +55,33 @@ class UsersShell extends Shell
     public function getOptionParser()
     {
         $parser = parent::getOptionParser();
-        $parser->setDescription(__d('CakeDC/Users', 'Utilities for CakeDC Users Plugin'))
+        $parser->setDescription(__d('cake_d_c/users', 'Utilities for CakeDC Users Plugin'))
             ->addSubcommand('activateUser', [
-                'help' => __d('CakeDC/Users', 'Activate an specific user')
+                'help' => __d('cake_d_c/users', 'Activate an specific user')
             ])
             ->addSubcommand('addSuperuser', [
-                'help' => __d('CakeDC/Users', 'Add a new superadmin user for testing purposes')
+                'help' => __d('cake_d_c/users', 'Add a new superadmin user for testing purposes')
             ])
             ->addSubcommand('addUser', [
-                'help' => __d('CakeDC/Users', 'Add a new user')
+                'help' => __d('cake_d_c/users', 'Add a new user')
             ])
             ->addSubcommand('changeRole', [
-                'help' => __d('CakeDC/Users', 'Change the role for an specific user')
+                'help' => __d('cake_d_c/users', 'Change the role for an specific user')
             ])
             ->addSubcommand('deactivateUser', [
-                'help' => __d('CakeDC/Users', 'Deactivate an specific user')
+                'help' => __d('cake_d_c/users', 'Deactivate an specific user')
             ])
             ->addSubcommand('deleteUser', [
-                'help' => __d('CakeDC/Users', 'Delete an specific user')
+                'help' => __d('cake_d_c/users', 'Delete an specific user')
             ])
             ->addSubcommand('passwordEmail', [
-                'help' => __d('CakeDC/Users', 'Reset the password via email')
+                'help' => __d('cake_d_c/users', 'Reset the password via email')
             ])
             ->addSubcommand('resetAllPasswords', [
-                'help' => __d('CakeDC/Users', 'Reset the password for all users')
+                'help' => __d('cake_d_c/users', 'Reset the password for all users')
             ])
             ->addSubcommand('resetPassword', [
-                'help' => __d('CakeDC/Users', 'Reset the password for an specific user')
+                'help' => __d('cake_d_c/users', 'Reset the password for an specific user')
             ])
             ->addOptions([
                 'username' => ['short' => 'u', 'help' => 'The username for the new user'],
@@ -130,12 +130,12 @@ class UsersShell extends Shell
     {
         $password = Hash::get($this->args, 0);
         if (empty($password)) {
-            $this->abort(__d('CakeDC/Users', 'Please enter a password.'));
+            $this->abort(__d('cake_d_c/users', 'Please enter a password.'));
         }
         $hashedPassword = $this->_generatedHashedPassword($password);
         $this->Users->updateAll(['password' => $hashedPassword], ['id IS NOT NULL']);
-        $this->out(__d('CakeDC/Users', 'Password changed for all users'));
-        $this->out(__d('CakeDC/Users', 'New password: {0}', $password));
+        $this->out(__d('cake_d_c/users', 'Password changed for all users'));
+        $this->out(__d('cake_d_c/users', 'New password: {0}', $password));
     }
 
     /**
@@ -153,17 +153,17 @@ class UsersShell extends Shell
         $username = Hash::get($this->args, 0);
         $password = Hash::get($this->args, 1);
         if (empty($username)) {
-            $this->abort(__d('CakeDC/Users', 'Please enter a username.'));
+            $this->abort(__d('cake_d_c/users', 'Please enter a username.'));
         }
         if (empty($password)) {
-            $this->abort(__d('CakeDC/Users', 'Please enter a password.'));
+            $this->abort(__d('cake_d_c/users', 'Please enter a password.'));
         }
         $data = [
             'password' => $password
         ];
         $this->_updateUser($username, $data);
-        $this->out(__d('CakeDC/Users', 'Password changed for user: {0}', $username));
-        $this->out(__d('CakeDC/Users', 'New password: {0}', $password));
+        $this->out(__d('cake_d_c/users', 'Password changed for user: {0}', $username));
+        $this->out(__d('cake_d_c/users', 'New password: {0}', $password));
     }
 
     /**
@@ -181,17 +181,17 @@ class UsersShell extends Shell
         $username = Hash::get($this->args, 0);
         $role = Hash::get($this->args, 1);
         if (empty($username)) {
-            $this->abort(__d('CakeDC/Users', 'Please enter a username.'));
+            $this->abort(__d('cake_d_c/users', 'Please enter a username.'));
         }
         if (empty($role)) {
-            $this->abort(__d('CakeDC/Users', 'Please enter a role.'));
+            $this->abort(__d('cake_d_c/users', 'Please enter a role.'));
         }
         $data = [
             'role' => $role
         ];
         $savedUser = $this->_updateUser($username, $data);
-        $this->out(__d('CakeDC/Users', 'Role changed for user: {0}', $username));
-        $this->out(__d('CakeDC/Users', 'New role: {0}', $savedUser->role));
+        $this->out(__d('cake_d_c/users', 'Role changed for user: {0}', $username));
+        $this->out(__d('cake_d_c/users', 'New role: {0}', $savedUser->role));
     }
 
     /**
@@ -206,7 +206,7 @@ class UsersShell extends Shell
     public function activateUser()
     {
         $user = $this->_changeUserActive(true);
-        $this->out(__d('CakeDC/Users', 'User was activated: {0}', $user->username));
+        $this->out(__d('cake_d_c/users', 'User was activated: {0}', $user->username));
     }
 
     /**
@@ -221,7 +221,7 @@ class UsersShell extends Shell
     public function deactivateUser()
     {
         $user = $this->_changeUserActive(false);
-        $this->out(__d('CakeDC/Users', 'User was de-activated: {0}', $user->username));
+        $this->out(__d('cake_d_c/users', 'User was de-activated: {0}', $user->username));
     }
 
     /**
@@ -233,7 +233,7 @@ class UsersShell extends Shell
     {
         $reference = Hash::get($this->args, 0);
         if (empty($reference)) {
-            $this->abort(__d('CakeDC/Users', 'Please enter a username or email.'));
+            $this->abort(__d('cake_d_c/users', 'Please enter a username or email.'));
         }
         $resetUser = $this->Users->resetToken($reference, [
             'expiration' => Configure::read('Users.Token.expiration'),
@@ -241,10 +241,10 @@ class UsersShell extends Shell
             'sendEmail' => true,
         ]);
         if ($resetUser) {
-            $msg = __d('CakeDC/Users', 'Please ask the user to check the email to continue with password reset process');
+            $msg = __d('cake_d_c/users', 'Please ask the user to check the email to continue with password reset process');
             $this->out($msg);
         } else {
-            $msg = __d('CakeDC/Users', 'The password token could not be generated. Please try again');
+            $msg = __d('cake_d_c/users', 'The password token could not be generated. Please try again');
             $this->abort($msg);
         }
     }
@@ -259,7 +259,7 @@ class UsersShell extends Shell
     {
         $username = Hash::get($this->args, 0);
         if (empty($username)) {
-            $this->abort(__d('CakeDC/Users', 'Please enter a username.'));
+            $this->abort(__d('cake_d_c/users', 'Please enter a username.'));
         }
         $data = [
             'active' => $active
@@ -305,20 +305,20 @@ class UsersShell extends Shell
 
         if (!empty($savedUser)) {
             if ($savedUser->is_superuser) {
-                $this->out(__d('CakeDC/Users', 'Superuser added:'));
+                $this->out(__d('cake_d_c/users', 'Superuser added:'));
             } else {
-                $this->out(__d('CakeDC/Users', 'User added:'));
+                $this->out(__d('cake_d_c/users', 'User added:'));
             }
-            $this->out(__d('CakeDC/Users', 'Id: {0}', $savedUser->id));
-            $this->out(__d('CakeDC/Users', 'Username: {0}', $savedUser->username));
-            $this->out(__d('CakeDC/Users', 'Email: {0}', $savedUser->email));
-            $this->out(__d('CakeDC/Users', 'Role: {0}', $savedUser->role));
-            $this->out(__d('CakeDC/Users', 'Password: {0}', $password));
+            $this->out(__d('cake_d_c/users', 'Id: {0}', $savedUser->id));
+            $this->out(__d('cake_d_c/users', 'Username: {0}', $savedUser->username));
+            $this->out(__d('cake_d_c/users', 'Email: {0}', $savedUser->email));
+            $this->out(__d('cake_d_c/users', 'Role: {0}', $savedUser->role));
+            $this->out(__d('cake_d_c/users', 'Password: {0}', $password));
         } else {
-            $this->out(__d('CakeDC/Users', 'User could not be added:'));
+            $this->out(__d('cake_d_c/users', 'User could not be added:'));
 
             collection($userEntity->getErrors())->each(function ($error, $field) {
-                $this->out(__d('CakeDC/Users', 'Field: {0} Error: {1}', $field, implode(',', $error)));
+                $this->out(__d('cake_d_c/users', 'Field: {0} Error: {1}', $field, implode(',', $error)));
             });
         }
     }
@@ -334,7 +334,7 @@ class UsersShell extends Shell
     {
         $user = $this->Users->find()->where(['username' => $username])->first();
         if (empty($user)) {
-            $this->abort(__d('CakeDC/Users', 'The user was not found.'));
+            $this->abort(__d('cake_d_c/users', 'The user was not found.'));
         }
         $user = $this->Users->patchEntity($user, $data);
         collection($data)->filter(function ($value, $field) use ($user) {
@@ -356,7 +356,7 @@ class UsersShell extends Shell
     {
         $username = Hash::get($this->args, 0);
         if (empty($username)) {
-            $this->abort(__d('CakeDC/Users', 'Please enter a username.'));
+            $this->abort(__d('cake_d_c/users', 'Please enter a username.'));
         }
         $user = $this->Users->find()->where(['username' => $username])->first();
         if (isset($this->Users->SocialAccounts)) {
@@ -364,9 +364,9 @@ class UsersShell extends Shell
         }
         $deleteUser = $this->Users->delete($user);
         if (!$deleteUser) {
-            $this->abort(__d('CakeDC/Users', 'The user {0} was not deleted. Please try again', $username));
+            $this->abort(__d('cake_d_c/users', 'The user {0} was not deleted. Please try again', $username));
         }
-        $this->out(__d('CakeDC/Users', 'The user {0} was deleted successfully', $username));
+        $this->out(__d('cake_d_c/users', 'The user {0} was deleted successfully', $username));
     }
 
     /**

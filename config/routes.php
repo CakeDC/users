@@ -1,39 +1,34 @@
 <?php
 /**
- * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * @copyright Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 use Cake\Core\Configure;
+use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
 
-Router::plugin('CakeDC/Users', ['path' => '/users'], function ($routes) {
+Router::plugin('CakeDC/Users', ['path' => '/users'], function (RouteBuilder $routes) {
     $routes->fallbacks('DashedRoute');
 });
 
-Router::connect('/auth/twitter', [
-    'plugin' => 'CakeDC/Users',
-    'controller' => 'Users',
-    'action' => 'twitterLogin',
-    'provider' => 'twitter'
-]);
 Router::connect('/accounts/validate/*', [
     'plugin' => 'CakeDC/Users',
     'controller' => 'SocialAccounts',
     'action' => 'validate'
 ]);
 // Google Authenticator related routes
-if (Configure::read('Users.GoogleAuthenticator.login')) {
+if (Configure::read('OneTimePasswordAuthenticator.login')) {
     Router::connect('/verify', ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'verify']);
 
-    Router::connect('/resetGoogleAuthenticator', [
+    Router::connect('/resetOneTimePasswordAuthenticator', [
         'plugin' => 'CakeDC/Users',
         'controller' => 'Users',
-        'action' => 'resetGoogleAuthenticator'
+        'action' => 'resetOneTimePasswordAuthenticator'
     ]);
 }
 

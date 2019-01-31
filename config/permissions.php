@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * @copyright Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -51,6 +51,41 @@
 
 return [
     'CakeDC/Auth.permissions' => [
+        //all bypass
+        [
+            'prefix' => false,
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+            'action' => [
+                // LoginTrait
+                'socialLogin',
+                'login',
+                'logout',
+                'socialEmail',
+                'verify',
+                // RegisterTrait
+                'register',
+                'validateEmail',
+                // PasswordManagementTrait used in RegisterTrait
+                'changePassword',
+                'resetPassword',
+                'requestResetPassword',
+                // UserValidationTrait used in PasswordManagementTrait
+                'resendTokenValidation',
+                'linkSocial'
+            ],
+            'bypassAuth' => true,
+        ],
+        [
+            'prefix' => false,
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'SocialAccounts',
+            'action' => [
+                'validateAccount',
+                'resendValidation',
+            ],
+            'bypassAuth' => true,
+        ],
         //admin role allowed to all the things
         [
             'role' => 'admin',
@@ -71,7 +106,7 @@ return [
             'role' => '*',
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
-            'action' => 'resetGoogleAuthenticator',
+            'action' => 'resetOneTimePasswordAuthenticator',
             'allowed' => function (array $user, $role, \Cake\Http\ServerRequest $request) {
                 $userId = \Cake\Utility\Hash::get($request->getAttribute('params'), 'pass.0');
                 if (!empty($userId) && !empty($user)) {

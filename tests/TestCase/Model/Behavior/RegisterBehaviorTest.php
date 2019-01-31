@@ -1,20 +1,20 @@
 <?php
 
 /**
- * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * @copyright Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 namespace CakeDC\Users\Test\TestCase\Model\Behavior;
 
-use CakeDC\Users\Exception\UserAlreadyActiveException;
 use Cake\Core\Configure;
 use Cake\Mailer\Email;
+use Cake\Mailer\TransportFactory;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
@@ -30,7 +30,7 @@ class RegisterBehaviorTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.CakeDC/Users.users',
+        'plugin.CakeDC/Users.Users',
     ];
 
     /**
@@ -45,7 +45,7 @@ class RegisterBehaviorTest extends TestCase
         $table->addBehavior('CakeDC/Users/Register.Register');
         $this->Table = $table;
         $this->Behavior = $table->behaviors()->Register;
-        Email::setConfigTransport('test', [
+        TransportFactory::setConfig('test', [
             'className' => 'Debug'
         ]);
         Email::setConfig('default', [
@@ -63,7 +63,7 @@ class RegisterBehaviorTest extends TestCase
     {
         unset($this->Table, $this->Behavior);
         Email::drop('default');
-        Email::dropTransport('test');
+        TransportFactory::drop('test');
         parent::tearDown();
     }
 

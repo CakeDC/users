@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * @copyright Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -42,29 +42,29 @@ class PasswordBehavior extends BaseTokenBehavior
     public function resetToken($reference, array $options = [])
     {
         if (empty($reference)) {
-            throw new \InvalidArgumentException(__d('CakeDC/Users', "Reference cannot be null"));
+            throw new \InvalidArgumentException(__d('cake_d_c/users', "Reference cannot be null"));
         }
 
         $expiration = Hash::get($options, 'expiration');
         if (empty($expiration)) {
-            throw new \InvalidArgumentException(__d('CakeDC/Users', "Token expiration cannot be empty"));
+            throw new \InvalidArgumentException(__d('cake_d_c/users', "Token expiration cannot be empty"));
         }
 
         $user = $this->_getUser($reference);
 
         if (empty($user)) {
-            throw new UserNotFoundException(__d('CakeDC/Users', "User not found"));
+            throw new UserNotFoundException(__d('cake_d_c/users', "User not found"));
         }
         if (Hash::get($options, 'checkActive')) {
             if ($user->active) {
-                throw new UserAlreadyActiveException(__d('CakeDC/Users', "User account already validated"));
+                throw new UserAlreadyActiveException(__d('cake_d_c/users', "User account already validated"));
             }
             $user->active = false;
             $user->activation_date = null;
         }
         if (Hash::get($options, 'ensureActive')) {
             if (!$user['active']) {
-                throw new UserNotActiveException(__d('CakeDC/Users', "User not active"));
+                throw new UserNotActiveException(__d('cake_d_c/users', "User not active"));
             }
         }
         $user->updateToken($expiration);
@@ -135,16 +135,16 @@ class PasswordBehavior extends BaseTokenBehavior
                 'contain' => []
             ]);
         } catch (RecordNotFoundException $e) {
-            throw new UserNotFoundException(__d('CakeDC/Users', "User not found"));
+            throw new UserNotFoundException(__d('cake_d_c/users', "User not found"));
         }
 
         if (!empty($user->current_password)) {
             if (!$user->checkPassword($user->current_password, $currentUser->password)) {
-                throw new WrongPasswordException(__d('CakeDC/Users', 'The current password does not match'));
+                throw new WrongPasswordException(__d('cake_d_c/users', 'The current password does not match'));
             }
             if ($user->current_password === $user->password_confirm) {
                 throw new WrongPasswordException(__d(
-                    'CakeDC/Users',
+                    'cake_d_c/users',
                     'You cannot use the current password as the new one'
                 ));
             }

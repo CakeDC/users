@@ -1,0 +1,807 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2019-01-10 14:38+0000\n"
+"PO-Revision-Date: 2019-01-10 13:21-0200\n"
+"Language-Team: CakeDC <contact@cakedc.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.2\n"
+"Last-Translator: Marcelo Rocha <contato@omarcelo.com.br>\n"
+"Language: sv\n"
+
+#: Controller/SocialAccountsController.php:50
+msgid "Account validated successfully"
+msgstr "Kontot har validerats"
+
+#: Controller/SocialAccountsController.php:52
+msgid "Account could not be validated"
+msgstr "Konto kunde inte valideras"
+
+#: Controller/SocialAccountsController.php:55
+msgid "Invalid token and/or social account"
+msgstr "Ogiltig token och/eller social konto"
+
+#: Controller/SocialAccountsController.php:57;85
+msgid "Social Account already active"
+msgstr "Socialt konto redan aktivt"
+
+#: Controller/SocialAccountsController.php:59
+msgid "Social Account could not be validated"
+msgstr "Socialt konto kunde inte valideras"
+
+#: Controller/SocialAccountsController.php:78
+msgid "Email sent successfully"
+msgstr "Epost har skickats."
+
+#: Controller/SocialAccountsController.php:80
+msgid "Email could not be sent"
+msgstr "Epost kunde inte skickas"
+
+#: Controller/SocialAccountsController.php:83
+msgid "Invalid account"
+msgstr "Ogiltigt konto"
+
+#: Controller/SocialAccountsController.php:87
+msgid "Email could not be resent"
+msgstr "E-post kunde inte skickas om"
+
+#: Controller/Traits/LinkSocialTrait.php:52
+msgid "Could not associate account, please try again."
+msgstr "Kunde inte ansluta konto, försök igen."
+
+#: Controller/Traits/LinkSocialTrait.php:76
+msgid "Social account was associated."
+msgstr "Socialt konto anslöts."
+
+#: Controller/Traits/LoginTrait.php:73
+msgid "You've successfully logged out"
+msgstr "Du har loggats ut"
+
+#: Controller/Traits/OneTimePasswordVerifyTrait.php:71
+msgid "Please enable Google Authenticator first."
+msgstr "Vänligen aktivera Google Authenticator först."
+
+#: Controller/Traits/OneTimePasswordVerifyTrait.php:80
+#, fuzzy
+msgid "Could not find user data"
+msgstr "Användare kunde inte läggas till:"
+
+#: Controller/Traits/OneTimePasswordVerifyTrait.php:116
+#, fuzzy
+msgid "Could not verify, please try again"
+msgstr "Kunde inte ansluta konto, försök igen."
+
+#: Controller/Traits/OneTimePasswordVerifyTrait.php:144
+msgid "Verification code is invalid. Try again"
+msgstr "Valideringskoden är ogiltig. Försök igen"
+
+#: Controller/Traits/PasswordManagementTrait.php:53;91
+#: Controller/Traits/ProfileTrait.php:53
+msgid "User was not found"
+msgstr "Användaren hittades inte"
+
+#: Controller/Traits/PasswordManagementTrait.php:75;87;95
+msgid "Password could not be changed"
+msgstr "Lösenordet kunde inte ändras"
+
+#: Controller/Traits/PasswordManagementTrait.php:83
+msgid "Password has been changed successfully"
+msgstr "Lösenordsbytet lyckades!"
+
+#: Controller/Traits/PasswordManagementTrait.php:137
+msgid "Please check your email to continue with password reset process"
+msgstr "Kontrollera din epost för att fortsätta lösenordsåterställningen"
+
+#: Controller/Traits/PasswordManagementTrait.php:140 Shell/UsersShell.php:247
+msgid "The password token could not be generated. Please try again"
+msgstr "Lösenordstoken kunde inte skapas. Var god försök igen"
+
+#: Controller/Traits/PasswordManagementTrait.php:146
+#: Controller/Traits/UserValidationTrait.php:116
+msgid "User {0} was not found"
+msgstr "Användaren {0} hittades inte"
+
+#: Controller/Traits/PasswordManagementTrait.php:148
+msgid "The user is not active"
+msgstr "Användaren är inte aktiverad"
+
+#: Controller/Traits/PasswordManagementTrait.php:150
+#: Controller/Traits/UserValidationTrait.php:111;120
+msgid "Token could not be reset"
+msgstr "Token kunde inte återställas"
+
+#: Controller/Traits/PasswordManagementTrait.php:174
+msgid "Google Authenticator token was successfully reset"
+msgstr "Google Authenticator token har återställts"
+
+#: Controller/Traits/ProfileTrait.php:57
+msgid "Not authorized, please login first"
+msgstr "Inte auktoriserad, vänligen logga in först"
+
+#: Controller/Traits/RegisterTrait.php:46
+msgid "You must log out to register a new user account"
+msgstr "Du måste logga ut för att registrera ett nytt användarkonto"
+
+#: Controller/Traits/RegisterTrait.php:75;99
+msgid "The user could not be saved"
+msgstr "Användaren kunde inte sparas"
+
+#: Controller/Traits/RegisterTrait.php:92 Loader/LoginComponentLoader.php:32
+msgid "Invalid reCaptcha"
+msgstr "Ogiltig reCaptcha"
+
+#: Controller/Traits/RegisterTrait.php:133
+msgid "You have registered successfully, please log in"
+msgstr "Din registrering är klar, vänligen logga in"
+
+#: Controller/Traits/RegisterTrait.php:135
+msgid "Please validate your account before log in"
+msgstr "Vänligen validera ditt konto innan inloggning"
+
+#: Controller/Traits/SimpleCrudTrait.php:77;107
+msgid "The {0} has been saved"
+msgstr "{0} har sparats"
+
+#: Controller/Traits/SimpleCrudTrait.php:81;111
+msgid "The {0} could not be saved"
+msgstr "{0} kunde inte sparas"
+
+#: Controller/Traits/SimpleCrudTrait.php:131
+msgid "The {0} has been deleted"
+msgstr "{0} har tagits bort"
+
+#: Controller/Traits/SimpleCrudTrait.php:133
+msgid "The {0} could not be deleted"
+msgstr "{0} kunde inte tas bort"
+
+#: Controller/Traits/UserValidationTrait.php:44
+msgid "User account validated successfully"
+msgstr "Användarkontot har validerats"
+
+#: Controller/Traits/UserValidationTrait.php:46
+msgid "User account could not be validated"
+msgstr "Användarkontot kunde inte valideras"
+
+#: Controller/Traits/UserValidationTrait.php:49
+msgid "User already active"
+msgstr "Användaren redan aktiv"
+
+#: Controller/Traits/UserValidationTrait.php:55
+msgid "Reset password token was validated successfully"
+msgstr "Återställning av lösenord lyckades"
+
+#: Controller/Traits/UserValidationTrait.php:63
+msgid "Reset password token could not be validated"
+msgstr "Token för att återställa lösenord kunde inte valideras"
+
+#: Controller/Traits/UserValidationTrait.php:67
+msgid "Invalid validation type"
+msgstr "Ogiltig valideringsmetod"
+
+#: Controller/Traits/UserValidationTrait.php:70
+msgid "Invalid token or user account already validated"
+msgstr "Ogiltig token eller så har användaren konto redan validerats"
+
+#: Controller/Traits/UserValidationTrait.php:76
+msgid "Token already expired"
+msgstr "Token redan löpt ut"
+
+#: Controller/Traits/UserValidationTrait.php:106
+msgid "Token has been reset successfully. Please check your email."
+msgstr "Token har återställts. Kontrollera din e-post."
+
+#: Controller/Traits/UserValidationTrait.php:118
+msgid "User {0} is already active"
+msgstr "Användaren {0} är redan aktiv"
+
+#: Loader/LoginComponentLoader.php:30
+msgid "Username or password is incorrect"
+msgstr "Användarnamn eller lösenord är felaktigt"
+
+#: Loader/LoginComponentLoader.php:51
+#, fuzzy
+msgid "Could not proceed with social account. Please try again"
+msgstr "Kunde inte ansluta konto, försök igen."
+
+#: Loader/LoginComponentLoader.php:53
+msgid ""
+"Your user has not been validated yet. Please check your inbox for "
+"instructions"
+msgstr ""
+"Ditt konto har inte verifierats ännu. Vänligen kontrollera din inbox för "
+"instruktioner"
+
+#: Loader/LoginComponentLoader.php:57
+msgid ""
+"Your social account has not been validated yet. Please check your inbox for "
+"instructions"
+msgstr ""
+"Ditt sociala konto har inte validerats ännu. Kontrollera din inkorg för "
+"instruktioner"
+
+#: Mailer/UsersMailer.php:33
+msgid "Your account validation link"
+msgstr "Din länk för att validera kontot"
+
+#: Mailer/UsersMailer.php:51
+msgid "{0}Your reset password link"
+msgstr "{0} Din länk för att återställa lösenord"
+
+#: Mailer/UsersMailer.php:74
+msgid "{0}Your social account validation link"
+msgstr "{0} Din sociala konto svalideringslänk"
+
+#: Middleware/SocialAuthMiddleware.php:65 Template/Users/social_email.ctp:16
+msgid "Please enter your email"
+msgstr "Lägg till din epost"
+
+#: Middleware/SocialAuthMiddleware.php:75
+#, fuzzy
+msgid "Could not identify your account, please try again"
+msgstr "Kunde inte ansluta konto, försök igen."
+
+#: Model/Behavior/AuthFinderBehavior.php:48
+msgid "Missing 'username' in options data"
+msgstr "Saknas 'username' i alternativa uppgifter"
+
+#: Model/Behavior/LinkSocialBehavior.php:53
+msgid "Social account already associated to another user"
+msgstr "Socialt konto är redan kopplat till en annan användare."
+
+#: Model/Behavior/PasswordBehavior.php:45
+msgid "Reference cannot be null"
+msgstr "Referens får inte vara null"
+
+#: Model/Behavior/PasswordBehavior.php:50
+msgid "Token expiration cannot be empty"
+msgstr "Giltighet för token kan inte vara tom"
+
+#: Model/Behavior/PasswordBehavior.php:56;138
+msgid "User not found"
+msgstr "Användaren hittades inte"
+
+#: Model/Behavior/PasswordBehavior.php:60
+#: Model/Behavior/RegisterBehavior.php:112
+msgid "User account already validated"
+msgstr "Kontot är redan aktiverat!"
+
+#: Model/Behavior/PasswordBehavior.php:67
+msgid "User not active"
+msgstr "Användaren ej aktiv"
+
+#: Model/Behavior/PasswordBehavior.php:143
+msgid "The current password does not match"
+msgstr "Den nuvarande lösenord matchar inte"
+
+#: Model/Behavior/PasswordBehavior.php:146
+msgid "You cannot use the current password as the new one"
+msgstr "Du kan inte använda det aktuella lösenordet som det nya"
+
+#: Model/Behavior/RegisterBehavior.php:90
+msgid "User not found for the given token and email."
+msgstr "Hittade ingen användare som matchar angivet token eller epost"
+
+#: Model/Behavior/RegisterBehavior.php:93
+msgid "Token has already expired user with no token"
+msgstr "Token har redan gått ut eller användare utan token"
+
+#: Model/Behavior/RegisterBehavior.php:151
+#, fuzzy
+msgid "This field is required"
+msgstr "Fält: {0} fel: {1}"
+
+#: Model/Behavior/SocialAccountBehavior.php:102;129
+#, fuzzy
+msgid "Account already validated"
+msgstr "Kontot är redan aktiverat!"
+
+#: Model/Behavior/SocialAccountBehavior.php:105;132
+msgid "Account not found for the given token and email."
+msgstr "Kontot hittades inte för givet token och e-post."
+
+#: Model/Behavior/SocialBehavior.php:83
+msgid "Unable to login user with reference {0}"
+msgstr "Det går inte att logga in användaren med refrens {0}"
+
+#: Model/Behavior/SocialBehavior.php:122
+msgid "Email not present"
+msgstr "Epost saknas"
+
+#: Model/Table/UsersTable.php:79
+msgid "Your password does not match your confirm password. Please try again"
+msgstr "Dina lösenord matchar inte. Vänligen försök igen."
+
+#: Model/Table/UsersTable.php:171
+msgid "Username already exists"
+msgstr "Användarnamnet är upptaget"
+
+#: Model/Table/UsersTable.php:177
+msgid "Email already exists"
+msgstr "E-postadressen finns redan"
+
+#: Shell/UsersShell.php:58
+msgid "Utilities for CakeDC Users Plugin"
+msgstr "Verktyg för CakeDC User Plugin"
+
+#: Shell/UsersShell.php:60
+msgid "Activate an specific user"
+msgstr "Aktivera en specifik användare"
+
+#: Shell/UsersShell.php:63
+msgid "Add a new superadmin user for testing purposes"
+msgstr "Lägga till en ny superadmin användare för teständamål"
+
+#: Shell/UsersShell.php:66
+msgid "Add a new user"
+msgstr "Ny användare"
+
+#: Shell/UsersShell.php:69
+msgid "Change the role for an specific user"
+msgstr "Ändra rollen för en specifik användare"
+
+#: Shell/UsersShell.php:72
+msgid "Deactivate an specific user"
+msgstr "Inaktivare en specifik användare"
+
+#: Shell/UsersShell.php:75
+msgid "Delete an specific user"
+msgstr "Ta bort en specifik användare"
+
+#: Shell/UsersShell.php:78
+msgid "Reset the password via email"
+msgstr "Återställ lösenord via e-post"
+
+#: Shell/UsersShell.php:81
+msgid "Reset the password for all users"
+msgstr "Återställ lösenord för alla användare"
+
+#: Shell/UsersShell.php:84
+msgid "Reset the password for an specific user"
+msgstr "Återställ lösenordet för en specifik användare"
+
+#: Shell/UsersShell.php:133;159
+msgid "Please enter a password."
+msgstr "Ange ett lösenord."
+
+#: Shell/UsersShell.php:137
+msgid "Password changed for all users"
+msgstr "Lösenordet ändrat för alla användare"
+
+#: Shell/UsersShell.php:138;166
+msgid "New password: {0}"
+msgstr "Nytt lösenord: {0}"
+
+#: Shell/UsersShell.php:156;184;262;359
+msgid "Please enter a username."
+msgstr "Ange ett användarnamn"
+
+#: Shell/UsersShell.php:165
+msgid "Password changed for user: {0}"
+msgstr "Lösenordet ändrat för användare: {0}"
+
+#: Shell/UsersShell.php:187
+msgid "Please enter a role."
+msgstr "Ange en roll."
+
+#: Shell/UsersShell.php:193
+msgid "Role changed for user: {0}"
+msgstr "Rollen har ändrats för användare: {0}"
+
+#: Shell/UsersShell.php:194
+msgid "New role: {0}"
+msgstr "Ny roll: {0}"
+
+#: Shell/UsersShell.php:209
+msgid "User was activated: {0}"
+msgstr "Användaren aktiverades: {0}"
+
+#: Shell/UsersShell.php:224
+msgid "User was de-activated: {0}"
+msgstr "Användaren avaktiverad: {0}"
+
+#: Shell/UsersShell.php:236
+msgid "Please enter a username or email."
+msgstr "Skriv användarnamn eller epost"
+
+#: Shell/UsersShell.php:244
+msgid ""
+"Please ask the user to check the email to continue with password reset "
+"process"
+msgstr ""
+"Be användaren kontrollera sin epost för att fortsätta "
+"lösenordsåterställningen"
+
+#: Shell/UsersShell.php:308
+msgid "Superuser added:"
+msgstr "Superanvändare tillagd:"
+
+#: Shell/UsersShell.php:310
+msgid "User added:"
+msgstr "Användare tillagd:"
+
+#: Shell/UsersShell.php:312
+msgid "Id: {0}"
+msgstr "Id: {0}"
+
+#: Shell/UsersShell.php:313
+msgid "Username: {0}"
+msgstr "Användarnamn: {0}"
+
+#: Shell/UsersShell.php:314
+msgid "Email: {0}"
+msgstr "Epost: {0}"
+
+#: Shell/UsersShell.php:315
+msgid "Role: {0}"
+msgstr "Roll: {0}"
+
+#: Shell/UsersShell.php:316
+msgid "Password: {0}"
+msgstr "Lösenord: {0}"
+
+#: Shell/UsersShell.php:318
+msgid "User could not be added:"
+msgstr "Användare kunde inte läggas till:"
+
+#: Shell/UsersShell.php:321
+msgid "Field: {0} Error: {1}"
+msgstr "Fält: {0} fel: {1}"
+
+#: Shell/UsersShell.php:337
+msgid "The user was not found."
+msgstr "Användaren hittades inte."
+
+#: Shell/UsersShell.php:367
+msgid "The user {0} was not deleted. Please try again"
+msgstr "Användaren {0} raderades ej. Var god försök igen"
+
+#: Shell/UsersShell.php:369
+msgid "The user {0} was deleted successfully"
+msgstr "Användaren {0} har tagits bort"
+
+#: Template/Email/html/reset_password.ctp:21
+#: Template/Email/html/social_account_validation.ctp:14
+#: Template/Email/html/validation.ctp:21
+#: Template/Email/text/reset_password.ctp:20
+#: Template/Email/text/social_account_validation.ctp:22
+#: Template/Email/text/validation.ctp:20
+msgid "Hi {0}"
+msgstr "Hej {0}"
+
+#: Template/Email/html/reset_password.ctp:24
+msgid "Reset your password here"
+msgstr "Återställ ditt lösenord här"
+
+#: Template/Email/html/reset_password.ctp:27
+#: Template/Email/html/social_account_validation.ctp:32
+#: Template/Email/html/validation.ctp:27
+msgid ""
+"If the link is not correctly displayed, please copy the following address in "
+"your web browser {0}"
+msgstr ""
+"Om länken inte visas korrekt, vänligen kopiera följande adress till din "
+"webbläsare {0}"
+
+#: Template/Email/html/reset_password.ctp:34
+#: Template/Email/html/social_account_validation.ctp:39
+#: Template/Email/html/validation.ctp:34
+#: Template/Email/text/reset_password.ctp:28
+#: Template/Email/text/social_account_validation.ctp:30
+#: Template/Email/text/validation.ctp:28
+msgid "Thank you"
+msgstr "Tack"
+
+#: Template/Email/html/social_account_validation.ctp:18
+msgid "Activate your social login here"
+msgstr "Aktivera ditt sociala konto här"
+
+#: Template/Email/html/validation.ctp:24
+msgid "Activate your account here"
+msgstr "Aktivera ditt konto här"
+
+#: Template/Email/text/reset_password.ctp:22
+#: Template/Email/text/validation.ctp:22
+msgid "Please copy the following address in your web browser {0}"
+msgstr "Kopiera följande adress till webbläsaren {0}"
+
+#: Template/Email/text/social_account_validation.ctp:24
+msgid ""
+"Please copy the following address in your web browser to activate your "
+"social login {0}"
+msgstr ""
+"Kopiera följande adress till din webbläsare för att aktivera din sociala "
+"inloggning {0}"
+
+#: Template/Users/add.ctp:13 Template/Users/edit.ctp:17
+#: Template/Users/index.ctp:13;26 Template/Users/view.ctp:15
+msgid "Actions"
+msgstr "Resurser"
+
+#: Template/Users/add.ctp:15 Template/Users/edit.ctp:28
+#: Template/Users/view.ctp:23
+msgid "List Users"
+msgstr "Lista användare"
+
+#: Template/Users/add.ctp:21 Template/Users/register.ctp:18
+msgid "Add User"
+msgstr "Ny användare"
+
+#: Template/Users/add.ctp:23 Template/Users/edit.ctp:36
+#: Template/Users/index.ctp:22 Template/Users/login.ctp:20
+#: Template/Users/profile.ctp:30 Template/Users/register.ctp:20
+#: Template/Users/view.ctp:33
+msgid "Username"
+msgstr "Användarnamn"
+
+#: Template/Users/add.ctp:24 Template/Users/edit.ctp:37
+#: Template/Users/index.ctp:23 Template/Users/profile.ctp:32
+#: Template/Users/register.ctp:21 Template/Users/view.ctp:35
+msgid "Email"
+msgstr "Epost"
+
+#: Template/Users/add.ctp:25 Template/Users/login.ctp:21
+#: Template/Users/register.ctp:22
+msgid "Password"
+msgstr "Lösenord"
+
+#: Template/Users/add.ctp:26 Template/Users/edit.ctp:38
+#: Template/Users/index.ctp:24 Template/Users/register.ctp:27
+msgid "First name"
+msgstr "Förnamn"
+
+#: Template/Users/add.ctp:27 Template/Users/edit.ctp:39
+#: Template/Users/index.ctp:25 Template/Users/register.ctp:28
+msgid "Last name"
+msgstr "Efternamn"
+
+#: Template/Users/add.ctp:30 Template/Users/edit.ctp:54
+#: Template/Users/view.ctp:49;74
+msgid "Active"
+msgstr "Aktivt"
+
+#: Template/Users/add.ctp:34 Template/Users/change_password.ctp:25
+#: Template/Users/edit.ctp:58 Template/Users/register.ctp:37
+#: Template/Users/request_reset_password.ctp:8
+#: Template/Users/resend_token_validation.ctp:20
+#: Template/Users/social_email.ctp:19
+msgid "Submit"
+msgstr "Skicka"
+
+#: Template/Users/change_password.ctp:5
+msgid "Please enter the new password"
+msgstr "Ange ditt nya lösenord"
+
+#: Template/Users/change_password.ctp:10
+msgid "Current password"
+msgstr "Nuvarande lösenord"
+
+#: Template/Users/change_password.ctp:16
+msgid "New password"
+msgstr "Nytt lösenord"
+
+#: Template/Users/change_password.ctp:21 Template/Users/register.ctp:25
+msgid "Confirm password"
+msgstr "Bekräfta lösenord"
+
+#: Template/Users/edit.ctp:22 Template/Users/index.ctp:40
+msgid "Delete"
+msgstr "Radera"
+
+#: Template/Users/edit.ctp:24 Template/Users/index.ctp:40
+#: Template/Users/view.ctp:21
+msgid "Are you sure you want to delete # {0}?"
+msgstr "Är du säker på att du vill radera{0}"
+
+#: Template/Users/edit.ctp:34 Template/Users/view.ctp:17
+msgid "Edit User"
+msgstr "Redigera användare"
+
+#: Template/Users/edit.ctp:40 Template/Users/view.ctp:43
+msgid "Token"
+msgstr "Token"
+
+#: Template/Users/edit.ctp:42
+msgid "Token expires"
+msgstr "Token förfaller"
+
+#: Template/Users/edit.ctp:45
+msgid "API token"
+msgstr "API-token"
+
+#: Template/Users/edit.ctp:48
+msgid "Activation date"
+msgstr "Aktiveringsdatum"
+
+#: Template/Users/edit.ctp:51
+msgid "TOS date"
+msgstr "TOS datum"
+
+#: Template/Users/edit.ctp:64
+msgid "Reset Google Authenticator Token"
+msgstr "Återställ Google Authenticator Token"
+
+#: Template/Users/edit.ctp:70
+msgid "Are you sure you want to reset token for user \"{0}\"?"
+msgstr "Är du säker du vill återställa token för användare \"{0}\"?"
+
+#: Template/Users/index.ctp:15
+msgid "New {0}"
+msgstr "Nytt {0}"
+
+#: Template/Users/index.ctp:37
+msgid "View"
+msgstr "Visa"
+
+#: Template/Users/index.ctp:38
+msgid "Change password"
+msgstr "Byt lösenord"
+
+#: Template/Users/index.ctp:39
+msgid "Edit"
+msgstr "Ändra"
+
+#: Template/Users/index.ctp:49
+msgid "previous"
+msgstr "föregående"
+
+#: Template/Users/index.ctp:51
+msgid "next"
+msgstr "nästa"
+
+#: Template/Users/login.ctp:19
+msgid "Please enter your username and password"
+msgstr "Ange ditt användarnamn och lösenord"
+
+#: Template/Users/login.ctp:29
+msgid "Remember me"
+msgstr "Kom ihåg mig"
+
+#: Template/Users/login.ctp:37
+msgid "Register"
+msgstr "Registrera"
+
+#: Template/Users/login.ctp:43
+msgid "Reset Password"
+msgstr "Återställ Lösenord"
+
+#: Template/Users/login.ctp:48
+msgid "Login"
+msgstr "Logga in"
+
+#: Template/Users/profile.ctp:21
+msgid "{0} {1}"
+msgstr "{0} {1}"
+
+#: Template/Users/profile.ctp:27
+msgid "Change Password"
+msgstr "Ändra Lösenord"
+
+#: Template/Users/profile.ctp:38 Template/Users/view.ctp:68
+msgid "Social Accounts"
+msgstr "Sociala konton"
+
+#: Template/Users/profile.ctp:42 Template/Users/view.ctp:73
+msgid "Avatar"
+msgstr "Profilbild"
+
+#: Template/Users/profile.ctp:43 Template/Users/view.ctp:72
+msgid "Provider"
+msgstr "Utförare"
+
+#: Template/Users/profile.ctp:44
+msgid "Link"
+msgstr "Länk"
+
+#: Template/Users/profile.ctp:51
+msgid "Link to {0}"
+msgstr "Länk till {0}"
+
+#: Template/Users/register.ctp:30
+msgid "Accept TOS conditions?"
+msgstr "Jag accepterar villkoren"
+
+#: Template/Users/request_reset_password.ctp:5
+msgid "Please enter your email to reset your password"
+msgstr "Ange din e-postadress för att återställa ditt lösenord"
+
+#: Template/Users/resend_token_validation.ctp:15
+msgid "Resend Validation email"
+msgstr "Skicka nytt bekräftelsemejl"
+
+#: Template/Users/resend_token_validation.ctp:17
+msgid "Email or username"
+msgstr "E-post/Användarnamn"
+
+#: Template/Users/verify.ctp:13
+msgid "Verification Code"
+msgstr "Verifieringskod"
+
+#: Template/Users/verify.ctp:15
+msgid ""
+"<span class=\"glyphicon glyphicon-log-in\" aria-hidden=\"true\"></span> "
+"Verify"
+msgstr ""
+"<span class=\"glyphicon glyphicon-log-in\" aria-hidden=\"true\"></span> "
+"Verifiera"
+
+#: Template/Users/view.ctp:19
+msgid "Delete User"
+msgstr "Ta bort användare"
+
+#: Template/Users/view.ctp:24
+msgid "New User"
+msgstr "Ny användare"
+
+#: Template/Users/view.ctp:31
+msgid "Id"
+msgstr "Id"
+
+#: Template/Users/view.ctp:37
+#, fuzzy
+msgid "First Name"
+msgstr "Förnamn"
+
+#: Template/Users/view.ctp:39
+#, fuzzy
+msgid "Last Name"
+msgstr "Efternamn"
+
+#: Template/Users/view.ctp:41
+msgid "Role"
+msgstr "Roll"
+
+#: Template/Users/view.ctp:45
+msgid "Api Token"
+msgstr "Api-token"
+
+#: Template/Users/view.ctp:53
+#, fuzzy
+msgid "Token Expires"
+msgstr "Token förfaller"
+
+#: Template/Users/view.ctp:55
+#, fuzzy
+msgid "Activation Date"
+msgstr "Aktiveringsdatum"
+
+#: Template/Users/view.ctp:57
+msgid "Tos Date"
+msgstr "Tos datum"
+
+#: Template/Users/view.ctp:59;75
+msgid "Created"
+msgstr "Skapad"
+
+#: Template/Users/view.ctp:61;76
+msgid "Modified"
+msgstr "Ändrad"
+
+#: View/Helper/UserHelper.php:46
+msgid "Sign in with"
+msgstr "Logga in med"
+
+#: View/Helper/UserHelper.php:103
+msgid "Logout"
+msgstr "Logga ut"
+
+#: View/Helper/UserHelper.php:121
+msgid "Welcome, {0}"
+msgstr "Välkommen, {0}"
+
+#: View/Helper/UserHelper.php:151
+msgid "reCaptcha is not configured! Please configure Users.reCaptcha.key"
+msgstr "reCaptcha är inte konfigurerad! Konfigurera Users.reCaptcha.key"
+
+#: View/Helper/UserHelper.php:215
+msgid "Connected with {0}"
+msgstr "Ansluten med {0}"
+
+#: View/Helper/UserHelper.php:220
+msgid "Connect with {0}"
+msgstr "Anslut med {0}"

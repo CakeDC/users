@@ -1,18 +1,17 @@
 <?php
 /**
- * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * @copyright Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 namespace CakeDC\Users\Test\TestCase\Model\Behavior;
 
 use CakeDC\Users\Model\Behavior\LinkSocialBehavior;
-use CakeDC\Users\Model\Table\UsersTable;
 use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
@@ -36,8 +35,8 @@ class LinkSocialBehaviorTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.CakeDC/Users.social_accounts',
-        'plugin.CakeDC/Users.users'
+        'plugin.CakeDC/Users.SocialAccounts',
+        'plugin.CakeDC/Users.Users'
     ];
 
     /**
@@ -160,13 +159,12 @@ class LinkSocialBehaviorTest extends TestCase
      *
      * @param array  $data   Test input data
      * @param string $userId User id to add social account
-     * @param array  $result Expected result
      *
      * @author Marcelo Rocha <marcelo@promosapiens.com.br>
      * @return void
      * @dataProvider providerFacebookLinkSocialAccountErrorSaving
      */
-    public function testlinkSocialAccountErrorSavingFacebookProvider($data, $userId, $result)
+    public function testlinkSocialAccountErrorSavingFacebookProvider($data, $userId)
     {
         $user = $this->Table->get($userId);
         $resultUser = $this->Behavior->linkSocialAccount($user, $data);
@@ -186,9 +184,6 @@ class LinkSocialBehaviorTest extends TestCase
             ]
         ];
         $this->assertEquals($expected, $actual);
-
-        $error = $user->getErrors('social_accounts');
-        $error = $error ? reset($error) : $message;
     }
 
     /**
@@ -271,14 +266,14 @@ class LinkSocialBehaviorTest extends TestCase
         $this->assertFalse($resultUser->has('social_accounts'));
         $expected = [
             'social_accounts' => [
-                '_existsIn' => __d('CakeDC/Users', 'Social account already associated to another user')
+                '_existsIn' => __d('cake_d_c/users', 'Social account already associated to another user')
             ]
         ];
         $actual = $user->getErrors();
         $this->assertEquals($expected, $actual);
 
         //Se for o usuário que já esta associado então okay
-        $socialAccount = $this->Table->SocialAccounts->find()->where([
+        $this->Table->SocialAccounts->find()->where([
             'reference' => $data['id'],
             'provider' => $data['provider']
         ])->firstOrFail();

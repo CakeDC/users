@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * @copyright Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -117,7 +117,25 @@ class ReCaptchaTraitTest extends TestCase
 
     public function testValidateReCaptchaFalse()
     {
-        $trait = $this->getMockBuilder('CakeDC\Users\Controller\Traits\ReCaptchaTrait')->getMockForTrait();
+        $ReCaptcha = $this->getMockBuilder('ReCaptcha\ReCaptcha')
+            ->setMethods(['verify'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $Response = $this->getMockBuilder('ReCaptcha\Response')
+            ->setMethods(['isSuccess'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $Response->expects($this->once())
+            ->method('isSuccess')
+            ->will($this->returnValue(false));
+        $ReCaptcha->expects($this->once())
+            ->method('verify')
+            ->with('value')
+            ->will($this->returnValue($Response));
+        $this->Trait->expects($this->once())
+            ->method('_getReCaptchaInstance')
+            ->will($this->returnValue($ReCaptcha));
+
         $this->assertFalse($this->Trait->validateReCaptcha('value', '255.255.255.255'));
     }
 }

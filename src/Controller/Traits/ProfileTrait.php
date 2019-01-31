@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * @copyright Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -15,6 +15,7 @@ use Cake\Controller\Component\AuthComponent;
 use Cake\Core\Configure;
 use Cake\Datasource\Exception\InvalidPrimaryKeyException;
 use Cake\Datasource\Exception\RecordNotFoundException;
+use Cake\Utility\Hash;
 
 /**
  * Covers the profile action
@@ -31,7 +32,9 @@ trait ProfileTrait
      */
     public function profile($id = null)
     {
-        $loggedUserId = $this->Auth->user('id');
+        $identity = $this->request->getAttribute('identity');
+        $identity = isset($identity) ? $identity : [];
+        $loggedUserId = Hash::get($identity, 'id');
         $isCurrentUser = false;
         if (!Configure::read('Users.Profile.viewOthers') || empty($id)) {
             $id = $loggedUserId;
@@ -47,11 +50,11 @@ trait ProfileTrait
                 $isCurrentUser = true;
             }
         } catch (RecordNotFoundException $ex) {
-            $this->Flash->error(__d('CakeDC/Users', 'User was not found'));
+            $this->Flash->error(__d('cake_d_c/users', 'User was not found'));
 
             return $this->redirect($this->request->referer());
         } catch (InvalidPrimaryKeyException $ex) {
-            $this->Flash->error(__d('CakeDC/Users', 'Not authorized, please login first'));
+            $this->Flash->error(__d('cake_d_c/users', 'Not authorized, please login first'));
 
             return $this->redirect($this->request->referer());
         }

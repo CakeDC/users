@@ -1,22 +1,18 @@
 <?php
 /**
- * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * @copyright Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
-use CakeDC\Users\Test\TestCase\Controller\Traits\BaseTraitTest;
 use Cake\Core\Configure;
-use Cake\Core\Plugin;
 use Cake\Event\Event;
-use Cake\Mailer\Email;
-use Cake\ORM\TableRegistry;
 
 class RegisterTraitTest extends BaseTraitTest
 {
@@ -66,7 +62,7 @@ class RegisterTraitTest extends BaseTraitTest
     {
         $this->assertEquals(0, $this->table->find()->where(['username' => 'testRegistration'])->count());
         $this->_mockRequestPost();
-        $this->_mockAuth();
+        $this->_mockAuthentication();
         $this->_mockFlash();
         $this->_mockDispatchEvent();
         $this->Trait->Flash->expects($this->once())
@@ -99,7 +95,7 @@ class RegisterTraitTest extends BaseTraitTest
     {
         $this->assertEquals(0, $this->table->find()->where(['username' => 'testRegistration'])->count());
         $this->_mockRequestPost();
-        $this->_mockAuth();
+        $this->_mockAuthentication();
         $this->_mockFlash();
         $this->_mockDispatchEvent(new Event('Users.Component.UsersAuth.beforeRegister'), ['username' => 'hello']);
         $this->Trait->Flash->expects($this->once())
@@ -131,7 +127,7 @@ class RegisterTraitTest extends BaseTraitTest
 
         $this->assertEquals(0, $this->table->find()->where(['username' => 'testRegistration'])->count());
         $this->_mockRequestPost();
-        $this->_mockAuth();
+        $this->_mockAuthentication();
         $this->_mockFlash();
         $this->_mockDispatchEvent(new Event('Users.Component.UsersAuth.beforeRegister'), $data);
         $this->Trait->request->expects($this->once())
@@ -160,7 +156,7 @@ class RegisterTraitTest extends BaseTraitTest
         Configure::write('Users.reCaptcha.registration', true);
         $this->assertEquals(0, $this->table->find()->where(['username' => 'testRegistration'])->count());
         $this->_mockRequestPost();
-        $this->_mockAuth();
+        $this->_mockAuthentication();
         $this->_mockFlash();
         $this->_mockDispatchEvent();
         $this->Trait->Flash->expects($this->once())
@@ -198,7 +194,7 @@ class RegisterTraitTest extends BaseTraitTest
         Configure::write('Users.reCaptcha.registration', true);
         $this->assertEquals(0, $this->table->find()->where(['username' => 'testRegistration'])->count());
         $this->_mockRequestPost();
-        $this->_mockAuth();
+        $this->_mockAuthentication();
         $this->_mockFlash();
         $this->_mockDispatchEvent();
         $this->Trait->Flash->expects($this->once())
@@ -235,7 +231,7 @@ class RegisterTraitTest extends BaseTraitTest
         Configure::write('Users.reCaptcha.registration', true);
         $this->assertEquals(0, $this->table->find()->where(['username' => 'testRegistration'])->count());
         $this->_mockRequestPost();
-        $this->_mockAuth();
+        $this->_mockAuthentication();
         $this->_mockFlash();
         $this->_mockDispatchEvent();
         $this->Trait->Flash->expects($this->once())
@@ -269,7 +265,7 @@ class RegisterTraitTest extends BaseTraitTest
     {
         $this->assertEquals(0, $this->table->find()->where(['username' => 'testRegistration'])->count());
         $this->_mockRequestGet();
-        $this->_mockAuth();
+        $this->_mockAuthentication();
         $this->_mockFlash();
         $this->_mockDispatchEvent();
         $this->Trait->Flash->expects($this->never())
@@ -293,7 +289,7 @@ class RegisterTraitTest extends BaseTraitTest
         Configure::write('Users.Registration.reCaptcha', false);
         $this->assertEquals(0, $this->table->find()->where(['username' => 'testRegistration'])->count());
         $this->_mockRequestPost();
-        $this->_mockAuth();
+        $this->_mockAuthentication();
         $this->_mockFlash();
         $this->_mockDispatchEvent();
         $this->Trait->Flash->expects($this->once())
@@ -330,7 +326,7 @@ class RegisterTraitTest extends BaseTraitTest
     {
         Configure::write('Users.Registration.active', false);
         $this->_mockRequestPost();
-        $this->_mockAuth();
+        $this->_mockAuthentication();
         $this->_mockFlash();
         $this->_mockDispatchEvent();
         $this->Trait->register();
