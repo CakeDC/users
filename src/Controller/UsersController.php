@@ -20,6 +20,7 @@ use CakeDC\Users\Controller\Traits\ReCaptchaTrait;
 use CakeDC\Users\Controller\Traits\RegisterTrait;
 use CakeDC\Users\Controller\Traits\SimpleCrudTrait;
 use CakeDC\Users\Controller\Traits\SocialTrait;
+use CakeDC\Users\Controller\Traits\U2fTrait;
 use CakeDC\Users\Model\Table\UsersTable;
 use Cake\Core\Configure;
 use Cake\ORM\Table;
@@ -38,4 +39,21 @@ class UsersController extends AppController
     use RegisterTrait;
     use SimpleCrudTrait;
     use SocialTrait;
+    use U2fTrait;
+
+    /**
+     * Initialize
+     *
+     * @return void
+     */
+    public function initialize()
+    {
+        parent::initialize();
+        if ($this->components()->has('Security')) {
+            $this->Security->setConfig(
+                'unlockedActions',
+                ['u2fRegister', 'u2fRegisterFinish', 'u2fAuthenticate', 'u2fAuthenticateFinish']
+            );
+        }
+    }
 }

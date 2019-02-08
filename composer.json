@@ -39,7 +39,8 @@
         "league/oauth2-linkedin": "@stable",
         "luchianenco/oauth2-amazon": "^1.1",
         "google/recaptcha": "@stable",
-        "robthree/twofactorauth": "~1.6.0"
+        "robthree/twofactorauth": "~1.6.0",
+        "yubico/u2flib-server": "^1.0"
     },
     "suggest": {
         "league/oauth1-client": "Provides Social Authentication with Twitter",

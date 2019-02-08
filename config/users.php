@@ -126,6 +126,16 @@ $config = [
             'prefix' => false,
         ],
     ],
+    'U2f' => [
+        'enabled' => false,
+        'checker' => \CakeDC\Users\Auth\DefaultU2fAuthenticationChecker::class,
+        'startAction' => [
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+            'action' => 'u2f',
+            'prefix' => false,
+        ]
+    ],
     // default configuration used to auto-load the Auth Component, override to change the way Auth works
     'Auth' => [
         'loginAction' => [

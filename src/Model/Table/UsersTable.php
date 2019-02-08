@@ -59,6 +59,10 @@ class UsersTable extends Table
             'foreignKey' => 'user_id',
             'className' => 'CakeDC/Users.SocialAccounts'
         ]);
+        $this->hasMany('U2fRegistrations', [
+            'foreignKey' => 'user_id',
+            'className' => 'CakeDC/Users.U2fRegistrations'
+        ]);
     }
 
     /**

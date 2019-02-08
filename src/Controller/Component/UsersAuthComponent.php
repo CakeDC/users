@@ -141,6 +141,12 @@ class UsersAuthComponent extends Component
                 // Social
                 'endpoint',
                 'authenticated',
+
+                'u2f',
+                'u2fRegister',
+                'u2fRegisterFinish',
+                'u2fAuthenticate',
+                'u2fAuthenticateFinish',
             ]);
         }
     }
