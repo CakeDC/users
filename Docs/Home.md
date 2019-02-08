@@ -18,6 +18,7 @@ Documentation
 * [ApiKeyAuthenticate](https://github.com/CakeDC/auth/blob/master/Docs/Documentation/ApiKeyAuthenticate.md)
 * [SocialAuthenticate](Documentation/SocialAuthenticate.md)
 * [Google Authenticator](Documentation/Google-Two-Factor-Authenticator.md)
+* [Yubico U2F](Documentation/Yubico-U2F.md)
 * [UserHelper](Documentation/UserHelper.md)
 * [Events](Documentation/Events.md)
 * [Extending the Plugin](Documentation/Extending-the-Plugin.md)
