@@ -548,7 +548,7 @@ class U2fTraitTest extends BaseTraitTest
         $user = TableRegistry::getTableLocator()
             ->get('CakeDC/Users.Users')
             ->get('00000000-0000-0000-0000-000000000001');
-        $this->assertNotNull( $user->u2f_registration);
+        $this->assertNotNull($user->u2f_registration);
 
         $registration = $user->u2f_registration;
         $registrationEntityResult = new Registration();

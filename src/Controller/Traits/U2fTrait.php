@@ -163,7 +163,7 @@ trait U2fTrait
             $additionalData = $data['user']->additional_data;
             $additionalData['u2f_registration'] = $result;
             $data['user']->additional_data = $additionalData;
-            $this->getUsersTable()->saveOrFail($data['user'],  ['checkRules' => false]);
+            $this->getUsersTable()->saveOrFail($data['user'], ['checkRules' => false]);
             $this->request->getSession()->delete('U2f');
             $this->Auth->setUser($data['user']->toArray());
 
