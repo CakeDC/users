@@ -1,4 +1,14 @@
 <?php
+/**
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
+ *
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
+ * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
+ */
+
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
 use Cake\Core\Configure;
@@ -23,7 +33,6 @@ class U2fTraitTest extends BaseTraitTest
      */
     public $fixtures = [
         'plugin.CakeDC/Users.users',
-        'plugin.CakeDC/Users.u2f_registrations',
     ];
     /**
      * setup
@@ -236,7 +245,7 @@ class U2fTraitTest extends BaseTraitTest
      *
      * @return void
      */
-    public function testU2fRegisterFinish()
+    public function testU2fRegisterFinishOkay()
     {
         $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->setMethods(['getSession', 'getData'])
@@ -313,10 +322,13 @@ class U2fTraitTest extends BaseTraitTest
             $actual
         );
 
-        $registration = json_decode(json_encode($registration), true);
-        $registration['user_id'] = '00000000-0000-0000-0000-000000000002';
-        $exists = TableRegistry::getTableLocator()->get('CakeDC/Users.U2fRegistrations')->exists($registration);
-        $this->assertTrue($exists);
+        $saveUser = TableRegistry::getTableLocator()
+            ->get('CakeDC/Users.Users')
+            ->get('00000000-0000-0000-0000-000000000002');
+
+        $savedRegistration = $saveUser->u2f_registration;
+        $this->assertNotNull($savedRegistration);
+        $this->assertEquals(json_encode($registration), json_encode($savedRegistration));
 
         $registration = new Registration();
         $registration->certificate = "user registration cert " . time();
@@ -403,10 +415,12 @@ class U2fTraitTest extends BaseTraitTest
             $actual
         );
 
-        $registration = json_decode(json_encode($registration), true);
-        $registration['user_id'] = '00000000-0000-0000-0000-000000000002';
-        $exists = TableRegistry::getTableLocator()->get('CakeDC/Users.U2fRegistrations')->exists($registration);
-        $this->assertFalse($exists);
+        $saveUser = TableRegistry::getTableLocator()
+            ->get('CakeDC/Users.Users')
+            ->get('00000000-0000-0000-0000-000000000002');
+
+        $savedRegistration = $saveUser->u2f_registration;
+        $this->assertNull($savedRegistration);
 
         $registration = new Registration();
         $registration->certificate = "user registration cert " . time();
@@ -482,12 +496,15 @@ class U2fTraitTest extends BaseTraitTest
             ['fake' => new \stdClass()],
             ['fake2' => new \stdClass()],
         ];
-        $registrations = TableRegistry::getTableLocator()
-            ->get('CakeDC/Users.U2fRegistrations')
-            ->findByUserId('00000000-0000-0000-0000-000000000001')
-            ->all()
-            ->toArray();
-        $this->assertCount(1, $registrations);
+        $reg1 = [
+            'keyHandle' => 'fake key handle',
+            'publicKey' => 'afdoaj0-23u423-ad ujsf-as8-0-afsd',
+            'certificate' => '23jdsfoasdj0f9sa082304823423',
+            'counter' => 1
+        ];
+        $registrations = [
+            (object)$reg1
+        ];
         $u2fLib->expects($this->once())
             ->method('getAuthenticateData')
             ->with(
@@ -528,12 +545,12 @@ class U2fTraitTest extends BaseTraitTest
      */
     public function testU2fAutheticateFinish()
     {
-        $registration = TableRegistry::getTableLocator()
-            ->get('CakeDC/Users.U2fRegistrations')
-            ->findByUserId('00000000-0000-0000-0000-000000000001')
-            ->first();
-        $this->assertNotNull($registration);
+        $user = TableRegistry::getTableLocator()
+            ->get('CakeDC/Users.Users')
+            ->get('00000000-0000-0000-0000-000000000001');
+        $this->assertNotNull( $user->u2f_registration);
 
+        $registration = $user->u2f_registration;
         $registrationEntityResult = new Registration();
         $registrationEntityResult->keyHandle = $registration->keyHandle;
         $registrationEntityResult->publicKey = $registration->publicKey;
@@ -545,13 +562,7 @@ class U2fTraitTest extends BaseTraitTest
             ->will($this->returnValue('/my-home-page'));
 
         $this->Trait->Auth->expects($this->once())
-            ->method('setUser')
-            ->with(
-                $this->equalTo([
-                    'id' => '00000000-0000-0000-0000-000000000001',
-                    'username' => 'user-1',
-                ])
-            );
+            ->method('setUser');
 
         $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->setMethods(['getSession', 'getData'])
@@ -611,7 +622,11 @@ class U2fTraitTest extends BaseTraitTest
         $actual = $this->Trait->request->getSession()->read('U2f');
         $this->assertNull($actual);
 
-        $updatedEntity = TableRegistry::getTableLocator()->get('CakeDC/Users.U2fRegistrations')->get($registration['id']);
+        $updatedEntity = TableRegistry::getTableLocator()
+            ->get('CakeDC/Users.Users')
+            ->get($user['id'])
+            ->u2f_registration;
+
         $this->assertEquals($registrationEntityResult->counter, $updatedEntity->counter);
     }
 
@@ -622,10 +637,13 @@ class U2fTraitTest extends BaseTraitTest
      */
     public function testU2fAutheticateFinishWithException()
     {
-        $registration = TableRegistry::getTableLocator()
-            ->get('CakeDC/Users.U2fRegistrations')
-            ->findByUserId('00000000-0000-0000-0000-000000000001')
-            ->first();
+        $saveUser = TableRegistry::getTableLocator()
+            ->get('CakeDC/Users.Users')
+            ->get('00000000-0000-0000-0000-000000000001');
+
+        $savedRegistration = $saveUser->u2f_registration;
+        $this->assertNotNull($savedRegistration);
+        $registration = $saveUser->u2f_registration;
         $counter = $registration->counter;
         $this->assertNotNull($registration);
 
@@ -700,7 +718,11 @@ class U2fTraitTest extends BaseTraitTest
             $actual
         );
 
-        $updatedEntity = TableRegistry::getTableLocator()->get('CakeDC/Users.U2fRegistrations')->get($registration['id']);
+        $updatedEntityUser = TableRegistry::getTableLocator()
+            ->get('CakeDC/Users.Users')
+            ->get('00000000-0000-0000-0000-000000000001');
+
+        $updatedEntity = $updatedEntityUser->u2f_registration;
         $this->assertEquals($counter, $updatedEntity->counter);
     }
 }

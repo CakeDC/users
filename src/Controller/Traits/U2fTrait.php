@@ -1,4 +1,13 @@
 <?php
+/**
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
+ *
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
+ * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
+ */
 namespace CakeDC\Users\Controller\Traits;
 
 use CakeDC\Users\Auth\U2fAuthenticationCheckerFactory;
@@ -36,18 +45,14 @@ trait U2fTrait
      */
     public function u2f()
     {
-        $user = $this->request->getSession()->read('U2f.User');
-        if (!isset($user['id'])) {
+        $data = $this->getU2fData();
+        if (!$data['valid']) {
             return $this->redirectWithQuery([
                 'action' => 'login'
             ]);
         }
-        $user = $this->getUsersTable()->get($user['id']);
-        $hasRegistration = $this->getUsersTable()->U2fRegistrations->exists([
-            'user_id' => $user['id']
-        ]);
 
-        if (!$hasRegistration) {
+        if (!$data['registration']) {
             return $this->redirectWithQuery([
                 'action' => 'u2fRegister'
             ]);
@@ -97,12 +102,11 @@ trait U2fTrait
         $request = json_decode($this->request->getSession()->read('U2f.registerRequest'));
         $response = json_decode($this->request->getData('registerResponse'));
         try {
-            $registration = $this->createU2fLib()->doRegister($request, $response);
-            $registration = json_decode(json_encode($registration), true);
-            $registration['user_id'] = $data['user']['id'];
-            $table = $this->getUsersTable()->U2fRegistrations;
-            $entity = $table->newEntity($registration);
-            $table->saveOrFail($entity);
+            $result = $this->createU2fLib()->doRegister($request, $response);
+            $additionalData = $data['user']->additional_data;
+            $additionalData['u2f_registration'] = $result;
+            $data['user']->additional_data = $additionalData;
+            $this->getUsersTable()->saveOrFail($data['user'], ['checkRules' => false]);
             $this->request->getSession()->delete('U2f.registerRequest');
 
             return $this->redirectWithQuery([
@@ -153,16 +157,15 @@ trait U2fTrait
         $response = json_decode($this->request->getData('authenticateResponse'));
 
         try {
-            $Model = $this->getUsersTable()->U2fRegistrations;
-            $registration = $Model->find('all')->where([
-                'user_id' => $data['user']['id']
-            ])->first();
-
+            $registration = $data['registration'];
             $result = $this->createU2fLib()->doAuthenticate($request, [$registration], $response);
             $registration->counter = $result->counter;
-            $Model->saveOrFail($registration);
+            $additionalData = $data['user']->additional_data;
+            $additionalData['u2f_registration'] = $result;
+            $data['user']->additional_data = $additionalData;
+            $this->getUsersTable()->saveOrFail($data['user'],  ['checkRules' => false]);
             $this->request->getSession()->delete('U2f');
-            $this->Auth->setUser($data['user']);
+            $this->Auth->setUser($data['user']->toArray());
 
             return $this->redirect($this->Auth->redirectUrl());
         } catch (\Exception $e) {
@@ -199,14 +202,13 @@ trait U2fTrait
             'user' => null,
             'registration' => null
         ];
-        $data['user'] = $this->request->getSession()->read('U2f.User');
-        if (!isset($data['user']['id'])) {
+        $user = $this->request->getSession()->read('U2f.User');
+        if (!isset($user['id'])) {
             return $data;
         }
+        $data['user'] = $this->getUsersTable()->get($user['id']);
         $data['valid'] = $this->getU2fAuthenticationChecker()->isEnabled();
-        $data['registration'] = $this->getUsersTable()->U2fRegistrations->find('all')->where([
-            'user_id' => $data['user']['id']
-        ])->first();
+        $data['registration'] = $data['user']->u2f_registration;
 
         return $data;
     }
