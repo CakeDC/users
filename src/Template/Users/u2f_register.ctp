@@ -52,7 +52,7 @@ setTimeout(function() {
         var targetInput = document.getElementById('registerResponse');
 
         if(data.errorCode && data.errorCode != 0) {
-            alert("Yubico key check has failed, please try again");
+            alert("<?= __('Yubico key check has failed, please try again')?>");
 
             return;
         }

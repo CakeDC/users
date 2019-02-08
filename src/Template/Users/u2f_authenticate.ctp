@@ -47,7 +47,7 @@ $this->Html->scriptStart(['block' => true]);
             var targetForm = document.getElementById('u2fAuthenticateFrm');
             var targetInput = document.getElementById('authenticateResponse');
             if(data.errorCode && data.errorCode != 0) {
-                alert("Yubico key check has failed, please try again");
+                alert("<?= __('Yubico key check has failed, please try again')?>");
 
                 return;
             }
