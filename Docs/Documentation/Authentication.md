@@ -24,7 +24,8 @@ And load the component at any controller:
 ```
 $authenticationConfig = Configure::read('Auth.AuthenticationComponent');
 $this->loadComponent('Authentication.Authentication', $authenticationConfig);
-$user = $this->Authentication->getIdentity();
+$userId = $this->Authentication->getIdentity()->getIdentifier();
+$user = $this->Authentication->getIdentity()->getOriginalData();
 ```
 The default configuration for Auth.AuthenticationComponent is:
 
