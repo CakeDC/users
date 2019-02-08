@@ -14,6 +14,22 @@ trait U2fTrait
 {
 
     /**
+     * Perform redirect keeping current query string
+     *
+     * @param array $url base url
+     *
+     * @return \Cake\Http\Response
+     */
+    public function redirectWithQuery($url)
+    {
+        $url['?'] = $this->request->getQueryParams();
+        if (empty($url['?'])) {
+            unset($url['?']);
+        }
+
+        return $this->redirect($url);
+    }
+    /**
      * U2f entry point
      *
      * @return \Cake\Http\Response|null
@@ -22,7 +38,7 @@ trait U2fTrait
     {
         $user = $this->request->getSession()->read('U2f.User');
         if (!isset($user['id'])) {
-            return $this->redirect([
+            return $this->redirectWithQuery([
                 'action' => 'login'
             ]);
         }
@@ -32,12 +48,12 @@ trait U2fTrait
         ]);
 
         if (!$hasRegistration) {
-            return $this->redirect([
+            return $this->redirectWithQuery([
                 'action' => 'u2fRegister'
             ]);
         }
 
-        return $this->redirect([
+        return $this->redirectWithQuery([
             'action' => 'u2fAuthenticate'
         ]);
     }
@@ -52,7 +68,7 @@ trait U2fTrait
     {
         $data = $this->getU2fData();
         if (!$data['valid']) {
-            return $this->redirect([
+            return $this->redirectWithQuery([
                 'action' => 'login'
             ]);
         }
@@ -65,7 +81,7 @@ trait U2fTrait
             return null;
         }
 
-        return $this->redirect([
+        return $this->redirectWithQuery([
             'action' => 'u2fAuthenticate'
         ]);
     }
@@ -89,13 +105,13 @@ trait U2fTrait
             $table->saveOrFail($entity);
             $this->request->getSession()->delete('U2f.registerRequest');
 
-            return $this->redirect([
+            return $this->redirectWithQuery([
                 'action' => 'u2fAuthenticate'
             ]);
         } catch (\Exception $e) {
             $this->request->getSession()->delete('U2f.registerRequest');
 
-            return $this->redirect([
+            return $this->redirectWithQuery([
                 'action' => 'u2fRegister'
             ]);
         }
@@ -110,13 +126,13 @@ trait U2fTrait
     {
         $data = $this->getU2fData();
         if (!$data['valid']) {
-            return $this->redirect([
+            return $this->redirectWithQuery([
                 'action' => 'login'
             ]);
         }
 
         if (!$data['registration']) {
-            return $this->redirect([
+            return $this->redirectWithQuery([
                 'action' => 'u2fRegister'
             ]);
         }
@@ -152,7 +168,7 @@ trait U2fTrait
         } catch (\Exception $e) {
             $this->request->getSession()->delete('U2f.authenticateRequest');
 
-            return $this->redirect([
+            return $this->redirectWithQuery([
                 'action' => 'u2fAuthenticate'
             ]);
         }

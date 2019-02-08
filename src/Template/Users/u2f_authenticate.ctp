@@ -10,7 +10,8 @@
             <div class="users form well well-lg">
                 <?= $this->Form->create(false, [
                     'url' => [
-                        'action' => 'u2fAuthenticateFinish'
+                        'action' => 'u2fAuthenticateFinish',
+                        '?' => $this->request->getQueryParams()
                     ],
                     'id' => 'u2fAuthenticateFrm'
                 ]) ?>
