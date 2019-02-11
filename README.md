@@ -29,6 +29,8 @@ It covers the following features:
 * Remember me (Cookie) via https://github.com/CakeDC/auth
 * Manage user's profile
 * Admin management
+* Yubico U2F for Two-Factor Authentication
+* One-Time Password for Two-Factor Authentication
 
 The plugin is here to provide users related features following 2 approaches:
 * Quick drop-in working solution for users login/registration. Get users working in 5 minutes.

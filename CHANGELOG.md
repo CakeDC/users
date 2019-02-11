@@ -3,6 +3,9 @@ Changelog
 
 Releases for CakePHP 3
 -------------
+* 8.1
+  * Added Yubico U2F Authentication
+
 * 8.0.3
   * Updated to latest version of Google OAuth
   * Added plugin object
