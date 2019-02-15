@@ -240,17 +240,20 @@ class PluginTest extends TestCase
     public function testGetAuthenticationService()
     {
         Configure::write('Auth.Authenticators', [
-            'Authentication.Session' => [
+            'Session' => [
+                'className' => 'Authentication.Session',
                 'skipTwoFactorVerify' => true,
                 'sessionKey' => 'CustomAuth',
                 'fields' => ['username' => 'email'],
                 'identify' => true,
             ],
-            'CakeDC/Auth.Form' => [
+            'Form' => [
+                'className' => 'CakeDC/Auth.Form',
                 'loginUrl' => '/login',
                 'fields' => ['username' => 'email', 'password' => 'alt_password'],
             ],
-            'Authentication.Token' => [
+            'Token' => [
+                'className' => 'Authentication.Token',
                 'skipTwoFactorVerify' => true,
                 'header' => null,
                 'queryParam' => 'api_key',
@@ -258,13 +261,15 @@ class PluginTest extends TestCase
             ],
         ]);
         Configure::write('Auth.Identifiers', [
-            'Authentication.Password' => [
+            'Password' => [
+                'className' => 'Authentication.Password',
                 'fields' => [
                     'username' => 'email_2',
                     'password' => 'password_2'
                 ],
             ],
-            'Authentication.Token' => [
+            'Token' => [
+                'className' => 'Authentication.Token',
                 'tokenField' => 'api_token'
             ],
             'Authentication.JwtSubject'
@@ -349,17 +354,20 @@ class PluginTest extends TestCase
     public function testGetAuthenticationServiceWithouOneTimePasswordAuthenticator()
     {
         Configure::write('Auth.Authenticators', [
-            'Authentication.Session' => [
+            'Session' => [
+                'className' => 'Authentication.Session',
                 'skipTwoFactorVerify' => true,
                 'sessionKey' => 'CustomAuth',
                 'fields' => ['username' => 'email'],
                 'identify' => true,
             ],
-            'CakeDC/Auth.Form' => [
+            'Form' => [
+                'className' => 'CakeDC/Auth.Form',
                 'loginUrl' => '/login',
                 'fields' => ['username' => 'email', 'password' => 'alt_password'],
             ],
-            'Authentication.Token' => [
+            'Token' => [
+                'className' => 'Authentication.Token',
                 'skipTwoFactorVerify' => true,
                 'header' => null,
                 'queryParam' => 'api_key',
@@ -368,7 +376,8 @@ class PluginTest extends TestCase
         ]);
         Configure::write('Auth.Identifiers', [
             'Authentication.Password',
-            'Authentication.Token' => [
+            'Token' => [
+                'className' => 'Authentication.Token',
                 'tokenField' => 'api_token'
             ],
             'Authentication.JwtSubject'
