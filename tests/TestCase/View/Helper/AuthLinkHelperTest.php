@@ -11,10 +11,8 @@
 
 namespace CakeDC\Users\Test\TestCase\View\Helper;
 
-use Authentication\Identity;
-use CakeDC\Auth\Rbac\Rbac;
-use CakeDC\Users\Model\Entity\User;
 use CakeDC\Users\View\Helper\AuthLinkHelper;
+use Cake\Http\ServerRequest;
 use Cake\TestSuite\TestCase;
 use Cake\View\View;
 
@@ -40,7 +38,10 @@ class AuthLinkHelperTest extends TestCase
     {
         parent::setUp();
         $view = new View();
-        $this->AuthLink = new AuthLinkHelper($view);
+        $this->AuthLink = $this->getMockBuilder(AuthLinkHelper::class)
+            ->setMethods(['isAuthorized'])
+            ->setConstructorArgs([$view])
+            ->getMock();
     }
 
     /**
@@ -60,31 +61,14 @@ class AuthLinkHelperTest extends TestCase
      *
      * @return void
      */
-    public function testLinkFalse()
-    {
-        $link = $this->AuthLink->link('title', ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile']);
-        $this->assertSame(false, $link);
-    }
-
-    /**
-     * Test link
-     *
-     * @return void
-     */
     public function testLinkFalseWithMock()
     {
-        $user = new User([
-            'id' => '00000000-0000-0000-0000-000000000001',
-            'password' => '12345'
-        ]);
-        $identity = new Identity($user);
-        $this->AuthLink->getView()->setRequest($this->AuthLink->getView()->getRequest()->withAttribute('identity', $identity));
-        $rbac = $this->getMockBuilder(Rbac::class)->setMethods(['checkPermissions'])->getMock();
-        $rbac->expects($this->once())
-            ->method('checkPermissions')
-            ->with($identity->getOriginalData()->toArray())
+        $this->AuthLink->expects($this->once())
+            ->method('isAuthorized')
+            ->with(
+                $this->equalTo(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile'])
+            )
             ->will($this->returnValue(false));
-        $this->AuthLink->getView()->setRequest($this->AuthLink->getView()->getRequest()->withAttribute('rbac', $rbac));
         $result = $this->AuthLink->link(
             'title',
             ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile'],
@@ -100,18 +84,12 @@ class AuthLinkHelperTest extends TestCase
      */
     public function testLinkAuthorizedHappy()
     {
-        $user = new User([
-            'id' => '00000000-0000-0000-0000-000000000001',
-            'password' => '12345'
-        ]);
-        $identity = new Identity($user);
-        $this->AuthLink->getView()->setRequest($this->AuthLink->getView()->getRequest()->withAttribute('identity', $identity));
-        $rbac = $this->getMockBuilder(Rbac::class)->setMethods(['checkPermissions'])->getMock();
-        $rbac->expects($this->once())
-            ->method('checkPermissions')
-            ->with($identity->getOriginalData()->toArray())
+        $this->AuthLink->expects($this->once())
+            ->method('isAuthorized')
+            ->with(
+                $this->equalTo(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile'])
+            )
             ->will($this->returnValue(true));
-        $this->AuthLink->getView()->setRequest($this->AuthLink->getView()->getRequest()->withAttribute('rbac', $rbac));
         $link = $this->AuthLink->link(
             'title',
             ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile'],
@@ -143,47 +121,13 @@ class AuthLinkHelperTest extends TestCase
     }
 
     /**
-     * Test isAuthorized
+     * Test getRequest method
      *
-     * @return void
+     * @retunr void
      */
-    public function testIsAuthorized()
+    public function testGetRequest()
     {
-        $user = new User([
-            'id' => '00000000-0000-0000-0000-000000000001',
-            'password' => '12345'
-        ]);
-        $identity = new Identity($user);
-        $this->AuthLink->getView()->setRequest($this->AuthLink->getView()->getRequest()->withAttribute('identity', $identity));
-        $rbac = $this->getMockBuilder(Rbac::class)->setMethods(['checkPermissions'])->getMock();
-        $rbac->expects($this->once())
-            ->method('checkPermissions')
-            ->with($identity->getOriginalData()->toArray())
-            ->will($this->returnValue(true));
-        $this->AuthLink->getView()->setRequest($this->AuthLink->getView()->getRequest()->withAttribute('rbac', $rbac));
-        $result = $this->AuthLink->isAuthorized(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile']);
-        $this->assertTrue($result);
-    }
-    /**
-     * Test isAuthorized
-     *
-     * @return void
-     */
-    public function testIsAuthorizedFalse()
-    {
-        $user = new User([
-            'id' => '00000000-0000-0000-0000-000000000001',
-            'password' => '12345'
-        ]);
-        $identity = new Identity($user);
-        $this->AuthLink->getView()->setRequest($this->AuthLink->getView()->getRequest()->withAttribute('identity', $identity));
-        $rbac = $this->getMockBuilder(Rbac::class)->setMethods(['checkPermissions'])->getMock();
-        $rbac->expects($this->once())
-            ->method('checkPermissions')
-            ->with($identity->getOriginalData()->toArray())
-            ->will($this->returnValue(false));
-        $this->AuthLink->getView()->setRequest($this->AuthLink->getView()->getRequest()->withAttribute('rbac', $rbac));
-        $result = $this->AuthLink->isAuthorized(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile']);
-        $this->assertFalse($result);
+        $actual = $this->AuthLink->getRequest();
+        $this->assertInstanceOf(ServerRequest::class, $actual);
     }
 }
