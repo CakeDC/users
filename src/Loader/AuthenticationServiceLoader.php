@@ -48,11 +48,8 @@ class AuthenticationServiceLoader
     protected function loadIdentifiers($service)
     {
         $identifiers = Configure::read('Auth.Identifiers');
-        foreach ($identifiers as $identifier => $options) {
-            if (is_numeric($identifier)) {
-                $identifier = $options;
-                $options = [];
-            }
+        foreach ($identifiers as $key => $item) {
+            list($identifier, $options) = $this->_getItemLoadData($item, $key);
 
             $service->loadIdentifier($identifier, $options);
         }
@@ -69,11 +66,8 @@ class AuthenticationServiceLoader
     {
         $authenticators = Configure::read('Auth.Authenticators');
 
-        foreach ($authenticators as $authenticator => $options) {
-            if (is_numeric($authenticator)) {
-                $authenticator = $options;
-                $options = [];
-            }
+        foreach ($authenticators as $key => $item) {
+            list($authenticator, $options) = $this->_getItemLoadData($item, $key);
 
             $service->loadAuthenticator($authenticator, $options);
         }
@@ -93,5 +87,28 @@ class AuthenticationServiceLoader
                 'skipTwoFactorVerify' => true,
             ]);
         }
+    }
+
+    /**
+     * @param mixed $item Item configuration or className
+     * @param string $key Item array key.
+     * @return array
+     */
+    protected function _getItemLoadData($item, $key)
+    {
+        $options = [];
+        if (!is_array($item)) {
+            return [$item, $options];
+        }
+        $options = $item;
+        if (!isset($options['className'])) {
+            throw new \InvalidArgumentException(
+                __('Property  {0}.className should be defined', $key)
+            );
+        }
+        $className = $options['className'];
+        unset($options['className']);
+
+        return [$className, $options];
     }
 }
