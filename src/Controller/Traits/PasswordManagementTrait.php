@@ -41,6 +41,9 @@ trait PasswordManagementTrait
         if (!empty($id)) {
             $user->id = $this->Auth->user('id');
             $validatePassword = true;
+            if ($this->Auth->user('is_superuser') && Configure::read('Users.Superuser.allowedToChangePasswords')) {
+                $validatePassword = false;
+            }
             //@todo add to the documentation: list of routes used
             $redirect = Configure::read('Users.Profile.route');
         } else {
