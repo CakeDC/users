@@ -57,7 +57,9 @@ class UsersMailer extends Mailer
         $this
             ->setTo($user['email'])
             ->setSubject($subject)
-            ->setViewVars($user->toArray())
+            ->setViewVars($user->toArray());
+        $this
+            ->viewBuilder()
             ->setTemplate('CakeDC/Users.resetPassword');
     }
 
@@ -77,7 +79,9 @@ class UsersMailer extends Mailer
         $this
             ->setTo($user['email'])
             ->setSubject($subject)
-            ->setViewVars(compact('user', 'socialAccount'))
+            ->setViewVars(compact('user', 'socialAccount'));
+        $this
+            ->viewBuilder()
             ->setTemplate('CakeDC/Users.socialAccountValidation');
     }
 }
