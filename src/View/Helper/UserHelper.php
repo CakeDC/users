@@ -114,7 +114,7 @@ class UserHelper extends Helper
         }
 
         $profileUrl = Configure::read('Users.Profile.route');
-        $label = __d('CakeDC/Users', 'Welcome, {0}', $this->AuthLink->link($this->getView()->getRequest()->getSession()->read('Auth.User.first_name') ?: $this->request->getSession()->read('Auth.User.username'), $profileUrl));
+        $label = __d('CakeDC/Users', 'Welcome, {0}', $this->AuthLink->link($this->getView()->getRequest()->getSession()->read('Auth.User.first_name') ?: $this->getView()->getRequest()->getSession()->read('Auth.User.username'), $profileUrl));
 
         return $this->Html->tag('span', $label, ['class' => 'welcome']);
     }
