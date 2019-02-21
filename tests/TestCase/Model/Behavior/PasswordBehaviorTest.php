@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Test\TestCase\Model\Behavior;
 
+use Cake\Mailer\TransportFactory;
 use CakeDC\Users\Model\Behavior\PasswordBehavior;
 use CakeDC\Users\Test\App\Mailer\OverrideMailer;
 use Cake\Core\Configure;
@@ -47,9 +48,8 @@ class PasswordBehaviorTest extends TestCase
                 ->setMethods(['_sendResetPasswordEmail'])
                 ->setConstructorArgs([$this->table])
                 ->getMock();
-        Email::setConfigTransport('test', [
-            'className' => 'Debug'
-        ]);
+        TransportFactory::drop('test');
+        TransportFactory::setConfig('test', ['className' => 'Debug']);
         //$this->configEmail = Email::getConfig('default');
         Email::setConfig('default', [
             'transport' => 'test',
@@ -66,7 +66,7 @@ class PasswordBehaviorTest extends TestCase
     {
         unset($this->table, $this->Behavior);
         Email::drop('default');
-        Email::dropTransport('test');
+        TransportFactory::drop('test');
         parent::tearDown();
     }
 

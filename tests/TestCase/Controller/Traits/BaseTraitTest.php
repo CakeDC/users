@@ -13,6 +13,7 @@ namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
 use Cake\Event\Event;
 use Cake\Mailer\Email;
+use Cake\Mailer\TransportFactory;
 use Cake\ORM\Entity;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
@@ -61,9 +62,7 @@ abstract class BaseTraitTest extends TestCase
         }
 
         if ($this->mockDefaultEmail) {
-            Email::setConfigTransport('test', [
-                'className' => 'Debug'
-            ]);
+            TransportFactory::setConfig('test', ['className' => 'Debug']);
             $this->configEmail = Email::getConfig('default');
             Email::drop('default');
             Email::setConfig('default', [
@@ -83,7 +82,7 @@ abstract class BaseTraitTest extends TestCase
         unset($this->table, $this->Trait);
         if ($this->mockDefaultEmail) {
             Email::drop('default');
-            Email::dropTransport('test');
+            TransportFactory::drop('test');
             //Email::setConfig('default', $this->setConfigEmail);
         }
         parent::tearDown();

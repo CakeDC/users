@@ -32,10 +32,12 @@ class UsersMailer extends Mailer
         $user->setHidden(['password', 'token_expires', 'api_token']);
         $subject = __d('CakeDC/Users', 'Your account validation link');
         $this
-            ->setTo($user['email'])
+             ->setTo($user['email'])
              ->setSubject($firstName . $subject)
-             ->setViewVars($user->toArray())
-             ->setTemplate('CakeDC/Users.validation');
+             ->setViewVars($user->toArray());
+
+        $this
+            ->viewBuilder()->setTemplate('CakeDC/Users.validation');
     }
 
     /**
