@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Test\TestCase\Model\Table;
 
+use Cake\Mailer\TransportFactory;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\UserAlreadyActiveException;
 use CakeDC\Users\Exception\UserNotFoundException;
@@ -49,9 +50,8 @@ class UsersTableTest extends TestCase
         $this->Users = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
         $this->fullBaseBackup = Router::fullBaseUrl();
         Router::fullBaseUrl('http://users.test');
-        Email::setConfigTransport('test', [
-            'className' => 'Debug'
-        ]);
+        TransportFactory::drop('test');
+        TransportFactory::setConfig('test', ['className' => 'Debug']);
         Email::setConfig('default', [
             'transport' => 'test',
             'from' => 'cakedc@example.com'
@@ -68,7 +68,6 @@ class UsersTableTest extends TestCase
         unset($this->Users);
         Router::fullBaseUrl($this->fullBaseBackup);
         Email::drop('default');
-        Email::dropTransport('test');
 
         parent::tearDown();
     }

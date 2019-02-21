@@ -143,10 +143,11 @@ class UserHelperTest extends TestCase
             ->with('Auth.User.first_name')
             ->will($this->returnValue('david'));
 
-        $this->User->request = $this->getMockBuilder('Cake\Network\Request')
+        $request = $this->getMockBuilder('Cake\Network\Request')
                 ->setMethods(['getSession'])
                 ->getMock();
-        $this->User->request->expects($this->any())
+        $this->User->getView()->setRequest($request);
+        $this->User->getView()->getRequest()->expects($this->any())
             ->method('getSession')
             ->will($this->returnValue($session));
 
@@ -170,10 +171,11 @@ class UserHelperTest extends TestCase
             ->with('Auth.User.id')
             ->will($this->returnValue(null));
 
-        $this->User->request = $this->getMockBuilder('Cake\Network\Request')
+        $request = $this->getMockBuilder('Cake\Network\Request')
                 ->setMethods(['getSession'])
                 ->getMock();
-        $this->User->request->expects($this->any())
+        $this->User->getView()->setRequest($request);
+        $this->User->getView()->getRequest()->expects($this->any())
             ->method('getSession')
             ->will($this->returnValue($session));
 
