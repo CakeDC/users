@@ -12,9 +12,9 @@
 
 namespace CakeDC\Users\Test\TestCase\Model\Behavior;
 
-use CakeDC\Users\Exception\UserAlreadyActiveException;
 use Cake\Core\Configure;
 use Cake\Mailer\Email;
+use Cake\Mailer\TransportFactory;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
@@ -30,7 +30,7 @@ class RegisterBehaviorTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.CakeDC/Users.users',
+        'plugin.CakeDC/Users.Users',
     ];
 
     /**
@@ -45,9 +45,7 @@ class RegisterBehaviorTest extends TestCase
         $table->addBehavior('CakeDC/Users/Register.Register');
         $this->Table = $table;
         $this->Behavior = $table->behaviors()->Register;
-        Email::setConfigTransport('test', [
-            'className' => 'Debug'
-        ]);
+        TransportFactory::setConfig('test', ['className' => 'Debug']);
         Email::setConfig('default', [
             'transport' => 'test',
             'from' => 'cakedc@example.com'
@@ -63,7 +61,7 @@ class RegisterBehaviorTest extends TestCase
     {
         unset($this->Table, $this->Behavior);
         Email::drop('default');
-        Email::dropTransport('test');
+        TransportFactory::drop('test');
         parent::tearDown();
     }
 

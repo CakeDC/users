@@ -38,8 +38,8 @@ class LinkSocialTraitTest extends BaseTraitTest
      * @var array
      */
     public $fixtures = [
-        'plugin.CakeDC/Users.social_accounts',
-        'plugin.CakeDC/Users.users'
+        'plugin.CakeDC/Users.SocialAccounts',
+        'plugin.CakeDC/Users.Users'
     ];
 
     /**

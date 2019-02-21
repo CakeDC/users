@@ -19,7 +19,7 @@ use Cake\Utility\Hash;
  */
 class Cognito extends AbstractMapper
 {
-    
+
     /**
      * Map for provider fields
      * @var
@@ -49,7 +49,7 @@ class Cognito extends AbstractMapper
     {
         return Hash::get($this->_rawData, $this->_mapFields['first_name'], Hash::get(explode(' ', Hash::get($this->_rawData, 'name', '')), 0));
     }
-    
+
     /**
      * @return mixed
      */
@@ -57,5 +57,4 @@ class Cognito extends AbstractMapper
     {
         return Hash::get($this->_rawData, $this->_mapFields['last_name'], Hash::get(explode(' ', Hash::get($this->_rawData, 'name', '')), 1));
     }
-        
 }
