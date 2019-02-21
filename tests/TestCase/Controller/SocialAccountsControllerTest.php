@@ -11,15 +11,10 @@
 
 namespace CakeDC\Users\Test\TestCase\Controller;
 
-use Cake\Mailer\TransportFactory;
-use CakeDC\Users\Controller\SocialAccountsController;
-use CakeDC\Users\Model\Behavior\SocialAccountBehavior;
-use CakeDC\Users\Model\Table\SocialAccountsTable;
 use Cake\Core\Configure;
-use Cake\Event\EventManager;
 use Cake\Http\ServerRequest;
 use Cake\Mailer\Email;
-use Cake\Network\Request;
+use Cake\Mailer\TransportFactory;
 use Cake\TestSuite\TestCase;
 
 class SocialAccountsControllerTest extends TestCase

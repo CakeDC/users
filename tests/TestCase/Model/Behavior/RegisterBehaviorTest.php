@@ -12,10 +12,9 @@
 
 namespace CakeDC\Users\Test\TestCase\Model\Behavior;
 
-use Cake\Mailer\TransportFactory;
-use CakeDC\Users\Exception\UserAlreadyActiveException;
 use Cake\Core\Configure;
 use Cake\Mailer\Email;
+use Cake\Mailer\TransportFactory;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
