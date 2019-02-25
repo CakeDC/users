@@ -281,8 +281,12 @@ class SocialAuthenticate extends BaseAuthenticate
         if ($this->getConfig('options.state')) {
             $request->getSession()->write('oauth2state', $provider->getState());
         }
+        
+        $options = [
+            'scope' => $this->getConfig(sprintf('providers.%s.scope', $request->getParam('provider')))
+        ];
 
-        $response = $response->withLocation($provider->getAuthorizationUrl());
+        $response = $response->withLocation($provider->getAuthorizationUrl($options));
 
         return $response;
     }
