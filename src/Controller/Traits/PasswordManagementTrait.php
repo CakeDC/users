@@ -34,12 +34,14 @@ trait PasswordManagementTrait
      *
      * @return mixed
      */
-    public function changePassword()
+    public function changePassword($id = null)
     {
         $user = $this->getUsersTable()->newEntity();
-        $id = $this->Auth->user('id');
+        if ($id === null || !$this->Auth->user('is_superuser') || !Configure::read('Users.Superuser.allowedToChangePasswords') {
+            $id = $this->Auth->user('id');
+        }
         if (!empty($id)) {
-            $user->id = $this->Auth->user('id');
+            $user->id = $id;
             $validatePassword = true;
             if ($this->Auth->user('is_superuser') && Configure::read('Users.Superuser.allowedToChangePasswords')) {
                 $validatePassword = false;
