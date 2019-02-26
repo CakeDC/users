@@ -282,7 +282,7 @@ class SocialAuthenticate extends BaseAuthenticate
             $request->getSession()->write('oauth2state', $provider->getState());
         }
 
-        $authParams = $this->getConfig(sprintf('providers.%s.authParams', $request->getParam('provider')));
+        $authParams = $this->getConfig(sprintf('providers.%s.authParams', $request->getParam('provider')), []);
 
         $response = $response->withLocation($provider->getAuthorizationUrl($authParams));
 
