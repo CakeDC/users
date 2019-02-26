@@ -152,7 +152,7 @@ $config = [
         'providers' => [
             'facebook' => [
                 'className' => 'League\OAuth2\Client\Provider\Facebook',
-                'scope' => ['public_profile', 'email', 'user_birthday', 'user_gender', 'user_link'],
+                'authScope' => ['public_profile', 'email', 'user_birthday', 'user_gender', 'user_link'],
                 'options' => [
                     'graphApiVersion' => 'v2.8', //bio field was deprecated on >= v2.8
                     'redirectUri' => Router::fullBaseUrl() . '/auth/facebook',
