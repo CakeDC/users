@@ -132,7 +132,13 @@ NOTE: SOME keys were hidden in this doc page, please refer to `vendor/cakedc/use
         'AuthorizationMiddleware' => [...],
         'AuthorizationComponent' => [...],
         'SocialLoginFailure' => [...],
-        'FormLoginFailure' => [...]
+        'FormLoginFailure' => [...],
+        'RbacPolicy' => [
+            'adapter' => [
+                'role_field' => 'group_name',
+                ...
+            ]
+        ]
     ],
     'SocialAuthMiddleware' => [...],
     'OAuth' => [...]
