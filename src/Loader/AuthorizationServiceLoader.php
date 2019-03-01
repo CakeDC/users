@@ -18,6 +18,7 @@ use Authorization\Policy\ResolverCollection;
 use CakeDC\Auth\Policy\CollectionPolicy;
 use CakeDC\Auth\Policy\RbacPolicy;
 use CakeDC\Auth\Policy\SuperuserPolicy;
+use Cake\Core\Configure;
 use Cake\Http\ServerRequest;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -36,7 +37,7 @@ class AuthorizationServiceLoader
             ServerRequest::class,
             new CollectionPolicy([
                 SuperuserPolicy::class,
-                RbacPolicy::class
+                new RbacPolicy(Configure::read('Auth.RbacPolicy'))
             ])
         );
 
