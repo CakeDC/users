@@ -152,7 +152,8 @@ class LinkSocialTraitTest extends BaseTraitTest
                         'callbackLinkSocialUri' => '/callback-link-social/facebook',
                         'clientId' => 'testclientidtestclientid',
                         'clientSecret' => 'testclientsecrettestclientsecret'
-                    ]
+                    ],
+                    'authParams' => ['scope' => ['public_profile', 'email', 'user_birthday', 'user_gender', 'user_link']],
                 ])
             )
             ->will($this->returnValue($ProviderMock));
@@ -341,7 +342,8 @@ class LinkSocialTraitTest extends BaseTraitTest
                         'callbackLinkSocialUri' => '/callback-link-social/facebook',
                         'clientId' => 'testclientidtestclientid',
                         'clientSecret' => 'testclientsecrettestclientsecret'
-                    ]
+                    ],
+                    'authParams' => ['scope' => ['public_profile', 'email', 'user_birthday', 'user_gender', 'user_link']],
                 ])
             )
             ->will($this->returnValue($ProviderMock));
@@ -486,7 +488,8 @@ class LinkSocialTraitTest extends BaseTraitTest
                         'callbackLinkSocialUri' => '/callback-link-social/facebook',
                         'clientId' => 'testclientidtestclientid',
                         'clientSecret' => 'testclientsecrettestclientsecret'
-                    ]
+                    ],
+                    'authParams' => ['scope' => ['public_profile', 'email', 'user_birthday', 'user_gender', 'user_link']],
                 ])
             )
             ->will($this->returnValue($ProviderMock));
@@ -579,7 +582,8 @@ class LinkSocialTraitTest extends BaseTraitTest
                         'callbackLinkSocialUri' => '/callback-link-social/facebook',
                         'clientId' => 'testclientidtestclientid',
                         'clientSecret' => 'testclientsecrettestclientsecret'
-                    ]
+                    ],
+                    'authParams' => ['scope' => ['public_profile', 'email', 'user_birthday', 'user_gender', 'user_link']],
                 ])
             )
             ->will($this->returnValue($ProviderMock));
@@ -670,7 +674,8 @@ class LinkSocialTraitTest extends BaseTraitTest
                         'callbackLinkSocialUri' => '/callback-link-social/facebook',
                         'clientId' => 'testclientidtestclientid',
                         'clientSecret' => 'testclientsecrettestclientsecret'
-                    ]
+                    ],
+                    'authParams' => ['scope' => ['public_profile', 'email', 'user_birthday', 'user_gender', 'user_link']],
                 ])
             )
             ->will($this->returnValue($ProviderMock));
@@ -757,7 +762,8 @@ class LinkSocialTraitTest extends BaseTraitTest
                         'callbackLinkSocialUri' => '/callback-link-social/facebook',
                         'clientId' => 'testclientidtestclientid',
                         'clientSecret' => 'testclientsecrettestclientsecret'
-                    ]
+                    ],
+                    'authParams' => ['scope' => ['public_profile', 'email', 'user_birthday', 'user_gender', 'user_link']],
                 ])
             )
             ->will($this->returnValue($ProviderMock));
