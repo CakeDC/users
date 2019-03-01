@@ -226,6 +226,7 @@ $config = [
         'AuthorizationComponent' => [
             'enabled' => true,
         ],
+        'RbacPolicy' => []
     ],
     'OAuth' => [
         'path' => ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'socialLogin', 'prefix' => null],
