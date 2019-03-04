@@ -112,6 +112,7 @@ class SocialAuthenticate extends BaseAuthenticate
 
         $defaults = [
                 'className' => null,
+                'authParams' => [],
                 'options' => [],
                 'collaborators' => [],
                 'mapFields' => [],
