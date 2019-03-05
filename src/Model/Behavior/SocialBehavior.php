@@ -130,6 +130,7 @@ class SocialBehavior extends BaseTokenBehavior
 
         $event = $this->dispatchEvent(UsersAuthComponent::EVENT_BEFORE_SOCIAL_LOGIN_USER_CREATE, [
             'userEntity' => $user,
+            'data' => $data,
         ]);
         if ($event->result instanceof EntityInterface) {
             $user = $event->result;
