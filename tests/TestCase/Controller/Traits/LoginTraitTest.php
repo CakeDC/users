@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
+use CakeDC\Users\Auth\DefaultU2fAuthenticationChecker;
 use CakeDC\Users\Controller\Component\GoogleAuthenticatorComponent;
 use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Controller\Traits\LoginTrait;
@@ -40,8 +41,11 @@ class LoginTraitTest extends BaseTraitTest
         parent::setUp();
         $request = new ServerRequest();
         $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\Traits\LoginTrait')
-            ->setMethods(['dispatchEvent', 'redirect', 'set'])
+            ->setMethods(['dispatchEvent', 'redirect', 'set', 'getU2fAuthenticationChecker'])
             ->getMockForTrait();
+        $this->Trait->expects($this->any())
+            ->method('getU2fAuthenticationChecker')
+            ->will($this->returnValue(new DefaultU2fAuthenticationChecker()));
 
         $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
             ->setMethods(['setConfig'])
