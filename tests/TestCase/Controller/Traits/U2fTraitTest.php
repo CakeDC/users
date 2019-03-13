@@ -32,7 +32,7 @@ class U2fTraitTest extends BaseTraitTest
      * @var array
      */
     public $fixtures = [
-        'plugin.CakeDC/Users.users',
+        'plugin.CakeDC/Users.Users',
     ];
     /**
      * setup

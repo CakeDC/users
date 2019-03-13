@@ -13,11 +13,8 @@ namespace CakeDC\Users\Test\TestCase\Model\Behavior;
 
 use CakeDC\Users\Model\Table\SocialAccountsTable;
 use Cake\Event\Event;
-use Cake\Mailer\Email;
 use Cake\ORM\TableRegistry;
-use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
-use InvalidArgumentException;
 
 /**
  * Test Case
@@ -30,8 +27,8 @@ class SocialAccountBehaviorTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.CakeDC/Users.social_accounts',
-        'plugin.CakeDC/Users.users'
+        'plugin.CakeDC/Users.SocialAccounts',
+        'plugin.CakeDC/Users.Users'
     ];
 
     /**

@@ -3,6 +3,16 @@ Changelog
 
 Releases for CakePHP 3
 -------------
+
+* 8.3.0
+  * Bootstrap don't need to listen for EVENT_FAILED_SOCIAL_LOGIN
+
+* 8.2.1
+  * Fix scope in facebook social login
+
+* 8.2
+  * Removed deprecations for CakePHP 3.7
+
 * 8.1
   * Added Yubico U2F Authentication
 
