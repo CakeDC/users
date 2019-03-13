@@ -12,7 +12,7 @@ Versions and branches
 
 | CakePHP | CakeDC Users Plugin | Tag   | Notes |
 | :-------------: | :------------------------: | :--:  | :---- |
-| 3.6             | [master](https://github.com/cakedc/users/tree/master)                      | 8.0.3 | stable |
+| 3.7             | [master](https://github.com/cakedc/users/tree/master)                      | 8.4.0 | stable |
 | 3.7             | [develop](https://github.com/cakedc/users/tree/develop)                      | - | unstable |
 | ^3.7            | [8.4](https://github.com/cakedc/users/tree/8.next)                      | 8.4.0 | stable |
 | 3.6             | [8.1](https://github.com/cakedc/users/tree/8.1.0)                      | 8.1.0 | stable |
