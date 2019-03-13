@@ -112,6 +112,58 @@ class LoginTraitTest extends BaseTraitTest
      *
      * @return void
      */
+    public function testLoginRehash()
+    {
+        $this->_mockDispatchEvent(new Event('event'));
+        $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
+            ->setMethods(['is'])
+            ->getMock();
+        $this->Trait->request->expects($this->any())
+            ->method('is')
+            ->with('post')
+            ->will($this->returnValue(true));
+        $authenticate = $this->getMockBuilder('Cake\Auth\FormAuthenticate')
+            ->setMethods(['needsPasswordRehash'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $authenticate->expects($this->any())
+            ->method('needsPasswordRehash')
+            ->will($this->returnValue(true));
+        $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
+            ->setMethods(['user', 'identify', 'setUser', 'redirectUrl', 'authenticationProvider'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $user = [
+            'id' => '00000000-0000-0000-0000-000000000001',
+        ];
+        $redirectLoginOK = '/';
+        $this->Trait->Auth->expects($this->at(0))
+            ->method('identify')
+            ->will($this->returnValue($user));
+        $this->Trait->Auth->expects($this->atMost(2))
+            ->method('authenticationProvider')
+            ->will($this->returnValue($authenticate));
+        $this->Trait->Auth->expects($this->at(3))
+            ->method('setUser')
+            ->with($user);
+        $this->Trait->Auth->expects($this->at(4))
+            ->method('redirectUrl')
+            ->will($this->returnValue($redirectLoginOK));
+        $this->Trait->expects($this->once())
+            ->method('redirect')
+            ->with($redirectLoginOK);
+        $this->Trait->GoogleAuthenticator = $this->getMockBuilder(GoogleAuthenticatorComponent::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['createSecret', 'getQRCodeImageAsDataUri'])
+            ->getMock();
+        $this->Trait->login();
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
     public function testAfterIdentifyEmptyUser()
     {
         $this->_mockDispatchEvent(new Event('event'));

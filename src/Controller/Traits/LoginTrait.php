@@ -182,6 +182,12 @@ trait LoginTrait
             }
             $user = $this->Auth->identify();
 
+            if ($this->Auth->authenticationProvider() !== null && $this->Auth->authenticationProvider()->needsPasswordRehash()) {
+                $entity = $this->getUsersTable()->get($user['id']);
+                $entity->set('password', $this->request->getData('password'));
+                $this->getUsersTable()->save($entity);
+            }
+
             return $this->_afterIdentifyUser(
                 $user,
                 $socialLogin,
