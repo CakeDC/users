@@ -433,7 +433,6 @@ trait LoginTrait
         return (new TwoFactorAuthenticationCheckerFactory())->build();
     }
 
-
     /**
      * Get the configured two factory authentication
      *
