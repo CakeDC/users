@@ -432,4 +432,15 @@ trait LoginTrait
     {
         return (new TwoFactorAuthenticationCheckerFactory())->build();
     }
+
+
+    /**
+     * Get the configured two factory authentication
+     *
+     * @return \CakeDC\Users\Auth\U2fAuthenticationCheckerInterface
+     */
+    protected function getU2fAuthenticationChecker()
+    {
+        return (new U2fAuthenticationCheckerFactory())->build();
+    }
 }
