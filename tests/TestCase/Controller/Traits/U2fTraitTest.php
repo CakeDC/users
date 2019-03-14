@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
+use CakeDC\Users\Auth\DefaultU2fAuthenticationChecker;
 use Cake\Core\Configure;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
@@ -42,7 +43,7 @@ class U2fTraitTest extends BaseTraitTest
     public function setUp()
     {
         $this->traitClassName = 'CakeDC\Users\Controller\Traits\U2fTrait';
-        $this->traitMockMethods = ['dispatchEvent', 'isStopped', 'redirect', 'getUsersTable', 'set', 'createU2fLib', 'getData'];
+        $this->traitMockMethods = ['dispatchEvent', 'isStopped', 'redirect', 'getUsersTable', 'set', 'createU2fLib', 'getData', 'getU2fAuthenticationChecker'];
 
         parent::setUp();
 
@@ -50,6 +51,9 @@ class U2fTraitTest extends BaseTraitTest
             ->setMethods(['setConfig', 'redirectUrl', 'setUser'])
             ->disableOriginalConstructor()
             ->getMock();
+        $this->Trait->expects($this->any())
+            ->method('getU2fAuthenticationChecker')
+            ->willReturn(new DefaultU2fAuthenticationChecker());
 
         $request = new ServerRequest();
         $this->Trait->request = $request;
