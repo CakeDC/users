@@ -13,6 +13,8 @@ namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
 use Authentication\Authenticator\Result;
 use Authentication\Controller\Component\AuthenticationComponent;
+use Authentication\Identifier\IdentifierCollection;
+use Authentication\Identifier\PasswordIdentifier;
 use Authentication\Identity;
 use CakeDC\Auth\Authentication\AuthenticationService;
 use CakeDC\Users\Model\Entity\User;
@@ -230,6 +232,71 @@ abstract class BaseTraitTest extends TestCase
         $authentication->expects($this->any())
             ->method('getFailures')
             ->will($this->returnValue($failures));
+
+        $this->Trait->request = $this->Trait->request->withAttribute('authentication', $authentication);
+
+        $controller = new Controller($this->Trait->request);
+        $registry = new ComponentRegistry($controller);
+        $this->Trait->Authentication = new AuthenticationComponent($registry, [
+            'loginRedirect' => $this->successLoginRedirect,
+            'logoutRedirect' => $this->logoutRedirect,
+            'loginAction' => $this->loginAction
+        ]);
+    }
+
+    /**
+     * Mock the Authentication service with a Password Rehash being required.
+     *
+     * @param array $user
+     * @param array $failures
+     * @return void
+     */
+    protected function _mockAuthenticationWithPasswordRehash($user = null, $failures = [])
+    {
+        $config = [
+            'identifiers' => [
+                'Authentication.Password'
+            ],
+            'authenticators' => [
+                'Authentication.Session',
+                'Authentication.Form'
+            ]
+        ];
+        $authentication = $this->getMockBuilder(AuthenticationService::class)->setConstructorArgs([$config])->setMethods([
+            'getResult',
+            'getFailures',
+            'identifiers'
+        ])->getMock();
+
+        $identifiers = new IdentifierCollection();
+        $passwordIdentifier = $this->getMockBuilder(PasswordIdentifier::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['needsPasswordRehash'])->getMock();
+        $passwordIdentifier->expects($this->any())
+            ->method('needsPasswordRehash')
+            ->will($this->returnValue(true));
+        $identifiers->set('Password', $passwordIdentifier);
+
+        if ($user) {
+            $user = new User($user);
+            $identity = new Identity($user);
+            $result = new Result($user, Result::SUCCESS);
+            $this->Trait->request = $this->Trait->request->withAttribute('identity', $identity);
+        } else {
+            $result = new Result($user, Result::FAILURE_CREDENTIALS_MISSING);
+        }
+
+        $authentication->expects($this->any())
+            ->method('getResult')
+            ->will($this->returnValue($result));
+
+        $authentication->expects($this->any())
+            ->method('getFailures')
+            ->will($this->returnValue($failures));
+
+        $authentication->expects($this->any())
+            ->method('identifiers')
+            ->will($this->returnValue($identifiers));
 
         $this->Trait->request = $this->Trait->request->withAttribute('authentication', $authentication);
 
