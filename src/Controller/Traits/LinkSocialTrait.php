@@ -15,6 +15,7 @@ use CakeDC\Users\Model\Table\SocialAccountsTable;
 use Cake\Core\Configure;
 use Cake\Http\Exception\NotFoundException;
 use League\OAuth1\Client\Server\Twitter;
+use CakeDC\Users\Controller\Component\UsersAuthComponent;
 
 /**
  * Ações para "linkar" contas sociais
@@ -40,6 +41,10 @@ trait LinkSocialTrait
             $this->request->getSession()->write('temporary_credentials', $temporaryCredentials);
         }
         $authUrl = $provider->getAuthorizationUrl($temporaryCredentials);
+        $this->dispatchEvent(UsersAuthComponent::EVENT_BEFORE_SOCIAL_LOGIN_REDIRECT, [
+            'location' =>$authUrl,
+            'request' => $this->getRequest(),
+        ]);
         if (empty($temporaryCredentials)) {
             $this->request->session()->write('SocialLink.oauth2state', $provider->getState());
         }
