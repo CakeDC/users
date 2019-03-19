@@ -368,11 +368,7 @@ class SocialAuthenticate extends BaseAuthenticate
             $this->_getController()->dispatchEvent(UsersAuthComponent::EVENT_AFTER_REGISTER, compact('user'));
         }
 
-        if (!empty($user->username)) {
-            $user = $this->_findUser($user->username);
-        }
-
-        return $user;
+        return $this->_findUser($user->get(Configure::read('Auth.authenticate.Form.fields.username', 'username')));
     }
 
     /**
