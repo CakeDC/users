@@ -182,6 +182,12 @@ trait LoginTrait
             }
             $user = $this->Auth->identify();
 
+            if ($this->Auth->authenticationProvider() !== null && $this->Auth->authenticationProvider()->needsPasswordRehash()) {
+                $entity = $this->getUsersTable()->get($user['id']);
+                $entity->set('password', $this->request->getData('password'));
+                $this->getUsersTable()->save($entity);
+            }
+
             return $this->_afterIdentifyUser(
                 $user,
                 $socialLogin,
@@ -425,5 +431,15 @@ trait LoginTrait
     protected function getTwoFactorAuthenticationChecker()
     {
         return (new TwoFactorAuthenticationCheckerFactory())->build();
+    }
+
+    /**
+     * Get the configured two factory authentication
+     *
+     * @return \CakeDC\Users\Auth\U2fAuthenticationCheckerInterface
+     */
+    protected function getU2fAuthenticationChecker()
+    {
+        return (new U2fAuthenticationCheckerFactory())->build();
     }
 }

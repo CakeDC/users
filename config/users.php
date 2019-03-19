@@ -204,10 +204,19 @@ $config = [
             ],
             'amazon' => [
                 'className' => 'Luchianenco\OAuth2\Client\Provider\Amazon',
-                'options' => [
+                 'options' => [
                     'redirectUri' => Router::fullBaseUrl() . '/auth/amazon',
                     'linkSocialUri' => Router::fullBaseUrl() . '/link-social/amazon',
                     'callbackLinkSocialUri' => Router::fullBaseUrl() . '/callback-link-social/amazon',
+                ]
+            ],
+            'cognito' => [
+                'className' => 'CakeDC\OAuth2\Client\Provider\Cognito',
+                'options' => [
+                    'redirectUri' => Router::fullBaseUrl() . '/auth/cognito',
+                    'linkSocialUri' => Router::fullBaseUrl() . '/link-social/cognito',
+                    'callbackLinkSocialUri' => Router::fullBaseUrl() . '/callback-link-social/cognito',
+                    'scope' => 'email openid'
                 ]
             ],
         ],
