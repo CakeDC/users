@@ -51,6 +51,12 @@ class LoginComponent extends Component
         if ($result->isValid()) {
             $user = $request->getAttribute('identity')->getOriginalData();
 
+            if ($service->identifiers()->get('Password')->needsPasswordRehash()) {
+                $user->set('password', $request->getData('password'));
+                $user->setDirty('modified');
+                $this->getController()->getUsersTable()->save($user);
+            }
+
             return $this->afterIdentifyUser($user);
         }
         if ($request->is('post') || $errorOnlyPost === false) {

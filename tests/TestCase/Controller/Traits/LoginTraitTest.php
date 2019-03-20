@@ -130,6 +130,89 @@ class LoginTraitTest extends BaseTraitTest
      *
      * @return void
      */
+    public function testLoginHappyReset()
+    {
+        $identifiers = new IdentifierCollection();
+        $SessionAuth = new SessionAuthenticator($identifiers);
+
+        $sessionFailure = new Failure(
+            $SessionAuth,
+            new Result(null, Result::FAILURE_IDENTITY_NOT_FOUND)
+        );
+        $failures = [$sessionFailure];
+
+        $this->_mockDispatchEvent(new Event('event'));
+        $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
+            ->setMethods(['is'])
+            ->getMock();
+        $this->Trait->request->expects($this->any())
+            ->method('is')
+            ->with('post')
+            ->will($this->returnValue(true));
+
+        $this->_mockFlash();
+        $this->_mockAuthenticationWithPasswordRehash(['id' => '00000000-0000-0000-0000-000000000001',
+            'username' => 'user-1',
+            'email' => 'user-1@test.com',
+            'password' => '12345',
+            'first_name' => 'first1',
+            'last_name' => 'last1',
+            'token' => 'ae93ddbe32664ce7927cf0c5c5a5e59d',
+            'token_expires' => '2035-06-24 17:33:54',
+            'api_token' => 'yyy',
+            'activation_date' => '2015-06-24 17:33:54',
+            'secret' => 'yyy',
+            'secret_verified' => false,
+            'tos_date' => '2015-06-24 17:33:54',
+            'active' => false,
+            'is_superuser' => true,
+            'role' => 'admin',
+            'created' => '2015-06-24 17:33:54',
+            'modified' => '2015-06-24 17:33:54'], $failures);
+        $this->Trait->Flash->expects($this->never())
+            ->method('error');
+        $this->Trait->expects($this->once())
+            ->method('redirect')
+            ->with($this->successLoginRedirect)
+            ->will($this->returnValue(new Response()));
+        $this->Trait->expects($this->any())
+            ->method('getRequest')
+            ->will($this->returnValue($this->Trait->request));
+
+        $registry = new ComponentRegistry();
+        $config = [
+            'component' => 'CakeDC/Users.Login',
+            'defaultMessage' => __d('cake_d_c/users', 'Username or password is incorrect'),
+            'messages' => [
+                FormAuthenticator::FAILURE_INVALID_RECAPTCHA => __d('cake_d_c/users', 'Invalid reCaptcha')
+            ],
+            'targetAuthenticator' => FormAuthenticator::class
+        ];
+        $Login = $this->getMockBuilder(LoginComponent::class)
+            ->setMethods(['getController'])
+            ->setConstructorArgs([$registry, $config])
+            ->getMock();
+
+        $Login->expects($this->any())
+            ->method('getController')
+            ->will($this->returnValue($this->Trait));
+        $this->Trait->expects($this->any())
+            ->method('loadComponent')
+            ->with(
+                $this->equalTo('CakeDC/Users.Login'),
+                $this->equalTo($config)
+            )
+            ->will($this->returnValue($Login));
+
+        $result = $this->Trait->login();
+        $this->assertInstanceOf(Response::class, $result);
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
     public function testLoginGet()
     {
         $this->_mockDispatchEvent(new Event('event'));
