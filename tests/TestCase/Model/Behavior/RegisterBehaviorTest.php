@@ -45,9 +45,7 @@ class RegisterBehaviorTest extends TestCase
         $table->addBehavior('CakeDC/Users/Register.Register');
         $this->Table = $table;
         $this->Behavior = $table->behaviors()->Register;
-        TransportFactory::setConfig('test', [
-            'className' => 'Debug'
-        ]);
+        TransportFactory::setConfig('test', ['className' => 'Debug']);
         Email::setConfig('default', [
             'transport' => 'test',
             'from' => 'cakedc@example.com'

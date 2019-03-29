@@ -91,9 +91,13 @@ Custom username field
 In your customized users table, add the SocialBehavior with the following configuration:
 
 ```php
-$this->addBehavior('CakeDC.Users/Social', [
+$this->addBehavior('CakeDC/Users.Social', [
     'username' => 'email' 
 ]);
+```
+Or if you extend the users table, the behavior is already loaded, so just configure it with:
+```php
+$this->behaviors()->get('Social')->config(['username' => 'email']);
 ```
 
 By default it will use `username` field.

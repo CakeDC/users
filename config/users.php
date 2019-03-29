@@ -120,6 +120,17 @@ $config = [
         // Random Number Generator provider (more on this later)
         'rngprovider' => null
     ],
+    'U2f' => [
+        'enabled' => false,
+        'checker' => \CakeDC\Users\Auth\DefaultU2fAuthenticationChecker::class,
+        'startAction' => [
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+            'action' => 'u2f',
+            'prefix' => false,
+        ]
+    ],
+    // default configuration used to auto-load the Auth Component, override to change the way Auth works
     'Auth' => [
         'Authentication' => [
             'serviceLoader' => \CakeDC\Users\Loader\AuthenticationServiceLoader::class
@@ -244,6 +255,7 @@ $config = [
                 'service' => 'CakeDC\Auth\Social\Service\OAuth2Service',
                 'className' => 'League\OAuth2\Client\Provider\Facebook',
                 'mapper' => 'CakeDC\Auth\Social\Mapper\Facebook',
+                'authParams' => ['scope' => ['public_profile', 'email', 'user_birthday', 'user_gender', 'user_link']],
                 'options' => [
                     'graphApiVersion' => 'v2.8', //bio field was deprecated on >= v2.8
                     'redirectUri' => Router::fullBaseUrl() . '/auth/facebook',
@@ -300,6 +312,17 @@ $config = [
                     'redirectUri' => Router::fullBaseUrl() . '/auth/amazon',
                     'linkSocialUri' => Router::fullBaseUrl() . '/link-social/amazon',
                     'callbackLinkSocialUri' => Router::fullBaseUrl() . '/callback-link-social/amazon',
+                ]
+            ],
+            'cognito' => [
+                'service' => 'CakeDC\Auth\Social\Service\OAuth2Service',
+                'className' => 'CakeDC\OAuth2\Client\Provider\Cognito',
+                'mapper' => 'CakeDC\Auth\Social\Mapper\Cognito',
+                'options' => [
+                    'redirectUri' => Router::fullBaseUrl() . '/auth/cognito',
+                    'linkSocialUri' => Router::fullBaseUrl() . '/link-social/cognito',
+                    'callbackLinkSocialUri' => Router::fullBaseUrl() . '/callback-link-social/cognito',
+                    'scope' => 'email openid'
                 ]
             ],
         ],
