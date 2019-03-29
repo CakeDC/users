@@ -149,37 +149,6 @@ class LinkSocialTraitTest extends BaseTraitTest
         $this->Trait->Flash->expects($this->never())
             ->method('success');
 
-        $ProviderMock = $this->getMockBuilder('League\OAuth2\Client\Provider\Facebook')
-            ->setMethods(['getAuthorizationUrl', 'getState'])
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $ProviderMock->expects($this->once())
-            ->method('getAuthorizationUrl')
-            ->will($this->returnValue('http://localhost/fake/facebook/login'));
-
-        $ProviderMock->expects($this->once())
-            ->method('getState')
-            ->will($this->returnValue('a3423ja9ads90u3242309'));
-
-        $this->Trait->expects($this->once())
-            ->method('_createSocialProvider')
-            ->with(
-                $this->equalTo([
-                    'className' => 'League\OAuth2\Client\Provider\Facebook',
-                    'options' => [
-                        'graphApiVersion' => 'v2.8',
-                        'redirectUri' => '/auth/facebook',
-                        'linkSocialUri' => '/link-social/facebook',
-                        'callbackLinkSocialUri' => '/callback-link-social/facebook',
-                        'clientId' => 'testclientidtestclientid',
-                        'clientSecret' => 'testclientsecrettestclientsecret'
-                    ],
-                    'authParams' => ['scope' => ['public_profile', 'email', 'user_birthday', 'user_gender', 'user_link']],
-                ])
-            )
-            ->will($this->returnValue($ProviderMock));
-
         $this->Trait->expects($this->once())
             ->method('redirect')
             ->with($this->equalTo('http://facebook.com/redirect/url'))
@@ -293,61 +262,7 @@ class LinkSocialTraitTest extends BaseTraitTest
 
         $this->Trait->Flash->expects($this->once())
             ->method('success')
-            ->with(__d('CakeDC/Users', 'Social account was associated.'));
-
-        $fbToken = new AccessToken([
-            'access_token' => 'token',
-            'tokenSecret' => null,
-            'expires' => 1458423682
-        ]);
-        $ProviderMock = $this->getMockBuilder('League\OAuth2\Client\Provider\Facebook')
-            ->setMethods(['getAccessToken', 'getResourceOwner'])
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $ProviderMock->expects($this->once())
-            ->method('getAccessToken')
-            ->with(
-                $this->equalTo('authorization_code'),
-                $this->equalTo([
-                    'code' => '99999000222220'
-                ])
-            )->will($this->returnValue($fbToken));
-
-        $fbUser = new FacebookUser([
-            'id' => '9999911112255',
-            'name' => 'Ful Name.',
-            'username' => 'mock_username',
-            'first_name' => 'First Name',
-            'last_name' => 'Last name',
-            'email' => 'user-1@test.com',
-            'Location' => 'mock_home',
-            'bio' => 'mock_description',
-            'link' => 'facebook-link-15579',
-        ]);
-        $ProviderMock->expects($this->once())
-            ->method('getResourceOwner')
-            ->with(
-                $this->equalTo($fbToken)
-            )->will($this->returnValue($fbUser));
-
-        $this->Trait->expects($this->once())
-            ->method('_createSocialProvider')
-            ->with(
-                $this->equalTo([
-                    'className' => 'League\OAuth2\Client\Provider\Facebook',
-                    'options' => [
-                        'graphApiVersion' => 'v2.8',
-                        'redirectUri' => '/auth/facebook',
-                        'linkSocialUri' => '/link-social/facebook',
-                        'callbackLinkSocialUri' => '/callback-link-social/facebook',
-                        'clientId' => 'testclientidtestclientid',
-                        'clientSecret' => 'testclientsecrettestclientsecret'
-                    ],
-                    'authParams' => ['scope' => ['public_profile', 'email', 'user_birthday', 'user_gender', 'user_link']],
-                ])
-            )
-            ->will($this->returnValue($ProviderMock));
+            ->with(__d('cake_d_c/users', 'Social account was associated.'));
 
         $this->Trait->callbackLinkSocial('facebook');
 
@@ -456,18 +371,7 @@ class LinkSocialTraitTest extends BaseTraitTest
         $this->Provider->expects($this->any())
             ->method('getResourceOwner')
             ->with(
-                $this->equalTo([
-                    'className' => 'League\OAuth2\Client\Provider\Facebook',
-                    'options' => [
-                        'graphApiVersion' => 'v2.8',
-                        'redirectUri' => '/auth/facebook',
-                        'linkSocialUri' => '/link-social/facebook',
-                        'callbackLinkSocialUri' => '/callback-link-social/facebook',
-                        'clientId' => 'testclientidtestclientid',
-                        'clientSecret' => 'testclientsecrettestclientsecret'
-                    ],
-                    'authParams' => ['scope' => ['public_profile', 'email', 'user_birthday', 'user_gender', 'user_link']],
-                ])
+                $this->equalTo($Token)
             )
             ->will($this->returnValue($user));
 
@@ -503,41 +407,6 @@ class LinkSocialTraitTest extends BaseTraitTest
 
         $this->Trait->Flash->expects($this->never())
             ->method('success');
-
-        $ProviderMock = $this->getMockBuilder('League\OAuth2\Client\Provider\Facebook')
-            ->setMethods(['getAccessToken', 'getResourceOwner'])
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $ProviderMock->expects($this->once())
-            ->method('getAccessToken')
-            ->with(
-                $this->equalTo('authorization_code'),
-                $this->equalTo([
-                    'code' => '99999000222220'
-                ])
-            )->will($this->throwException(new \Exception));
-
-        $ProviderMock->expects($this->never())
-            ->method('getResourceOwner');
-
-        $this->Trait->expects($this->once())
-            ->method('_createSocialProvider')
-            ->with(
-                $this->equalTo([
-                    'className' => 'League\OAuth2\Client\Provider\Facebook',
-                    'options' => [
-                        'graphApiVersion' => 'v2.8',
-                        'redirectUri' => '/auth/facebook',
-                        'linkSocialUri' => '/link-social/facebook',
-                        'callbackLinkSocialUri' => '/callback-link-social/facebook',
-                        'clientId' => 'testclientidtestclientid',
-                        'clientSecret' => 'testclientsecrettestclientsecret'
-                    ],
-                    'authParams' => ['scope' => ['public_profile', 'email', 'user_birthday', 'user_gender', 'user_link']],
-                ])
-            )
-            ->will($this->returnValue($ProviderMock));
 
         $this->Trait->callbackLinkSocial('facebook');
 
@@ -604,24 +473,6 @@ class LinkSocialTraitTest extends BaseTraitTest
             ->method('error')
             ->with(__d('cake_d_c/users', 'Could not associate account, please try again.'));
 
-        $this->Trait->expects($this->once())
-            ->method('_createSocialProvider')
-            ->with(
-                $this->equalTo([
-                    'className' => 'League\OAuth2\Client\Provider\Facebook',
-                    'options' => [
-                        'graphApiVersion' => 'v2.8',
-                        'redirectUri' => '/auth/facebook',
-                        'linkSocialUri' => '/link-social/facebook',
-                        'callbackLinkSocialUri' => '/callback-link-social/facebook',
-                        'clientId' => 'testclientidtestclientid',
-                        'clientSecret' => 'testclientsecrettestclientsecret'
-                    ],
-                    'authParams' => ['scope' => ['public_profile', 'email', 'user_birthday', 'user_gender', 'user_link']],
-                ])
-            )
-            ->will($this->returnValue($ProviderMock));
-
         $result = $this->Trait->callbackLinkSocial('facebook');
         $this->assertInstanceOf(Response::class, $result);
     }
@@ -647,39 +498,6 @@ class LinkSocialTraitTest extends BaseTraitTest
 
         $this->Provider->expects($this->never())
             ->method('getResourceOwner');
-
-        $this->Trait->expects($this->once())
-            ->method('_createSocialProvider')
-            ->with(
-                $this->equalTo([
-                    'className' => 'League\OAuth2\Client\Provider\Facebook',
-                    'options' => [
-                        'graphApiVersion' => 'v2.8',
-                        'redirectUri' => '/auth/facebook',
-                        'linkSocialUri' => '/link-social/facebook',
-                        'callbackLinkSocialUri' => '/callback-link-social/facebook',
-                        'clientId' => 'testclientidtestclientid',
-                        'clientSecret' => 'testclientsecrettestclientsecret'
-                    ],
-                    'authParams' => ['scope' => ['public_profile', 'email', 'user_birthday', 'user_gender', 'user_link']],
-                ])
-            )
-            ->will($this->returnValue($ProviderMock));
-
-        $this->Trait->callbackLinkSocial('facebook');
-    }
-
-    /**
-     * test
-     *
-     * @return void
-     */
-    public function testCallbackLinkSocialMissingCode()
-    {
-        Configure::write('OAuth.providers.facebook.options.clientId', 'testclientidtestclientid');
-        Configure::write('OAuth.providers.facebook.options.clientSecret', 'testclientsecrettestclientsecret');
-
-        $Table = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
 
         $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\Traits\LinkSocialTrait')
             ->setMethods(['dispatchEvent', 'redirect', 'set', 'getUsersTable', 'log'])
