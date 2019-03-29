@@ -79,7 +79,9 @@ class UsersMailer extends Mailer
         $this
             ->setTo($user['email'])
             ->setSubject($subject)
-            ->setViewVars(compact('user', 'socialAccount'))
-            ->viewBuilder()->setTemplate('CakeDC/Users.socialAccountValidation');
+            ->setViewVars(compact('user', 'socialAccount'));
+        $this
+            ->viewBuilder()
+            ->setTemplate('CakeDC/Users.socialAccountValidation');
     }
 }
