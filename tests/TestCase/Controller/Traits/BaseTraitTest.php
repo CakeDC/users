@@ -198,61 +198,21 @@ abstract class BaseTraitTest extends TestCase
      *
      * @param array $user
      * @param array $failures
+     * @param \Authentication\Identifier\IdentifierCollection $identifiers custom identifiers collection
      * @return void
      */
-    protected function _mockAuthentication($user = null, $failures = [])
+    protected function _mockAuthentication($user = null, $failures = [], $identifiers = null)
     {
-        $config = [
-            'identifiers' => [
-                'Authentication.Password'
-            ],
-            'authenticators' => [
-                'Authentication.Session',
-                'Authentication.Form'
-            ]
-        ];
-        $authentication = $this->getMockBuilder(AuthenticationService::class)->setConstructorArgs([$config])->setMethods([
-            'getResult',
-            'getFailures'
-        ])->getMock();
-
-        if ($user) {
-            $user = new User($user);
-            $identity = new Identity($user);
-            $result = new Result($user, Result::SUCCESS);
-            $this->Trait->request = $this->Trait->request->withAttribute('identity', $identity);
-        } else {
-            $result = new Result($user, Result::FAILURE_CREDENTIALS_MISSING);
+        if ($identifiers === null) {
+            $passwordIdentifier = $this->getMockBuilder(PasswordIdentifier::class)
+                ->setMethods(['needsPasswordRehash'])
+                ->getMock();
+            $passwordIdentifier->expects($this->any())
+                ->method('needsPasswordRehash')
+                ->willReturn(false);
+            $identifiers = new IdentifierCollection([]);
+            $identifiers->set('Password', $passwordIdentifier);
         }
-
-        $authentication->expects($this->any())
-            ->method('getResult')
-            ->will($this->returnValue($result));
-
-        $authentication->expects($this->any())
-            ->method('getFailures')
-            ->will($this->returnValue($failures));
-
-        $this->Trait->request = $this->Trait->request->withAttribute('authentication', $authentication);
-
-        $controller = new Controller($this->Trait->request);
-        $registry = new ComponentRegistry($controller);
-        $this->Trait->Authentication = new AuthenticationComponent($registry, [
-            'loginRedirect' => $this->successLoginRedirect,
-            'logoutRedirect' => $this->logoutRedirect,
-            'loginAction' => $this->loginAction
-        ]);
-    }
-
-    /**
-     * Mock the Authentication service with a Password Rehash being required.
-     *
-     * @param array $user
-     * @param array $failures
-     * @return void
-     */
-    protected function _mockAuthenticationWithPasswordRehash($user = null, $failures = [])
-    {
         $config = [
             'identifiers' => [
                 'Authentication.Password'
@@ -267,18 +227,11 @@ abstract class BaseTraitTest extends TestCase
             'getFailures',
             'identifiers'
         ])->getMock();
-
-        $identifiers = new IdentifierCollection();
-        $passwordIdentifier = $this->getMockBuilder(PasswordIdentifier::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['needsPasswordRehash'])->getMock();
-        $passwordIdentifier->expects($this->any())
-            ->method('needsPasswordRehash')
-            ->will($this->returnValue(true));
-        $identifiers->set('Password', $passwordIdentifier);
-
+        $authentication->expects($this->any())
+            ->method('identifiers')
+            ->willReturn($identifiers);
         if ($user) {
-            $user = new User($user);
+            $user = is_object($user) ? $user : new User($user);
             $identity = new Identity($user);
             $result = new Result($user, Result::SUCCESS);
             $this->Trait->request = $this->Trait->request->withAttribute('identity', $identity);
@@ -293,10 +246,6 @@ abstract class BaseTraitTest extends TestCase
         $authentication->expects($this->any())
             ->method('getFailures')
             ->will($this->returnValue($failures));
-
-        $authentication->expects($this->any())
-            ->method('identifiers')
-            ->will($this->returnValue($identifiers));
 
         $this->Trait->request = $this->Trait->request->withAttribute('authentication', $authentication);
 
