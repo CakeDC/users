@@ -22,7 +22,7 @@ use Authorization\Policy\MapResolver;
 use Authorization\Policy\OrmResolver;
 use Authorization\Policy\ResolverCollection;
 use CakeDC\Auth\Authentication\AuthenticationService;
-use CakeDC\Auth\Middleware\OneTimePasswordAuthenticatorMiddleware;
+use CakeDC\Auth\Middleware\TwoFactorMiddleware;
 use CakeDC\Auth\Middleware\RbacMiddleware;
 use CakeDC\Auth\Policy\RbacPolicy;
 use CakeDC\Users\Middleware\SocialAuthMiddleware;

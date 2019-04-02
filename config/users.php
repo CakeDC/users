@@ -100,7 +100,7 @@ $config = [
         ],
     ],
     'OneTimePasswordAuthenticator' => [
-        'checker' => \CakeDC\Auth\Authentication\DefaultTwoFactorAuthenticationChecker::class,
+        'checker' => \CakeDC\Auth\Authentication\DefaultOneTimePasswordAuthenticationChecker::class,
         'verifyAction' => [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
@@ -122,7 +122,7 @@ $config = [
     ],
     'U2f' => [
         'enabled' => false,
-        'checker' => \CakeDC\Users\Auth\DefaultU2fAuthenticationChecker::class,
+        'checker' => \CakeDC\Auth\Authentication\DefaultU2fAuthenticationChecker::class,
         'startAction' => [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',

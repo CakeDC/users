@@ -10,6 +10,7 @@
  */
 namespace CakeDC\Users\Controller\Traits;
 
+use CakeDC\Auth\Authentication\U2fAuthenticationCheckerFactory;
 use u2flib_server\U2F;
 
 /**
@@ -210,5 +211,15 @@ trait U2fTrait
         $data['registration'] = $data['user']->u2f_registration;
 
         return $data;
+    }
+
+    /**
+     * Get the configured u2f authentication checker
+     *
+     * @return \CakeDC\Auth\Authentication\U2fAuthenticationCheckerInterface
+     */
+    protected function getU2fAuthenticationChecker()
+    {
+        return (new U2fAuthenticationCheckerFactory())->build();
     }
 }

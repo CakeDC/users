@@ -43,7 +43,8 @@
         "google/recaptcha": "@stable",
         "robthree/twofactorauth": "^1.6",
         "php-coveralls/php-coveralls": "^2.1",
-        "league/oauth1-client": "^1.7"
+        "league/oauth1-client": "^1.7",
+        "yubico/u2flib-server": "^1.0"
     },
     "suggest": {
         "league/oauth1-client": "Provides Social Authentication with Twitter",

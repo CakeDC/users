@@ -11,7 +11,7 @@
 
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
-use CakeDC\Users\Auth\DefaultU2fAuthenticationChecker;
+use CakeDC\Auth\Authentication\DefaultU2fAuthenticationChecker;
 use Cake\Core\Configure;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
