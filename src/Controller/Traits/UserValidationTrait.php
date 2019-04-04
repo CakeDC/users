@@ -80,7 +80,7 @@ trait UserValidationTrait
         } catch (TokenExpiredException $ex) {
             $event = $this->dispatchEvent(Plugin::EVENT_ON_EXPIRED_TOKEN, ['type' => $type]);
             if (!empty($event) && is_array($event->result)) {
-                return $this->redirect($event->result);
+                return $event->result;
             }
             $this->Flash->error(__d('cake_d_c/users', 'Token already expired'));
         }
