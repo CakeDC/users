@@ -13,7 +13,7 @@ namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
 use Cake\Event\Event;
 
-class UserValidationTraitTest extends BaseTraitTest
+class testValidateTokenExpiredWithOnExpiredEventUserValidationTraitTest extends BaseTraitTest
 {
     /**
      * setup
