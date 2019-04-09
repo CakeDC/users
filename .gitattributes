@@ -1,0 +1,4 @@
+# Remove files for archives generated using `git archive`
+.travis.yml export-ignore
+.gitattributes export-ignore
+phpunit.xml.dist export-ignore
