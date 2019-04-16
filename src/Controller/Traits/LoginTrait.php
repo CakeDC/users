@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Controller\Traits;
 
+use Cake\Http\Response;
 use CakeDC\Users\Auth\TwoFactorAuthenticationCheckerFactory;
 use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Exception\AccountNotActiveException;
@@ -189,7 +190,7 @@ trait LoginTrait
         }
 
         if (!$this->request->is('post') && !$socialLogin) {
-            if ($this->Auth->user()) {
+            if ($user = $this->Auth->user()) {
                 if (!$this->request->getSession()->read('Users.successSocialLogin')) {
                     $msg = __d('CakeDC/Users', 'You are already logged in');
                     $this->Flash->error($msg);
@@ -198,6 +199,12 @@ trait LoginTrait
                     $this->request->getSession()->delete('Flash');
                 }
                 $url = $this->Auth->redirectUrl();
+
+                if ($this->getRequest()->is('ajax')) {
+                    $this->set('user', $user);
+                    $this->set('_serialize', ['user']);
+                    return;
+                }
 
                 return $this->redirect($url);
             }
@@ -355,11 +362,22 @@ trait LoginTrait
 
             $url = $this->Auth->redirectUrl();
 
+            if ($this->getRequest()->is('ajax')) {
+                $this->set('user', $user);
+                $this->set('_serialize', ['user']);
+                return;
+            }
+
             return $this->redirect($url);
         } else {
             if (!$socialLogin) {
                 $message = __d('CakeDC/Users', 'Username or password is incorrect');
                 $this->Flash->error($message, 'default', [], 'auth');
+                if ($this->getRequest()->is('ajax')) {
+                    $this->set('error', $message);
+                    $this->set('_serialize', ['error']);
+                    return;
+                }
             }
 
             return $this->redirect(Configure::read('Auth.loginAction'));
@@ -388,7 +406,8 @@ trait LoginTrait
             return $this->redirect($eventAfter->result);
         }
 
-        return $this->redirect($this->Auth->logout());
+        $redirectUrl = $this->getRequest()->getQuery('redirect_url');
+        return $this->redirect( $redirectUrl ?: $this->Auth->logout());
     }
 
     /**
