@@ -10,7 +10,10 @@
  */
 namespace CakeDC\Users\Controller\Traits;
 
+use Cake\Core\Configure;
+use CakeDC\Auth\Authentication\AuthenticationService;
 use CakeDC\Auth\Authentication\U2fAuthenticationCheckerFactory;
+use CakeDC\Auth\Authenticator\TwoFactorAuthenticator;
 use u2flib_server\U2F;
 
 /**
@@ -165,9 +168,10 @@ trait U2fTrait
             $data['user']->additional_data = $additionalData;
             $this->getUsersTable()->saveOrFail($data['user'], ['checkRules' => false]);
             $this->request->getSession()->delete('U2f');
-            $this->Auth->setUser($data['user']->toArray());
+            $this->request->getSession()->delete(AuthenticationService::U2F_SESSION_KEY);
+            $this->request->getSession()->write(TwoFactorAuthenticator::USER_SESSION_KEY, $data['user']);
 
-            return $this->redirect($this->Auth->redirectUrl());
+            return $this->redirectWithQuery(Configure::read('Auth.AuthenticationComponent.loginAction'));
         } catch (\Exception $e) {
             $this->request->getSession()->delete('U2f.authenticateRequest');
 
@@ -202,13 +206,14 @@ trait U2fTrait
             'user' => null,
             'registration' => null
         ];
-        $user = $this->request->getSession()->read('U2f.User');
+        $user = $this->request->getSession()->read(AuthenticationService::U2F_SESSION_KEY);
         if (!isset($user['id'])) {
             return $data;
         }
-        $data['user'] = $this->getUsersTable()->get($user['id']);
+        $entity = $this->getUsersTable()->get($user['id']);
+        $data['user'] = $user;
         $data['valid'] = $this->getU2fAuthenticationChecker()->isEnabled();
-        $data['registration'] = $data['user']->u2f_registration;
+        $data['registration'] = $entity->u2f_registration;
 
         return $data;
     }
