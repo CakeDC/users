@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Controller\Traits;
 
+use Cake\Error\Debugger;
 use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
@@ -34,6 +35,10 @@ trait RegisterTrait
      */
     public function register()
     {
+        if ($this->request->is('ajax')) {
+            $this->viewBuilder()->setLayout('ajax');
+        }
+
         if (!Configure::read('Users.Registration.active')) {
             throw new NotFoundException();
         }
@@ -61,14 +66,21 @@ trait RegisterTrait
             'options' => $options,
             'userEntity' => $user,
         ]);
+        $this->set(compact('user'));
+        $this->set('_serialize', ['user']);
 
         if ($event->result instanceof EntityInterface) {
             $data = $event->result->toArray();
             $data['password'] = $requestData['password']; //since password is a hidden property
+          //  debug($data); die;
             if ($userSaved = $usersTable->register($user, $data, $options)) {
+                $this->set(compact('user'));
+                $this->set('_serialize', ['user']);
+
                 return $this->_afterRegister($userSaved);
             } else {
-                $this->set(compact('user'));
+                $this->set('error', $user->getErrors());
+                $this->set('_serialize', ['error']);
                 $this->Flash->error(__d('CakeDC/Users', 'The user could not be saved'));
 
                 return;
@@ -93,6 +105,8 @@ trait RegisterTrait
 
         $userSaved = $usersTable->register($user, $requestData, $options);
         if (!$userSaved) {
+            $this->set('error', $user->getErrors());
+            $this->set('_serialize', ['error']);
             $this->Flash->error(__d('CakeDC/Users', 'The user could not be saved'));
 
             return;
@@ -134,12 +148,16 @@ trait RegisterTrait
         $event = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_REGISTER, [
             'user' => $userSaved
         ]);
+      //  Debugger::log($event->result);
         if ($event->result instanceof Response) {
+            Debugger::log('event after register');
             return $event->result;
         }
-        $this->Flash->success($message);
 
-        return $this->redirect(['action' => 'login']);
+        if (!$this->getRequest()->is('ajax')) {
+            $this->Flash->success($message);
+            return $this->redirect(['action' => 'login']);
+        }
     }
 
     /**
