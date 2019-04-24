@@ -11,7 +11,6 @@
 
 namespace CakeDC\Users\Controller\Traits;
 
-use Cake\Http\Response;
 use CakeDC\Users\Auth\TwoFactorAuthenticationCheckerFactory;
 use CakeDC\Users\Auth\U2fAuthenticationCheckerFactory;
 use CakeDC\Users\Controller\Component\UsersAuthComponent;
@@ -23,8 +22,8 @@ use Cake\Core\Configure;
 use Cake\Core\Exception\Exception;
 use Cake\Event\Event;
 use Cake\Http\Exception\NotFoundException;
+use Cake\Http\Response;
 use Cake\Utility\Hash;
-use League\OAuth1\Client\Server\Twitter;
 
 /**
  * Covers the login, logout and social login

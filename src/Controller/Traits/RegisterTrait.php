@@ -11,7 +11,6 @@
 
 namespace CakeDC\Users\Controller\Traits;
 
-use Cake\Error\Debugger;
 use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
