@@ -12,6 +12,7 @@
 namespace CakeDC\Users\Auth\Social\Mapper;
 
 use Cake\Utility\Hash;
+use Cake\Utility\Inflector;
 
 /**
  * AbstractMapper
@@ -96,7 +97,7 @@ abstract class AbstractMapper
         $result = [];
         collection($this->_mapFields)->each(function ($mappedField, $field) use (&$result) {
             $value = Hash::get($this->_rawData, $mappedField);
-            $function = '_' . $field;
+            $function = '_' . Inflector::camelize($field);
             if (method_exists($this, $function)) {
                 $value = $this->{$function}();
             }

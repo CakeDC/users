@@ -13,6 +13,7 @@ namespace CakeDC\Users\Controller\Traits;
 
 use Cake\Http\Response;
 use CakeDC\Users\Auth\TwoFactorAuthenticationCheckerFactory;
+use CakeDC\Users\Auth\U2fAuthenticationCheckerFactory;
 use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
@@ -182,10 +183,17 @@ trait LoginTrait
             }
             $user = $this->Auth->identify();
 
+            if ($this->Auth->authenticationProvider() !== null && $this->Auth->authenticationProvider()->needsPasswordRehash()) {
+                $entity = $this->getUsersTable()->get($user['id']);
+                $entity->set('password', $this->request->getData('password'));
+                $this->getUsersTable()->save($entity);
+            }
+
             return $this->_afterIdentifyUser(
                 $user,
                 $socialLogin,
-                $user && $this->getTwoFactorAuthenticationChecker()->isRequired($user)
+                $user && $this->getTwoFactorAuthenticationChecker()->isRequired($user),
+                $user && $this->getU2fAuthenticationChecker()->isRequired($user)
             );
         }
 
@@ -337,11 +345,23 @@ trait LoginTrait
      * @param array $user user data after identified
      * @param bool $socialLogin is social login
      * @param bool $googleAuthenticatorLogin googleAuthenticatorLogin
+     * @param bool $u2fLogin should perform u2f authentication
      * @return array
      */
-    protected function _afterIdentifyUser($user, $socialLogin = false, $googleAuthenticatorLogin = false)
+    protected function _afterIdentifyUser($user, $socialLogin = false, $googleAuthenticatorLogin = false, $u2fLogin = false)
     {
         if (!empty($user)) {
+            if ($u2fLogin) {
+                // storing user's session in the temporary one
+                $this->request->getSession()->write('U2f.User', $user);
+                $url = Configure::read('U2f.startAction');
+                $url = array_merge($url, [
+                    '?' => $this->request->getQueryParams()
+                ]);
+
+                return $this->redirect($url);
+            }
+
             if ($googleAuthenticatorLogin) {
                 // storing user's session in the temporary one
                 // until the GA verification is checked
@@ -432,5 +452,15 @@ trait LoginTrait
     protected function getTwoFactorAuthenticationChecker()
     {
         return (new TwoFactorAuthenticationCheckerFactory())->build();
+    }
+
+    /**
+     * Get the configured two factory authentication
+     *
+     * @return \CakeDC\Users\Auth\U2fAuthenticationCheckerInterface
+     */
+    protected function getU2fAuthenticationChecker()
+    {
+        return (new U2fAuthenticationCheckerFactory())->build();
     }
 }

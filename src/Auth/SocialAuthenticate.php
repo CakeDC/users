@@ -112,6 +112,7 @@ class SocialAuthenticate extends BaseAuthenticate
 
         $defaults = [
                 'className' => null,
+                'authParams' => [],
                 'options' => [],
                 'collaborators' => [],
                 'mapFields' => [],
@@ -282,7 +283,9 @@ class SocialAuthenticate extends BaseAuthenticate
             $request->getSession()->write('oauth2state', $provider->getState());
         }
 
-        $response = $response->withLocation($provider->getAuthorizationUrl());
+        $authParams = $this->getConfig(sprintf('providers.%s.authParams', $request->getParam('provider')), []);
+
+        $response = $response->withLocation($provider->getAuthorizationUrl($authParams));
 
         return $response;
     }
@@ -365,11 +368,7 @@ class SocialAuthenticate extends BaseAuthenticate
             $this->_getController()->dispatchEvent(UsersAuthComponent::EVENT_AFTER_REGISTER, compact('user'));
         }
 
-        if (!empty($user->username)) {
-            $user = $this->_findUser($user->username);
-        }
-
-        return $user;
+        return $this->_findUser($user->get(Configure::read('Auth.authenticate.Form.fields.username', 'username')));
     }
 
     /**

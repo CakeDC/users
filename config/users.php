@@ -126,6 +126,16 @@ $config = [
             'prefix' => false,
         ],
     ],
+    'U2f' => [
+        'enabled' => false,
+        'checker' => \CakeDC\Users\Auth\DefaultU2fAuthenticationChecker::class,
+        'startAction' => [
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+            'action' => 'u2f',
+            'prefix' => false,
+        ]
+    ],
     // default configuration used to auto-load the Auth Component, override to change the way Auth works
     'Auth' => [
         'loginAction' => [
@@ -152,6 +162,7 @@ $config = [
         'providers' => [
             'facebook' => [
                 'className' => 'League\OAuth2\Client\Provider\Facebook',
+                'authParams' => ['scope' => ['public_profile', 'email', 'user_birthday', 'user_gender', 'user_link']],
                 'options' => [
                     'graphApiVersion' => 'v2.8', //bio field was deprecated on >= v2.8
                     'redirectUri' => Router::fullBaseUrl() . '/auth/facebook',
