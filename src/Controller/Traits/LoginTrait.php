@@ -153,7 +153,7 @@ trait LoginTrait
             throw new NotFoundException();
         }
         $user = $this->Auth->user();
-
+        
         return $this->_afterIdentifyUser($user, true);
     }
 
@@ -355,6 +355,8 @@ trait LoginTrait
             }
 
             $this->Auth->setUser($user);
+            debug($user);
+            die();
             $event = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_LOGIN, ['user' => $user]);
             if (is_array($event->result)) {
                 return $this->redirect($event->result);

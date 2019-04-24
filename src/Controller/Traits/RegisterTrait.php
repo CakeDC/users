@@ -72,7 +72,6 @@ trait RegisterTrait
         if ($event->result instanceof EntityInterface) {
             $data = $event->result->toArray();
             $data['password'] = $requestData['password']; //since password is a hidden property
-          //  debug($data); die;
             if ($userSaved = $usersTable->register($user, $data, $options)) {
                 $this->set(compact('user'));
                 $this->set('_serialize', ['user']);
@@ -148,13 +147,15 @@ trait RegisterTrait
         $event = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_REGISTER, [
             'user' => $userSaved
         ]);
-      //  Debugger::log($event->result);
+
         if ($event->result instanceof Response) {
-            Debugger::log('event after register');
             return $event->result;
         }
 
         if (!$this->getRequest()->is('ajax')) {
+            if (Configure::check('Users.Registration.successMessage')) {
+                $message = Configure::read('Users.Registration.successMessage');
+            }
             $this->Flash->success($message);
             return $this->redirect(['action' => 'login']);
         }
