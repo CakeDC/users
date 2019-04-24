@@ -157,6 +157,7 @@ trait RegisterTrait
                 $message = Configure::read('Users.Registration.successMessage');
             }
             $this->Flash->success($message);
+
             return $this->redirect(['action' => 'login']);
         }
     }

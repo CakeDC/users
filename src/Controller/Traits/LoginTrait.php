@@ -154,7 +154,7 @@ trait LoginTrait
             throw new NotFoundException();
         }
         $user = $this->Auth->user();
-        
+
         return $this->_afterIdentifyUser($user, true);
     }
 
@@ -211,6 +211,7 @@ trait LoginTrait
                 if ($this->getRequest()->is('ajax')) {
                     $this->set('user', $user);
                     $this->set('_serialize', ['user']);
+
                     return;
                 }
 
@@ -387,6 +388,7 @@ trait LoginTrait
             if ($this->getRequest()->is('ajax')) {
                 $this->set('user', $user);
                 $this->set('_serialize', ['user']);
+
                 return;
             }
 
@@ -398,6 +400,7 @@ trait LoginTrait
                 if ($this->getRequest()->is('ajax')) {
                     $this->set('error', $message);
                     $this->set('_serialize', ['error']);
+
                     return;
                 }
             }
@@ -429,7 +432,8 @@ trait LoginTrait
         }
 
         $redirectUrl = $this->getRequest()->getQuery('redirect_url');
-        return $this->redirect( $redirectUrl ?: $this->Auth->logout());
+
+        return $this->redirect($redirectUrl ?: $this->Auth->logout());
     }
 
     /**
