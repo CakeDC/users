@@ -313,15 +313,10 @@ class U2fTraitTest extends BaseTraitTest
         $actual = $this->Trait->u2fRegisterFinish();
         $this->assertSame($response, $actual);
         $actual = $this->Trait->request->getSession()->read('U2f');
-        $this->assertEquals(
-            [
-                'User' => new User([
-                    'id' => '00000000-0000-0000-0000-000000000002',
-                    'username' => 'user-2',
-                ]),
-            ],
-            $actual
-        );
+        $this->assertEquals('00000000-0000-0000-0000-000000000002', $actual['User']['id']);
+        $this->assertEquals('user-2', $actual['User']['username']);
+        $this->assertNotEmpty($actual['User']['additional_data']);
+        $this->assertNotEmpty($actual['User']['additional_data']['u2f_registration']);
 
         $saveUser = TableRegistry::getTableLocator()
             ->get('CakeDC/Users.Users')
