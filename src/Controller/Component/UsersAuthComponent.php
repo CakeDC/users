@@ -161,6 +161,7 @@ class UsersAuthComponent extends Component
     public function isUrlAuthorized(Event $event)
     {
         $url = Hash::get((array)$event->getData(), 'url');
+        
         if (empty($url)) {
             return false;
         }

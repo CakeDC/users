@@ -43,6 +43,7 @@ trait RegisterTrait
         }
 
         $userId = $this->Auth->user('id');
+
         if (!empty($userId) && !Configure::read('Users.Registration.allowLoggedIn')) {
             $this->Flash->error(__d('CakeDC/Users', 'You must log out to register a new user account'));
 
