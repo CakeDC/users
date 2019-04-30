@@ -12,11 +12,11 @@
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
 use CakeDC\Auth\Authentication\DefaultU2fAuthenticationChecker;
+use CakeDC\Users\Model\Entity\User;
 use Cake\Core\Configure;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 use Cake\ORM\TableRegistry;
-use CakeDC\Users\Model\Entity\User;
 use u2flib_server\RegisterRequest;
 use u2flib_server\Registration;
 use u2flib_server\U2F;

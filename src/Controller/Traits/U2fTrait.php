@@ -10,10 +10,10 @@
  */
 namespace CakeDC\Users\Controller\Traits;
 
-use Cake\Core\Configure;
 use CakeDC\Auth\Authentication\AuthenticationService;
 use CakeDC\Auth\Authentication\U2fAuthenticationCheckerFactory;
 use CakeDC\Auth\Authenticator\TwoFactorAuthenticator;
+use Cake\Core\Configure;
 use u2flib_server\U2F;
 
 /**

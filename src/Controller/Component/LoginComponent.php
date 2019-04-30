@@ -12,10 +12,10 @@
 namespace CakeDC\Users\Controller\Component;
 
 use Authentication\Authenticator\ResultInterface;
-use Cake\Core\Configure;
 use CakeDC\Auth\Authentication\AuthenticationService;
 use CakeDC\Users\Plugin;
 use Cake\Controller\Component;
+use Cake\Core\Configure;
 
 /**
  * LoginFailure component
