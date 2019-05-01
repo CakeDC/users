@@ -111,9 +111,9 @@ class PasswordManagementTraitTest extends BaseTraitTest
                 'password_confirm' => 'new',
             ]));
         $event = new Event('event');
-        $event->result = [
+        $event->setResult([
             'action' => 'newAction',
-        ];
+        ]);
         $this->Trait->expects($this->once())
             ->method('dispatchEvent')
             ->will($this->returnValue($event));

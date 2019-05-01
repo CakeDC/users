@@ -13,7 +13,6 @@ namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
 use CakeDC\Users\Test\TestCase\Controller\Traits\BaseTraitTest;
 use Cake\Event\Event;
-use Cake\Network\Request;
 
 class UserValidationTraitTest extends BaseTraitTest
 {
@@ -93,9 +92,9 @@ class UserValidationTraitTest extends BaseTraitTest
     public function testValidateTokenExpiredWithOnExpiredEvent()
     {
         $event = new Event('event');
-        $event->result = [
+        $event->setResult([
             'action' => 'newAction',
-        ];
+        ]);
         $this->Trait->expects($this->once())
             ->method('dispatchEvent')
             ->will($this->returnValue($event));
@@ -182,9 +181,9 @@ class UserValidationTraitTest extends BaseTraitTest
             ->will($this->returnValue('user-3'));
 
         $event = new Event('event');
-        $event->result = [
+        $event->seResult([
             'action' => 'newAction',
-        ];
+        ]);
         $this->Trait->expects($this->once())
             ->method('dispatchEvent')
             ->will($this->returnValue($event));

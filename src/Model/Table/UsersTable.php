@@ -43,7 +43,7 @@ class UsersTable extends Table
      * @param \Cake\Database\Schema\TableSchema $schema The table definition fetched from database.
      * @return \Cake\Database\Schema\TableSchema the altered schema
      */
-    protected function _initializeSchema(TableSchema $schema)
+    protected function _initializeSchema(TableSchema $schema): TableSchema
     {
         $schema->setColumnType('additional_data', 'json');
 
@@ -56,7 +56,7 @@ class UsersTable extends Table
      * @param array $config The configuration for the Table.
      * @return void
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         parent::initialize($config);
 
@@ -119,27 +119,27 @@ class UsersTable extends Table
      * @param Validator $validator Validator instance.
      * @return Validator
      */
-    public function validationDefault(Validator $validator)
+    public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->allowEmpty('id', 'create');
+            ->allowEmptyString('id', 'create');
 
         $validator
             ->requirePresence('username', 'create')
-            ->notEmpty('username');
+            ->notEmptyString('username');
 
         $validator
             ->requirePresence('password', 'create')
-            ->notEmpty('password');
+            ->notEmptyString('password');
 
         $validator
-            ->allowEmpty('first_name');
+            ->allowEmptyString('first_name');
 
         $validator
-            ->allowEmpty('last_name');
+            ->allowEmptyString('last_name');
 
         $validator
-            ->allowEmpty('token');
+            ->allowEmptyString('token');
 
         $validator
             ->add('token_expires', 'valid', ['rule' => 'datetime'])
@@ -180,7 +180,7 @@ class UsersTable extends Table
      * @param RulesChecker $rules The rules object to be modified.
      * @return RulesChecker
      */
-    public function buildRules(RulesChecker $rules)
+    public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->isUnique(['username']), '_isUnique', [
             'errorField' => 'username',

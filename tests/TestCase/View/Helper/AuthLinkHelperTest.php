@@ -63,7 +63,7 @@ class AuthLinkHelperTest extends TestCase
     public function testLinkFalse()
     {
         $link = $this->AuthLink->link('title', ['controller' => 'noaccess']);
-        $this->assertSame(false, $link);
+        $this->assertEmpty($link);
     }
 
     /**
@@ -80,7 +80,7 @@ class AuthLinkHelperTest extends TestCase
         EventManager::instance($eventManagerMock);
         $this->AuthLink = new AuthLinkHelper($view);
         $result = new Event('dispatch-result');
-        $result->result = true;
+        $result->setResult(true);
         $eventManagerMock->expects($this->once())
             ->method('dispatch')
             ->will($this->returnValue($result));
@@ -103,7 +103,7 @@ class AuthLinkHelperTest extends TestCase
         EventManager::instance($eventManagerMock);
         $this->AuthLink = new AuthLinkHelper($view);
         $result = new Event('dispatch-result');
-        $result->result = true;
+        $result->setResult(true);
         $eventManagerMock->expects($this->never())
             ->method('dispatch');
 
@@ -128,7 +128,7 @@ class AuthLinkHelperTest extends TestCase
         $eventManagerMock->expects($this->never())
             ->method('dispatch');
         $link = $this->AuthLink->link('title', '/', ['allowed' => false, 'before' => 'before_', 'after' => '_after', 'class' => 'link-class']);
-        $this->assertFalse($link);
+        $this->assertEmpty($link);
     }
 
     /**
@@ -145,7 +145,7 @@ class AuthLinkHelperTest extends TestCase
         EventManager::instance($eventManagerMock);
         $this->AuthLink = new AuthLinkHelper($view);
         $result = new Event('dispatch-result');
-        $result->result = true;
+        $result->setResult(true);
         $eventManagerMock->expects($this->once())
             ->method('dispatch')
             ->will($this->returnValue($result));

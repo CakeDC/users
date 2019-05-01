@@ -19,7 +19,7 @@ class SetupComponent extends Component
      * @param array $config component configuration
      * @throws \Exception
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         parent::initialize($config);
         $this->getController()->loadComponent('CakeDC/Users.UsersAuth');

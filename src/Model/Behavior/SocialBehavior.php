@@ -45,7 +45,7 @@ class SocialBehavior extends BaseTokenBehavior
      * @param array $config Configuration options passed to the constructor
      * @return void
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         if (isset($config['username'])) {
             $this->_username = $config['username'];
@@ -131,8 +131,9 @@ class SocialBehavior extends BaseTokenBehavior
         $event = $this->dispatchEvent(UsersAuthComponent::EVENT_BEFORE_SOCIAL_LOGIN_USER_CREATE, [
             'userEntity' => $user,
         ]);
-        if ($event->result instanceof EntityInterface) {
-            $user = $event->result;
+        $result = $event->getResult();
+        if ($result instanceof EntityInterface) {
+            $user = $result;
         }
 
         $this->_table->isValidateEmail = $validateEmail;

@@ -36,7 +36,7 @@ trait PasswordManagementTrait
      */
     public function changePassword()
     {
-        $user = $this->getUsersTable()->newEntity();
+        $user = $this->getUsersTable()->newEntity([]);
         $id = $this->Auth->user('id');
         if (!empty($id)) {
             $user->id = $this->Auth->user('id');
@@ -73,8 +73,8 @@ trait PasswordManagementTrait
                     $result = $this->getUsersTable()->changePassword($user);
                     if ($result) {
                         $event = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_CHANGE_PASSWORD, ['user' => $result]);
-                        if (!empty($event) && is_array($event->result)) {
-                            return $this->redirect($event->result);
+                        if (!empty($event) && is_array($event->getResult())) {
+                            return $this->redirect($event->getResult());
                         }
                         $this->Flash->success(__d('CakeDC/Users', 'Password has been changed successfully'));
 
@@ -114,7 +114,7 @@ trait PasswordManagementTrait
      */
     public function requestResetPassword()
     {
-        $this->set('user', $this->getUsersTable()->newEntity());
+        $this->set('user', $this->getUsersTable()->newEntity([]));
         $this->set('_serialize', ['user']);
         if (!$this->request->is('post')) {
             return;

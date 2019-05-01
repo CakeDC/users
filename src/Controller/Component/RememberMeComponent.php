@@ -46,7 +46,7 @@ class RememberMeComponent extends Component
      * @param array $config The config data.
      * @return void
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         parent::initialize($config);
         $this->_cookieName = Configure::read('Users.RememberMe.Cookie.name');
@@ -149,8 +149,8 @@ class RememberMeComponent extends Component
         }
         $this->Auth->setUser($user);
         $event = $this->getController()->dispatchEvent(UsersAuthComponent::EVENT_AFTER_COOKIE_LOGIN);
-        if (is_array($event->result)) {
-            return $this->getController()->redirect($event->result);
+        if (is_array($event->getResult())) {
+            return $this->getController()->redirect($event->getResult());
         }
         $url = $this->getController()->getRequest()->getRequestTarget();
 

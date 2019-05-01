@@ -72,7 +72,7 @@ class LinkSocialBehavior extends Behavior
     protected function createOrUpdateSocialAccount(EntityInterface $user, $data, $socialAccount)
     {
         if (!$socialAccount) {
-            $socialAccount = $this->_table->SocialAccounts->newEntity();
+            $socialAccount = $this->_table->SocialAccounts->newEntity([]);
         }
 
         $data['user_id'] = $user->id;

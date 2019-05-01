@@ -46,7 +46,7 @@ class UsersController extends AppController
      *
      * @return void
      */
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
         if ($this->components()->has('Security')) {

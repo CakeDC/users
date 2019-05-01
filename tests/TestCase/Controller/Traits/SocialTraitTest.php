@@ -57,7 +57,7 @@ class SocialTraitTest extends TestCase
             ->method('delete')
             ->with('Flash.auth');
 
-        $this->controller->Trait->request = $this->getMockBuilder('Cake\Network\Request')
+        $this->controller->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
                 ->setMethods(['getSession'])
                 ->getMock();
         $this->controller->Trait->request->expects($this->any())
@@ -82,7 +82,7 @@ class SocialTraitTest extends TestCase
             ->with('Users.social')
             ->will($this->returnValue(null));
 
-        $this->controller->Trait->request = $this->getMockBuilder('Cake\Network\Request')
+        $this->controller->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
                 ->setMethods(['getSession'])
                 ->getMock();
         $this->controller->Trait->request->expects($this->once())
@@ -106,7 +106,7 @@ class SocialTraitTest extends TestCase
             ->method('delete')
             ->with('Flash.auth');
 
-        $this->controller->Trait->request = $this->getMockBuilder('Cake\Network\Request')
+        $this->controller->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
                 ->setMethods(['getSession', 'is'])
                 ->getMock();
         $this->controller->Trait->request->expects($this->any())
@@ -148,7 +148,7 @@ class SocialTraitTest extends TestCase
             ->method('delete')
             ->with('Flash.auth');
 
-        $this->controller->Trait->request = $this->getMockBuilder('Cake\Network\Request')
+        $this->controller->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
                 ->setMethods(['getSession', 'is'])
                 ->getMock();
         $this->controller->Trait->request->expects($this->any())

@@ -34,7 +34,7 @@ class RegisterBehavior extends BaseTokenBehavior
      * @param array $config The configuration settings provided to this behavior.
      * @return void
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         parent::initialize($config);
         $this->validateEmail = (bool)Configure::read('Users.Email.validate');

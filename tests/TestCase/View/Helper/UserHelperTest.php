@@ -19,7 +19,6 @@ use Cake\Core\Plugin;
 use Cake\Event\Event;
 use Cake\Http\ServerRequest;
 use Cake\I18n\I18n;
-use Cake\Network\Request;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use Cake\View\Helper\HtmlHelper;
@@ -143,7 +142,7 @@ class UserHelperTest extends TestCase
             ->with('Auth.User.first_name')
             ->will($this->returnValue('david'));
 
-        $request = $this->getMockBuilder('Cake\Network\Request')
+        $request = $this->getMockBuilder('Cake\Http\ServerRequest')
                 ->setMethods(['getSession'])
                 ->getMock();
         $this->User->getView()->setRequest($request);
@@ -171,7 +170,7 @@ class UserHelperTest extends TestCase
             ->with('Auth.User.id')
             ->will($this->returnValue(null));
 
-        $request = $this->getMockBuilder('Cake\Network\Request')
+        $request = $this->getMockBuilder('Cake\Http\ServerRequest')
                 ->setMethods(['getSession'])
                 ->getMock();
         $this->User->getView()->setRequest($request);

@@ -21,7 +21,6 @@ use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
-use Cake\Network\Request;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use ReflectionClass;
@@ -252,7 +251,7 @@ class SocialAuthenticateTest extends TestCase
             ->method('delete')
             ->with('Users.social');
 
-        $this->Request = $this->getMockBuilder('Cake\Network\Request')
+        $this->Request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->setMethods(['getSession'])
             ->getMock();
         $this->Request->expects($this->any())

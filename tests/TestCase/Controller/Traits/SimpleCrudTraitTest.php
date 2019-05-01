@@ -12,7 +12,6 @@
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
 use CakeDC\Users\Test\TestCase\Controller\Traits\BaseTraitTest;
-use Cake\Network\Request;
 
 class SimpleCrudTraitTest extends BaseTraitTest
 {
@@ -125,7 +124,7 @@ class SimpleCrudTraitTest extends BaseTraitTest
         $this->_mockRequestGet();
         $this->Trait->add();
         $expected = [
-            'Users' => $this->table->newEntity(),
+            'Users' => $this->table->newEntity([]),
             'tableAlias' => 'Users',
             '_serialize' => [
                 'Users',

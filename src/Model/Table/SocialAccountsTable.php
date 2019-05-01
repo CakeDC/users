@@ -37,7 +37,7 @@ class SocialAccountsTable extends Table
      * @param array $config The configuration for the Table.
      * @return void
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         parent::initialize($config);
 
@@ -54,39 +54,39 @@ class SocialAccountsTable extends Table
      * @param Validator $validator Validator instance.
      * @return Validator
      */
-    public function validationDefault(Validator $validator)
+    public function validationDefault(Validator $validator): Validator
     {
         $validator
             ->add('id', 'valid', ['rule' => 'uuid'])
-            ->allowEmpty('id', 'create');
+            ->allowEmptyString('id', 'create');
 
         $validator
             ->requirePresence('provider', 'create')
-            ->notEmpty('provider');
+            ->notEmptyString('provider');
 
         $validator
-            ->allowEmpty('username');
+            ->allowEmptyString('username');
 
         $validator
             ->requirePresence('reference', 'create')
-            ->notEmpty('reference');
+            ->notEmptyString('reference');
 
         $validator
             ->requirePresence('link', 'create')
-            ->notEmpty('reference');
+            ->notEmptyString('reference');
 
         $validator
             ->allowEmpty('avatar');
 
         $validator
-            ->allowEmpty('description');
+            ->allowEmptyString('description');
 
         $validator
             ->requirePresence('token', 'create')
-            ->notEmpty('token');
+            ->notEmptyString('token');
 
         $validator
-            ->allowEmpty('token_secret');
+            ->allowEmptyString('token_secret');
 
         $validator
             ->add('token_expires', 'valid', ['rule' => 'datetime'])
@@ -111,7 +111,7 @@ class SocialAccountsTable extends Table
      * @param RulesChecker $rules The rules object to be modified.
      * @return RulesChecker
      */
-    public function buildRules(RulesChecker $rules)
+    public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->existsIn(['user_id'], 'Users'));
 

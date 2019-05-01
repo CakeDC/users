@@ -56,10 +56,8 @@ define('CAKE', CORE_PATH . 'src' . DS);
 require ROOT . '/vendor/cakephp/cakephp/src/basics.php';
 require ROOT . '/vendor/autoload.php';
 
-Cake\Core\Configure::write('App', ['namespace' => 'Users\Test\App']);
 
 Cake\Core\Configure::write('debug', true);
-Cake\Core\Configure::write('App.encoding', 'UTF-8');
 
 ini_set('intl.default_locale', 'en_US');
 
@@ -93,6 +91,30 @@ Cake\Core\Configure::write('Session', [
     'defaults' => 'php'
 ]);
 
+
+Configure::write('App', [
+    'namespace' => 'Users\Test\App',
+    'encoding' => 'UTF-8',
+    'base' => false,
+    'baseUrl' => false,
+    'dir' => 'src',
+    'webroot' => WEBROOT_DIR,
+    'wwwRoot' => WWW_ROOT,
+    'fullBaseUrl' => 'http://localhost',
+    'imageBaseUrl' => 'img/',
+    'jsBaseUrl' => 'js/',
+    'cssBaseUrl' => 'css/',
+    'paths' => [
+        'plugins' => [dirname(APP) . DS . 'plugins' . DS],
+        'templates' => [dirname(APP) . 'templates' . DS]
+    ]
+]);
+
+// \Cake\Core\Configure::write('App.paths.templates', [
+    // APP . 'Template/',
+// ]);
+
+
 //init router
 \Cake\Routing\Router::reload();
 
@@ -104,8 +126,8 @@ if (file_exists($root . '/config/bootstrap.php')) {
     require $root . '/config/bootstrap.php';
 }
 
-Cake\Routing\DispatcherFactory::add('Routing');
-Cake\Routing\DispatcherFactory::add('ControllerFactory');
+// Cake\Routing\DispatcherFactory::add('Routing');
+// Cake\Routing\DispatcherFactory::add('ControllerFactory');
 
 class_alias('CakeDC\Users\Test\App\Controller\AppController', 'App\Controller\AppController');
 
@@ -131,6 +153,4 @@ Cake\Datasource\ConnectionManager::setConfig('test', [
     'timezone' => 'UTC'
 ]);
 
-\Cake\Core\Configure::write('App.paths.templates', [
-    APP . 'Template/',
-]);
+// Cake\Core\Configure::write('App', ['namespace' => 'Users\Test\App']);

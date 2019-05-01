@@ -21,7 +21,6 @@ use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Http\ServerRequest;
-use Cake\Network\Request;
 use Cake\ORM\Entity;
 use Cake\TestSuite\TestCase;
 
@@ -69,7 +68,7 @@ class LoginTraitTest extends BaseTraitTest
     public function testLoginHappy()
     {
         $this->_mockDispatchEvent(new Event('event'));
-        $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
+        $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->setMethods(['is'])
             ->getMock();
         $this->Trait->request->expects($this->any())
@@ -111,7 +110,7 @@ class LoginTraitTest extends BaseTraitTest
     public function testLoginRehash()
     {
         $this->_mockDispatchEvent(new Event('event'));
-        $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
+        $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->setMethods(['is'])
             ->getMock();
         $this->Trait->request->expects($this->any())
@@ -163,7 +162,7 @@ class LoginTraitTest extends BaseTraitTest
     public function testAfterIdentifyEmptyUser()
     {
         $this->_mockDispatchEvent(new Event('event'));
-        $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
+        $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->setMethods(['is'])
             ->getMock();
         $this->Trait->request->expects($this->any())
@@ -206,7 +205,7 @@ class LoginTraitTest extends BaseTraitTest
             ->method('_isSocialLogin')
             ->will($this->returnValue(true));
         $this->_mockDispatchEvent(new Event('event'));
-        $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
+        $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->setMethods(['is'])
             ->getMock();
         $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
@@ -228,7 +227,7 @@ class LoginTraitTest extends BaseTraitTest
             'id' => 1
         ];
         $event = new Event('event');
-        $event->result = $user;
+        $event->setResult($user);
         $this->Trait->expects($this->at(0))
             ->method('dispatchEvent')
             ->with(UsersAuthComponent::EVENT_BEFORE_LOGIN)
@@ -262,7 +261,7 @@ class LoginTraitTest extends BaseTraitTest
     public function testLoginBeforeLoginReturningStoppedEvent()
     {
         $event = new Event('event');
-        $event->result = '/';
+        $event->setResult('/');
         $event->stopPropagation();
         $this->Trait->expects($this->at(0))
             ->method('dispatchEvent')
@@ -288,7 +287,7 @@ class LoginTraitTest extends BaseTraitTest
             ->setMethods(['user'])
             ->disableOriginalConstructor()
             ->getMock();
-        $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
+        $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->setMethods(['is'])
             ->disableOriginalConstructor()
             ->getMock();
@@ -452,7 +451,7 @@ class LoginTraitTest extends BaseTraitTest
     {
         Configure::write('Users.GoogleAuthenticator.login', true);
 
-        $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
+        $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->setMethods(['is', 'getData', 'allow', 'getSession'])
             ->getMock();
         $this->Trait->request->expects($this->once())
@@ -477,7 +476,7 @@ class LoginTraitTest extends BaseTraitTest
     {
         Configure::write('Users.GoogleAuthenticator.login', true);
 
-        $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
+        $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->setMethods(['is', 'getData', 'allow', 'getSession'])
             ->getMock();
         $this->Trait->request->expects($this->never())

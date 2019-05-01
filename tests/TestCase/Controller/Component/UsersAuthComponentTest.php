@@ -21,7 +21,6 @@ use Cake\Database\Exception;
 use Cake\Event\Event;
 use Cake\Http\ServerRequest;
 use Cake\Http\Session;
-use Cake\Network\Request;
 use Cake\ORM\Entity;
 use Cake\Routing\Exception\MissingRouteException;
 use Cake\Routing\Router;
@@ -65,7 +64,7 @@ class UsersAuthComponentTest extends TestCase
         ]);
         Security::setSalt('YJfIxfs2guVoUubWDYhG93b0qyJfIxfs2guwvniR2G0FgaC9mi');
         Configure::write('App.namespace', 'Users');
-        $this->request = $this->getMockBuilder('Cake\Network\Request')
+        $this->request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->setMethods(['is', 'method'])
             ->getMock();
         $this->request->expects($this->any())->method('is')->will($this->returnValue(true));

@@ -36,7 +36,7 @@ class SocialAccountBehavior extends Behavior
      * @param array $config config
      * @return void
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         parent::initialize($config);
         $this->_table->belongsTo('Users', [

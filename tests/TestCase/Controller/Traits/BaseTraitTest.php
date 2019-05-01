@@ -210,7 +210,7 @@ abstract class BaseTraitTest extends TestCase
         }
 
         if (!empty($result)) {
-            $event->result = new Entity($result);
+            $event->setResult(new Entity($result));
         }
         $this->Trait->expects($this->any())
                 ->method('dispatchEvent')

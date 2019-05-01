@@ -32,16 +32,16 @@ class AuthLinkHelper extends HtmlHelper
      * @param array $options Array with option data. Extra options include
      * 'before' and 'after' to quickly inject some html code in the link, like icons etc
      * 'allowed' to manage if the link should be displayed, default is null to check isAuthorized
-     * @return string|bool
+     * @return string
      */
-    public function link($title, $url = null, array $options = [])
+    public function link($title, $url = null, array $options = []): string
     {
         $linkOptions = $options;
         unset($linkOptions['before'], $linkOptions['after'], $linkOptions['allowed']);
         $allowed = Hash::get($options, 'allowed');
 
         if ($allowed === false) {
-            return false;
+            return '';
         }
         if ($allowed === true || $this->isAuthorized($url)) {
             return Hash::get($options, 'before') .
@@ -49,7 +49,7 @@ class AuthLinkHelper extends HtmlHelper
                 Hash::get($options, 'after');
         }
 
-        return false;
+        return '';
     }
 
     /**
@@ -63,6 +63,6 @@ class AuthLinkHelper extends HtmlHelper
         $event = new Event(UsersAuthComponent::EVENT_IS_AUTHORIZED, $this, ['url' => $url]);
         $result = EventManager::instance()->dispatch($event);
 
-        return $result->result;
+        return $result->getResult();
     }
 }

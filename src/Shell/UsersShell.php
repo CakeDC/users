@@ -38,21 +38,10 @@ class UsersShell extends Shell
     ];
 
     /**
-     * initialize callback
-     *
-     * @return void
-     */
-    public function initialize()
-    {
-        parent::initialize();
-        $this->Users = $this->loadModel(Configure::read('Users.table'));
-    }
-
-    /**
      *
      * @return ConsoleOptionParser
      */
-    public function getOptionParser()
+    public function getOptionParser(): ConsoleOptionParser
     {
         $parser = parent::getOptionParser();
         $parser->setDescription(__d('CakeDC/Users', 'Utilities for CakeDC Users Plugin'))
@@ -91,6 +80,17 @@ class UsersShell extends Shell
             ]);
 
         return $parser;
+    }
+
+    /**
+     * initialize callback
+     *
+     * @return void
+     */
+    public function initialize(): void
+    {
+        parent::initialize();
+        $this->Users = $this->loadModel(Configure::read('Users.table'));
     }
 
     /**

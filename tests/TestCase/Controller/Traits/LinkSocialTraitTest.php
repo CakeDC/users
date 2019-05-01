@@ -93,7 +93,7 @@ class LinkSocialTraitTest extends BaseTraitTest
             $methods[] = 'session';
         }
 
-        $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
+        $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
                 ->setMethods($methods)
                 ->getMock();
         $this->Trait->request->expects($this->any())

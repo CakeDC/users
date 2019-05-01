@@ -288,7 +288,7 @@ class UsersShellTest extends TestCase
      */
     public function testResetPassword()
     {
-        $user = $this->Users->newEntity();
+        $user = $this->Users->newEntity([]);
         $user->username = 'user-1';
         $user->password = 'password';
 

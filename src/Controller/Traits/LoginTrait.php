@@ -165,11 +165,11 @@ trait LoginTrait
     public function login()
     {
         $event = $this->dispatchEvent(UsersAuthComponent::EVENT_BEFORE_LOGIN);
-        if (is_array($event->result)) {
-            return $this->_afterIdentifyUser($event->result);
+        if (is_array($event->getResult())) {
+            return $this->_afterIdentifyUser($event->getResult());
         }
         if ($event->isStopped()) {
-            return $this->redirect($event->result);
+            return $this->redirect($event->getResult());
         }
 
         $socialLogin = $this->_isSocialLogin();
@@ -300,8 +300,8 @@ trait LoginTrait
                 $this->request->getSession()->delete('temporarySession');
                 $this->Auth->setUser($user);
                 $event = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_LOGIN, ['user' => $user]);
-                if (is_array($event->result)) {
-                    return $this->redirect($event->result);
+                if (is_array($event->getResult())) {
+                    return $this->redirect($event->getResult());
                 }
                 $url = $this->Auth->redirectUrl();
 
@@ -369,8 +369,8 @@ trait LoginTrait
 
             $this->Auth->setUser($user);
             $event = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_LOGIN, ['user' => $user]);
-            if (is_array($event->result)) {
-                return $this->redirect($event->result);
+            if (is_array($event->getResult())) {
+                return $this->redirect($event->getResult());
             }
 
             $url = $this->Auth->redirectUrl();
@@ -396,16 +396,16 @@ trait LoginTrait
         $user = (array)$this->Auth->user();
 
         $eventBefore = $this->dispatchEvent(UsersAuthComponent::EVENT_BEFORE_LOGOUT, ['user' => $user]);
-        if (is_array($eventBefore->result)) {
-            return $this->redirect($eventBefore->result);
+        if (is_array($eventBefore->getResult())) {
+            return $this->redirect($eventBefore->getResult());
         }
 
         $this->request->getSession()->destroy();
         $this->Flash->success(__d('CakeDC/Users', 'You\'ve successfully logged out'));
 
         $eventAfter = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_LOGOUT, ['user' => $user]);
-        if (is_array($eventAfter->result)) {
-            return $this->redirect($eventAfter->result);
+        if (is_array($eventAfter->getResult())) {
+            return $this->redirect($eventAfter->getResult());
         }
 
         return $this->redirect($this->Auth->logout());

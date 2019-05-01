@@ -46,7 +46,7 @@ trait RegisterTrait
         }
 
         $usersTable = $this->getUsersTable();
-        $user = $usersTable->newEntity();
+        $user = $usersTable->newEntity([]);
         $validateEmail = (bool)Configure::read('Users.Email.validate');
         $useTos = (bool)Configure::read('Users.Tos.required');
         $tokenExpiration = Configure::read('Users.Token.expiration');
@@ -62,8 +62,9 @@ trait RegisterTrait
             'userEntity' => $user,
         ]);
 
-        if ($event->result instanceof EntityInterface) {
-            $data = $event->result->toArray();
+        $result = $event->getResult();
+        if ($result instanceof EntityInterface) {
+            $data = $result->toArray();
             $data['password'] = $requestData['password']; //since password is a hidden property
             if ($userSaved = $usersTable->register($user, $data, $options)) {
                 return $this->_afterRegister($userSaved);
@@ -75,7 +76,7 @@ trait RegisterTrait
             }
         }
         if ($event->isStopped()) {
-            return $this->redirect($event->result);
+            return $this->redirect($event->getResult());
         }
 
         $this->set(compact('user'));
@@ -134,8 +135,9 @@ trait RegisterTrait
         $event = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_REGISTER, [
             'user' => $userSaved
         ]);
-        if ($event->result instanceof Response) {
-            return $event->result;
+        $result = $event->getResult();
+        if ($result instanceof Response) {
+            return $result;
         }
         $this->Flash->success($message);
 

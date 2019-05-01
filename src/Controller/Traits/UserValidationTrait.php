@@ -70,8 +70,9 @@ trait UserValidationTrait
             $this->Flash->error(__d('CakeDC/Users', 'Invalid token or user account already validated'));
         } catch (TokenExpiredException $ex) {
             $event = $this->dispatchEvent(UsersAuthComponent::EVENT_ON_EXPIRED_TOKEN, ['type' => $type]);
-            if (!empty($event) && is_array($event->result)) {
-                return $this->redirect($event->result);
+            $result = $event->getResult();
+            if (!empty($event) && is_array($result)) {
+                return $this->redirect($result);
             }
             $this->Flash->error(__d('CakeDC/Users', 'Token already expired'));
         }
@@ -86,7 +87,7 @@ trait UserValidationTrait
      */
     public function resendTokenValidation()
     {
-        $this->set('user', $this->getUsersTable()->newEntity());
+        $this->set('user', $this->getUsersTable()->newEntity([]));
         $this->set('_serialize', ['user']);
         if (!$this->request->is('post')) {
             return;
@@ -100,8 +101,9 @@ trait UserValidationTrait
                 'type' => 'email'
             ])) {
                 $event = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_RESEND_TOKEN_VALIDATION);
-                if (!empty($event) && is_array($event->result)) {
-                    return $this->redirect($event->result);
+                $result = $event->getResult();
+                if (!empty($event) && is_array($result)) {
+                    return $this->redirect($result);
                 }
                 $this->Flash->success(__d(
                     'CakeDC/Users',
