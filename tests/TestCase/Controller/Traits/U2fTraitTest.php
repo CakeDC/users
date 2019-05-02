@@ -120,7 +120,7 @@ class U2fTraitTest extends BaseTraitTest
             ->setMethods(['getSession'])
             ->getMock();
         $response = new Response([
-            'body' => time(),
+            'body' => (string)time(),
         ]);
         $this->Trait->expects($this->once())
             ->method('redirect')
@@ -230,7 +230,7 @@ class U2fTraitTest extends BaseTraitTest
             'U2f.User' => $userData,
         ]);
         $response = new Response([
-            'body' => time(),
+            'body' => (string)time(),
         ]);
         $this->Trait->expects($this->once())
             ->method('redirect')
@@ -467,7 +467,7 @@ class U2fTraitTest extends BaseTraitTest
             ->setMethods(['getSession'])
             ->getMock();
         $response = new Response([
-            'body' => time(),
+            'body' => (string)time(),
         ]);
         $this->Trait->expects($this->once())
             ->method('redirect')

@@ -70,9 +70,8 @@ trait UserValidationTrait
             $this->Flash->error(__d('CakeDC/Users', 'Invalid token or user account already validated'));
         } catch (TokenExpiredException $ex) {
             $event = $this->dispatchEvent(UsersAuthComponent::EVENT_ON_EXPIRED_TOKEN, ['type' => $type]);
-            $result = $event->getResult();
-            if (!empty($event) && is_array($result)) {
-                return $this->redirect($result);
+            if (!empty($event) && is_array($event->getResult())) {
+                return $this->redirect($event->getResult());
             }
             $this->Flash->error(__d('CakeDC/Users', 'Token already expired'));
         }

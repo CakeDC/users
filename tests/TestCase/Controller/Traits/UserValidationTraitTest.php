@@ -181,7 +181,7 @@ class UserValidationTraitTest extends BaseTraitTest
             ->will($this->returnValue('user-3'));
 
         $event = new Event('event');
-        $event->seResult([
+        $event->setResult([
             'action' => 'newAction',
         ]);
         $this->Trait->expects($this->once())
