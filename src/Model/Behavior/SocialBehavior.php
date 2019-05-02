@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace CakeDC\Users\Model\Behavior;
 
 use Cake\Core\Configure;
+use Cake\Utility\Hash;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\UserNotActiveException;
