@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -26,7 +27,6 @@ use InvalidArgumentException;
  */
 class RememberMeComponent extends Component
 {
-
     /**
      * Components
      *
@@ -58,7 +58,7 @@ class RememberMeComponent extends Component
     /**
      * Validate component config
      *
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      * @return void
      */
     protected function _validateConfig()
@@ -96,7 +96,7 @@ class RememberMeComponent extends Component
     /**
      * Sets the login cookie that handles the remember me feature
      *
-     * @param Event $event event
+     * @param \Cake\Event\Event $event event
      * @return void
      */
     public function setLoginCookie(Event $event)
@@ -115,7 +115,7 @@ class RememberMeComponent extends Component
     /**
      * Destroys the remember me cookie
      *
-     * @param Event $event event
+     * @param \Cake\Event\Event $event event
      * @return void
      */
     public function destroy(Event $event)
@@ -128,7 +128,7 @@ class RememberMeComponent extends Component
     /**
      * Reads the stored cookie and auto login the user if present
      *
-     * @param Event $event event
+     * @param \Cake\Event\Event $event event
      * @return mixed
      */
     public function beforeFilter(Event $event)

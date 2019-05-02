@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -26,7 +27,7 @@ trait CustomUsersTableTrait
     /**
      * Gets the users table instance
      *
-     * @return Table
+     * @return \Cake\ORM\Table
      */
     public function getUsersTable()
     {
@@ -41,7 +42,7 @@ trait CustomUsersTableTrait
     /**
      * Set the users table
      *
-     * @param Table $table table
+     * @param \Cake\ORM\Table $table table
      * @return void
      */
     public function setUsersTable(Table $table)

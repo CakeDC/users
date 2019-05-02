@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -10,11 +11,10 @@
  */
 namespace CakeDC\Users\Test\TestCase\Auth;
 
-use CakeDC\Users\Auth\DefaultTwoFactorAuthenticationChecker;
-use CakeDC\Users\Auth\TwoFactorAuthenticationCheckerFactory;
-use CakeDC\Users\Auth\TwoFactorAuthenticationCheckerInterface;
 use Cake\Core\Configure;
 use Cake\TestSuite\TestCase;
+use CakeDC\Users\Auth\DefaultTwoFactorAuthenticationChecker;
+use CakeDC\Users\Auth\TwoFactorAuthenticationCheckerFactory;
 
 class TwoFactorAuthenticationCheckerFactoryTest extends TestCase
 {

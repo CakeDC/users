@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -23,7 +24,6 @@ use Cake\Datasource\Exception\RecordNotFoundException;
  */
 trait ProfileTrait
 {
-
     /**
      * Profile action
      * @param mixed $id Profile id object.
@@ -38,9 +38,9 @@ trait ProfileTrait
         }
         try {
             $appContain = (array)Configure::read('Auth.authenticate.' . AuthComponent::ALL . '.contain');
-            $socialContain = Configure::read('Users.Social.login') ? ['SocialAccounts']: [];
+            $socialContain = Configure::read('Users.Social.login') ? ['SocialAccounts'] : [];
             $user = $this->getUsersTable()->get($id, [
-                    'contain' => array_merge((array)$appContain, (array)$socialContain)
+                    'contain' => array_merge((array)$appContain, (array)$socialContain),
                 ]);
             $this->set('avatarPlaceholder', Configure::read('Users.Avatar.placeholder'));
             if ($user->id === $loggedUserId) {

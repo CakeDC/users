@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -12,10 +13,8 @@
 namespace CakeDC\Users\Model\Table;
 
 use Cake\Database\Schema\TableSchema;
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
-use Cake\Utility\Hash;
 use Cake\Validation\Validator;
 
 /**
@@ -23,12 +22,11 @@ use Cake\Validation\Validator;
  */
 class UsersTable extends Table
 {
-
     /**
      * Role Constants
      */
-    const ROLE_USER = 'user';
-    const ROLE_ADMIN = 'admin';
+    public const ROLE_USER = 'user';
+    public const ROLE_ADMIN = 'admin';
 
     /**
      * Flag to set email check in buildRules or not
@@ -71,14 +69,14 @@ class UsersTable extends Table
         $this->addBehavior('CakeDC/Users.AuthFinder');
         $this->hasMany('SocialAccounts', [
             'foreignKey' => 'user_id',
-            'className' => 'CakeDC/Users.SocialAccounts'
+            'className' => 'CakeDC/Users.SocialAccounts',
         ]);
     }
 
     /**
      * Adds some rules for password confirm
-     * @param Validator $validator Cake validator object.
-     * @return Validator
+     * @param \Cake\Validation\Validator $validator Cake validator object.
+     * @return \Cake\Validation\Validator
      */
     public function validationPasswordConfirm(Validator $validator)
     {
@@ -93,7 +91,7 @@ class UsersTable extends Table
                 'password_confirm_check' => [
                     'rule' => ['compareWith', 'password_confirm'],
                     'message' => __d('CakeDC/Users', 'Your password does not match your confirm password. Please try again'),
-                    'allowEmpty' => false
+                    'allowEmpty' => false,
                 ]]);
 
         return $validator;
@@ -102,8 +100,8 @@ class UsersTable extends Table
     /**
      * Adds rules for current password
      *
-     * @param Validator $validator Cake validator object.
-     * @return Validator
+     * @param \Cake\Validation\Validator $validator Cake validator object.
+     * @return \Cake\Validation\Validator
      */
     public function validationCurrentPassword(Validator $validator)
     {
@@ -116,8 +114,8 @@ class UsersTable extends Table
     /**
      * Default validation rules.
      *
-     * @param Validator $validator Validator instance.
-     * @return Validator
+     * @param \Cake\Validation\Validator $validator Validator instance.
+     * @return \Cake\Validation\Validator
      */
     public function validationDefault(Validator $validator): Validator
     {
@@ -161,9 +159,9 @@ class UsersTable extends Table
 
     /**
      * Wrapper for all validation rules for register
-     * @param Validator $validator Cake validator object.
+     * @param \Cake\Validation\Validator $validator Cake validator object.
      *
-     * @return Validator
+     * @return \Cake\Validation\Validator
      */
     public function validationRegister(Validator $validator)
     {
@@ -177,20 +175,20 @@ class UsersTable extends Table
      * Returns a rules checker object that will be used for validating
      * application integrity.
      *
-     * @param RulesChecker $rules The rules object to be modified.
-     * @return RulesChecker
+     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @return \Cake\ORM\RulesChecker
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->isUnique(['username']), '_isUnique', [
             'errorField' => 'username',
-            'message' => __d('CakeDC/Users', 'Username already exists')
+            'message' => __d('CakeDC/Users', 'Username already exists'),
         ]);
 
         if ($this->isValidateEmail) {
             $rules->add($rules->isUnique(['email']), '_isUnique', [
                 'errorField' => 'email',
-                'message' => __d('CakeDC/Users', 'Email already exists')
+                'message' => __d('CakeDC/Users', 'Email already exists'),
             ]);
         }
 

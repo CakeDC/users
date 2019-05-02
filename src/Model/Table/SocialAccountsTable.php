@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,7 +12,6 @@
 
 namespace CakeDC\Users\Model\Table;
 
-use Cake\Core\Configure;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -22,14 +22,13 @@ use Cake\Validation\Validator;
  */
 class SocialAccountsTable extends Table
 {
-
     /**
      * Constants
      */
-    const PROVIDER_TWITTER = 'Twitter';
-    const PROVIDER_FACEBOOK = 'Facebook';
-    const PROVIDER_INSTAGRAM = 'Instagram';
-    const PROVIDER_LINKEDIN = 'LinkedIn';
+    public const PROVIDER_TWITTER = 'Twitter';
+    public const PROVIDER_FACEBOOK = 'Facebook';
+    public const PROVIDER_INSTAGRAM = 'Instagram';
+    public const PROVIDER_LINKEDIN = 'LinkedIn';
 
     /**
      * Initialize method
@@ -51,8 +50,8 @@ class SocialAccountsTable extends Table
     /**
      * Default validation rules.
      *
-     * @param Validator $validator Validator instance.
-     * @return Validator
+     * @param \Cake\Validation\Validator $validator Validator instance.
+     * @return \Cake\Validation\Validator
      */
     public function validationDefault(Validator $validator): Validator
     {
@@ -108,8 +107,8 @@ class SocialAccountsTable extends Table
      * Returns a rules checker object that will be used for validating
      * application integrity.
      *
-     * @param RulesChecker $rules The rules object to be modified.
-     * @return RulesChecker
+     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @return \Cake\ORM\RulesChecker
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
@@ -121,13 +120,13 @@ class SocialAccountsTable extends Table
     /**
      * Finder for active social accounts
      *
-     * @param Query $query query
+     * @param \Cake\ORM\Query $query query
      * @return \Cake\ORM\Query
      */
     public function findActive(Query $query)
     {
         return $query->where([
-            $this->aliasField('active') => true
+            $this->aliasField('active') => true,
         ]);
     }
 }

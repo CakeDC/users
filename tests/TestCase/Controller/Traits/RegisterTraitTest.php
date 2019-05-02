@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,12 +12,8 @@
 
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
-use CakeDC\Users\Test\TestCase\Controller\Traits\BaseTraitTest;
 use Cake\Core\Configure;
-use Cake\Core\Plugin;
 use Cake\Event\Event;
-use Cake\Mailer\Email;
-use Cake\ORM\TableRegistry;
 
 class RegisterTraitTest extends BaseTraitTest
 {
@@ -82,7 +79,7 @@ class RegisterTraitTest extends BaseTraitTest
                 'password' => 'password',
                 'email' => 'test-registration@example.com',
                 'password_confirm' => 'password',
-                'tos' => 1
+                'tos' => 1,
             ]));
 
         $this->Trait->register();
@@ -126,7 +123,7 @@ class RegisterTraitTest extends BaseTraitTest
             'password' => 'password',
             'email' => 'test-registration@example.com',
             'password_confirm' => 'password',
-            'tos' => 1
+            'tos' => 1,
         ];
 
         $this->assertEquals(0, $this->table->find()->where(['username' => 'testRegistration'])->count());
@@ -180,7 +177,7 @@ class RegisterTraitTest extends BaseTraitTest
                 'password' => 'password',
                 'email' => 'test-registration@example.com',
                 'password_confirm' => 'password',
-                'tos' => 1
+                'tos' => 1,
             ]));
 
         $this->Trait->register();
@@ -217,7 +214,7 @@ class RegisterTraitTest extends BaseTraitTest
                 'password' => 'password',
                 'email' => 'test-registration@example.com',
                 'password_confirm' => 'not-matching',
-                'tos' => 1
+                'tos' => 1,
             ]));
 
         $this->Trait->register();
@@ -252,7 +249,7 @@ class RegisterTraitTest extends BaseTraitTest
                 'password' => 'password',
                 'email' => 'test-registration@example.com',
                 'password_confirm' => 'password',
-                'tos' => 1
+                'tos' => 1,
             ]));
 
         $this->Trait->register();
@@ -312,7 +309,7 @@ class RegisterTraitTest extends BaseTraitTest
                 'password' => 'password',
                 'email' => 'test-registration@example.com',
                 'password_confirm' => 'password',
-                'tos' => 1
+                'tos' => 1,
             ]));
 
         $this->Trait->register();
@@ -363,7 +360,7 @@ class RegisterTraitTest extends BaseTraitTest
                 'password' => 'password',
                 'email' => 'test-registration@example.com',
                 'password_confirm' => 'password',
-                'tos' => 1
+                'tos' => 1,
             ]));
 
         $this->Trait->register();

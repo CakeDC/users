@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,12 +12,8 @@
 
 namespace CakeDC\Users\Controller\Component;
 
-use CakeDC\Users\Auth\TwoFactorAuthenticationCheckerInterface;
 use Cake\Controller\Component;
 use Cake\Core\Configure;
-use Cake\Event\Event;
-use Cake\Utility\Security;
-use InvalidArgumentException;
 use RobThree\Auth\TwoFactorAuth;
 
 /**
@@ -26,7 +23,9 @@ use RobThree\Auth\TwoFactorAuth;
  */
 class GoogleAuthenticatorComponent extends Component
 {
-    /** @var \RobThree\Auth\TwoFactorAuth $tfa */
+    /**
+     * @var \RobThree\Auth\TwoFactorAuth $tfa
+     */
     public $tfa;
 
     /**

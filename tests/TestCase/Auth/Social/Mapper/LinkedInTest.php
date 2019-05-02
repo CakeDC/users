@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,8 +12,8 @@
 
 namespace CakeDC\Users\Test\TestCase\Auth\Social\Mapper;
 
-use CakeDC\Users\Auth\Social\Mapper\LinkedIn;
 use Cake\TestSuite\TestCase;
+use CakeDC\Users\Auth\Social\Mapper\LinkedIn;
 
 class LinkedInTest extends TestCase
 {
@@ -30,7 +31,7 @@ class LinkedInTest extends TestCase
     {
         $token = new \League\OAuth2\Client\Token\AccessToken([
             'access_token' => 'test-token',
-            'expires' => 1490988496
+            'expires' => 1490988496,
         ]);
         $rawData = [
             'token' => $token,
@@ -42,12 +43,12 @@ class LinkedInTest extends TestCase
             'lastName' => 'User',
             'location' => [
                 'country' => [
-                    'code' => 'es'
+                    'code' => 'es',
                 ],
-                'name' => 'Spain'
+                'name' => 'Spain',
             ],
             'pictureUrl' => 'https://media.licdn.com/mpr/mprx/test.jpg',
-            'publicProfileUrl' => 'https://www.linkedin.com/in/test'
+            'publicProfileUrl' => 'https://www.linkedin.com/in/test',
         ];
         $providerMapper = new LinkedIn($rawData);
         $user = $providerMapper();
@@ -67,9 +68,9 @@ class LinkedInTest extends TestCase
             'credentials' => [
                 'token' => 'test-token',
                 'secret' => null,
-                'expires' => 1490988496
+                'expires' => 1490988496,
             ],
-            'raw' => $rawData
+            'raw' => $rawData,
         ], $user);
     }
 }

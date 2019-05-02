@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -23,6 +24,6 @@ class LinkedIn extends AbstractMapper
         'last_name' => 'lastName',
         'email' => 'emailAddress',
         'bio' => 'headline',
-        'link' => 'publicProfileUrl'
+        'link' => 'publicProfileUrl',
     ];
 }

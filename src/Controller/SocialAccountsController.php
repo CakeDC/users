@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,20 +12,16 @@
 
 namespace CakeDC\Users\Controller;
 
-use CakeDC\Users\Controller\AppController;
-use CakeDC\Users\Exception\AccountAlreadyActiveException;
-use CakeDC\Users\Model\Table\SocialAccountsTable;
 use Cake\Datasource\Exception\RecordNotFoundException;
-use Cake\Http\Response;
+use CakeDC\Users\Exception\AccountAlreadyActiveException;
 
 /**
  * SocialAccounts Controller
  *
- * @property SocialAccountsTable $SocialAccounts
+ * @property \CakeDC\Users\Model\Table\SocialAccountsTable $SocialAccounts
  */
 class SocialAccountsController extends AppController
 {
-
     /**
      * Init
      *
@@ -42,7 +39,7 @@ class SocialAccountsController extends AppController
      * @param string $provider provider
      * @param string $reference reference
      * @param string $token token
-     * @return Response
+     * @return \Cake\Http\Response
      */
     public function validateAccount($provider, $reference, $token)
     {
@@ -70,7 +67,7 @@ class SocialAccountsController extends AppController
      * @param string $provider provider
      * @param string $reference reference
      * @return mixed
-     * @throws AccountAlreadyActiveException
+     * @throws \CakeDC\Users\Exception\AccountAlreadyActiveException
      */
     public function resendValidation($provider, $reference)
     {

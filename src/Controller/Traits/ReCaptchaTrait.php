@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -20,7 +21,6 @@ use Cake\Core\Configure;
  */
 trait ReCaptchaTrait
 {
-
     /**
      * Validates reCaptcha response
      *

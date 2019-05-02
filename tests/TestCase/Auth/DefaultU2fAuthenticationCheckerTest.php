@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -10,10 +11,9 @@
  */
 namespace CakeDC\Users\Test\TestCase\Auth;
 
-use CakeDC\Users\Auth\DefaultU2fAuthenticationChecker;
 use Cake\Core\Configure;
-use Cake\Http\Exception\BadRequestException;
 use Cake\TestSuite\TestCase;
+use CakeDC\Users\Auth\DefaultU2fAuthenticationChecker;
 
 /**
  * Test case for DefaultU2fAuthenticationChecker class

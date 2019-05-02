@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,11 +12,6 @@
 
 namespace CakeDC\Users\Test\TestCase\Auth;
 
-use CakeDC\Users\Auth\SocialAuthenticate;
-use CakeDC\Users\Controller\Component\UsersAuthComponent;
-use CakeDC\Users\Exception\AccountNotActiveException;
-use CakeDC\Users\Exception\MissingEmailException;
-use CakeDC\Users\Exception\UserNotActiveException;
 use Cake\Controller\ComponentRegistry;
 use Cake\Core\Configure;
 use Cake\Event\Event;
@@ -23,6 +19,11 @@ use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use CakeDC\Users\Auth\SocialAuthenticate;
+use CakeDC\Users\Controller\Component\UsersAuthComponent;
+use CakeDC\Users\Exception\AccountNotActiveException;
+use CakeDC\Users\Exception\MissingEmailException;
+use CakeDC\Users\Exception\UserNotActiveException;
 use ReflectionClass;
 
 class SocialAuthenticateTest extends TestCase
@@ -34,7 +35,7 @@ class SocialAuthenticateTest extends TestCase
      */
     public $fixtures = [
         'plugin.CakeDC/Users.SocialAccounts',
-        'plugin.CakeDC/Users.Users'
+        'plugin.CakeDC/Users.Users',
     ];
 
     /**
@@ -118,9 +119,9 @@ class SocialAuthenticateTest extends TestCase
                     'options' => [
                         'graphApiVersion' => 'v2.8',
                         'redirectUri' => 'http://example.com/auth/facebook',
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         ]);
 
         $this->assertInstanceOf('\CakeDC\Users\Auth\SocialAuthenticate', $socialAuthenticate);
@@ -140,9 +141,9 @@ class SocialAuthenticateTest extends TestCase
                     'options' => [
                         'graphApiVersion' => 'v2.8',
                         'redirectUri' => 'http://example.com/auth/facebook',
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         ]);
     }
 
@@ -197,7 +198,7 @@ class SocialAuthenticateTest extends TestCase
                     'last_name' => 'second',
                     'email' => 'userSecond@example.com',
                     'cover' => [
-                        'id' => 'reference-2-1'
+                        'id' => 'reference-2-1',
                     ],
                     'gender' => 'female',
                     'locale' => 'en_US',
@@ -217,14 +218,14 @@ class SocialAuthenticateTest extends TestCase
                     'credentials' => [
                         'token' => 'token',
                         'secret' => null,
-                        'expires' => 1458423682
+                        'expires' => 1458423682,
                     ],
                     'raw' => [
 
                     ],
-                    'provider' => 'Facebook'
+                    'provider' => 'Facebook',
                 ],
-            ]
+            ],
 
         ];
     }
@@ -396,7 +397,7 @@ class SocialAuthenticateTest extends TestCase
                     'last_name' => 'second',
                     'email' => 'userSecond@example.com',
                     'cover' => [
-                        'id' => 'reference-2-1'
+                        'id' => 'reference-2-1',
                     ],
                     'gender' => 'female',
                     'locale' => 'en_US',
@@ -416,14 +417,14 @@ class SocialAuthenticateTest extends TestCase
                     'credentials' => [
                         'token' => 'token',
                         'secret' => null,
-                        'expires' => 1458423682
+                        'expires' => 1458423682,
                     ],
                     'raw' => [
 
                     ],
-                    'provider' => 'Twitter'
+                    'provider' => 'Twitter',
                 ],
-            ]
+            ],
 
         ];
     }
@@ -442,7 +443,7 @@ class SocialAuthenticateTest extends TestCase
         $socialLogin->setAccessible(true);
         $data = [
             'id' => 'reference-2-1',
-            'provider' => 'Facebook'
+            'provider' => 'Facebook',
         ];
         $result = $socialLogin->invoke($this->SocialAuthenticate, $data);
         $this->assertEquals($result->id, '00000000-0000-0000-0000-000000000002');
@@ -510,11 +511,11 @@ class SocialAuthenticateTest extends TestCase
                     'credentials' => [
                         'token' => 'token',
                         'secret' => null,
-                        'expires' => (int)1458510952
+                        'expires' => (int)1458510952,
                     ],
-                    'provider' => 'Facebook'
+                    'provider' => 'Facebook',
                 ],
-            ]
+            ],
 
         ];
     }
@@ -577,7 +578,7 @@ class SocialAuthenticateTest extends TestCase
                         ],
                         'instagram' => [
                             'className' => 'League\OAuth2\Client\Provider\Instagram',
-                        ]
+                        ],
                     ],
 
                 ],
@@ -588,11 +589,11 @@ class SocialAuthenticateTest extends TestCase
                         ],
                         'instagram' => [
                             'className' => 'League\OAuth2\Client\Provider\Instagram',
-                        ]
-                    ]
+                        ],
+                    ],
                 ],
                 2,
-                false
+                false,
             ],
             [
                 [
@@ -608,10 +609,10 @@ class SocialAuthenticateTest extends TestCase
                         'facebook' => [
                             'className' => 'League\OAuth2\Client\Provider\Facebook',
                         ],
-                    ]
+                    ],
                 ],
                 1,
-                false
+                false,
             ],
             [
                 [
@@ -626,18 +627,18 @@ class SocialAuthenticateTest extends TestCase
                     'providers' => [
                         'instagram' => [
                             'className' => 'League\OAuth2\Client\Provider\Instagram',
-                        ]
-                    ]
+                        ],
+                    ],
                 ],
                 2,
-                false
+                false,
             ],
             [
                 [],
                 [],
                 0,
-                true
-            ]
+                true,
+            ],
         ];
     }
 }

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -19,7 +20,6 @@ use Cake\Utility\Hash;
  */
 class Cognito extends AbstractMapper
 {
-
     /**
      * Map for provider fields
      * @var

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -23,9 +24,9 @@ class AuthFinderBehavior extends Behavior
     /**
      * Custom finder to filter active users
      *
-     * @param Query $query Query object to modify
+     * @param \Cake\ORM\Query $query Query object to modify
      * @param array $options Query options
-     * @return Query
+     * @return \Cake\ORM\Query
      */
     public function findActive(Query $query, array $options = [])
     {
@@ -37,9 +38,9 @@ class AuthFinderBehavior extends Behavior
     /**
      * Custom finder to log in users
      *
-     * @param Query $query Query object to modify
+     * @param \Cake\ORM\Query $query Query object to modify
      * @param array $options Query options
-     * @return Query
+     * @return \Cake\ORM\Query
      * @throws \BadMethodCallException
      */
     public function findAuth(Query $query, array $options = [])

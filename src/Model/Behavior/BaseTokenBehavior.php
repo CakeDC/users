@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -23,10 +24,10 @@ class BaseTokenBehavior extends Behavior
     /**
      * DRY for update active and token based on validateEmail flag
      *
-     * @param EntityInterface $user User to be updated.
+     * @param \Cake\Datasource\EntityInterface $user User to be updated.
      * @param bool $validateEmail email user to validate.
      * @param int $tokenExpiration seconds to expire from now
-     * @return EntityInterface
+     * @return \Cake\Datasource\EntityInterface
      */
     protected function _updateActive(EntityInterface $user, $validateEmail, $tokenExpiration)
     {
@@ -45,8 +46,8 @@ class BaseTokenBehavior extends Behavior
     /**
      * Remove user token for validation
      *
-     * @param EntityInterface $user user object.
-     * @return EntityInterface
+     * @param \Cake\Datasource\EntityInterface $user user object.
+     * @return \Cake\Datasource\EntityInterface
      */
     protected function _removeValidationToken(EntityInterface $user)
     {

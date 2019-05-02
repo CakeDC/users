@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,8 +12,8 @@
 
 namespace CakeDC\Users\Test\TestCase\Auth\Social\Mapper;
 
-use CakeDC\Users\Auth\Social\Mapper\Instagram;
 use Cake\TestSuite\TestCase;
+use CakeDC\Users\Auth\Social\Mapper\Instagram;
 
 class InstagramTest extends TestCase
 {
@@ -30,7 +31,7 @@ class InstagramTest extends TestCase
     {
         $token = new \League\OAuth2\Client\Token\AccessToken([
             'access_token' => 'test-token',
-            'expires' => 1490988496
+            'expires' => 1490988496,
         ]);
         $rawData = [
             'token' => $token,
@@ -42,9 +43,9 @@ class InstagramTest extends TestCase
             'counts' => [
                 'followed_by' => 35,
                 'media' => 1,
-                'follows' => 44
+                'follows' => 44,
             ],
-            'bio' => ''
+            'bio' => '',
         ];
         $providerMapper = new Instagram($rawData);
         $user = $providerMapper();
@@ -64,9 +65,9 @@ class InstagramTest extends TestCase
             'credentials' => [
                 'token' => 'test-token',
                 'secret' => null,
-                'expires' => 1490988496
+                'expires' => 1490988496,
             ],
-            'raw' => $rawData
+            'raw' => $rawData,
         ], $user);
     }
 }

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,21 +12,14 @@
 
 namespace CakeDC\Users\Test\TestCase\Controller\Component;
 
-use CakeDC\Users\Controller\Component\UsersAuthComponent;
-use CakeDC\Users\Exception\MissingEmailException;
-use CakeDC\Users\Exception\UserNotFoundException;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
-use Cake\Core\Plugin;
-use Cake\Database\Exception;
 use Cake\Event\Event;
 use Cake\Http\ServerRequest;
-use Cake\Http\Session;
-use Cake\ORM\Entity;
-use Cake\Routing\Exception\MissingRouteException;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Security;
+use CakeDC\Users\Controller\Component\UsersAuthComponent;
 
 /**
  * Users\Controller\Component\UsersAuthComponent Test Case
@@ -55,12 +49,12 @@ class UsersAuthComponentTest extends TestCase
         Router::connect('/route/*', [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
-            'action' => 'requestResetPassword'
+            'action' => 'requestResetPassword',
         ]);
         Router::connect('/notAllowed/*', [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
-            'action' => 'edit'
+            'action' => 'edit',
         ]);
         Security::setSalt('YJfIxfs2guVoUubWDYhG93b0qyJfIxfs2guwvniR2G0FgaC9mi');
         Configure::write('App.namespace', 'Users');
@@ -408,7 +402,7 @@ class UsersAuthComponentTest extends TestCase
                 'plugin' => 'CakeDC/Users',
                 'controller' => 'Users',
                 'action' => 'requestResetPassword',
-                'pass-one'
+                'pass-one',
             ],
         ]);
         $this->Controller->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
@@ -494,7 +488,7 @@ class UsersAuthComponentTest extends TestCase
         Router::connect('/route-another-controller/*', [
             'plugin' => 'CakeDC/Users',
             'controller' => 'AnotherController',
-            'action' => 'requestResetPassword'
+            'action' => 'requestResetPassword',
         ]);
         $event = new Event('event');
         $event->setData([

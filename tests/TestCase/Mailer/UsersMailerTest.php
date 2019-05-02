@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -10,9 +11,7 @@
  */
 namespace CakeDC\Users\Test\TestCase\Email;
 
-use Cake\Mailer\Email;
 use Cake\ORM\TableRegistry;
-use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 
 /**
@@ -71,7 +70,7 @@ class UsersMailerTest extends TestCase
         $data = [
             'first_name' => 'FirstName',
             'email' => 'test@example.com',
-            'token' => '12345'
+            'token' => '12345',
         ];
         $user = $table->newEntity($data);
         $this->UsersMailer->expects($this->once())
@@ -131,7 +130,7 @@ class UsersMailerTest extends TestCase
         $data = [
             'first_name' => 'FirstName',
             'email' => 'test@example.com',
-            'token' => '12345'
+            'token' => '12345',
         ];
         $user = $table->newEntity($data);
         $this->UsersMailer->expects($this->once())

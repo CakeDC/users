@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -23,7 +24,7 @@ class SetupComponent extends Component
     {
         parent::initialize($config);
         $this->getController()->loadComponent('CakeDC/Users.UsersAuth');
-        list($plugin, $controller) = pluginSplit(Configure::read('Users.controller'));
+        [$plugin, $controller] = pluginSplit(Configure::read('Users.controller'));
         if ($this->getController()->getRequest()->getParam('plugin', null) === $plugin &&
             $this->getController()->getRequest()->getParam('controller') === $controller
         ) {

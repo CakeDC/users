@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,18 +12,16 @@
 
 namespace CakeDC\Users\Controller\Traits;
 
+use Cake\Core\Configure;
+use Cake\Event\Event;
+use Cake\Http\Exception\NotFoundException;
+use Cake\Utility\Hash;
 use CakeDC\Users\Auth\TwoFactorAuthenticationCheckerFactory;
 use CakeDC\Users\Auth\U2fAuthenticationCheckerFactory;
 use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\UserNotActiveException;
-use CakeDC\Users\Model\Table\SocialAccountsTable;
-use Cake\Core\Configure;
-use Cake\Core\Exception\Exception;
-use Cake\Event\Event;
-use Cake\Http\Exception\NotFoundException;
-use Cake\Utility\Hash;
 use League\OAuth1\Client\Server\Twitter;
 
 /**
@@ -87,7 +86,7 @@ trait LoginTrait
     }
 
     /**
-     * @param Event $event event
+     * @param \Cake\Event\Event $event event
      * @return mixed
      */
     public function failedSocialLoginListener(Event $event)
@@ -115,7 +114,7 @@ trait LoginTrait
                 return $this->redirect([
                     'plugin' => 'CakeDC/Users',
                     'controller' => 'Users',
-                    'action' => 'socialEmail'
+                    'action' => 'socialEmail',
                 ]);
             }
             if ($exception instanceof UserNotActiveException) {
@@ -141,7 +140,7 @@ trait LoginTrait
     /**
      * Social login
      *
-     * @throws NotFoundException
+     * @throws \Cake\Http\Exception\NotFoundException
      * @return array
      */
     public function socialLogin()
@@ -226,7 +225,7 @@ trait LoginTrait
         $loginUrl = array_merge(
             Configure::read('Auth.loginAction'),
             [
-                '?' => $this->request->getQueryParams()
+                '?' => $this->request->getQueryParams(),
             ]
         );
         if (!$this->getTwoFactorAuthenticationChecker()->isEnabled()) {
@@ -349,7 +348,7 @@ trait LoginTrait
                 $this->request->getSession()->write('U2f.User', $user);
                 $url = Configure::read('U2f.startAction');
                 $url = array_merge($url, [
-                    '?' => $this->request->getQueryParams()
+                    '?' => $this->request->getQueryParams(),
                 ]);
 
                 return $this->redirect($url);
@@ -361,7 +360,7 @@ trait LoginTrait
                 $this->request->getSession()->write('temporarySession', $user);
                 $url = Configure::read('GoogleAuthenticator.verifyAction');
                 $url = array_merge($url, [
-                    '?' => $this->request->getQueryParams()
+                    '?' => $this->request->getQueryParams(),
                 ]);
 
                 return $this->redirect($url);

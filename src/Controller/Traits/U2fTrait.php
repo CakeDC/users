@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -20,7 +21,6 @@ use u2flib_server\U2F;
  */
 trait U2fTrait
 {
-
     /**
      * Perform redirect keeping current query string
      *
@@ -47,18 +47,18 @@ trait U2fTrait
         $data = $this->getU2fData();
         if (!$data['valid']) {
             return $this->redirectWithQuery([
-                'action' => 'login'
+                'action' => 'login',
             ]);
         }
 
         if (!$data['registration']) {
             return $this->redirectWithQuery([
-                'action' => 'u2fRegister'
+                'action' => 'u2fRegister',
             ]);
         }
 
         return $this->redirectWithQuery([
-            'action' => 'u2fAuthenticate'
+            'action' => 'u2fAuthenticate',
         ]);
     }
 
@@ -73,12 +73,12 @@ trait U2fTrait
         $data = $this->getU2fData();
         if (!$data['valid']) {
             return $this->redirectWithQuery([
-                'action' => 'login'
+                'action' => 'login',
             ]);
         }
 
         if (!$data['registration']) {
-            list($registerRequest, $signs) = $this->createU2fLib()->getRegisterData();
+            [$registerRequest, $signs] = $this->createU2fLib()->getRegisterData();
             $this->request->getSession()->write('U2f.registerRequest', json_encode($registerRequest));
             $this->set(compact('registerRequest', 'signs'));
 
@@ -86,7 +86,7 @@ trait U2fTrait
         }
 
         return $this->redirectWithQuery([
-            'action' => 'u2fAuthenticate'
+            'action' => 'u2fAuthenticate',
         ]);
     }
 
@@ -109,13 +109,13 @@ trait U2fTrait
             $this->request->getSession()->delete('U2f.registerRequest');
 
             return $this->redirectWithQuery([
-                'action' => 'u2fAuthenticate'
+                'action' => 'u2fAuthenticate',
             ]);
         } catch (\Exception $e) {
             $this->request->getSession()->delete('U2f.registerRequest');
 
             return $this->redirectWithQuery([
-                'action' => 'u2fRegister'
+                'action' => 'u2fRegister',
             ]);
         }
     }
@@ -130,13 +130,13 @@ trait U2fTrait
         $data = $this->getU2fData();
         if (!$data['valid']) {
             return $this->redirectWithQuery([
-                'action' => 'login'
+                'action' => 'login',
             ]);
         }
 
         if (!$data['registration']) {
             return $this->redirectWithQuery([
-                'action' => 'u2fRegister'
+                'action' => 'u2fRegister',
             ]);
         }
         $authenticateRequest = $this->createU2fLib()->getAuthenticateData([$data['registration']]);
@@ -171,7 +171,7 @@ trait U2fTrait
             $this->request->getSession()->delete('U2f.authenticateRequest');
 
             return $this->redirectWithQuery([
-                'action' => 'u2fAuthenticate'
+                'action' => 'u2fAuthenticate',
             ]);
         }
     }
@@ -179,7 +179,7 @@ trait U2fTrait
     /**
      * Create a u2f lib
      *
-     * @return U2F
+     * @return \u2flib_server\U2F
      * @throws \u2flib_server\Error
      */
     protected function createU2fLib()
@@ -199,7 +199,7 @@ trait U2fTrait
         $data = [
             'valid' => false,
             'user' => null,
-            'registration' => null
+            'registration' => null,
         ];
         $user = $this->request->getSession()->read('U2f.User');
         if (!isset($user['id'])) {

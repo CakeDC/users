@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -19,11 +20,10 @@ use Cake\Utility\Hash;
  */
 class Facebook extends AbstractMapper
 {
-
     /**
      * Url constants
      */
-    const FB_GRAPH_BASE_URL = 'https://graph.facebook.com/';
+    public const FB_GRAPH_BASE_URL = 'https://graph.facebook.com/';
 
     /**
      * Map for provider fields

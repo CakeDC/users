@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,7 +12,6 @@
 namespace CakeDC\Users\Auth;
 
 use Cake\Core\Configure;
-use Cake\Http\Exception\BadRequestException;
 
 /**
  * Default class to check if two factor authentication is enabled and required
@@ -37,7 +37,7 @@ class DefaultTwoFactorAuthenticationChecker implements TwoFactorAuthenticationCh
      *
      * @return bool
      */
-    public function isRequired(array $user = null)
+    public function isRequired(?array $user = null)
     {
         return !empty($user) && $this->isEnabled();
     }

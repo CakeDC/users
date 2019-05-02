@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -21,7 +22,6 @@ use Cake\Utility\Hash;
  */
 class LinkSocialBehavior extends Behavior
 {
-
     /**
      * Default configuration.
      *
@@ -32,10 +32,10 @@ class LinkSocialBehavior extends Behavior
     /**
      * Link an user account with a social account (facebook, google)
      *
-     * @param EntityInterface  $user User to link.
+     * @param \Cake\Datasource\EntityInterface $user User to link.
      * @param array $data Social account information.
      *
-     * @return EntityInterface
+     * @return \Cake\Datasource\EntityInterface
      */
     public function linkSocialAccount(EntityInterface $user, $data)
     {
@@ -44,14 +44,14 @@ class LinkSocialBehavior extends Behavior
         $socialAccount = $this->_table->SocialAccounts->find()
             ->where([
                 $alias . '.reference' => $reference,
-                $alias . '.provider' => Hash::get($data, 'provider')
+                $alias . '.provider' => Hash::get($data, 'provider'),
             ])->first();
 
         if ($socialAccount && $user->id !== $socialAccount->user_id) {
             $user->setErrors([
                 'social_accounts' => [
-                    '_existsIn' => __d('CakeDC/Users', 'Social account already associated to another user')
-                ]
+                    '_existsIn' => __d('CakeDC/Users', 'Social account already associated to another user'),
+                ],
             ]);
 
             return $user;
@@ -63,11 +63,11 @@ class LinkSocialBehavior extends Behavior
     /**
      * Create or update a new social account linking to the user.
      *
-     * @param EntityInterface  $user User to link.
+     * @param \Cake\Datasource\EntityInterface $user User to link.
      * @param array $data Social account information.
-     * @param EntityInterface $socialAccount to update or create.
+     * @param \Cake\Datasource\EntityInterface $socialAccount to update or create.
      *
-     * @return EntityInterface
+     * @return \Cake\Datasource\EntityInterface
      */
     protected function createOrUpdateSocialAccount(EntityInterface $user, $data, $socialAccount)
     {
@@ -105,10 +105,10 @@ class LinkSocialBehavior extends Behavior
     /**
      * Populate the social account
      *
-     * @param EntityInterface $socialAccount to populate.
+     * @param \Cake\Datasource\EntityInterface $socialAccount to populate.
      * @param array $data Social account information.
      *
-     * @return EntityInterface
+     * @return \Cake\Datasource\EntityInterface
      */
     protected function populateSocialAccount($socialAccount, $data)
     {

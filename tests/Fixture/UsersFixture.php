@@ -19,7 +19,6 @@ use Cake\TestSuite\Fixture\TestFixture;
  */
 class UsersFixture extends TestFixture
 {
-
     /**
      * Fields
      *
@@ -88,9 +87,9 @@ class UsersFixture extends TestFixture
                         'keyHandle' => 'fake key handle',
                         'publicKey' => 'afdoaj0-23u423-ad ujsf-as8-0-afsd',
                         'certificate' => '23jdsfoasdj0f9sa082304823423',
-                        'counter' => 1
-                    ]
-                ])
+                        'counter' => 1,
+                    ],
+                ]),
             ],
             [
                 'id' => '00000000-0000-0000-0000-000000000002',
@@ -110,7 +109,7 @@ class UsersFixture extends TestFixture
                 'is_superuser' => true,
                 'role' => 'admin',
                 'created' => '2015-06-24 17:33:54',
-                'modified' => '2015-06-24 17:33:54'
+                'modified' => '2015-06-24 17:33:54',
             ],
             [
                 'id' => '00000000-0000-0000-0000-000000000003',
@@ -131,7 +130,7 @@ class UsersFixture extends TestFixture
                 'is_superuser' => true,
                 'role' => 'admin',
                 'created' => '2015-06-24 17:33:54',
-                'modified' => '2015-06-24 17:33:54'
+                'modified' => '2015-06-24 17:33:54',
             ],
             [
                 'id' => '00000000-0000-0000-0000-000000000004',
@@ -152,7 +151,7 @@ class UsersFixture extends TestFixture
                 'is_superuser' => false,
                 'role' => 'Lorem ipsum dolor sit amet',
                 'created' => '2015-06-24 17:33:54',
-                'modified' => '2015-06-24 17:33:54'
+                'modified' => '2015-06-24 17:33:54',
             ],
             [
                 'id' => '00000000-0000-0000-0000-000000000005',
@@ -172,7 +171,7 @@ class UsersFixture extends TestFixture
                 'is_superuser' => false,
                 'role' => 'user',
                 'created' => '2015-06-24 17:33:54',
-                'modified' => '2015-06-24 17:33:54'
+                'modified' => '2015-06-24 17:33:54',
             ],
             [
                 'id' => '00000000-0000-0000-0000-000000000006',
@@ -192,7 +191,7 @@ class UsersFixture extends TestFixture
                 'is_superuser' => false,
                 'role' => 'user',
                 'created' => '2015-06-24 17:33:54',
-                'modified' => '2015-06-24 17:33:54'
+                'modified' => '2015-06-24 17:33:54',
             ],
             [
                 'id' => '00000000-0000-0000-0000-000000000007',
@@ -212,7 +211,7 @@ class UsersFixture extends TestFixture
                 'is_superuser' => false,
                 'role' => 'Lorem ipsum dolor sit amet',
                 'created' => '2015-06-24 17:33:54',
-                'modified' => '2015-06-24 17:33:54'
+                'modified' => '2015-06-24 17:33:54',
             ],
             [
                 'id' => '00000000-0000-0000-0000-000000000008',
@@ -232,7 +231,7 @@ class UsersFixture extends TestFixture
                 'is_superuser' => false,
                 'role' => 'Lorem ipsum dolor sit amet',
                 'created' => '2015-06-24 17:33:54',
-                'modified' => '2015-06-24 17:33:54'
+                'modified' => '2015-06-24 17:33:54',
             ],
             [
                 'id' => '00000000-0000-0000-0000-000000000009',
@@ -252,7 +251,7 @@ class UsersFixture extends TestFixture
                 'is_superuser' => false,
                 'role' => 'Lorem ipsum dolor sit amet',
                 'created' => '2015-06-24 17:33:54',
-                'modified' => '2015-06-24 17:33:54'
+                'modified' => '2015-06-24 17:33:54',
             ],
             [
                 'id' => '00000000-0000-0000-0000-000000000010',
@@ -272,7 +271,7 @@ class UsersFixture extends TestFixture
                 'is_superuser' => false,
                 'role' => 'Lorem ipsum dolor sit amet',
                 'created' => '2015-06-24 17:33:54',
-                'modified' => '2015-06-24 17:33:54'
+                'modified' => '2015-06-24 17:33:54',
             ],
         ];
 

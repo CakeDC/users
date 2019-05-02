@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -23,7 +23,6 @@ use Cake\TestSuite\TestCase;
  */
 class RegisterBehaviorTest extends TestCase
 {
-
     /**
      * Fixtures
      *
@@ -48,7 +47,7 @@ class RegisterBehaviorTest extends TestCase
         TransportFactory::setConfig('test', ['className' => 'Debug']);
         Email::setConfig('default', [
             'transport' => 'test',
-            'from' => 'cakedc@example.com'
+            'from' => 'cakedc@example.com',
         ]);
     }
 
@@ -79,7 +78,7 @@ class RegisterBehaviorTest extends TestCase
             'password_confirm' => 'password',
             'first_name' => 'test',
             'last_name' => 'user',
-            'tos' => 1
+            'tos' => 1,
         ];
         $result = $this->Table->register($this->Table->newEntity([]), $user, ['token_expiration' => 3600, 'validate_email' => 0]);
         $this->assertTrue($result->active);
@@ -111,7 +110,7 @@ class RegisterBehaviorTest extends TestCase
             'password_confirm' => 'password',
             'first_name' => 'test',
             'last_name' => 'user',
-            'tos' => 1
+            'tos' => 1,
         ];
         $result = $this->Table->register($this->Table->newEntity([]), $user, ['token_expiration' => 3600, 'validate_email' => 1]);
         $this->assertNotEmpty($result);
@@ -140,7 +139,7 @@ class RegisterBehaviorTest extends TestCase
             'password_confirm' => 'password',
             'first_name' => 'test',
             'last_name' => 'user',
-            'tos' => 1
+            'tos' => 1,
         ];
 
         $this->Behavior->expects($this->never())
@@ -282,12 +281,12 @@ class RegisterBehaviorTest extends TestCase
             'password_confirm' => 'password',
             'first_name' => 'test',
             'last_name' => 'user',
-            'tos' => 1
+            'tos' => 1,
         ];
         Configure::write('Users.Registration.defaultRole', false);
         $result = $this->Table->register($this->Table->newEntity([]), $user, [
             'token_expiration' => 3600,
-            'validate_email' => 0
+            'validate_email' => 0,
         ]);
         $this->assertSame('user', $result['role']);
     }
@@ -306,7 +305,7 @@ class RegisterBehaviorTest extends TestCase
             'password_confirm' => 'password',
             'first_name' => 'test',
             'last_name' => 'user',
-            'tos' => 1
+            'tos' => 1,
         ];
         Configure::write('Users.Registration.defaultRole', 'emperor');
         $result = $this->Table->register($this->Table->newEntity([]), $user, [

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -19,11 +20,10 @@ use Cake\Utility\Hash;
  */
 class Twitter extends AbstractMapper
 {
-
     /**
      * Url constants
      */
-    const TWITTER_BASE_URL = 'https://twitter.com/';
+    public const TWITTER_BASE_URL = 'https://twitter.com/';
 
     /**
      * Map for provider fields
@@ -38,7 +38,7 @@ class Twitter extends AbstractMapper
         'email' => 'email',
         'avatar' => 'imageUrl',
         'bio' => 'description',
-        'validated' => 'validated'
+        'validated' => 'validated',
     ];
 
     /**

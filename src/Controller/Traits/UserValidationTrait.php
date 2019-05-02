@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,12 +12,11 @@
 
 namespace CakeDC\Users\Controller\Traits;
 
+use Cake\Core\Configure;
 use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Exception\TokenExpiredException;
 use CakeDC\Users\Exception\UserAlreadyActiveException;
 use CakeDC\Users\Exception\UserNotFoundException;
-use Cake\Core\Configure;
-use Cake\Http\Response;
 use Exception;
 
 /**
@@ -31,7 +31,7 @@ trait UserValidationTrait
      *
      * @param string $type 'email' or 'password' to validate the user
      * @param string $token token
-     * @return Response
+     * @return \Cake\Http\Response
      */
     public function validate($type = null, $token = null)
     {
@@ -98,7 +98,7 @@ trait UserValidationTrait
                 'expiration' => Configure::read('Users.Token.expiration'),
                 'checkActive' => true,
                 'sendEmail' => true,
-                'type' => 'email'
+                'type' => 'email',
             ])) {
                 $event = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_RESEND_TOKEN_VALIDATION);
                 $result = $event->getResult();

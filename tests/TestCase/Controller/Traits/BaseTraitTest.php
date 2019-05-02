@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -67,7 +68,7 @@ abstract class BaseTraitTest extends TestCase
             Email::drop('default');
             Email::setConfig('default', [
                 'transport' => 'test',
-                'from' => 'cakedc@example.com'
+                'from' => 'cakedc@example.com',
             ]);
         }
     }
@@ -203,7 +204,7 @@ abstract class BaseTraitTest extends TestCase
      * @param array $result array of data
      * @return void
      */
-    protected function _mockDispatchEvent(Event $event = null, $result = [])
+    protected function _mockDispatchEvent(?Event $event = null, $result = [])
     {
         if (is_null($event)) {
             $event = new Event('cool-name-here');

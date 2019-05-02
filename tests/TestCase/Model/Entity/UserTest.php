@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,11 +12,11 @@
 
 namespace CakeDC\Users\Test\TestCase\Model\Entity;
 
-use CakeDC\Users\Model\Entity\User;
 use Cake\Auth\DefaultPasswordHasher;
 use Cake\I18n\I18n;
 use Cake\I18n\Time;
 use Cake\TestSuite\TestCase;
+use CakeDC\Users\Model\Entity\User;
 
 /**
  * Users\Model\Entity\User Test Case
@@ -110,14 +111,14 @@ class UserTest extends TestCase
     {
         $pw = 'password';
         $this->User->password = $pw;
-        $this->assertTrue((new DefaultPasswordHasher)->check($pw, $this->User->password));
+        $this->assertTrue((new DefaultPasswordHasher())->check($pw, $this->User->password));
     }
 
     public function testConfirmPasswordsAreEncrypted()
     {
         $pw = 'password';
         $this->User->confirm_password = $pw;
-        $this->assertTrue((new DefaultPasswordHasher)->check($pw, $this->User->confirm_password));
+        $this->assertTrue((new DefaultPasswordHasher())->check($pw, $this->User->confirm_password));
     }
 
     /**
@@ -128,7 +129,7 @@ class UserTest extends TestCase
     public function testCheckPassword()
     {
         $pw = 'password';
-        $this->assertTrue($this->User->checkPassword($pw, (new DefaultPasswordHasher)->hash($pw)));
+        $this->assertTrue($this->User->checkPassword($pw, (new DefaultPasswordHasher())->hash($pw)));
         $this->assertFalse($this->User->checkPassword($pw, 'fail'));
     }
 
@@ -143,7 +144,7 @@ class UserTest extends TestCase
         $avatar = 'first-avatar';
         $this->User->social_accounts = [
             ['avatar' => 'first-avatar'],
-            ['avatar' => 'second-avatar']
+            ['avatar' => 'second-avatar'],
         ];
         $this->assertSame($avatar, $this->User->avatar);
     }

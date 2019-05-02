@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -25,7 +26,7 @@ class SocialBehaviorTest extends TestCase
      */
     public $fixtures = [
         'plugin.CakeDC/Users.SocialAccounts',
-        'plugin.CakeDC/Users.Users'
+        'plugin.CakeDC/Users.Users',
     ];
 
     /**
@@ -142,23 +143,23 @@ class SocialBehaviorTest extends TestCase
                         'email' => 'email@example.com',
                         'picture' => [
                             'data' => [
-                                'url' => 'data-url'
-                            ]
-                        ]
+                                'url' => 'data-url',
+                            ],
+                        ],
                     ],
                     'credentials' => [
                         'token' => 'token',
                         'secret' => null,
-                        'expires' => 1458423682
+                        'expires' => 1458423682,
                     ],
                     'validated' => true,
                     'link' => 'facebook-link',
-                    'provider' => 'Facebook'
+                    'provider' => 'Facebook',
                 ],
                 'options' => [
                     'use_email' => true,
                     'validate_email' => true,
-                    'token_expiration' => 3600
+                    'token_expiration' => 3600,
                 ],
                 'result' => [
                     'first_name' => 'First name',
@@ -181,13 +182,13 @@ class SocialBehaviorTest extends TestCase
                             'token_secret' => null,
                             'token_expires' => '2016-03-19 21:41:22',
                             'data' => '-',
-                            'active' => true
-                        ]
+                            'active' => true,
+                        ],
                     ],
                     'activation_date' => '2016-01-20 15:45:09',
                     'active' => true,
-                ]
-                ]
+                ],
+                ],
 
         ];
     }
@@ -223,14 +224,14 @@ class SocialBehaviorTest extends TestCase
             'provider' => [
                 'data' => [
                     'id' => 'reference-2-1',
-                    'provider' => 'Facebook'
+                    'provider' => 'Facebook',
                 ],
                 'options' => [
                     'use_email' => true,
                     'validate_email' => true,
-                    'token_expiration' => 3600
+                    'token_expiration' => 3600,
                 ],
-            ]
+            ],
 
         ];
     }
@@ -264,14 +265,14 @@ class SocialBehaviorTest extends TestCase
             'provider' => [
                 'data' => [
                     'id' => 'reference-1-1234',
-                    'provider' => 'Facebook'
+                    'provider' => 'Facebook',
                 ],
                 'options' => [
                     'use_email' => true,
                     'validate_email' => true,
-                    'token_expiration' => 3600
+                    'token_expiration' => 3600,
                 ],
-            ]
+            ],
 
         ];
     }
@@ -305,14 +306,14 @@ class SocialBehaviorTest extends TestCase
             'provider' => [
                 'data' => [
                     'id' => 'reference-1-1234',
-                    'provider' => 'Twitter'
+                    'provider' => 'Twitter',
                 ],
                 'options' => [
                     'use_email' => true,
                     'validate_email' => true,
-                    'token_expiration' => 3600
+                    'token_expiration' => 3600,
                 ],
-            ]
+            ],
 
         ];
     }
@@ -344,14 +345,14 @@ class SocialBehaviorTest extends TestCase
                     'last_name' => 'Last name',
                     'validated' => true,
                     'link' => 'facebook-link',
-                    'provider' => 'Facebook'
+                    'provider' => 'Facebook',
                 ],
                 'options' => [
                     'use_email' => true,
                     'validate_email' => true,
-                    'token_expiration' => 3600
+                    'token_expiration' => 3600,
                 ],
-            ]
+            ],
 
         ];
     }
@@ -381,7 +382,7 @@ class SocialBehaviorTest extends TestCase
         return [
             ['username', 'username'],
             ['user-1', 'user-10'],
-            ['user-5', 'user-50']
+            ['user-5', 'user-50'],
 
         ];
     }

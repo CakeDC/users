@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -31,7 +32,7 @@ class Tumblr extends AbstractMapper
         'avatar' => 'imageUrl',
         'bio' => 'extra.blogs.0.description',
         'validated' => 'validated',
-        'link' => 'extra.blogs.0.url'
+        'link' => 'extra.blogs.0.url',
     ];
 
     /**

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -31,7 +32,7 @@ class Google extends AbstractMapper
         'first_name' => 'given_name',
         'last_name' => 'family_name',
         'bio' => 'aboutMe',
-        'link' => 'profile'
+        'link' => 'profile',
     ];
 
     /**

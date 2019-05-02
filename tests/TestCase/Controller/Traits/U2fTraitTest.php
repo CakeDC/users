@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,11 +12,11 @@
 
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
-use CakeDC\Users\Auth\DefaultU2fAuthenticationChecker;
 use Cake\Core\Configure;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 use Cake\ORM\TableRegistry;
+use CakeDC\Users\Auth\DefaultU2fAuthenticationChecker;
 use u2flib_server\RegisterRequest;
 use u2flib_server\Registration;
 use u2flib_server\U2F;
@@ -101,7 +102,7 @@ class U2fTraitTest extends BaseTraitTest
         return [
             [$empty, ['action' => 'login']],
             [$withWhoutRegistration, ['action' => 'u2fRegister']],
-            [$withRegistration, ['action' => 'u2fAuthenticate']]
+            [$withRegistration, ['action' => 'u2fAuthenticate']],
         ];
     }
     /**
@@ -119,7 +120,7 @@ class U2fTraitTest extends BaseTraitTest
             ->setMethods(['getSession'])
             ->getMock();
         $response = new Response([
-            'body' => time()
+            'body' => time(),
         ]);
         $this->Trait->expects($this->once())
             ->method('redirect')
@@ -166,7 +167,7 @@ class U2fTraitTest extends BaseTraitTest
             ->with(
                 $this->equalTo([
                 'registerRequest' => $registerRequest,
-                'signs' => $signs
+                'signs' => $signs,
                 ])
             );
         $this->Trait->expects($this->never())
@@ -200,7 +201,7 @@ class U2fTraitTest extends BaseTraitTest
 
         return [
             [$empty, ['action' => 'login']],
-            [$withRegistration, ['action' => 'u2fAuthenticate']]
+            [$withRegistration, ['action' => 'u2fAuthenticate']],
         ];
     }
 
@@ -229,7 +230,7 @@ class U2fTraitTest extends BaseTraitTest
             'U2f.User' => $userData,
         ]);
         $response = new Response([
-            'body' => time()
+            'body' => time(),
         ]);
         $this->Trait->expects($this->once())
             ->method('redirect')
@@ -268,7 +269,7 @@ class U2fTraitTest extends BaseTraitTest
         ];
         $registerResponse = json_decode(json_encode([
             'fakeA' => 'fakevaluea',
-            'fakeB' => 'fakevalueb'
+            'fakeB' => 'fakevalueb',
         ]));
         $registration = new Registration();
         $registration->certificate = "user registration cert " . time();
@@ -286,7 +287,7 @@ class U2fTraitTest extends BaseTraitTest
                     'id' => '00000000-0000-0000-0000-000000000002',
                     'username' => 'user-2',
                 ],
-                'registerRequest' => json_encode($registerRequest)
+                'registerRequest' => json_encode($registerRequest),
             ],
         ]);
         $u2fLib->expects($this->once())
@@ -309,7 +310,7 @@ class U2fTraitTest extends BaseTraitTest
             ->method('redirect')
             ->with(
                 $this->equalTo([
-                    'action' => 'u2fAuthenticate'
+                    'action' => 'u2fAuthenticate',
                 ])
             )->will($this->returnValue($response));
 
@@ -361,7 +362,7 @@ class U2fTraitTest extends BaseTraitTest
         $registerRequest = json_decode(json_encode($registerRequest));
         $registerResponse = json_decode(json_encode([
             'fakeA' => 'fakevaluea',
-            'fakeB' => 'fakevalueb'
+            'fakeB' => 'fakevalueb',
         ]));
         $registration = new Registration();
         $registration->certificate = "user registration cert " . time();
@@ -379,7 +380,7 @@ class U2fTraitTest extends BaseTraitTest
                     'id' => '00000000-0000-0000-0000-000000000002',
                     'username' => 'user-2',
                 ],
-                'registerRequest' => json_encode($registerRequest)
+                'registerRequest' => json_encode($registerRequest),
             ],
         ]);
         $u2fLib->expects($this->once())
@@ -402,7 +403,7 @@ class U2fTraitTest extends BaseTraitTest
             ->method('redirect')
             ->with(
                 $this->equalTo([
-                    'action' => 'u2fRegister'
+                    'action' => 'u2fRegister',
                 ])
             )->will($this->returnValue($response));
 
@@ -466,7 +467,7 @@ class U2fTraitTest extends BaseTraitTest
             ->setMethods(['getSession'])
             ->getMock();
         $response = new Response([
-            'body' => time()
+            'body' => time(),
         ]);
         $this->Trait->expects($this->once())
             ->method('redirect')
@@ -504,10 +505,10 @@ class U2fTraitTest extends BaseTraitTest
             'keyHandle' => 'fake key handle',
             'publicKey' => 'afdoaj0-23u423-ad ujsf-as8-0-afsd',
             'certificate' => '23jdsfoasdj0f9sa082304823423',
-            'counter' => 1
+            'counter' => 1,
         ];
         $registrations = [
-            (object)$reg1
+            (object)$reg1,
         ];
         $u2fLib->expects($this->once())
             ->method('getAuthenticateData')
@@ -523,7 +524,7 @@ class U2fTraitTest extends BaseTraitTest
             ->method('set')
             ->with(
                 $this->equalTo([
-                    'authenticateRequest' => $signs
+                    'authenticateRequest' => $signs,
                 ])
             );
         $this->Trait->expects($this->never())
@@ -583,7 +584,7 @@ class U2fTraitTest extends BaseTraitTest
         ]));
         $authenticateResponse = json_decode(json_encode([
             'fakeA' => 'fakevaluea',
-            'fakeB' => 'fakevalueb'
+            'fakeB' => 'fakevalueb',
         ]));
 
         $this->Trait->request->expects($this->once())
@@ -596,7 +597,7 @@ class U2fTraitTest extends BaseTraitTest
                     'id' => '00000000-0000-0000-0000-000000000001',
                     'username' => 'user-1',
                 ],
-                'authenticateRequest' => json_encode($signs)
+                'authenticateRequest' => json_encode($signs),
             ],
         ]);
 
@@ -672,7 +673,7 @@ class U2fTraitTest extends BaseTraitTest
         ]));
         $authenticateResponse = json_decode(json_encode([
             'fakeA' => 'fakevaluea',
-            'fakeB' => 'fakevalueb'
+            'fakeB' => 'fakevalueb',
         ]));
 
         $this->Trait->request->expects($this->once())
@@ -686,7 +687,7 @@ class U2fTraitTest extends BaseTraitTest
                     'id' => '00000000-0000-0000-0000-000000000001',
                     'username' => 'user-1',
                 ],
-                'authenticateRequest' => json_encode($signs)
+                'authenticateRequest' => json_encode($signs),
             ],
         ]);
 

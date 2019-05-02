@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -26,7 +27,7 @@ class SocialAccountsControllerTest extends TestCase
      */
     public $fixtures = [
         'plugin.CakeDC/Users.SocialAccounts',
-        'plugin.CakeDC/Users.Users'
+        'plugin.CakeDC/Users.Users',
     ];
 
     /**
@@ -48,7 +49,7 @@ class SocialAccountsControllerTest extends TestCase
         Email::drop('default');
         Email::setConfig('default', [
             'transport' => 'test',
-            'from' => 'cakedc@example.com'
+            'from' => 'cakedc@example.com',
         ]);
 
         $request = new ServerRequest(['url' => '/users/users/index']);
@@ -59,7 +60,7 @@ class SocialAccountsControllerTest extends TestCase
                 ->setConstructorArgs([$request, null, 'SocialAccounts'])
                 ->getMock();
         $this->Controller->SocialAccounts = $this->getMockForModel('CakeDC\Users.SocialAccounts', ['sendSocialValidationEmail'], [
-            'className' => 'CakeDC\Users\Model\Table\SocialAccountsTable'
+            'className' => 'CakeDC\Users\Model\Table\SocialAccountsTable',
         ]);
     }
 

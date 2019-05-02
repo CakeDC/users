@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,19 +12,17 @@
 
 namespace CakeDC\Users\Test\TestCase\View\Helper;
 
-use CakeDC\Users\View\Helper\AuthLinkHelper;
-use CakeDC\Users\View\Helper\UserHelper;
 use Cake\Event\Event;
 use Cake\Event\EventManager;
 use Cake\TestSuite\TestCase;
 use Cake\View\View;
+use CakeDC\Users\View\Helper\AuthLinkHelper;
 
 /**
  * CakeDC\Users\View\Helper\AuthLinkHelper Test Case
  */
 class AuthLinkHelperTest extends TestCase
 {
-
     /**
      * Test subject
      *

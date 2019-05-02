@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,7 +12,6 @@
 namespace CakeDC\Users\Auth;
 
 use Cake\Core\Configure;
-use Cake\Http\Exception\BadRequestException;
 
 /**
  * Factory for two authentication checker
@@ -23,7 +23,7 @@ class U2fAuthenticationCheckerFactory
     /**
      * Get the two factor authentication checker
      *
-     * @return U2fAuthenticationCheckerInterface
+     * @return \CakeDC\Users\Auth\U2fAuthenticationCheckerInterface
      */
     public function build()
     {

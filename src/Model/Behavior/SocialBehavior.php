@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,15 +12,15 @@
 
 namespace CakeDC\Users\Model\Behavior;
 
+use Cake\Core\Configure;
+use Cake\Datasource\EntityInterface;
+use Cake\Event\EventDispatcherTrait;
+use Cake\Utility\Hash;
 use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Traits\RandomStringTrait;
-use Cake\Core\Configure;
-use Cake\Datasource\EntityInterface;
-use Cake\Event\EventDispatcherTrait;
-use Cake\Utility\Hash;
 use DateTime;
 use InvalidArgumentException;
 
@@ -59,10 +60,10 @@ class SocialBehavior extends BaseTokenBehavior
      *
      * @param array $data Array social login.
      * @param array $options Array option data.
-     * @throws InvalidArgumentException
-     * @throws UserNotActiveException
-     * @throws AccountNotActiveException
-     * @return bool|EntityInterface|mixed
+     * @throws \InvalidArgumentException
+     * @throws \CakeDC\Users\Exception\UserNotActiveException
+     * @throws \CakeDC\Users\Exception\AccountNotActiveException
+     * @return bool|\Cake\Datasource\EntityInterface|mixed
      */
     public function socialLogin(array $data, array $options)
     {
@@ -70,7 +71,7 @@ class SocialBehavior extends BaseTokenBehavior
         $existingAccount = $this->_table->SocialAccounts->find()
                 ->where([
                     'SocialAccounts.reference' => $reference,
-                    'SocialAccounts.provider' => Hash::get($data, 'provider')
+                    'SocialAccounts.provider' => Hash::get($data, 'provider'),
                 ])
                 ->contain(['Users'])
                 ->first();
@@ -89,13 +90,13 @@ class SocialBehavior extends BaseTokenBehavior
             if (!$existingAccount->active) {
                 throw new AccountNotActiveException([
                     $existingAccount->provider,
-                    $existingAccount->reference
+                    $existingAccount->reference,
                 ]);
             }
             if (!$user->active) {
                 throw new UserNotActiveException([
                     $existingAccount->provider,
-                    $existingAccount->$user
+                    $existingAccount->$user,
                 ]);
             }
         }
@@ -108,8 +109,8 @@ class SocialBehavior extends BaseTokenBehavior
      *
      * @param array $data Array social user.
      * @param array $options Array option data.
-     * @throws MissingEmailException
-     * @return bool|EntityInterface|mixed result of the save operation
+     * @throws \CakeDC\Users\Exception\MissingEmailException
+     * @return bool|\Cake\Datasource\EntityInterface|mixed result of the save operation
      */
     protected function _createSocialUser($data, $options = [])
     {
@@ -147,11 +148,11 @@ class SocialBehavior extends BaseTokenBehavior
      * data to create a new one
      *
      * @param array $data Array social login.
-     * @param EntityInterface $existingUser user data.
+     * @param \Cake\Datasource\EntityInterface $existingUser user data.
      * @param string $useEmail email to use.
      * @param string $validateEmail email to validate.
      * @param string $tokenExpiration token_expires data.
-     * @return EntityInterface
+     * @return \Cake\Datasource\EntityInterface
      * @todo refactor
      */
     protected function _populateUser($data, $existingUser, $useEmail, $validateEmail, $tokenExpiration)

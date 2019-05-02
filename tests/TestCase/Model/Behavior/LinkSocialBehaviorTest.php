@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,18 +12,16 @@
 
 namespace CakeDC\Users\Test\TestCase\Model\Behavior;
 
-use CakeDC\Users\Model\Behavior\LinkSocialBehavior;
-use CakeDC\Users\Model\Table\UsersTable;
 use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use CakeDC\Users\Model\Behavior\LinkSocialBehavior;
 
 /**
  * App\Model\Behavior\LinkSocialBehavior Test Case
  */
 class LinkSocialBehaviorTest extends TestCase
 {
-
     /**
      * Test subject
      *
@@ -37,7 +36,7 @@ class LinkSocialBehaviorTest extends TestCase
      */
     public $fixtures = [
         'plugin.CakeDC/Users.SocialAccounts',
-        'plugin.CakeDC/Users.Users'
+        'plugin.CakeDC/Users.Users',
     ];
 
     /**
@@ -77,7 +76,7 @@ class LinkSocialBehaviorTest extends TestCase
     public function testlinkSocialAccountFacebookProvider($data, $userId, $result)
     {
         $user = $this->Table->get($userId, [
-            'contain' => 'SocialAccounts'
+            'contain' => 'SocialAccounts',
         ]);
         $resultUser = $this->Behavior->linkSocialAccount($user, $data);
         $this->assertInstanceOf('\CakeDC\Users\Model\Entity\User', $resultUser);
@@ -122,18 +121,18 @@ class LinkSocialBehaviorTest extends TestCase
                         'email' => 'user-1@test.com',
                         'picture' => [
                             'data' => [
-                                'url' => 'data-url'
-                            ]
-                        ]
+                                'url' => 'data-url',
+                            ],
+                        ],
                     ],
                     'credentials' => [
                         'token' => 'token',
                         'secret' => null,
-                        'expires' => 1458423682
+                        'expires' => 1458423682,
                     ],
                     'validated' => true,
                     'link' => 'facebook-link-15579',
-                    'provider' => 'Facebook'
+                    'provider' => 'Facebook',
                 ],
                 'user' => '00000000-0000-0000-0000-000000000001',
                 'result' => [
@@ -147,10 +146,10 @@ class LinkSocialBehaviorTest extends TestCase
                     'token_secret' => null,
                     'token_expires' => $tokenExpires,
                     'user_id' => '00000000-0000-0000-0000-000000000001',
-                    'active' => true
+                    'active' => true,
 
-                ]
-                ]
+                ],
+                ],
 
         ];
     }
@@ -180,10 +179,10 @@ class LinkSocialBehaviorTest extends TestCase
             'social_accounts' => [
                 [
                     'token' => [
-                        '_empty' => 'This field cannot be left empty'
-                    ]
-                ]
-            ]
+                        '_empty' => 'This field cannot be left empty',
+                    ],
+                ],
+            ],
         ];
         $this->assertEquals($expected, $actual);
 
@@ -219,18 +218,18 @@ class LinkSocialBehaviorTest extends TestCase
                         'email' => 'user-1@test.com',
                         'picture' => [
                             'data' => [
-                                'url' => 'data-url'
-                            ]
-                        ]
+                                'url' => 'data-url',
+                            ],
+                        ],
                     ],
                     'credentials' => [
                         'token' => '',
                         'secret' => null,
-                        'expires' => 1458423682
+                        'expires' => 1458423682,
                     ],
                     'validated' => true,
                     'link' => 'facebook-link-15579',
-                    'provider' => 'Facebook'
+                    'provider' => 'Facebook',
                 ],
                 'user' => '00000000-0000-0000-0000-000000000001',
                 'result' => [
@@ -244,10 +243,10 @@ class LinkSocialBehaviorTest extends TestCase
                     'token_secret' => null,
                     'token_expires' => $tokenExpires,
                     'user_id' => '00000000-0000-0000-0000-000000000001',
-                    'active' => true
+                    'active' => true,
 
-                ]
-                ]
+                ],
+                ],
 
         ];
     }
@@ -271,8 +270,8 @@ class LinkSocialBehaviorTest extends TestCase
         $this->assertFalse($resultUser->has('social_accounts'));
         $expected = [
             'social_accounts' => [
-                '_existsIn' => __d('CakeDC/Users', 'Social account already associated to another user')
-            ]
+                '_existsIn' => __d('CakeDC/Users', 'Social account already associated to another user'),
+            ],
         ];
         $actual = $user->getErrors();
         $this->assertEquals($expected, $actual);
@@ -280,11 +279,11 @@ class LinkSocialBehaviorTest extends TestCase
         //Se for o usuário que já esta associado então okay
         $socialAccount = $this->Table->SocialAccounts->find()->where([
             'reference' => $data['id'],
-            'provider' => $data['provider']
+            'provider' => $data['provider'],
         ])->firstOrFail();
 
         $userBase = $this->Table->get('00000000-0000-0000-0000-000000000002', [
-            'contain' => ['SocialAccounts']
+            'contain' => ['SocialAccounts'],
         ]);
         $resultUser = $this->Behavior->linkSocialAccount($userBase, $data);
         $this->assertInstanceOf('\CakeDC\Users\Model\Entity\User', $resultUser);
@@ -328,18 +327,18 @@ class LinkSocialBehaviorTest extends TestCase
                             'email' => 'email@example.com',
                             'picture' => [
                                 'data' => [
-                                    'url' => 'data-url'
-                                ]
-                            ]
+                                    'url' => 'data-url',
+                                ],
+                            ],
                         ],
                         'credentials' => [
                             'token' => 'token',
                             'secret' => null,
-                            'expires' => 1458423682
+                            'expires' => 1458423682,
                         ],
                         'validated' => true,
                         'link' => 'facebook-link-15579',
-                        'provider' => 'Facebook'
+                        'provider' => 'Facebook',
                     ],
                     'user' => '00000000-0000-0000-0000-000000000001',
                     'result' => [
@@ -354,9 +353,9 @@ class LinkSocialBehaviorTest extends TestCase
                         'token_secret' => null,
                         'token_expires' => $tokenExpires,
                         'user_id' => '00000000-0000-0000-0000-000000000002',
-                        'active' => true
-                    ]
-                ]
+                        'active' => true,
+                    ],
+                ],
 
         ];
     }

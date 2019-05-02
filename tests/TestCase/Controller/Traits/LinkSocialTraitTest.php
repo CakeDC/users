@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,15 +12,12 @@
 
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
-use CakeDC\Users\Controller\Traits\LinkSocialTrait;
 use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\ServerRequest;
 use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
-use Cake\TestSuite\TestCase;
-use League\OAuth2\Client\Provider\Facebook;
 use League\OAuth2\Client\Provider\FacebookUser;
 use League\OAuth2\Client\Token\AccessToken;
 
@@ -39,7 +37,7 @@ class LinkSocialTraitTest extends BaseTraitTest
      */
     public $fixtures = [
         'plugin.CakeDC/Users.SocialAccounts',
-        'plugin.CakeDC/Users.Users'
+        'plugin.CakeDC/Users.Users',
     ];
 
     /**
@@ -151,7 +149,7 @@ class LinkSocialTraitTest extends BaseTraitTest
                         'linkSocialUri' => '/link-social/facebook',
                         'callbackLinkSocialUri' => '/callback-link-social/facebook',
                         'clientId' => 'testclientidtestclientid',
-                        'clientSecret' => 'testclientsecrettestclientsecret'
+                        'clientSecret' => 'testclientsecrettestclientsecret',
                     ],
                     'authParams' => ['scope' => ['public_profile', 'email', 'user_birthday', 'user_gender', 'user_link']],
                 ])
@@ -276,13 +274,13 @@ class LinkSocialTraitTest extends BaseTraitTest
                 ->method('getQueryParams')
                 ->will($this->returnValue([
                     'code' => '99999000222220',
-                    'state' => 'a393j2942789'
+                    'state' => 'a393j2942789',
                 ]));
 
         $this->_mockSession([
             'SocialLink' => [
-                'oauth2state' => 'a393j2942789'
-            ]
+                'oauth2state' => 'a393j2942789',
+            ],
         ]);
         $this->_mockAuthLoggedIn();
         $this->_mockDispatchEvent(new Event('event'));
@@ -297,7 +295,7 @@ class LinkSocialTraitTest extends BaseTraitTest
         $fbToken = new AccessToken([
             'access_token' => 'token',
             'tokenSecret' => null,
-            'expires' => 1458423682
+            'expires' => 1458423682,
         ]);
         $ProviderMock = $this->getMockBuilder('League\OAuth2\Client\Provider\Facebook')
             ->setMethods(['getAccessToken', 'getResourceOwner'])
@@ -309,7 +307,7 @@ class LinkSocialTraitTest extends BaseTraitTest
             ->with(
                 $this->equalTo('authorization_code'),
                 $this->equalTo([
-                    'code' => '99999000222220'
+                    'code' => '99999000222220',
                 ])
             )->will($this->returnValue($fbToken));
 
@@ -341,7 +339,7 @@ class LinkSocialTraitTest extends BaseTraitTest
                         'linkSocialUri' => '/link-social/facebook',
                         'callbackLinkSocialUri' => '/callback-link-social/facebook',
                         'clientId' => 'testclientidtestclientid',
-                        'clientSecret' => 'testclientsecrettestclientsecret'
+                        'clientSecret' => 'testclientsecrettestclientsecret',
                     ],
                     'authParams' => ['scope' => ['public_profile', 'email', 'user_birthday', 'user_gender', 'user_link']],
                 ])
@@ -364,7 +362,7 @@ class LinkSocialTraitTest extends BaseTraitTest
             'token' => 'token',
             'token_secret' => null,
             'user_id' => '00000000-0000-0000-0000-000000000001',
-            'active' => true
+            'active' => true,
         ];
         foreach ($expected as $property => $value) {
             $check = $actual->$property;
@@ -385,8 +383,8 @@ class LinkSocialTraitTest extends BaseTraitTest
         $user = TableRegistry::getTableLocator()->get('CakeDC/Users.Users')->get('00000000-0000-0000-0000-000000000001');
         $user->setErrors([
             'social_accounts' => [
-                '_existsIn' => __d('CakeDC/Users', 'Social account already associated to another user')
-            ]
+                '_existsIn' => __d('CakeDC/Users', 'Social account already associated to another user'),
+            ],
         ]);
         $Table = $this->getMockForModel('CakeDC/Users.Users', ['linkSocialAccount', 'get']);
         $Table->setAlias('Users');
@@ -422,13 +420,13 @@ class LinkSocialTraitTest extends BaseTraitTest
                 ->method('getQueryParams')
                 ->will($this->returnValue([
                     'code' => '99999000222220',
-                    'state' => 'a393j2942789'
+                    'state' => 'a393j2942789',
                 ]));
 
         $this->_mockSession([
             'SocialLink' => [
-                'oauth2state' => 'a393j2942789'
-            ]
+                'oauth2state' => 'a393j2942789',
+            ],
         ]);
         $this->_mockAuthLoggedIn();
         $this->_mockDispatchEvent(new Event('event'));
@@ -443,7 +441,7 @@ class LinkSocialTraitTest extends BaseTraitTest
         $fbToken = new AccessToken([
             'access_token' => 'token',
             'tokenSecret' => null,
-            'expires' => 1458423682
+            'expires' => 1458423682,
         ]);
         $ProviderMock = $this->getMockBuilder('League\OAuth2\Client\Provider\Facebook')
             ->setMethods(['getAccessToken', 'getResourceOwner'])
@@ -455,7 +453,7 @@ class LinkSocialTraitTest extends BaseTraitTest
             ->with(
                 $this->equalTo('authorization_code'),
                 $this->equalTo([
-                    'code' => '99999000222220'
+                    'code' => '99999000222220',
                 ])
             )->will($this->returnValue($fbToken));
 
@@ -487,7 +485,7 @@ class LinkSocialTraitTest extends BaseTraitTest
                         'linkSocialUri' => '/link-social/facebook',
                         'callbackLinkSocialUri' => '/callback-link-social/facebook',
                         'clientId' => 'testclientidtestclientid',
-                        'clientSecret' => 'testclientsecrettestclientsecret'
+                        'clientSecret' => 'testclientsecrettestclientsecret',
                     ],
                     'authParams' => ['scope' => ['public_profile', 'email', 'user_birthday', 'user_gender', 'user_link']],
                 ])
@@ -535,13 +533,13 @@ class LinkSocialTraitTest extends BaseTraitTest
                 ->method('getQueryParams')
                 ->will($this->returnValue([
                     'code' => '99999000222220',
-                    'state' => 'a393j2942789'
+                    'state' => 'a393j2942789',
                 ]));
 
         $this->_mockSession([
             'SocialLink' => [
-                'oauth2state' => 'a393j2942789'
-            ]
+                'oauth2state' => 'a393j2942789',
+            ],
         ]);
         $this->_mockAuthLoggedIn();
         $this->_mockDispatchEvent(new Event('event'));
@@ -563,9 +561,9 @@ class LinkSocialTraitTest extends BaseTraitTest
             ->with(
                 $this->equalTo('authorization_code'),
                 $this->equalTo([
-                    'code' => '99999000222220'
+                    'code' => '99999000222220',
                 ])
-            )->will($this->throwException(new \Exception));
+            )->will($this->throwException(new \Exception()));
 
         $ProviderMock->expects($this->never())
             ->method('getResourceOwner');
@@ -581,7 +579,7 @@ class LinkSocialTraitTest extends BaseTraitTest
                         'linkSocialUri' => '/link-social/facebook',
                         'callbackLinkSocialUri' => '/callback-link-social/facebook',
                         'clientId' => 'testclientidtestclientid',
-                        'clientSecret' => 'testclientsecrettestclientsecret'
+                        'clientSecret' => 'testclientsecrettestclientsecret',
                     ],
                     'authParams' => ['scope' => ['public_profile', 'email', 'user_birthday', 'user_gender', 'user_link']],
                 ])
@@ -628,7 +626,7 @@ class LinkSocialTraitTest extends BaseTraitTest
                 ->will($this->returnValue([
                     'error' => 'We got some error',
                     'code' => '99999000222220',
-                    'state' => 'a393j2942789'
+                    'state' => 'a393j2942789',
                 ]));
         $this->Trait->expects($this->once())
             ->method('redirect')
@@ -638,8 +636,8 @@ class LinkSocialTraitTest extends BaseTraitTest
 
         $this->_mockSession([
             'SocialLink' => [
-                'oauth2state' => 'a393j2942789'
-            ]
+                'oauth2state' => 'a393j2942789',
+            ],
         ]);
         $this->_mockAuthLoggedIn();
         $this->_mockDispatchEvent(new Event('event'));
@@ -673,7 +671,7 @@ class LinkSocialTraitTest extends BaseTraitTest
                         'linkSocialUri' => '/link-social/facebook',
                         'callbackLinkSocialUri' => '/callback-link-social/facebook',
                         'clientId' => 'testclientidtestclientid',
-                        'clientSecret' => 'testclientsecrettestclientsecret'
+                        'clientSecret' => 'testclientsecrettestclientsecret',
                     ],
                     'authParams' => ['scope' => ['public_profile', 'email', 'user_birthday', 'user_gender', 'user_link']],
                 ])
@@ -716,7 +714,7 @@ class LinkSocialTraitTest extends BaseTraitTest
                 ->method('getQueryParams')
                 ->will($this->returnValue([
                     'code' => '99999000222220',
-                    'state' => 'bd393j2942789'
+                    'state' => 'bd393j2942789',
                 ]));
         $this->Trait->expects($this->once())
             ->method('redirect')
@@ -726,8 +724,8 @@ class LinkSocialTraitTest extends BaseTraitTest
 
         $this->_mockSession([
             'SocialLink' => [
-                'oauth2state' => 'a393j2942789'
-            ]
+                'oauth2state' => 'a393j2942789',
+            ],
         ]);
         $this->_mockAuthLoggedIn();
         $this->_mockDispatchEvent(new Event('event'));
@@ -761,7 +759,7 @@ class LinkSocialTraitTest extends BaseTraitTest
                         'linkSocialUri' => '/link-social/facebook',
                         'callbackLinkSocialUri' => '/callback-link-social/facebook',
                         'clientId' => 'testclientidtestclientid',
-                        'clientSecret' => 'testclientsecrettestclientsecret'
+                        'clientSecret' => 'testclientsecrettestclientsecret',
                     ],
                     'authParams' => ['scope' => ['public_profile', 'email', 'user_birthday', 'user_gender', 'user_link']],
                 ])
@@ -803,7 +801,7 @@ class LinkSocialTraitTest extends BaseTraitTest
         $this->Trait->request->expects($this->once())
                 ->method('getQueryParams')
                 ->will($this->returnValue([
-                    'state' => 'bd393j2942789'
+                    'state' => 'bd393j2942789',
                 ]));
         $this->Trait->expects($this->once())
             ->method('redirect')
@@ -813,8 +811,8 @@ class LinkSocialTraitTest extends BaseTraitTest
 
         $this->_mockSession([
             'SocialLink' => [
-                'oauth2state' => 'a393j2942789'
-            ]
+                'oauth2state' => 'a393j2942789',
+            ],
         ]);
         $this->_mockAuthLoggedIn();
         $this->_mockDispatchEvent(new Event('event'));

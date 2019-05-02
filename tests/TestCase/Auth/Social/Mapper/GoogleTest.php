@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,8 +12,8 @@
 
 namespace CakeDC\Users\Test\TestCase\Auth\Social\Mapper;
 
-use CakeDC\Users\Auth\Social\Mapper\Google;
 use Cake\TestSuite\TestCase;
+use CakeDC\Users\Auth\Social\Mapper\Google;
 
 class GoogleTest extends TestCase
 {
@@ -30,7 +31,7 @@ class GoogleTest extends TestCase
     {
         $token = new \League\OAuth2\Client\Token\AccessToken([
             'access_token' => 'test-token',
-            'expires' => 1490988496
+            'expires' => 1490988496,
         ]);
         $rawData = [
             'token' => $token,
@@ -41,7 +42,7 @@ class GoogleTest extends TestCase
             'given_name' => 'Test',
             'aboutMe' => '<span>I am the best test user in the world.</span>',
             'profile' => 'https://plus.google.com/+TestUser',
-            'picture' => 'https://lh3.googleusercontent.com/photo.jpg'
+            'picture' => 'https://lh3.googleusercontent.com/photo.jpg',
         ];
         $providerMapper = new Google($rawData);
         $user = $providerMapper();
@@ -61,9 +62,9 @@ class GoogleTest extends TestCase
             'credentials' => [
                 'token' => 'test-token',
                 'secret' => null,
-                'expires' => 1490988496
+                'expires' => 1490988496,
             ],
-            'raw' => $rawData
+            'raw' => $rawData,
         ], $user);
     }
 }

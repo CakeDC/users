@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,13 +12,12 @@
 
 namespace CakeDC\Users\Shell;
 
-use CakeDC\Users\Model\Entity\User;
-use CakeDC\Users\Model\Table\UsersTable;
 use Cake\Console\ConsoleOptionParser;
 use Cake\Console\Shell;
 use Cake\Core\Configure;
 use Cake\Utility\Hash;
 use Cake\Utility\Text;
+use CakeDC\Users\Model\Entity\User;
 
 /**
  * Shell with utilities for the Users Plugin
@@ -26,7 +26,6 @@ use Cake\Utility\Text;
  */
 class UsersShell extends Shell
 {
-
     /**
      * Work as a seed for username generator
      *
@@ -34,49 +33,49 @@ class UsersShell extends Shell
      */
     protected $_usernameSeed = [
         'aayla', 'admiral', 'anakin', 'chewbacca',
-        'darthvader', 'hansolo', 'luke', 'obiwan', 'leia', 'r2d2'
+        'darthvader', 'hansolo', 'luke', 'obiwan', 'leia', 'r2d2',
     ];
 
     /**
      *
-     * @return ConsoleOptionParser
+     * @return \Cake\Console\ConsoleOptionParser
      */
     public function getOptionParser(): ConsoleOptionParser
     {
         $parser = parent::getOptionParser();
         $parser->setDescription(__d('CakeDC/Users', 'Utilities for CakeDC Users Plugin'))
             ->addSubcommand('activateUser', [
-                'help' => __d('CakeDC/Users', 'Activate an specific user')
+                'help' => __d('CakeDC/Users', 'Activate an specific user'),
             ])
             ->addSubcommand('addSuperuser', [
-                'help' => __d('CakeDC/Users', 'Add a new superadmin user for testing purposes')
+                'help' => __d('CakeDC/Users', 'Add a new superadmin user for testing purposes'),
             ])
             ->addSubcommand('addUser', [
-                'help' => __d('CakeDC/Users', 'Add a new user')
+                'help' => __d('CakeDC/Users', 'Add a new user'),
             ])
             ->addSubcommand('changeRole', [
-                'help' => __d('CakeDC/Users', 'Change the role for an specific user')
+                'help' => __d('CakeDC/Users', 'Change the role for an specific user'),
             ])
             ->addSubcommand('deactivateUser', [
-                'help' => __d('CakeDC/Users', 'Deactivate an specific user')
+                'help' => __d('CakeDC/Users', 'Deactivate an specific user'),
             ])
             ->addSubcommand('deleteUser', [
-                'help' => __d('CakeDC/Users', 'Delete an specific user')
+                'help' => __d('CakeDC/Users', 'Delete an specific user'),
             ])
             ->addSubcommand('passwordEmail', [
-                'help' => __d('CakeDC/Users', 'Reset the password via email')
+                'help' => __d('CakeDC/Users', 'Reset the password via email'),
             ])
             ->addSubcommand('resetAllPasswords', [
-                'help' => __d('CakeDC/Users', 'Reset the password for all users')
+                'help' => __d('CakeDC/Users', 'Reset the password for all users'),
             ])
             ->addSubcommand('resetPassword', [
-                'help' => __d('CakeDC/Users', 'Reset the password for an specific user')
+                'help' => __d('CakeDC/Users', 'Reset the password for an specific user'),
             ])
             ->addOptions([
                 'username' => ['short' => 'u', 'help' => 'The username for the new user'],
                 'password' => ['short' => 'p', 'help' => 'The password for the new user'],
                 'email' => ['short' => 'e', 'help' => 'The email for the new user'],
-                'role' => ['short' => 'r', 'help' => 'The role for the new user']
+                'role' => ['short' => 'r', 'help' => 'The role for the new user'],
             ]);
 
         return $parser;
@@ -113,7 +112,7 @@ class UsersShell extends Shell
         $this->_createUser([
             'username' => 'superadmin',
             'role' => 'superuser',
-            'is_superuser' => true
+            'is_superuser' => true,
         ]);
     }
 
@@ -159,7 +158,7 @@ class UsersShell extends Shell
             $this->abort(__d('CakeDC/Users', 'Please enter a password.'));
         }
         $data = [
-            'password' => $password
+            'password' => $password,
         ];
         $this->_updateUser($username, $data);
         $this->out(__d('CakeDC/Users', 'Password changed for user: {0}', $username));
@@ -187,7 +186,7 @@ class UsersShell extends Shell
             $this->abort(__d('CakeDC/Users', 'Please enter a role.'));
         }
         $data = [
-            'role' => $role
+            'role' => $role,
         ];
         $savedUser = $this->_updateUser($username, $data);
         $this->out(__d('CakeDC/Users', 'Role changed for user: {0}', $username));
@@ -262,7 +261,7 @@ class UsersShell extends Shell
             $this->abort(__d('CakeDC/Users', 'Please enter a username.'));
         }
         $data = [
-            'active' => $active
+            'active' => $active,
         ];
 
         return $this->_updateUser($username, $data);
@@ -397,7 +396,7 @@ class UsersShell extends Shell
      */
     protected function _generatedHashedPassword($password)
     {
-        return (new User)->hashPassword($password);
+        return (new User())->hashPassword($password);
     }
     //add filters LIKE in username and email to some tasks
     // --force to ignore "you are about to do X to Y users"

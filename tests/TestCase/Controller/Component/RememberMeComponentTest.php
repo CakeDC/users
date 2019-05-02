@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,13 +12,13 @@
 
 namespace CakeDC\Users\Test\TestCase\Controller\Component;
 
-use CakeDC\Users\Controller\Component\RememberMeComponent;
 use Cake\Controller\ComponentRegistry;
 use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Http\ServerRequest;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Security;
+use CakeDC\Users\Controller\Component\RememberMeComponent;
 use InvalidArgumentException;
 
 /**
@@ -26,7 +27,7 @@ use InvalidArgumentException;
 class RememberMeComponentTest extends TestCase
 {
     public $fixtures = [
-        'plugin.CakeDC/Users.Users'
+        'plugin.CakeDC/Users.Users',
     ];
     /**
      * setUp method
@@ -74,7 +75,7 @@ class RememberMeComponentTest extends TestCase
             'secure' => false,
             'key' => '2a20bac195a9eb2e28f05b7ac7090afe599365a8fe480b7d8a5ce0f79687346e',
             'encryption' => 'aes',
-            'enabled' => false
+            'enabled' => false,
         ];
         $this->assertEquals($cookieOptions, $this->rememberMeComponent->Cookie->configKey('remember_me'));
     }

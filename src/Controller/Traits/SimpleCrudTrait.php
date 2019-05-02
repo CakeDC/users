@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,8 +12,6 @@
 
 namespace CakeDC\Users\Controller\Traits;
 
-use Cake\Http\Exception\NotFoundException;
-use Cake\Http\Response;
 use Cake\Utility\Inflector;
 
 /**
@@ -41,14 +40,14 @@ trait SimpleCrudTrait
      *
      * @param string|null $id User id.
      * @return void
-     * @throws NotFoundException When record not found.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
     public function view($id = null)
     {
         $table = $this->loadModel();
         $tableAlias = $table->getAlias();
         $entity = $table->get($id, [
-            'contain' => []
+            'contain' => [],
         ]);
         $this->set($tableAlias, $entity);
         $this->set('tableAlias', $tableAlias);
@@ -86,14 +85,14 @@ trait SimpleCrudTrait
      *
      * @param string|null $id User id.
      * @return mixed Redirects on successful edit, renders view otherwise.
-     * @throws NotFoundException When record not found.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
     public function edit($id = null)
     {
         $table = $this->loadModel();
         $tableAlias = $table->getAlias();
         $entity = $table->get($id, [
-            'contain' => []
+            'contain' => [],
         ]);
         $this->set($tableAlias, $entity);
         $this->set('tableAlias', $tableAlias);
@@ -115,8 +114,8 @@ trait SimpleCrudTrait
      * Delete method
      *
      * @param string|null $id User id.
-     * @return Response Redirects to index.
-     * @throws NotFoundException When record not found.
+     * @return \Cake\Http\Response Redirects to index.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
     public function delete($id = null)
     {
@@ -124,7 +123,7 @@ trait SimpleCrudTrait
         $table = $this->loadModel();
         $tableAlias = $table->getAlias();
         $entity = $table->get($id, [
-            'contain' => []
+            'contain' => [],
         ]);
         $singular = Inflector::singularize(Inflector::humanize($tableAlias));
         if ($table->delete($entity)) {

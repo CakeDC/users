@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,11 +12,11 @@
 
 namespace CakeDC\Users\Controller\Traits;
 
-use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
+use CakeDC\Users\Controller\Component\UsersAuthComponent;
 
 /**
  * Covers registration features and email token validation
@@ -29,7 +30,7 @@ trait RegisterTrait
     /**
      * Register a new user
      *
-     * @throws NotFoundException
+     * @throws \Cake\Http\Exception\NotFoundException
      * @return mixed
      */
     public function register()
@@ -53,7 +54,7 @@ trait RegisterTrait
         $options = [
             'token_expiration' => $tokenExpiration,
             'validate_email' => $validateEmail,
-            'use_tos' => $useTos
+            'use_tos' => $useTos,
         ];
         $requestData = $this->request->getData();
         $event = $this->dispatchEvent(UsersAuthComponent::EVENT_BEFORE_REGISTER, [
@@ -122,8 +123,8 @@ trait RegisterTrait
     /**
      * Prepare flash messages after registration, and dispatch afterRegister event
      *
-     * @param EntityInterface $userSaved User entity saved
-     * @return Response
+     * @param \Cake\Datasource\EntityInterface $userSaved User entity saved
+     * @return \Cake\Http\Response
      */
     protected function _afterRegister(EntityInterface $userSaved)
     {
@@ -133,7 +134,7 @@ trait RegisterTrait
             $message = __d('CakeDC/Users', 'Please validate your account before log in');
         }
         $event = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_REGISTER, [
-            'user' => $userSaved
+            'user' => $userSaved,
         ]);
         $result = $event->getResult();
         if ($result instanceof Response) {

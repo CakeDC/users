@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,8 +12,6 @@
 
 namespace CakeDC\Users\Controller\Component;
 
-use CakeDC\Users\Auth\TwoFactorAuthenticationCheckerFactory;
-use CakeDC\Users\Exception\BadConfigurationException;
 use Cake\Controller\Component;
 use Cake\Core\Configure;
 use Cake\Event\Event;
@@ -21,22 +20,24 @@ use Cake\Http\ServerRequest;
 use Cake\Routing\Exception\MissingRouteException;
 use Cake\Routing\Router;
 use Cake\Utility\Hash;
+use CakeDC\Users\Auth\TwoFactorAuthenticationCheckerFactory;
+use CakeDC\Users\Exception\BadConfigurationException;
 
 class UsersAuthComponent extends Component
 {
-    const EVENT_IS_AUTHORIZED = 'Users.Component.UsersAuth.isAuthorized';
-    const EVENT_BEFORE_LOGIN = 'Users.Component.UsersAuth.beforeLogin';
-    const EVENT_AFTER_LOGIN = 'Users.Component.UsersAuth.afterLogin';
-    const EVENT_FAILED_SOCIAL_LOGIN = 'Users.Component.UsersAuth.failedSocialLogin';
-    const EVENT_AFTER_COOKIE_LOGIN = 'Users.Component.UsersAuth.afterCookieLogin';
-    const EVENT_BEFORE_REGISTER = 'Users.Component.UsersAuth.beforeRegister';
-    const EVENT_AFTER_REGISTER = 'Users.Component.UsersAuth.afterRegister';
-    const EVENT_BEFORE_LOGOUT = 'Users.Component.UsersAuth.beforeLogout';
-    const EVENT_AFTER_LOGOUT = 'Users.Component.UsersAuth.afterLogout';
-    const EVENT_BEFORE_SOCIAL_LOGIN_USER_CREATE = 'Users.Component.UsersAuth.beforeSocialLoginUserCreate';
-    const EVENT_AFTER_CHANGE_PASSWORD = 'Users.Component.UsersAuth.afterResetPassword';
-    const EVENT_ON_EXPIRED_TOKEN = 'Users.Component.UsersAuth.onExpiredToken';
-    const EVENT_AFTER_RESEND_TOKEN_VALIDATION = 'Users.Component.UsersAuth.afterResendTokenValidation';
+    public const EVENT_IS_AUTHORIZED = 'Users.Component.UsersAuth.isAuthorized';
+    public const EVENT_BEFORE_LOGIN = 'Users.Component.UsersAuth.beforeLogin';
+    public const EVENT_AFTER_LOGIN = 'Users.Component.UsersAuth.afterLogin';
+    public const EVENT_FAILED_SOCIAL_LOGIN = 'Users.Component.UsersAuth.failedSocialLogin';
+    public const EVENT_AFTER_COOKIE_LOGIN = 'Users.Component.UsersAuth.afterCookieLogin';
+    public const EVENT_BEFORE_REGISTER = 'Users.Component.UsersAuth.beforeRegister';
+    public const EVENT_AFTER_REGISTER = 'Users.Component.UsersAuth.afterRegister';
+    public const EVENT_BEFORE_LOGOUT = 'Users.Component.UsersAuth.beforeLogout';
+    public const EVENT_AFTER_LOGOUT = 'Users.Component.UsersAuth.afterLogout';
+    public const EVENT_BEFORE_SOCIAL_LOGIN_USER_CREATE = 'Users.Component.UsersAuth.beforeSocialLoginUserCreate';
+    public const EVENT_AFTER_CHANGE_PASSWORD = 'Users.Component.UsersAuth.afterResetPassword';
+    public const EVENT_ON_EXPIRED_TOKEN = 'Users.Component.UsersAuth.onExpiredToken';
+    public const EVENT_AFTER_RESEND_TOKEN_VALIDATION = 'Users.Component.UsersAuth.afterResendTokenValidation';
 
     /**
      * Initialize method, setup Auth if not already done passing the $config provided and
@@ -83,7 +84,7 @@ class UsersAuthComponent extends Component
     protected function _loadSocialLogin()
     {
         $this->getController()->Auth->setConfig('authenticate', [
-            Configure::read('Users.Social.authenticator')
+            Configure::read('Users.Social.authenticator'),
         ], true);
     }
 
@@ -119,7 +120,7 @@ class UsersAuthComponent extends Component
             $this->getController()->loadComponent('Auth', Configure::read('Auth'));
         }
 
-        list($plugin, $controller) = pluginSplit(Configure::read('Users.controller'));
+        [$plugin, $controller] = pluginSplit(Configure::read('Users.controller'));
         if ($this->getController()->getRequest()->getParam('plugin', null) === $plugin &&
             $this->getController()->getRequest()->getParam('controller') === $controller
         ) {
@@ -154,7 +155,7 @@ class UsersAuthComponent extends Component
     /**
      * Check if a given url is authorized
      *
-     * @param Event $event event
+     * @param \Cake\Event\Event $event event
      *
      * @return bool
      */
@@ -205,7 +206,7 @@ class UsersAuthComponent extends Component
     /**
      * Validate if the passed configuration makes sense
      *
-     * @throws BadConfigurationException
+     * @throws \CakeDC\Users\Exception\BadConfigurationException
      * @return void
      */
     protected function _validateConfig()

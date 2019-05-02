@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,18 +12,15 @@
 
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
-use CakeDC\Users\Controller\Component\GoogleAuthenticatorComponent;
-use CakeDC\Users\Controller\Component\UsersAuthComponent;
-use CakeDC\Users\Controller\Traits\LoginTrait;
-use CakeDC\Users\Exception\AccountNotActiveException;
-use CakeDC\Users\Exception\MissingEmailException;
-use CakeDC\Users\Exception\UserNotActiveException;
-use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Http\ServerRequest;
 use Cake\ORM\Entity;
-use Cake\TestSuite\TestCase;
+use CakeDC\Users\Controller\Component\GoogleAuthenticatorComponent;
+use CakeDC\Users\Controller\Component\UsersAuthComponent;
+use CakeDC\Users\Exception\AccountNotActiveException;
+use CakeDC\Users\Exception\MissingEmailException;
+use CakeDC\Users\Exception\UserNotActiveException;
 
 class LoginTraitTest extends BaseTraitTest
 {
@@ -224,7 +222,7 @@ class LoginTraitTest extends BaseTraitTest
     public function testLoginBeforeLoginReturningArray()
     {
         $user = [
-            'id' => 1
+            'id' => 1,
         ];
         $event = new Event('event');
         $event->setResult($user);
@@ -344,8 +342,8 @@ class LoginTraitTest extends BaseTraitTest
             'exception' => new MissingEmailException('Email not present'),
             'rawData' => [
                 'id' => 11111,
-                'username' => 'user-1'
-            ]
+                'username' => 'user-1',
+            ],
         ];
         $this->_mockFlash();
         $this->_mockRequestGet();
@@ -372,8 +370,8 @@ class LoginTraitTest extends BaseTraitTest
             'exception' => new UserNotActiveException('Facebook user-1'),
             'rawData' => [
                 'id' => 111111,
-                'username' => 'user-1'
-            ]
+                'username' => 'user-1',
+            ],
         ];
         $this->_mockFlash();
         $this->_mockRequestGet();
@@ -400,8 +398,8 @@ class LoginTraitTest extends BaseTraitTest
             'exception' => new AccountNotActiveException('Facebook user-1'),
             'rawData' => [
                 'id' => 111111,
-                'username' => 'user-1'
-            ]
+                'username' => 'user-1',
+            ],
         ];
         $this->_mockFlash();
         $this->_mockRequestGet();
@@ -427,8 +425,8 @@ class LoginTraitTest extends BaseTraitTest
         $event->data = [
             'rawData' => [
                 'id' => 111111,
-                'username' => 'user-1'
-            ]
+                'username' => 'user-1',
+            ],
         ];
         $this->_mockFlash();
         $this->_mockRequestGet();
@@ -463,7 +461,7 @@ class LoginTraitTest extends BaseTraitTest
             'temporarySession' => [
                 'id' => 1,
                 'secret_verified' => 1,
-            ]
+            ],
         ]);
         $this->Trait->verify();
     }
@@ -537,7 +535,7 @@ class LoginTraitTest extends BaseTraitTest
                 'id' => '00000000-0000-0000-0000-000000000001',
                 'email' => 'email@example.com',
                 'secret_verified' => 0,
-            ]
+            ],
         ]);
         $this->Trait->GoogleAuthenticator->expects($this->at(0))
             ->method('createSecret')
@@ -591,7 +589,7 @@ class LoginTraitTest extends BaseTraitTest
                 'id' => '00000000-0000-0000-0000-000000000001',
                 'email' => 'email@example.com',
                 'secret_verified' => false,
-            ]
+            ],
         ]);
         $this->Trait->verify();
 
@@ -601,8 +599,8 @@ class LoginTraitTest extends BaseTraitTest
                     'id' => '00000000-0000-0000-0000-000000000001',
                     'email' => 'email@example.com',
                     'secret_verified' => false,
-                    'secret' => 'newSecret'
-                ]
+                    'secret' => 'newSecret',
+                ],
             ],
             $session->read()
         );
@@ -646,8 +644,8 @@ class LoginTraitTest extends BaseTraitTest
                 'id' => '00000000-0000-0000-0000-000000000001',
                 'email' => 'email@example.com',
                 'secret_verified' => false,
-                'secret' => 'alreadyPresentSecret'
-            ]
+                'secret' => 'alreadyPresentSecret',
+            ],
         ]);
         $this->Trait->verify();
 
@@ -657,8 +655,8 @@ class LoginTraitTest extends BaseTraitTest
                     'id' => '00000000-0000-0000-0000-000000000001',
                     'email' => 'email@example.com',
                     'secret_verified' => false,
-                    'secret' => 'alreadyPresentSecret'
-                ]
+                    'secret' => 'alreadyPresentSecret',
+                ],
             ],
             $session->read()
         );
@@ -714,7 +712,7 @@ class LoginTraitTest extends BaseTraitTest
             ->with([
                 'id' => '00000000-0000-0000-0000-000000000001',
                 'email' => 'email@example.com',
-                'secret_verified' => true
+                'secret_verified' => true,
             ]);
         $this->Trait->Auth
             ->expects($this->at(1))
@@ -723,7 +721,7 @@ class LoginTraitTest extends BaseTraitTest
 
         $this->assertFalse($this->table->exists([
             'id' => '00000000-0000-0000-0000-000000000001',
-            'secret_verified' => true
+            'secret_verified' => true,
         ]));
 
         $session = $this->_mockSession([
@@ -731,14 +729,14 @@ class LoginTraitTest extends BaseTraitTest
                 'id' => '00000000-0000-0000-0000-000000000001',
                 'email' => 'email@example.com',
                 'secret_verified' => false,
-                'secret' => 'yyy'
-            ]
+                'secret' => 'yyy',
+            ],
         ]);
         $this->Trait->verify();
 
         $this->assertTrue($this->table->exists([
             'id' => '00000000-0000-0000-0000-000000000001',
-            'secret_verified' => true
+            'secret_verified' => true,
         ]));
 
         $this->assertEmpty($session->read());
@@ -815,12 +813,12 @@ class LoginTraitTest extends BaseTraitTest
                 'controller' => 'Users',
                 'action' => 'login',
                 'prefix' => false,
-                '?' => []
+                '?' => [],
             ]);
 
         $this->assertFalse($this->table->exists([
             'id' => '00000000-0000-0000-0000-000000000001',
-            'secret_verified' => true
+            'secret_verified' => true,
         ]));
 
         $session = $this->_mockSession([
@@ -828,14 +826,14 @@ class LoginTraitTest extends BaseTraitTest
                 'id' => '00000000-0000-0000-0000-000000000001',
                 'email' => 'email@example.com',
                 'secret_verified' => false,
-                'secret' => 'yyy'
-            ]
+                'secret' => 'yyy',
+            ],
         ]);
         $this->Trait->verify();
 
         $this->assertFalse($this->table->exists([
             'id' => '00000000-0000-0000-0000-000000000001',
-            'secret_verified' => true
+            'secret_verified' => true,
         ]));
 
         $this->assertEmpty($session->read());

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,13 +12,12 @@
 
 namespace CakeDC\Users\Controller\Traits;
 
+use Cake\Core\Configure;
+use Cake\Validation\Validator;
 use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Exception\UserNotFoundException;
 use CakeDC\Users\Exception\WrongPasswordException;
-use Cake\Core\Configure;
-use Cake\Log\Log;
-use Cake\Validation\Validator;
 use Exception;
 
 /**
@@ -127,7 +127,7 @@ trait PasswordManagementTrait
                 'checkActive' => false,
                 'sendEmail' => true,
                 'ensureActive' => Configure::read('Users.Registration.ensureActive'),
-                'type' => 'password'
+                'type' => 'password',
             ]);
             if ($resetUser) {
                 $msg = __d('CakeDC/Users', 'Please check your email to continue with password reset process');

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,12 +12,7 @@
 
 namespace CakeDC\Users\Test\TestCase\Model\Table;
 
-use CakeDC\Users\Model\Table\SocialAccountsTable;
-use CakeDC\Users\Model\Table\UsersTable;
-use Cake\Event\Event;
-use Cake\Mailer\Email;
 use Cake\ORM\TableRegistry;
-use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 
 /**
@@ -24,7 +20,6 @@ use Cake\TestSuite\TestCase;
  */
 class SocialAccountsTableTest extends TestCase
 {
-
     /**
      * Fixtures
      *
@@ -32,7 +27,7 @@ class SocialAccountsTableTest extends TestCase
      */
     public $fixtures = [
         'plugin.CakeDC/Users.SocialAccounts',
-        'plugin.CakeDC/Users.Users'
+        'plugin.CakeDC/Users.Users',
     ];
 
     /**

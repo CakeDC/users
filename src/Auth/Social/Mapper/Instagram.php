@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -22,7 +23,7 @@ class Instagram extends AbstractMapper
     /**
      * Url constants
      */
-    const INSTAGRAM_BASE_URL = 'https://instagram.com/';
+    public const INSTAGRAM_BASE_URL = 'https://instagram.com/';
 
     /**
      * Map for provider fields

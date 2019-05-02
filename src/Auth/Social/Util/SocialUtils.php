@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -23,7 +24,7 @@ class SocialUtils
     /**
      * Get provider from classname
      *
-     * @param AbstractProvider $provider provider
+     * @param \League\OAuth2\Client\Provider\AbstractProvider $provider provider
      * @return string
      */
     public static function getProvider(AbstractProvider $provider)

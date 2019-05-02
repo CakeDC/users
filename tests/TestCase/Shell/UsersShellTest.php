@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,11 +12,11 @@
 
 namespace CakeDC\Users\Test\TestCase\Shell;
 
-use CakeDC\Users\Shell\UsersShell;
 use Cake\Console\ConsoleOutput;
 use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use CakeDC\Users\Shell\UsersShell;
 
 class UsersShellTest extends TestCase
 {
@@ -368,7 +369,7 @@ class UsersShellTest extends TestCase
             '--username=custom',
             '--password=12345678',
             '--email=custom@example.com',
-            '--role=custom'
+            '--role=custom',
         ]);
         $user = $this->Users->findByUsername('custom')->first();
         $this->assertSame('custom', $user['role']);

@@ -19,7 +19,6 @@ use Cake\TestSuite\Fixture\TestFixture;
  */
 class PostsUsersFixture extends TestFixture
 {
-
     /**
      * Fields
      *

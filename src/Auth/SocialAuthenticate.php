@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,6 +12,15 @@
 
 namespace CakeDC\Users\Auth;
 
+use Cake\Auth\BaseAuthenticate;
+use Cake\Controller\ComponentRegistry;
+use Cake\Core\Configure;
+use Cake\Event\EventDispatcherTrait;
+use Cake\Http\Response;
+use Cake\Http\ServerRequest;
+use Cake\Log\LogTrait;
+use Cake\ORM\TableRegistry;
+use Cake\Utility\Hash;
 use CakeDC\Users\Auth\Exception\InvalidProviderException;
 use CakeDC\Users\Auth\Exception\InvalidSettingsException;
 use CakeDC\Users\Auth\Exception\MissingProviderConfigurationException;
@@ -21,17 +31,6 @@ use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\MissingProviderException;
 use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Model\Table\SocialAccountsTable;
-use Cake\Auth\BaseAuthenticate;
-use Cake\Controller\ComponentRegistry;
-use Cake\Core\Configure;
-use Cake\Event\Event;
-use Cake\Event\EventDispatcherTrait;
-use Cake\Event\EventManager;
-use Cake\Http\Response;
-use Cake\Http\ServerRequest;
-use Cake\Log\LogTrait;
-use Cake\ORM\TableRegistry;
-use Cake\Utility\Hash;
 use League\OAuth2\Client\Provider\AbstractProvider;
 
 /**
@@ -337,7 +336,7 @@ class SocialAuthenticate extends BaseAuthenticate
      *
      * @param array $data data
      * @return array|bool|mixed
-     * @throws MissingEmailException
+     * @throws \CakeDC\Users\Exception\MissingEmailException
      */
     protected function _touch(array $data)
     {
@@ -450,7 +449,7 @@ class SocialAuthenticate extends BaseAuthenticate
      *
      * @param string $provider Provider name.
      * @param array $data User data
-     * @throws MissingProviderException
+     * @throws \CakeDC\Users\Exception\MissingProviderException
      * @return mixed Either false or an array of user information
      */
     protected function _mapUser($provider, $data)
@@ -475,7 +474,7 @@ class SocialAuthenticate extends BaseAuthenticate
         $options = [
             'use_email' => Configure::read('Users.Email.required'),
             'validate_email' => Configure::read('Users.Email.validate'),
-            'token_expiration' => Configure::read('Users.Token.expiration')
+            'token_expiration' => Configure::read('Users.Token.expiration'),
         ];
 
         $userModel = Configure::read('Users.table');

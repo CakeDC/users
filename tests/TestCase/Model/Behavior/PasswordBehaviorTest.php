@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,14 +12,13 @@
 
 namespace CakeDC\Users\Test\TestCase\Model\Behavior;
 
-use CakeDC\Users\Model\Behavior\PasswordBehavior;
-use CakeDC\Users\Test\App\Mailer\OverrideMailer;
 use Cake\Core\Configure;
 use Cake\Mailer\Email;
 use Cake\Mailer\TransportFactory;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
-use InvalidArgumentException;
+use CakeDC\Users\Model\Behavior\PasswordBehavior;
+use CakeDC\Users\Test\App\Mailer\OverrideMailer;
 
 /**
  * Test Case
@@ -53,7 +53,7 @@ class PasswordBehaviorTest extends TestCase
         //$this->configEmail = Email::getConfig('default');
         Email::setConfig('default', [
             'transport' => 'test',
-            'from' => 'cakedc@example.com'
+            'from' => 'cakedc@example.com',
         ]);
     }
 
@@ -105,7 +105,7 @@ class PasswordBehaviorTest extends TestCase
             'expiration' => 3600,
             'checkActive' => true,
             'sendEmail' => true,
-            'type' => 'password'
+            'type' => 'password',
         ]);
         $this->assertNotEquals($token, $result->token);
         $this->assertNotEquals($tokenExpires, $result->token_expires);
@@ -142,7 +142,7 @@ class PasswordBehaviorTest extends TestCase
     public function testResetTokenNotExistingUser()
     {
         $this->Behavior->resetToken('user-not-found', [
-            'expiration' => 3600
+            'expiration' => 3600,
         ]);
     }
 
@@ -176,7 +176,7 @@ class PasswordBehaviorTest extends TestCase
         $user = $this->table->findByUsername('user-1')->first();
         $this->Behavior->resetToken('user-1', [
             'ensureActive' => true,
-            'expiration' => 3600
+            'expiration' => 3600,
         ]);
     }
 
@@ -188,7 +188,7 @@ class PasswordBehaviorTest extends TestCase
         $user = TableRegistry::getTableLocator()->get('CakeDC/Users.Users')->findByUsername('user-2')->first();
         $result = $this->Behavior->resetToken('user-2', [
             'ensureActive' => true,
-            'expiration' => 3600
+            'expiration' => 3600,
         ]);
         $this->assertEquals($user->id, $result->id);
     }
@@ -231,7 +231,7 @@ class PasswordBehaviorTest extends TestCase
             'expiration' => 3600,
             'checkActive' => true,
             'sendEmail' => true,
-            'type' => 'password'
+            'type' => 'password',
         ]);
     }
 }

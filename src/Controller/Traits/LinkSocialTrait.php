@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,9 +12,9 @@
 
 namespace CakeDC\Users\Controller\Traits;
 
-use CakeDC\Users\Model\Table\SocialAccountsTable;
 use Cake\Core\Configure;
 use Cake\Http\Exception\NotFoundException;
+use CakeDC\Users\Model\Table\SocialAccountsTable;
 use League\OAuth1\Client\Server\Twitter;
 
 /**
@@ -142,7 +143,7 @@ trait LinkSocialTrait
      * @param string $alias of the provider.
      * @param array $data User data.
      *
-     * @throws MissingProviderException
+     * @throws \CakeDC\Users\Controller\Traits\MissingProviderException
      * @return array
      */
     protected function _mapSocialUser($alias, $data)
@@ -168,11 +169,11 @@ trait LinkSocialTrait
     {
         $config = Configure::read('OAuth.providers.' . $alias);
         if (!$config || !isset($config['options'], $config['options']['callbackLinkSocialUri'])) {
-            throw new NotFoundException;
+            throw new NotFoundException();
         }
 
         if (!isset($config['options']['clientId'], $config['options']['clientSecret'])) {
-            throw new NotFoundException;
+            throw new NotFoundException();
         }
 
         return $this->_createSocialProvider($config, ucfirst($alias));

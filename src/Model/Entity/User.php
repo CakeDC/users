@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -21,7 +22,6 @@ use Cake\Utility\Security;
  */
 class User extends Entity
 {
-
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -103,7 +103,7 @@ class User extends Entity
             $passwordHasher = '\Cake\Auth\DefaultPasswordHasher';
         }
 
-        return new $passwordHasher;
+        return new $passwordHasher();
     }
 
     /**

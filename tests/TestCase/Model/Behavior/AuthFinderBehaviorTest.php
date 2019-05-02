@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,15 +12,10 @@
 
 namespace CakeDC\Users\Test\TestCase\Model\Behavior;
 
-use CakeDC\Users\Exception\UserAlreadyActiveException;
-use CakeDC\Users\Model\Behavior\AuthFinderBehavior;
-use CakeDC\Users\Model\Table\UsersTable;
-use Cake\Mailer\Email;
 use Cake\ORM\TableRegistry;
-use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Hash;
-use InvalidArgumentException;
+use CakeDC\Users\Model\Behavior\AuthFinderBehavior;
 
 /**
  * Test Case

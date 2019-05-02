@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,18 +12,12 @@
 
 namespace CakeDC\Users\Test\TestCase\View\Helper;
 
-use CakeDC\Users\Model\Entity\SocialAccount;
-use CakeDC\Users\View\Helper\UserHelper;
-use Cake\Core\App;
 use Cake\Core\Configure;
-use Cake\Core\Plugin;
-use Cake\Event\Event;
 use Cake\Http\ServerRequest;
 use Cake\I18n\I18n;
-use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
-use Cake\View\Helper\HtmlHelper;
-use Cake\View\View;
+use CakeDC\Users\Model\Entity\SocialAccount;
+use CakeDC\Users\View\Helper\UserHelper;
 
 /**
  * Users\View\Helper\UserHelper Test Case
@@ -39,7 +34,7 @@ class UserHelperTest extends TestCase
     /**
      * Keep original config Users.Social.login
      *
-     * @var boolean
+     * @var bool
      */
     private $socialLogin;
 
@@ -300,8 +295,8 @@ class UserHelperTest extends TestCase
                 'active' => false,
                 'data' => '',
                 'created' => '2015-05-22 21:52:44',
-                'modified' => '2015-05-22 21:52:44'
-            ])
+                'modified' => '2015-05-22 21:52:44',
+            ]),
         ];
         $actual = $this->User->socialConnectLinkList($socialAccounts);
         $expected = '<a class="btn btn-social btn-facebook disabled"><span class="fa fa-facebook"></span> Connected with Facebook</a>';
@@ -339,8 +334,8 @@ class UserHelperTest extends TestCase
                 'active' => false,
                 'data' => '',
                 'created' => '2015-05-22 21:52:44',
-                'modified' => '2015-05-22 21:52:44'
-            ])
+                'modified' => '2015-05-22 21:52:44',
+            ]),
         ];
         $actual = $this->User->socialConnectLinkList($socialAccounts);
         $expected = '';
@@ -371,8 +366,8 @@ class UserHelperTest extends TestCase
                 'active' => false,
                 'data' => '',
                 'created' => '2015-05-22 21:52:44',
-                'modified' => '2015-05-22 21:52:44'
-            ])
+                'modified' => '2015-05-22 21:52:44',
+            ]),
         ];
         $actual = $this->User->socialConnectLinkList($socialAccounts);
         $expected = '';

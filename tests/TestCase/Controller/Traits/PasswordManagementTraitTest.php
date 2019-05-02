@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -14,7 +15,6 @@ namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 use Cake\Auth\PasswordHasherFactory;
 use Cake\Core\Configure;
 use Cake\Event\Event;
-use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 class PasswordManagementTraitTest extends BaseTraitTest
@@ -263,7 +263,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
         $this->_mockAuth();
         $this->_mockFlash();
         $this->_mockSession([
-            Configure::read('Users.Key.Session.resetPasswordUserId') => '00000000-0000-0000-0000-000000000001'
+            Configure::read('Users.Key.Session.resetPasswordUserId') => '00000000-0000-0000-0000-000000000001',
         ]);
         $this->Trait->expects($this->any())
             ->method('set')
@@ -421,7 +421,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
 
         return [
             [$ensureActive],
-            [$defaultBehavior]
+            [$defaultBehavior],
         ];
     }
 

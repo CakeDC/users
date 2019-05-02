@@ -28,7 +28,7 @@ if (is_array($oauthPath)) {
 Router::connect('/accounts/validate/*', [
     'plugin' => 'CakeDC/Users',
     'controller' => 'SocialAccounts',
-    'action' => 'validate'
+    'action' => 'validate',
 ]);
 Router::connect('/profile/*', ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile']);
 Router::connect('/login', ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
