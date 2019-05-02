@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 /**
- * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * @copyright Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -259,8 +259,16 @@ class PasswordManagementTraitTest extends BaseTraitTest
      */
     public function testChangePasswordGetNotLoggedInInsideResetPasswordFlow()
     {
-        $this->_mockRequestGet(true);
-        $this->_mockAuth();
+        $methods = ['is', 'referer', 'getData', 'getSession'];
+        $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
+            ->setMethods($methods)
+            ->getMock();
+        $this->Trait->request->expects($this->any())
+            ->method('is')
+            ->with(['post', 'put'])
+            ->will($this->returnValue(false));
+
+        $this->_mockAuthentication();
         $this->_mockFlash();
         $this->_mockSession([
             Configure::read('Users.Key.Session.resetPasswordUserId') => '00000000-0000-0000-0000-000000000001',
@@ -283,7 +291,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
     public function testChangePasswordGetNotLoggedInOutsideResetPasswordFlow()
     {
         $this->_mockRequestGet();
-        $this->_mockAuth();
+        $this->_mockAuthentication();
         $this->_mockFlash();
         $this->Trait->Flash->expects($this->once())
             ->method('error')
@@ -426,7 +434,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
     }
 
     /**
-     * @dataProvider ensureGoogleAuthenticatorResets
+     * @dataProvider ensureOneTimePasswordAuthenticatorResets
      *
      * @return void
      */
@@ -450,10 +458,10 @@ class PasswordManagementTraitTest extends BaseTraitTest
             ->method($method)
             ->with($msg);
 
-        $this->Trait->resetGoogleAuthenticator($entityId);
+        $this->Trait->resetOneTimePasswordAuthenticator($entityId);
     }
 
-    public function ensureGoogleAuthenticatorResets()
+    public function ensureOneTimePasswordAuthenticatorResets()
     {
         $error = 'error';
         $success = 'success';

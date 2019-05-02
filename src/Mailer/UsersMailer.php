@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 /**
- * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * @copyright Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 namespace CakeDC\Users\Mailer;
@@ -31,14 +31,12 @@ class UsersMailer extends Mailer
         $firstName = isset($user['first_name']) ? $user['first_name'] . ', ' : '';
         // un-hide the token to be able to send it in the email content
         $user->setHidden(['password', 'token_expires', 'api_token']);
-        $subject = __d('CakeDC/Users', 'Your account validation link');
+        $subject = __d('cake_d_c/users', 'Your account validation link');
         $this
              ->setTo($user['email'])
              ->setSubject($firstName . $subject)
-             ->setViewVars($user->toArray());
-
-        $this
-            ->viewBuilder()->setTemplate('CakeDC/Users.validation');
+             ->setViewVars($user->toArray())
+             ->viewBuilder()->setTemplate('CakeDC/Users.validation');
     }
 
     /**
@@ -51,7 +49,7 @@ class UsersMailer extends Mailer
     protected function resetPassword(EntityInterface $user)
     {
         $firstName = isset($user['first_name']) ? $user['first_name'] . ', ' : '';
-        $subject = __d('CakeDC/Users', '{0}Your reset password link', $firstName);
+        $subject = __d('cake_d_c/users', '{0}Your reset password link', $firstName);
         // un-hide the token to be able to send it in the email content
         $user->setHidden(['password', 'token_expires', 'api_token']);
 
@@ -61,7 +59,7 @@ class UsersMailer extends Mailer
             ->setViewVars($user->toArray());
         $this
             ->viewBuilder()
-            ->setTemplate('CakeDC/Users.resetPassword');
+            ->viewBuilder()->setTemplate('CakeDC/Users.resetPassword');
     }
 
     /**
@@ -76,13 +74,13 @@ class UsersMailer extends Mailer
     {
         $firstName = isset($user['first_name']) ? $user['first_name'] . ', ' : '';
         // note: we control the space after the username in the previous line
-        $subject = __d('CakeDC/Users', '{0}Your social account validation link', $firstName);
+        $subject = __d('cake_d_c/users', '{0}Your social account validation link', $firstName);
         $this
             ->setTo($user['email'])
             ->setSubject($subject)
             ->setViewVars(compact('user', 'socialAccount'));
         $this
             ->viewBuilder()
-            ->setTemplate('CakeDC/Users.socialAccountValidation');
+            ->viewBuilder()->setTemplate('CakeDC/Users.socialAccountValidation');
     }
 }

@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 /**
- * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * @copyright Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -39,7 +39,10 @@ class AuthLinkHelperTest extends TestCase
     {
         parent::setUp();
         $view = new View();
-        $this->AuthLink = new AuthLinkHelper($view);
+        $this->AuthLink = $this->getMockBuilder(AuthLinkHelper::class)
+            ->setMethods(['isAuthorized'])
+            ->setConstructorArgs([$view])
+            ->getMock();
     }
 
     /**
@@ -59,10 +62,20 @@ class AuthLinkHelperTest extends TestCase
      *
      * @return void
      */
-    public function testLinkFalse()
+    public function testLinkFalseWithMock()
     {
-        $link = $this->AuthLink->link('title', ['controller' => 'noaccess']);
-        $this->assertEmpty($link);
+        $this->AuthLink->expects($this->once())
+            ->method('isAuthorized')
+            ->with(
+                $this->equalTo(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile'])
+            )
+            ->will($this->returnValue(false));
+        $result = $this->AuthLink->link(
+            'title',
+            ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile'],
+            ['before' => 'before_', 'after' => '_after', 'class' => 'link-class']
+        );
+        $this->assertEmpty($result);
     }
 
     /**
@@ -70,22 +83,20 @@ class AuthLinkHelperTest extends TestCase
      *
      * @return void
      */
-    public function testLinkAuthorized()
+    public function testLinkAuthorizedHappy()
     {
-        $view = new View();
-        $eventManagerMock = $this->getMockBuilder('Cake\Event\EventManager')
-            ->setMethods(['dispatch'])
-            ->getMock();
-        EventManager::instance($eventManagerMock);
-        $this->AuthLink = new AuthLinkHelper($view);
-        $result = new Event('dispatch-result');
-        $result->setResult(true);
-        $eventManagerMock->expects($this->once())
-            ->method('dispatch')
-            ->will($this->returnValue($result));
-
-        $link = $this->AuthLink->link('title', '/', ['before' => 'before_', 'after' => '_after', 'class' => 'link-class']);
-        $this->assertSame('before_<a href="/" class="link-class">title</a>_after', $link);
+        $this->AuthLink->expects($this->once())
+            ->method('isAuthorized')
+            ->with(
+                $this->equalTo(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile'])
+            )
+            ->will($this->returnValue(true));
+        $link = $this->AuthLink->link(
+            'title',
+            ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile'],
+            ['before' => 'before_', 'after' => '_after', 'class' => 'link-class']
+        );
+        $this->assertSame('before_<a href="/profile" class="link-class">title</a>_after', $link);
     }
 
     /**
@@ -95,17 +106,6 @@ class AuthLinkHelperTest extends TestCase
      */
     public function testLinkAuthorizedAllowedTrue()
     {
-        $view = new View();
-        $eventManagerMock = $this->getMockBuilder('Cake\Event\EventManager')
-            ->setMethods(['dispatch'])
-            ->getMock();
-        EventManager::instance($eventManagerMock);
-        $this->AuthLink = new AuthLinkHelper($view);
-        $result = new Event('dispatch-result');
-        $result->setResult(true);
-        $eventManagerMock->expects($this->never())
-            ->method('dispatch');
-
         $link = $this->AuthLink->link('title', '/', ['allowed' => true, 'before' => 'before_', 'after' => '_after', 'class' => 'link-class']);
         $this->assertSame('before_<a href="/" class="link-class">title</a>_after', $link);
     }
@@ -117,39 +117,18 @@ class AuthLinkHelperTest extends TestCase
      */
     public function testLinkAuthorizedAllowedFalse()
     {
-        $view = new View();
-        $eventManagerMock = $this->getMockBuilder('Cake\Event\EventManager')
-            ->setMethods(['dispatch'])
-            ->getMock();
-        $view->getEventManager($eventManagerMock);
-        $this->AuthLink = new AuthLinkHelper($view);
-        $result = new Event('dispatch-result');
-        $eventManagerMock->expects($this->never())
-            ->method('dispatch');
         $link = $this->AuthLink->link('title', '/', ['allowed' => false, 'before' => 'before_', 'after' => '_after', 'class' => 'link-class']);
         $this->assertEmpty($link);
     }
 
     /**
-     * Test isAuthorized
+     * Test getRequest method
      *
-     * @return void
+     * @retunr void
      */
-    public function testIsAuthorized()
+    public function testGetRequest()
     {
-        $view = new View();
-        $eventManagerMock = $this->getMockBuilder('Cake\Event\EventManager')
-            ->setMethods(['dispatch'])
-            ->getMock();
-        EventManager::instance($eventManagerMock);
-        $this->AuthLink = new AuthLinkHelper($view);
-        $result = new Event('dispatch-result');
-        $result->setResult(true);
-        $eventManagerMock->expects($this->once())
-            ->method('dispatch')
-            ->will($this->returnValue($result));
-
-        $result = $this->AuthLink->isAuthorized(['controller' => 'MyController', 'action' => 'myAction']);
-        $this->assertTrue($result);
+        $actual = $this->AuthLink->getRequest();
+        $this->assertInstanceOf(ServerRequest::class, $actual);
     }
 }

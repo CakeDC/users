@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 /**
- * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * @copyright Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -19,6 +19,9 @@ use Cake\View\Helper;
 
 /**
  * User helper
+ *
+ * @property \CakeDC\Users\View\Helper\AuthLinkHelper $AuthLink
+ * @property \Cake\View\Helper\HtmlHelper $Html
  */
 class UserHelper extends Helper
 {
@@ -41,7 +44,7 @@ class UserHelper extends Helper
     public function socialLogin($name, $options = [])
     {
         if (empty($options['label'])) {
-            $options['label'] = __d('CakeDC/Users', 'Sign in with');
+            $options['label'] = __d('cake_d_c/users', 'Sign in with');
         }
         $icon = $this->Html->tag('i', '', [
             'class' => 'fa fa-' . strtolower($name),
@@ -98,7 +101,7 @@ class UserHelper extends Helper
      */
     public function logout($message = null, $options = [])
     {
-        return $this->AuthLink->link(empty($message) ? __d('CakeDC/Users', 'Logout') : $message, [
+        return $this->AuthLink->link(empty($message) ? __d('cake_d_c/users', 'Logout') : $message, [
             'plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'logout',
         ], $options);
     }
@@ -115,7 +118,15 @@ class UserHelper extends Helper
         }
 
         $profileUrl = Configure::read('Users.Profile.route');
-        $label = __d('CakeDC/Users', 'Welcome, {0}', $this->AuthLink->link($this->getView()->getRequest()->getSession()->read('Auth.User.first_name') ?: $this->getView()->getRequest()->getSession()->read('Auth.User.username'), $profileUrl));
+        $session = $this->getView()->getRequest()->getSession();
+        $label = __d(
+            'cake_d_c/users',
+            'Welcome, {0}',
+            $this->AuthLink->link(
+                $session->read('Auth.User.first_name') ?: $session->read('Auth.User.username'),
+                $profileUrl
+            )
+        );
 
         return $this->Html->tag('span', $label, ['class' => 'welcome']);
     }
@@ -138,7 +149,7 @@ class UserHelper extends Helper
     public function addReCaptcha()
     {
         if (!Configure::read('Users.reCaptcha.key')) {
-            return $this->Html->tag('p', __d('CakeDC/Users', 'reCaptcha is not configured! Please configure Users.reCaptcha.key'));
+            return $this->Html->tag('p', __d('cake_d_c/users', 'reCaptcha is not configured! Please configure Users.reCaptcha.key'));
         }
         $this->addReCaptchaScript();
         $this->Form->unlockField('g-recaptcha-response');
@@ -202,12 +213,12 @@ class UserHelper extends Helper
     {
         $linkClass = 'btn btn-social btn-' . strtolower($name) . (Hash::get($provider['options'], 'class') ? ' ' . Hash::get($provider['options'], 'class') : '');
         if ($isConnected) {
-            $title = __d('CakeDC/Users', 'Connected with {0}', Inflector::camelize($name));
+            $title = __d('cake_d_c/users', 'Connected with {0}', Inflector::camelize($name));
 
             return "<a class=\"$linkClass disabled\"><span class=\"fa fa-$name\"></span> $title</a>";
         }
 
-        $title = __d('CakeDC/Users', 'Connect with {0}', Inflector::camelize($name));
+        $title = __d('cake_d_c/users', 'Connect with {0}', Inflector::camelize($name));
 
         return $this->Html->link(
             "<span class=\"fa fa-$name\"></span> $title",

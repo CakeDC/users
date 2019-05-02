@@ -1,28 +1,26 @@
 <?php
 declare(strict_types=1);
 /**
- * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * @copyright Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 namespace CakeDC\Users\Model\Behavior;
 
 use Cake\Core\Configure;
-use Cake\Datasource\EntityInterface;
-use Cake\Event\EventDispatcherTrait;
-use Cake\Utility\Hash;
-use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\UserNotActiveException;
+use CakeDC\Users\Plugin;
 use CakeDC\Users\Traits\RandomStringTrait;
 use DateTime;
 use InvalidArgumentException;
+use Cake\Event\EventDispatcherTrait;
 
 /**
  * Covers social features
@@ -81,7 +79,7 @@ class SocialBehavior extends BaseTokenBehavior
                 $existingAccount = $user->social_accounts[0];
             } else {
                 //@todo: what if we don't have a social account after createSocialUser?
-                throw new InvalidArgumentException(__d('CakeDC/Users', 'Unable to login user with reference {0}', $reference));
+                throw new InvalidArgumentException(__d('cake_d_c/users', 'Unable to login user with reference {0}', $reference));
             }
         } else {
             $user = $existingAccount->user;
@@ -120,7 +118,7 @@ class SocialBehavior extends BaseTokenBehavior
         $existingUser = null;
         $email = Hash::get($data, 'email');
         if ($useEmail && empty($email)) {
-            throw new MissingEmailException(__d('CakeDC/Users', 'Email not present'));
+            throw new MissingEmailException(__d('cake_d_c/users', 'Email not present'));
         } else {
             $existingUser = $this->_table->find()
                 ->where([$this->_table->aliasField('email') => $email])
@@ -129,8 +127,9 @@ class SocialBehavior extends BaseTokenBehavior
 
         $user = $this->_populateUser($data, $existingUser, $useEmail, $validateEmail, $tokenExpiration);
 
-        $event = $this->dispatchEvent(UsersAuthComponent::EVENT_BEFORE_SOCIAL_LOGIN_USER_CREATE, [
+        $event = $this->dispatchEvent(Plugin::EVENT_BEFORE_SOCIAL_LOGIN_USER_CREATE, [
             'userEntity' => $user,
+            'data' => $data,
         ]);
         $result = $event->getResult();
         if ($result instanceof EntityInterface) {

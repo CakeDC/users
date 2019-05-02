@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 /**
- * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * @copyright Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -73,11 +73,11 @@ trait SimpleCrudTrait
         $entity = $table->patchEntity($entity, $this->request->getData());
         $singular = Inflector::singularize(Inflector::humanize($tableAlias));
         if ($table->save($entity)) {
-            $this->Flash->success(__d('CakeDC/Users', 'The {0} has been saved', $singular));
+            $this->Flash->success(__d('cake_d_c/users', 'The {0} has been saved', $singular));
 
             return $this->redirect(['action' => 'index']);
         }
-        $this->Flash->error(__d('CakeDC/Users', 'The {0} could not be saved', $singular));
+        $this->Flash->error(__d('cake_d_c/users', 'The {0} could not be saved', $singular));
     }
 
     /**
@@ -103,11 +103,11 @@ trait SimpleCrudTrait
         $entity = $table->patchEntity($entity, $this->request->getData());
         $singular = Inflector::singularize(Inflector::humanize($tableAlias));
         if ($table->save($entity)) {
-            $this->Flash->success(__d('CakeDC/Users', 'The {0} has been saved', $singular));
+            $this->Flash->success(__d('cake_d_c/users', 'The {0} has been saved', $singular));
 
             return $this->redirect(['action' => 'index']);
         }
-        $this->Flash->error(__d('CakeDC/Users', 'The {0} could not be saved', $singular));
+        $this->Flash->error(__d('cake_d_c/users', 'The {0} could not be saved', $singular));
     }
 
     /**
@@ -127,9 +127,9 @@ trait SimpleCrudTrait
         ]);
         $singular = Inflector::singularize(Inflector::humanize($tableAlias));
         if ($table->delete($entity)) {
-            $this->Flash->success(__d('CakeDC/Users', 'The {0} has been deleted', $singular));
+            $this->Flash->success(__d('cake_d_c/users', 'The {0} has been deleted', $singular));
         } else {
-            $this->Flash->error(__d('CakeDC/Users', 'The {0} could not be deleted', $singular));
+            $this->Flash->error(__d('cake_d_c/users', 'The {0} could not be deleted', $singular));
         }
 
         return $this->redirect(['action' => 'index']);

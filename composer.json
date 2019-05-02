@@ -30,7 +30,9 @@
     "require": {
         "php": ">=7.2.0",
         "cakephp/cakephp": "4.x-dev as 4.0.0",
-        "cakedc/auth": "feature/cakephp4-dev as 4.0.0"
+        "cakedc/auth": "feature/cakephp4-dev as 4.0.0",
+        "cakephp/authorization": "2.x-dev as 2.0",
+        "cakephp/authentication": "2.x-dev as 2.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^7",
@@ -40,8 +42,10 @@
         "league/oauth2-linkedin": "@stable",
         "luchianenco/oauth2-amazon": "^1.1",
         "google/recaptcha": "@stable",
-        "robthree/twofactorauth": "~1.6",
+        "robthree/twofactorauth": "^1.6",
         "yubico/u2flib-server": "^1.0",
+        "php-coveralls/php-coveralls": "^2.1",
+        "league/oauth1-client": "^1.7",
         "cakephp/cakephp-codesniffer": "dev-next"
     },
     "suggest": {
@@ -52,7 +56,8 @@
         "luchianenco/oauth2-amazon": "Provides Social Authentication with Amazon",
         "league/oauth2-linkedin": "Provides Social Authentication with LinkedIn",
         "google/recaptcha": "Provides reCAPTCHA validation for registration form",
-        "robthree/twofactorauth": "Provides Google Authenticator functionality"
+        "robthree/twofactorauth": "Provides Google Authenticator functionality",
+        "cakephp/authorization": "Provide authorization for users"
     },
     "autoload": {
         "psr-4": {

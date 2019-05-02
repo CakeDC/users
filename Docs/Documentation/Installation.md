@@ -40,19 +40,27 @@ If you want to use Google Authenticator features...
 composer require robthree/twofactorauth:"^1.5.2"
 ```
 
-NOTE: you'll need to enable `Users.GoogleAuthenticator.login`
+NOTE: you'll need to enable `OneTimePasswordAuthenticator.login`
 
 ```
-Configure::write('Users.GoogleAuthenticator.login', true);
+Configure::write('OneTimePasswordAuthenticator.login', true);
 ```
 
 Load the Plugin
 -----------
 
-Ensure the Users Plugin is loaded in your config/bootstrap.php file
+Ensure the Users Plugin is loaded in your src/Application.php file
 
 ```
-Plugin::load('CakeDC/Users', ['routes' => true, 'bootstrap' => true]);
+    /**
+     * {@inheritdoc}
+     */
+    public function bootstrap()
+    {
+        parent::bootstrap();
+
+        $this->addPlugin(\CakeDC\Users\Plugin::class);
+    }
 ```
 
 Creating Required Tables
@@ -96,20 +104,3 @@ IMPORTANT: Remember you'll need to configure your social login application **cal
 Note: using social authentication is not required.
 
 For more details, check the Configuration doc page
-
-Load the UsersAuth Component
----------------------
-
-Load the Component in your src/Controller/AppController.php, and use the passed Component configuration to customize the Users Plugin:
-
-```
-    public function initialize()
-    {
-        parent::initialize();
-
-        // Important: add the 'enableBeforeRedirect' config or or disable deprecation warnings
-        $this->loadComponent('RequestHandler', ['enableBeforeRedirect' => false]);
-        $this->loadComponent('Flash');                
-        $this->loadComponent('CakeDC/Users.UsersAuth');
-    }
-```
