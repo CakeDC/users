@@ -16,6 +16,7 @@ use Cake\Core\Configure;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 use Cake\Http\ServerRequestFactory;
+use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use CakeDC\Auth\Social\MapUser;
 use CakeDC\Auth\Social\Service\OAuth2Service;
@@ -90,7 +91,7 @@ class SocialAuthMiddlewareTest extends TestCase
                 'plugin' => 'CakeDC/Users',
                 'controller' => 'Users',
                 'action' => 'socialLogin',
-                'prefix' => null,
+                'prefix' => false,
             ],
         ];
         Configure::write('OAuth.providers.facebook', $config);
@@ -251,6 +252,20 @@ class SocialAuthMiddlewareTest extends TestCase
      */
     public function testSocialAuthenticationException($previousException, $flash, $location, $keepSocialUser)
     {
+        Router::connect('/login', [
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+            'action' => 'login',
+            '_ext' => NULL,
+            'prefix' => null
+        ]);
+        Router::connect('/users/users/social-email', [
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+            'action' => 'socialEmail',
+            '_ext' => NULL,
+            'prefix' => null
+        ]);
         $uri = new Uri('/auth/facebook');
         $this->Request = $this->Request->withUri($uri);
         $this->Request = $this->Request->withQueryParams([
@@ -318,7 +333,6 @@ class SocialAuthMiddlewareTest extends TestCase
             $this->assertInstanceOf(OAuth2Service::class, $service);
             $this->assertEquals('facebook', $service->getProviderName());
             $this->assertTrue($service->isGetUserStep($request));
-            //$this->assertSame($response, $ResponseOriginal);
             $checked = true;
 
             throw new SocialAuthenticationException(
@@ -361,6 +375,7 @@ class SocialAuthMiddlewareTest extends TestCase
     public function testNotValidAction()
     {
         $response = new Response();
+        $response = $response->withStringBody(__METHOD__ . time());
         $Middleware = new SocialAuthMiddleware();
         $handlerCb = function ($request) use ($response) {
             return $response;
@@ -371,8 +386,6 @@ class SocialAuthMiddlewareTest extends TestCase
          * @var Response $result
          */
         $result = $Middleware->process($this->Request, $handler);
-        $this->assertTrue(is_array($result));
-
-        $this->assertEquals(200, $result['response']->getStatusCode());
+        $this->assertSame($result, $result);
     }
 }

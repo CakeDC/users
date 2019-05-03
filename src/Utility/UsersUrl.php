@@ -47,7 +47,8 @@ class UsersUrl
     {
         $url = $this->actionUrl($action);
         foreach ($url as $param => $value) {
-            if ($request->getParam($param) !== $value) {
+            $actual = $request->getParam($param) ?? false;
+            if ($actual !== $value) {
                 return false;
             }
         }
