@@ -210,6 +210,9 @@ trait U2fTrait
         if (!isset($user['id'])) {
             return $data;
         }
+        if (!$this->request->is('ssl')) {
+            throw new \UnexpectedValueException(__d('cake_d_c/users', 'U2F requires SSL.'));
+        }
         $entity = $this->getUsersTable()->get($user['id']);
         $data['user'] = $user;
         $data['valid'] = $this->getU2fAuthenticationChecker()->isEnabled();

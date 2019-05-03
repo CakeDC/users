@@ -113,8 +113,13 @@ class U2fTraitTest extends BaseTraitTest
     public function testU2fCustomUser($userData, $redirect)
     {
         $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
-            ->setMethods(['getSession'])
+            ->setMethods(['getSession', 'is'])
             ->getMock();
+        $this->Trait->request->expects($this->any())
+            ->method('is')
+            ->with(
+                $this->equalTo('ssl')
+            )->will($this->returnValue(true));
         $response = new Response([
             'body' => time()
         ]);
@@ -138,8 +143,13 @@ class U2fTraitTest extends BaseTraitTest
     public function testU2fRegisterOkay()
     {
         $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
-            ->setMethods(['getSession'])
+            ->setMethods(['getSession', 'is'])
             ->getMock();
+        $this->Trait->request->expects($this->once())
+            ->method('is')
+            ->with(
+                $this->equalTo('ssl')
+            )->will($this->returnValue(true));
 
         $u2fLib = $this->getMockBuilder(U2F::class)
             ->setConstructorArgs(['https://localhost'])
@@ -213,9 +223,13 @@ class U2fTraitTest extends BaseTraitTest
     public function testU2fRegisterRedirect($userData, $redirect)
     {
         $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
-            ->setMethods(['getSession'])
+            ->setMethods(['getSession', 'is'])
             ->getMock();
-
+        $this->Trait->request->expects($this->any())
+            ->method('is')
+            ->with(
+                $this->equalTo('ssl')
+            )->will($this->returnValue(true));
         $this->Trait->expects($this->never())
             ->method('createU2fLib');
 
@@ -249,8 +263,13 @@ class U2fTraitTest extends BaseTraitTest
     public function testU2fRegisterFinishOkay()
     {
         $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
-            ->setMethods(['getSession', 'getData'])
+            ->setMethods(['getSession', 'is', 'getData'])
             ->getMock();
+        $this->Trait->request->expects($this->once())
+            ->method('is')
+            ->with(
+                $this->equalTo('ssl')
+            )->will($this->returnValue(true));
 
         $u2fLib = $this->getMockBuilder(U2F::class)
             ->setConstructorArgs(['https://localhost'])
@@ -341,8 +360,13 @@ class U2fTraitTest extends BaseTraitTest
     public function testU2fRegisterFinishException()
     {
         $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
-            ->setMethods(['getSession', 'getData'])
+            ->setMethods(['getSession', 'is', 'getData'])
             ->getMock();
+        $this->Trait->request->expects($this->once())
+            ->method('is')
+            ->with(
+                $this->equalTo('ssl')
+            )->will($this->returnValue(true));
 
         $u2fLib = $this->getMockBuilder(U2F::class)
             ->setConstructorArgs(['https://localhost'])
@@ -455,8 +479,13 @@ class U2fTraitTest extends BaseTraitTest
     public function testU2fAuthenticateRedirectCustomUser($userData, $redirect)
     {
         $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
-            ->setMethods(['getSession'])
+            ->setMethods(['getSession', 'is'])
             ->getMock();
+        $this->Trait->request->expects($this->any())
+            ->method('is')
+            ->with(
+                $this->equalTo('ssl')
+            )->will($this->returnValue(true));
         $response = new Response([
             'body' => time()
         ]);
@@ -480,8 +509,13 @@ class U2fTraitTest extends BaseTraitTest
     public function testU2fAuthenticate()
     {
         $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
-            ->setMethods(['getSession'])
+            ->setMethods(['getSession', 'is'])
             ->getMock();
+        $this->Trait->request->expects($this->once())
+            ->method('is')
+            ->with(
+                $this->equalTo('ssl')
+            )->will($this->returnValue(true));
 
         $u2fLib = $this->getMockBuilder(U2F::class)
             ->setConstructorArgs(['https://localhost'])
@@ -554,9 +588,13 @@ class U2fTraitTest extends BaseTraitTest
         $registrationEntityResult->certificate = $registration->certificate;
 
         $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
-            ->setMethods(['getSession', 'getData'])
+            ->setMethods(['getSession', 'is', 'getData'])
             ->getMock();
-
+        $this->Trait->request->expects($this->once())
+            ->method('is')
+            ->with(
+                $this->equalTo('ssl')
+            )->will($this->returnValue(true));
         $u2fLib = $this->getMockBuilder(U2F::class)
             ->setConstructorArgs(['https://localhost'])
             ->setMethods(['doAuthenticate'])
@@ -642,8 +680,13 @@ class U2fTraitTest extends BaseTraitTest
         $this->assertNotNull($registration);
 
         $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
-            ->setMethods(['getSession', 'getData'])
+            ->setMethods(['getSession', 'is', 'getData'])
             ->getMock();
+        $this->Trait->request->expects($this->once())
+            ->method('is')
+            ->with(
+                $this->equalTo('ssl')
+            )->will($this->returnValue(true));
 
         $u2fLib = $this->getMockBuilder(U2F::class)
             ->setConstructorArgs(['https://localhost'])
