@@ -17,7 +17,7 @@ use Cake\TestSuite\TestCase;
 
 class CustomUsersTableTraitTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->controller = $this->getMockBuilder('Cake\Controller\Controller')
@@ -26,7 +26,7 @@ class CustomUsersTableTraitTest extends TestCase
         $this->controller->Trait = $this->getMockForTrait('CakeDC\Users\Controller\Traits\CustomUsersTableTrait');
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
     }

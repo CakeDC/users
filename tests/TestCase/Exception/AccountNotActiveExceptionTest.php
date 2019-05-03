@@ -22,7 +22,7 @@ class AccountNotActiveExceptionTest extends TestCase
     /**
      * Setup
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
     }
@@ -30,7 +30,7 @@ class AccountNotActiveExceptionTest extends TestCase
     /**
      * Tear Down
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
     }

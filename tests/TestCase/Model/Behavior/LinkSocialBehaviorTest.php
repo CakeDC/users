@@ -44,7 +44,7 @@ class LinkSocialBehaviorTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->Table = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
@@ -56,7 +56,7 @@ class LinkSocialBehaviorTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->Table, $this->Behavior);
         parent::tearDown();

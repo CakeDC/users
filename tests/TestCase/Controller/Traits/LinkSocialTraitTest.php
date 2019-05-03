@@ -44,7 +44,7 @@ class LinkSocialTraitTest extends BaseTraitTest
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->traitClassName = 'CakeDC\Users\Controller\Traits\LinkSocialTrait';
         $this->traitMockMethods = ['dispatchEvent', 'isStopped', 'redirect', 'getUsersTable', 'set'];

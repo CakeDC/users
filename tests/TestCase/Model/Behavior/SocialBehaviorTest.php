@@ -34,7 +34,7 @@ class SocialBehaviorTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->Table = $this->getMockForModel('CakeDC/Users.Users', ['save']);
@@ -49,7 +49,7 @@ class SocialBehaviorTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->Table, $this->Behavior, $this->Email);
         parent::tearDown();

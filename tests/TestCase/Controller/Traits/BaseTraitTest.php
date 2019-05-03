@@ -60,7 +60,7 @@ abstract class BaseTraitTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $traitMockMethods = array_unique(array_merge(['getUsersTable'], $this->traitMockMethods));
@@ -93,7 +93,7 @@ abstract class BaseTraitTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->table, $this->Trait);
         if ($this->mockDefaultEmail) {

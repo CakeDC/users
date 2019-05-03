@@ -38,7 +38,7 @@ class RegisterBehaviorTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $table = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
@@ -57,7 +57,7 @@ class RegisterBehaviorTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->Table, $this->Behavior);
         Email::drop('default');

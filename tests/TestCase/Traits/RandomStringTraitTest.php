@@ -16,13 +16,13 @@ use Cake\TestSuite\TestCase;
 
 class RandomStringTraitTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->Trait = $this->getMockForTrait('CakeDC\Users\Traits\RandomStringTrait');
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
     }

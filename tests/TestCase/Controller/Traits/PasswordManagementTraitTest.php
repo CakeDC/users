@@ -24,7 +24,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->traitClassName = 'CakeDC\Users\Controller\Traits\PasswordManagementTrait';
         $this->traitMockMethods = ['set', 'redirect', 'validate', 'log', 'dispatchEvent'];
@@ -37,7 +37,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
     }

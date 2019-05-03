@@ -21,7 +21,7 @@ class SimpleCrudTraitTest extends BaseTraitTest
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->traitClassName = 'CakeDC\Users\Controller\Traits\SimpleCrudTrait';
         $this->traitMockMethods = ['dispatchEvent', 'isStopped', 'redirect', 'getUsersTable', 'set', 'loadModel', 'paginate'];
@@ -42,7 +42,7 @@ class SimpleCrudTraitTest extends BaseTraitTest
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->viewVars = null;
         parent::tearDown();

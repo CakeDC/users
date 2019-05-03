@@ -53,7 +53,7 @@ class UserHelperTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         if ($this->oauthConfig === null) {
             $this->oauthConfig = (array)Configure::read('OAuth');
@@ -82,7 +82,7 @@ class UserHelperTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         Configure::write('OAuth', $this->oauthConfig);
         Configure::write('Users.Social.login', $this->socialLogin);

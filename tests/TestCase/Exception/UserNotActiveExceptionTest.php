@@ -20,7 +20,7 @@ class UserNotActiveExceptionTest extends TestCase
     /**
      * Setup
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
     }
@@ -28,7 +28,7 @@ class UserNotActiveExceptionTest extends TestCase
     /**
      * Tear Down
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
     }

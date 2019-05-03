@@ -35,7 +35,7 @@ class SocialAccountsTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->SocialAccounts = TableRegistry::getTableLocator()->get('CakeDC/Users.SocialAccounts');
@@ -46,7 +46,7 @@ class SocialAccountsTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->SocialAccounts);
 

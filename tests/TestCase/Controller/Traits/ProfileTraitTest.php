@@ -29,7 +29,7 @@ class ProfileTraitTest extends BaseTraitTest
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->traitClassName = 'CakeDC\Users\Controller\Traits\ProfileTrait';
         $this->traitMockMethods = ['set', 'getUsersTable', 'redirect', 'validate'];

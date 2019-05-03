@@ -34,7 +34,7 @@ class UsersMailerTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->Email = $this->getMockBuilder('Cake\Mailer\Email')
@@ -52,7 +52,7 @@ class UsersMailerTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->UsersMailer);
         unset($this->Email);
