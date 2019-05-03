@@ -16,6 +16,7 @@ use Cake\Core\Configure;
 use Cake\Mailer\Email;
 use Cake\Mailer\TransportFactory;
 use Cake\ORM\TableRegistry;
+use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 
 /**
@@ -103,6 +104,12 @@ class RegisterBehaviorTest extends TestCase
      */
     public function testValidateRegisterValidateEmailAndTos()
     {
+        Router::connect('/users/validate-email/*', [
+             'plugin' => 'CakeDC/Users',
+             'controller' => 'Users',
+             'action' => 'validateEmail',
+         ]);
+
         $user = [
             'username' => 'testuser',
             'email' => 'testuser@test.com',
@@ -125,6 +132,12 @@ class RegisterBehaviorTest extends TestCase
      */
     public function testValidateRegisterValidatorOption()
     {
+        Router::connect('/users/validate-email/*', [
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+            'action' => 'validateEmail',
+        ]);
+
         $this->Table = $this->getMockForModel('CakeDC/Users.Users', ['validationCustom', 'patchEntity', 'errors', 'save']);
 
         $this->Behavior = $this->getMockBuilder('CakeDC\Users\Model\Behavior\RegisterBehavior')
@@ -190,6 +203,12 @@ class RegisterBehaviorTest extends TestCase
      */
     public function testValidateRegisterNoTosRequired()
     {
+        Router::connect('/users/validate-email/*', [
+             'plugin' => 'CakeDC/Users',
+             'controller' => 'Users',
+             'action' => 'validateEmail',
+         ]);
+
         $user = [
             'username' => 'testuser',
             'email' => 'testuser@test.com',

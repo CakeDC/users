@@ -15,6 +15,7 @@ namespace CakeDC\Users\Test\TestCase\View\Helper;
 use Cake\Core\Configure;
 use Cake\Http\ServerRequest;
 use Cake\I18n\I18n;
+use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use CakeDC\Users\Model\Entity\SocialAccount;
 use CakeDC\Users\View\Helper\UserHelper;
@@ -97,6 +98,12 @@ class UserHelperTest extends TestCase
      */
     public function testLogout()
     {
+        Router::connect('/logout', [
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+            'action' => 'logout',
+        ]);
+
         $result = $this->User->logout();
         $expected = '<a href="/logout">Logout</a>';
         $this->assertEquals($expected, $result);
@@ -109,6 +116,12 @@ class UserHelperTest extends TestCase
      */
     public function testLogoutDifferentMessage()
     {
+        Router::connect('/logout', [
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+            'action' => 'logout',
+        ]);
+
         $result = $this->User->logout('Sign Out');
         $expected = '<a href="/logout">Sign Out</a>';
         $this->assertEquals($expected, $result);
@@ -121,6 +134,12 @@ class UserHelperTest extends TestCase
      */
     public function testLogoutWithOptions()
     {
+        Router::connect('/logout', [
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+            'action' => 'logout',
+        ]);
+
         $result = $this->User->logout('Sign Out', ['class' => 'logout']);
         $expected = '<a href="/logout" class="logout">Sign Out</a>';
         $this->assertEquals($expected, $result);
@@ -133,6 +152,12 @@ class UserHelperTest extends TestCase
      */
     public function testWelcome()
     {
+        Router::connect('/profile', [
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+            'action' => 'profile',
+        ]);
+
         $session = $this->getMockBuilder('Cake\Http\Session')
                 ->setMethods(['read'])
                 ->getMock();

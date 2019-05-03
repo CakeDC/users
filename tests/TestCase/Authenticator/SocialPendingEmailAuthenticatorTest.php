@@ -12,6 +12,7 @@ namespace CakeDC\Users\Test\TestCase\Authenticator;
 
 use Authentication\Authenticator\Result;
 use Authentication\Identifier\IdentifierCollection;
+use Cake\Routing\Router;
 use CakeDC\Auth\Social\Mapper\Facebook;
 use CakeDC\Users\Authenticator\SocialPendingEmailAuthenticator;
 use CakeDC\Users\Model\Entity\User;
@@ -58,6 +59,12 @@ class SocialPendingEmailAuthenticatorTest extends TestCase
      */
     public function testAuthenticateInvalidUrl()
     {
+        Router::connect('/users/validate-email/*', [
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+            'action' => 'socialEmail',
+        ]);
+
         $user = $this->getUserData();
         $requestNoEmail = ServerRequestFactory::fromGlobals(
             ['REQUEST_URI' => '/users/users/social-email-invalid'],
@@ -82,6 +89,12 @@ class SocialPendingEmailAuthenticatorTest extends TestCase
      */
     public function testAuthenticateBaseFailed()
     {
+        Router::connect('/users/social-email/*', [
+             'plugin' => 'CakeDC/Users',
+             'controller' => 'Users',
+             'action' => 'socialEmail',
+         ]);
+
         $user = $this->getUserData();
         $requestNoEmail = ServerRequestFactory::fromGlobals(
             ['REQUEST_URI' => '/users/users/social-email', 'PHP_SELF' => ''],
