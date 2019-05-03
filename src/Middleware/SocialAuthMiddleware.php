@@ -21,8 +21,11 @@ use Cake\Http\ServerRequest;
 use Cake\Log\LogTrait;
 use Cake\Routing\Router;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class SocialAuthMiddleware
+class SocialAuthMiddleware implements MiddlewareInterface
 {
     use LogTrait;
 
@@ -34,20 +37,20 @@ class SocialAuthMiddleware
      * @param callable $next Callback to invoke the next middleware.
      * @return \Psr\Http\Message\ResponseInterface A response
      */
-    public function __invoke(ServerRequest $request, ResponseInterface $response, $next)
-    {
-        if (!(new UsersUrl())->checkActionOnRequest('socialLogin', $request)) {
-            return $next($request, $response);
-        }
-
-        $service = (new ServiceFactory())->createFromRequest($request);
-        if (!$service->isGetUserStep($request)) {
-            return $response->withLocation($service->getAuthorizationUrl($request));
-        }
-        $request = $request->withAttribute(SocialAuthenticator::SOCIAL_SERVICE_ATTRIBUTE, $service);
-
-        return $this->goNext($request, $response, $next);
-    }
+//    public function __invoke(ServerRequest $request, ResponseInterface $response, $next)
+//    {
+//        if (!(new UsersUrl())->checkActionOnRequest('socialLogin', $request)) {
+//            return $next($request, $response);
+//        }
+//
+//        $service = (new ServiceFactory())->createFromRequest($request);
+//        if (!$service->isGetUserStep($request)) {
+//            return $response->withLocation($service->getAuthorizationUrl($request));
+//        }
+//        $request = $request->withAttribute(SocialAuthenticator::SOCIAL_SERVICE_ATTRIBUTE, $service);
+//
+//        return $this->goNext($request, $response, $next);
+//    }
 
     /**
      * Handle SocialAuthenticationException
@@ -126,5 +129,26 @@ class SocialAuthMiddleware
         } catch (SocialAuthenticationException $exception) {
             return $this->onAuthenticationException($request, $response, $exception);
         }
+    }
+
+    /**
+     * Process an incoming server request.
+     *
+     * Processes an incoming server request in order to produce a response.
+     * If unable to produce the response itself, it may delegate to the provided
+     * request handler to do so.
+     */
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    {
+        if (!(new UsersUrl())->checkActionOnRequest('socialLogin', $request)) {
+            return $handler->handle($request);
+        }
+
+        $service = (new ServiceFactory())->createFromRequest($request);
+        if (!$service->isGetUserStep($request)) {
+            return $handler->handle($request)->withLocation($service->getAuthorizationUrl($request));
+        }
+        $request = $request->withAttribute(SocialAuthenticator::SOCIAL_SERVICE_ATTRIBUTE, $service);
+        return $handler->handle($request);
     }
 }

@@ -59,12 +59,20 @@ class PluginTest extends TestCase
         $middleware = new MiddlewareQueue();
 
         $middleware = $plugin->middleware($middleware);
-        $this->assertInstanceOf(SocialAuthMiddleware::class, $middleware->get(0));
-        $this->assertInstanceOf(SocialEmailMiddleware::class, $middleware->get(1));
-        $this->assertInstanceOf(AuthenticationMiddleware::class, $middleware->get(2));
-        $this->assertInstanceOf(OneTimePasswordAuthenticatorMiddleware::class, $middleware->get(3));
-        $this->assertInstanceOf(AuthorizationMiddleware::class, $middleware->get(4));
-        $this->assertInstanceOf(RequestAuthorizationMiddleware::class, $middleware->get(5));
+		
+		// next two is DoublePassDecoratorMiddleware as they not implements MiddlewareInterface
+		$middleware->seek(0);
+        $this->assertInstanceOf(SocialAuthMiddleware::class, $middleware->current());
+		$middleware->seek(1);
+        $this->assertInstanceOf(SocialEmailMiddleware::class, $middleware->current());
+		$middleware->seek(2);
+        $this->assertInstanceOf(AuthenticationMiddleware::class, $middleware->current());
+		$middleware->seek(3);
+        $this->assertInstanceOf(OneTimePasswordAuthenticatorMiddleware::class, $middleware->current());
+		$middleware->seek(4);
+        $this->assertInstanceOf(AuthorizationMiddleware::class, $middleware->current());
+		$middleware->seek(5);
+        $this->assertInstanceOf(RequestAuthorizationMiddleware::class, $middleware->current());
         $this->assertEquals(6, $middleware->count());
     }
 
@@ -84,12 +92,18 @@ class PluginTest extends TestCase
         $middleware = new MiddlewareQueue();
 
         $middleware = $plugin->middleware($middleware);
-        $this->assertInstanceOf(SocialAuthMiddleware::class, $middleware->get(0));
-        $this->assertInstanceOf(SocialEmailMiddleware::class, $middleware->get(1));
-        $this->assertInstanceOf(AuthenticationMiddleware::class, $middleware->get(2));
-        $this->assertInstanceOf(OneTimePasswordAuthenticatorMiddleware::class, $middleware->get(3));
-        $this->assertInstanceOf(AuthorizationMiddleware::class, $middleware->get(4));
-        $this->assertInstanceOf(RequestAuthorizationMiddleware::class, $middleware->get(5));
+		$middleware->seek(0);
+        $this->assertInstanceOf(SocialAuthMiddleware::class, $middleware->current());
+		$middleware->seek(1);
+        $this->assertInstanceOf(SocialEmailMiddleware::class, $middleware->current());
+		$middleware->seek(2);
+        $this->assertInstanceOf(AuthenticationMiddleware::class, $middleware->current());
+		$middleware->seek(3);
+        $this->assertInstanceOf(OneTimePasswordAuthenticatorMiddleware::class, $middleware->current());
+		$middleware->seek(4);
+        $this->assertInstanceOf(AuthorizationMiddleware::class, $middleware->current());
+		$middleware->seek(5);
+        $this->assertInstanceOf(RequestAuthorizationMiddleware::class, $middleware->current());
         $this->assertEquals(6, $middleware->count());
     }
 
@@ -109,10 +123,14 @@ class PluginTest extends TestCase
         $middleware = new MiddlewareQueue();
 
         $middleware = $plugin->middleware($middleware);
-        $this->assertInstanceOf(SocialAuthMiddleware::class, $middleware->get(0));
-        $this->assertInstanceOf(SocialEmailMiddleware::class, $middleware->get(1));
-        $this->assertInstanceOf(AuthenticationMiddleware::class, $middleware->get(2));
-        $this->assertInstanceOf(OneTimePasswordAuthenticatorMiddleware::class, $middleware->get(3));
+		$middleware->seek(0);
+        $this->assertInstanceOf(SocialAuthMiddleware::class, $middleware->current());
+		$middleware->seek(1);
+        $this->assertInstanceOf(SocialEmailMiddleware::class, $middleware->current());
+		$middleware->seek(2);
+        $this->assertInstanceOf(AuthenticationMiddleware::class, $middleware->current());
+		$middleware->seek(3);
+        $this->assertInstanceOf(OneTimePasswordAuthenticatorMiddleware::class, $middleware->current());
         $this->assertEquals(4, $middleware->count());
     }
 
@@ -131,10 +149,14 @@ class PluginTest extends TestCase
         $middleware = new MiddlewareQueue();
 
         $middleware = $plugin->middleware($middleware);
-        $this->assertInstanceOf(AuthenticationMiddleware::class, $middleware->get(0));
-        $this->assertInstanceOf(OneTimePasswordAuthenticatorMiddleware::class, $middleware->get(1));
-        $this->assertInstanceOf(AuthorizationMiddleware::class, $middleware->get(2));
-        $this->assertInstanceOf(RequestAuthorizationMiddleware::class, $middleware->get(3));
+		$middleware->seek(0);
+        $this->assertInstanceOf(AuthenticationMiddleware::class, $middleware->current());
+		$middleware->seek(1);
+        $this->assertInstanceOf(OneTimePasswordAuthenticatorMiddleware::class, $middleware->current());
+		$middleware->seek(2);
+        $this->assertInstanceOf(AuthorizationMiddleware::class, $middleware->current());
+		$middleware->seek(3);
+        $this->assertInstanceOf(RequestAuthorizationMiddleware::class, $middleware->current());
     }
 
     /**
@@ -152,11 +174,16 @@ class PluginTest extends TestCase
         $middleware = new MiddlewareQueue();
 
         $middleware = $plugin->middleware($middleware);
-        $this->assertInstanceOf(SocialAuthMiddleware::class, $middleware->get(0));
-        $this->assertInstanceOf(SocialEmailMiddleware::class, $middleware->get(1));
-        $this->assertInstanceOf(AuthenticationMiddleware::class, $middleware->get(2));
-        $this->assertInstanceOf(AuthorizationMiddleware::class, $middleware->get(3));
-        $this->assertInstanceOf(RequestAuthorizationMiddleware::class, $middleware->get(4));
+		$middleware->seek(0);
+        $this->assertInstanceOf(SocialAuthMiddleware::class, $middleware->current());
+		$middleware->seek(1);
+        $this->assertInstanceOf(SocialEmailMiddleware::class, $middleware->current());
+		$middleware->seek(2);
+        $this->assertInstanceOf(AuthenticationMiddleware::class, $middleware->current());
+		$middleware->seek(3);
+        $this->assertInstanceOf(AuthorizationMiddleware::class, $middleware->current());
+		$middleware->seek(4);
+        $this->assertInstanceOf(RequestAuthorizationMiddleware::class, $middleware->current());
     }
 
     /**
@@ -174,9 +201,12 @@ class PluginTest extends TestCase
         $middleware = new MiddlewareQueue();
 
         $middleware = $plugin->middleware($middleware);
-        $this->assertInstanceOf(AuthenticationMiddleware::class, $middleware->get(0));
-        $this->assertInstanceOf(AuthorizationMiddleware::class, $middleware->get(1));
-        $this->assertInstanceOf(RequestAuthorizationMiddleware::class, $middleware->get(2));
+		$middleware->seek(0);
+        $this->assertInstanceOf(AuthenticationMiddleware::class, $middleware->current());
+		$middleware->seek(1);
+        $this->assertInstanceOf(AuthorizationMiddleware::class, $middleware->current());
+		$middleware->seek(2);
+        $this->assertInstanceOf(RequestAuthorizationMiddleware::class, $middleware->current());
     }
 
     /**
@@ -188,21 +218,19 @@ class PluginTest extends TestCase
     {
         $request = ServerRequestFactory::fromGlobals();
         $request->withQueryParams(['method' => __METHOD__]);
-        $response = new Response(['body' => __METHOD__]);
         $service = new CakeDCAuthenticationService([
             'identifiers' => [
                 'Authentication.Password'
             ]
         ]);
-        Configure::write('Auth.Authentication.serviceLoader', function ($aRequest, $aResponse) use ($request, $response, $service) {
+        Configure::write('Auth.Authentication.serviceLoader', function ($aRequest) use ($request, $service) {
             $this->assertSame($request, $aRequest);
-            $this->assertSame($response, $aResponse);
 
             return $service;
         });
 
         $plugin = new Plugin();
-        $actualService = $plugin->getAuthenticationService($request, $response);
+        $actualService = $plugin->getAuthenticationService($request);
         $this->assertSame($service, $actualService);
     }
     /**
@@ -400,7 +428,7 @@ class PluginTest extends TestCase
     public function testGetAuthorizationService()
     {
         $plugin = new Plugin();
-        $service = $plugin->getAuthorizationService(new ServerRequest(), new Response());
+        $service = $plugin->getAuthorizationService(new ServerRequest());
         $this->assertInstanceOf(AuthorizationService::class, $service);
     }
 
@@ -413,17 +441,15 @@ class PluginTest extends TestCase
     {
         $request = ServerRequestFactory::fromGlobals();
         $request->withQueryParams(['method' => __METHOD__]);
-        $response = new Response(['body' => __METHOD__]);
         $service = new AuthorizationService(new ResolverCollection());
-        Configure::write('Auth.Authorization.serviceLoader', function ($aRequest, $aResponse) use ($request, $response, $service) {
+        Configure::write('Auth.Authorization.serviceLoader', function ($aRequest) use ($request, $service) {
             $this->assertSame($request, $aRequest);
-            $this->assertSame($response, $aResponse);
 
             return $service;
         });
 
         $plugin = new Plugin();
-        $actualService = $plugin->getAuthorizationService($request, $response);
+        $actualService = $plugin->getAuthorizationService($request);
         $this->assertSame($service, $actualService);
     }
 }

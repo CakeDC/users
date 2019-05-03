@@ -28,9 +28,20 @@ class TestApplication extends \Cake\Http\BaseApplication
      *
      * @return \Cake\Http\MiddlewareQueue
      */
-    public function middleware(MiddlewareQueue $middleware): MiddlewareQueue
+    /**
+     * Setup the middleware queue your application will use.
+     *
+     * @param \Cake\Http\MiddlewareQueue $middlewareQueue The middleware queue to setup.
+     * @return \Cake\Http\MiddlewareQueue The updated middleware queue.
+     */
+    public function middleware(MiddlewareQueue $middlewareQueue): MiddlewareQueue
     {
-        return $middleware;
+        $middlewareQueue
+            ->add(ErrorHandlerMiddleware::class)
+            ->add(AssetMiddleware::class)
+            ->add(new RoutingMiddleware($this, null));
+
+        return $middlewareQueue;
     }
 
     /**
