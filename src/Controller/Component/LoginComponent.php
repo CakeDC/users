@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -12,16 +13,15 @@
 namespace CakeDC\Users\Controller\Component;
 
 use Authentication\Authenticator\ResultInterface;
+use Cake\Controller\Component;
 use CakeDC\Auth\Authentication\AuthenticationService;
 use CakeDC\Users\Plugin;
-use Cake\Controller\Component;
 
 /**
  * LoginFailure component
  */
 class LoginComponent extends Component
 {
-
     /**
      * Default configuration.
      *
@@ -90,8 +90,8 @@ class LoginComponent extends Component
     /**
      * Get the target authenticator result for current login action
      *
-     * @param AuthenticationService $service authentication service.
-     * @return ResultInterface|null
+     * @param \CakeDC\Auth\Authentication\AuthenticationService $service authentication service.
+     * @return \Authentication\Authenticator\ResultInterface|null
      */
     public function getTargetAuthenticatorResult(AuthenticationService $service)
     {
@@ -109,10 +109,10 @@ class LoginComponent extends Component
     /**
      * Get the error message for result status
      *
-     * @param ResultInterface|null $result Result object;
+     * @param \Authentication\Authenticator\ResultInterface|null $result Result object;
      * @return string
      */
-    public function getErrorMessage(ResultInterface $result = null)
+    public function getErrorMessage(?ResultInterface $result = null)
     {
         $messagesMap = $this->getConfig('messages');
 

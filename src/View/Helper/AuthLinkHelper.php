@@ -12,9 +12,9 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\View\Helper;
 
-use CakeDC\Auth\Traits\IsAuthorizedTrait;
 use Cake\Utility\Hash;
 use Cake\View\Helper\HtmlHelper;
+use CakeDC\Auth\Traits\IsAuthorizedTrait;
 
 /**
  * AuthLink helper

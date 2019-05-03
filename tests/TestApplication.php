@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -20,7 +21,6 @@ use Cake\Http\MiddlewareQueue;
  */
 class TestApplication extends \Cake\Http\BaseApplication
 {
-
     /**
      * Setup the middleware queue
      *
@@ -52,7 +52,7 @@ class TestApplication extends \Cake\Http\BaseApplication
         parent::bootstrap();
         $this->addPlugin('CakeDC/Users', [
             'path' => dirname(dirname(__FILE__)) . DS,
-            'routes' => true
+            'routes' => true,
         ]);
     }
 }

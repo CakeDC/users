@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -12,20 +13,20 @@ namespace CakeDC\Users\Test\TestCase\Authenticator;
 
 use Authentication\Authenticator\Result;
 use Authentication\Identifier\IdentifierCollection;
-use Cake\Routing\Router;
-use CakeDC\Auth\Social\Mapper\Facebook;
-use CakeDC\Users\Authenticator\SocialPendingEmailAuthenticator;
-use CakeDC\Users\Model\Entity\User;
 use Cake\Core\Configure;
 use Cake\Http\Client\Response;
 use Cake\Http\ServerRequestFactory;
+use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
+use CakeDC\Auth\Social\Mapper\Facebook;
+use CakeDC\Users\Authenticator\SocialPendingEmailAuthenticator;
+use CakeDC\Users\Model\Entity\User;
 
 class SocialPendingEmailAuthenticatorTest extends TestCase
 {
     public $fixtures = [
         'plugin.CakeDC/Users.Users',
-        'plugin.CakeDC/Users.SocialAccounts'
+        'plugin.CakeDC/Users.SocialAccounts',
     ];
 
     /**
@@ -74,7 +75,7 @@ class SocialPendingEmailAuthenticatorTest extends TestCase
         $requestNoEmail->getSession()->write(Configure::read('Users.Key.Session.social'), $user);
         $Response = new Response();
         $identifiers = new IdentifierCollection([
-            'CakeDC/Users.Social'
+            'CakeDC/Users.Social',
         ]);
         $Authenticator = new SocialPendingEmailAuthenticator($identifiers);
         $result = $Authenticator->authenticate($requestNoEmail, $Response);
@@ -112,7 +113,7 @@ class SocialPendingEmailAuthenticatorTest extends TestCase
         $requestNoEmail->getSession()->write(Configure::read('Users.Key.Session.social'), $user);
         $Response = new Response();
         $identifiers = new IdentifierCollection([
-            'CakeDC/Users.Social'
+            'CakeDC/Users.Social',
         ]);
         $Authenticator = new SocialPendingEmailAuthenticator($identifiers);
         $result = $Authenticator->authenticate($requestNoEmail, $Response);
@@ -138,7 +139,7 @@ class SocialPendingEmailAuthenticatorTest extends TestCase
     {
         $Token = new \League\OAuth2\Client\Token\AccessToken([
             'access_token' => 'test-token',
-            'expires' => 1490988496
+            'expires' => 1490988496,
         ]);
 
         $data = [
@@ -149,29 +150,29 @@ class SocialPendingEmailAuthenticatorTest extends TestCase
             'last_name' => 'User',
             'hometown' => [
                 'id' => '108226049197930',
-                'name' => 'Madrid'
+                'name' => 'Madrid',
             ],
             'picture' => [
                 'data' => [
                     'url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
-                    'is_silhouette' => false
-                ]
+                    'is_silhouette' => false,
+                ],
             ],
             'cover' => [
                 'source' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
-                'id' => '1'
+                'id' => '1',
             ],
             'gender' => 'male',
             'locale' => 'en_US',
             'link' => 'https://www.facebook.com/app_scoped_user_id/1/',
             'timezone' => -5,
             'age_range' => [
-                'min' => 21
+                'min' => 21,
             ],
             'bio' => 'I am the best test user in the world.',
             'picture_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
             'is_silhouette' => false,
-            'cover_photo_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg'
+            'cover_photo_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
         ];
 
         $mapper = new Facebook();

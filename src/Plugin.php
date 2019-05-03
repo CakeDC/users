@@ -12,27 +12,11 @@ declare(strict_types=1);
 
 namespace CakeDC\Users;
 
-use Authentication\AuthenticationServiceInterface;
 use Authentication\AuthenticationServiceProviderInterface;
-use Authentication\Middleware\AuthenticationMiddleware;
-use Authorization\AuthorizationService;
 use Authorization\AuthorizationServiceProviderInterface;
-use Authorization\Middleware\AuthorizationMiddleware;
-use Authorization\Middleware\RequestAuthorizationMiddleware;
-use Authorization\Policy\MapResolver;
-use Authorization\Policy\OrmResolver;
-use Authorization\Policy\ResolverCollection;
-use CakeDC\Auth\Authentication\AuthenticationService;
-use CakeDC\Auth\Middleware\OneTimePasswordAuthenticatorMiddleware;
-use CakeDC\Auth\Middleware\RbacMiddleware;
-use CakeDC\Auth\Policy\RbacPolicy;
-use CakeDC\Users\Middleware\SocialAuthMiddleware;
-use CakeDC\Users\Middleware\SocialEmailMiddleware;
 use Cake\Core\BasePlugin;
 use Cake\Core\Configure;
 use Cake\Http\MiddlewareQueue;
-use Cake\Http\ServerRequest;
-use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 class Plugin extends BasePlugin implements AuthenticationServiceProviderInterface, AuthorizationServiceProviderInterface
@@ -42,17 +26,17 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
      *
      * @var string
      */
-    protected $name = 'CakeDC/Users'; 
-    const EVENT_AFTER_LOGIN = 'Users.Authentication.afterLogin';
-    const EVENT_BEFORE_LOGOUT = 'Users.Authentication.beforeLogout';
-    const EVENT_AFTER_LOGOUT = 'Users.Authentication.afterLogout';
+    protected $name = 'CakeDC/Users';
+    public const EVENT_AFTER_LOGIN = 'Users.Authentication.afterLogin';
+    public const EVENT_BEFORE_LOGOUT = 'Users.Authentication.beforeLogout';
+    public const EVENT_AFTER_LOGOUT = 'Users.Authentication.afterLogout';
 
-    const EVENT_BEFORE_REGISTER = 'Users.Global.beforeRegister';
-    const EVENT_AFTER_REGISTER = 'Users.Global.afterRegister';
-    const EVENT_AFTER_CHANGE_PASSWORD = 'Users.Global.afterResetPassword';
-    const EVENT_BEFORE_SOCIAL_LOGIN_USER_CREATE = 'Users.Global.beforeSocialLoginUserCreate';
-    const EVENT_ON_EXPIRED_TOKEN = 'Users.Global.onExpiredToken';
-    const EVENT_AFTER_RESEND_TOKEN_VALIDATION = 'Users.Global.afterResendTokenValidation';
+    public const EVENT_BEFORE_REGISTER = 'Users.Global.beforeRegister';
+    public const EVENT_AFTER_REGISTER = 'Users.Global.afterRegister';
+    public const EVENT_AFTER_CHANGE_PASSWORD = 'Users.Global.afterResetPassword';
+    public const EVENT_BEFORE_SOCIAL_LOGIN_USER_CREATE = 'Users.Global.beforeSocialLoginUserCreate';
+    public const EVENT_ON_EXPIRED_TOKEN = 'Users.Global.onExpiredToken';
+    public const EVENT_AFTER_RESEND_TOKEN_VALIDATION = 'Users.Global.afterResendTokenValidation';
 
     /**
      * Returns an authentication service instance.
@@ -66,7 +50,7 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
         $key = 'Auth.Authentication.serviceLoader';
 
         return $this->loadService($request, $key);
-}
+    }
 
     /**
      * {@inheritdoc}
@@ -91,8 +75,8 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
     /**
      * Load a service defined in configuration $loaderKey
      *
-     * @param ServerRequestInterface $request The request.
-     * @param ResponseInterface $response The response.
+     * @param \Psr\Http\Message\ServerRequestInterface $request The request.
+     * @param \Psr\Http\Message\ResponseInterface $loaderKey The response.
      * @param string $loaderKey service loader key
      *
      * @return mixed

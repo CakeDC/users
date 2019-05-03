@@ -45,31 +45,31 @@ class UsersShell extends Shell
         $parser = parent::getOptionParser();
         $parser->setDescription(__d('cake_d_c/users', 'Utilities for CakeDC Users Plugin'))
             ->addSubcommand('activateUser', [
-                'help' => __d('cake_d_c/users', 'Activate an specific user')
+                'help' => __d('cake_d_c/users', 'Activate an specific user'),
             ])
             ->addSubcommand('addSuperuser', [
-                'help' => __d('cake_d_c/users', 'Add a new superadmin user for testing purposes')
+                'help' => __d('cake_d_c/users', 'Add a new superadmin user for testing purposes'),
             ])
             ->addSubcommand('addUser', [
-                'help' => __d('cake_d_c/users', 'Add a new user')
+                'help' => __d('cake_d_c/users', 'Add a new user'),
             ])
             ->addSubcommand('changeRole', [
-                'help' => __d('cake_d_c/users', 'Change the role for an specific user')
+                'help' => __d('cake_d_c/users', 'Change the role for an specific user'),
             ])
             ->addSubcommand('deactivateUser', [
-                'help' => __d('cake_d_c/users', 'Deactivate an specific user')
+                'help' => __d('cake_d_c/users', 'Deactivate an specific user'),
             ])
             ->addSubcommand('deleteUser', [
-                'help' => __d('cake_d_c/users', 'Delete an specific user')
+                'help' => __d('cake_d_c/users', 'Delete an specific user'),
             ])
             ->addSubcommand('passwordEmail', [
-                'help' => __d('cake_d_c/users', 'Reset the password via email')
+                'help' => __d('cake_d_c/users', 'Reset the password via email'),
             ])
             ->addSubcommand('resetAllPasswords', [
-                'help' => __d('cake_d_c/users', 'Reset the password for all users')
+                'help' => __d('cake_d_c/users', 'Reset the password for all users'),
             ])
             ->addSubcommand('resetPassword', [
-                'help' => __d('cake_d_c/users', 'Reset the password for an specific user')
+                'help' => __d('cake_d_c/users', 'Reset the password for an specific user'),
             ])
             ->addOptions([
                 'username' => ['short' => 'u', 'help' => 'The username for the new user'],

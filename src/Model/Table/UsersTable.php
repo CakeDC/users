@@ -182,13 +182,13 @@ class UsersTable extends Table
     {
         $rules->add($rules->isUnique(['username']), '_isUnique', [
             'errorField' => 'username',
-            'message' => __d('cake_d_c/users', 'Username already exists')
+            'message' => __d('cake_d_c/users', 'Username already exists'),
         ]);
 
         if ($this->isValidateEmail) {
             $rules->add($rules->isUnique(['email']), '_isUnique', [
                 'errorField' => 'email',
-                'message' => __d('cake_d_c/users', 'Email already exists')
+                'message' => __d('cake_d_c/users', 'Email already exists'),
             ]);
         }
 

@@ -50,8 +50,8 @@ class LinkSocialBehavior extends Behavior
         if ($socialAccount && $user->id !== $socialAccount->user_id) {
             $user->setErrors([
                 'social_accounts' => [
-                    '_existsIn' => __d('cake_d_c/users', 'Social account already associated to another user')
-                ]
+                    '_existsIn' => __d('cake_d_c/users', 'Social account already associated to another user'),
+                ],
             ]);
 
             return $user;

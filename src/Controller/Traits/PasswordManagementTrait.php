@@ -12,13 +12,13 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Controller\Traits;
 
+use Cake\Core\Configure;
+use Cake\Utility\Hash;
+use Cake\Validation\Validator;
 use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Exception\UserNotFoundException;
 use CakeDC\Users\Exception\WrongPasswordException;
 use CakeDC\Users\Plugin;
-use Cake\Core\Configure;
-use Cake\Utility\Hash;
-use Cake\Validation\Validator;
 use Exception;
 
 /**
@@ -39,7 +39,7 @@ trait PasswordManagementTrait
     {
         $user = $this->getUsersTable()->newEntity([]);
         $identity = $this->request->getAttribute('identity');
-        $identity = isset($identity) ? $identity : [];
+        $identity = $identity ?? [];
         $id = Hash::get($identity, 'id');
 
         if (!empty($id)) {

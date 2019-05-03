@@ -10,10 +10,8 @@
  */
 
 use Cake\Core\Configure;
-use Cake\Core\Plugin;
- 
-class_alias('CakeDC\Users\Test\App\Controller\AppController', 'App\Controller\AppController');
 
+class_alias('CakeDC\Users\Test\App\Controller\AppController', 'App\Controller\AppController');
 
 Configure::write('App', [
     'namespace' => 'Users\Test\App',
@@ -32,14 +30,11 @@ Configure::write('App', [
         'templates' => [dirname(APP) . 'templates' . DS],
     ],
 ]);
-
-
 if (!getenv('db_dsn')) {
     putenv('db_dsn=sqlite:///:memory:');
 }
 
 Cake\Datasource\ConnectionManager::setConfig('test', [
     'url' => getenv('db_dsn'),
-    'timezone' => 'UTC'
+    'timezone' => 'UTC',
 ]);
-

@@ -12,8 +12,6 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Test\TestCase\View\Helper;
 
-use Cake\Event\Event;
-use Cake\Event\EventManager;
 use Cake\TestSuite\TestCase;
 use Cake\View\View;
 use CakeDC\Users\View\Helper\AuthLinkHelper;

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,10 +12,10 @@
 
 namespace CakeDC\Users\Middleware;
 
-use CakeDC\Users\Utility\UsersUrl;
 use Cake\Core\Configure;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\ServerRequest;
+use CakeDC\Users\Utility\UsersUrl;
 use Psr\Http\Message\ResponseInterface;
 
 class SocialEmailMiddleware extends SocialAuthMiddleware

@@ -15,14 +15,14 @@ namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 use Authentication\Authenticator\Result;
 use Authentication\Authenticator\SessionAuthenticator;
 use Authentication\Identifier\IdentifierCollection;
-use CakeDC\Auth\Authentication\Failure;
-use CakeDC\Auth\Authenticator\FormAuthenticator;
-use CakeDC\Users\Authenticator\SocialAuthenticator;
-use CakeDC\Users\Controller\Component\LoginComponent;
 use Cake\Controller\ComponentRegistry;
 use Cake\Event\Event;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
+use CakeDC\Auth\Authentication\Failure;
+use CakeDC\Auth\Authenticator\FormAuthenticator;
+use CakeDC\Users\Authenticator\SocialAuthenticator;
+use CakeDC\Users\Controller\Component\LoginComponent;
 
 class LoginTraitTest extends BaseTraitTest
 {
@@ -102,9 +102,9 @@ class LoginTraitTest extends BaseTraitTest
             'component' => 'CakeDC/Users.Login',
             'defaultMessage' => __d('cake_d_c/users', 'Username or password is incorrect'),
             'messages' => [
-                FormAuthenticator::FAILURE_INVALID_RECAPTCHA => __d('cake_d_c/users', 'Invalid reCaptcha')
+                FormAuthenticator::FAILURE_INVALID_RECAPTCHA => __d('cake_d_c/users', 'Invalid reCaptcha'),
             ],
-            'targetAuthenticator' => FormAuthenticator::class
+            'targetAuthenticator' => FormAuthenticator::class,
         ];
         $Login = $this->getMockBuilder(LoginComponent::class)
             ->setMethods(['getController'])
@@ -185,9 +185,9 @@ class LoginTraitTest extends BaseTraitTest
             'component' => 'CakeDC/Users.Login',
             'defaultMessage' => __d('cake_d_c/users', 'Username or password is incorrect'),
             'messages' => [
-                FormAuthenticator::FAILURE_INVALID_RECAPTCHA => __d('cake_d_c/users', 'Invalid reCaptcha')
+                FormAuthenticator::FAILURE_INVALID_RECAPTCHA => __d('cake_d_c/users', 'Invalid reCaptcha'),
             ],
-            'targetAuthenticator' => FormAuthenticator::class
+            'targetAuthenticator' => FormAuthenticator::class,
         ];
         $Login = $this->getMockBuilder(LoginComponent::class)
             ->setMethods(['getController'])
@@ -242,9 +242,9 @@ class LoginTraitTest extends BaseTraitTest
             'component' => 'CakeDC/Users.Login',
             'defaultMessage' => __d('cake_d_c/users', 'Username or password is incorrect'),
             'messages' => [
-                FormAuthenticator::FAILURE_INVALID_RECAPTCHA => __d('cake_d_c/users', 'Invalid reCaptcha')
+                FormAuthenticator::FAILURE_INVALID_RECAPTCHA => __d('cake_d_c/users', 'Invalid reCaptcha'),
             ],
-            'targetAuthenticator' => FormAuthenticator::class
+            'targetAuthenticator' => FormAuthenticator::class,
         ];
         $Login = $this->getMockBuilder(LoginComponent::class)
             ->setMethods(['getController'])
@@ -281,7 +281,7 @@ class LoginTraitTest extends BaseTraitTest
             ->disableOriginalConstructor()
             ->getMock();
         $this->_mockAuthentication([
-            'id' => 1
+            'id' => 1,
         ]);
         $this->Trait->expects($this->once())
             ->method('redirect')
@@ -312,9 +312,9 @@ class LoginTraitTest extends BaseTraitTest
                 SocialAuthenticator::FAILURE_ACCOUNT_NOT_ACTIVE => __d(
                     'cake_d_c/users',
                     'Your social account has not been validated yet. Please check your inbox for instructions'
-                )
+                ),
             ],
-            'targetAuthenticator' => SocialAuthenticator::class
+            'targetAuthenticator' => SocialAuthenticator::class,
         ];
         $loginConfig = [
             'component' => 'CakeDC/Users.Login',
@@ -322,7 +322,7 @@ class LoginTraitTest extends BaseTraitTest
             'messages' => [
                 FormAuthenticator::FAILURE_INVALID_RECAPTCHA => __d('cake_d_c/users', 'Invalid reCaptcha'),
             ],
-            'targetAuthenticator' => FormAuthenticator::class
+            'targetAuthenticator' => FormAuthenticator::class,
         ];
 
         return [
@@ -331,36 +331,36 @@ class LoginTraitTest extends BaseTraitTest
                 SocialAuthenticator::FAILURE_USER_NOT_ACTIVE,
                 'Your user has not been validated yet. Please check your inbox for instructions',
                 'socialLogin',
-                $socialLoginConfig
+                $socialLoginConfig,
             ],
             [
                 SocialAuthenticator::class,
                 SocialAuthenticator::FAILURE_ACCOUNT_NOT_ACTIVE,
                 'Your social account has not been validated yet. Please check your inbox for instructions',
                 'socialLogin',
-                $socialLoginConfig
+                $socialLoginConfig,
             ],
             [
                 SocialAuthenticator::class,
                 Result::FAILURE_IDENTITY_NOT_FOUND,
                 'Could not proceed with social account. Please try again',
                 'socialLogin',
-                $socialLoginConfig
+                $socialLoginConfig,
             ],
             [
                 FormAuthenticator::class,
                 Result::FAILURE_IDENTITY_NOT_FOUND,
                 'Username or password is incorrect',
                 'login',
-                $loginConfig
+                $loginConfig,
             ],
             [
                 FormAuthenticator::class,
                 FormAuthenticator::FAILURE_INVALID_RECAPTCHA,
                 'Invalid reCaptcha',
                 'login',
-                $loginConfig
-            ]
+                $loginConfig,
+            ],
         ];
     }
     /**
@@ -372,7 +372,7 @@ class LoginTraitTest extends BaseTraitTest
     public function testLogin($AuthClass, $resultStatus, $message, $method, $failureConfig)
     {
         $identifiers = new IdentifierCollection([
-            'CakeDC/Users.Social'
+            'CakeDC/Users.Social',
         ]);
         $FormAuth = new FormAuthenticator($identifiers);
         $SessionAuth = new SessionAuthenticator($identifiers);
@@ -385,7 +385,7 @@ class LoginTraitTest extends BaseTraitTest
         $formFailure = new Failure(
             $FormAuth,
             new Result(null, $resultStatus, [
-                'Password' => []
+                'Password' => [],
             ])
         );
         $socialFailure = new Failure(
@@ -440,7 +440,7 @@ class LoginTraitTest extends BaseTraitTest
                 ->will($this->returnValue(new Response()));
             $result = $this->Trait->$method();
             $this->assertInstanceOf(Response::class, $result);
-    }
+        }
     }
 
     /**
@@ -451,7 +451,7 @@ class LoginTraitTest extends BaseTraitTest
     public function testSocialLoginSuccess()
     {
         $identifiers = new IdentifierCollection([
-            'CakeDC/Users.Social'
+            'CakeDC/Users.Social',
         ]);
         $FormAuth = new FormAuthenticator($identifiers);
         $SessionAuth = new SessionAuthenticator($identifiers);
@@ -463,7 +463,7 @@ class LoginTraitTest extends BaseTraitTest
         $formFailure = new Failure(
             $FormAuth,
             new Result(null, Result::FAILURE_CREDENTIALS_MISSING, [
-                'Password' => []
+                'Password' => [],
             ])
         );
         $failures = [$sessionFailure, $formFailure];
@@ -501,9 +501,9 @@ class LoginTraitTest extends BaseTraitTest
                 SocialAuthenticator::FAILURE_ACCOUNT_NOT_ACTIVE => __d(
                     'cake_d_c/users',
                     'Your social account has not been validated yet. Please check your inbox for instructions'
-                )
+                ),
             ],
-            'targetAuthenticator' => SocialAuthenticator::class
+            'targetAuthenticator' => SocialAuthenticator::class,
         ];
         $Login = $this->getMockBuilder(LoginComponent::class)
             ->setMethods(['getController'])
@@ -524,4 +524,4 @@ class LoginTraitTest extends BaseTraitTest
         $result = $this->Trait->socialLogin();
         $this->assertInstanceOf(Response::class, $result);
     }
-        }
+}

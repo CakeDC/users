@@ -33,7 +33,7 @@ trait ProfileTrait
     public function profile($id = null)
     {
         $identity = $this->request->getAttribute('identity');
-        $identity = isset($identity) ? $identity : [];
+        $identity = $identity ?? [];
         $loggedUserId = Hash::get($identity, 'id');
         $isCurrentUser = false;
         if (!Configure::read('Users.Profile.viewOthers') || empty($id)) {

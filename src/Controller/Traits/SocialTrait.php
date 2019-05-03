@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace CakeDC\Users\Controller\Traits;
 
 use CakeDC\Users\Loader\LoginComponentLoader;
-use Cake\Http\Exception\NotFoundException;
 
 /**
  * Covers registration features and email token validation

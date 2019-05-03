@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -14,10 +15,9 @@ namespace CakeDC\Users\Authenticator;
 use Authentication\Authenticator\AbstractAuthenticator;
 use Authentication\Authenticator\Result;
 use Authentication\UrlChecker\UrlCheckerTrait;
-use CakeDC\Users\Controller\Traits\ReCaptchaTrait;
 use Cake\Core\Configure;
 use Cake\Utility\Hash;
-use Psr\Http\Message\ResponseInterface;
+use CakeDC\Users\Controller\Traits\ReCaptchaTrait;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
@@ -27,12 +27,11 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 class SocialPendingEmailAuthenticator extends AbstractAuthenticator
 {
-
     use ReCaptchaTrait;
     use SocialAuthTrait;
     use UrlCheckerTrait;
 
-    const FAILURE_INVALID_RECAPTCHA = 'FAILURE_INVALID_RECAPTCHA';
+    public const FAILURE_INVALID_RECAPTCHA = 'FAILURE_INVALID_RECAPTCHA';
 
     /**
      * Default config for this object.
@@ -46,7 +45,7 @@ class SocialPendingEmailAuthenticator extends AbstractAuthenticator
         'loginUrl' => [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
-            'action' => 'socialEmail'
+            'action' => 'socialEmail',
         ],
         'urlChecker' => 'Authentication.CakeRouter',
     ];
@@ -64,7 +63,7 @@ class SocialPendingEmailAuthenticator extends AbstractAuthenticator
                 'Login URL `%s` did not match `%s`.',
                 (string)$request->getUri(),
                 implode('` or `', (array)$this->getConfig('loginUrl'))
-            )
+            ),
         ];
 
         return new Result(null, Result::FAILURE_OTHER, $errors);

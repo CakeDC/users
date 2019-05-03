@@ -27,7 +27,7 @@ class SetupComponent extends Component
     {
         parent::initialize($config);
         $this->loadAuthComponents($this->getController());
-        }
+    }
 
     /**
      * Load all auth components needed: Authentication.Authentication, Authorization.Authorization and CakeDC/OneTimePasswordAuthenticator
@@ -42,12 +42,12 @@ class SetupComponent extends Component
         if (Hash::get($authenticationConfig, 'load')) {
             unset($authenticationConfig['config']);
             $controller->loadComponent('Authentication.Authentication', $authenticationConfig);
-    }
+        }
 
         if (Configure::read('Auth.AuthorizationComponent.enable') !== false) {
             $config = (array)Configure::read('Auth.AuthorizationComponent');
             $controller->loadComponent('Authorization.Authorization', $config);
-}
+        }
 
         if (Configure::read('OneTimePasswordAuthenticator.login') !== false) {
             $controller->loadComponent('CakeDC/Auth.OneTimePasswordAuthenticator');

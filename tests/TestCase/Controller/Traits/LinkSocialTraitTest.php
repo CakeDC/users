@@ -69,11 +69,11 @@ class LinkSocialTraitTest extends BaseTraitTest
                 'linkSocialUri' => '/link-social/facebook',
                 'callbackLinkSocialUri' => '/callback-link-social/facebook',
                 'clientId' => '10003030300303',
-                'clientSecret' => 'secretpassword'
+                'clientSecret' => 'secretpassword',
             ],
-            []
+            [],
         ])->setMethods([
-            'getAccessToken', 'getState', 'getAuthorizationUrl', 'getResourceOwner'
+            'getAccessToken', 'getState', 'getAuthorizationUrl', 'getResourceOwner',
         ])->getMock();
 
         $config = [
@@ -87,7 +87,7 @@ class LinkSocialTraitTest extends BaseTraitTest
                 'linkSocialUri' => '/link-social/facebook',
                 'callbackLinkSocialUri' => '/callback-link-social/facebook',
                 'clientId' => '10003030300303',
-                'clientSecret' => 'secretpassword'
+                'clientSecret' => 'secretpassword',
             ],
             'collaborators' => [],
             'signature' => null,
@@ -96,11 +96,11 @@ class LinkSocialTraitTest extends BaseTraitTest
                 'plugin' => 'CakeDC/Users',
                 'controller' => 'Users',
                 'action' => 'socialLogin',
-                'prefix' => null
-            ]
+                'prefix' => null,
+            ],
         ];
         Configure::write('OAuth.providers.facebook', $config);
-        }
+    }
 
     /**
      * test linkSocial method
@@ -123,13 +123,13 @@ class LinkSocialTraitTest extends BaseTraitTest
         $this->Trait->request = $this->Trait->request->withUri($uri);
         $this->Trait->request = $this->Trait->request->withQueryParams([
             'code' => 'ZPO9972j3092304230',
-            'state' => '__TEST_STATE__'
+            'state' => '__TEST_STATE__',
         ]);
         $this->Trait->request = $this->Trait->request->withAttribute('params', [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'linkSocial',
-            'provider' => 'facebook'
+            'provider' => 'facebook',
         ]);
 
         $this->_mockAuthLoggedIn();
@@ -172,7 +172,7 @@ class LinkSocialTraitTest extends BaseTraitTest
 
         $Token = new \League\OAuth2\Client\Token\AccessToken([
             'access_token' => 'test-token',
-            'expires' => 1490988496
+            'expires' => 1490988496,
         ]);
 
         $user = new FacebookUser([
@@ -185,29 +185,29 @@ class LinkSocialTraitTest extends BaseTraitTest
             'Location' => 'mock_home',
             'hometown' => [
                 'id' => '108226049197930',
-                'name' => 'Madrid'
+                'name' => 'Madrid',
             ],
             'picture' => [
                 'data' => [
                     'url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
-                    'is_silhouette' => false
-                ]
+                    'is_silhouette' => false,
+                ],
             ],
             'cover' => [
                 'source' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
-                'id' => '1'
+                'id' => '1',
             ],
             'gender' => 'male',
             'locale' => 'en_US',
             'link' => 'facebook-link-15579',
             'timezone' => -5,
             'age_range' => [
-                'min' => 21
+                'min' => 21,
             ],
             'bio' => 'I am the best test user in the world.',
             'picture_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
             'is_silhouette' => false,
-            'cover_photo_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg'
+            'cover_photo_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
         ]);
 
         $this->Provider->expects($this->never())
@@ -242,13 +242,13 @@ class LinkSocialTraitTest extends BaseTraitTest
         $this->Trait->request = $this->Trait->request->withUri($uri);
         $this->Trait->request = $this->Trait->request->withQueryParams([
             'code' => 'ZPO9972j3092304230',
-            'state' => '__TEST_STATE__'
+            'state' => '__TEST_STATE__',
         ]);
         $this->Trait->request = $this->Trait->request->withAttribute('params', [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'linkSocial',
-            'provider' => 'facebook'
+            'provider' => 'facebook',
         ]);
 
         $this->Trait->expects($this->any())
@@ -301,8 +301,8 @@ class LinkSocialTraitTest extends BaseTraitTest
         $user = TableRegistry::getTableLocator()->get('CakeDC/Users.Users')->get('00000000-0000-0000-0000-000000000001');
         $user->setErrors([
             'social_accounts' => [
-                '_existsIn' => __d('cake_d_c/users', 'Social account already associated to another user')
-            ]
+                '_existsIn' => __d('cake_d_c/users', 'Social account already associated to another user'),
+            ],
         ]);
         $Table = $this->getMockForModel('CakeDC/Users.Users', ['linkSocialAccount', 'get']);
         $Table->setAlias('Users');
@@ -317,7 +317,7 @@ class LinkSocialTraitTest extends BaseTraitTest
 
         $Token = new \League\OAuth2\Client\Token\AccessToken([
             'access_token' => 'test-token',
-            'expires' => 1490988496
+            'expires' => 1490988496,
         ]);
 
         $user = new FacebookUser([
@@ -330,29 +330,29 @@ class LinkSocialTraitTest extends BaseTraitTest
             'Location' => 'mock_home',
             'hometown' => [
                 'id' => '108226049197930',
-                'name' => 'Madrid'
+                'name' => 'Madrid',
             ],
             'picture' => [
                 'data' => [
                     'url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
-                    'is_silhouette' => false
-                ]
+                    'is_silhouette' => false,
+                ],
             ],
             'cover' => [
                 'source' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
-                'id' => '1'
+                'id' => '1',
             ],
             'gender' => 'male',
             'locale' => 'en_US',
             'link' => 'facebook-link-15579',
             'timezone' => -5,
             'age_range' => [
-                'min' => 21
+                'min' => 21,
             ],
             'bio' => 'I am the best test user in the world.',
             'picture_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
             'is_silhouette' => false,
-            'cover_photo_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg'
+            'cover_photo_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
         ]);
 
         $this->Provider->expects($this->never())
@@ -391,13 +391,13 @@ class LinkSocialTraitTest extends BaseTraitTest
         $this->Trait->request = $this->Trait->request->withUri($uri);
         $this->Trait->request = $this->Trait->request->withQueryParams([
             'code' => 'ZPO9972j3092304230',
-            'state' => '__TEST_STATE__'
+            'state' => '__TEST_STATE__',
         ]);
         $this->Trait->request = $this->Trait->request->withAttribute('params', [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'linkSocial',
-            'provider' => 'facebook'
+            'provider' => 'facebook',
         ]);
 
         $this->_mockAuthLoggedIn();
@@ -452,7 +452,7 @@ class LinkSocialTraitTest extends BaseTraitTest
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'linkSocial',
-            'provider' => 'facebook'
+            'provider' => 'facebook',
         ]);
 
         $this->Trait->expects($this->any())
@@ -461,7 +461,7 @@ class LinkSocialTraitTest extends BaseTraitTest
         $this->Trait->expects($this->once())
             ->method('redirect')
             ->with($this->equalTo([
-                'action' => 'profile'
+                'action' => 'profile',
             ]))
             ->will($this->returnValue(new Response()));
         $this->_mockAuthLoggedIn();
@@ -513,7 +513,7 @@ class LinkSocialTraitTest extends BaseTraitTest
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'linkSocial',
-            'provider' => 'unknown'
+            'provider' => 'unknown',
         ]);
 
         $this->Trait->expects($this->never())
@@ -522,7 +522,7 @@ class LinkSocialTraitTest extends BaseTraitTest
         $this->Trait->expects($this->once())
             ->method('redirect')
             ->with($this->equalTo([
-                'action' => 'profile'
+                'action' => 'profile',
             ]))
             ->will($this->returnValue(new Response()));
         $this->_mockAuthLoggedIn();

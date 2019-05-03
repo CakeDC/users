@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -16,7 +17,6 @@ use Cake\Http\ServerRequest;
 
 class UsersUrl
 {
-
     /**
      * Get an user action url
      *
@@ -29,7 +29,7 @@ class UsersUrl
     {
         $prefix = false;
         $controller = Configure::read('Users.controller', 'CakeDC/Users.Users');
-        list($plugin, $controller) = pluginSplit($controller);
+        [$plugin, $controller] = pluginSplit($controller);
         $plugin = $plugin ? $plugin : false;
 
         return compact('prefix', 'plugin', 'controller', 'action') + $extra;
@@ -39,7 +39,7 @@ class UsersUrl
      * Check if the action is the one from a request
      *
      * @param string $action users action
-     * @param Request $request the request
+     * @param \CakeDC\Users\Utility\Request $request the request
      *
      * @return bool
      */

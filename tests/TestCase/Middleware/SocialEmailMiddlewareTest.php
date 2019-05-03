@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,13 +12,13 @@
 
 namespace CakeDC\Users\Test\TestCase\Middleware;
 
-use CakeDC\Auth\Social\Mapper\Facebook;
-use CakeDC\Users\Middleware\SocialEmailMiddleware;
 use Cake\Core\Configure;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
 use Cake\Http\ServerRequestFactory;
 use Cake\TestSuite\TestCase;
+use CakeDC\Auth\Social\Mapper\Facebook;
+use CakeDC\Users\Middleware\SocialEmailMiddleware;
 use League\OAuth2\Client\Provider\FacebookUser;
 use Zend\Diactoros\Uri;
 
@@ -25,7 +26,7 @@ class SocialEmailMiddlewareTest extends TestCase
 {
     public $fixtures = [
         'plugin.CakeDC/Users.Users',
-        'plugin.CakeDC/Users.SocialAccounts'
+        'plugin.CakeDC/Users.SocialAccounts',
     ];
 
     /**
@@ -54,7 +55,7 @@ class SocialEmailMiddlewareTest extends TestCase
                 'linkSocialUri' => '/link-social/facebook',
                 'callbackLinkSocialUri' => '/callback-link-social/facebook',
                 'clientId' => '10003030300303',
-                'clientSecret' => 'secretpassword'
+                'clientSecret' => 'secretpassword',
             ],
             'collaborators' => [],
             'signature' => null,
@@ -63,8 +64,8 @@ class SocialEmailMiddlewareTest extends TestCase
                 'plugin' => 'CakeDC/Users',
                 'controller' => 'Users',
                 'action' => 'socialLogin',
-                'prefix' => null
-            ]
+                'prefix' => null,
+            ],
         ];
         Configure::write('OAuth.providers.facebook', $config);
 
@@ -92,7 +93,7 @@ class SocialEmailMiddlewareTest extends TestCase
     {
         $Token = new \League\OAuth2\Client\Token\AccessToken([
             'access_token' => 'test-token',
-            'expires' => 1490988496
+            'expires' => 1490988496,
         ]);
 
         $user = new FacebookUser([
@@ -103,29 +104,29 @@ class SocialEmailMiddlewareTest extends TestCase
             'email' => null,
             'hometown' => [
                 'id' => '108226049197930',
-                'name' => 'Madrid'
+                'name' => 'Madrid',
             ],
             'picture' => [
                 'data' => [
                     'url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
-                    'is_silhouette' => false
-                ]
+                    'is_silhouette' => false,
+                ],
             ],
             'cover' => [
                 'source' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
-                'id' => '1'
+                'id' => '1',
             ],
             'gender' => 'male',
             'locale' => 'en_US',
             'link' => 'https://www.facebook.com/app_scoped_user_id/1/',
             'timezone' => -5,
             'age_range' => [
-                'min' => 21
+                'min' => 21,
             ],
             'bio' => 'I am the best test user in the world.',
             'picture_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
             'is_silhouette' => false,
-            'cover_photo_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg'
+            'cover_photo_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
         ]);
         $user = [
                 'token' => $Token,
@@ -168,7 +169,7 @@ class SocialEmailMiddlewareTest extends TestCase
         $uri = new Uri('/auth/facebook');
         $this->Request = $this->Request->withUri($uri);
         $this->Request = $this->Request->withParsedBody([
-            'email' => 'example@example.com'
+            'email' => 'example@example.com',
         ]);
         $this->Request = $this->Request->withMethod('POST');
         $this->Request = $this->Request->withAttribute('params', [
@@ -196,7 +197,7 @@ class SocialEmailMiddlewareTest extends TestCase
     {
         $Token = new \League\OAuth2\Client\Token\AccessToken([
             'access_token' => 'test-token',
-            'expires' => 1490988496
+            'expires' => 1490988496,
         ]);
 
         $user = new FacebookUser([
@@ -207,29 +208,29 @@ class SocialEmailMiddlewareTest extends TestCase
             'email' => null,
             'hometown' => [
                 'id' => '108226049197930',
-                'name' => 'Madrid'
+                'name' => 'Madrid',
             ],
             'picture' => [
                 'data' => [
                     'url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
-                    'is_silhouette' => false
-                ]
+                    'is_silhouette' => false,
+                ],
             ],
             'cover' => [
                 'source' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
-                'id' => '1'
+                'id' => '1',
             ],
             'gender' => 'male',
             'locale' => 'en_US',
             'link' => 'https://www.facebook.com/app_scoped_user_id/1/',
             'timezone' => -5,
             'age_range' => [
-                'min' => 21
+                'min' => 21,
             ],
             'bio' => 'I am the best test user in the world.',
             'picture_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
             'is_silhouette' => false,
-            'cover_photo_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg'
+            'cover_photo_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
         ]);
         $user = [
             'token' => $Token,
@@ -245,7 +246,7 @@ class SocialEmailMiddlewareTest extends TestCase
         $uri = new Uri('/auth/facebook');
         $this->Request = $this->Request->withUri($uri);
         $this->Request = $this->Request->withParsedBody([
-            'email' => 'example@example.com'
+            'email' => 'example@example.com',
         ]);
         $this->Request = $this->Request->withMethod('POST');
         $this->Request = $this->Request->withAttribute('params', [
@@ -277,7 +278,7 @@ class SocialEmailMiddlewareTest extends TestCase
     {
         $Token = new \League\OAuth2\Client\Token\AccessToken([
             'access_token' => 'test-token',
-            'expires' => 1490988496
+            'expires' => 1490988496,
         ]);
 
         $user = new FacebookUser([
@@ -288,29 +289,29 @@ class SocialEmailMiddlewareTest extends TestCase
             'email' => null,
             'hometown' => [
                 'id' => '108226049197930',
-                'name' => 'Madrid'
+                'name' => 'Madrid',
             ],
             'picture' => [
                 'data' => [
                     'url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
-                    'is_silhouette' => false
-                ]
+                    'is_silhouette' => false,
+                ],
             ],
             'cover' => [
                 'source' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
-                'id' => '1'
+                'id' => '1',
             ],
             'gender' => 'male',
             'locale' => 'en_US',
             'link' => 'https://www.facebook.com/app_scoped_user_id/1/',
             'timezone' => -5,
             'age_range' => [
-                'min' => 21
+                'min' => 21,
             ],
             'bio' => 'I am the best test user in the world.',
             'picture_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
             'is_silhouette' => false,
-            'cover_photo_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg'
+            'cover_photo_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
         ]);
         $user = [
                 'token' => $Token,

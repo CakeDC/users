@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace CakeDC\Users\Model\Behavior;
 
 use Cake\Core\Configure;
+use Cake\Event\EventDispatcherTrait;
 use Cake\Utility\Hash;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
@@ -21,7 +22,6 @@ use CakeDC\Users\Plugin;
 use CakeDC\Users\Traits\RandomStringTrait;
 use DateTime;
 use InvalidArgumentException;
-use Cake\Event\EventDispatcherTrait;
 
 /**
  * Covers social features

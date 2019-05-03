@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,15 +12,14 @@
 
 namespace CakeDC\Users\Test\TestCase\Utility;
 
-use CakeDC\Users\Utility\UsersUrl;
 use Cake\Core\Configure;
 use Cake\Http\ServerRequestFactory;
 use Cake\TestSuite\TestCase;
+use CakeDC\Users\Utility\UsersUrl;
 use Zend\Diactoros\Uri;
 
 class UsersUrlTest extends TestCase
 {
-
     /**
      * Data provider for test testActionUrl
      *
@@ -76,7 +76,7 @@ class UsersUrlTest extends TestCase
             ['add', ['prefix' => false, 'plugin' => false, 'controller' => 'Users', 'action' => 'add'], 'Users'],
             ['edit', ['prefix' => false, 'plugin' => false, 'controller' => 'Users', 'action' => 'edit'], 'Users'],
             ['delete', ['prefix' => false, 'plugin' => false, 'controller' => 'Users', 'action' => 'delete'], 'Users'],
-            ['socialEmail', ['prefix' => false, 'plugin' => false, 'controller' => 'Users', 'action' => 'socialEmail'], 'Users']
+            ['socialEmail', ['prefix' => false, 'plugin' => false, 'controller' => 'Users', 'action' => 'socialEmail'], 'Users'],
         ];
     }
 
@@ -109,7 +109,7 @@ class UsersUrlTest extends TestCase
                 'socialLogin',
                 ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'socialLogin', 'provider' => 'facebook'],
                 null,
-                true
+                true,
             ],
             [
                 'socialLogin',

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,10 +12,10 @@
 
 namespace CakeDC\Users\Controller\Traits;
 
-use CakeDC\Auth\Authentication\AuthenticationService;
-use CakeDC\Auth\Authenticator\TwoFactorAuthenticator;
 use Cake\Core\Configure;
 use Cake\Utility\Hash;
+use CakeDC\Auth\Authentication\AuthenticationService;
+use CakeDC\Auth\Authenticator\TwoFactorAuthenticator;
 
 trait OneTimePasswordVerifyTrait
 {
@@ -32,7 +33,7 @@ trait OneTimePasswordVerifyTrait
         $loginAction = array_merge(
             Configure::read('Auth.AuthenticationComponent.loginAction'),
             [
-                '?' => $this->request->getQueryParams()
+                '?' => $this->request->getQueryParams(),
             ]
         );
         if (!$this->isVerifyAllowed()) {

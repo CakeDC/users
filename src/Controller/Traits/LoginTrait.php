@@ -15,8 +15,6 @@ namespace CakeDC\Users\Controller\Traits;
 use CakeDC\Auth\Authentication\AuthenticationService;
 use CakeDC\Users\Loader\LoginComponentLoader;
 use CakeDC\Users\Plugin;
-use Cake\Core\Configure;
-use Cake\Http\Exception\NotFoundException;
 
 /**
  * Covers the login, logout and social login
@@ -39,7 +37,7 @@ trait LoginTrait
         $Login = LoginComponentLoader::forSocial($this);
 
         return $Login->handleLogin(false, true);
-        }
+    }
 
     /**
      * Login user
@@ -53,7 +51,7 @@ trait LoginTrait
         $Login = LoginComponentLoader::forForm($this);
 
         return $Login->handleLogin(true, false);
-            }
+    }
 
     /**
      * Logout
@@ -63,7 +61,7 @@ trait LoginTrait
     public function logout()
     {
         $user = $this->request->getAttribute('identity');
-        $user = isset($user) ? $user : [];
+        $user = $user ?? [];
 
         $eventBefore = $this->dispatchEvent(Plugin::EVENT_BEFORE_LOGOUT, ['user' => $user]);
         if (is_array($eventBefore->getResult())) {
@@ -80,4 +78,4 @@ trait LoginTrait
 
         return $this->redirect($this->Authentication->logout());
     }
-    }
+}

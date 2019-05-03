@@ -20,9 +20,6 @@ use CakeDC\Users\Controller\Traits\ReCaptchaTrait;
 use CakeDC\Users\Controller\Traits\RegisterTrait;
 use CakeDC\Users\Controller\Traits\SimpleCrudTrait;
 use CakeDC\Users\Controller\Traits\SocialTrait;
-use CakeDC\Users\Model\Table\UsersTable;
-use Cake\Core\Configure;
-use Cake\Utility\Hash;
 
 /**
  * Users Controller

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,15 +12,15 @@
 
 namespace CakeDC\Users\Middleware;
 
+use Cake\Core\Configure;
+use Cake\Http\ServerRequest;
+use Cake\Log\LogTrait;
+use Cake\Routing\Router;
 use CakeDC\Auth\Social\Service\ServiceFactory;
 use CakeDC\Users\Authenticator\SocialAuthenticator;
 use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\SocialAuthenticationException;
 use CakeDC\Users\Utility\UsersUrl;
-use Cake\Core\Configure;
-use Cake\Http\ServerRequest;
-use Cake\Log\LogTrait;
-use Cake\Routing\Router;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -29,14 +30,14 @@ class SocialAuthMiddleware implements MiddlewareInterface
 {
     use LogTrait;
 
-    /**
-     * Perform social auth
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request The request.
-     * @param \Psr\Http\Message\ResponseInterface $response The response.
-     * @param callable $next Callback to invoke the next middleware.
-     * @return \Psr\Http\Message\ResponseInterface A response
-     */
+/**
+ * Perform social auth
+ *
+ * @param \Psr\Http\Message\ServerRequestInterface $request The request.
+ * @param \Psr\Http\Message\ResponseInterface $response The response.
+ * @param callable $next Callback to invoke the next middleware.
+ * @return \Psr\Http\Message\ResponseInterface A response
+ */
 //    public function __invoke(ServerRequest $request, ResponseInterface $response, $next)
 //    {
 //        if (!(new UsersUrl())->checkActionOnRequest('socialLogin', $request)) {
@@ -83,7 +84,7 @@ class SocialAuthMiddleware implements MiddlewareInterface
     /**
      * Set request error message
      *
-     * @param ServerRequest $request the request with session attribute
+     * @param \Cake\Http\ServerRequest $request the request with session attribute
      * @param string $message the message
      *
      * @return void
@@ -95,7 +96,7 @@ class SocialAuthMiddleware implements MiddlewareInterface
             'key' => 'flash',
             'element' => 'Flash/error',
             'params' => [],
-            'message' => $message
+            'message' => $message,
         ];
         $request->getSession()->write('Flash.flash', $messages);
     }
@@ -103,9 +104,9 @@ class SocialAuthMiddleware implements MiddlewareInterface
     /**
      * Set location header to response using the string action
      *
-     * @param ResponseInterface $response to set location header
+     * @param \Psr\Http\Message\ResponseInterface $response to set location header
      * @param string $action action at users controller
-     * @return ResponseInterface
+     * @return \Psr\Http\Message\ResponseInterface
      */
     protected function responseWithActionLocation(ResponseInterface $response, $action)
     {
@@ -117,10 +118,10 @@ class SocialAuthMiddleware implements MiddlewareInterface
     /**
      * Go to next handling SocialAuthenticationException
      *
-     * @param ServerRequest $request The request
-     * @param ResponseInterface $response The response
+     * @param \Cake\Http\ServerRequest $request The request
+     * @param \Psr\Http\Message\ResponseInterface $response The response
      * @param callable $next next middleware
-     * @return ResponseInterface
+     * @return \Psr\Http\Message\ResponseInterface
      */
     protected function goNext(ServerRequest $request, ResponseInterface $response, $next)
     {
@@ -149,6 +150,7 @@ class SocialAuthMiddleware implements MiddlewareInterface
             return $handler->handle($request)->withLocation($service->getAuthorizationUrl($request));
         }
         $request = $request->withAttribute(SocialAuthenticator::SOCIAL_SERVICE_ATTRIBUTE, $service);
+
         return $handler->handle($request);
     }
 }

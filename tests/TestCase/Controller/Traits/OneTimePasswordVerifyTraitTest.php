@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,10 +12,10 @@
 
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
-use CakeDC\Auth\Controller\Component\OneTimePasswordAuthenticatorComponent;
 use Cake\Core\Configure;
 use Cake\Http\ServerRequest;
 use Cake\ORM\TableRegistry;
+use CakeDC\Auth\Controller\Component\OneTimePasswordAuthenticatorComponent;
 
 class OneTimePasswordVerifyTraitTest extends BaseTraitTest
 {
@@ -22,7 +23,7 @@ class OneTimePasswordVerifyTraitTest extends BaseTraitTest
         'plugin' => 'CakeDC/Users',
         'prefix' => false,
         'controller' => 'users',
-        'action' => 'login'
+        'action' => 'login',
     ];
 
     /**
@@ -76,7 +77,7 @@ class OneTimePasswordVerifyTraitTest extends BaseTraitTest
             'temporarySession' => [
                 'id' => 1,
                 'secret_verified' => 1,
-            ]
+            ],
         ]);
 
         $this->Trait->verify();
@@ -121,7 +122,7 @@ class OneTimePasswordVerifyTraitTest extends BaseTraitTest
                 'id' => '00000000-0000-0000-0000-000000000001',
                 'email' => 'email@example.com',
                 'secret_verified' => 0,
-            ]
+            ],
         ]);
         $this->Trait->expects($this->any())
             ->method('getUsersTable')
@@ -186,7 +187,7 @@ class OneTimePasswordVerifyTraitTest extends BaseTraitTest
                 'id' => '00000000-0000-0000-0000-000000000001',
                 'email' => 'email@example.com',
                 'secret_verified' => false,
-            ]
+            ],
         ]);
         $this->Trait->expects($this->any())
             ->method('getUsersTable')
@@ -199,8 +200,8 @@ class OneTimePasswordVerifyTraitTest extends BaseTraitTest
                     'id' => '00000000-0000-0000-0000-000000000001',
                     'email' => 'email@example.com',
                     'secret_verified' => false,
-                    'secret' => 'newSecret'
-                ]
+                    'secret' => 'newSecret',
+                ],
             ],
             $session->read()
         );
@@ -244,8 +245,8 @@ class OneTimePasswordVerifyTraitTest extends BaseTraitTest
                 'id' => '00000000-0000-0000-0000-000000000001',
                 'email' => 'email@example.com',
                 'secret_verified' => false,
-                'secret' => 'alreadyPresentSecret'
-            ]
+                'secret' => 'alreadyPresentSecret',
+            ],
         ]);
         $this->Trait->expects($this->any())
             ->method('getUsersTable')
@@ -258,8 +259,8 @@ class OneTimePasswordVerifyTraitTest extends BaseTraitTest
                     'id' => '00000000-0000-0000-0000-000000000001',
                     'email' => 'email@example.com',
                     'secret_verified' => false,
-                    'secret' => 'alreadyPresentSecret'
-                ]
+                    'secret' => 'alreadyPresentSecret',
+                ],
             ],
             $session->read()
         );

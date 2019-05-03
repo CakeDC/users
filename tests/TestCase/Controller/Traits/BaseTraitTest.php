@@ -17,8 +17,6 @@ use Authentication\Controller\Component\AuthenticationComponent;
 use Authentication\Identifier\IdentifierCollection;
 use Authentication\Identifier\PasswordIdentifier;
 use Authentication\Identity;
-use CakeDC\Auth\Authentication\AuthenticationService;
-use CakeDC\Users\Model\Entity\User;
 use Cake\Controller\ComponentRegistry;
 use Cake\Controller\Controller;
 use Cake\Event\Event;
@@ -27,6 +25,8 @@ use Cake\Mailer\TransportFactory;
 use Cake\ORM\Entity;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use CakeDC\Auth\Authentication\AuthenticationService;
+use CakeDC\Users\Model\Entity\User;
 use PHPUnit_Framework_MockObject_RuntimeException;
 
 abstract class BaseTraitTest extends TestCase
@@ -203,16 +203,16 @@ abstract class BaseTraitTest extends TestCase
     {
         $config = [
             'identifiers' => [
-                'Authentication.Password'
+                'Authentication.Password',
             ],
             'authenticators' => [
                 'Authentication.Session',
-                'Authentication.Form'
-            ]
+                'Authentication.Form',
+            ],
         ];
         $authentication = $this->getMockBuilder(AuthenticationService::class)->setConstructorArgs([$config])->setMethods([
             'getResult',
-            'getFailures'
+            'getFailures',
         ])->getMock();
 
         if ($user) {
@@ -239,7 +239,7 @@ abstract class BaseTraitTest extends TestCase
         $this->Trait->Authentication = new AuthenticationComponent($registry, [
             'loginRedirect' => $this->successLoginRedirect,
             'logoutRedirect' => $this->logoutRedirect,
-            'loginAction' => $this->loginAction
+            'loginAction' => $this->loginAction,
         ]);
     }
 
@@ -254,17 +254,17 @@ abstract class BaseTraitTest extends TestCase
     {
         $config = [
             'identifiers' => [
-                'Authentication.Password'
+                'Authentication.Password',
             ],
             'authenticators' => [
                 'Authentication.Session',
-                'Authentication.Form'
-            ]
+                'Authentication.Form',
+            ],
         ];
         $authentication = $this->getMockBuilder(AuthenticationService::class)->setConstructorArgs([$config])->setMethods([
             'getResult',
             'getFailures',
-            'identifiers'
+            'identifiers',
         ])->getMock();
 
         $identifiers = new IdentifierCollection();
@@ -283,7 +283,7 @@ abstract class BaseTraitTest extends TestCase
             $this->Trait->request = $this->Trait->request->withAttribute('identity', $identity);
         } else {
             $result = new Result($user, Result::FAILURE_CREDENTIALS_MISSING);
-    }
+        }
 
         $authentication->expects($this->any())
             ->method('getResult')
@@ -304,7 +304,7 @@ abstract class BaseTraitTest extends TestCase
         $this->Trait->Authentication = new AuthenticationComponent($registry, [
             'loginRedirect' => $this->successLoginRedirect,
             'logoutRedirect' => $this->logoutRedirect,
-            'loginAction' => $this->loginAction
+            'loginAction' => $this->loginAction,
         ]);
     }
 

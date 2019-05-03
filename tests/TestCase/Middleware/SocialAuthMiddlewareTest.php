@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,27 +12,27 @@
 
 namespace CakeDC\Users\Test\TestCase\Middleware;
 
+use Cake\Core\Configure;
+use Cake\Http\Response;
+use Cake\Http\ServerRequest;
+use Cake\Http\ServerRequestFactory;
+use Cake\TestSuite\TestCase;
 use CakeDC\Auth\Social\MapUser;
 use CakeDC\Auth\Social\Service\OAuth2Service;
 use CakeDC\Auth\Social\Service\ServiceFactory;
 use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\SocialAuthenticationException;
 use CakeDC\Users\Middleware\SocialAuthMiddleware;
-use Cake\Core\Configure;
-use Cake\Http\Response;
-use Cake\Http\ServerRequest;
-use Cake\Http\ServerRequestFactory;
-use Cake\TestSuite\TestCase;
+use CakeDC\Users\Test\App\Http\TestRequestHandler;
 use Doctrine\Instantiator\Exception\UnexpectedValueException;
 use League\OAuth2\Client\Provider\FacebookUser;
 use Zend\Diactoros\Uri;
 
 class SocialAuthMiddlewareTest extends TestCase
 {
-
     public $fixtures = [
         'plugin.CakeDC/Users.Users',
-        'plugin.CakeDC/Users.SocialAccounts'
+        'plugin.CakeDC/Users.SocialAccounts',
     ];
 
     /**
@@ -62,11 +63,11 @@ class SocialAuthMiddlewareTest extends TestCase
                 'linkSocialUri' => '/link-social/facebook',
                 'callbackLinkSocialUri' => '/callback-link-social/facebook',
                 'clientId' => '10003030300303',
-                'clientSecret' => 'secretpassword'
+                'clientSecret' => 'secretpassword',
             ],
-            []
+            [],
         ])->setMethods([
-            'getAccessToken', 'getState', 'getAuthorizationUrl', 'getResourceOwner'
+            'getAccessToken', 'getState', 'getAuthorizationUrl', 'getResourceOwner',
         ])->getMock();
 
         $config = [
@@ -80,7 +81,7 @@ class SocialAuthMiddlewareTest extends TestCase
                 'linkSocialUri' => '/link-social/facebook',
                 'callbackLinkSocialUri' => '/callback-link-social/facebook',
                 'clientId' => '10003030300303',
-                'clientSecret' => 'secretpassword'
+                'clientSecret' => 'secretpassword',
             ],
             'collaborators' => [],
             'signature' => null,
@@ -89,8 +90,8 @@ class SocialAuthMiddlewareTest extends TestCase
                 'plugin' => 'CakeDC/Users',
                 'controller' => 'Users',
                 'action' => 'socialLogin',
-                'prefix' => null
-            ]
+                'prefix' => null,
+            ],
         ];
         Configure::write('OAuth.providers.facebook', $config);
 
@@ -123,7 +124,7 @@ class SocialAuthMiddlewareTest extends TestCase
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'socialLogin',
-            'provider' => 'facebook'
+            'provider' => 'facebook',
         ]);
 
         $this->Provider->expects($this->any())
@@ -136,11 +137,15 @@ class SocialAuthMiddlewareTest extends TestCase
 
         $Middleware = new SocialAuthMiddleware();
         $response = new Response();
-        $next = function () {
+        $handlerCb = function () use ($response) {
             $this->fail('Should not call $next');
         };
 
-        $result = $Middleware($this->Request, $response, $next);
+        $handler = new TestRequestHandler($handlerCb);
+        /**
+         * @var Response $result
+         */
+        $result = $Middleware->process($this->Request, $handler);
         $this->assertInstanceOf(Response::class, $result);
         if (!$result) {
             $this->fail('No response set, cannot assert location header. ');
@@ -166,20 +171,20 @@ class SocialAuthMiddlewareTest extends TestCase
         $this->Request = $this->Request->withUri($uri);
         $this->Request = $this->Request->withQueryParams([
             'code' => 'ZPO9972j3092304230',
-            'state' => '__TEST_STATE__'
+            'state' => '__TEST_STATE__',
         ]);
         $this->Request = $this->Request->withAttribute('params', [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'socialLogin',
-            'provider' => 'facebook'
+            'provider' => 'facebook',
         ]);
         $this->Request->getSession()->write('oauth2state', '__TEST_STATE__');
         $Middleware = new SocialAuthMiddleware();
 
         $ResponseOriginal = new Response();
         $checked = false;
-        $next = function (ServerRequest $request, Response $response) use ($ResponseOriginal, &$checked) {
+        $handlerCb = function (ServerRequest $request) use ($ResponseOriginal, &$checked) {
             /**
              * @var OAuth2Service $service
              */
@@ -187,13 +192,14 @@ class SocialAuthMiddlewareTest extends TestCase
             $this->assertInstanceOf(OAuth2Service::class, $service);
             $this->assertEquals('facebook', $service->getProviderName());
             $this->assertTrue($service->isGetUserStep($request));
-            $this->assertSame($response, $ResponseOriginal);
             $checked = true;
 
-            return $response;
+            return $ResponseOriginal;
         };
-        $result = $Middleware($this->Request, $ResponseOriginal, $next);
-        $this->assertSame($result, $ResponseOriginal);
+        $handler = new TestRequestHandler($handlerCb);
+        $response = $Middleware->process($this->Request, $handler);
+
+        $this->assertSame($response, $ResponseOriginal);
         $this->assertTrue($checked);
     }
 
@@ -210,7 +216,7 @@ class SocialAuthMiddlewareTest extends TestCase
                 'key' => 'flash',
                 'element' => 'Flash/error',
                 'params' => [],
-                'message' => __d('cake_d_c/users', 'Please enter your email')
+                'message' => __d('cake_d_c/users', 'Please enter your email'),
             ],
             '/users/users/social-email',
             true,
@@ -221,15 +227,15 @@ class SocialAuthMiddlewareTest extends TestCase
                 'key' => 'flash',
                 'element' => 'Flash/error',
                 'params' => [],
-                'message' => __d('cake_d_c/users', 'Could not identify your account, please try again')
+                'message' => __d('cake_d_c/users', 'Could not identify your account, please try again'),
             ],
             '/login',
-            false
+            false,
         ];
 
         return [
             $missingEmail,
-            $unknown
+            $unknown,
         ];
     }
 
@@ -249,13 +255,13 @@ class SocialAuthMiddlewareTest extends TestCase
         $this->Request = $this->Request->withUri($uri);
         $this->Request = $this->Request->withQueryParams([
             'code' => 'ZPO9972j3092304230',
-            'state' => '__TEST_STATE__'
+            'state' => '__TEST_STATE__',
         ]);
         $this->Request = $this->Request->withAttribute('params', [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'socialLogin',
-            'provider' => 'facebook'
+            'provider' => 'facebook',
         ]);
         $this->Request->getSession()->write('oauth2state', '__TEST_STATE__');
 
@@ -267,7 +273,7 @@ class SocialAuthMiddlewareTest extends TestCase
         $service = (new ServiceFactory())->createFromProvider('facebook');
         $Token = new \League\OAuth2\Client\Token\AccessToken([
             'access_token' => 'test-token',
-            'expires' => 1490988496
+            'expires' => 1490988496,
         ]);
         $user = new FacebookUser([
             'id' => '1',
@@ -277,34 +283,34 @@ class SocialAuthMiddlewareTest extends TestCase
             'email' => 'test@gmail.com',
             'hometown' => [
                 'id' => '108226049197930',
-                'name' => 'Madrid'
+                'name' => 'Madrid',
             ],
             'picture' => [
                 'data' => [
                     'url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
-                    'is_silhouette' => false
-                ]
+                    'is_silhouette' => false,
+                ],
             ],
             'cover' => [
                 'source' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
-                'id' => '1'
+                'id' => '1',
             ],
             'gender' => 'male',
             'locale' => 'en_US',
             'link' => 'https://www.facebook.com/app_scoped_user_id/1/',
             'timezone' => -5,
             'age_range' => [
-                'min' => 21
+                'min' => 21,
             ],
             'bio' => 'I am the best test user in the world.',
             'picture_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
             'is_silhouette' => false,
-            'cover_photo_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg'
+            'cover_photo_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
         ]);
         $user = ['token' => $Token] + $user->toArray();
         $mapper = new MapUser();
         $rawData = $mapper($service, $user);
-        $next = function (ServerRequest $request, Response $response) use ($previousException, $ResponseOriginal, &$checked, $rawData) {
+        $handlerCb = function (ServerRequest $request) use ($previousException, $ResponseOriginal, &$checked, $rawData) {
             /**
              * @var OAuth2Service $service
              */
@@ -312,27 +318,29 @@ class SocialAuthMiddlewareTest extends TestCase
             $this->assertInstanceOf(OAuth2Service::class, $service);
             $this->assertEquals('facebook', $service->getProviderName());
             $this->assertTrue($service->isGetUserStep($request));
-            $this->assertSame($response, $ResponseOriginal);
+            //$this->assertSame($response, $ResponseOriginal);
             $checked = true;
 
             throw new SocialAuthenticationException(
                 [
-                    'rawData' => $rawData
+                    'rawData' => $rawData,
                 ],
                 null,
                 $previousException
             );
         };
+        $handler = new TestRequestHandler($handlerCb);
         /**
          * @var Response $result
          */
-        $result = $Middleware($this->Request, $ResponseOriginal, $next);
+        $result = $Middleware->process($this->Request, $handler);
+
         $this->assertInstanceOf(Response::class, $result);
         $actual = $result->getHeader('Location');
         $expected = [$location];
         $this->assertEquals($expected, $actual);
         $expected = [
-            $flash
+            $flash,
         ];
         $actual = $this->Request->getSession()->read('Flash.flash');
         $this->assertEquals($expected, $actual);
@@ -352,13 +360,17 @@ class SocialAuthMiddlewareTest extends TestCase
      */
     public function testNotValidAction()
     {
-        $Middleware = new SocialAuthMiddleware();
         $response = new Response();
-        $next = function ($request, $response) {
-            return compact('request', 'response');
+        $Middleware = new SocialAuthMiddleware();
+        $handlerCb = function ($request) use ($response) {
+            return $response;
         };
 
-        $result = $Middleware($this->Request, $response, $next);
+        $handler = new TestRequestHandler($handlerCb);
+        /**
+         * @var Response $result
+         */
+        $result = $Middleware->process($this->Request, $handler);
         $this->assertTrue(is_array($result));
 
         $this->assertEquals(200, $result['response']->getStatusCode());

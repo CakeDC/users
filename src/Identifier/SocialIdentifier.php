@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -12,17 +13,17 @@
 namespace CakeDC\Users\Identifier;
 
 use Authentication\Identifier\AbstractIdentifier;
-use CakeDC\Users\Plugin;
 use Cake\Core\Configure;
 use Cake\Event\EventDispatcherTrait;
 use Cake\ORM\Locator\LocatorAwareTrait;
+use CakeDC\Users\Plugin;
 
 class SocialIdentifier extends AbstractIdentifier
 {
     use EventDispatcherTrait;
     use LocatorAwareTrait;
 
-    const CREDENTIAL_KEY = 'socialAuthUser';
+    public const CREDENTIAL_KEY = 'socialAuthUser';
 
     /**
      * Default configuration.
@@ -32,7 +33,7 @@ class SocialIdentifier extends AbstractIdentifier
      * @var array
      */
     protected $_defaultConfig = [
-        'authFinder' => 'active'
+        'authFinder' => 'active',
     ];
 
     /**
@@ -96,7 +97,7 @@ class SocialIdentifier extends AbstractIdentifier
         $options = [
             'use_email' => Configure::read('Users.Email.required'),
             'validate_email' => Configure::read('Users.Email.validate'),
-            'token_expiration' => Configure::read('Users.Token.expiration')
+            'token_expiration' => Configure::read('Users.Token.expiration'),
         ];
 
         return $this->getUsersTable()->socialLogin($data, $options);

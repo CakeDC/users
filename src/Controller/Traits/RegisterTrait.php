@@ -12,12 +12,12 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Controller\Traits;
 
-use CakeDC\Users\Plugin;
 use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
 use Cake\Utility\Hash;
+use CakeDC\Users\Plugin;
 
 /**
  * Covers registration features and email token validation
@@ -41,7 +41,7 @@ trait RegisterTrait
         }
 
         $identity = $this->request->getAttribute('identity');
-        $identity = isset($identity) ? $identity : [];
+        $identity = $identity ?? [];
         $userId = Hash::get($identity, 'id');
         if (!empty($userId) && !Configure::read('Users.Registration.allowLoggedIn')) {
             $this->Flash->error(__d('cake_d_c/users', 'You must log out to register a new user account'));

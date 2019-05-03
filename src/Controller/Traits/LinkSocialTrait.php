@@ -12,9 +12,9 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Controller\Traits;
 
+use Cake\Utility\Hash;
 use CakeDC\Auth\Social\MapUser;
 use CakeDC\Auth\Social\Service\ServiceFactory;
-use Cake\Utility\Hash;
 
 /**
  * Ações para "linkar" contas sociais
@@ -38,7 +38,7 @@ trait LinkSocialTrait
                 ->createFromProvider($alias)
                 ->getAuthorizationUrl($this->request)
         );
-        }
+    }
 
     /**
      * Callback to get user information from provider
@@ -51,21 +51,21 @@ trait LinkSocialTrait
     public function callbackLinkSocial($alias = null)
     {
         $message = __d('cake_d_c/users', 'Could not associate account, please try again.');
-                try {
+        try {
             $server = (new ServiceFactory())
-                ->setRedirectUriField('callbackLinkSocialUri')
-                ->createFromProvider($alias);
+            ->setRedirectUriField('callbackLinkSocialUri')
+            ->createFromProvider($alias);
 
             if (!$server->isGetUserStep($this->request)) {
-            $this->Flash->error($message);
+                $this->Flash->error($message);
 
-            return $this->redirect(['action' => 'profile']);
-        }
+                return $this->redirect(['action' => 'profile']);
+            }
             $data = $server->getUser($this->request);
             $mapper = new MapUser();
             $data = $mapper($server, $data);
             $identity = $this->request->getAttribute('identity');
-            $identity = isset($identity) ? $identity : [];
+            $identity = $identity ?? [];
             $userId = Hash::get($identity, 'id');
             $user = $this->getUsersTable()->get($userId);
 
@@ -89,4 +89,4 @@ trait LinkSocialTrait
 
         return $this->redirect(['action' => 'profile']);
     }
-    }
+}

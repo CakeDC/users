@@ -17,7 +17,6 @@ use CakeDC\Users\Exception\TokenExpiredException;
 use CakeDC\Users\Exception\UserAlreadyActiveException;
 use CakeDC\Users\Exception\UserNotFoundException;
 use CakeDC\Users\Plugin;
-use Cake\Http\Response;
 use Exception;
 
 /**
