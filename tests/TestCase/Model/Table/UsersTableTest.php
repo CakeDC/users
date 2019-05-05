@@ -17,6 +17,7 @@ use Cake\Mailer\TransportFactory;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
+use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Model\Table\SocialAccountsTable;
 
 /**
@@ -210,11 +211,10 @@ class UsersTableTest extends TestCase
 
     /**
      * Test socialLogin
-     *
-     * @expectedException CakeDC\Users\Exception\AccountNotActiveException
      */
     public function testSocialLoginInactiveAccount()
     {
+        $this->expectException(AccountNotActiveException::class);
         $data = [
             'provider' => SocialAccountsTable::PROVIDER_TWITTER,
             'email' => 'hello@test.com',
@@ -240,11 +240,10 @@ class UsersTableTest extends TestCase
 
     /**
      * Test socialLogin
-     *
-     * @expectedException InvalidArgumentException
      */
     public function testSocialLoginCreateNewAccountWithNoCredentials()
     {
+        $this->expectException(\InvalidArgumentException::class);
         $data = [
             'provider' => SocialAccountsTable::PROVIDER_TWITTER,
             'email' => 'user@test.com',

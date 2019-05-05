@@ -13,6 +13,9 @@ declare(strict_types=1);
 namespace CakeDC\Users\Test\TestCase\Model\Behavior;
 
 use Cake\TestSuite\TestCase;
+use CakeDC\Users\Exception\AccountNotActiveException;
+use CakeDC\Users\Exception\MissingEmailException;
+use CakeDC\Users\Exception\UserNotActiveException;
 
 /**
  * Test Case
@@ -239,11 +242,11 @@ class SocialBehaviorTest extends TestCase
     /**
      * Test socialLogin with existing and active user and not active social account
      *
-     * @expectedException CakeDC\Users\Exception\AccountNotActiveException
      * @dataProvider providerSocialLoginExistingAndNotActiveAccount
      */
     public function testSocialLoginExistingNotActiveReference($data, $options)
     {
+        $this->expectException(AccountNotActiveException::class);
         $this->Behavior->expects($this->never())
             ->method('generateUniqueUsername');
 
@@ -280,11 +283,11 @@ class SocialBehaviorTest extends TestCase
     /**
      * Test socialLogin with existing and active account but not active user
      *
-     * @expectedException CakeDC\Users\Exception\UserNotActiveException
      * @dataProvider providerSocialLoginExistingAccountNotActiveUser
      */
     public function testSocialLoginExistingReferenceNotActiveUser($data, $options)
     {
+        $this->expectException(UserNotActiveException::class);
         $this->Behavior->expects($this->never())
             ->method('generateUniqueUsername');
 
@@ -322,10 +325,10 @@ class SocialBehaviorTest extends TestCase
      * Test socialLogin with facebook and not existing user
      *
      * @dataProvider providerFacebookSocialLoginNoEmail
-     * @expectedException CakeDC\Users\Exception\MissingEmailException
      */
     public function testSocialLoginNoEmail($data, $options)
     {
+        $this->expectException(MissingEmailException::class);
         $this->Behavior->socialLogin($data, $options);
     }
 

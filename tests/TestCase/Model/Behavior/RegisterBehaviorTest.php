@@ -18,6 +18,8 @@ use Cake\Mailer\TransportFactory;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
+use CakeDC\Users\Exception\TokenExpiredException;
+use CakeDC\Users\Exception\UserNotFoundException;
 
 /**
  * Test Case
@@ -249,10 +251,10 @@ class RegisterBehaviorTest extends TestCase
      * Test Validate method
      *
      * @return void
-     * @expectedException \CakeDC\Users\Exception\TokenExpiredException
      */
     public function testValidateUserWithExpiredToken()
     {
+        $this->expectException(TokenExpiredException::class);
         $this->Table->validate('token-5', 'activateUser');
     }
 
@@ -260,10 +262,10 @@ class RegisterBehaviorTest extends TestCase
      * Test Validate method
      *
      * @return void
-     * @expectedException \CakeDC\Users\Exception\UserNotFoundException
      */
     public function testValidateNotExistingUser()
     {
+        $this->expectException(UserNotFoundException::class);
         $this->Table->validate('not-existing-token', 'activateUser');
     }
 

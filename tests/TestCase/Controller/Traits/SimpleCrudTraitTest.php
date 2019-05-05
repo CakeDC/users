@@ -12,6 +12,9 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
+use Cake\Datasource\Exception\InvalidPrimaryKeyException;
+use Cake\Datasource\Exception\RecordNotFoundException;
+
 class SimpleCrudTraitTest extends BaseTraitTest
 {
     public $viewVars;
@@ -95,10 +98,10 @@ class SimpleCrudTraitTest extends BaseTraitTest
      * test
      *
      * @return void
-     * @expectedException Cake\Datasource\Exception\RecordNotFoundException
      */
     public function testViewNotFound()
     {
+        $this->expectException(RecordNotFoundException::class);
         $this->Trait->view('00000000-0000-0000-0000-000000000000');
     }
 
@@ -106,10 +109,10 @@ class SimpleCrudTraitTest extends BaseTraitTest
      * test
      *
      * @return void
-     * @expectedException Cake\Datasource\Exception\InvalidPrimaryKeyException
      */
     public function testViewInvalidPK()
     {
+        $this->expectException(InvalidPrimaryKeyException::class);
         $this->Trait->view();
     }
 
@@ -263,10 +266,10 @@ class SimpleCrudTraitTest extends BaseTraitTest
      * test
      *
      * @return void
-     * @expectedException Cake\Datasource\Exception\RecordNotFoundException
      */
     public function testDeleteHappy()
     {
+        $this->expectException(RecordNotFoundException::class);
         $this->assertNotEmpty($this->table->get('00000000-0000-0000-0000-000000000001'));
         $this->_mockRequestPost();
         $this->Trait->request->expects($this->any())
@@ -288,10 +291,10 @@ class SimpleCrudTraitTest extends BaseTraitTest
      * test
      *
      * @return void
-     * @expectedException Cake\Datasource\Exception\RecordNotFoundException
      */
     public function testDeleteNotFound()
     {
+        $this->expectException(RecordNotFoundException::class);
         $this->assertNotEmpty($this->table->get('00000000-0000-0000-0000-000000000001'));
         $this->_mockRequestPost();
         $this->Trait->request->expects($this->any())

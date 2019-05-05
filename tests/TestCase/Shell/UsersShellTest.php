@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace CakeDC\Users\Test\TestCase\Shell;
 
 use Cake\Console\ConsoleOutput;
+use Cake\Console\Exception\StopException;
 use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
@@ -273,12 +274,11 @@ class UsersShellTest extends TestCase
 
     /**
      * Reset all passwords
-     *
-     * @expectedException \Cake\Console\Exception\StopException
-     * @expectedExceptionMessage Please enter a password.
      */
     public function testResetAllPasswordsNoPassingParams()
     {
+        $this->expectException(StopException::class);
+        $this->expectExceptionMessage('Please enter a password.');
         $this->Shell->runCommand(['resetAllPasswords']);
     }
 

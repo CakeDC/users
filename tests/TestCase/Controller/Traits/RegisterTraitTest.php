@@ -14,6 +14,7 @@ namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
 use Cake\Core\Configure;
 use Cake\Event\Event;
+use Cake\Http\Exception\NotFoundException;
 use Cake\Routing\Router;
 
 class RegisterTraitTest extends BaseTraitTest
@@ -346,10 +347,10 @@ class RegisterTraitTest extends BaseTraitTest
      * test
      *
      * @return void
-     * @expectedException Cake\Http\Exception\NotFoundException
      */
     public function testRegisterNotEnabled()
     {
+        $this->expectException(NotFoundException::class);
         Configure::write('Users.Registration.active', false);
         $this->_mockRequestPost();
         $this->_mockAuthentication();

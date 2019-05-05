@@ -17,6 +17,9 @@ use Cake\Mailer\Email;
 use Cake\Mailer\TransportFactory;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use CakeDC\Users\Exception\UserAlreadyActiveException;
+use CakeDC\Users\Exception\UserNotActiveException;
+use CakeDC\Users\Exception\UserNotFoundException;
 use CakeDC\Users\Model\Behavior\PasswordBehavior;
 use CakeDC\Users\Test\App\Mailer\OverrideMailer;
 
@@ -115,32 +118,29 @@ class PasswordBehaviorTest extends TestCase
 
     /**
      * Test resetToken
-     *
-     * @expectedException InvalidArgumentException
      */
     public function testResetTokenWithNullParams()
     {
+        $this->expectException(\InvalidArgumentException::class);
         $this->Behavior->resetToken(null);
     }
 
     /**
      * Test resetTokenNoExpiration
-     *
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Token expiration cannot be empty
      */
     public function testResetTokenNoExpiration()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Token expiration cannot be empty');
         $this->Behavior->resetToken('ref');
     }
 
     /**
      * Test resetToken
-     *
-     * @expectedException \CakeDC\Users\Exception\UserNotFoundException
      */
     public function testResetTokenNotExistingUser()
     {
+        $this->expectException(UserNotFoundException::class);
         $this->Behavior->resetToken('user-not-found', [
             'expiration' => 3600,
         ]);
@@ -148,11 +148,10 @@ class PasswordBehaviorTest extends TestCase
 
     /**
      * Test resetToken
-     *
-     * @expectedException \CakeDC\Users\Exception\UserAlreadyActiveException
      */
     public function testResetTokenUserAlreadyActive()
     {
+        $this->expectException(UserAlreadyActiveException::class);
         $activeUser = TableRegistry::getTableLocator()->get('CakeDC/Users.Users')->findByUsername('user-4')->first();
         $this->assertTrue($activeUser->active);
         $this->table = $this->getMockForModel('CakeDC/Users.Users', ['save']);
@@ -168,11 +167,10 @@ class PasswordBehaviorTest extends TestCase
 
     /**
      * Test resetToken
-     *
-     * @expectedException \CakeDC\Users\Exception\UserNotActiveException
      */
     public function testResetTokenUserNotActive()
     {
+        $this->expectException(UserNotActiveException::class);
         $this->table->findByUsername('user-1')->firstOrFail();
         $this->Behavior->resetToken('user-1', [
             'ensureActive' => true,

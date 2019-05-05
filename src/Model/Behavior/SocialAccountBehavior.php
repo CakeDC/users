@@ -12,10 +12,12 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Model\Behavior;
 
+use ArrayObject;
 use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Event\Event;
+use Cake\Event\EventInterface;
 use Cake\Mailer\MailerAwareTrait;
 use Cake\ORM\Behavior;
 use Cake\ORM\Entity;
@@ -47,17 +49,17 @@ class SocialAccountBehavior extends Behavior
     /**
      * After save callback
      *
-     * @param \Cake\Event\Event $event event
-     * @param \Cake\ORM\Entity $entity entity
+     * @param \Cake\Event\EventInterface $event event
+     * @param \Cake\Datasource\EntityInterface $entity entity
      * @param \ArrayObject $options options
      * @return mixed
      */
-    public function afterSave(Event $event, Entity $entity, $options)
+    public function afterSave(EventInterface $event, EntityInterface $entity, ArrayObject $options)
     {
-        if ($entity->active) {
+        if ($entity->get('active')) {
             return true;
         }
-        $user = $this->_table->Users->find()->where(['Users.id' => $entity->user_id, 'Users.active' => true])->first();
+        $user = $this->_table->getAssociation('Users')->find()->where(['Users.id' => $entity->get('user_id'), 'Users.active' => true])->first();
         if (empty($user)) {
             return true;
         }
@@ -70,7 +72,7 @@ class SocialAccountBehavior extends Behavior
      *
      * @param \Cake\Datasource\EntityInterface $socialAccount social account
      * @param \Cake\Datasource\EntityInterface $user user
-     * @return void
+     * @return array
      */
     protected function sendSocialValidationEmail(EntityInterface $socialAccount, EntityInterface $user)
     {

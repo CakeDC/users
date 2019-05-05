@@ -12,9 +12,11 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Test\TestCase\Model\Behavior;
 
+use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Event\Event;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use CakeDC\Users\Exception\AccountAlreadyActiveException;
 use CakeDC\Users\Model\Table\SocialAccountsTable;
 
 /**
@@ -70,31 +72,28 @@ class SocialAccountBehaviorTest extends TestCase
 
     /**
      * Test validateEmail method
-     *
-     * @expectedException \Cake\Datasource\Exception\RecordNotFoundException
      */
     public function testValidateEmailInvalidToken()
     {
+        $this->expectException(RecordNotFoundException::class);
         $this->Behavior->validateAccount(1, 'reference-1234', 'invalid-token');
     }
 
     /**
      * Test validateEmail method
-     *
-     * @expectedException \Cake\Datasource\Exception\RecordNotFoundException
      */
     public function testValidateEmailInvalidUser()
     {
+        $this->expectException(RecordNotFoundException::class);
         $this->Behavior->validateAccount(1, 'invalid-user', 'token-1234');
     }
 
     /**
      * Test validateEmail method
-     *
-     * @expectedException CakeDC\Users\Exception\AccountAlreadyActiveException
      */
     public function testValidateEmailActiveAccount()
     {
+        $this->expectException(AccountAlreadyActiveException::class);
         $this->Behavior->validateAccount(SocialAccountsTable::PROVIDER_TWITTER, 'reference-1-1234', 'token-1234');
     }
 
@@ -108,7 +107,7 @@ class SocialAccountBehaviorTest extends TestCase
     {
         $event = new Event('eventName');
         $entity = $this->Table->find()->first();
-        $this->assertTrue($this->Behavior->afterSave($event, $entity, []));
+        $this->assertTrue($this->Behavior->afterSave($event, $entity, new \ArrayObject([])));
     }
 
     /**
@@ -121,7 +120,7 @@ class SocialAccountBehaviorTest extends TestCase
     {
         $event = new Event('eventName');
         $entity = $this->Table->findById('00000000-0000-0000-0000-000000000003')->first();
-        $this->assertTrue($this->Behavior->afterSave($event, $entity, []));
+        $this->assertTrue($this->Behavior->afterSave($event, $entity, new \ArrayObject([])));
     }
 
     /**
@@ -134,6 +133,6 @@ class SocialAccountBehaviorTest extends TestCase
     {
         $event = new Event('eventName');
         $entity = $this->Table->findById('00000000-0000-0000-0000-000000000002')->first();
-        $this->assertTrue($this->Behavior->afterSave($event, $entity, []));
+        $this->assertTrue($this->Behavior->afterSave($event, $entity, new \ArrayObject([])));
     }
 }

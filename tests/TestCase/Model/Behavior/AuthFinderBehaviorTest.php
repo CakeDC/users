@@ -68,12 +68,11 @@ class AuthFinderBehaviorTest extends TestCase
 
     /**
      * Test findAuth method.
-     *
-     * @expectedException \BadMethodCallException
-     * @expectedExceptionMessage  Missing 'username' in options data
      */
     public function testFindAuthBadMethodCallException()
     {
+        $this->expectException(\BadMethodCallException::class);
+        $this->expectExceptionMessage("Missing 'username' in options data");
         $this->table->find('auth');
     }
 
