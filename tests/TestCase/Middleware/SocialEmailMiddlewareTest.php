@@ -15,6 +15,7 @@ namespace CakeDC\Users\Test\TestCase\Middleware;
 use Cake\Core\Configure;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
+use Cake\Http\Runner;
 use Cake\Http\ServerRequestFactory;
 use Cake\TestSuite\TestCase;
 use CakeDC\Auth\Social\Mapper\Facebook;
@@ -149,12 +150,17 @@ class SocialEmailMiddlewareTest extends TestCase
 
         $Middleware = new SocialEmailMiddleware();
         $response = new Response();
-        $next = function ($request, $response) {
-            return compact('request', 'response');
-        };
+        $response = $response->withStringBody(__METHOD__ . time());
+        $handler = $this->getMockBuilder(Runner::class)
+            ->setMethods(['handle'])
+            ->getMock();
+        $handler->expects($this->once())
+            ->method('handle')
+            ->with($this->equalTo($this->Request))
+            ->willReturn($response);
 
-        $result = $Middleware($this->Request, $response, $next);
-        $this->assertTrue(is_array($result));
+        $result = $Middleware->process($this->Request, $handler);
+        $this->assertSame($response, $result);
         $this->assertEmpty($this->Request->getSession()->read('Auth'));
         $this->assertEmpty($this->Request->getSession()->read('Users.successSocialLogin'));
     }
@@ -180,12 +186,15 @@ class SocialEmailMiddlewareTest extends TestCase
 
         $Middleware = new SocialEmailMiddleware();
         $response = new Response();
-        $next = function ($request, $response) {
-            return compact('request', 'response');
-        };
+        $response = $response->withStringBody(__METHOD__ . time());
+        $handler = $this->getMockBuilder(Runner::class)
+            ->setMethods(['handle'])
+            ->getMock();
+        $handler->expects($this->never())
+            ->method('handle');
 
         $this->expectException(NotFoundException::class);
-        $Middleware($this->Request, $response, $next);
+        $Middleware->process($this->Request, $handler);
     }
 
     /**
@@ -257,14 +266,18 @@ class SocialEmailMiddlewareTest extends TestCase
 
         $Middleware = new SocialEmailMiddleware();
         $response = new Response();
-        $next = function ($request, $response) {
-            return compact('request', 'response');
-        };
+        $response = $response->withStringBody(__METHOD__ . time());
+        $handler = $this->getMockBuilder(Runner::class)
+            ->setMethods(['handle'])
+            ->getMock();
+        $handler->expects($this->once())
+            ->method('handle')
+            ->with($this->equalTo($this->Request))
+            ->willReturn($response);
 
-        $result = $Middleware($this->Request, $response, $next);
-        $this->assertTrue(is_array($result));
+        $result = $Middleware->process($this->Request, $handler);
+        $this->assertSame($response, $result);
 
-        $this->assertEquals(200, $result['response']->getStatusCode());
         $actual = $this->Request->getSession()->read(Configure::read('Users.Key.Session.social'));
         $this->assertSame($user, $actual);
     }
@@ -335,14 +348,17 @@ class SocialEmailMiddlewareTest extends TestCase
 
         $Middleware = new SocialEmailMiddleware();
         $response = new Response();
-        $next = function ($request, $response) {
-            return compact('request', 'response');
-        };
+        $response = $response->withStringBody(__METHOD__ . time());
+        $handler = $this->getMockBuilder(Runner::class)
+            ->setMethods(['handle'])
+            ->getMock();
+        $handler->expects($this->once())
+            ->method('handle')
+            ->with($this->equalTo($this->Request))
+            ->willReturn($response);
 
-        $result = $Middleware($this->Request, $response, $next);
-        $this->assertTrue(is_array($result));
-
-        $this->assertEquals(200, $result['response']->getStatusCode());
+        $result = $Middleware->process($this->Request, $handler);
+        $this->assertSame($response, $result);
         $this->assertEmpty($this->Request->getSession()->read('Auth'));
     }
 
@@ -355,15 +371,16 @@ class SocialEmailMiddlewareTest extends TestCase
     {
         $Middleware = new SocialEmailMiddleware();
         $response = new Response();
-        $next = function ($request, $response) {
-            return compact('request', 'response');
-        };
+        $response = $response->withStringBody(__METHOD__ . time());
+        $handler = $this->getMockBuilder(Runner::class)
+            ->setMethods(['handle'])
+            ->getMock();
+        $handler->expects($this->once())
+            ->method('handle')
+            ->with($this->equalTo($this->Request))
+            ->willReturn($response);
 
-        $result = $Middleware($this->Request, $response, $next);
-        $this->assertTrue(is_array($result));
-
-        $this->assertEquals(200, $result['response']->getStatusCode());
-        $this->assertSame($response, $result['response']);
-        $this->assertSame($this->Request, $result['request']);
+        $result = $Middleware->process($this->Request, $handler);
+        $this->assertSame($response, $result);
     }
 }
