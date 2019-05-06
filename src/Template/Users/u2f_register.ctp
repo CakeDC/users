@@ -19,12 +19,12 @@
                 <?= $this->Flash->render('auth') ?>
                 <?= $this->Flash->render() ?>
                 <fieldset>
-                    <h2 class='text-center'><?= __('Registering your yubico key')?> </h2>
-                    <h3 class='text-center'><?= __('Please insert and tap your yubico key')?></h3>
+                    <h2 class='text-center'><?= __d('cake_d_c/users', 'Registering your yubico key')?> </h2>
+                    <h3 class='text-center'><?= __d('cake_d_c/users', 'Please insert and tap your yubico key')?></h3>
                     <p>In order to enable your YubiKey the first step is to perform a registration.</p>
                     <p>When the YubiKey starts blinking, press the golden disc to activate it. Depending on the web browser you might need to confirm the use of extended information from the YubiKey.</p>
                     <p class="text-center"><?= $this->Html->link(
-                        __('Reload'),
+                        __d('cake_d_c/users', 'Reload'),
                         ['action' => 'u2fRegister'],
                         ['class' => 'btn btn-primary']
                         )?></p>
@@ -53,7 +53,7 @@ setTimeout(function() {
         var targetInput = document.getElementById('registerResponse');
 
         if(data.errorCode && data.errorCode != 0) {
-            alert("<?= __('Yubico key check has failed, please try again')?>");
+            alert("<?= __d('cake_d_c/users', 'Yubico key check has failed, please try again')?>");
 
             return;
         }
