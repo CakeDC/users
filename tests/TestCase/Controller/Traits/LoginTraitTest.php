@@ -145,7 +145,6 @@ class LoginTraitTest extends BaseTraitTest
         $identifiers = new IdentifierCollection([]);
         $identifiers->set('Password', $passwordIdentifier);
 
-//        $identifiers = new IdentifierCollection();
         $SessionAuth = new SessionAuthenticator($identifiers);
 
         $sessionFailure = new Failure(
