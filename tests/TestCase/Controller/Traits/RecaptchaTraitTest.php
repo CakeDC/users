@@ -56,17 +56,18 @@ class ReCaptchaTraitTest extends TestCase
                 ->setMethods(['isSuccess'])
                 ->disableOriginalConstructor()
                 ->getMock();
-        $Response->expects($this->any())
+        $Response->expects($this->once())
             ->method('isSuccess')
             ->will($this->returnValue(true));
-        $ReCaptcha->expects($this->any())
+        $ReCaptcha->expects($this->once())
             ->method('verify')
             ->with('value')
             ->will($this->returnValue($Response));
-        $this->Trait->expects($this->any())
+        $this->Trait->expects($this->once())
             ->method('_getReCaptchaInstance')
             ->will($this->returnValue($ReCaptcha));
-        $this->Trait->validateReCaptcha('value', '255.255.255.255');
+        $actual = $this->Trait->validateReCaptcha('value', '255.255.255.255');
+        $this->assertTrue($actual);
     }
 
     /**
@@ -84,17 +85,18 @@ class ReCaptchaTraitTest extends TestCase
                 ->setMethods(['isSuccess'])
                 ->disableOriginalConstructor()
                 ->getMock();
-        $Response->expects($this->any())
+        $Response->expects($this->once())
             ->method('isSuccess')
             ->will($this->returnValue(false));
-        $ReCaptcha->expects($this->any())
+        $ReCaptcha->expects($this->once())
             ->method('verify')
             ->with('invalid')
             ->will($this->returnValue($Response));
-        $this->Trait->expects($this->any())
+        $this->Trait->expects($this->once())
             ->method('_getReCaptchaInstance')
             ->will($this->returnValue($ReCaptcha));
-        $this->Trait->validateReCaptcha('invalid', '255.255.255.255');
+        $actual = $this->Trait->validateReCaptcha('invalid', '255.255.255.255');
+        $this->assertFalse($actual);
     }
 
     public function testGetRecaptchaInstance()
