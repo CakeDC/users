@@ -21,6 +21,7 @@ use CakeDC\Users\Exception\UserAlreadyActiveException;
 use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Exception\UserNotFoundException;
 use CakeDC\Users\Model\Behavior\PasswordBehavior;
+use CakeDC\Users\Model\Entity\User;
 use CakeDC\Users\Test\App\Mailer\OverrideMailer;
 
 /**
@@ -219,19 +220,21 @@ class PasswordBehaviorTest extends TestCase
             ->setConstructorArgs([$this->table])
             ->setMethods(['getMailer'])
             ->getMock();
+        $responseEmail = ['headers' => ['A' => 111, 'B' => 33], 'message' => 'My message'  . time()];
         $overrideMailer->expects($this->once())
             ->method('send')
             ->with('resetPassword')
-            ->willReturn(true);
+            ->willReturn($responseEmail);
         $this->Behavior->expects($this->once())
             ->method('getMailer')
             ->with(OverrideMailer::class)
             ->willReturn($overrideMailer);
-        $this->Behavior->resetToken('user-1', [
+        $result = $this->Behavior->resetToken('user-1', [
             'expiration' => 3600,
             'checkActive' => true,
             'sendEmail' => true,
             'type' => 'password',
         ]);
+        $this->assertInstanceOf(User::class, $result);
     }
 }
