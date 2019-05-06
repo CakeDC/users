@@ -20,6 +20,7 @@ use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use CakeDC\Users\Exception\TokenExpiredException;
 use CakeDC\Users\Exception\UserNotFoundException;
+use CakeDC\Users\Model\Behavior\RegisterBehavior;
 
 /**
  * Test Case
@@ -34,6 +35,13 @@ class RegisterBehaviorTest extends TestCase
     public $fixtures = [
         'plugin.CakeDC/Users.Users',
     ];
+
+    /**
+     * The bahavior
+     *
+     * @var \CakeDC\Users\Model\Behavior\RegisterBehavior
+     */
+    public $Behavior;
 
     /**
      * setup
@@ -277,15 +285,14 @@ class RegisterBehaviorTest extends TestCase
     public function testActiveUserRemoveValidationToken()
     {
         $user = $this->Table->find()->where(['id' => '00000000-0000-0000-0000-000000000001'])->first();
-        $this->Behavior = $this->getMockBuilder('CakeDC\Users\Model\Behavior\RegisterBehavior')
-                ->setConstructorArgs([$this->Table])
-                ->getMock();
+        $this->Behavior = new RegisterBehavior($this->Table);
 
-        $resultValidationToken = $user;
-        $resultValidationToken->token_expires = null;
-        $resultValidationToken->token = null;
-
-        $this->Behavior->activateUser($user);
+        $result = $this->Behavior->activateUser($user);
+        $this->assertSame($result, $user);
+        $this->assertNull($user->token_expires);
+        $this->assertTrue($user->active);
+        $this->assertInstanceOf(\DateTime::class, $user->activation_date);
+        $this->assertEquals(date('Y-m-d'), $user->activation_date->format('Y-m-d'));
     }
 
     /**
