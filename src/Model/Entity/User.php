@@ -142,8 +142,8 @@ class User extends Entity
     protected function _getAvatar()
     {
         $avatar = null;
-        if (!empty($this->_properties['social_accounts'][0])) {
-            $avatar = $this->_properties['social_accounts'][0]['avatar'];
+        if (isset($this->social_accounts[0])) {
+            $avatar = $this->social_accounts[0]['avatar'];
         }
 
         return $avatar;
