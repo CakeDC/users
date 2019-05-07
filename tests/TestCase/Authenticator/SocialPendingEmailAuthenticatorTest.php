@@ -98,16 +98,15 @@ class SocialPendingEmailAuthenticatorTest extends TestCase
 
         $user = $this->getUserData();
         $requestNoEmail = ServerRequestFactory::fromGlobals(
-            ['REQUEST_URI' => '/users/users/social-email', 'PHP_SELF' => ''],
+            ['REQUEST_URI' => '/users/social-email', 'PHP_SELF' => ''],
             [],
             []
         );
         $request = ServerRequestFactory::fromGlobals(
-            ['REQUEST_URI' => '/users/users/social-email', 'PHP_SELF' => ''],
+            ['REQUEST_URI' => '/users/social-email', 'PHP_SELF' => ''],
             [],
             ['email' => 'testAuthenticateBaseFailed@example.com']
         );
-
         Configure::write('Users.Email.validate', false);
         $request->getSession()->write(Configure::read('Users.Key.Session.social'), $user);
         $requestNoEmail->getSession()->write(Configure::read('Users.Key.Session.social'), $user);
