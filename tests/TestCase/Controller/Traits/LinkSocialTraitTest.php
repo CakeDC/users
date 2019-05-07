@@ -38,6 +38,10 @@ class LinkSocialTraitTest extends BaseTraitTest
      * @var \League\OAuth2\Client\Provider\Facebook
      */
     public $Provider;
+    /**
+     * @var \CakeDC\Users\Controller\UsersController
+     */
+    public $Trait;
 
     /**
      * setup
@@ -121,7 +125,7 @@ class LinkSocialTraitTest extends BaseTraitTest
         $uri = new Uri('/callback-link-social/facebook');
 
         $this->Trait->setRequest($this->Trait->getRequest()->withUri($uri));
-        $this->Trait->setRequest($this->Trait->getRequest()->withAttribute('params', [
+        $this->Trait->setRequest($this->Trait->getRequest()->withQueryParams([
             'code' => 'ZPO9972j3092304230',
             'state' => '__TEST_STATE__',
         ]));
@@ -240,7 +244,7 @@ class LinkSocialTraitTest extends BaseTraitTest
         $uri = new Uri('/callback-link-social/facebook');
 
         $this->Trait->setRequest($this->Trait->getRequest()->withUri($uri));
-        $this->Trait->setRequest($this->Trait->getRequest()->withAttribute('params', [
+        $this->Trait->setRequest($this->Trait->getRequest()->withQueryParams([
             'code' => 'ZPO9972j3092304230',
             'state' => '__TEST_STATE__',
         ]));
@@ -389,7 +393,7 @@ class LinkSocialTraitTest extends BaseTraitTest
         $uri = new Uri('/callback-link-social/facebook');
 
         $this->Trait->setRequest($this->Trait->getRequest()->withUri($uri));
-        $this->Trait->setRequest($this->Trait->getRequest()->withAttribute('params', [
+        $this->Trait->setRequest($this->Trait->getRequest()->withQueryParams([
             'code' => 'ZPO9972j3092304230',
             'state' => '__TEST_STATE__',
         ]));
