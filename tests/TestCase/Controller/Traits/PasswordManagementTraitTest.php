@@ -237,7 +237,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
         $request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->setMethods(['is', 'referer', 'getData'])
             ->getMock();
-		$this->Trait->setRequest($request);
+        $this->Trait->setRequest($request);
         $this->Trait->getRequest()->expects($this->any())
             ->method('is')
             ->with(['post', 'put'])
@@ -264,7 +264,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
         $request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->setMethods($methods)
             ->getMock();
-		$this->Trait->setRequest($request);
+        $this->Trait->setRequest($request);
         $this->Trait->getRequest()->expects($this->any())
             ->method('is')
             ->with(['post', 'put'])

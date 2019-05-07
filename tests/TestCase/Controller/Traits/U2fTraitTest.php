@@ -75,7 +75,7 @@ class U2fTraitTest extends BaseTraitTest
         }
 
         $this->Trait
-			->getRequest()
+            ->getRequest()
             ->expects($this->any())
             ->method('getSession')
             ->willReturn($session);

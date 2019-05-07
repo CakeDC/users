@@ -66,7 +66,7 @@ class OneTimePasswordVerifyTraitTest extends BaseTraitTest
         $request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->setMethods(['is', 'getData', 'allow', 'getSession'])
             ->getMock();
-		$this->Trait->setRequest($request);
+        $this->Trait->setRequest($request);
         $this->Trait->getRequest()->expects($this->once())
             ->method('is')
             ->with('post')
@@ -118,8 +118,8 @@ class OneTimePasswordVerifyTraitTest extends BaseTraitTest
         $request = $this->getMockBuilder(ServerRequest::class)
             ->setMethods(['is', 'getData', 'allow', 'getSession'])
             ->getMock();
-		$this->Trait->setRequest($request);
-			
+        $this->Trait->setRequest($request);
+
         $this->_mockSession([
             'temporarySession' => [
                 'id' => '00000000-0000-0000-0000-000000000001',
@@ -168,9 +168,9 @@ class OneTimePasswordVerifyTraitTest extends BaseTraitTest
         $request = $this->getMockBuilder(ServerRequest::class)
             ->setMethods(['is', 'getData', 'allow', 'getSession'])
             ->getMock();
-		$this->Trait->setRequest($request);
+        $this->Trait->setRequest($request);
         $this->Trait
-			->getRequest()
+            ->getRequest()
             ->expects($this->once())
             ->method('is')
             ->with('post')
@@ -228,9 +228,9 @@ class OneTimePasswordVerifyTraitTest extends BaseTraitTest
         $request = $this->getMockBuilder(ServerRequest::class)
             ->setMethods(['is', 'getData', 'allow', 'getSession'])
             ->getMock();
-		$this->Trait->setRequest($request);
+        $this->Trait->setRequest($request);
         $this->Trait
-			->getRequest()
+            ->getRequest()
             ->expects($this->once())
             ->method('is')
             ->with('post')

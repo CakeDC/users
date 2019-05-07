@@ -272,14 +272,14 @@ class SimpleCrudTraitTest extends BaseTraitTest
         $this->expectException(RecordNotFoundException::class);
         $this->assertNotEmpty($this->table->get('00000000-0000-0000-0000-000000000001'));
         $this->_mockRequestPost();
-		$request = $this->getMockBuilder('Cake\Http\ServerRequest')
+        $request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->setMethods(['is', 'allowMethod'])
             ->getMock();
         $request->expects($this->any())
             ->method('allowMethod')
             ->with(['post', 'delete'])
             ->will($this->returnValue(true));
-		$this->Trait->setRequest($request);
+        $this->Trait->setRequest($request);
 
         $this->_mockFlash();
         $this->Trait->Flash->expects($this->once())
@@ -302,14 +302,14 @@ class SimpleCrudTraitTest extends BaseTraitTest
         $this->assertNotEmpty($this->table->get('00000000-0000-0000-0000-000000000001'));
         $this->_mockRequestPost();
 
-		$request = $this->getMockBuilder('Cake\Http\ServerRequest')
+        $request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->setMethods(['is', 'allowMethod'])
             ->getMock();
         $request->expects($this->any())
             ->method('allowMethod')
             ->with(['post', 'delete'])
             ->will($this->returnValue(true));
-		$this->Trait->setRequest($request);
+        $this->Trait->setRequest($request);
 
         $this->Trait->delete('00000000-0000-0000-0000-000000000000');
     }

@@ -114,7 +114,7 @@ class LinkSocialTraitTest extends BaseTraitTest
 
         $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\UsersController')
             ->setMethods(['dispatchEvent', 'redirect', 'set', '_createSocialProvider', 'getUsersTable', 'log'])
-            ->getMock();		
+            ->getMock();
 
         $this->Trait->setRequest(ServerRequestFactory::fromGlobals());
         $this->Trait->getRequest()->getSession()->write('oauth2state', '__TEST_STATE__');

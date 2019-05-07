@@ -118,7 +118,7 @@ abstract class BaseTraitTest extends TestCase
         }
 
         $this->Trait
-			->getRequest()
+            ->getRequest()
             ->expects($this->any())
             ->method('getSession')
             ->willReturn($session);
@@ -146,7 +146,7 @@ abstract class BaseTraitTest extends TestCase
                 ->method('is')
                 ->with('post')
                 ->will($this->returnValue(false));
-		$this->Trait->setRequest($request);
+        $this->Trait->setRequest($request);
     }
 
     /**
@@ -177,7 +177,7 @@ abstract class BaseTraitTest extends TestCase
                 ->method('is')
                 ->with($with)
                 ->will($this->returnValue(true));
-		$this->Trait->setRequest($request);
+        $this->Trait->setRequest($request);
     }
 
     /**

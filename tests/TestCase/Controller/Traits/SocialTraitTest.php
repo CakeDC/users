@@ -83,7 +83,7 @@ class SocialTraitTest extends BaseTraitTest
         $this->_mockDispatchEvent(new Event('event'));
         $this->Trait->setRequest($this->getMockBuilder('Cake\Http\ServerRequest')
             ->setMethods(['is'])
-			->getMock());
+            ->getMock());
         $this->Trait->getRequest()->expects($this->any())
             ->method('is')
             ->with('post')

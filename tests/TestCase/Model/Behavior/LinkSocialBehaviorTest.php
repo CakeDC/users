@@ -179,7 +179,7 @@ class LinkSocialBehaviorTest extends TestCase
                 [
                     'token' => [
                         '_empty' => 'This field cannot be left empty',
-                        '_required' => 'This field is required'
+                        '_required' => 'This field is required',
 
                     ],
                 ],

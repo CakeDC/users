@@ -16,11 +16,9 @@ use ArrayObject;
 use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
 use Cake\Datasource\Exception\RecordNotFoundException;
-use Cake\Event\Event;
 use Cake\Event\EventInterface;
 use Cake\Mailer\MailerAwareTrait;
 use Cake\ORM\Behavior;
-use Cake\ORM\Entity;
 use CakeDC\Users\Exception\AccountAlreadyActiveException;
 
 /**

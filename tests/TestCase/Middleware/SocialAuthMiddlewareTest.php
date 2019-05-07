@@ -256,15 +256,15 @@ class SocialAuthMiddlewareTest extends TestCase
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'login',
-            '_ext' => NULL,
-            'prefix' => null
+            '_ext' => null,
+            'prefix' => null,
         ]);
         Router::connect('/users/users/social-email', [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'socialEmail',
-            '_ext' => NULL,
-            'prefix' => null
+            '_ext' => null,
+            'prefix' => null,
         ]);
         $uri = new Uri('/auth/facebook');
         $this->Request = $this->Request->withUri($uri);
