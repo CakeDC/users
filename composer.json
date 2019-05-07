@@ -28,7 +28,7 @@
     },
     "require": {
         "cakephp/cakephp": "^3.6",
-        "cakedc/auth": "^4.0",
+        "cakedc/auth": "dev-develop",
         "cakephp/authentication": "^1.0",
         "cakephp/authorization": "^1.0"
     },
