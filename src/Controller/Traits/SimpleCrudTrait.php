@@ -67,10 +67,10 @@ trait SimpleCrudTrait
         $this->set($tableAlias, $entity);
         $this->set('tableAlias', $tableAlias);
         $this->set('_serialize', [$tableAlias, 'tableAlias']);
-        if (!$this->request->is('post')) {
+        if (!$this->getRequest()->is('post')) {
             return;
         }
-        $entity = $table->patchEntity($entity, $this->request->getData());
+        $entity = $table->patchEntity($entity, $this->getRequest()->getData());
         $singular = Inflector::singularize(Inflector::humanize($tableAlias));
         if ($table->save($entity)) {
             $this->Flash->success(__d('cake_d_c/users', 'The {0} has been saved', $singular));
@@ -97,10 +97,10 @@ trait SimpleCrudTrait
         $this->set($tableAlias, $entity);
         $this->set('tableAlias', $tableAlias);
         $this->set('_serialize', [$tableAlias, 'tableAlias']);
-        if (!$this->request->is(['patch', 'post', 'put'])) {
+        if (!$this->getRequest()->is(['patch', 'post', 'put'])) {
             return;
         }
-        $entity = $table->patchEntity($entity, $this->request->getData());
+        $entity = $table->patchEntity($entity, $this->getRequest()->getData());
         $singular = Inflector::singularize(Inflector::humanize($tableAlias));
         if ($table->save($entity)) {
             $this->Flash->success(__d('cake_d_c/users', 'The {0} has been saved', $singular));
@@ -119,7 +119,7 @@ trait SimpleCrudTrait
      */
     public function delete($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
+        $this->getRequest()->allowMethod(['post', 'delete']);
         $table = $this->loadModel();
         $tableAlias = $table->getAlias();
         $entity = $table->get($id, [

@@ -220,7 +220,7 @@ class PasswordBehaviorTest extends TestCase
             ->setConstructorArgs([$this->table])
             ->setMethods(['getMailer'])
             ->getMock();
-        $responseEmail = ['headers' => ['A' => 111, 'B' => 33], 'message' => 'My message'  . time()];
+        $responseEmail = ['headers' => ['A' => 111, 'B' => 33], 'message' => 'My message' . time()];
         $overrideMailer->expects($this->once())
             ->method('send')
             ->with('resetPassword')

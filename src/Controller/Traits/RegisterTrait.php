@@ -40,7 +40,7 @@ trait RegisterTrait
             throw new NotFoundException();
         }
 
-        $identity = $this->request->getAttribute('identity');
+        $identity = $this->getRequest()->getAttribute('identity');
         $identity = $identity ?? [];
         $userId = Hash::get($identity, 'id');
         if (!empty($userId) && !Configure::read('Users.Registration.allowLoggedIn')) {
@@ -59,7 +59,7 @@ trait RegisterTrait
             'validate_email' => $validateEmail,
             'use_tos' => $useTos,
         ];
-        $requestData = $this->request->getData();
+        $requestData = $this->getRequest()->getData();
         $event = $this->dispatchEvent(Plugin::EVENT_BEFORE_REGISTER, [
             'usersTable' => $usersTable,
             'options' => $options,
@@ -86,7 +86,7 @@ trait RegisterTrait
         $this->set(compact('user'));
         $this->set('_serialize', ['user']);
 
-        if (!$this->request->is('post')) {
+        if (!$this->getRequest()->is('post')) {
             return;
         }
 
@@ -118,8 +118,8 @@ trait RegisterTrait
         }
 
         return $this->validateReCaptcha(
-            $this->request->getData('g-recaptcha-response'),
-            $this->request->clientIp()
+            $this->getRequest()->getData('g-recaptcha-response'),
+            $this->getRequest()->clientIp()
         );
     }
 

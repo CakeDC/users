@@ -32,7 +32,7 @@ trait ProfileTrait
      */
     public function profile($id = null)
     {
-        $identity = $this->request->getAttribute('identity');
+        $identity = $this->getRequest()->getAttribute('identity');
         $identity = $identity ?? [];
         $loggedUserId = Hash::get($identity, 'id');
         $isCurrentUser = false;
@@ -52,11 +52,11 @@ trait ProfileTrait
         } catch (RecordNotFoundException $ex) {
             $this->Flash->error(__d('cake_d_c/users', 'User was not found'));
 
-            return $this->redirect($this->request->referer());
+            return $this->redirect($this->getRequest()->referer());
         } catch (InvalidPrimaryKeyException $ex) {
             $this->Flash->error(__d('cake_d_c/users', 'Not authorized, please login first'));
 
-            return $this->redirect($this->request->referer());
+            return $this->redirect($this->getRequest()->referer());
         }
         $this->set(compact('user', 'isCurrentUser'));
         $this->set('_serialize', ['user', 'isCurrentUser']);

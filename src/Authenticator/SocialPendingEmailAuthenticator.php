@@ -75,7 +75,6 @@ class SocialPendingEmailAuthenticator extends AbstractAuthenticator
      * there is no post data, either username or password is missing, or if the scope conditions have not been met.
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request The request that contains login information.
-     * @param \Psr\Http\Message\ResponseInterface $response Unused response object.
      * @return \Authentication\Authenticator\ResultInterface
      */
     public function authenticate(ServerRequestInterface $request)

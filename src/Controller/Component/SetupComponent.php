@@ -21,6 +21,7 @@ class SetupComponent extends Component
      * Initialize
      *
      * @param array $config component configuration
+     * @return void
      * @throws \Exception
      */
     public function initialize(array $config): void

@@ -36,7 +36,7 @@ trait LinkSocialTrait
             (new ServiceFactory())
                 ->setRedirectUriField('callbackLinkSocialUri')
                 ->createFromProvider($alias)
-                ->getAuthorizationUrl($this->request)
+                ->getAuthorizationUrl($this->getRequest())
         );
     }
 
@@ -56,15 +56,15 @@ trait LinkSocialTrait
             ->setRedirectUriField('callbackLinkSocialUri')
             ->createFromProvider($alias);
 
-            if (!$server->isGetUserStep($this->request)) {
+            if (!$server->isGetUserStep($this->getRequest())) {
                 $this->Flash->error($message);
 
                 return $this->redirect(['action' => 'profile']);
             }
-            $data = $server->getUser($this->request);
+            $data = $server->getUser($this->getRequest());
             $mapper = new MapUser();
             $data = $mapper($server, $data);
-            $identity = $this->request->getAttribute('identity');
+            $identity = $this->getRequest()->getAttribute('identity');
             $identity = $identity ?? [];
             $userId = Hash::get($identity, 'id');
             $user = $this->getUsersTable()->get($userId);

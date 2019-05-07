@@ -30,7 +30,7 @@ trait U2fTrait
      */
     public function redirectWithQuery($url)
     {
-        $url['?'] = $this->request->getQueryParams();
+        $url['?'] = $this->getRequest()->getQueryParams();
         if (empty($url['?'])) {
             unset($url['?']);
         }
@@ -79,7 +79,7 @@ trait U2fTrait
 
         if (!$data['registration']) {
             [$registerRequest, $signs] = $this->createU2fLib()->getRegisterData();
-            $this->request->getSession()->write('U2f.registerRequest', json_encode($registerRequest));
+            $this->getRequest()->getSession()->write('U2f.registerRequest', json_encode($registerRequest));
             $this->set(compact('registerRequest', 'signs'));
 
             return null;
@@ -98,21 +98,21 @@ trait U2fTrait
     public function u2fRegisterFinish()
     {
         $data = $this->getU2fData();
-        $request = json_decode($this->request->getSession()->read('U2f.registerRequest'));
-        $response = json_decode($this->request->getData('registerResponse'));
+        $request = json_decode($this->getRequest()->getSession()->read('U2f.registerRequest'));
+        $response = json_decode($this->getRequest()->getData('registerResponse'));
         try {
             $result = $this->createU2fLib()->doRegister($request, $response);
             $additionalData = $data['user']->additional_data;
             $additionalData['u2f_registration'] = $result;
             $data['user']->additional_data = $additionalData;
             $this->getUsersTable()->saveOrFail($data['user'], ['checkRules' => false]);
-            $this->request->getSession()->delete('U2f.registerRequest');
+            $this->getRequest()->getSession()->delete('U2f.registerRequest');
 
             return $this->redirectWithQuery([
                 'action' => 'u2fAuthenticate',
             ]);
         } catch (\Exception $e) {
-            $this->request->getSession()->delete('U2f.registerRequest');
+            $this->getRequest()->getSession()->delete('U2f.registerRequest');
 
             return $this->redirectWithQuery([
                 'action' => 'u2fRegister',
@@ -140,7 +140,7 @@ trait U2fTrait
             ]);
         }
         $authenticateRequest = $this->createU2fLib()->getAuthenticateData([$data['registration']]);
-        $this->request->getSession()->write('U2f.authenticateRequest', json_encode($authenticateRequest));
+        $this->getRequest()->getSession()->write('U2f.authenticateRequest', json_encode($authenticateRequest));
         $this->set(compact('authenticateRequest'));
     }
 
@@ -152,8 +152,8 @@ trait U2fTrait
     public function u2fAuthenticateFinish()
     {
         $data = $this->getU2fData();
-        $request = json_decode($this->request->getSession()->read('U2f.authenticateRequest'));
-        $response = json_decode($this->request->getData('authenticateResponse'));
+        $request = json_decode($this->getRequest()->getSession()->read('U2f.authenticateRequest'));
+        $response = json_decode($this->getRequest()->getData('authenticateResponse'));
 
         try {
             $registration = $data['registration'];
@@ -163,12 +163,12 @@ trait U2fTrait
             $additionalData['u2f_registration'] = $result;
             $data['user']->additional_data = $additionalData;
             $this->getUsersTable()->saveOrFail($data['user'], ['checkRules' => false]);
-            $this->request->getSession()->delete('U2f');
+            $this->getRequest()->getSession()->delete('U2f');
             $this->Auth->setUser($data['user']->toArray());
 
             return $this->redirect($this->Auth->redirectUrl());
         } catch (\Exception $e) {
-            $this->request->getSession()->delete('U2f.authenticateRequest');
+            $this->getRequest()->getSession()->delete('U2f.authenticateRequest');
 
             return $this->redirectWithQuery([
                 'action' => 'u2fAuthenticate',
@@ -184,7 +184,7 @@ trait U2fTrait
      */
     protected function createU2fLib()
     {
-        $appId = $this->request->scheme() . '://' . $this->request->host();
+        $appId = $this->getRequest()->scheme() . '://' . $this->getRequest()->host();
 
         return new U2F($appId);
     }
@@ -201,7 +201,7 @@ trait U2fTrait
             'user' => null,
             'registration' => null,
         ];
-        $user = $this->request->getSession()->read('U2f.User');
+        $user = $this->getRequest()->getSession()->read('U2f.User');
         if (!isset($user['id'])) {
             return $data;
         }

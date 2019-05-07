@@ -53,7 +53,7 @@ trait UserValidationTrait
                     $result = $this->getUsersTable()->validate($token);
                     if (!empty($result)) {
                         $this->Flash->success(__d('cake_d_c/users', 'Reset password token was validated successfully'));
-                        $this->request->getSession()->write(
+                        $this->getRequest()->getSession()->write(
                             Configure::read('Users.Key.Session.resetPasswordUserId'),
                             $result->id
                         );
@@ -88,10 +88,10 @@ trait UserValidationTrait
     {
         $this->set('user', $this->getUsersTable()->newEntity([]));
         $this->set('_serialize', ['user']);
-        if (!$this->request->is('post')) {
+        if (!$this->getRequest()->is('post')) {
             return;
         }
-        $reference = $this->request->getData('reference');
+        $reference = $this->getRequest()->getData('reference');
         try {
             if ($this->getUsersTable()->resetToken($reference, [
                 'expiration' => Configure::read('Users.Token.expiration'),

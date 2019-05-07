@@ -38,7 +38,7 @@ trait PasswordManagementTrait
     public function changePassword()
     {
         $user = $this->getUsersTable()->newEntity([]);
-        $identity = $this->request->getAttribute('identity');
+        $identity = $this->getRequest()->getAttribute('identity');
         $identity = $identity ?? [];
         $id = Hash::get($identity, 'id');
 
@@ -48,7 +48,7 @@ trait PasswordManagementTrait
             //@todo add to the documentation: list of routes used
             $redirect = Configure::read('Users.Profile.route');
         } else {
-            $user->id = $this->request->getSession()->read(Configure::read('Users.Key.Session.resetPasswordUserId'));
+            $user->id = $this->getRequest()->getSession()->read(Configure::read('Users.Key.Session.resetPasswordUserId'));
             $validatePassword = false;
             if (!$user->id) {
                 $this->Flash->error(__d('cake_d_c/users', 'User was not found'));
@@ -60,7 +60,7 @@ trait PasswordManagementTrait
             $redirect = $this->Authentication->getConfig('loginAction');
         }
         $this->set('validatePassword', $validatePassword);
-        if ($this->request->is(['post', 'put'])) {
+        if ($this->getRequest()->is(['post', 'put'])) {
             try {
                 $validator = $this->getUsersTable()->validationPasswordConfirm(new Validator());
                 if (!empty($id)) {
@@ -68,7 +68,7 @@ trait PasswordManagementTrait
                 }
                 $user = $this->getUsersTable()->patchEntity(
                     $user,
-                    $this->request->getData(),
+                    $this->getRequest()->getData(),
                     ['validate' => $validator]
                 );
 
@@ -121,11 +121,11 @@ trait PasswordManagementTrait
     {
         $this->set('user', $this->getUsersTable()->newEntity([]));
         $this->set('_serialize', ['user']);
-        if (!$this->request->is('post')) {
+        if (!$this->getRequest()->is('post')) {
             return;
         }
 
-        $reference = $this->request->getData('reference');
+        $reference = $this->getRequest()->getData('reference');
         try {
             $resetUser = $this->getUsersTable()->resetToken($reference, [
                 'expiration' => Configure::read('Users.Token.expiration'),
@@ -164,7 +164,7 @@ trait PasswordManagementTrait
      */
     public function resetOneTimePasswordAuthenticator($id = null)
     {
-        if ($this->request->is('post')) {
+        if ($this->getRequest()->is('post')) {
             try {
                 $query = $this->getUsersTable()->query();
                 $query->update()
@@ -180,6 +180,6 @@ trait PasswordManagementTrait
             }
         }
 
-        return $this->redirect($this->request->referer());
+        return $this->redirect($this->getRequest()->referer());
     }
 }

@@ -47,7 +47,7 @@ trait LoginTrait
      */
     public function login()
     {
-        $this->request->getSession()->delete(AuthenticationService::TWO_FACTOR_VERIFY_SESSION_KEY);
+        $this->getRequest()->getSession()->delete(AuthenticationService::TWO_FACTOR_VERIFY_SESSION_KEY);
         $Login = LoginComponentLoader::forForm($this);
 
         return $Login->handleLogin(true, false);
@@ -60,7 +60,7 @@ trait LoginTrait
      */
     public function logout()
     {
-        $user = $this->request->getAttribute('identity');
+        $user = $this->getRequest()->getAttribute('identity');
         $user = $user ?? [];
 
         $eventBefore = $this->dispatchEvent(Plugin::EVENT_BEFORE_LOGOUT, ['user' => $user]);
@@ -68,7 +68,7 @@ trait LoginTrait
             return $this->redirect($eventBefore->getResult());
         }
 
-        $this->request->getSession()->destroy();
+        $this->getRequest()->getSession()->destroy();
         $this->Flash->success(__d('cake_d_c/users', 'You\'ve successfully logged out'));
 
         $eventAfter = $this->dispatchEvent(Plugin::EVENT_AFTER_LOGOUT, ['user' => $user]);
