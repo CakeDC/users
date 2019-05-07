@@ -17,10 +17,12 @@ Configure::load('CakeDC/Users.users');
 collection((array)Configure::read('Users.config'))->each(function ($file) {
     Configure::load($file);
 });
-
-TableRegistry::getTableLocator()->setConfig('Users', ['className' => Configure::read('Users.table')]);
-TableRegistry::getTableLocator()->setConfig('CakeDC/Users.Users', ['className' => Configure::read('Users.table')]);
-
+$locator = TableRegistry::getTableLocator();
+foreach (['Users', 'CakeDC/Users.Users'] as $modelKey) {
+    if (!$locator->exists($modelKey)) {
+        $locator->setConfig($modelKey, ['className' => Configure::read('Users.table')]);
+    }
+}
 if (Configure::check('Auth.authenticate') || Configure::check('Auth.authorize')) {
     trigger_error("Users plugin configurations keys Auth.authenticate and Auth.authorize were removed, please check migration guide https://github.com/CakeDC/users/blob/master/Docs/Documentation/MigrationGuide.md'");
 }
