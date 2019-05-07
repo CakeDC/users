@@ -68,7 +68,7 @@ abstract class BaseTraitTest extends TestCase
         try {
             $this->Trait = $this->getMockBuilder($this->traitClassName)
                     ->setMethods($traitMockMethods)
-                    ->getMockForTrait();
+                    ->getMock();
             $this->Trait->expects($this->any())
                     ->method('getUsersTable')
                     ->will($this->returnValue($this->table));
@@ -117,7 +117,8 @@ abstract class BaseTraitTest extends TestCase
             $session->write($field, $value);
         }
 
-        $this->Trait->request
+        $this->Trait
+			->getRequest()
             ->expects($this->any())
             ->method('getSession')
             ->willReturn($session);
@@ -138,13 +139,14 @@ abstract class BaseTraitTest extends TestCase
             $methods[] = 'getSession';
         }
 
-        $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
+        $request = $this->getMockBuilder('Cake\Http\ServerRequest')
                 ->setMethods($methods)
                 ->getMock();
-        $this->Trait->request->expects($this->any())
+        $request->expects($this->any())
                 ->method('is')
                 ->with('post')
                 ->will($this->returnValue(false));
+		$this->Trait->setRequest($request);
     }
 
     /**
@@ -168,13 +170,14 @@ abstract class BaseTraitTest extends TestCase
      */
     protected function _mockRequestPost($with = 'post')
     {
-        $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
+        $request = $this->getMockBuilder('Cake\Http\ServerRequest')
                 ->setMethods(['is', 'getData', 'allow'])
                 ->getMock();
-        $this->Trait->request->expects($this->any())
+        $request->expects($this->any())
                 ->method('is')
                 ->with($with)
                 ->will($this->returnValue(true));
+		$this->Trait->setRequest($request);
     }
 
     /**
@@ -219,7 +222,7 @@ abstract class BaseTraitTest extends TestCase
             $user = new User($user);
             $identity = new Identity($user);
             $result = new Result($user, Result::SUCCESS);
-            $this->Trait->request = $this->Trait->request->withAttribute('identity', $identity);
+            $this->Trait->setRequest($this->Trait->getRequest()->withAttribute('identity', $identity));
         } else {
             $result = new Result($user, Result::FAILURE_CREDENTIALS_MISSING);
         }
@@ -232,9 +235,9 @@ abstract class BaseTraitTest extends TestCase
             ->method('getFailures')
             ->will($this->returnValue($failures));
 
-        $this->Trait->request = $this->Trait->request->withAttribute('authentication', $authentication);
+        $this->Trait->setRequest($this->Trait->getRequest()->withAttribute('authentication', $authentication));
 
-        $controller = new Controller($this->Trait->request);
+        $controller = new Controller($this->Trait->getRequest());
         $registry = new ComponentRegistry($controller);
         $this->Trait->Authentication = new AuthenticationComponent($registry, [
             'loginRedirect' => $this->successLoginRedirect,
@@ -280,7 +283,7 @@ abstract class BaseTraitTest extends TestCase
             $user = new User($user);
             $identity = new Identity($user);
             $result = new Result($user, Result::SUCCESS);
-            $this->Trait->request = $this->Trait->request->withAttribute('identity', $identity);
+            $this->Trait->setRequest($this->Trait->getRequest()->withAttribute('identity', $identity));
         } else {
             $result = new Result($user, Result::FAILURE_CREDENTIALS_MISSING);
         }
@@ -297,10 +300,10 @@ abstract class BaseTraitTest extends TestCase
             ->method('identifiers')
             ->will($this->returnValue($identifiers));
 
-        $this->Trait->request = $this->Trait->request->withAttribute('authentication', $authentication);
+        $this->Trait->setRequest($this->Trait->getRequest()->withAttribute('authentication', $authentication));
 
-        $controller = new Controller($this->Trait->request);
-        $registry = new ComponentRegistry($controller);
+        //$controller = new Controller($this->Trait->getRequest());
+        $registry = new ComponentRegistry($this->Trait);
         $this->Trait->Authentication = new AuthenticationComponent($registry, [
             'loginRedirect' => $this->successLoginRedirect,
             'logoutRedirect' => $this->logoutRedirect,

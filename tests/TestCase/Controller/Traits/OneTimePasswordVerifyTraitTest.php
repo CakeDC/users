@@ -33,16 +33,16 @@ class OneTimePasswordVerifyTraitTest extends BaseTraitTest
      */
     public function setUp(): void
     {
-        $this->traitClassName = 'CakeDC\Users\Controller\Traits\OneTimePasswordVerifyTrait';
+        $this->traitClassName = 'CakeDC\Users\Controller\UsersController';
         $this->traitMockMethods = ['dispatchEvent', 'isStopped', 'redirect', 'getUsersTable', 'set'];
 
         parent::setUp();
         $request = new ServerRequest();
-        $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\Traits\OneTimePasswordVerifyTrait')
+        $this->Trait = $this->getMockBuilder($this->traitClassName)
             ->setMethods(['dispatchEvent', 'redirect', 'set', 'getUsersTable'])
-            ->getMockForTrait();
+            ->getMock();
 
-        $this->Trait->request = $request;
+        $this->Trait->setRequest($request);
         Configure::write('Auth.AuthenticationComponent.loginAction', $this->loginPage);
     }
 
@@ -63,10 +63,11 @@ class OneTimePasswordVerifyTraitTest extends BaseTraitTest
     public function testVerifyHappy()
     {
         Configure::write('OneTimePasswordAuthenticator.login', true);
-        $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
+        $request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->setMethods(['is', 'getData', 'allow', 'getSession'])
             ->getMock();
-        $this->Trait->request->expects($this->once())
+		$this->Trait->setRequest($request);
+        $this->Trait->getRequest()->expects($this->once())
             ->method('is')
             ->with('post')
             ->will($this->returnValue(false));
@@ -91,7 +92,7 @@ class OneTimePasswordVerifyTraitTest extends BaseTraitTest
     {
         $this->_mockFlash();
         Configure::write('OneTimePasswordAuthenticator.login', false);
-        $this->Trait->request = $this->Trait->request->withQueryParams(['redirect' => 'dashboard/list']);
+        $this->Trait->setRequest($this->Trait->getRequest()->withQueryParams(['redirect' => 'dashboard/list']));
         $this->Trait->Flash->expects($this->once())
             ->method('error')
             ->with('Please enable Google Authenticator first.');
@@ -114,9 +115,11 @@ class OneTimePasswordVerifyTraitTest extends BaseTraitTest
             ->setMethods(['createSecret', 'getQRCodeImageAsDataUri'])
             ->getMock();
 
-        $this->Trait->request = $this->getMockBuilder(ServerRequest::class)
+        $request = $this->getMockBuilder(ServerRequest::class)
             ->setMethods(['is', 'getData', 'allow', 'getSession'])
             ->getMock();
+		$this->Trait->setRequest($request);
+			
         $this->_mockSession([
             'temporarySession' => [
                 'id' => '00000000-0000-0000-0000-000000000001',
@@ -128,7 +131,7 @@ class OneTimePasswordVerifyTraitTest extends BaseTraitTest
             ->method('getUsersTable')
             ->will($this->returnValue(TableRegistry::getTableLocator()->get('CakeDC/Users.Users')));
 
-        $this->Trait->request->expects($this->once())
+        $this->Trait->getRequest()->expects($this->once())
             ->method('is')
             ->with('post')
             ->will($this->returnValue(false));
@@ -162,11 +165,12 @@ class OneTimePasswordVerifyTraitTest extends BaseTraitTest
             ->setMethods(['createSecret', 'getQRCodeImageAsDataUri'])
             ->getMock();
 
-        $this->Trait->request = $this
-            ->getMockBuilder(ServerRequest::class)
+        $request = $this->getMockBuilder(ServerRequest::class)
             ->setMethods(['is', 'getData', 'allow', 'getSession'])
             ->getMock();
-        $this->Trait->request
+		$this->Trait->setRequest($request);
+        $this->Trait
+			->getRequest()
             ->expects($this->once())
             ->method('is')
             ->with('post')
@@ -221,11 +225,12 @@ class OneTimePasswordVerifyTraitTest extends BaseTraitTest
             ->setMethods(['createSecret', 'getQRCodeImageAsDataUri'])
             ->getMock();
 
-        $this->Trait->request = $this
-            ->getMockBuilder(ServerRequest::class)
+        $request = $this->getMockBuilder(ServerRequest::class)
             ->setMethods(['is', 'getData', 'allow', 'getSession'])
             ->getMock();
-        $this->Trait->request
+		$this->Trait->setRequest($request);
+        $this->Trait
+			->getRequest()
             ->expects($this->once())
             ->method('is')
             ->with('post')

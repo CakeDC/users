@@ -26,7 +26,7 @@ class RegisterTraitTest extends BaseTraitTest
      */
     public function setUp(): void
     {
-        $this->traitClassName = 'CakeDC\Users\Controller\Traits\RegisterTrait';
+        $this->traitClassName = 'CakeDC\Users\Controller\UsersController';
         $this->traitMockMethods = ['validate', 'dispatchEvent', 'set', 'validateReCaptcha', 'redirect'];
         $this->mockDefaultEmail = true;
         parent::setUp();
@@ -80,7 +80,7 @@ class RegisterTraitTest extends BaseTraitTest
         $this->Trait->expects($this->once())
             ->method('redirect')
             ->with(['action' => 'login']);
-        $this->Trait->request->expects($this->once())
+        $this->Trait->getRequest()->expects($this->once())
             ->method('getData')
             ->will($this->returnValue([
                 'username' => 'testRegistration',
@@ -112,7 +112,7 @@ class RegisterTraitTest extends BaseTraitTest
             ->with('The user could not be saved');
         $this->Trait->expects($this->never())
             ->method('redirect');
-        $this->Trait->request->expects($this->never())
+        $this->Trait->getRequest()->expects($this->never())
             ->method('is');
 
         $this->Trait->register();
@@ -145,7 +145,7 @@ class RegisterTraitTest extends BaseTraitTest
         $this->_mockAuthentication();
         $this->_mockFlash();
         $this->_mockDispatchEvent(new Event('Users.Component.UsersAuth.beforeRegister'), $data);
-        $this->Trait->request->expects($this->once())
+        $this->Trait->getRequest()->expects($this->once())
             ->method('getData')
             ->will($this->returnValue($data));
         $this->Trait->Flash->expects($this->once())
@@ -154,7 +154,7 @@ class RegisterTraitTest extends BaseTraitTest
         $this->Trait->expects($this->once())
             ->method('redirect')
             ->with(['action' => 'login']);
-        $this->Trait->request->expects($this->never())
+        $this->Trait->getRequest()->expects($this->never())
             ->method('is');
 
         $this->Trait->register();
@@ -189,7 +189,7 @@ class RegisterTraitTest extends BaseTraitTest
         $this->Trait->expects($this->once())
             ->method('redirect')
             ->with(['action' => 'login']);
-        $this->Trait->request->expects($this->at(0))
+        $this->Trait->getRequest()->expects($this->at(0))
             ->method('getData')
             ->with()
             ->will($this->returnValue([
@@ -226,7 +226,7 @@ class RegisterTraitTest extends BaseTraitTest
             ->will($this->returnValue(true));
         $this->Trait->expects($this->never())
             ->method('redirect');
-        $this->Trait->request->expects($this->at(0))
+        $this->Trait->getRequest()->expects($this->at(0))
             ->method('getData')
             ->with()
             ->will($this->returnValue([
@@ -261,7 +261,7 @@ class RegisterTraitTest extends BaseTraitTest
         $this->Trait->expects($this->once())
             ->method('validateRecaptcha')
             ->will($this->returnValue(false));
-        $this->Trait->request->expects($this->at(0))
+        $this->Trait->getRequest()->expects($this->at(0))
             ->method('getData')
             ->with()
             ->will($this->returnValue([
@@ -327,7 +327,7 @@ class RegisterTraitTest extends BaseTraitTest
         $this->Trait->expects($this->once())
             ->method('redirect')
             ->with(['action' => 'login']);
-        $this->Trait->request->expects($this->at(0))
+        $this->Trait->getRequest()->expects($this->at(0))
             ->method('getData')
             ->with()
             ->will($this->returnValue([
@@ -384,7 +384,7 @@ class RegisterTraitTest extends BaseTraitTest
         $this->Trait->expects($this->once())
             ->method('redirect')
             ->with(['action' => 'login']);
-        $this->Trait->request->expects($this->at(0))
+        $this->Trait->getRequest()->expects($this->at(0))
             ->method('getData')
             ->with()
             ->will($this->returnValue([
@@ -419,7 +419,7 @@ class RegisterTraitTest extends BaseTraitTest
         $this->Trait->expects($this->once())
             ->method('redirect')
             ->with(Configure::read('Users.Profile.route'));
-        $this->Trait->request->expects($this->never())
+        $this->Trait->getRequest()->expects($this->never())
             ->method('getData')
             ->with();
 

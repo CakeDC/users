@@ -23,7 +23,7 @@ class UserValidationTraitTest extends BaseTraitTest
      */
     public function setUp(): void
     {
-        $this->traitClassName = 'CakeDC\Users\Controller\Traits\UserValidationTrait';
+        $this->traitClassName = 'CakeDC\Users\Controller\UsersController';
         $this->traitMockMethods = ['dispatchEvent', 'isStopped', 'redirect', 'getUsersTable', 'set'];
         $this->mockDefaultEmail = true;
         parent::setUp();
@@ -152,7 +152,7 @@ class UserValidationTraitTest extends BaseTraitTest
     {
         $this->_mockRequestPost();
         $this->_mockFlash();
-        $this->Trait->request->expects($this->once())
+        $this->Trait->getRequest()->expects($this->once())
                 ->method('getData')
                 ->with('reference')
                 ->will($this->returnValue('user-3'));
@@ -175,7 +175,7 @@ class UserValidationTraitTest extends BaseTraitTest
     {
         $this->_mockRequestPost();
         $this->_mockFlash();
-        $this->Trait->request->expects($this->once())
+        $this->Trait->getRequest()->expects($this->once())
             ->method('getData')
             ->with('reference')
             ->will($this->returnValue('user-3'));
@@ -203,7 +203,7 @@ class UserValidationTraitTest extends BaseTraitTest
     {
         $this->_mockRequestPost();
         $this->_mockFlash();
-        $this->Trait->request->expects($this->once())
+        $this->Trait->getRequest()->expects($this->once())
                 ->method('getData')
                 ->with('reference')
                 ->will($this->returnValue('user-4'));
@@ -226,7 +226,7 @@ class UserValidationTraitTest extends BaseTraitTest
     {
         $this->_mockRequestPost();
         $this->_mockFlash();
-        $this->Trait->request->expects($this->once())
+        $this->Trait->getRequest()->expects($this->once())
                 ->method('getData')
                 ->with('reference')
                 ->will($this->returnValue('not-found'));

@@ -43,7 +43,7 @@ class U2fTraitTest extends BaseTraitTest
      */
     public function setUp(): void
     {
-        $this->traitClassName = 'CakeDC\Users\Controller\Traits\U2fTrait';
+        $this->traitClassName = 'CakeDC\Users\Controller\UsersController';
         $this->traitMockMethods = ['dispatchEvent', 'isStopped', 'redirect', 'getUsersTable', 'set', 'createU2fLib', 'getData', 'getU2fAuthenticationChecker'];
 
         parent::setUp();
@@ -57,7 +57,7 @@ class U2fTraitTest extends BaseTraitTest
             ->willReturn(new DefaultU2fAuthenticationChecker());
 
         $request = new ServerRequest();
-        $this->Trait->request = $request;
+        $this->Trait->setRequest($request);
         Configure::write('U2f.enabled', true);
     }
 
@@ -74,7 +74,8 @@ class U2fTraitTest extends BaseTraitTest
             $session->write($field, $value);
         }
 
-        $this->Trait->request
+        $this->Trait
+			->getRequest()
             ->expects($this->any())
             ->method('getSession')
             ->willReturn($session);
@@ -181,7 +182,7 @@ class U2fTraitTest extends BaseTraitTest
         ]);
         $actual = $this->Trait->u2fRegister();
         $this->assertNull($actual);
-        $actual = $this->Trait->request->getSession()->read('U2f.registerRequest');
+        $actual = $this->Trait->getRequest()->getSession()->read('U2f.registerRequest');
         $expected = json_encode($registerRequest);
         $this->assertEquals($expected, $actual);
     }
@@ -240,7 +241,7 @@ class U2fTraitTest extends BaseTraitTest
 
         $actual = $this->Trait->u2fRegister();
         $this->assertSame($response, $actual);
-        $actual = $this->Trait->request->getSession()->read('U2f.registerRequest');
+        $actual = $this->Trait->getRequest()->getSession()->read('U2f.registerRequest');
         $expected = null;
         $this->assertEquals($expected, $actual);
     }
@@ -277,7 +278,7 @@ class U2fTraitTest extends BaseTraitTest
         $registration->publicKey = "pub skska08u90234230990";
         $registration->keyHandle = 'hahdofa02390423udu9ma0dumfá0dsufm2um9432uu903u923';
 
-        $this->Trait->request->expects($this->once())
+        $this->Trait->getRequest()->expects($this->once())
             ->method('getData')
             ->with($this->equalTo('registerResponse'))
             ->will($this->returnValue(json_encode($registerResponse)));
@@ -302,7 +303,7 @@ class U2fTraitTest extends BaseTraitTest
             ->method('createU2fLib')
             ->will($this->returnValue($u2fLib));
 
-        $actual = $this->Trait->request->getSession()->read('U2f');
+        $actual = $this->Trait->getRequest()->getSession()->read('U2f');
         $this->assertNotNull($actual);
 
         $response = new Response();
@@ -316,7 +317,7 @@ class U2fTraitTest extends BaseTraitTest
 
         $actual = $this->Trait->u2fRegisterFinish();
         $this->assertSame($response, $actual);
-        $actual = $this->Trait->request->getSession()->read('U2f');
+        $actual = $this->Trait->getRequest()->getSession()->read('U2f');
         $this->assertEquals(
             [
                 'User' => [
@@ -370,7 +371,7 @@ class U2fTraitTest extends BaseTraitTest
         $registration->publicKey = "pub skska08u90234230990";
         $registration->keyHandle = 'hahdofa02390423udu9ma0dumfá0dsufm2um9432uu903u923';
 
-        $this->Trait->request->expects($this->once())
+        $this->Trait->getRequest()->expects($this->once())
             ->method('getData')
             ->with($this->equalTo('registerResponse'))
             ->will($this->returnValue(json_encode($registerResponse)));
@@ -395,7 +396,7 @@ class U2fTraitTest extends BaseTraitTest
             ->method('createU2fLib')
             ->will($this->returnValue($u2fLib));
 
-        $actual = $this->Trait->request->getSession()->read('U2f');
+        $actual = $this->Trait->getRequest()->getSession()->read('U2f');
         $this->assertNotNull($actual);
 
         $response = new Response();
@@ -409,7 +410,7 @@ class U2fTraitTest extends BaseTraitTest
 
         $actual = $this->Trait->u2fRegisterFinish();
         $this->assertSame($response, $actual);
-        $actual = $this->Trait->request->getSession()->read('U2f');
+        $actual = $this->Trait->getRequest()->getSession()->read('U2f');
         $this->assertEquals(
             [
                 'User' => [
@@ -538,7 +539,7 @@ class U2fTraitTest extends BaseTraitTest
         ]);
         $actual = $this->Trait->u2fAuthenticate();
         $this->assertNull($actual);
-        $actual = $this->Trait->request->getSession()->read('U2f.authenticateRequest');
+        $actual = $this->Trait->getRequest()->getSession()->read('U2f.authenticateRequest');
         $expected = json_encode($signs);
         $this->assertEquals($expected, $actual);
     }
@@ -587,7 +588,7 @@ class U2fTraitTest extends BaseTraitTest
             'fakeB' => 'fakevalueb',
         ]));
 
-        $this->Trait->request->expects($this->once())
+        $this->Trait->getRequest()->expects($this->once())
             ->method('getData')
             ->with($this->equalTo('authenticateResponse'))
             ->will($this->returnValue(json_encode($authenticateResponse)));
@@ -614,7 +615,7 @@ class U2fTraitTest extends BaseTraitTest
             ->method('createU2fLib')
             ->will($this->returnValue($u2fLib));
 
-        $actual = $this->Trait->request->getSession()->read('U2f');
+        $actual = $this->Trait->getRequest()->getSession()->read('U2f');
         $this->assertNotNull($actual);
 
         $response = new Response();
@@ -624,7 +625,7 @@ class U2fTraitTest extends BaseTraitTest
 
         $actual = $this->Trait->u2fAuthenticateFinish();
         $this->assertSame($response, $actual);
-        $actual = $this->Trait->request->getSession()->read('U2f');
+        $actual = $this->Trait->getRequest()->getSession()->read('U2f');
         $this->assertNull($actual);
 
         $updatedEntity = TableRegistry::getTableLocator()
@@ -676,7 +677,7 @@ class U2fTraitTest extends BaseTraitTest
             'fakeB' => 'fakevalueb',
         ]));
 
-        $this->Trait->request->expects($this->once())
+        $this->Trait->getRequest()->expects($this->once())
             ->method('getData')
             ->with($this->equalTo('authenticateResponse'))
             ->will($this->returnValue(json_encode($authenticateResponse)));
@@ -712,7 +713,7 @@ class U2fTraitTest extends BaseTraitTest
 
         $actual = $this->Trait->u2fAuthenticateFinish();
         $this->assertSame($response, $actual);
-        $actual = $this->Trait->request->getSession()->read('U2f');
+        $actual = $this->Trait->getRequest()->getSession()->read('U2f');
         $this->assertEquals(
             [
                 'User' => [

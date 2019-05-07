@@ -33,21 +33,19 @@ class LoginTraitTest extends BaseTraitTest
      */
     public function setUp(): void
     {
-        $this->traitClassName = 'CakeDC\Users\Controller\Traits\LoginTrait';
+        $this->traitClassName = 'CakeDC\Users\Controller\UsersController';
         $this->traitMockMethods = ['dispatchEvent', 'isStopped', 'redirect', 'getUsersTable', 'set'];
 
         parent::setUp();
-        $request = new ServerRequest();
-        $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\Traits\LoginTrait')
-            ->setMethods(['dispatchEvent', 'redirect', 'set', 'loadComponent', 'getRequest'])
-            ->getMockForTrait();
+        $this->Trait->setRequest(new ServerRequest());
+        $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\UsersController')
+            ->setMethods(['dispatchEvent', 'redirect', 'set', 'loadComponent'])
+            ->getMock();
 
         $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
             ->setMethods(['setConfig'])
             ->disableOriginalConstructor()
             ->getMock();
-
-        $this->Trait->request = $request;
     }
 
     /**
@@ -77,13 +75,15 @@ class LoginTraitTest extends BaseTraitTest
         $failures = [$sessionFailure];
 
         $this->_mockDispatchEvent(new Event('event'));
-        $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
+
+		$request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->setMethods(['is'])
             ->getMock();
-        $this->Trait->request->expects($this->any())
+        $request->expects($this->any())
             ->method('is')
             ->with('post')
             ->will($this->returnValue(true));
+        $this->Trait->setRequest($request);
 
         $this->_mockFlash();
         $this->_mockAuthentication(['id' => 1], $failures);
@@ -93,9 +93,6 @@ class LoginTraitTest extends BaseTraitTest
             ->method('redirect')
             ->with($this->successLoginRedirect)
             ->will($this->returnValue(new Response()));
-        $this->Trait->expects($this->any())
-            ->method('getRequest')
-            ->will($this->returnValue($this->Trait->request));
 
         $registry = new ComponentRegistry();
         $config = [
@@ -143,14 +140,16 @@ class LoginTraitTest extends BaseTraitTest
         $failures = [$sessionFailure];
 
         $this->_mockDispatchEvent(new Event('event'));
-        $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
+
+		$request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->setMethods(['is'])
             ->getMock();
-        $this->Trait->request->expects($this->any())
+        $request->expects($this->any())
             ->method('is')
             ->with('post')
             ->will($this->returnValue(true));
-
+        $this->Trait->setRequest($request);
+			
         $this->_mockFlash();
         $this->_mockAuthenticationWithPasswordRehash(['id' => '00000000-0000-0000-0000-000000000001',
             'username' => 'user-1',
@@ -176,9 +175,6 @@ class LoginTraitTest extends BaseTraitTest
             ->method('redirect')
             ->with($this->successLoginRedirect)
             ->will($this->returnValue(new Response()));
-        $this->Trait->expects($this->any())
-            ->method('getRequest')
-            ->will($this->returnValue($this->Trait->getRequest()));
 
         $registry = new ComponentRegistry();
         $config = [
@@ -217,10 +213,11 @@ class LoginTraitTest extends BaseTraitTest
     public function testLoginGet()
     {
         $this->_mockDispatchEvent(new Event('event'));
-        $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
+		$request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->setMethods(['is'])
             ->getMock();
-        $this->Trait->request->expects($this->once())
+        $this->Trait->setRequest($request);
+        $request->expects($this->once())
             ->method('is')
             ->with('post')
             ->will($this->returnValue(false));
@@ -254,9 +251,9 @@ class LoginTraitTest extends BaseTraitTest
         $Login->expects($this->any())
             ->method('getController')
             ->will($this->returnValue($this->Trait));
-        $this->Trait->expects($this->any())
-            ->method('getRequest')
-            ->will($this->returnValue($this->Trait->request));
+        // $this->Trait->expects($this->any())
+            // ->method('getRequest')
+            // ->will($this->returnValue($request));
         $this->Trait->expects($this->any())
             ->method('loadComponent')
             ->with(
@@ -395,22 +392,22 @@ class LoginTraitTest extends BaseTraitTest
         $failures = [$sessionFailure, $formFailure, $socialFailure];
 
         $this->_mockDispatchEvent(new Event('event'));
-        $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
+
+		$request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->setMethods(['is'])
             ->getMock();
-        $this->Trait->request->expects($this->any())
+        $request->expects($this->any())
             ->method('is')
             ->with('post')
             ->will($this->returnValue(true));
+        $this->Trait->setRequest($request);
+
         $this->_mockFlash();
         $this->_mockAuthentication(null, $failures);
         $this->Trait->Flash->expects($this->once())
             ->method('error')
             ->with($message);
-        $this->Trait->expects($this->any())
-            ->method('getRequest')
-            ->will($this->returnValue($this->Trait->request));
-
+			
         $registry = new ComponentRegistry();
         $Login = $this->getMockBuilder(LoginComponent::class)
             ->setMethods(['getController'])
@@ -469,13 +466,15 @@ class LoginTraitTest extends BaseTraitTest
         $failures = [$sessionFailure, $formFailure];
 
         $this->_mockDispatchEvent(new Event('event'));
-        $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
+
+		$request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->setMethods(['is'])
-             ->getMock();
-        $this->Trait->request->expects($this->any())
-             ->method('is')
-             ->with('post')
-             ->will($this->returnValue(true));
+            ->getMock();
+        $request->expects($this->any())
+            ->method('is')
+            ->with('post')
+            ->will($this->returnValue(true));
+        $this->Trait->setRequest($request);
 
         $this->_mockFlash();
         $this->_mockAuthentication(['id' => 1], $failures);
@@ -485,9 +484,6 @@ class LoginTraitTest extends BaseTraitTest
             ->method('redirect')
             ->with($this->successLoginRedirect)
             ->will($this->returnValue(new Response()));
-        $this->Trait->expects($this->any())
-            ->method('getRequest')
-            ->will($this->returnValue($this->Trait->request));
 
         $registry = new ComponentRegistry();
         $config = [

@@ -93,7 +93,7 @@ class RegisterBehavior extends BaseTokenBehavior
         if ($user->tokenExpired()) {
             throw new TokenExpiredException(__d('cake_d_c/users', "Token has already expired user with no token"));
         }
-        if (!method_exists($this, $callback)) {
+        if (!method_exists($this, (string)$callback)) {
             return $user;
         }
 

@@ -132,11 +132,11 @@ class LoginComponent extends Component
     protected function afterIdentifyUser($user)
     {
         $event = $this->getController()->dispatchEvent(Plugin::EVENT_AFTER_LOGIN, ['user' => $user]);
-        if (is_array($event->result)) {
-            return $this->getController()->redirect($event->result);
+        if (is_array($event->getResult())) {
+            return $this->getController()->redirect($event->getResult());
         }
 
-        $query = $this->getController()->request->getQueryParams();
+        $query = $this->getController()->getRequest()->getQueryParams();
         $redirectUrl = $this->getController()->Authentication->getConfig('loginRedirect');
         if (isset($query['redirect'])) {
             $redirectUrl = $query['redirect'];

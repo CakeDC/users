@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Test\TestCase\View\Helper;
 
+use Cake\Http\ServerRequest;
+use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use Cake\View\View;
 use CakeDC\Users\View\Helper\AuthLinkHelper;
@@ -35,8 +37,8 @@ class AuthLinkHelperTest extends TestCase
      */
     public function setUp(): void
     {
-        parent::setUp();
-        $view = new View();
+        parent::setUp();		
+        $view = new View(new ServerRequest());
         $this->AuthLink = $this->getMockBuilder(AuthLinkHelper::class)
             ->setMethods(['isAuthorized'])
             ->setConstructorArgs([$view])
@@ -83,6 +85,11 @@ class AuthLinkHelperTest extends TestCase
      */
     public function testLinkAuthorizedHappy()
     {
+        Router::connect('/profile', [
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+            'action' => 'profile',
+        ]);
         $this->AuthLink->expects($this->once())
             ->method('isAuthorized')
             ->with(
