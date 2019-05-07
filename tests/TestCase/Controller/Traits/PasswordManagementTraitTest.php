@@ -20,6 +20,10 @@ use Cake\TestSuite\TestCase;
 class PasswordManagementTraitTest extends BaseTraitTest
 {
     /**
+     * @var \CakeDC\Users\Controller\UsersController
+     */
+    public $Trait;
+    /**
      * setUp
      *
      * @return void
@@ -371,7 +375,11 @@ class PasswordManagementTraitTest extends BaseTraitTest
         $this->Trait->Flash->expects($this->any())
             ->method('error')
             ->with('User 12312312-0000-0000-0000-000000000002 was not found');
-        $this->Trait->requestResetPassword();
+
+        $this->Trait->expects($this->never())
+            ->method('redirect');
+        $actual = $this->Trait->requestResetPassword();
+        $this->assertNull($actual);
     }
 
     /**
@@ -392,7 +400,11 @@ class PasswordManagementTraitTest extends BaseTraitTest
         $this->Trait->Flash->expects($this->any())
             ->method('error')
             ->with('Token could not be reset');
-        $this->Trait->requestResetPassword();
+
+        $this->Trait->expects($this->never())
+            ->method('redirect');
+        $actual = $this->Trait->requestResetPassword();
+        $this->assertNull($actual);
     }
 
     /**
@@ -459,8 +471,14 @@ class PasswordManagementTraitTest extends BaseTraitTest
         $this->Trait->Flash->expects($this->any())
             ->method($method)
             ->with($msg);
+        $response = new \Cake\Http\Response();
+        $response = $response->withLocation('/');
+        $this->Trait->expects($this->any())
+            ->method('redirect')
+            ->willReturn($response);
 
-        $this->Trait->resetOneTimePasswordAuthenticator($entityId);
+        $actual = $this->Trait->resetOneTimePasswordAuthenticator($entityId);
+        $this->assertSame($response, $actual);
     }
 
     public function ensureOneTimePasswordAuthenticatorResets()

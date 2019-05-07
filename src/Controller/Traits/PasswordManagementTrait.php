@@ -37,7 +37,7 @@ trait PasswordManagementTrait
      */
     public function changePassword()
     {
-        $user = $this->getUsersTable()->newEntity([]);
+        $user = $this->getUsersTable()->newEntity([], ['validate' => false]);
         $identity = $this->getRequest()->getAttribute('identity');
         $identity = $identity ?? [];
         $id = Hash::get($identity, 'id');
@@ -119,7 +119,7 @@ trait PasswordManagementTrait
      */
     public function requestResetPassword()
     {
-        $this->set('user', $this->getUsersTable()->newEntity([]));
+        $this->set('user', $this->getUsersTable()->newEntity([], ['validate' => false]));
         $this->set('_serialize', ['user']);
         if (!$this->getRequest()->is('post')) {
             return;

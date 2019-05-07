@@ -63,6 +63,7 @@ abstract class BaseTraitTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
+        $this->loadPlugins(['CakeDC/Users' => ['routes' => true]]);
         $traitMockMethods = array_unique(array_merge(['getUsersTable'], $this->traitMockMethods));
         $this->table = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
         try {
