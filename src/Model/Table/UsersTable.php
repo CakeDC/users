@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Model\Table;
 
+use Cake\Database\Schema\TableSchema;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -33,6 +34,19 @@ class UsersTable extends Table
      * @var bool
      */
     public $isValidateEmail = false;
+
+    /**
+     * Field additional_data is json
+     *
+     * @param \Cake\Database\Schema\TableSchema $schema The table definition fetched from database.
+     * @return \Cake\Database\Schema\TableSchema the altered schema
+     */
+    protected function _initializeSchema(TableSchema $schema)
+    {
+        $schema->setColumnType('additional_data', 'json');
+
+        return parent::_initializeSchema($schema);
+    }
 
     /**
      * Initialize method

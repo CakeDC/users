@@ -24,7 +24,7 @@ use Authorization\Policy\ResolverCollection;
 use CakeDC\Auth\Authentication\AuthenticationService as CakeDCAuthenticationService;
 use CakeDC\Auth\Authenticator\FormAuthenticator;
 use CakeDC\Auth\Authenticator\TwoFactorAuthenticator;
-use CakeDC\Auth\Middleware\OneTimePasswordAuthenticatorMiddleware;
+use CakeDC\Auth\Middleware\TwoFactorMiddleware;
 use CakeDC\Users\Middleware\SocialAuthMiddleware;
 use CakeDC\Users\Middleware\SocialEmailMiddleware;
 use CakeDC\Users\Plugin;
@@ -62,7 +62,7 @@ class PluginTest extends TestCase
         $this->assertInstanceOf(SocialAuthMiddleware::class, $middleware->get(0));
         $this->assertInstanceOf(SocialEmailMiddleware::class, $middleware->get(1));
         $this->assertInstanceOf(AuthenticationMiddleware::class, $middleware->get(2));
-        $this->assertInstanceOf(OneTimePasswordAuthenticatorMiddleware::class, $middleware->get(3));
+        $this->assertInstanceOf(TwoFactorMiddleware::class, $middleware->get(3));
         $this->assertInstanceOf(AuthorizationMiddleware::class, $middleware->get(4));
         $this->assertInstanceOf(RequestAuthorizationMiddleware::class, $middleware->get(5));
         $this->assertEquals(6, $middleware->count());
@@ -87,7 +87,7 @@ class PluginTest extends TestCase
         $this->assertInstanceOf(SocialAuthMiddleware::class, $middleware->get(0));
         $this->assertInstanceOf(SocialEmailMiddleware::class, $middleware->get(1));
         $this->assertInstanceOf(AuthenticationMiddleware::class, $middleware->get(2));
-        $this->assertInstanceOf(OneTimePasswordAuthenticatorMiddleware::class, $middleware->get(3));
+        $this->assertInstanceOf(TwoFactorMiddleware::class, $middleware->get(3));
         $this->assertInstanceOf(AuthorizationMiddleware::class, $middleware->get(4));
         $this->assertInstanceOf(RequestAuthorizationMiddleware::class, $middleware->get(5));
         $this->assertEquals(6, $middleware->count());
@@ -112,7 +112,7 @@ class PluginTest extends TestCase
         $this->assertInstanceOf(SocialAuthMiddleware::class, $middleware->get(0));
         $this->assertInstanceOf(SocialEmailMiddleware::class, $middleware->get(1));
         $this->assertInstanceOf(AuthenticationMiddleware::class, $middleware->get(2));
-        $this->assertInstanceOf(OneTimePasswordAuthenticatorMiddleware::class, $middleware->get(3));
+        $this->assertInstanceOf(TwoFactorMiddleware::class, $middleware->get(3));
         $this->assertEquals(4, $middleware->count());
     }
 
@@ -132,7 +132,7 @@ class PluginTest extends TestCase
 
         $middleware = $plugin->middleware($middleware);
         $this->assertInstanceOf(AuthenticationMiddleware::class, $middleware->get(0));
-        $this->assertInstanceOf(OneTimePasswordAuthenticatorMiddleware::class, $middleware->get(1));
+        $this->assertInstanceOf(TwoFactorMiddleware::class, $middleware->get(1));
         $this->assertInstanceOf(AuthorizationMiddleware::class, $middleware->get(2));
         $this->assertInstanceOf(RequestAuthorizationMiddleware::class, $middleware->get(3));
     }

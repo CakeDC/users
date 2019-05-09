@@ -49,9 +49,8 @@ class PasswordBehaviorTest extends TestCase
                 ->setMethods(['_sendResetPasswordEmail'])
                 ->setConstructorArgs([$this->table])
                 ->getMock();
-        TransportFactory::setConfig('test', [
-            'className' => 'Debug'
-        ]);
+        TransportFactory::drop('test');
+        TransportFactory::setConfig('test', ['className' => 'Debug']);
         //$this->configEmail = Email::getConfig('default');
         Email::setConfig('default', [
             'transport' => 'test',

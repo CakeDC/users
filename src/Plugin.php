@@ -11,26 +11,10 @@
 
 namespace CakeDC\Users;
 
-use Authentication\AuthenticationServiceInterface;
 use Authentication\AuthenticationServiceProviderInterface;
-use Authentication\Middleware\AuthenticationMiddleware;
-use Authorization\AuthorizationService;
 use Authorization\AuthorizationServiceProviderInterface;
-use Authorization\Middleware\AuthorizationMiddleware;
-use Authorization\Middleware\RequestAuthorizationMiddleware;
-use Authorization\Policy\MapResolver;
-use Authorization\Policy\OrmResolver;
-use Authorization\Policy\ResolverCollection;
-use CakeDC\Auth\Authentication\AuthenticationService;
-use CakeDC\Auth\Middleware\OneTimePasswordAuthenticatorMiddleware;
-use CakeDC\Auth\Middleware\RbacMiddleware;
-use CakeDC\Auth\Policy\RbacPolicy;
-use CakeDC\Users\Middleware\SocialAuthMiddleware;
-use CakeDC\Users\Middleware\SocialEmailMiddleware;
 use Cake\Core\BasePlugin;
 use Cake\Core\Configure;
-use Cake\Http\MiddlewareQueue;
-use Cake\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 

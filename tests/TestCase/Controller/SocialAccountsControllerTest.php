@@ -43,9 +43,7 @@ class SocialAccountsControllerTest extends TestCase
         Configure::write('Opauth', null);
         Configure::write('Users.RememberMe.active', false);
 
-        TransportFactory::setConfig('test', [
-            'className' => 'Debug'
-        ]);
+        TransportFactory::setConfig('test', ['className' => 'Debug']);
         $this->configEmail = Email::getConfig('default');
         Email::drop('default');
         Email::setConfig('default', [

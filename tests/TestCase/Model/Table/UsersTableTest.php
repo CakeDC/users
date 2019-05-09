@@ -45,9 +45,8 @@ class UsersTableTest extends TestCase
         $this->Users = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
         $this->fullBaseBackup = Router::fullBaseUrl();
         Router::fullBaseUrl('http://users.test');
-        TransportFactory::setConfig('test', [
-            'className' => 'Debug'
-        ]);
+        TransportFactory::drop('test');
+        TransportFactory::setConfig('test', ['className' => 'Debug']);
         Email::setConfig('default', [
             'transport' => 'test',
             'from' => 'cakedc@example.com'
@@ -64,7 +63,6 @@ class UsersTableTest extends TestCase
         unset($this->Users);
         Router::fullBaseUrl($this->fullBaseBackup);
         Email::drop('default');
-        TransportFactory::drop('test');
 
         parent::tearDown();
     }

@@ -20,6 +20,7 @@ Documentation
 * [Intercept Login Action](Documentation/InterceptLoginAction.md)
 * [Social Authentication](Documentation/SocialAuthenticate.md)
 * [Google Authenticator](Documentation/Two-Factor-Authenticator.md)
+* [Yubico U2F](Documentation/Yubico-U2F.md)
 * [UserHelper](Documentation/UserHelper.md)
 * [Events](Documentation/Events.md)
 * [Extending the Plugin](Documentation/Extending-the-Plugin.md)
