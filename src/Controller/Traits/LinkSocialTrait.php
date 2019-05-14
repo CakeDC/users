@@ -42,8 +42,8 @@ trait LinkSocialTrait
         }
         $authUrl = $provider->getAuthorizationUrl($temporaryCredentials);
         $this->dispatchEvent(UsersAuthComponent::EVENT_BEFORE_SOCIAL_LOGIN_REDIRECT, [
-            'location' =>$authUrl,
-            'request' => $this->getRequest(),
+            'location' => $authUrl,
+            'request' => $this->request,
         ]);
         if (empty($temporaryCredentials)) {
             $this->request->session()->write('SocialLink.oauth2state', $provider->getState());
