@@ -19,12 +19,12 @@
                 <?= $this->Flash->render('auth') ?>
                 <?= $this->Flash->render() ?>
                 <fieldset>
-                    <h2 class='text-center'><?= __('Verify your registered yubico key')?> </h2>
-                    <h3 class='text-center'><?= __('Please insert and tap your yubico key')?></h3>
+                    <h2 class='text-center'><?= __d('cake_d_c/users', 'Verify your registered yubico key')?> </h2>
+                    <h3 class='text-center'><?= __d('cake_d_c/users', 'Please insert and tap your yubico key')?></h3>
                     <p><?__( 'You can now finish the authentication process using the registered device.')?></p>
-                    <p><?= __('When the YubiKey starts blinking, press the golden disc to activate it. Depending on the web browser you might need to confirm the use of extended information from the YubiKey.')?></p>
+                    <p><?= __d('cake_d_c/users', 'When the YubiKey starts blinking, press the golden disc to activate it. Depending on the web browser you might need to confirm the use of extended information from the YubiKey.')?></p>
                     <p class="text-center"><?= $this->Html->link(
-                        __('Reload'),
+                        __d('cake_d_c/users', 'Reload'),
                         ['action' => 'u2fAuthenticate'],
                         ['class' => 'btn btn-primary']
                         )?></p>
@@ -48,7 +48,7 @@ $this->Html->scriptStart(['block' => true]);
             var targetForm = document.getElementById('u2fAuthenticateFrm');
             var targetInput = document.getElementById('authenticateResponse');
             if(data.errorCode && data.errorCode != 0) {
-                alert("<?= __('Yubico key check has failed, please try again')?>");
+                alert("<?= __d('cake_d_c/users', 'Yubico key check has failed, please try again')?>");
 
                 return;
             }

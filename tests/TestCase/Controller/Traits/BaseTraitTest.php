@@ -79,7 +79,9 @@ abstract class BaseTraitTest extends TestCase
         }
 
         if ($this->mockDefaultEmail) {
-            TransportFactory::setConfig('test', ['className' => 'Debug']);
+            TransportFactory::setConfig('test', [
+                'className' => 'Debug',
+            ]);
             $this->configEmail = Email::getConfig('default');
             Email::drop('default');
             Email::setConfig('default', [
@@ -201,10 +203,21 @@ abstract class BaseTraitTest extends TestCase
      *
      * @param array $user
      * @param array $failures
+     * @param \Authentication\Identifier\IdentifierCollection $identifiers custom identifiers collection
      * @return void
      */
-    protected function _mockAuthentication($user = null, $failures = [])
+    protected function _mockAuthentication($user = null, $failures = [], $identifiers = null)
     {
+/*        if ($identifiers === null) {
+            $passwordIdentifier = $this->getMockBuilder(PasswordIdentifier::class)
+                ->setMethods(['needsPasswordRehash'])
+                ->getMock();
+            $passwordIdentifier->expects($this->any())
+                ->method('needsPasswordRehash')
+                ->willReturn(false);
+            $identifiers = new IdentifierCollection([]);
+            $identifiers->set('Password', $passwordIdentifier);
+*/
         $config = [
             'identifiers' => [
                 'Authentication.Password',
@@ -270,18 +283,11 @@ abstract class BaseTraitTest extends TestCase
             'getFailures',
             'identifiers',
         ])->getMock();
-
-        $identifiers = new IdentifierCollection();
-        $passwordIdentifier = $this->getMockBuilder(PasswordIdentifier::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['needsPasswordRehash'])->getMock();
-        $passwordIdentifier->expects($this->any())
-            ->method('needsPasswordRehash')
-            ->will($this->returnValue(true));
-        $identifiers->set('Password', $passwordIdentifier);
-
+        $authentication->expects($this->any())
+            ->method('identifiers')
+            ->willReturn($identifiers);
         if ($user) {
-            $user = new User($user);
+            $user = is_object($user) ? $user : new User($user);
             $identity = new Identity($user);
             $result = new Result($user, Result::SUCCESS);
             $this->Trait->setRequest($this->Trait->getRequest()->withAttribute('identity', $identity));
@@ -296,10 +302,6 @@ abstract class BaseTraitTest extends TestCase
         $authentication->expects($this->any())
             ->method('getFailures')
             ->will($this->returnValue($failures));
-
-        $authentication->expects($this->any())
-            ->method('identifiers')
-            ->will($this->returnValue($identifiers));
 
         $this->Trait->setRequest($this->Trait->getRequest()->withAttribute('authentication', $authentication));
 
