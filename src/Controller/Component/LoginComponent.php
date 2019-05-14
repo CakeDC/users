@@ -14,9 +14,9 @@ namespace CakeDC\Users\Controller\Component;
 
 use Authentication\Authenticator\ResultInterface;
 use Cake\Controller\Component;
+use Cake\Core\Configure;
 use CakeDC\Auth\Authentication\AuthenticationService;
 use CakeDC\Users\Plugin;
-use Cake\Core\Configure;
 
 /**
  * LoginFailure component
@@ -160,7 +160,7 @@ class LoginComponent extends Component
             $checker = $service->identifiers()->get($indentifierName);
             if (!$checker || !$checker->needsPasswordRehash()) {
                 continue;
-}
+            }
             $password = $request->getData('password');
             $user->set('password', $password);
             $user->setDirty('modified');

@@ -18,7 +18,6 @@ use Authorization\AuthorizationServiceProviderInterface;
 use Cake\Core\BasePlugin;
 use Cake\Core\Configure;
 use Cake\Http\MiddlewareQueue;
-use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 class Plugin extends BasePlugin implements AuthenticationServiceProviderInterface, AuthorizationServiceProviderInterface

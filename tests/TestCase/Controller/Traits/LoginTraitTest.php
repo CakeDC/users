@@ -16,6 +16,7 @@ use Authentication\Authenticator\Result;
 use Authentication\Authenticator\SessionAuthenticator;
 use Authentication\Identifier\IdentifierCollection;
 use Authentication\Identifier\PasswordIdentifier;
+use Cake\Auth\DefaultPasswordHasher;
 use Cake\Controller\ComponentRegistry;
 use Cake\Event\Event;
 use Cake\Http\Response;
@@ -24,7 +25,6 @@ use CakeDC\Auth\Authentication\Failure;
 use CakeDC\Auth\Authenticator\FormAuthenticator;
 use CakeDC\Users\Authenticator\SocialAuthenticator;
 use CakeDC\Users\Controller\Component\LoginComponent;
-use Cake\Auth\DefaultPasswordHasher;
 
 class LoginTraitTest extends BaseTraitTest
 {
@@ -77,8 +77,6 @@ class LoginTraitTest extends BaseTraitTest
         $failures = [$sessionFailure];
 
         $this->_mockDispatchEvent(new Event('event'));
-
-
 
         $request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->setMethods(['is'])

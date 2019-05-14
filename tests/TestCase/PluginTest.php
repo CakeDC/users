@@ -32,7 +32,6 @@ use Cake\TestSuite\TestCase;
 use CakeDC\Auth\Authentication\AuthenticationService as CakeDCAuthenticationService;
 use CakeDC\Auth\Authenticator\FormAuthenticator;
 use CakeDC\Auth\Authenticator\TwoFactorAuthenticator;
-use CakeDC\Auth\Middleware\OneTimePasswordAuthenticatorMiddleware;
 use CakeDC\Auth\Middleware\TwoFactorMiddleware;
 use CakeDC\Users\Middleware\SocialAuthMiddleware;
 use CakeDC\Users\Middleware\SocialEmailMiddleware;

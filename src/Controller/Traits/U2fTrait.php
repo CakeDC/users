@@ -11,10 +11,10 @@ declare(strict_types=1);
  */
 namespace CakeDC\Users\Controller\Traits;
 
+use Cake\Core\Configure;
 use CakeDC\Auth\Authentication\AuthenticationService;
 use CakeDC\Auth\Authentication\U2fAuthenticationCheckerFactory;
 use CakeDC\Auth\Authenticator\TwoFactorAuthenticator;
-use Cake\Core\Configure;
 use u2flib_server\U2F;
 
 /**
@@ -229,5 +229,5 @@ trait U2fTrait
     protected function getU2fAuthenticationChecker()
     {
         return (new U2fAuthenticationCheckerFactory())->build();
-}
+    }
 }

@@ -231,7 +231,7 @@ abstract class BaseTraitTest extends TestCase
         $authentication = $this->getMockBuilder(AuthenticationService::class)->setConstructorArgs([$config])->setMethods([
             'getResult',
             'getFailures',
-            'identifiers'
+            'identifiers',
         ])->getMock();
 
         if ($user) {

@@ -12,12 +12,12 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
-use CakeDC\Auth\Authentication\DefaultU2fAuthenticationChecker;
-use CakeDC\Users\Model\Entity\User;
 use Cake\Core\Configure;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 use Cake\ORM\TableRegistry;
+use CakeDC\Auth\Authentication\DefaultU2fAuthenticationChecker;
+use CakeDC\Users\Model\Entity\User;
 use u2flib_server\RegisterRequest;
 use u2flib_server\Registration;
 use u2flib_server\U2F;
@@ -117,7 +117,7 @@ class U2fTraitTest extends BaseTraitTest
         $request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->setMethods(['getSession', 'is'])
             ->getMock();
-		$this->Trait->setRequest($request);
+        $this->Trait->setRequest($request);
         $request->expects($this->any())
             ->method('is')
             ->with(
@@ -148,7 +148,7 @@ class U2fTraitTest extends BaseTraitTest
         $request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->setMethods(['getSession', 'is'])
             ->getMock();
-		$this->Trait->setRequest($request);
+        $this->Trait->setRequest($request);
         $request->expects($this->once())
             ->method('is')
             ->with(
@@ -229,7 +229,7 @@ class U2fTraitTest extends BaseTraitTest
         $request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->setMethods(['getSession', 'is'])
             ->getMock();
-		$this->Trait->setRequest($request);
+        $this->Trait->setRequest($request);
         $request->expects($this->any())
             ->method('is')
             ->with(
@@ -270,7 +270,7 @@ class U2fTraitTest extends BaseTraitTest
         $request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->setMethods(['getSession', 'is', 'getData'])
             ->getMock();
-		$this->Trait->setRequest($request);
+        $this->Trait->setRequest($request);
         $request->expects($this->once())
             ->method('is')
             ->with(
@@ -368,7 +368,7 @@ class U2fTraitTest extends BaseTraitTest
         $request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->setMethods(['getSession', 'is', 'getData'])
             ->getMock();
-		$this->Trait->setRequest($request);
+        $this->Trait->setRequest($request);
         $request->expects($this->once())
             ->method('is')
             ->with(
@@ -488,7 +488,7 @@ class U2fTraitTest extends BaseTraitTest
         $request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->setMethods(['getSession', 'is'])
             ->getMock();
-		$this->Trait->setRequest($request);
+        $this->Trait->setRequest($request);
         $request->expects($this->any())
             ->method('is')
             ->with(
@@ -519,7 +519,7 @@ class U2fTraitTest extends BaseTraitTest
         $request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->setMethods(['getSession', 'is'])
             ->getMock();
-		$this->Trait->setRequest($request);
+        $this->Trait->setRequest($request);
         $request->expects($this->once())
             ->method('is')
             ->with(
@@ -599,7 +599,7 @@ class U2fTraitTest extends BaseTraitTest
         $request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->setMethods(['getSession', 'is', 'getData'])
             ->getMock();
-		$this->Trait->setRequest($request);
+        $this->Trait->setRequest($request);
         $request->expects($this->once())
             ->method('is')
             ->with(
@@ -656,7 +656,7 @@ class U2fTraitTest extends BaseTraitTest
                 'plugin' => 'CakeDC/Users',
                 'controller' => 'Users',
                 'action' => 'login',
-                'prefix' => false
+                'prefix' => false,
             ])->will($this->returnValue($response));
 
         $actual = $this->Trait->u2fAuthenticateFinish();
@@ -692,7 +692,7 @@ class U2fTraitTest extends BaseTraitTest
         $request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->setMethods(['getSession', 'is', 'getData'])
             ->getMock();
-		$this->Trait->setRequest($request);
+        $this->Trait->setRequest($request);
         $request->expects($this->once())
             ->method('is')
             ->with(
