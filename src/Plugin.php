@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace CakeDC\Users;
 
+use Authentication\AuthenticationServiceInterface;
 use Authentication\AuthenticationServiceProviderInterface;
 use Authorization\AuthorizationServiceProviderInterface;
 use Cake\Core\BasePlugin;
@@ -45,7 +46,7 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
      * @param \Psr\Http\Message\ResponseInterface $response Response
      * @return \Authentication\AuthenticationServiceInterface
      */
-    public function getAuthenticationService(ServerRequestInterface $request)
+    public function getAuthenticationService(ServerRequestInterface $request): AuthenticationServiceInterface
     {
         $key = 'Auth.Authentication.serviceLoader';
 
