@@ -100,7 +100,7 @@ $config = [
         ],
     ],
     'OneTimePasswordAuthenticator' => [
-        'checker' => \CakeDC\Auth\Authentication\DefaultTwoFactorAuthenticationChecker::class,
+        'checker' => \CakeDC\Auth\Authentication\DefaultOneTimePasswordAuthenticationChecker::class,
         'verifyAction' => [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
@@ -122,7 +122,7 @@ $config = [
     ],
     'U2f' => [
         'enabled' => false,
-        'checker' => \CakeDC\Users\Auth\DefaultU2fAuthenticationChecker::class,
+        'checker' => \CakeDC\Auth\Authentication\DefaultU2fAuthenticationChecker::class,
         'startAction' => [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
@@ -246,7 +246,10 @@ $config = [
         'AuthorizationComponent' => [
             'enabled' => true,
         ],
-        'RbacPolicy' => []
+        'RbacPolicy' => [],
+        'PasswordRehash' => [
+            'identifiers' => ['Password'],
+        ]
     ],
     'OAuth' => [
         'path' => ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'socialLogin', 'prefix' => null],
@@ -254,8 +257,8 @@ $config = [
             'facebook' => [
                 'service' => 'CakeDC\Auth\Social\Service\OAuth2Service',
                 'className' => 'League\OAuth2\Client\Provider\Facebook',
-                'authParams' => ['scope' => ['public_profile', 'email', 'user_birthday', 'user_gender', 'user_link']],
                 'mapper' => 'CakeDC\Auth\Social\Mapper\Facebook',
+                'authParams' => ['scope' => ['public_profile', 'email', 'user_birthday', 'user_gender', 'user_link']],
                 'options' => [
                     'graphApiVersion' => 'v2.8', //bio field was deprecated on >= v2.8
                     'redirectUri' => Router::fullBaseUrl() . '/auth/facebook',
@@ -315,7 +318,9 @@ $config = [
                 ]
             ],
             'cognito' => [
+                'service' => 'CakeDC\Auth\Social\Service\OAuth2Service',
                 'className' => 'CakeDC\OAuth2\Client\Provider\Cognito',
+                'mapper' => 'CakeDC\Auth\Social\Mapper\Cognito',
                 'options' => [
                     'redirectUri' => Router::fullBaseUrl() . '/auth/cognito',
                     'linkSocialUri' => Router::fullBaseUrl() . '/link-social/cognito',

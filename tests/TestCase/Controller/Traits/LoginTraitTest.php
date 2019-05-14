@@ -15,6 +15,7 @@ namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 use Authentication\Authenticator\Result;
 use Authentication\Authenticator\SessionAuthenticator;
 use Authentication\Identifier\IdentifierCollection;
+use Authentication\Identifier\PasswordIdentifier;
 use Cake\Controller\ComponentRegistry;
 use Cake\Event\Event;
 use Cake\Http\Response;
@@ -23,6 +24,7 @@ use CakeDC\Auth\Authentication\Failure;
 use CakeDC\Auth\Authenticator\FormAuthenticator;
 use CakeDC\Users\Authenticator\SocialAuthenticator;
 use CakeDC\Users\Controller\Component\LoginComponent;
+use Cake\Auth\DefaultPasswordHasher;
 
 class LoginTraitTest extends BaseTraitTest
 {
@@ -76,17 +78,22 @@ class LoginTraitTest extends BaseTraitTest
 
         $this->_mockDispatchEvent(new Event('event'));
 
+
+
         $request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->setMethods(['is'])
             ->getMock();
-        $request->expects($this->any())
-            ->method('is')
-            ->with('post')
-            ->will($this->returnValue(true));
+
+        $this->_mockRequestPost();
+        $this->Trait->getRequest()->expects($this->never())
+            ->method('getData');
         $this->Trait->setRequest($request);
 
         $this->_mockFlash();
-        $this->_mockAuthentication(['id' => 1], $failures);
+        $user = $this->Trait->getUsersTable()->get('00000000-0000-0000-0000-000000000002');
+        $passwordBefore = $user['password'];
+        $this->assertNotEmpty($passwordBefore);
+        $this->_mockAuthentication($user->toArray(), $failures);
         $this->Trait->Flash->expects($this->never())
             ->method('error');
         $this->Trait->expects($this->once())
@@ -121,6 +128,9 @@ class LoginTraitTest extends BaseTraitTest
 
         $result = $this->Trait->login();
         $this->assertInstanceOf(Response::class, $result);
+        $userAfter = $this->Trait->getUsersTable()->get('00000000-0000-0000-0000-000000000002');
+        $passwordAfter = $userAfter['password'];
+        $this->assertSame($passwordBefore, $passwordAfter);
     }
 
     /**
@@ -128,9 +138,17 @@ class LoginTraitTest extends BaseTraitTest
      *
      * @return void
      */
-    public function testLoginHappyReset()
+    public function testLoginRehash2()
     {
-        $identifiers = new IdentifierCollection();
+        $passwordIdentifier = $this->getMockBuilder(PasswordIdentifier::class)
+            ->setMethods(['needsPasswordRehash'])
+            ->getMock();
+        $passwordIdentifier->expects($this->once())
+            ->method('needsPasswordRehash')
+            ->willReturn(true);
+        $identifiers = new IdentifierCollection([]);
+        $identifiers->set('Password', $passwordIdentifier);
+
         $SessionAuth = new SessionAuthenticator($identifiers);
 
         $sessionFailure = new Failure(
@@ -139,36 +157,19 @@ class LoginTraitTest extends BaseTraitTest
         );
         $failures = [$sessionFailure];
 
+        $userPassword = 'testLoginRehash' . time();
         $this->_mockDispatchEvent(new Event('event'));
-
-        $request = $this->getMockBuilder('Cake\Http\ServerRequest')
-            ->setMethods(['is'])
-            ->getMock();
-        $request->expects($this->any())
-            ->method('is')
-            ->with('post')
-            ->will($this->returnValue(true));
-        $this->Trait->setRequest($request);
+        $this->_mockRequestPost();
+        $this->Trait->getRequest()->expects($this->once())
+            ->method('getData')
+            ->with($this->equalTo('password'))
+            ->willReturn($userPassword);
 
         $this->_mockFlash();
-        $this->_mockAuthenticationWithPasswordRehash(['id' => '00000000-0000-0000-0000-000000000001',
-            'username' => 'user-1',
-            'email' => 'user-1@test.com',
-            'password' => '12345',
-            'first_name' => 'first1',
-            'last_name' => 'last1',
-            'token' => 'ae93ddbe32664ce7927cf0c5c5a5e59d',
-            'token_expires' => '2035-06-24 17:33:54',
-            'api_token' => 'yyy',
-            'activation_date' => '2015-06-24 17:33:54',
-            'secret' => 'yyy',
-            'secret_verified' => false,
-            'tos_date' => '2015-06-24 17:33:54',
-            'active' => false,
-            'is_superuser' => true,
-            'role' => 'admin',
-            'created' => '2015-06-24 17:33:54',
-            'modified' => '2015-06-24 17:33:54'], $failures);
+        $user = $this->Trait->getUsersTable()->get('00000000-0000-0000-0000-000000000002');
+        $passwordBefore = $user['password'];
+        $this->assertNotEmpty($passwordBefore);
+        $this->_mockAuthentication($user->toArray(), $failures, $identifiers);
         $this->Trait->Flash->expects($this->never())
             ->method('error');
         $this->Trait->expects($this->once())
@@ -203,6 +204,12 @@ class LoginTraitTest extends BaseTraitTest
 
         $result = $this->Trait->login();
         $this->assertInstanceOf(Response::class, $result);
+        $userAfter = $this->Trait->getUsersTable()->get('00000000-0000-0000-0000-000000000002');
+        $passwordAfter = $userAfter['password'];
+        $this->assertNotEquals($passwordBefore, $passwordAfter);
+        $passwordHasher = new DefaultPasswordHasher();
+        $check = $passwordHasher->check($userPassword, $passwordAfter);
+        $this->assertTrue($check);
     }
 
     /**

@@ -17,7 +17,7 @@ use Authorization\Middleware\AuthorizationMiddleware;
 use Authorization\Middleware\RequestAuthorizationMiddleware;
 use Cake\Core\Configure;
 use Cake\Http\MiddlewareQueue;
-use CakeDC\Auth\Middleware\OneTimePasswordAuthenticatorMiddleware;
+use CakeDC\Auth\Middleware\TwoFactorMiddleware;
 use CakeDC\Users\Middleware\SocialAuthMiddleware;
 use CakeDC\Users\Middleware\SocialEmailMiddleware;
 use CakeDC\Users\Plugin;
@@ -91,8 +91,8 @@ class MiddlewareQueueLoader
      */
     protected function load2faMiddleware(MiddlewareQueue $middlewareQueue)
     {
-        if (Configure::read('OneTimePasswordAuthenticator.login')) {
-            $middlewareQueue->add(OneTimePasswordAuthenticatorMiddleware::class);
+        if (Configure::read('OneTimePasswordAuthenticator.login') !== false || Configure::read('U2f.enabled') !== false) {
+            $middlewareQueue->add(TwoFactorMiddleware::class);
         }
     }
 

@@ -64,7 +64,6 @@ class UsersTableTest extends TestCase
         unset($this->Users);
         Router::fullBaseUrl($this->fullBaseBackup);
         Email::drop('default');
-        TransportFactory::drop('test');
 
         parent::tearDown();
     }

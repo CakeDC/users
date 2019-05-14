@@ -15,6 +15,8 @@ namespace CakeDC\Users\Controller\Traits;
 use CakeDC\Auth\Authentication\AuthenticationService;
 use CakeDC\Users\Loader\LoginComponentLoader;
 use CakeDC\Users\Plugin;
+use Cake\Core\Configure;
+use Cake\Http\Exception\NotFoundException;
 
 /**
  * Covers the login, logout and social login

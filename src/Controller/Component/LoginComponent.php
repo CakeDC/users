@@ -16,6 +16,7 @@ use Authentication\Authenticator\ResultInterface;
 use Cake\Controller\Component;
 use CakeDC\Auth\Authentication\AuthenticationService;
 use CakeDC\Users\Plugin;
+use Cake\Core\Configure;
 
 /**
  * LoginFailure component
@@ -50,12 +51,7 @@ class LoginComponent extends Component
         $result = $service->getResult();
         if ($result->isValid()) {
             $user = $request->getAttribute('identity')->getOriginalData();
-
-            if ($service->identifiers()->get('Password')->needsPasswordRehash()) {
-                $user->set('password', $request->getData('password'));
-                $user->setDirty('modified');
-                $this->getController()->getUsersTable()->save($user);
-            }
+            $this->handlePasswordRehash($service, $user, $request);
 
             return $this->afterIdentifyUser($user);
         }
@@ -143,5 +139,33 @@ class LoginComponent extends Component
         }
 
         return $this->getController()->redirect($redirectUrl);
+    }
+
+    /**
+     * Handle password rehash logic
+     *
+     * @param \CakeDC\Auth\Authentication\AuthenticationService $service Authentication service
+     * @param \CakeDC\Users\Model\Entity\User $user User entity.
+     * @param \Cake\Http\ServerRequest $request The http request.
+     *
+     * @return void
+     */
+    protected function handlePasswordRehash($service, $user, \Cake\Http\ServerRequest $request)
+    {
+        $indentifiersNames = (array)Configure::read('Auth.PasswordRehash.identifiers');
+        foreach ($indentifiersNames as $indentifierName) {
+            /**
+             * @var \Authentication\PasswordHasher\PasswordHasherTrait $checker |null
+             */
+            $checker = $service->identifiers()->get($indentifierName);
+            if (!$checker || !$checker->needsPasswordRehash()) {
+                continue;
+}
+            $password = $request->getData('password');
+            $user->set('password', $password);
+            $user->setDirty('modified');
+            $this->getController()->getUsersTable()->save($user);
+            break;
+        }
     }
 }
