@@ -138,7 +138,7 @@ class LoginTraitTest extends BaseTraitTest
      *
      * @return void
      */
-    public function testLoginRehash2()
+    public function testLoginRehash()
     {
         $passwordIdentifier = $this->getMockBuilder(PasswordIdentifier::class)
             ->setMethods(['needsPasswordRehash'])

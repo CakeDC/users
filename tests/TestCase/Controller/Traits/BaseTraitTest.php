@@ -208,7 +208,7 @@ abstract class BaseTraitTest extends TestCase
      */
     protected function _mockAuthentication($user = null, $failures = [], $identifiers = null)
     {
-/*        if ($identifiers === null) {
+        if ($identifiers === null) {
             $passwordIdentifier = $this->getMockBuilder(PasswordIdentifier::class)
                 ->setMethods(['needsPasswordRehash'])
                 ->getMock();
@@ -217,7 +217,8 @@ abstract class BaseTraitTest extends TestCase
                 ->willReturn(false);
             $identifiers = new IdentifierCollection([]);
             $identifiers->set('Password', $passwordIdentifier);
-*/
+        }
+
         $config = [
             'identifiers' => [
                 'Authentication.Password',
@@ -230,6 +231,7 @@ abstract class BaseTraitTest extends TestCase
         $authentication = $this->getMockBuilder(AuthenticationService::class)->setConstructorArgs([$config])->setMethods([
             'getResult',
             'getFailures',
+            'identifiers'
         ])->getMock();
 
         if ($user) {
@@ -248,6 +250,10 @@ abstract class BaseTraitTest extends TestCase
         $authentication->expects($this->any())
             ->method('getFailures')
             ->will($this->returnValue($failures));
+
+        $authentication->expects($this->any())
+            ->method('identifiers')
+            ->will($this->returnValue($identifiers));
 
         $this->Trait->setRequest($this->Trait->getRequest()->withAttribute('authentication', $authentication));
 

@@ -33,6 +33,7 @@ use CakeDC\Auth\Authentication\AuthenticationService as CakeDCAuthenticationServ
 use CakeDC\Auth\Authenticator\FormAuthenticator;
 use CakeDC\Auth\Authenticator\TwoFactorAuthenticator;
 use CakeDC\Auth\Middleware\OneTimePasswordAuthenticatorMiddleware;
+use CakeDC\Auth\Middleware\TwoFactorMiddleware;
 use CakeDC\Users\Middleware\SocialAuthMiddleware;
 use CakeDC\Users\Middleware\SocialEmailMiddleware;
 use CakeDC\Users\Plugin;
@@ -69,7 +70,7 @@ class PluginTest extends TestCase
         $middleware->seek(2);
         $this->assertInstanceOf(AuthenticationMiddleware::class, $middleware->current());
         $middleware->seek(3);
-        $this->assertInstanceOf(OneTimePasswordAuthenticatorMiddleware::class, $middleware->current());
+        $this->assertInstanceOf(TwoFactorMiddleware::class, $middleware->current());
         $middleware->seek(4);
         $this->assertInstanceOf(AuthorizationMiddleware::class, $middleware->current());
         $middleware->seek(5);
@@ -100,7 +101,7 @@ class PluginTest extends TestCase
         $middleware->seek(2);
         $this->assertInstanceOf(AuthenticationMiddleware::class, $middleware->current());
         $middleware->seek(3);
-        $this->assertInstanceOf(OneTimePasswordAuthenticatorMiddleware::class, $middleware->current());
+        $this->assertInstanceOf(TwoFactorMiddleware::class, $middleware->current());
         $middleware->seek(4);
         $this->assertInstanceOf(AuthorizationMiddleware::class, $middleware->current());
         $middleware->seek(5);
@@ -131,7 +132,7 @@ class PluginTest extends TestCase
         $middleware->seek(2);
         $this->assertInstanceOf(AuthenticationMiddleware::class, $middleware->current());
         $middleware->seek(3);
-        $this->assertInstanceOf(OneTimePasswordAuthenticatorMiddleware::class, $middleware->current());
+        $this->assertInstanceOf(TwoFactorMiddleware::class, $middleware->current());
         $this->assertEquals(4, $middleware->count());
     }
 
@@ -153,7 +154,7 @@ class PluginTest extends TestCase
         $middleware->seek(0);
         $this->assertInstanceOf(AuthenticationMiddleware::class, $middleware->current());
         $middleware->seek(1);
-        $this->assertInstanceOf(OneTimePasswordAuthenticatorMiddleware::class, $middleware->current());
+        $this->assertInstanceOf(TwoFactorMiddleware::class, $middleware->current());
         $middleware->seek(2);
         $this->assertInstanceOf(AuthorizationMiddleware::class, $middleware->current());
         $middleware->seek(3);
