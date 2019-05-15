@@ -22,6 +22,9 @@ collection((array)Configure::read('Users.config'))->each(function ($file) {
     Configure::load($file);
 });
 
+if (TableRegistry::getTableLocator()->exists('Users')) {
+    TableRegistry::getTableLocator()->remove('Users');
+}
 TableRegistry::getTableLocator()->setConfig('Users', ['className' => Configure::read('Users.table')]);
 TableRegistry::getTableLocator()->setConfig('CakeDC/Users.Users', ['className' => Configure::read('Users.table')]);
 
