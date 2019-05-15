@@ -4,6 +4,9 @@ Changelog
 Releases for CakePHP 3
 -------------
 
+* 8.4.0
+  * Rehash password if needed at login
+  
 * 8.3.0
   * Bootstrap don't need to listen for EVENT_FAILED_SOCIAL_LOGIN
 
