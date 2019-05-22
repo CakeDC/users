@@ -46,7 +46,7 @@ class AuthFinderBehavior extends Behavior
     {
         $identifier = Hash::get($options, 'username');
         if (empty($identifier)) {
-            throw new \BadMethodCallException(__d('CakeDC/Users', 'Missing \'username\' in options data'));
+            throw new \BadMethodCallException(__d('cake_d_c/users', 'Missing \'username\' in options data'));
         }
         $where = $query->clause('where') ?: [];
         $query

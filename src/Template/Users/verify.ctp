@@ -10,9 +10,9 @@
                     <?php if (!empty($secretDataUri)): ?>
                         <p class='text-center'><img src="<?php echo $secretDataUri; ?>"/></p>
                     <?php endif; ?>
-                    <?= $this->Form->control('code', ['required' => true, 'label' => __d('CakeDC/Users', 'Verification Code')]) ?>
+                    <?= $this->Form->control('code', ['required' => true, 'label' => __d('cake_d_c/users', 'Verification Code')]) ?>
                 </fieldset>
-                <?= $this->Form->button(__d('CakeDC/Users', '<span class="glyphicon glyphicon-log-in" aria-hidden="true"></span> Verify'), ['class' => 'btn btn-primary']); ?>
+                <?= $this->Form->button(__d('cake_d_c/users', '<span class="glyphicon glyphicon-log-in" aria-hidden="true"></span> Verify'), ['class' => 'btn btn-primary']); ?>
                 <?= $this->Form->end() ?>
             </div>
         </div>

@@ -65,7 +65,7 @@ class RememberMeComponent extends Component
     {
         if (mb_strlen(Security::getSalt(), '8bit') < 32) {
             throw new InvalidArgumentException(
-                __d('CakeDC/Users', 'Invalid app salt, app salt must be at least 256 bits (32 bytes) long')
+                __d('cake_d_c/users', 'Invalid app salt, app salt must be at least 256 bits (32 bytes) long')
             );
         }
     }

@@ -211,7 +211,7 @@ class UsersAuthComponent extends Component
     protected function _validateConfig()
     {
         if (!Configure::read('Users.Email.required') && Configure::read('Users.Email.validate')) {
-            $message = __d('CakeDC/Users', 'You can\'t enable email validation workflow if use_email is false');
+            $message = __d('cake_d_c/users', 'You can\'t enable email validation workflow if use_email is false');
             throw new BadConfigurationException($message);
         }
     }

@@ -30,7 +30,7 @@ class UsersMailer extends Mailer
         $firstName = isset($user['first_name'])? $user['first_name'] . ', ' : '';
         // un-hide the token to be able to send it in the email content
         $user->setHidden(['password', 'token_expires', 'api_token']);
-        $subject = __d('CakeDC/Users', 'Your account validation link');
+        $subject = __d('cake_d_c/users', 'Your account validation link');
         $this
              ->setTo($user['email'])
              ->setSubject($firstName . $subject)
@@ -50,7 +50,7 @@ class UsersMailer extends Mailer
     protected function resetPassword(EntityInterface $user)
     {
         $firstName = isset($user['first_name'])? $user['first_name'] . ', ' : '';
-        $subject = __d('CakeDC/Users', '{0}Your reset password link', $firstName);
+        $subject = __d('cake_d_c/users', '{0}Your reset password link', $firstName);
         // un-hide the token to be able to send it in the email content
         $user->setHidden(['password', 'token_expires', 'api_token']);
 
@@ -75,7 +75,7 @@ class UsersMailer extends Mailer
     {
         $firstName = isset($user['first_name'])? $user['first_name'] . ', ' : '';
         // note: we control the space after the username in the previous line
-        $subject = __d('CakeDC/Users', '{0}Your social account validation link', $firstName);
+        $subject = __d('cake_d_c/users', '{0}Your social account validation link', $firstName);
         $this
             ->setTo($user['email'])
             ->setSubject($subject)

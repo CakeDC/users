@@ -80,7 +80,7 @@ class SocialBehavior extends BaseTokenBehavior
                 $existingAccount = $user->social_accounts[0];
             } else {
                 //@todo: what if we don't have a social account after createSocialUser?
-                throw new InvalidArgumentException(__d('CakeDC/Users', 'Unable to login user with reference {0}', $reference));
+                throw new InvalidArgumentException(__d('cake_d_c/users', 'Unable to login user with reference {0}', $reference));
             }
         } else {
             $user = $existingAccount->user;
@@ -119,7 +119,7 @@ class SocialBehavior extends BaseTokenBehavior
         $existingUser = null;
         $email = Hash::get($data, 'email');
         if ($useEmail && empty($email)) {
-            throw new MissingEmailException(__d('CakeDC/Users', 'Email not present'));
+            throw new MissingEmailException(__d('cake_d_c/users', 'Email not present'));
         } else {
             $existingUser = $this->_table->find()
                 ->where([$this->_table->aliasField('email') => $email])

@@ -103,12 +103,12 @@ trait LoginTrait
      */
     public function failedSocialLogin($exception, $data, $flash = false)
     {
-        $msg = __d('CakeDC/Users', 'Issues trying to log in with your social account');
+        $msg = __d('cake_d_c/users', 'Issues trying to log in with your social account');
 
         if (isset($exception)) {
             if ($exception instanceof MissingEmailException) {
                 if ($flash) {
-                    $this->Flash->success(__d('CakeDC/Users', 'Please enter your email'), ['clear' => true]);
+                    $this->Flash->success(__d('cake_d_c/users', 'Please enter your email'), ['clear' => true]);
                 }
                 $this->request->getSession()->write(Configure::read('Users.Key.Session.social'), $data);
 
@@ -176,7 +176,7 @@ trait LoginTrait
 
         if ($this->request->is('post')) {
             if (!$this->_checkReCaptcha()) {
-                $this->Flash->error(__d('CakeDC/Users', 'Invalid reCaptcha'));
+                $this->Flash->error(__d('cake_d_c/users', 'Invalid reCaptcha'));
 
                 return;
             }
@@ -199,7 +199,7 @@ trait LoginTrait
         if (!$this->request->is('post') && !$socialLogin) {
             if ($this->Auth->user()) {
                 if (!$this->request->getSession()->read('Users.successSocialLogin')) {
-                    $msg = __d('CakeDC/Users', 'You are already logged in');
+                    $msg = __d('cake_d_c/users', 'You are already logged in');
                     $this->Flash->error($msg);
                 } else {
                     $this->request->getSession()->delete('Users.successSocialLogin');
@@ -230,7 +230,7 @@ trait LoginTrait
             ]
         );
         if (!$this->getTwoFactorAuthenticationChecker()->isEnabled()) {
-            $message = __d('CakeDC/Users', 'Please enable Google Authenticator first.');
+            $message = __d('cake_d_c/users', 'Please enable Google Authenticator first.');
             $this->Flash->error($message, 'default', [], 'auth');
 
             return $this->redirect($loginUrl);
@@ -238,7 +238,7 @@ trait LoginTrait
 
         $temporarySession = $this->request->getSession()->read('temporarySession');
         if (!is_array($temporarySession) || empty($temporarySession)) {
-            $this->Flash->error(__d('CakeDC/Users', 'Invalid request.'), 'default', [], 'auth');
+            $this->Flash->error(__d('cake_d_c/users', 'Invalid request.'), 'default', [], 'auth');
 
             return $this->redirect($loginUrl);
         }
@@ -308,7 +308,7 @@ trait LoginTrait
                 return $this->redirect($url);
             } else {
                 $this->request->getSession()->destroy();
-                $message = __d('CakeDC/Users', 'Verification code is invalid. Try again');
+                $message = __d('cake_d_c/users', 'Verification code is invalid. Try again');
                 $this->Flash->error($message, 'default', [], 'auth');
 
                 return $this->redirect($loginUrl);
@@ -378,7 +378,7 @@ trait LoginTrait
             return $this->redirect($url);
         } else {
             if (!$socialLogin) {
-                $message = __d('CakeDC/Users', 'Username or password is incorrect');
+                $message = __d('cake_d_c/users', 'Username or password is incorrect');
                 $this->Flash->error($message, 'default', [], 'auth');
             }
 
@@ -401,7 +401,7 @@ trait LoginTrait
         }
 
         $this->request->getSession()->destroy();
-        $this->Flash->success(__d('CakeDC/Users', 'You\'ve successfully logged out'));
+        $this->Flash->success(__d('cake_d_c/users', 'You\'ve successfully logged out'));
 
         $eventAfter = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_LOGOUT, ['user' => $user]);
         if (is_array($eventAfter->result)) {

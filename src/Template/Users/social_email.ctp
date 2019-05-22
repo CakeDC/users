@@ -13,9 +13,9 @@
     <?= $this->Flash->render() ?>
     <?= $this->Form->create('User') ?>
     <fieldset>
-        <legend><?= __d('CakeDC/Users', 'Please enter your email') ?></legend>
+        <legend><?= __d('cake_d_c/users', 'Please enter your email') ?></legend>
         <?= $this->Form->control('email') ?>
     </fieldset>
-    <?= $this->Form->button(__d('CakeDC/Users', 'Submit')); ?>
+    <?= $this->Form->button(__d('cake_d_c/users', 'Submit')); ?>
     <?= $this->Form->end() ?>
 </div>
