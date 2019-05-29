@@ -121,9 +121,7 @@ class SocialBehavior extends BaseTokenBehavior
         if ($useEmail && empty($email)) {
             throw new MissingEmailException(__d('CakeDC/Users', 'Email not present'));
         } else {
-            $existingUser = $this->_table->find()
-                ->where([$this->_table->aliasField('email') => $email])
-                ->first();
+            $existingUser = $this->_table->find('existingForSocialLogin', compact('email'))->first();
         }
 
         $user = $this->_populateUser($data, $existingUser, $useEmail, $validateEmail, $tokenExpiration);
@@ -257,5 +255,20 @@ class SocialBehavior extends BaseTokenBehavior
         }
 
         return $username;
+    }
+
+    /**
+     * Prepare a query to retrieve existing entity for social login
+     *
+     * @param \Cake\ORM\Query $query The base query.
+     * @param array $options Find options with email key.
+     *
+     * @return \Cake\ORM\Query
+     */
+    public function findExistingForSocialLogin(\Cake\ORM\Query $query, array $options)
+    {
+        return $query->where([
+            $this->_table->aliasField('email') => $options['email']
+        ]);
     }
 }
