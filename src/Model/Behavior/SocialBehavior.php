@@ -164,9 +164,9 @@ class SocialBehavior extends BaseTokenBehavior
 
         $accountData['avatar'] = str_replace('normal', 'square', $accountData['avatar']);
         $accountData['description'] = $data['bio'] ?? null;
-        $accountData['token'] = Hash::get($data, 'credentials.token');
-        $accountData['token_secret'] = Hash::get($data, 'credentials.secret');
-        $expires = Hash::get($data, 'credentials.expires');
+        $accountData['token'] = $data['credentials']['token'] ?? null;
+        $accountData['token_secret'] = $data['credentials']['secret'] ?? null;
+        $expires = $data['credentials']['expires'] ?? null;
         if (!empty($expires)) {
             $expiresTime = new DateTime();
             $accountData['token_expires'] = $expiresTime->setTimestamp($expires)->format('Y-m-d H:i:s');
@@ -185,7 +185,7 @@ class SocialBehavior extends BaseTokenBehavior
                 $userData['first_name'] = $firstName;
                 $userData['last_name'] = $lastName;
             } else {
-                $name = explode(' ', Hash::get($data, 'full_name', ''));
+                $name = explode(' ', $data[ 'full_name'] ?? '');
                 $userData['first_name'] = Hash::get($name, 0);
                 array_shift($name);
                 $userData['last_name'] = implode(' ', $name);

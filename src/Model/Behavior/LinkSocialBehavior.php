@@ -119,11 +119,11 @@ class LinkSocialBehavior extends Behavior
         $accountData['link'] = $data['link'] ?? null;
         $accountData['avatar'] = str_replace('normal', 'square', $accountData['avatar']);
         $accountData['description'] = $data['bio'] ?? null;
-        $accountData['token'] = Hash::get($data, 'credentials.token');
-        $accountData['token_secret'] = Hash::get($data, 'credentials.secret');
+        $accountData['token'] = $data['credentials']['token'] ?? null;
+        $accountData['token_secret'] = $data['credentials']['secret'] ?? null;
         $accountData['user_id'] = $data['user_id'] ?? null;
         $accountData['token_expires'] = null;
-        $expires = Hash::get($data, 'credentials.expires');
+        $expires = $data['credentials']['expires'] ?? null;
         if (!empty($expires)) {
             $expiresTime = new Time();
             $accountData['token_expires'] = $expiresTime->setTimestamp($expires)->format('Y-m-d H:i:s');
