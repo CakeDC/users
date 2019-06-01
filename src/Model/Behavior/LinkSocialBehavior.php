@@ -39,7 +39,7 @@ class LinkSocialBehavior extends Behavior
      */
     public function linkSocialAccount(EntityInterface $user, $data)
     {
-        $reference = Hash::get($data, 'id');
+        $reference = $data['id'] ?? null;
         $alias = $this->_table->SocialAccounts->getAlias();
         $socialAccount = $this->_table->SocialAccounts->find()
             ->where([
@@ -113,15 +113,15 @@ class LinkSocialBehavior extends Behavior
     protected function populateSocialAccount($socialAccount, $data)
     {
         $accountData = $socialAccount->toArray();
-        $accountData['username'] = Hash::get($data, 'username');
-        $accountData['reference'] = Hash::get($data, 'id');
-        $accountData['avatar'] = Hash::get($data, 'avatar');
-        $accountData['link'] = Hash::get($data, 'link');
+        $accountData['username'] = $data['username'] ?? null;
+        $accountData['reference'] = $data['id'] ?? null;
+        $accountData['avatar'] = $data['avatar'] ?? null;
+        $accountData['link'] = $data['link'] ?? null;
         $accountData['avatar'] = str_replace('normal', 'square', $accountData['avatar']);
-        $accountData['description'] = Hash::get($data, 'bio');
+        $accountData['description'] = $data['bio'] ?? null;
         $accountData['token'] = Hash::get($data, 'credentials.token');
         $accountData['token_secret'] = Hash::get($data, 'credentials.secret');
-        $accountData['user_id'] = Hash::get($data, 'user_id');
+        $accountData['user_id'] = $data['user_id'] ?? null;
         $accountData['token_expires'] = null;
         $expires = Hash::get($data, 'credentials.expires');
         if (!empty($expires)) {
@@ -134,7 +134,7 @@ class LinkSocialBehavior extends Behavior
 
         $socialAccount = $this->_table->SocialAccounts->patchEntity($socialAccount, $accountData);
         //ensure provider is present in Entity
-        $socialAccount['provider'] = Hash::get($data, 'provider');
+        $socialAccount['provider'] = $data['provider'] ?? null;
 
         return $socialAccount;
     }

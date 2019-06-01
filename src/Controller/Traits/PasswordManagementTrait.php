@@ -40,7 +40,7 @@ trait PasswordManagementTrait
         $user = $this->getUsersTable()->newEntity([], ['validate' => false]);
         $identity = $this->getRequest()->getAttribute('identity');
         $identity = $identity ?? [];
-        $id = Hash::get($identity, 'id');
+        $id = $identity['id'] ?? null;
 
         if (!empty($id)) {
             $user->id = $id;

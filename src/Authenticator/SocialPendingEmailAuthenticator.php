@@ -89,7 +89,7 @@ class SocialPendingEmailAuthenticator extends AbstractAuthenticator
         }
         $rawData = $request->getAttribute('session')->read(Configure::read('Users.Key.Session.social'));
         $body = $request->getParsedBody();
-        $email = Hash::get($body, 'email');
+        $email = $body['email'] ?? null;
 
         if (empty($rawData) || empty($email)) {
             return new Result(null, Result::FAILURE_CREDENTIALS_MISSING);

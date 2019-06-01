@@ -66,7 +66,7 @@ class SocialBehavior extends BaseTokenBehavior
      */
     public function socialLogin(array $data, array $options)
     {
-        $reference = Hash::get($data, 'id');
+        $reference = $data['id'] ?? null;
         $existingAccount = $this->_table->SocialAccounts->find()
                 ->where([
                     'SocialAccounts.reference' => $reference,
@@ -113,11 +113,11 @@ class SocialBehavior extends BaseTokenBehavior
      */
     protected function _createSocialUser($data, $options = [])
     {
-        $useEmail = Hash::get($options, 'use_email');
-        $validateEmail = Hash::get($options, 'validate_email');
-        $tokenExpiration = Hash::get($options, 'token_expiration');
+        $useEmail = $options['use_email'] ?? null;
+        $validateEmail = $options['validate_email'] ?? null;
+        $tokenExpiration = $options['token_expiration'] ?? null;
         $existingUser = null;
-        $email = Hash::get($data, 'email');
+        $email = $data['email'] ?? null;
         if ($useEmail && empty($email)) {
             throw new MissingEmailException(__d('cake_d_c/users', 'Email not present'));
         } else {
@@ -157,13 +157,13 @@ class SocialBehavior extends BaseTokenBehavior
      */
     protected function _populateUser($data, $existingUser, $useEmail, $validateEmail, $tokenExpiration)
     {
-        $accountData['username'] = Hash::get($data, 'username');
-        $accountData['reference'] = Hash::get($data, 'id');
-        $accountData['avatar'] = Hash::get($data, 'avatar');
-        $accountData['link'] = Hash::get($data, 'link');
+        $accountData['username'] = $data['username'] ?? null;
+        $accountData['reference'] = $data['id'] ?? null;
+        $accountData['avatar'] = $data['avatar'] ?? null;
+        $accountData['link'] = $data['link'] ?? null;
 
         $accountData['avatar'] = str_replace('normal', 'square', $accountData['avatar']);
-        $accountData['description'] = Hash::get($data, 'bio');
+        $accountData['description'] = $data['bio'] ?? null;
         $accountData['token'] = Hash::get($data, 'credentials.token');
         $accountData['token_secret'] = Hash::get($data, 'credentials.secret');
         $expires = Hash::get($data, 'credentials.expires');
@@ -176,11 +176,11 @@ class SocialBehavior extends BaseTokenBehavior
         $accountData['data'] = serialize(Hash::get($data, 'raw'));
         $accountData['active'] = true;
 
-        $dataValidated = Hash::get($data, 'validated');
+        $dataValidated = $data['validated'] ?? null;
 
         if (empty($existingUser)) {
-            $firstName = Hash::get($data, 'first_name');
-            $lastName = Hash::get($data, 'last_name');
+            $firstName = $data['first_name'] ?? null;
+            $lastName = $data['last_name'] ?? null;
             if (!empty($firstName) && !empty($lastName)) {
                 $userData['first_name'] = $firstName;
                 $userData['last_name'] = $lastName;
@@ -190,16 +190,16 @@ class SocialBehavior extends BaseTokenBehavior
                 array_shift($name);
                 $userData['last_name'] = implode(' ', $name);
             }
-            $userData['username'] = Hash::get($data, 'username');
-            $username = Hash::get($userData, 'username');
+            $userData['username'] = $data['username'] ?? null;
+            $username = $userData['username'] ?? null;
             if (empty($username)) {
-                $dataEmail = Hash::get($data, 'email');
+                $dataEmail = $data['email'] ?? null;
                 if (!empty($dataEmail)) {
                     $email = explode('@', $dataEmail);
                     $userData['username'] = Hash::get($email, 0);
                 } else {
-                    $firstName = Hash::get($userData, 'first_name');
-                    $lastName = Hash::get($userData, 'last_name');
+                    $firstName = $userData['first_name'] ?? null;
+                    $lastName = $userData['last_name'] ?? null;
                     $userData['username'] = strtolower($firstName . $lastName);
                     $userData['username'] = preg_replace('/[^A-Za-z0-9]/i', '', Hash::get($userData, 'username'));
                 }
@@ -207,17 +207,17 @@ class SocialBehavior extends BaseTokenBehavior
 
             $userData['username'] = $this->generateUniqueUsername(Hash::get($userData, 'username'));
             if ($useEmail) {
-                $userData['email'] = Hash::get($data, 'email');
+                $userData['email'] = $data['email'] ?? null;
                 if (empty($dataValidated)) {
                     $accountData['active'] = false;
                 }
             }
 
             $userData['password'] = $this->randomString();
-            $userData['avatar'] = Hash::get($data, 'avatar');
+            $userData['avatar'] = $data['avatar'] ?? null;
             $userData['validated'] = !empty($dataValidated);
             $userData['tos_date'] = date("Y-m-d H:i:s");
-            $userData['gender'] = Hash::get($data, 'gender');
+            $userData['gender'] = $data['gender'] ?? null;
             $userData['social_accounts'][] = $accountData;
 
             $user = $this->_table->newEntity($userData);
@@ -230,7 +230,7 @@ class SocialBehavior extends BaseTokenBehavior
         }
         $socialAccount = $this->_table->SocialAccounts->newEntity($accountData);
         //ensure provider is present in Entity
-        $socialAccount['provider'] = Hash::get($data, 'provider');
+        $socialAccount['provider'] = $data['provider'] ?? null;
         $user['social_accounts'] = [$socialAccount];
         $user['role'] = Configure::read('Users.Registration.defaultRole') ?: 'user';
 

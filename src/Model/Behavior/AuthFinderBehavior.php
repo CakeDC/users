@@ -44,7 +44,7 @@ class AuthFinderBehavior extends Behavior
      */
     public function findAuth(Query $query, array $options = [])
     {
-        $identifier = Hash::get($options, 'username');
+        $identifier = $options['username'] ?? null;
         if (empty($identifier)) {
             throw new \BadMethodCallException(__d('cake_d_c/users', 'Missing \'username\' in options data'));
         }

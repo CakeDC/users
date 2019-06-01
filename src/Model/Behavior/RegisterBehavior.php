@@ -52,8 +52,8 @@ class RegisterBehavior extends BaseTokenBehavior
      */
     public function register($user, $data, $options)
     {
-        $validateEmail = Hash::get($options, 'validate_email');
-        $tokenExpiration = Hash::get($options, 'token_expiration');
+        $validateEmail = $options['validate_email'] ?? null;
+        $tokenExpiration = $options['token_expiration'] ?? null;
         $user = $this->_table->patchEntity(
             $user,
             $data,
@@ -179,8 +179,8 @@ class RegisterBehavior extends BaseTokenBehavior
      */
     public function getRegisterValidators($options)
     {
-        $validateEmail = Hash::get($options, 'validate_email');
-        $useTos = Hash::get($options, 'use_tos');
+        $validateEmail = $options['validate_email'] ?? null;
+        $useTos = $options['use_tos'] ?? null;
 
         $validator = $this->_table->validationDefault(new Validator());
         $validator = $this->_table->validationRegister($validator);

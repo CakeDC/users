@@ -46,7 +46,7 @@ class PasswordBehavior extends BaseTokenBehavior
             throw new \InvalidArgumentException(__d('cake_d_c/users', "Reference cannot be null"));
         }
 
-        $expiration = Hash::get($options, 'expiration');
+        $expiration = $options['expiration'] ?? null;
         if (empty($expiration)) {
             throw new \InvalidArgumentException(__d('cake_d_c/users', "Token expiration cannot be empty"));
         }
