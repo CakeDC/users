@@ -129,7 +129,7 @@ class LinkSocialBehavior extends Behavior
             $accountData['token_expires'] = $expiresTime->setTimestamp($expires)->format('Y-m-d H:i:s');
         }
 
-        $accountData['data'] = serialize(Hash::get($data, 'raw'));
+        $accountData['data'] = serialize($data['raw'] ?? null);
         $accountData['active'] = true;
 
         $socialAccount = $this->_table->SocialAccounts->patchEntity($socialAccount, $accountData);

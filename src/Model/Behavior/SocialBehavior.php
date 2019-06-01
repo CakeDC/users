@@ -173,7 +173,7 @@ class SocialBehavior extends BaseTokenBehavior
         } else {
             $accountData['token_expires'] = null;
         }
-        $accountData['data'] = serialize(Hash::get($data, 'raw'));
+        $accountData['data'] = serialize($data['raw'] ?? null);
         $accountData['active'] = true;
 
         $dataValidated = $data['validated'] ?? null;
@@ -201,11 +201,11 @@ class SocialBehavior extends BaseTokenBehavior
                     $firstName = $userData['first_name'] ?? null;
                     $lastName = $userData['last_name'] ?? null;
                     $userData['username'] = strtolower($firstName . $lastName);
-                    $userData['username'] = preg_replace('/[^A-Za-z0-9]/i', '', Hash::get($userData, 'username'));
+                    $userData['username'] = preg_replace('/[^A-Za-z0-9]/i', '', $userData['username'] ?? null);
                 }
             }
 
-            $userData['username'] = $this->generateUniqueUsername(Hash::get($userData, 'username'));
+            $userData['username'] = $this->generateUniqueUsername($userData['username'] ?? null);
             if ($useEmail) {
                 $userData['email'] = $data['email'] ?? null;
                 if (empty($dataValidated)) {

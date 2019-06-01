@@ -71,7 +71,7 @@ class PasswordBehavior extends BaseTokenBehavior
         $user->updateToken($expiration);
         $saveResult = $this->_table->save($user);
         if ($options['sendEmail'] ?? false) {
-            switch (Hash::get($options, 'type')) {
+            switch ($options['type'] ?? null) {
                 case 'email':
                     $this->_sendValidationEmail($user);
                     break;
