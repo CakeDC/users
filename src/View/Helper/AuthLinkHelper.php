@@ -43,9 +43,9 @@ class AuthLinkHelper extends HtmlHelper
             return '';
         }
         if ($allowed === true || $this->isAuthorized($url)) {
-            return ($options['before'] ?? null) .
+            return ($options['before'] ?? '') .
                 parent::link($title, $url, $linkOptions) .
-                ($options['after'] ?? null);
+                ($options['after'] ?? '');
         }
 
         return '';
