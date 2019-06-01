@@ -13,12 +13,23 @@ declare(strict_types=1);
 namespace CakeDC\Users\Model\Table;
 
 use Cake\Database\Schema\TableSchemaInterface;
+use Cake\Datasource\EntityInterface;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
  * Users Model
+ *
+ * @method \CakeDC\Users\Model\Entity\User get($primaryKey, $options = [])
+ * @method \CakeDC\Users\Model\Entity\User newEntity($data = null, array $options = [])
+ * @method \CakeDC\Users\Model\Entity\User[] newEntities(array $data, array $options = [])
+ * @method \CakeDC\Users\Model\Entity\User|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \CakeDC\Users\Model\Entity\User|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \CakeDC\Users\Model\Entity\User patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \CakeDC\Users\Model\Entity\User[] patchEntities($entities, array $data, array $options = [])
+ * @method \CakeDC\Users\Model\Entity\User findOrCreate($search, callable $callback = null, $options = [])
+ *
  */
 class UsersTable extends Table
 {

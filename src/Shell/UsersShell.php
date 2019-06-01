@@ -22,7 +22,7 @@ use CakeDC\Users\Model\Entity\User;
 /**
  * Shell with utilities for the Users Plugin
  *
- * @property UsersTable Users
+ * @property \CakeDC\Users\Model\Table\UsersTable $Users
  */
 class UsersShell extends Shell
 {

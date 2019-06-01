@@ -19,6 +19,8 @@ use Cake\Validation\Validator;
 
 /**
  * SocialAccounts Model
+ *
+ * @mixin \CakeDC\Users\Model\Behavior\SocialAccountBehavior
  */
 class SocialAccountsTable extends Table
 {

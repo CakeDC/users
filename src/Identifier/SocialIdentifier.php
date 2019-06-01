@@ -68,7 +68,7 @@ class SocialIdentifier extends AbstractIdentifier
      *
      * @param \Cake\Datasource\EntityInterface $user The user.
      *
-     * @return \Cake\Orm\Query
+     * @return \Cake\ORM\Query
      */
     protected function findUser($user)
     {
