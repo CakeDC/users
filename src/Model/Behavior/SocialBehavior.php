@@ -70,7 +70,7 @@ class SocialBehavior extends BaseTokenBehavior
         $existingAccount = $this->_table->SocialAccounts->find()
                 ->where([
                     'SocialAccounts.reference' => $reference,
-                    'SocialAccounts.provider' => Hash::get($data, 'provider'),
+                    'SocialAccounts.provider' => $data['provider'] ?? null,
                 ])
                 ->contain(['Users'])
                 ->first();

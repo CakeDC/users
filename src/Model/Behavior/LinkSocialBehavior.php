@@ -44,7 +44,7 @@ class LinkSocialBehavior extends Behavior
         $socialAccount = $this->_table->SocialAccounts->find()
             ->where([
                 $alias . '.reference' => $reference,
-                $alias . '.provider' => Hash::get($data, 'provider'),
+                $alias . '.provider' => $data['provider'] ?? null,
             ])->first();
 
         if ($socialAccount && $user->id !== $socialAccount->user_id) {

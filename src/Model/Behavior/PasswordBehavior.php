@@ -56,21 +56,21 @@ class PasswordBehavior extends BaseTokenBehavior
         if (empty($user)) {
             throw new UserNotFoundException(__d('cake_d_c/users', "User not found"));
         }
-        if (Hash::get($options, 'checkActive')) {
+        if ($options['checkActive'] ?? false) {
             if ($user->active) {
                 throw new UserAlreadyActiveException(__d('cake_d_c/users', "User account already validated"));
             }
             $user->active = false;
             $user->activation_date = null;
         }
-        if (Hash::get($options, 'ensureActive')) {
+        if ($options['ensureActive'] ?? false) {
             if (!$user['active']) {
                 throw new UserNotActiveException(__d('cake_d_c/users', "User not active"));
             }
         }
         $user->updateToken($expiration);
         $saveResult = $this->_table->save($user);
-        if (Hash::get($options, 'sendEmail')) {
+        if ($options['sendEmail'] ?? false) {
             switch (Hash::get($options, 'type')) {
                 case 'email':
                     $this->_sendValidationEmail($user);
