@@ -22,6 +22,7 @@ use Cake\View\Helper;
  *
  * @property \CakeDC\Users\View\Helper\AuthLinkHelper $AuthLink
  * @property \Cake\View\Helper\HtmlHelper $Html
+ * @property \Cake\View\Helper\FormHelper $Form
  */
 class UserHelper extends Helper
 {

@@ -34,7 +34,7 @@ class SocialAuthMiddleware implements MiddlewareInterface
     /**
      * Handle SocialAuthenticationException
      *
-     * @param \Psr\Http\Message\ServerRequestInterface $request The request.
+     * @param \Cake\Http\ServerRequest $request The request.
      * @param \CakeDC\Users\Exception\SocialAuthenticationException $exception Exception thrown
      *
      * @return \Psr\Http\Message\ResponseInterface A response
@@ -97,7 +97,8 @@ class SocialAuthMiddleware implements MiddlewareInterface
      * Go to next handling SocialAuthenticationException
      *
      * @param \Cake\Http\ServerRequest $request The request
-     * @param \Psr\Http\Server\RequestHandlerInterface
+     * @param \Psr\Http\Server\RequestHandlerInterface $handler
+     *
      * @return \Psr\Http\Message\ResponseInterface
      */
     protected function goNext(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface

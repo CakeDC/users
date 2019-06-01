@@ -34,6 +34,10 @@ class SocialPendingEmailAuthenticator extends AbstractAuthenticator
 
     public const FAILURE_INVALID_RECAPTCHA = 'FAILURE_INVALID_RECAPTCHA';
 
+    public const FAILURE_ACCOUNT_NOT_ACTIVE = 'FAILURE_ACCOUNT_NOT_ACTIVE';
+
+    public const FAILURE_USER_NOT_ACTIVE = 'FAILURE_USER_NOT_ACTIVE';
+
     /**
      * Default config for this object.
      * - `fields` The fields to use to identify a user by.
@@ -83,7 +87,7 @@ class SocialPendingEmailAuthenticator extends AbstractAuthenticator
         if (!$this->_checkUrl($request)) {
             return $this->_buildLoginUrlErrorResult($request);
         }
-        $rawData = $request->getSession()->read(Configure::read('Users.Key.Session.social'));
+        $rawData = $request->getAttribute('session')->read(Configure::read('Users.Key.Session.social'));
         $body = $request->getParsedBody();
         $email = Hash::get($body, 'email');
 

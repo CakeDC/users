@@ -39,7 +39,7 @@ class UsersUrl
      * Check if the action is the one from a request
      *
      * @param string $action users action
-     * @param \CakeDC\Users\Utility\Request $request the request
+     * @param \Cake\Http\ServerRequest $request the request
      *
      * @return bool
      */
