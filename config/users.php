@@ -116,6 +116,7 @@ $config = [
                 ]
             ]
         ],
+        'Superuser' => ['allowedToChangePasswords' => false], // able to reset any users password
     ],
     'GoogleAuthenticator' => [
         'checker' => \CakeDC\Users\Auth\DefaultTwoFactorAuthenticationChecker::class,
