@@ -53,7 +53,10 @@ trait PasswordManagementTrait
                 $validatePassword = true;
                 $redirect = Configure::read('Users.Profile.route');
             } else {
-                throw new NotFoundException('Changing another user\'s password is not allowed');
+                $this->Flash->error(__d('CakeDC/Users', 'Changing another user\'s password is not allowed'));
+                $this->redirect(Configure::read('Users.Profile.route'));
+
+                return;
             }
         } else {
             // password reset
@@ -71,7 +74,7 @@ trait PasswordManagementTrait
         if ($this->request->is(['post', 'put'])) {
             try {
                 $validator = $this->getUsersTable()->validationPasswordConfirm(new Validator());
-                if (!empty($id)) {
+                if ($validatePassword) {
                     $validator = $this->getUsersTable()->validationCurrentPassword($validator);
                 }
                 $user = $this->getUsersTable()->patchEntity(
