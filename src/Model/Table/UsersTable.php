@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -13,7 +14,6 @@ declare(strict_types=1);
 namespace CakeDC\Users\Model\Table;
 
 use Cake\Database\Schema\TableSchemaInterface;
-use Cake\Datasource\EntityInterface;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;

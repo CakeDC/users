@@ -23,6 +23,9 @@ matrix:
       env: PHPCS=1 DEFAULT=0
 
     - php: 7.3
+      env: PHPSTAN=1 DEFAULT=0
+	  
+    - php: 7.3
       env: COVERAGE=1 DEFAULT=0 DB=mysql db_dsn='mysql://travis@0.0.0.0/cakephp_test'
 
 before_script:

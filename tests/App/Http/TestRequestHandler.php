@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 namespace CakeDC\Users\Test\App\Http;
 
 use Psr\Http\Message\ResponseInterface;
