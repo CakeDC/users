@@ -66,7 +66,7 @@ trait LinkSocialTrait
             $data = $mapper($server, $data);
             $identity = $this->getRequest()->getAttribute('identity');
             $identity = $identity ?? [];
-            $userId = Hash::get($identity, 'id');
+            $userId = $identity['id'] ?? null;
             $user = $this->getUsersTable()->get($userId);
 
             $this->getUsersTable()->linkSocialAccount($user, $data);

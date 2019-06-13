@@ -42,7 +42,7 @@ trait RegisterTrait
 
         $identity = $this->getRequest()->getAttribute('identity');
         $identity = $identity ?? [];
-        $userId = Hash::get($identity, 'id');
+        $userId = $identity['id'] ?? null;
         if (!empty($userId) && !Configure::read('Users.Registration.allowLoggedIn')) {
             $this->Flash->error(__d('cake_d_c/users', 'You must log out to register a new user account'));
 
