@@ -84,6 +84,6 @@
         "stan-setup": "cp composer.json composer.backup && composer require --dev phpstan/phpstan:^0.11 vimeo/psalm:^3.0 && mv composer.backup composer.json", 
         "rector": "rector process src/",
         "rector-setup": "cp composer.json composer.backup && composer require --dev rector/rector:^0.4.11 && mv composer.backup composer.json", 
-        "test-coverage": "phpunit --stderr --coverage-clover=clover.xml"
+        "coverage-test": "phpunit --stderr --coverage-clover=clover.xml"
     }
 }
