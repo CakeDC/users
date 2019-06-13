@@ -42,7 +42,7 @@ trait OneTimePasswordVerifyTrait
         }
 
         $temporarySession = $this->getRequest()->getSession()->read(AuthenticationService::TWO_FACTOR_VERIFY_SESSION_KEY);
-        $secretVerified = Hash::get($temporarySession, 'secret_verified');
+        $secretVerified = $temporarySession['secret_verified'] ?? null;
         // showing QR-code until shared secret is verified
         if (!$secretVerified) {
             $secret = $this->onVerifyGetSecret($temporarySession);

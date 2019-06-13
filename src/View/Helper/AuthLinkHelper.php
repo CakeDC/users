@@ -38,15 +38,15 @@ class AuthLinkHelper extends HtmlHelper
     {
         $linkOptions = $options;
         unset($linkOptions['before'], $linkOptions['after'], $linkOptions['allowed']);
-        $allowed = Hash::get($options, 'allowed');
+        $allowed = $options['allowed'] ?? null;
 
         if ($allowed === false) {
             return '';
         }
         if ($allowed === true || $this->isAuthorized($url)) {
-            return Hash::get($options, 'before') .
+            return ($options['before'] ?? '') .
                 parent::link($title, $url, $linkOptions) .
-                Hash::get($options, 'after');
+                ($options['after'] ?? '');
         }
 
         return '';

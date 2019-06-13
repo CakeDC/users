@@ -55,10 +55,14 @@ class UserHelper extends Helper
         if (isset($options['title'])) {
             $providerTitle = $options['title'];
         } else {
-            $providerTitle = Hash::get($options, 'label') . ' ' . Inflector::camelize($name);
+            $providerTitle = ($options['label'] ?? '') . ' ' . Inflector::camelize($name);
         }
 
-        $providerClass = 'btn btn-social btn-' . strtolower($name) . (Hash::get($options, 'class') ? ' ' . Hash::get($options, 'class') : '');
+        $providerClass = 'btn btn-social btn-' . strtolower($name);
+        $optionClass = $options['class'] ?? null;
+        if ($optionClass) {
+            $providerClass .= " $optionClass";
+        }
 
         return $this->Html->link($icon . $providerTitle, "/auth/$name", [
             'escape' => false, 'class' => $providerClass,
@@ -213,7 +217,8 @@ class UserHelper extends Helper
      */
     public function socialConnectLink($name, $provider, $isConnected = false)
     {
-        $linkClass = 'btn btn-social btn-' . strtolower($name) . (Hash::get($provider['options'], 'class') ? ' ' . Hash::get($provider['options'], 'class') : '');
+        $optionClass = $provider['options']['class'] ?? null;
+        $linkClass = 'btn btn-social btn-' . strtolower($name) . ($optionClass ? ' ' . $optionClass : '');
         if ($isConnected) {
             $title = __d('cake_d_c/users', 'Connected with {0}', Inflector::camelize($name));
 

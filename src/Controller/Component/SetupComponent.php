@@ -41,7 +41,7 @@ class SetupComponent extends Component
     protected function loadAuthComponents($controller)
     {
         $authenticationConfig = Configure::read('Auth.AuthenticationComponent');
-        if (Hash::get($authenticationConfig, 'load')) {
+        if ($authenticationConfig['load'] ?? false) {
             unset($authenticationConfig['config']);
             $controller->loadComponent('Authentication.Authentication', $authenticationConfig);
         }
