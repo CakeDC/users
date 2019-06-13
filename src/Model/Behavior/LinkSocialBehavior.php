@@ -16,7 +16,6 @@ namespace CakeDC\Users\Model\Behavior;
 use Cake\Datasource\EntityInterface;
 use Cake\I18n\Time;
 use Cake\ORM\Behavior;
-use Cake\Utility\Hash;
 
 /**
  * LinkSocial behavior

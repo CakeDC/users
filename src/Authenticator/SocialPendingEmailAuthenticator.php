@@ -18,7 +18,6 @@ use Authentication\Authenticator\Result;
 use Authentication\Authenticator\ResultInterface;
 use Authentication\UrlChecker\UrlCheckerTrait;
 use Cake\Core\Configure;
-use Cake\Utility\Hash;
 use CakeDC\Users\Controller\Traits\ReCaptchaTrait;
 use Psr\Http\Message\ServerRequestInterface;
 

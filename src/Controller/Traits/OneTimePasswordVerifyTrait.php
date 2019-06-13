@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace CakeDC\Users\Controller\Traits;
 
 use Cake\Core\Configure;
-use Cake\Utility\Hash;
 use CakeDC\Auth\Authentication\AuthenticationService;
 use CakeDC\Auth\Authenticator\TwoFactorAuthenticator;
 

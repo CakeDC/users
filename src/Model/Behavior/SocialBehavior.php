@@ -186,7 +186,7 @@ class SocialBehavior extends BaseTokenBehavior
                 $userData['first_name'] = $firstName;
                 $userData['last_name'] = $lastName;
             } else {
-                $name = explode(' ', $data[ 'full_name'] ?? '');
+                $name = explode(' ', $data['full_name'] ?? '');
                 $userData['first_name'] = Hash::get($name, 0);
                 array_shift($name);
                 $userData['last_name'] = implode(' ', $name);

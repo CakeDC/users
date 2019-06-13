@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Controller\Traits;
 
-use Cake\Utility\Hash;
 use CakeDC\Auth\Social\MapUser;
 use CakeDC\Auth\Social\Service\ServiceFactory;
 

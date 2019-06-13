@@ -14,7 +14,6 @@ namespace CakeDC\Users\Controller\Component;
 
 use Cake\Controller\Component;
 use Cake\Core\Configure;
-use Cake\Utility\Hash;
 
 class SetupComponent extends Component
 {

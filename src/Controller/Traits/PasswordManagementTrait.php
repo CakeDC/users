@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace CakeDC\Users\Controller\Traits;
 
 use Cake\Core\Configure;
-use Cake\Utility\Hash;
 use Cake\Validation\Validator;
 use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Exception\UserNotFoundException;

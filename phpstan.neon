@@ -1,5 +1,5 @@
 parameters:
-    level: 4
+    level: 7
     autoload_files:
         - tests/bootstrap.php
     ignoreErrors:

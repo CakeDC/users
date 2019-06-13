@@ -17,7 +17,6 @@ use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
-use Cake\Utility\Hash;
 use CakeDC\Users\Plugin;
 
 /**

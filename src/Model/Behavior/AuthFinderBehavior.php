@@ -15,7 +15,6 @@ namespace CakeDC\Users\Model\Behavior;
 
 use Cake\ORM\Behavior;
 use Cake\ORM\Query;
-use Cake\Utility\Hash;
 
 /**
  * Implement finders used by Auth
