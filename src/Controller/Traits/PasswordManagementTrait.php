@@ -31,35 +31,50 @@ trait PasswordManagementTrait
 
     /**
      * Change password
+     * Can be used while logged in for own password, as a superuser on any user, or while not logged in for reset
+     * reset password with session key (email token has already been validated)
+     *
+     * @param int|string|null $id user_id, null for logged in user id
      *
      * @return mixed
      */
-    public function changePassword()
+    public function changePassword($id = null)
     {
         $user = $this->getUsersTable()->newEntity();
-        $id = $this->Auth->user('id');
-        if (!empty($id)) {
-            $user->id = $this->Auth->user('id');
-            $validatePassword = true;
-            //@todo add to the documentation: list of routes used
-            $redirect = Configure::read('Users.Profile.route');
+        if ($this->Auth->user('id')) {
+            if ($id && $this->Auth->user('is_superuser') && Configure::read('Users.Superuser.allowedToChangePasswords')) {
+                // superuser editing any account's password
+                $user->id = $id;
+                $validatePassword = false;
+                $redirect = ['action' => 'index'];
+            } elseif (!$id || $id === $this->Auth->user('id')) {
+                // normal user editing own password
+                $user->id = $this->Auth->user('id');
+                $validatePassword = true;
+                $redirect = Configure::read('Users.Profile.route');
+            } else {
+                $this->Flash->error(__d('CakeDC/Users', 'Changing another user\'s password is not allowed'));
+                $this->redirect(Configure::read('Users.Profile.route'));
+
+                return;
+            }
         } else {
+            // password reset
             $user->id = $this->request->getSession()->read(Configure::read('Users.Key.Session.resetPasswordUserId'));
             $validatePassword = false;
+            $redirect = $this->Auth->getConfig('loginAction');
             if (!$user->id) {
                 $this->Flash->error(__d('CakeDC/Users', 'User was not found'));
                 $this->redirect($this->Auth->getConfig('loginAction'));
 
                 return;
             }
-            //@todo add to the documentation: list of routes used
-            $redirect = $this->Auth->getConfig('loginAction');
         }
         $this->set('validatePassword', $validatePassword);
         if ($this->request->is(['post', 'put'])) {
             try {
                 $validator = $this->getUsersTable()->validationPasswordConfirm(new Validator());
-                if (!empty($id)) {
+                if ($validatePassword) {
                     $validator = $this->getUsersTable()->validationCurrentPassword($validator);
                 }
                 $user = $this->getUsersTable()->patchEntity(
