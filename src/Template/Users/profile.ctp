@@ -59,11 +59,11 @@
                             </td>
                             <td><?= h($socialAccount->provider) ?></td>
                             <td><?=
-                                $this->Html->link(
+                                $socialAccount->link && $socialAccount->link != '#' ? $this->Html->link(
                                     $linkText,
                                     $socialAccount->link,
                                     ['target' => '_blank']
-                                ) ?></td>
+                                ) : '-' ?></td>
                         </tr>
                         <?php
                     endforeach;
