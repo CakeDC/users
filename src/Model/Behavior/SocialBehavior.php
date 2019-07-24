@@ -87,7 +87,6 @@ class SocialBehavior extends BaseTokenBehavior
             $accountData = $this->extractAccountData($data);
             $this->_table->SocialAccounts->patchEntity($existingAccount, $accountData);
             $this->_table->SocialAccounts->save($existingAccount);
-
         }
         if (!empty($existingAccount)) {
             if (!$existingAccount->active) {
