@@ -26,13 +26,3 @@ foreach (['Users', 'CakeDC/Users.Users'] as $modelKey) {
 if (Configure::check('Auth.authenticate') || Configure::check('Auth.authorize')) {
     trigger_error("Users plugin configurations keys Auth.authenticate and Auth.authorize were removed, please check migration guide https://github.com/CakeDC/users/blob/master/Docs/Documentation/MigrationGuide.md'");
 }
-$oauthPath = Configure::read('OAuth.path');
-if (is_array($oauthPath)) {
-    Router::scope('/auth', function ($routes) use ($oauthPath) {
-        $routes->connect(
-            '/:provider',
-            $oauthPath,
-            ['provider' => implode('|', array_keys(Configure::read('OAuth.providers')))]
-        );
-    });
-}

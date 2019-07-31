@@ -45,3 +45,13 @@ Router::connect('/callback-link-social/*', [
     'action' => 'callbackLinkSocial',
     'plugin' => 'CakeDC/Users',
 ]);
+$oauthPath = Configure::read('OAuth.path');
+if (is_array($oauthPath)) {
+    Router::scope('/auth', function ($routes) use ($oauthPath) {
+        $routes->connect(
+            '/:provider',
+            $oauthPath,
+            ['provider' => implode('|', array_keys(Configure::read('OAuth.providers')))]
+        );
+    });
+}
