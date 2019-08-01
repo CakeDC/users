@@ -55,6 +55,25 @@ Ensure the Users Plugin is loaded in your config/bootstrap.php file
 Plugin::load('CakeDC/Users', ['routes' => true, 'bootstrap' => true]);
 ```
 
+In CakePHP 3.8 , this method is deprecated, load the plugin in /src/Application.php :
+
+```
+// In src/Application.php. Requires at least 3.6.0
+use Cake\Http\BaseApplication;
+use ContactManager\Plugin as ContactManagerPlugin;
+
+class Application extends BaseApplication {
+    public function bootstrap()
+    {
+        parent::bootstrap();
+
+        // Load a plugin with a vendor namespace by 'short name'
+        $this->addPlugin('CakeDC/Users');
+    }
+}
+```
+
+
 Creating Required Tables
 ------------------------
 If you want to use the Users tables to store your users and social accounts:
