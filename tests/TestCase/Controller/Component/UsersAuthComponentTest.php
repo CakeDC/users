@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Test\TestCase\Controller\Component;
 
+use Cake\Routing\RouteBuilder;
 use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\UserNotFoundException;
@@ -65,7 +66,7 @@ class UsersAuthComponentTest extends TestCase
         ]);
         Security::setSalt('YJfIxfs2guVoUubWDYhG93b0qyJfIxfs2guwvniR2G0FgaC9mi');
         Configure::write('App.namespace', 'Users');
-        $this->request = $this->getMockBuilder('Cake\Network\Request')
+        $this->request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->setMethods(['is', 'method'])
             ->getMock();
         $this->request->expects($this->any())->method('is')->will($this->returnValue(true));
@@ -256,6 +257,42 @@ class UsersAuthComponentTest extends TestCase
                     'action' => 'requestResetPassword',
                     '_matchedRoute' => '/route/*',
                 ];
+            }))
+            ->will($this->returnValue(true));
+        $result = $this->Controller->UsersAuth->isUrlAuthorized($event);
+        $this->assertTrue($result);
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testIsUrlAuthorizedUrlWithRedirectRoute()
+    {
+        (new RouteBuilder(Router::getRouteCollection(), '/'))->redirect("/my-redirect-route", "/route");
+        $event = new Event('event');
+
+        $event->setData([
+            'url' => '/my-redirect-route',
+        ]);
+        $this->Controller->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
+            ->setMethods(['user', 'isAuthorized'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->Controller->Auth->expects($this->once())
+            ->method('user')
+            ->will($this->returnValue(['id' => 1]));
+        $this->Controller->Auth->expects($this->once())
+            ->method('isAuthorized')
+            ->with(null, $this->callback(function ($subject) {
+                return $subject->getAttribute('params') === [
+                        'pass' => [],
+                        'plugin' => 'CakeDC/Users',
+                        'controller' => 'Users',
+                        'action' => 'requestResetPassword',
+                        '_matchedRoute' => '/route/*',
+                    ];
             }))
             ->will($this->returnValue(true));
         $result = $this->Controller->UsersAuth->isUrlAuthorized($event);

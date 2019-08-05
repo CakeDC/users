@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Controller\Component;
 
+use Cake\Routing\Exception\RedirectException;
 use CakeDC\Users\Auth\TwoFactorAuthenticationCheckerFactory;
 use CakeDC\Users\Exception\BadConfigurationException;
 use Cake\Controller\Component;
@@ -21,6 +22,7 @@ use Cake\Http\ServerRequest;
 use Cake\Routing\Exception\MissingRouteException;
 use Cake\Routing\Router;
 use Cake\Utility\Hash;
+use Zend\Diactoros\Uri;
 
 class UsersAuthComponent extends Component
 {
@@ -161,7 +163,6 @@ class UsersAuthComponent extends Component
     public function isUrlAuthorized(Event $event)
     {
         $url = Hash::get((array)$event->getData(), 'url');
-        
         if (empty($url)) {
             return false;
         }
@@ -181,6 +182,12 @@ class UsersAuthComponent extends Component
                 }
 
                 return true;
+            } catch (RedirectException $e) {
+                $uri = new Uri($e->getMessage());
+                $requestParams = Router::parseRequest(
+                    new ServerRequest(['uri' => $uri])
+                );
+                $url = $uri->getPath();
             }
             $requestUrl = $url;
         }
@@ -194,7 +201,6 @@ class UsersAuthComponent extends Component
         if (empty($user)) {
             return false;
         }
-
         $request = new ServerRequest($requestUrl);
         $request = $request->withAttribute('params', $requestParams);
 
