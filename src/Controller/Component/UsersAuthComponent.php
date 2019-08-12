@@ -19,8 +19,10 @@ use Cake\Event\Event;
 use Cake\Event\EventManager;
 use Cake\Http\ServerRequest;
 use Cake\Routing\Exception\MissingRouteException;
+use Cake\Routing\Exception\RedirectException;
 use Cake\Routing\Router;
 use Cake\Utility\Hash;
+use Zend\Diactoros\Uri;
 
 class UsersAuthComponent extends Component
 {
@@ -33,6 +35,7 @@ class UsersAuthComponent extends Component
     const EVENT_AFTER_REGISTER = 'Users.Component.UsersAuth.afterRegister';
     const EVENT_BEFORE_LOGOUT = 'Users.Component.UsersAuth.beforeLogout';
     const EVENT_AFTER_LOGOUT = 'Users.Component.UsersAuth.afterLogout';
+    const EVENT_BEFORE_SOCIAL_LOGIN_REDIRECT = 'Users.Component.UsersAuth.beforeSocialLoginRedirect';
     const EVENT_BEFORE_SOCIAL_LOGIN_USER_CREATE = 'Users.Component.UsersAuth.beforeSocialLoginUserCreate';
     const EVENT_AFTER_CHANGE_PASSWORD = 'Users.Component.UsersAuth.afterResetPassword';
     const EVENT_ON_EXPIRED_TOKEN = 'Users.Component.UsersAuth.onExpiredToken';
@@ -161,7 +164,6 @@ class UsersAuthComponent extends Component
     public function isUrlAuthorized(Event $event)
     {
         $url = Hash::get((array)$event->getData(), 'url');
-        
         if (empty($url)) {
             return false;
         }
@@ -181,6 +183,12 @@ class UsersAuthComponent extends Component
                 }
 
                 return true;
+            } catch (RedirectException $e) {
+                $uri = new Uri($e->getMessage());
+                $requestParams = Router::parseRequest(
+                    new ServerRequest(['uri' => $uri])
+                );
+                $url = $uri->getPath();
             }
             $requestUrl = $url;
         }
@@ -194,7 +202,6 @@ class UsersAuthComponent extends Component
         if (empty($user)) {
             return false;
         }
-
         $request = new ServerRequest($requestUrl);
         $request = $request->withAttribute('params', $requestParams);
 
