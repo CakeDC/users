@@ -16,7 +16,13 @@ use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use CakeDC\Users\Controller\Traits\PasswordManagementTrait;
 
+/**
+ * Class PasswordManagementTraitTest
+ * @package CakeDC\Users\Test\TestCase\Controller\Traits
+ * @property PasswordManagementTrait Trait
+ */
 class PasswordManagementTraitTest extends BaseTraitTest
 {
     /**
@@ -61,7 +67,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
                 ]));
         $this->Trait->expects($this->once())
                 ->method('redirect')
-                ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile']);
+                ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile', 'prefix' => false]);
         $this->Trait->Flash->expects($this->any())
             ->method('success')
             ->with('Password has been changed successfully');
@@ -259,7 +265,11 @@ class PasswordManagementTraitTest extends BaseTraitTest
      */
     public function testChangePasswordGetNotLoggedInInsideResetPasswordFlow()
     {
-        $this->_mockRequestGet(true);
+        $this->_mockRequestGet([
+            'method' => 'is',
+            'with' => ['post', 'put'],
+            'returnValue' => false
+        ], true);
         $this->_mockAuth();
         $this->_mockFlash();
         $this->_mockSession([
@@ -328,7 +338,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
     public function testRequestPasswordHappy()
     {
         $this->assertEquals('6614f65816754310a5f0553436dd89e9', $this->table->get('00000000-0000-0000-0000-000000000002')->token);
-        $this->_mockRequestPost();
+        $this->_mockRequestPost('post');
         $this->_mockAuthLoggedIn();
         $this->_mockFlash();
         $reference = 'user-2';
@@ -350,7 +360,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
      */
     public function testRequestPasswordInvalidUser()
     {
-        $this->_mockRequestPost();
+        $this->_mockRequestPost('post');
         $this->_mockAuthLoggedIn(['id' => 'invalid-id', 'password' => 'invalid-pass']);
         $this->_mockFlash();
         $reference = '12312312-0000-0000-0000-000000000002';
@@ -446,9 +456,9 @@ class PasswordManagementTraitTest extends BaseTraitTest
             ->method('user')
             ->will($this->returnValue($user));
 
-        $this->Trait->Flash->expects($this->any())
+        $this->Trait->Flash->expects($this->at(0))
             ->method($method)
-            ->with($msg);
+            ->with($msg, 'default');
 
         $this->Trait->resetGoogleAuthenticator($entityId);
     }
