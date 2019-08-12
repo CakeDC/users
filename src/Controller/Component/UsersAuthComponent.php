@@ -11,7 +11,6 @@
 
 namespace CakeDC\Users\Controller\Component;
 
-use Cake\Routing\Exception\RedirectException;
 use CakeDC\Users\Auth\TwoFactorAuthenticationCheckerFactory;
 use CakeDC\Users\Exception\BadConfigurationException;
 use Cake\Controller\Component;
@@ -20,6 +19,7 @@ use Cake\Event\Event;
 use Cake\Event\EventManager;
 use Cake\Http\ServerRequest;
 use Cake\Routing\Exception\MissingRouteException;
+use Cake\Routing\Exception\RedirectException;
 use Cake\Routing\Router;
 use Cake\Utility\Hash;
 use Zend\Diactoros\Uri;

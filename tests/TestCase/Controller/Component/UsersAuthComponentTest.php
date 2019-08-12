@@ -11,7 +11,6 @@
 
 namespace CakeDC\Users\Test\TestCase\Controller\Component;
 
-use Cake\Routing\RouteBuilder;
 use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\UserNotFoundException;
@@ -28,6 +27,7 @@ use Cake\Routing\Exception\MissingRouteException;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Security;
+use Cake\Routing\RouteBuilder;
 
 /**
  * Users\Controller\Component\UsersAuthComponent Test Case
