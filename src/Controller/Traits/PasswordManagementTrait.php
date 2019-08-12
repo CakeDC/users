@@ -65,7 +65,14 @@ trait PasswordManagementTrait
                 $user = $this->getUsersTable()->patchEntity(
                     $user,
                     $this->request->getData(),
-                    ['validate' => $validator]
+                    [
+                        'validate' => $validator,
+                        'accessibleFields' => [
+                            'current_password' => true,
+                            'password' => true,
+                            'password_confirm' => true,
+                        ]
+                    ]
                 );
                 if ($user->getErrors()) {
                     $this->Flash->error(__d('CakeDC/Users', 'Password could not be changed'));

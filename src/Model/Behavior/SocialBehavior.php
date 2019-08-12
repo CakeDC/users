@@ -84,6 +84,9 @@ class SocialBehavior extends BaseTokenBehavior
             }
         } else {
             $user = $existingAccount->user;
+            $accountData = $this->extractAccountData($data);
+            $this->_table->SocialAccounts->patchEntity($existingAccount, $accountData);
+            $this->_table->SocialAccounts->save($existingAccount);
         }
         if (!empty($existingAccount)) {
             if (!$existingAccount->active) {
@@ -121,9 +124,7 @@ class SocialBehavior extends BaseTokenBehavior
         if ($useEmail && empty($email)) {
             throw new MissingEmailException(__d('CakeDC/Users', 'Email not present'));
         } else {
-            $existingUser = $this->_table->find()
-                ->where([$this->_table->aliasField('email') => $email])
-                ->first();
+            $existingUser = $this->_table->find('existingForSocialLogin', compact('email'))->first();
         }
 
         $user = $this->_populateUser($data, $existingUser, $useEmail, $validateEmail, $tokenExpiration);
@@ -155,23 +156,7 @@ class SocialBehavior extends BaseTokenBehavior
      */
     protected function _populateUser($data, $existingUser, $useEmail, $validateEmail, $tokenExpiration)
     {
-        $accountData['username'] = Hash::get($data, 'username');
-        $accountData['reference'] = Hash::get($data, 'id');
-        $accountData['avatar'] = Hash::get($data, 'avatar');
-        $accountData['link'] = Hash::get($data, 'link');
-
-        $accountData['avatar'] = str_replace('normal', 'square', $accountData['avatar']);
-        $accountData['description'] = Hash::get($data, 'bio');
-        $accountData['token'] = Hash::get($data, 'credentials.token');
-        $accountData['token_secret'] = Hash::get($data, 'credentials.secret');
-        $expires = Hash::get($data, 'credentials.expires');
-        if (!empty($expires)) {
-            $expiresTime = new DateTime();
-            $accountData['token_expires'] = $expiresTime->setTimestamp($expires)->format('Y-m-d H:i:s');
-        } else {
-            $accountData['token_expires'] = null;
-        }
-        $accountData['data'] = serialize(Hash::get($data, 'raw'));
+        $accountData = $this->extractAccountData($data);
         $accountData['active'] = true;
 
         $dataValidated = Hash::get($data, 'validated');
@@ -257,5 +242,51 @@ class SocialBehavior extends BaseTokenBehavior
         }
 
         return $username;
+    }
+
+    /**
+     * Prepare a query to retrieve existing entity for social login
+     *
+     * @param \Cake\ORM\Query $query The base query.
+     * @param array $options Find options with email key.
+     *
+     * @return \Cake\ORM\Query
+     */
+    public function findExistingForSocialLogin(\Cake\ORM\Query $query, array $options)
+    {
+        return $query->where([
+            $this->_table->aliasField('email') => $options['email']
+        ]);
+    }
+
+    /**
+     * Extract the account data to insert/update
+     *
+     * @param array $data Social data.
+     *
+     * @throws \Exception
+     */
+    protected function extractAccountData(array $data)
+    {
+        $accountData = [];
+        $accountData['username'] = Hash::get($data, 'username');
+        $accountData['reference'] = Hash::get($data, 'id');
+        $accountData['avatar'] = Hash::get($data, 'avatar');
+        $accountData['link'] = Hash::get($data, 'link');
+
+        $accountData['avatar'] = str_replace('normal', 'square', $accountData['avatar']);
+        $accountData['description'] = Hash::get($data, 'bio');
+        $accountData['token'] = Hash::get($data, 'credentials.token');
+        $accountData['token_secret'] = Hash::get($data, 'credentials.secret');
+        $expires = Hash::get($data, 'credentials.expires');
+        if (!empty($expires)) {
+            $expiresTime = new DateTime();
+            $accountData['token_expires'] = $expiresTime->setTimestamp($expires)->format('Y-m-d H:i:s');
+        } else {
+            $accountData['token_expires'] = null;
+        }
+        $accountData['data'] = serialize(Hash::get($data, 'raw'));
+
+        return $accountData;
     }
 }
