@@ -67,7 +67,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
                 ]));
         $this->Trait->expects($this->once())
                 ->method('redirect')
-                ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile', 'prefix' => false]);
+                ->with(['prefix' => false, 'plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile', 'prefix' => false]);
         $this->Trait->Flash->expects($this->any())
             ->method('success')
             ->with('Password has been changed successfully');
