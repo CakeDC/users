@@ -168,29 +168,31 @@ class UsersAuthComponent extends Component
             return false;
         }
 
-        if (is_array($url)) {
-            $requestUrl = Router::normalize(Router::reverse($url));
-            $requestParams = Router::parseRequest(new ServerRequest($requestUrl));
-        } else {
-            try {
-                //remove base from $url if exists
-                $normalizedUrl = Router::normalize($url);
-                $requestParams = Router::parseRequest(new ServerRequest($normalizedUrl));
-            } catch (MissingRouteException $ex) {
-                //if it's a url pointing to our own app
-                if (substr($normalizedUrl, 0, 1) === '/') {
-                    throw $ex;
-                }
+        try {
+            if (is_array($url)) {
+                $requestUrl = Router::normalize(Router::reverse($url));
+                $requestParams = Router::parseRequest(new ServerRequest($requestUrl));
+            } else {
+                try {
+                    //remove base from $url if exists
+                    $normalizedUrl = Router::normalize($url);
+                    $requestParams = Router::parseRequest(new ServerRequest($normalizedUrl));
+                } catch (MissingRouteException $ex) {
+                    //if it's a url pointing to our own app
+                    if (substr($normalizedUrl, 0, 1) === '/') {
+                        throw $ex;
+                    }
 
-                return true;
-            } catch (RedirectException $e) {
-                $uri = new Uri($e->getMessage());
-                $requestParams = Router::parseRequest(
-                    new ServerRequest(['uri' => $uri])
-                );
-                $url = $uri->getPath();
+                    return true;
+                }
+                $requestUrl = $url;
             }
-            $requestUrl = $url;
+        }  catch (RedirectException $e) {
+            $uri = new Uri($e->getMessage());
+            $requestParams = Router::parseRequest(
+                new ServerRequest(['uri' => $uri])
+            );
+            $requestUrl = $uri->getPath();
         }
         // check if controller action is allowed
         if ($this->_isActionAllowed($requestParams)) {
