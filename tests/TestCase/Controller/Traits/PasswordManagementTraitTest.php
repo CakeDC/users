@@ -440,47 +440,37 @@ class PasswordManagementTraitTest extends BaseTraitTest
      *
      * @return void
      */
-    public function testRequestGoogleAuthTokenResetWithValidUser($userId, $entityId, $method, $msg)
+    public function testRequestGoogleAuthTokenResetWithValidUser($userId, $method, $msg)
     {
         $this->_mockRequestPost();
         $this->_mockFlash();
-
-        $user = $this->table->get($userId);
 
         $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
             ->setMethods(['user', 'config'])
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->Trait->Auth->expects($this->any())
-            ->method('user')
-            ->will($this->returnValue($user));
+        $this->Trait->Auth->expects($this->never())
+            ->method('user');
 
         $this->Trait->Flash->expects($this->at(0))
             ->method($method)
             ->with($msg, 'default');
 
-        $this->Trait->resetGoogleAuthenticator($entityId);
+        $this->Trait->resetGoogleAuthenticator($userId);
     }
 
     public function ensureGoogleAuthenticatorResets()
     {
         $error = 'error';
         $success = 'success';
-        $errorMsg = 'You are not allowed to reset users Google Authenticator token';
+        $errorMsg = 'Could not reset the token';
         $successMsg = 'Google Authenticator token was successfully reset';
 
         return [
-            //is_superuser = true.
-            ['00000000-0000-0000-0000-000000000003', null, $success, $successMsg],
-            //is_superuser = true.
-            ['00000000-0000-0000-0000-000000000001', null, $success, $successMsg],
-            //is_superuser = false, and not his profile.
-            ['00000000-0000-0000-0000-000000000004', '00000000-0000-0000-0000-000000000001', $error, $errorMsg],
-            //is_superuser = false, editing own record.
-            ['00000000-0000-0000-0000-000000000004', '00000000-0000-0000-0000-000000000004', $success, $successMsg],
-            //is_superuser = false, and no entity-id given.
-            ['00000000-0000-0000-0000-000000000004', null, $error, $errorMsg],
+            ['00000000-0000-0000-0000-000000000003', $success, $successMsg],
+            ['00000000-0000-0000-0000-000000000001',$success, $successMsg],
+            [null, $error, $errorMsg],
         ];
     }
 }

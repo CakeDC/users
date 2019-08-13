@@ -168,6 +168,9 @@ trait PasswordManagementTrait
     {
         if ($this->request->is('post')) {
             try {
+                if (empty($id)) {
+                    throw new \Exception(__('Invalid user id'));
+                }
                 $query = $this->getUsersTable()->query();
                 $query->update()
                     ->set(['secret_verified' => false, 'secret' => null])
@@ -177,8 +180,7 @@ trait PasswordManagementTrait
                 $message = __d('CakeDC/Users', 'Google Authenticator token was successfully reset');
                 $this->Flash->success($message, 'default');
             } catch (\Exception $e) {
-                $message = $e->getMessage();
-                $this->Flash->error($message, 'default');
+                $this->Flash->error(__('Could not reset the token'), 'default');
             }
         }
 
