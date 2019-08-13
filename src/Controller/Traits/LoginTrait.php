@@ -382,7 +382,7 @@ trait LoginTrait
 
             $url = $this->Auth->redirectUrl();
 
-            if ($this->getRequest()->is('ajax')) {
+            if ($this->request->is('ajax')) {
                 $this->set('user', $user);
                 $this->set('_serialize', ['user']);
 
@@ -394,7 +394,7 @@ trait LoginTrait
             if (!$socialLogin) {
                 $message = __d('CakeDC/Users', 'Username or password is incorrect');
                 $this->Flash->error($message, 'default', [], 'auth');
-                if ($this->getRequest()->is('ajax')) {
+                if ($this->request->is('ajax')) {
                     $this->set('error', $message);
                     $this->set('_serialize', ['error']);
 
@@ -428,7 +428,7 @@ trait LoginTrait
             return $this->redirect($eventAfter->result);
         }
 
-        $redirectUrl = $this->getRequest()->getQuery('redirect_url');
+        $redirectUrl = $this->request->getQuery('redirect_url');
 
         return $this->redirect($redirectUrl ?: $this->Auth->logout());
     }
