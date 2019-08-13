@@ -107,6 +107,10 @@ abstract class BaseTraitTest extends TestCase
             ->expects($this->any())
             ->method('getSession')
             ->willReturn($session);
+        $this->Trait->request
+            ->expects($this->any())
+            ->method('session')
+            ->willReturn($session);
     }
 
     /**
@@ -119,6 +123,7 @@ abstract class BaseTraitTest extends TestCase
         $methods = ['is', 'referer', 'getData'];
 
         if ($withSession) {
+            $methods[] = 'session';
             $methods[] = 'getSession';
         }
 

@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
+use Cake\Controller\Component\AuthComponent;
 use CakeDC\Users\Controller\Component\GoogleAuthenticatorComponent;
 use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Controller\Traits\LoginTrait;
@@ -25,6 +26,11 @@ use Cake\Network\Request;
 use Cake\ORM\Entity;
 use Cake\TestSuite\TestCase;
 
+/**
+ * Class LoginTraitTest
+ * @package CakeDC\Users\Test\TestCase\Controller\Traits
+ * @property LoginTrait Trait
+ */
 class LoginTraitTest extends BaseTraitTest
 {
     /**
@@ -211,17 +217,17 @@ class LoginTraitTest extends BaseTraitTest
      */
     public function testAfterIdentifyEmptyUserSocialLogin()
     {
-        $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\Traits\LoginTrait')
+        $this->Trait = $this->getMockBuilder(LoginTrait::class)
             ->setMethods(['dispatchEvent', 'redirect', '_isSocialLogin'])
             ->getMockForTrait();
         $this->Trait->expects($this->any())
             ->method('_isSocialLogin')
             ->will($this->returnValue(true));
         $this->_mockDispatchEvent(new Event('event'));
-        $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
+        $this->Trait->request = $this->getMockBuilder(ServerRequest::class)
             ->setMethods(['is'])
             ->getMock();
-        $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
+        $this->Trait->Auth = $this->getMockBuilder(AuthComponent::class)
             ->setMethods(['user', 'identify', 'setUser', 'redirectUrl'])
             ->disableOriginalConstructor()
             ->getMock();

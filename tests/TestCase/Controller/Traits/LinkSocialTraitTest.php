@@ -23,6 +23,11 @@ use League\OAuth2\Client\Provider\Facebook;
 use League\OAuth2\Client\Provider\FacebookUser;
 use League\OAuth2\Client\Token\AccessToken;
 
+/**
+ * Class LinkSocialTraitTest
+ * @package CakeDC\Users\Test\TestCase\Controller\Traits
+ * @property LinkSocialTrait Trait
+ */
 class LinkSocialTraitTest extends BaseTraitTest
 {
     /**
@@ -91,6 +96,7 @@ class LinkSocialTraitTest extends BaseTraitTest
 
         if ($withSession) {
             $methods[] = 'session';
+            $methods[] = 'getSession';
         }
 
         $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
