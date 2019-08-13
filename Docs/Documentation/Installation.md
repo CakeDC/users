@@ -60,15 +60,16 @@ In CakePHP 3.8 , this method is deprecated, load the plugin in /src/Application.
 ```
 // In src/Application.php. Requires at least 3.6.0
 use Cake\Http\BaseApplication;
-use ContactManager\Plugin as ContactManagerPlugin;
 
-class Application extends BaseApplication {
+class Application extends BaseApplication 
+{
     public function bootstrap()
     {
         parent::bootstrap();
 
         // Load a plugin with a vendor namespace by 'short name'
         $this->addPlugin('CakeDC/Users');
+        Configure::write('Users.config', ['users']);
     }
 }
 ```
