@@ -59,6 +59,7 @@ In CakePHP 3.8 , this method is deprecated, load the plugin in /src/Application.
 
 ```
 // In src/Application.php. Requires at least 3.6.0
+namespace App;
 use Cake\Http\BaseApplication;
 
 class Application extends BaseApplication 
