@@ -187,7 +187,7 @@ class UsersAuthComponent extends Component
                 }
                 $requestUrl = $url;
             }
-        }  catch (RedirectException $e) {
+        } catch (RedirectException $e) {
             $uri = new Uri($e->getMessage());
             $requestParams = Router::parseRequest(
                 new ServerRequest(['uri' => $uri])

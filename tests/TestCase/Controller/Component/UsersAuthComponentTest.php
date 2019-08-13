@@ -24,10 +24,10 @@ use Cake\Http\Session;
 use Cake\Network\Request;
 use Cake\ORM\Entity;
 use Cake\Routing\Exception\MissingRouteException;
+use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Security;
-use Cake\Routing\RouteBuilder;
 
 /**
  * Users\Controller\Component\UsersAuthComponent Test Case
@@ -517,6 +517,7 @@ class UsersAuthComponentTest extends TestCase
         $result = $this->Controller->UsersAuth->isUrlAuthorized($event);
         $this->assertTrue($result);
     }
+
     /**
      * test The user is logged in and allowed by rules to access this action,
      * and we are checking another controller action not allowed

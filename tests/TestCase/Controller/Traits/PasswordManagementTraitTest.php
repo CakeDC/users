@@ -11,12 +11,12 @@
 
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
+use CakeDC\Users\Controller\Traits\PasswordManagementTrait;
 use Cake\Auth\PasswordHasherFactory;
 use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
-use CakeDC\Users\Controller\Traits\PasswordManagementTrait;
 
 /**
  * Class PasswordManagementTraitTest
@@ -469,7 +469,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
 
         return [
             ['00000000-0000-0000-0000-000000000003', $success, $successMsg],
-            ['00000000-0000-0000-0000-000000000001',$success, $successMsg],
+            ['00000000-0000-0000-0000-000000000001', $success, $successMsg],
             [null, $error, $errorMsg],
         ];
     }

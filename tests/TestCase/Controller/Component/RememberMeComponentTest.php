@@ -28,6 +28,7 @@ class RememberMeComponentTest extends TestCase
     public $fixtures = [
         'plugin.CakeDC/Users.Users'
     ];
+
     /**
      * setUp method
      *
