@@ -152,7 +152,7 @@ trait RegisterTrait
             return $event->result;
         }
 
-        if (!$this->getRequest()->is('ajax')) {
+        if (!$this->request->is('ajax')) {
             if (Configure::check('Users.Registration.successMessage')) {
                 $message = Configure::read('Users.Registration.successMessage');
             }

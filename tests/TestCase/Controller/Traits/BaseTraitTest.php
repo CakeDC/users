@@ -153,6 +153,13 @@ abstract class BaseTraitTest extends TestCase
                 ->getMock();
     }
 
+    protected function _mockRequest()
+    {
+        $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
+            ->setMethods(['is', 'getData', 'allow'])
+            ->getMock();
+    }
+
     /**
      * mock Request for POST, is and allow methods
      *
@@ -161,10 +168,29 @@ abstract class BaseTraitTest extends TestCase
      */
     protected function _mockRequestPost($with = 'post')
     {
+        $this->_mockRequest();
+        $this->Trait->request->expects($this->any())
+                ->method('is')
+                ->with($with)
+                ->will($this->returnValue(true));
+    }
+
+    /**
+     * mock Request for POST, is and allow methods
+     *
+     * @param mixed $with used in with
+     * @return void
+     */
+    protected function _mockRequestPostIsAjax($with = 'post', $isAjax = false)
+    {
         $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
                 ->setMethods(['is', 'getData', 'allow'])
                 ->getMock();
-        $this->Trait->request->expects($this->any())
+        $this->Trait->request->expects($this->at(0))
+                ->method('is')
+                ->with('ajax')
+                ->will($this->returnValue($isAjax));
+        $this->Trait->request->expects($this->at(1))
                 ->method('is')
                 ->with($with)
                 ->will($this->returnValue(true));
