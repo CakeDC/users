@@ -166,8 +166,9 @@ class UsersAuthComponent extends Component
         }
 
         if (is_array($url)) {
-            $requestUrl = Router::normalize(Router::reverse($url));
-            $requestParams = Router::parseRequest(new ServerRequest($requestUrl));
+            $requestUrl = Router::normalize(Router::url($url));
+            $request = new ServerRequest($requestUrl);
+            $requestParams = Router::parseRequest($request);
         } else {
             try {
                 //remove base from $url if exists

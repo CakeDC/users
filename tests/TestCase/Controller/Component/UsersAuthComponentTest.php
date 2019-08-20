@@ -65,7 +65,7 @@ class UsersAuthComponentTest extends TestCase
         ]);
         Security::setSalt('YJfIxfs2guVoUubWDYhG93b0qyJfIxfs2guwvniR2G0FgaC9mi');
         Configure::write('App.namespace', 'Users');
-        $this->request = $this->getMockBuilder('Cake\Network\Request')
+        $this->request = $this->getMockBuilder(ServerRequest::class)
             ->setMethods(['is', 'method'])
             ->getMock();
         $this->request->expects($this->any())->method('is')->will($this->returnValue(true));
@@ -250,12 +250,12 @@ class UsersAuthComponentTest extends TestCase
             ->method('isAuthorized')
             ->with(null, $this->callback(function ($subject) {
                 return $subject->getAttribute('params') === [
-                    'pass' => [],
-                    'plugin' => 'CakeDC/Users',
-                    'controller' => 'Users',
-                    'action' => 'requestResetPassword',
-                    '_matchedRoute' => '/route/*',
-                ];
+                        'pass' => [],
+                        'plugin' => 'CakeDC/Users',
+                        'controller' => 'Users',
+                        'action' => 'requestResetPassword',
+                        '_matchedRoute' => '/route/*',
+                    ];
             }))
             ->will($this->returnValue(true));
         $result = $this->Controller->UsersAuth->isUrlAuthorized($event);
@@ -329,12 +329,12 @@ class UsersAuthComponentTest extends TestCase
             ->method('isAuthorized')
             ->with(null, $this->callback(function ($subject) {
                 return $subject->getAttribute('params') === [
-                    'pass' => [],
-                    'plugin' => 'CakeDC/Users',
-                    'controller' => 'Users',
-                    'action' => 'requestResetPassword',
-                    '_matchedRoute' => '/route/*',
-                ];
+                        'pass' => [],
+                        'plugin' => 'CakeDC/Users',
+                        'controller' => 'Users',
+                        'action' => 'requestResetPassword',
+                        '_matchedRoute' => '/route/*',
+                    ];
             }))
             ->will($this->returnValue(true));
         $result = $this->Controller->UsersAuth->isUrlAuthorized($event);
@@ -363,12 +363,12 @@ class UsersAuthComponentTest extends TestCase
             ->method('isAuthorized')
             ->with(null, $this->callback(function ($subject) {
                 return $subject->getAttribute('params') === [
-                    'pass' => [],
-                    'plugin' => 'CakeDC/Users',
-                    'controller' => 'Users',
-                    'action' => 'requestResetPassword',
-                    '_matchedRoute' => '/route/*',
-                ];
+                        'pass' => [],
+                        'plugin' => 'CakeDC/Users',
+                        'controller' => 'Users',
+                        'action' => 'requestResetPassword',
+                        '_matchedRoute' => '/route/*',
+                    ];
             }))
             ->will($this->returnValue(true));
         $result = $this->Controller->UsersAuth->isUrlAuthorized($event);
@@ -423,12 +423,12 @@ class UsersAuthComponentTest extends TestCase
             ->method('isAuthorized')
             ->with(null, $this->callback(function ($subject) {
                 return $subject->getAttribute('params') === [
-                    'pass' => ['pass-one'],
-                    'plugin' => 'CakeDC/Users',
-                    'controller' => 'Users',
-                    'action' => 'requestResetPassword',
-                    '_matchedRoute' => '/route/*',
-                ];
+                        'pass' => ['pass-one'],
+                        'plugin' => 'CakeDC/Users',
+                        'controller' => 'Users',
+                        'action' => 'requestResetPassword',
+                        '_matchedRoute' => '/route/*',
+                    ];
             }))
             ->will($this->returnValue(true));
         $result = $this->Controller->UsersAuth->isUrlAuthorized($event);
@@ -447,9 +447,9 @@ class UsersAuthComponentTest extends TestCase
     {
         Configure::write('App.base', 'app');
         Router::pushRequest(new ServerRequest([
-                'base' => '/app',
-                'url' => '/',
-            ]));
+            'base' => '/app',
+            'url' => '/',
+        ]));
         $event = new Event('event');
         $event->setData([
             'url' => [
@@ -469,17 +469,18 @@ class UsersAuthComponentTest extends TestCase
             ->method('isAuthorized')
             ->with(null, $this->callback(function ($subject) {
                 return $subject->getAttribute('params') === [
-                    'pass' => [],
-                    'plugin' => 'CakeDC/Users',
-                    'controller' => 'Users',
-                    'action' => 'requestResetPassword',
-                    '_matchedRoute' => '/route/*',
-                ];
+                        'pass' => [],
+                        'plugin' => 'CakeDC/Users',
+                        'controller' => 'Users',
+                        'action' => 'requestResetPassword',
+                        '_matchedRoute' => '/route/*',
+                    ];
             }))
             ->will($this->returnValue(true));
         $result = $this->Controller->UsersAuth->isUrlAuthorized($event);
         $this->assertTrue($result);
     }
+
     /**
      * test The user is logged in and allowed by rules to access this action,
      * and we are checking another controller action not allowed
@@ -511,5 +512,48 @@ class UsersAuthComponentTest extends TestCase
             ->will($this->returnValue(false));
         $result = $this->Controller->UsersAuth->isUrlAuthorized($event);
         $this->assertFalse($result);
+    }
+
+    /**
+     * Named routes should be handled in permissions check too
+     *
+     * @return void
+     */
+    public function testIsUrlAuthorizedNamedRoute()
+    {
+        Router::connect('/named1', [
+            'controller' => 'Users',
+            'action' => 'dasboard'
+        ], [
+            '_name' => 'namedRoute1',
+        ]);
+        $event = new Event('event');
+        $event->setData([
+            'url' => [
+                '_name' => 'namedRoute1',
+            ],
+        ]);
+        $this->Controller->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
+            ->setMethods(['user', 'isAuthorized'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->Controller->Auth->expects($this->once())
+            ->method('user')
+            ->will($this->returnValue(['id' => 1]));
+        $this->Controller->Auth->expects($this->once())
+            ->method('isAuthorized')
+            ->with(null, $this->callback(function ($subject) {
+                return $subject->getAttribute('params') === [
+                        'pass' => [],
+                        'controller' => 'Users',
+                        'action' => 'dasboard',
+                        'plugin' => null,
+                        '_name' => 'namedRoute1',
+                        '_matchedRoute' => '/named1'
+                    ];
+            }))
+            ->will($this->returnValue(true));
+        $result = $this->Controller->UsersAuth->isUrlAuthorized($event);
+        $this->assertTrue($result);
     }
 }
