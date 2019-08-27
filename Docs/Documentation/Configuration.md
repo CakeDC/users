@@ -113,6 +113,7 @@ NOTE: SOME keys were hidden in this doc page, please refer to `vendor/cakedc/use
             // configure Remember Me component
             'active' => true,
         ],
+        'Superuser' => ['allowedToChangePasswords' => false], // able to reset any users password
     ],
 // default configuration used to auto-load the Auth Component, override to change the way Auth works
     'Auth' => [
