@@ -34,11 +34,16 @@ trait RegisterTrait
      */
     public function register()
     {
+        if ($this->request->is('ajax')) {
+            $this->viewBuilder()->setLayout('ajax');
+        }
+
         if (!Configure::read('Users.Registration.active')) {
             throw new NotFoundException();
         }
 
         $userId = $this->Auth->user('id');
+
         if (!empty($userId) && !Configure::read('Users.Registration.allowLoggedIn')) {
             $this->Flash->error(__d('CakeDC/Users', 'You must log out to register a new user account'));
 
@@ -61,14 +66,20 @@ trait RegisterTrait
             'options' => $options,
             'userEntity' => $user,
         ]);
+        $this->set(compact('user'));
+        $this->set('_serialize', ['user']);
 
         if ($event->result instanceof EntityInterface) {
             $data = $event->result->toArray();
             $data['password'] = $requestData['password']; //since password is a hidden property
             if ($userSaved = $usersTable->register($user, $data, $options)) {
+                $this->set(compact('user'));
+                $this->set('_serialize', ['user']);
+
                 return $this->_afterRegister($userSaved);
             } else {
-                $this->set(compact('user'));
+                $this->set('error', $user->getErrors());
+                $this->set('_serialize', ['error']);
                 $this->Flash->error(__d('CakeDC/Users', 'The user could not be saved'));
 
                 return;
@@ -93,6 +104,8 @@ trait RegisterTrait
 
         $userSaved = $usersTable->register($user, $requestData, $options);
         if (!$userSaved) {
+            $this->set('error', $user->getErrors());
+            $this->set('_serialize', ['error']);
             $this->Flash->error(__d('CakeDC/Users', 'The user could not be saved'));
 
             return;
@@ -134,12 +147,19 @@ trait RegisterTrait
         $event = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_REGISTER, [
             'user' => $userSaved
         ]);
+
         if ($event->result instanceof Response) {
             return $event->result;
         }
-        $this->Flash->success($message);
 
-        return $this->redirect(['action' => 'login']);
+        if (!$this->request->is('ajax')) {
+            if (Configure::check('Users.Registration.successMessage')) {
+                $message = Configure::read('Users.Registration.successMessage');
+            }
+            $this->Flash->success($message);
+
+            return $this->redirect(['action' => 'login']);
+        }
     }
 
     /**

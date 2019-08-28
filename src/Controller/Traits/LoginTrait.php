@@ -22,8 +22,8 @@ use Cake\Core\Configure;
 use Cake\Core\Exception\Exception;
 use Cake\Event\Event;
 use Cake\Http\Exception\NotFoundException;
+use Cake\Http\Response;
 use Cake\Utility\Hash;
-use League\OAuth1\Client\Server\Twitter;
 
 /**
  * Covers the login, logout and social login
@@ -197,7 +197,7 @@ trait LoginTrait
         }
 
         if (!$this->request->is('post') && !$socialLogin) {
-            if ($this->Auth->user()) {
+            if ($user = $this->Auth->user()) {
                 if (!$this->request->getSession()->read('Users.successSocialLogin')) {
                     $msg = __d('CakeDC/Users', 'You are already logged in');
                     $this->Flash->error($msg);
@@ -206,6 +206,13 @@ trait LoginTrait
                     $this->request->getSession()->delete('Flash');
                 }
                 $url = $this->Auth->redirectUrl();
+
+                if ($this->getRequest()->is('ajax')) {
+                    $this->set('user', $user);
+                    $this->set('_serialize', ['user']);
+
+                    return;
+                }
 
                 return $this->redirect($url);
             }
@@ -375,11 +382,24 @@ trait LoginTrait
 
             $url = $this->Auth->redirectUrl();
 
+            if ($this->request->is('ajax')) {
+                $this->set('user', $user);
+                $this->set('_serialize', ['user']);
+
+                return;
+            }
+
             return $this->redirect($url);
         } else {
             if (!$socialLogin) {
                 $message = __d('CakeDC/Users', 'Username or password is incorrect');
                 $this->Flash->error($message, 'default', [], 'auth');
+                if ($this->request->is('ajax')) {
+                    $this->set('error', $message);
+                    $this->set('_serialize', ['error']);
+
+                    return;
+                }
             }
 
             return $this->redirect(Configure::read('Auth.loginAction'));
@@ -408,7 +428,9 @@ trait LoginTrait
             return $this->redirect($eventAfter->result);
         }
 
-        return $this->redirect($this->Auth->logout());
+        $redirectUrl = $this->request->getQuery('redirect_url');
+
+        return $this->redirect($redirectUrl ?: $this->Auth->logout());
     }
 
     /**

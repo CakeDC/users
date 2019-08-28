@@ -11,7 +11,9 @@
 
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
+use Cake\Controller\Component\FlashComponent;
 use Cake\Event\Event;
+use Cake\Http\ServerRequest;
 use Cake\Mailer\Email;
 use Cake\Mailer\TransportFactory;
 use Cake\ORM\Entity;
@@ -103,6 +105,10 @@ abstract class BaseTraitTest extends TestCase
 
         $this->Trait->request
             ->expects($this->any())
+            ->method('getSession')
+            ->willReturn($session);
+        $this->Trait->request
+            ->expects($this->any())
             ->method('session')
             ->willReturn($session);
     }
@@ -112,21 +118,31 @@ abstract class BaseTraitTest extends TestCase
      *
      * @return void
      */
-    protected function _mockRequestGet($withSession = false)
+    protected function _mockRequestGet($expectation = [], $withSession = false)
     {
         $methods = ['is', 'referer', 'getData'];
 
         if ($withSession) {
             $methods[] = 'session';
+            $methods[] = 'getSession';
         }
 
-        $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
+        $this->Trait->request = $this->getMockBuilder(ServerRequest::class)
                 ->setMethods($methods)
                 ->getMock();
+
+        if (empty($expectation)) {
+            $expectation = [
+                'method' => 'is',
+                'with' => 'post',
+                'returnValue' => false
+            ];
+        }
+
         $this->Trait->request->expects($this->any())
-                ->method('is')
-                ->with('post')
-                ->will($this->returnValue(false));
+            ->method($expectation['method'])
+            ->with($expectation['with'])
+            ->will($this->returnValue($expectation['returnValue']));
     }
 
     /**
@@ -136,10 +152,17 @@ abstract class BaseTraitTest extends TestCase
      */
     protected function _mockFlash()
     {
-        $this->Trait->Flash = $this->getMockBuilder('Cake\Controller\Component\FlashComponent')
+        $this->Trait->Flash = $this->getMockBuilder(FlashComponent::class)
                 ->setMethods(['error', 'success'])
                 ->disableOriginalConstructor()
                 ->getMock();
+    }
+
+    protected function _mockRequest()
+    {
+        $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
+            ->setMethods(['is', 'getData', 'allow'])
+            ->getMock();
     }
 
     /**
@@ -150,10 +173,29 @@ abstract class BaseTraitTest extends TestCase
      */
     protected function _mockRequestPost($with = 'post')
     {
+        $this->_mockRequest();
+        $this->Trait->request->expects($this->any())
+                ->method('is')
+                ->with($with)
+                ->will($this->returnValue(true));
+    }
+
+    /**
+     * mock Request for POST, is and allow methods
+     *
+     * @param mixed $with used in with
+     * @return void
+     */
+    protected function _mockRequestPostIsAjax($with = 'post', $isAjax = false)
+    {
         $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
                 ->setMethods(['is', 'getData', 'allow'])
                 ->getMock();
-        $this->Trait->request->expects($this->any())
+        $this->Trait->request->expects($this->at(0))
+                ->method('is')
+                ->with('ajax')
+                ->will($this->returnValue($isAjax));
+        $this->Trait->request->expects($this->at(1))
                 ->method('is')
                 ->with($with)
                 ->will($this->returnValue(true));

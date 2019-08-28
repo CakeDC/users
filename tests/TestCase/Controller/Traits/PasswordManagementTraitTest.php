@@ -11,12 +11,18 @@
 
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
+use CakeDC\Users\Controller\Traits\PasswordManagementTrait;
 use Cake\Auth\PasswordHasherFactory;
 use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
+/**
+ * Class PasswordManagementTraitTest
+ * @package CakeDC\Users\Test\TestCase\Controller\Traits
+ * @property PasswordManagementTrait Trait
+ */
 class PasswordManagementTraitTest extends BaseTraitTest
 {
     /**
@@ -61,7 +67,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
                 ]));
         $this->Trait->expects($this->once())
                 ->method('redirect')
-                ->with(['prefix' => false, 'plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile']);
+                ->with(['prefix' => false, 'plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile', 'prefix' => false]);
         $this->Trait->Flash->expects($this->any())
             ->method('success')
             ->with('Password has been changed successfully');
@@ -259,7 +265,11 @@ class PasswordManagementTraitTest extends BaseTraitTest
      */
     public function testChangePasswordGetNotLoggedInInsideResetPasswordFlow()
     {
-        $this->_mockRequestGet(true);
+        $this->_mockRequestGet([
+            'method' => 'is',
+            'with' => ['post', 'put'],
+            'returnValue' => false
+        ], true);
         $this->_mockAuth();
         $this->_mockFlash();
         $this->_mockSession([
@@ -328,7 +338,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
     public function testRequestPasswordHappy()
     {
         $this->assertEquals('6614f65816754310a5f0553436dd89e9', $this->table->get('00000000-0000-0000-0000-000000000002')->token);
-        $this->_mockRequestPost();
+        $this->_mockRequestPost('post');
         $this->_mockAuthLoggedIn();
         $this->_mockFlash();
         $reference = 'user-2';
@@ -350,7 +360,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
      */
     public function testRequestPasswordInvalidUser()
     {
-        $this->_mockRequestPost();
+        $this->_mockRequestPost('post');
         $this->_mockAuthLoggedIn(['id' => 'invalid-id', 'password' => 'invalid-pass']);
         $this->_mockFlash();
         $reference = '12312312-0000-0000-0000-000000000002';
@@ -430,47 +440,37 @@ class PasswordManagementTraitTest extends BaseTraitTest
      *
      * @return void
      */
-    public function testRequestGoogleAuthTokenResetWithValidUser($userId, $entityId, $method, $msg)
+    public function testRequestGoogleAuthTokenResetWithValidUser($userId, $method, $msg)
     {
         $this->_mockRequestPost();
         $this->_mockFlash();
-
-        $user = $this->table->get($userId);
 
         $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
             ->setMethods(['user', 'config'])
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->Trait->Auth->expects($this->any())
-            ->method('user')
-            ->will($this->returnValue($user));
+        $this->Trait->Auth->expects($this->never())
+            ->method('user');
 
-        $this->Trait->Flash->expects($this->any())
+        $this->Trait->Flash->expects($this->at(0))
             ->method($method)
-            ->with($msg);
+            ->with($msg, 'default');
 
-        $this->Trait->resetGoogleAuthenticator($entityId);
+        $this->Trait->resetGoogleAuthenticator($userId);
     }
 
     public function ensureGoogleAuthenticatorResets()
     {
         $error = 'error';
         $success = 'success';
-        $errorMsg = 'You are not allowed to reset users Google Authenticator token';
+        $errorMsg = 'Could not reset the token';
         $successMsg = 'Google Authenticator token was successfully reset';
 
         return [
-            //is_superuser = true.
-            ['00000000-0000-0000-0000-000000000003', null, $success, $successMsg],
-            //is_superuser = true.
-            ['00000000-0000-0000-0000-000000000001', null, $success, $successMsg],
-            //is_superuser = false, and not his profile.
-            ['00000000-0000-0000-0000-000000000004', '00000000-0000-0000-0000-000000000001', $error, $errorMsg],
-            //is_superuser = false, editing own record.
-            ['00000000-0000-0000-0000-000000000004', '00000000-0000-0000-0000-000000000004', $success, $successMsg],
-            //is_superuser = false, and no entity-id given.
-            ['00000000-0000-0000-0000-000000000004', null, $error, $errorMsg],
+            ['00000000-0000-0000-0000-000000000003', $success, $successMsg],
+            ['00000000-0000-0000-0000-000000000001', $success, $successMsg],
+            [null, $error, $errorMsg],
         ];
     }
 }

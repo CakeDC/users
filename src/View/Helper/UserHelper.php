@@ -188,6 +188,7 @@ class UserHelper extends Helper
 
         return $this->AuthLink->isAuthorized($url);
     }
+
     /**
      * Create links for all social providers enabled social link (connect)
      *

@@ -53,10 +53,12 @@ class RegisterBehavior extends BaseTokenBehavior
     {
         $validateEmail = Hash::get($options, 'validate_email');
         $tokenExpiration = Hash::get($options, 'token_expiration');
+        $associated = Configure::read('Users.Registration.associated') ? ['associated' => Configure::read('Users.Registration.associated')] : [];
+
         $user = $this->_table->patchEntity(
             $user,
             $data,
-            ['validate' => Hash::get($options, 'validator') ?: $this->getRegisterValidators($options)]
+            array_merge(['validate' => Hash::get($options, 'validator') ?: $this->getRegisterValidators($options)], $associated)
         );
         $user['role'] = Configure::read('Users.Registration.defaultRole') ?: 'user';
         $user->validated = false;

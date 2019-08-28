@@ -17,6 +17,7 @@ use CakeDC\Users\Controller\Traits\LoginTrait;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\UserNotActiveException;
+use Cake\Controller\Component\AuthComponent;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Event\Event;
@@ -25,6 +26,11 @@ use Cake\Network\Request;
 use Cake\ORM\Entity;
 use Cake\TestSuite\TestCase;
 
+/**
+ * Class LoginTraitTest
+ * @package CakeDC\Users\Test\TestCase\Controller\Traits
+ * @property LoginTrait Trait
+ */
 class LoginTraitTest extends BaseTraitTest
 {
     /**
@@ -69,13 +75,17 @@ class LoginTraitTest extends BaseTraitTest
     public function testLoginHappy()
     {
         $this->_mockDispatchEvent(new Event('event'));
-        $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
+        $this->Trait->request = $this->getMockBuilder(ServerRequest::class)
             ->setMethods(['is'])
             ->getMock();
-        $this->Trait->request->expects($this->any())
+        $this->Trait->request->expects($this->at(0))
             ->method('is')
             ->with('post')
             ->will($this->returnValue(true));
+        $this->Trait->request->expects($this->at(1))
+            ->method('is')
+            ->with('ajax')
+            ->will($this->returnValue(false));
         $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
             ->setMethods(['user', 'identify', 'setUser', 'redirectUrl'])
             ->disableOriginalConstructor()
@@ -114,10 +124,14 @@ class LoginTraitTest extends BaseTraitTest
         $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
             ->setMethods(['is'])
             ->getMock();
-        $this->Trait->request->expects($this->any())
+        $this->Trait->request->expects($this->at(0))
             ->method('is')
             ->with('post')
             ->will($this->returnValue(true));
+        $this->Trait->request->expects($this->at(1))
+            ->method('is')
+            ->with('ajax')
+            ->will($this->returnValue(false));
         $authenticate = $this->getMockBuilder('Cake\Auth\FormAuthenticate')
             ->setMethods(['needsPasswordRehash'])
             ->disableOriginalConstructor()
@@ -166,10 +180,14 @@ class LoginTraitTest extends BaseTraitTest
         $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
             ->setMethods(['is'])
             ->getMock();
-        $this->Trait->request->expects($this->any())
+        $this->Trait->request->expects($this->at(0))
             ->method('is')
             ->with('post')
             ->will($this->returnValue(true));
+        $this->Trait->request->expects($this->at(1))
+            ->method('is')
+            ->with('ajax')
+            ->will($this->returnValue(false));
         $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
             ->setMethods(['user', 'identify', 'setUser', 'redirectUrl'])
             ->disableOriginalConstructor()
@@ -199,17 +217,17 @@ class LoginTraitTest extends BaseTraitTest
      */
     public function testAfterIdentifyEmptyUserSocialLogin()
     {
-        $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\Traits\LoginTrait')
+        $this->Trait = $this->getMockBuilder(LoginTrait::class)
             ->setMethods(['dispatchEvent', 'redirect', '_isSocialLogin'])
             ->getMockForTrait();
         $this->Trait->expects($this->any())
             ->method('_isSocialLogin')
             ->will($this->returnValue(true));
         $this->_mockDispatchEvent(new Event('event'));
-        $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
+        $this->Trait->request = $this->getMockBuilder(ServerRequest::class)
             ->setMethods(['is'])
             ->getMock();
-        $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
+        $this->Trait->Auth = $this->getMockBuilder(AuthComponent::class)
             ->setMethods(['user', 'identify', 'setUser', 'redirectUrl'])
             ->disableOriginalConstructor()
             ->getMock();
