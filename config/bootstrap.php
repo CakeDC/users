@@ -21,9 +21,12 @@ Configure::load('CakeDC/Users.users');
 collection((array)Configure::read('Users.config'))->each(function ($file) {
     Configure::load($file);
 });
-
-TableRegistry::getTableLocator()->setConfig('Users', ['className' => Configure::read('Users.table')]);
-TableRegistry::getTableLocator()->setConfig('CakeDC/Users.Users', ['className' => Configure::read('Users.table')]);
+if (!TableRegistry::getTableLocator()->exists('Users')) {
+    TableRegistry::getTableLocator()->setConfig('Users', ['className' => Configure::read('Users.table')]);
+}
+if (!TableRegistry::getTableLocator()->exists('CakeDC/Users.Users')) {
+    TableRegistry::getTableLocator()->setConfig('CakeDC/Users.Users', ['className' => Configure::read('Users.table')]);
+}
 
 if (Configure::check('Users.auth')) {
     Configure::write('Auth.authenticate.all.userModel', Configure::read('Users.table'));
