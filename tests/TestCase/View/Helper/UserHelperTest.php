@@ -46,6 +46,7 @@ class UserHelperTest extends TestCase
      * @var \CakeDC\Users\View\Helper\AuthLinkHelper
      */
     private $AuthLink;
+
     /**
      * setUp method
      *

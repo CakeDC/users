@@ -365,6 +365,7 @@ class LoginTraitTest extends BaseTraitTest
             ]
         ];
     }
+
     /**
      * test socialLogin/login failure
      *
