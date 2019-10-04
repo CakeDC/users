@@ -4,3 +4,4 @@
 composer.lock
 .php_cs*
 /coverage
+/nbproject/private/

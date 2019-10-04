@@ -468,6 +468,33 @@ class LoginTraitTest extends BaseTraitTest
         ]);
         $this->Trait->verify();
     }
+    /**
+     * testVerifyGoogleAuthenticator
+     *
+     */
+    public function testVerifyGoogleAuthenticator()
+    {
+        Configure::write('Users.GoogleAuthenticator.login', true);
+
+        $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
+            ->setMethods(['is', 'getData', 'allow', 'getSession'])
+            ->getMock();
+        $this->Trait->request->expects($this->once())
+            ->method('is')
+            ->with('post')
+            ->will($this->returnValue(false));
+
+        $this->_mockSession([
+            'temporarySession' => [
+                'id' => 1,
+                'secret_verified' => 1,
+            ],
+            'Users' => [
+                'hasRememberMe' => 1
+            ]
+        ]);
+        $this->Trait->verify();
+    }
 
     /**
      * testVerifyNoUser

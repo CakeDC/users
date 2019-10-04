@@ -280,6 +280,7 @@ trait LoginTrait
             $verificationCode = $this->request->getData('code');
             $user = $this->request->getSession()->read('temporarySession');
             $entity = $this->getUsersTable()->get($user['id']);
+            $userRememberMe = $this->request->getSession()->read('Users.hasRememberMe');
 
             if (!empty($entity['secret'])) {
                 $codeVerified = $this->GoogleAuthenticator->verifyCode($entity['secret'], $verificationCode);
@@ -295,6 +296,11 @@ trait LoginTrait
                         ->execute();
 
                     $user['secret_verified'] = true;
+                }
+                
+                if ($userRememberMe) {
+                    $this->request->data(Configure::read('Users.RememberMe.Cookie.name'), $userRememberMe);
+                    $this->request->getSession()->delete('Users.hasRememberMe');
                 }
 
                 $this->request->getSession()->delete('temporarySession');
@@ -359,6 +365,11 @@ trait LoginTrait
                 // storing user's session in the temporary one
                 // until the GA verification is checked
                 $this->request->getSession()->write('temporarySession', $user);
+                
+                if (Configure::read('Users.RememberMe.active')) {
+                    $this->request->getSession()->write('Users.hasRememberMe', $this->request->getData(Configure::read('Users.RememberMe.Cookie.name')));
+                }
+                
                 $url = Configure::read('GoogleAuthenticator.verifyAction');
                 $url = array_merge($url, [
                     '?' => $this->request->getQueryParams()
