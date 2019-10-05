@@ -113,6 +113,7 @@ trait LoginTrait
                 $this->request->getSession()->write(Configure::read('Users.Key.Session.social'), $data);
 
                 return $this->redirect([
+                    'prefix' => false,
                     'plugin' => 'CakeDC/Users',
                     'controller' => 'Users',
                     'action' => 'socialEmail'
