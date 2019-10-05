@@ -356,7 +356,7 @@ class LoginTraitTest extends BaseTraitTest
 
         $this->Trait->expects($this->once())
             ->method('redirect')
-            ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'socialEmail']);
+            ->with(['prefix' => false, 'plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'socialEmail']);
 
         $this->Trait->failedSocialLogin($event->data['exception'], $event->data['rawData'], true);
     }
