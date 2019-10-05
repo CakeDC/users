@@ -399,6 +399,7 @@ class UsersShell extends Shell
     {
         return (new User)->hashPassword($password);
     }
+
     //add filters LIKE in username and email to some tasks
     // --force to ignore "you are about to do X to Y users"
 }
