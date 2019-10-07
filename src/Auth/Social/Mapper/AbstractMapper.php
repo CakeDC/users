@@ -65,6 +65,7 @@ abstract class AbstractMapper
         }
         $this->_mapFields = array_merge($this->_defaultMapFields, $this->_mapFields);
     }
+
     /**
      * Invoke method
      *

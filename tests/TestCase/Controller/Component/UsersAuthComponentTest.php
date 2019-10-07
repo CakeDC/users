@@ -480,6 +480,7 @@ class UsersAuthComponentTest extends TestCase
         $result = $this->Controller->UsersAuth->isUrlAuthorized($event);
         $this->assertTrue($result);
     }
+
     /**
      * test The user is logged in and allowed by rules to access this action,
      * and we are checking another controller action not allowed

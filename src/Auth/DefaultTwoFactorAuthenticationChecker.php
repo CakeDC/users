@@ -11,7 +11,7 @@
 namespace CakeDC\Users\Auth;
 
 use Cake\Core\Configure;
-use Cake\Network\Exception\BadRequestException;
+use Cake\Http\Exception\BadRequestException;
 
 /**
  * Default class to check if two factor authentication is enabled and required

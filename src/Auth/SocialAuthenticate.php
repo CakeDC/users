@@ -284,10 +284,11 @@ class SocialAuthenticate extends BaseAuthenticate
         }
 
         $authParams = $this->getConfig(sprintf('providers.%s.authParams', $request->getParam('provider')), []);
+        $location = $provider->getAuthorizationUrl($authParams);
 
-        $response = $response->withLocation($provider->getAuthorizationUrl($authParams));
+        $this->dispatchEvent(UsersAuthComponent::EVENT_BEFORE_SOCIAL_LOGIN_REDIRECT, compact('location', 'request'));
 
-        return $response;
+        return $response->withLocation($location);
     }
 
     /**
@@ -368,11 +369,7 @@ class SocialAuthenticate extends BaseAuthenticate
             $this->_getController()->dispatchEvent(UsersAuthComponent::EVENT_AFTER_REGISTER, compact('user'));
         }
 
-        if (!empty($user->username)) {
-            $user = $this->_findUser($user->username);
-        }
-
-        return $user;
+        return $this->_findUser($user->get(Configure::read('Auth.authenticate.Form.fields.username', 'username')));
     }
 
     /**

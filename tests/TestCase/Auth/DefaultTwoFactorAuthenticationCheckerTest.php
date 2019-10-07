@@ -12,7 +12,7 @@ namespace CakeDC\Users\Test\TestCase\Auth;
 
 use CakeDC\Users\Auth\DefaultTwoFactorAuthenticationChecker;
 use Cake\Core\Configure;
-use Cake\Network\Exception\BadRequestException;
+use Cake\Http\Exception\BadRequestException;
 use Cake\TestSuite\TestCase;
 
 /**
