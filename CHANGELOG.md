@@ -3,6 +3,8 @@ Changelog
 
 Releases for CakePHP 3
 -------------
+* 8.5.1
+  * Added new `UsersAuthComponent::EVENT_SOCIAL_LOGIN_EXISTING_ACCOUNT`
 * 8.5.0
   * Added new `UsersAuthComponent::EVENT_BEFORE_SOCIAL_LOGIN_REDIRECT`
   * Added finder to get existing social account
