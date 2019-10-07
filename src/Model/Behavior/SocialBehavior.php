@@ -87,6 +87,14 @@ class SocialBehavior extends BaseTokenBehavior
             $accountData = $this->extractAccountData($data);
             $this->_table->SocialAccounts->patchEntity($existingAccount, $accountData);
             $this->_table->SocialAccounts->save($existingAccount);
+            $event = $this->dispatchEvent(UsersAuthComponent::EVENT_SOCIAL_LOGIN_EXISTING_ACCOUNT, [
+                'userEntity' => $user,
+                'data' => $data
+            ]);
+
+            if ($event->result instanceof EntityInterface) {
+                $user = $this->_table->save($event->result);
+            }
         }
         if (!empty($existingAccount)) {
             if (!$existingAccount->active) {
