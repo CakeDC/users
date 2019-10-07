@@ -35,6 +35,7 @@ class UsersAuthComponent extends Component
     const EVENT_AFTER_LOGOUT = 'Users.Component.UsersAuth.afterLogout';
     const EVENT_BEFORE_SOCIAL_LOGIN_REDIRECT = 'Users.Component.UsersAuth.beforeSocialLoginRedirect';
     const EVENT_BEFORE_SOCIAL_LOGIN_USER_CREATE = 'Users.Component.UsersAuth.beforeSocialLoginUserCreate';
+    const EVENT_SOCIAL_LOGIN_EXISTING_ACCOUNT = 'Users.Component.UsersAuth.socialLoginExistingAccount';
     const EVENT_AFTER_CHANGE_PASSWORD = 'Users.Component.UsersAuth.afterResetPassword';
     const EVENT_ON_EXPIRED_TOKEN = 'Users.Component.UsersAuth.onExpiredToken';
     const EVENT_AFTER_RESEND_TOKEN_VALIDATION = 'Users.Component.UsersAuth.afterResendTokenValidation';
