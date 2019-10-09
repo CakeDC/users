@@ -52,13 +52,7 @@ class UsersController extends AppController
         if ($this->components()->has('Security')) {
             $this->Security->setConfig(
                 'unlockedActions',
-                [
-                    'login',
-                    'u2fRegister',
-                    'u2fRegisterFinish',
-                    'u2fAuthenticate',
-                    'u2fAuthenticateFinish'
-                ]
+                ['login', 'u2fRegister', 'u2fRegisterFinish', 'u2fAuthenticate', 'u2fAuthenticateFinish']
             );
         }
     }
