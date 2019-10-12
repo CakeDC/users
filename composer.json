@@ -75,8 +75,7 @@
     "scripts": {
         "check": [
             "@cs-check",
-            "@test",
-            "@stan"
+            "@test"
         ],
         "cs-check": "phpcs -p --standard=vendor/cakephp/cakephp-codesniffer/CakePHP src/ tests/",
         "cs-fix": "phpcbf --standard=vendor/cakephp/cakephp-codesniffer/CakePHP src/ tests/",
