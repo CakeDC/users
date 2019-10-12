@@ -98,7 +98,7 @@ class SocialAuthMiddleware implements MiddlewareInterface
      * Go to next handling SocialAuthenticationException
      *
      * @param \Cake\Http\ServerRequest $request The request
-     * @param \Psr\Http\Server\RequestHandlerInterface $handler
+     * @param \Psr\Http\Server\RequestHandlerInterface $handler The request handler.
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -112,11 +112,11 @@ class SocialAuthMiddleware implements MiddlewareInterface
     }
 
     /**
-     * Process an incoming server request.
+     * Callable implementation for the middleware stack.
      *
-     * Processes an incoming server request in order to produce a response.
-     * If unable to produce the response itself, it may delegate to the provided
-     * request handler to do so.
+     * @param \Psr\Http\Message\ServerRequestInterface $request The request.
+     * @param \Psr\Http\Server\RequestHandlerInterface $handler The request handler.
+     * @return \Psr\Http\Message\ResponseInterface A response.
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

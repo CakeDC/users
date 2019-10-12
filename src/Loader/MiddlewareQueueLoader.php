@@ -92,7 +92,10 @@ class MiddlewareQueueLoader
      */
     protected function load2faMiddleware(MiddlewareQueue $middlewareQueue)
     {
-        if (Configure::read('OneTimePasswordAuthenticator.login') !== false || Configure::read('U2f.enabled') !== false) {
+        if (
+            Configure::read('OneTimePasswordAuthenticator.login') !== false
+            || Configure::read('U2f.enabled') !== false
+        ) {
             $middlewareQueue->add(TwoFactorMiddleware::class);
         }
     }

@@ -84,7 +84,10 @@ class AuthenticationServiceLoader
      */
     protected function loadTwoFactorAuthenticator($service)
     {
-        if (Configure::read('OneTimePasswordAuthenticator.login') !== false || Configure::read('U2f.enabled') !== false) {
+        if (
+            Configure::read('OneTimePasswordAuthenticator.login') !== false
+            || Configure::read('U2f.enabled') !== false
+        ) {
             $service->loadAuthenticator('CakeDC/Auth.TwoFactor', [
                 'skipTwoFactorVerify' => true,
             ]);

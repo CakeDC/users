@@ -241,10 +241,16 @@ class UsersShell extends Shell
             'sendEmail' => true,
         ]);
         if ($resetUser) {
-            $msg = __d('cake_d_c/users', 'Please ask the user to check the email to continue with password reset process');
+            $msg = __d(
+                'cake_d_c/users',
+                'Please ask the user to check the email to continue with password reset process'
+            );
             $this->out($msg);
         } else {
-            $msg = __d('cake_d_c/users', 'The password token could not be generated. Please try again');
+            $msg = __d(
+                'cake_d_c/users',
+                'The password token could not be generated. Please try again'
+            );
             $this->abort($msg);
         }
     }

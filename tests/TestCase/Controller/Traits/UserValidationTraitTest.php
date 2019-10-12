@@ -21,6 +21,7 @@ class UserValidationTraitTest extends BaseTraitTest
      * @var \CakeDC\Users\Controller\UsersController
      */
     public $Trait;
+
     /**
      * setup
      *

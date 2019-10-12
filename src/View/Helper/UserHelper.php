@@ -83,7 +83,8 @@ class UserHelper extends Helper
         $outProviders = [];
         $providers = Configure::read('OAuth.providers');
         foreach ($providers as $provider => $options) {
-            if (!empty($options['options']['redirectUri']) &&
+            if (
+                !empty($options['options']['redirectUri']) &&
                 !empty($options['options']['clientId']) &&
                 !empty($options['options']['clientSecret'])
             ) {
@@ -155,7 +156,13 @@ class UserHelper extends Helper
     public function addReCaptcha()
     {
         if (!Configure::read('Users.reCaptcha.key')) {
-            return $this->Html->tag('p', __d('cake_d_c/users', 'reCaptcha is not configured! Please configure Users.reCaptcha.key'));
+            return $this->Html->tag(
+                'p',
+                __d(
+                    'cake_d_c/users',
+                    'reCaptcha is not configured! Please configure Users.reCaptcha.key'
+                )
+            );
         }
         $this->addReCaptchaScript();
         $this->Form->unlockField('g-recaptcha-response');
@@ -260,7 +267,8 @@ class UserHelper extends Helper
 
         $providers = Configure::read('OAuth.providers');
         foreach ($providers as $name => $provider) {
-            if (!empty($provider['options']['callbackLinkSocialUri']) &&
+            if (
+                !empty($provider['options']['callbackLinkSocialUri']) &&
                 !empty($provider['options']['linkSocialUri']) &&
                 !empty($provider['options']['clientId']) &&
                 !empty($provider['options']['clientSecret'])

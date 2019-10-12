@@ -217,7 +217,7 @@ class SocialBehaviorTest extends TestCase
             'credentials' => [
                 'token' => 'aT0ken' . time(),
                 'secret' => 'AS3crEt' . time(),
-                'expires' => 1458423682
+                'expires' => 1458423682,
             ],
             'avatar' => 'http://localhost/avatar.jpg' . time(),
             'link' => 'facebook-link' . time(),
@@ -226,11 +226,11 @@ class SocialBehaviorTest extends TestCase
                 'bio' => 'This is a raw bio',
                 'extra' => 'value',
                 'foo' => 'bar',
-            ]
+            ],
         ];
         $accountBefore = $this->Table->SocialAccounts->find()->where([
             'SocialAccounts.reference' => $data['id'],
-            'SocialAccounts.provider' => $data['provider']
+            'SocialAccounts.provider' => $data['provider'],
         ])->firstOrFail();
         $result = $this->Behavior->socialLogin($fullData + [], $options);
         $this->assertEquals($result->id, '00000000-0000-0000-0000-000000000002');
@@ -238,7 +238,7 @@ class SocialBehaviorTest extends TestCase
 
         $account = $this->Table->SocialAccounts->find()->where([
             'SocialAccounts.reference' => $data['id'],
-            'SocialAccounts.provider' => $data['provider']
+            'SocialAccounts.provider' => $data['provider'],
         ])->firstOrFail();
 
         $this->assertEquals($fullData['avatar'], $account->avatar);

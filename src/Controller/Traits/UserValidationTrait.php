@@ -94,12 +94,14 @@ trait UserValidationTrait
         }
         $reference = $this->getRequest()->getData('reference');
         try {
-            if ($this->getUsersTable()->resetToken($reference, [
+            if (
+                $this->getUsersTable()->resetToken($reference, [
                 'expiration' => Configure::read('Users.Token.expiration'),
                 'checkActive' => true,
                 'sendEmail' => true,
                 'type' => 'email',
-            ])) {
+                ])
+            ) {
                 $event = $this->dispatchEvent(Plugin::EVENT_AFTER_RESEND_TOKEN_VALIDATION);
                 $result = $event->getResult();
                 if (!empty($event) && is_array($result)) {

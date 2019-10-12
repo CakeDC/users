@@ -29,6 +29,7 @@ class TestApplication extends \Cake\Http\BaseApplication
      *
      * @return \Cake\Http\MiddlewareQueue
      */
+
     /**
      * Setup the middleware queue your application will use.
      *

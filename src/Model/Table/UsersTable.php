@@ -101,7 +101,10 @@ class UsersTable extends Table
             ->add('password', [
                 'password_confirm_check' => [
                     'rule' => ['compareWith', 'password_confirm'],
-                    'message' => __d('cake_d_c/users', 'Your password does not match your confirm password. Please try again'),
+                    'message' => __d(
+                        'cake_d_c/users',
+                        'Your password does not match your confirm password. Please try again'
+                    ),
                     'allowEmpty' => false,
                 ]]);
 

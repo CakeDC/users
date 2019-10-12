@@ -70,7 +70,8 @@ trait RegisterTrait
         if ($result instanceof EntityInterface) {
             $data = $result->toArray();
             $data['password'] = $requestData['password']; //since password is a hidden property
-            if ($userSaved = $usersTable->register($user, $data, $options)) {
+            $userSaved = $usersTable->register($user, $data, $options);
+            if ($userSaved) {
                 return $this->_afterRegister($userSaved);
             } else {
                 $this->set(compact('user'));

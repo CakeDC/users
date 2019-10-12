@@ -24,6 +24,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
      * @var \CakeDC\Users\Controller\UsersController
      */
     public $Trait;
+
     /**
      * setUp
      *

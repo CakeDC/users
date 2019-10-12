@@ -38,14 +38,14 @@ class UsersMailerTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->Email = $this->getMockBuilder('Cake\Mailer\Email')
+        $this->Email = $this->getMockBuilder('Cake\Mailer\Message')
             ->setMethods(['setTo', 'setSubject', 'setViewVars', 'setTemplate'])
             ->getMock();
 
         $this->UsersMailer = $this->getMockBuilder('CakeDC\Users\Mailer\UsersMailer')
-            ->setConstructorArgs([$this->Email])
-            ->setMethods(['setTo', 'setSubject', 'setViewVars', 'setTemplate'])
+            ->setMethods(['setViewVars'])
             ->getMock();
+        $this->UsersMailer->setMessage($this->Email);
     }
 
     /**
@@ -74,7 +74,7 @@ class UsersMailerTest extends TestCase
             'token' => '12345',
         ];
         $user = $table->newEntity($data);
-        $this->UsersMailer->expects($this->once())
+        $this->Email->expects($this->once())
             ->method('setTo')
             ->with($user['email'])
             ->will($this->returnValue($this->Email));
@@ -84,10 +84,10 @@ class UsersMailerTest extends TestCase
             ->with('FirstName, Your account validation link')
             ->will($this->returnValue($this->Email));
 
-        $this->Email->expects($this->once())
+        $this->UsersMailer->expects($this->once())
             ->method('setViewVars')
             ->with($data)
-            ->will($this->returnValue($this->Email));
+            ->will($this->returnValue($this->UsersMailer));
 
         $this->invokeMethod($this->UsersMailer, 'validation', [$user]);
     }
@@ -102,7 +102,7 @@ class UsersMailerTest extends TestCase
         $social = TableRegistry::getTableLocator()->get('CakeDC/Users.SocialAccounts')
             ->get('00000000-0000-0000-0000-000000000001', ['contain' => 'Users']);
 
-        $this->UsersMailer->expects($this->once())
+        $this->Email->expects($this->once())
             ->method('setTo')
             ->with('user-1@test.com')
             ->will($this->returnValue($this->Email));
@@ -112,10 +112,10 @@ class UsersMailerTest extends TestCase
             ->with('first1, Your social account validation link')
             ->will($this->returnValue($this->Email));
 
-        $this->Email->expects($this->once())
+        $this->UsersMailer->expects($this->once())
             ->method('setViewVars')
             ->with(['user' => $social->user, 'socialAccount' => $social])
-            ->will($this->returnValue($this->Email));
+            ->will($this->returnValue($this->UsersMailer));
 
         $this->invokeMethod($this->UsersMailer, 'socialAccountValidation', [$social->user, $social]);
     }
@@ -134,7 +134,7 @@ class UsersMailerTest extends TestCase
             'token' => '12345',
         ];
         $user = $table->newEntity($data);
-        $this->UsersMailer->expects($this->once())
+        $this->Email->expects($this->once())
             ->method('setTo')
             ->with($user['email'])
             ->will($this->returnValue($this->Email));
@@ -144,10 +144,10 @@ class UsersMailerTest extends TestCase
             ->with('FirstName, Your reset password link')
             ->will($this->returnValue($this->Email));
 
-        $this->Email->expects($this->once())
+        $this->UsersMailer->expects($this->once())
             ->method('setViewVars')
             ->with($data)
-            ->will($this->returnValue($this->Email));
+            ->will($this->returnValue($this->UsersMailer));
 
         $this->invokeMethod($this->UsersMailer, 'resetPassword', [$user]);
     }

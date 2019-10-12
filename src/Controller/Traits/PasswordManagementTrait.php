@@ -58,14 +58,18 @@ trait PasswordManagementTrait
                 $validatePassword = true;
                 $redirect = Configure::read('Users.Profile.route');
             } else {
-                $this->Flash->error(__d('CakeDC/Users', 'Changing another user\'s password is not allowed'));
+                $this->Flash->error(
+                    __d('CakeDC/Users', 'Changing another user\'s password is not allowed')
+                );
                 $this->redirect(Configure::read('Users.Profile.route'));
 
                 return;
             }
         } else {
             // password reset
-            $user->id = $this->getRequest()->getSession()->read(Configure::read('Users.Key.Session.resetPasswordUserId'));
+            $user->id = $this->getRequest()->getSession()->read(
+                Configure::read('Users.Key.Session.resetPasswordUserId')
+            );
             $validatePassword = false;
             $redirect = $this->Authentication->getConfig('loginAction');
             if (!$user->id) {
@@ -91,7 +95,7 @@ trait PasswordManagementTrait
                             'current_password' => true,
                             'password' => true,
                             'password_confirm' => true,
-                        ]
+                        ],
                     ]
                 );
 

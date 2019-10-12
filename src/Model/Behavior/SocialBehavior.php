@@ -82,7 +82,9 @@ class SocialBehavior extends BaseTokenBehavior
                 $existingAccount = $user->social_accounts[0];
             } else {
                 //@todo: what if we don't have a social account after createSocialUser?
-                throw new InvalidArgumentException(__d('cake_d_c/users', 'Unable to login user with reference {0}', $reference));
+                throw new InvalidArgumentException(
+                    __d('cake_d_c/users', 'Unable to login user with reference {0}', $reference)
+                );
             }
         } else {
             $user = $existingAccount->user;
@@ -91,7 +93,7 @@ class SocialBehavior extends BaseTokenBehavior
             $this->_table->SocialAccounts->save($existingAccount);
             $event = $this->dispatchEvent(Plugin::EVENT_SOCIAL_LOGIN_EXISTING_ACCOUNT, [
                 'userEntity' => $user,
-                'data' => $data
+                'data' => $data,
             ]);
 
             if ($event->getResult() instanceof EntityInterface) {
@@ -267,7 +269,7 @@ class SocialBehavior extends BaseTokenBehavior
     public function findExistingForSocialLogin(\Cake\ORM\Query $query, array $options)
     {
         return $query->where([
-            $this->_table->aliasField('email') => $options['email']
+            $this->_table->aliasField('email') => $options['email'],
         ]);
     }
 
@@ -277,6 +279,7 @@ class SocialBehavior extends BaseTokenBehavior
      * @param array $data Social data.
      *
      * @throws \Exception
+     * @return array
      */
     protected function extractAccountData(array $data)
     {

@@ -58,7 +58,9 @@ class SocialAccountBehavior extends Behavior
         if ($entity->get('active')) {
             return true;
         }
-        $user = $this->_table->getAssociation('Users')->find()->where(['Users.id' => $entity->get('user_id'), 'Users.active' => true])->first();
+        $user = $this->_table->getAssociation('Users')->find()
+            ->where(['Users.id' => $entity->get('user_id'), 'Users.active' => true])
+            ->first();
         if (empty($user)) {
             return true;
         }
@@ -102,7 +104,9 @@ class SocialAccountBehavior extends Behavior
                 throw new AccountAlreadyActiveException(__d('cake_d_c/users', "Account already validated"));
             }
         } else {
-            throw new RecordNotFoundException(__d('cake_d_c/users', "Account not found for the given token and email."));
+            throw new RecordNotFoundException(
+                __d('cake_d_c/users', "Account not found for the given token and email.")
+            );
         }
 
         return $this->_activateAccount($socialAccount);
@@ -126,10 +130,14 @@ class SocialAccountBehavior extends Behavior
 
         if (!empty($socialAccount)) {
             if ($socialAccount->active) {
-                throw new AccountAlreadyActiveException(__d('cake_d_c/users', "Account already validated"));
+                throw new AccountAlreadyActiveException(
+                    __d('cake_d_c/users', "Account already validated")
+                );
             }
         } else {
-            throw new RecordNotFoundException(__d('cake_d_c/users', "Account not found for the given token and email."));
+            throw new RecordNotFoundException(
+                __d('cake_d_c/users', "Account not found for the given token and email.")
+            );
         }
 
         return $this->sendSocialValidationEmail($socialAccount, $socialAccount->user);

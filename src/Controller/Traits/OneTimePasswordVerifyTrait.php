@@ -40,7 +40,9 @@ trait OneTimePasswordVerifyTrait
             return $this->redirect($loginAction);
         }
 
-        $temporarySession = $this->getRequest()->getSession()->read(AuthenticationService::TWO_FACTOR_VERIFY_SESSION_KEY);
+        $temporarySession = $this->getRequest()->getSession()->read(
+            AuthenticationService::TWO_FACTOR_VERIFY_SESSION_KEY
+        );
         $secretVerified = $temporarySession['secret_verified'] ?? null;
         // showing QR-code until shared secret is verified
         if (!$secretVerified) {
@@ -80,7 +82,9 @@ trait OneTimePasswordVerifyTrait
             return false;
         }
 
-        $temporarySession = $this->getRequest()->getSession()->read(AuthenticationService::TWO_FACTOR_VERIFY_SESSION_KEY);
+        $temporarySession = $this->getRequest()->getSession()->read(
+            AuthenticationService::TWO_FACTOR_VERIFY_SESSION_KEY
+        );
 
         if (empty($temporarySession) || !isset($temporarySession['id'])) {
             $message = __d('cake_d_c/users', 'Could not find user data');
