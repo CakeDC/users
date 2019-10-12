@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace CakeDC\Users\Model\Behavior;
 
 use Cake\Core\Configure;
+use Cake\Datasource\EntityInterface;
 use Cake\Event\EventDispatcherTrait;
 use Cake\Utility\Hash;
 use CakeDC\Users\Exception\AccountNotActiveException;
@@ -93,8 +94,8 @@ class SocialBehavior extends BaseTokenBehavior
                 'data' => $data
             ]);
 
-            if ($event->result instanceof EntityInterface) {
-                $user = $this->_table->save($event->result);
+            if ($event->getResult() instanceof EntityInterface) {
+                $user = $this->_table->save($event->getResult());
             }
         }
         if (!empty($existingAccount)) {
