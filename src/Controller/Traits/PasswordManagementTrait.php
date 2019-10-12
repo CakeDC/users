@@ -73,7 +73,6 @@ trait PasswordManagementTrait
 
                 return;
             }
-
         }
         $this->set('validatePassword', $validatePassword);
         if ($this->request->is(['post', 'put'])) {
