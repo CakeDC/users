@@ -62,7 +62,7 @@ $config = [
         'Profile' => [
             // Allow view other users profiles
             'viewOthers' => true,
-            'route' => ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile'],
+            'route' => ['prefix' => false, 'plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile'],
         ],
         'Key' => [
             'Session' => [
@@ -98,6 +98,7 @@ $config = [
                 ]
             ]
         ],
+        'Superuser' => ['allowedToChangePasswords' => false], // able to reset any users password
     ],
     'OneTimePasswordAuthenticator' => [
         'checker' => \CakeDC\Auth\Authentication\DefaultOneTimePasswordAuthenticationChecker::class,

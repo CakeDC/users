@@ -12,9 +12,9 @@ Versions and branches
 
 | CakePHP | CakeDC Users Plugin | Tag   | Notes |
 | :-------------: | :------------------------: | :--:  | :---- |
-| 3.7             | [master](https://github.com/cakedc/users/tree/master)                      | 8.4.0 | stable |
+| 3.7             | [master](https://github.com/cakedc/users/tree/master)                      | 8.5.1 | stable |
 | 3.7             | [develop](https://github.com/cakedc/users/tree/develop)                      | - | unstable |
-| ^3.7            | [8.4](https://github.com/cakedc/users/tree/8.next)                      | 8.4.0 | stable |
+| ^3.7            | [8.5](https://github.com/cakedc/users/tree/8.next)                      | 8.5.1 | stable |
 | 3.6             | [8.1](https://github.com/cakedc/users/tree/8.1.0)                      | 8.1.0 | stable |
 | 3.5             | [6.x](https://github.com/cakedc/users/tree/6.x)                      | 6.0.1 | stable |
 | 3.4             | [5.x](https://github.com/cakedc/users/tree/5.x)                      | 5.2.0 | stable |
@@ -73,6 +73,6 @@ This repository follows the [CakeDC Plugin Standard](https://www.cakedc.com/plug
 License
 -------
 
-Copyright 2017 Cake Development Corporation (CakeDC). All rights reserved.
+Copyright 2019 Cake Development Corporation (CakeDC). All rights reserved.
 
 Licensed under the [MIT](http://www.opensource.org/licenses/mit-license.php) License. Redistributions of the source code included in this repository must retain the copyright notice found in each file.

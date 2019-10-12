@@ -77,6 +77,10 @@
         ],
         "cs-check": "vendor/bin/phpcs -n --colors -p --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests",
         "cs-fix": "vendor/bin/phpcbf --colors --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests",
-        "test": "vendor/bin/phpunit --colors=always ./tests"
+        "test": "vendor/bin/phpunit --colors=always ./tests",
+        "stan": "phpstan analyse src/ && psalm --show-info=false",
+        "psalm": "psalm --show-info=false",
+        "stan-setup": "cp composer.json composer.backup && composer require --dev phpstan/phpstan:^0.11 vimeo/psalm:^3.0 && mv composer.backup composer.json",
+        "test-coverage": "phpunit --stderr --coverage-clover=clover.xml"
     }
 }

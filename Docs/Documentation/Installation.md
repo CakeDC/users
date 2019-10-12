@@ -63,6 +63,27 @@ Ensure the Users Plugin is loaded in your src/Application.php file
     }
 ```
 
+In CakePHP 3.8 , this method is deprecated, load the plugin in /src/Application.php :
+
+```
+// In src/Application.php. Requires at least 3.6.0
+namespace App;
+use Cake\Http\BaseApplication;
+
+class Application extends BaseApplication 
+{
+    public function bootstrap()
+    {
+        parent::bootstrap();
+
+        // Load a plugin with a vendor namespace by 'short name'
+        $this->addPlugin('CakeDC/Users');
+        Configure::write('Users.config', ['users']);
+    }
+}
+```
+
+
 Creating Required Tables
 ------------------------
 If you want to use the Users tables to store your users and social accounts:
@@ -74,6 +95,12 @@ bin/cake migrations migrate -p CakeDC/Users
 Note you don't need to use the provided tables, you could customize the table names, fields etc in your
 application and then use the plugin configuration to use your own tables instead. Please refer to the [Extending the Plugin](Extending-the-Plugin.md)
 section to check all the customization options
+
+You can create the first user, the super user by issuing the following command
+
+```
+bin/cake users addSuperuser
+```
 
 Customization
 ----------
