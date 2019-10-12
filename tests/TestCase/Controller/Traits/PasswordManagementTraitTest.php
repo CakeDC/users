@@ -486,7 +486,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
     {
         $error = 'error';
         $success = 'success';
-        $errorMsg = 'You are not allowed to reset users Google Authenticator token';
+        $errorMsg = 'Could not reset Google Authenticator';
         $successMsg = 'Google Authenticator token was successfully reset';
 
         return [

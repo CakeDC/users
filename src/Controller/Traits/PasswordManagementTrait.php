@@ -198,8 +198,7 @@ trait PasswordManagementTrait
                 $message = __d('cake_d_c/users', 'Google Authenticator token was successfully reset');
                 $this->Flash->success($message, 'default');
             } catch (\Exception $e) {
-                $message = $e->getMessage();
-                $this->Flash->error($message, 'default');
+                $this->Flash->error(__d('cake_d_c/users', 'Could not reset Google Authenticator'), 'default');
             }
         }
 
