@@ -30,6 +30,12 @@ use Cake\Validation\Validator;
  * @method \CakeDC\Users\Model\Entity\User[] patchEntities($entities, array $data, array $options = [])
  * @method \CakeDC\Users\Model\Entity\User findOrCreate($search, callable $callback = null, $options = [])
  *
+ * @mixin \CakeDC\Users\Model\Behavior\AuthFinderBehavior
+ * @mixin \CakeDC\Users\Model\Behavior\LinkSocialBehavior
+ * @mixin \CakeDC\Users\Model\Behavior\PasswordBehavior
+ * @mixin \CakeDC\Users\Model\Behavior\RegisterBehavior
+ * @mixin \CakeDC\Users\Model\Behavior\SocialAccountBehavior
+ * @mixin \CakeDC\Users\Model\Behavior\SocialBehavior
  */
 class UsersTable extends Table
 {

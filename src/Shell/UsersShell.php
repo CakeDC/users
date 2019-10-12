@@ -309,7 +309,7 @@ class UsersShell extends Shell
         $userEntity->role = $role;
         $savedUser = $this->Users->save($userEntity);
 
-        if (!empty($savedUser)) {
+        if (is_object($savedUser)) {
             if ($savedUser->is_superuser) {
                 $this->out(__d('cake_d_c/users', 'Superuser added:'));
             } else {
@@ -334,14 +334,19 @@ class UsersShell extends Shell
      *
      * @param string $username username
      * @param array $data data
-     * @return bool
+     * @return \CakeDC\Users\Model\Entity\User|bool
      */
     protected function _updateUser($username, $data)
     {
         $user = $this->Users->find()->where(['username' => $username])->first();
-        if (empty($user)) {
+        if (!is_object($user)) {
             $this->abort(__d('cake_d_c/users', 'The user was not found.'));
+
+            return false;
         }
+        /**
+         * @var \Cake\Datasource\EntityInterface $user
+         */
         $user = $this->Users->patchEntity($user, $data);
         collection($data)->filter(function ($value, $field) use ($user) {
             return !$user->isAccessible($field);
@@ -364,7 +369,10 @@ class UsersShell extends Shell
         if (empty($username)) {
             $this->abort(__d('cake_d_c/users', 'Please enter a username.'));
         }
-        $user = $this->Users->find()->where(['username' => $username])->first();
+        /**
+         * @var \Cake\Datasource\EntityInterface $user
+         */
+        $user = $this->Users->find()->where(['username' => $username])->firstOrFail();
         if (isset($this->Users->SocialAccounts)) {
             $this->Users->SocialAccounts->deleteAll(['user_id' => $user->id]);
         }

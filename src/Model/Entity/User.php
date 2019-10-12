@@ -20,6 +20,14 @@ use Cake\Utility\Security;
 
 /**
  * User Entity.
+ *
+ * @property string $email
+ * @property string $role
+ * @property string $username
+ * @property bool $is_superuser
+ * @property \Cake\I18n\Time token_expires
+ * @property string token
+ * @property array additional_data
  */
 class User extends Entity
 {
