@@ -202,7 +202,7 @@ class SocialBehaviorTest extends TestCase
      *
      * @dataProvider providerFacebookSocialLoginExistingReference
      */
-    public function testSocialLoginExistingReference($data, $options)
+    public function testSocialLoginExistingReferenceOkay($data, $options)
     {
         $this->Behavior->expects($this->never())
             ->method('generateUniqueUsername');
@@ -213,9 +213,44 @@ class SocialBehaviorTest extends TestCase
         $this->Behavior->expects($this->never())
             ->method('_updateActive');
 
-        $result = $this->Behavior->socialLogin($data, $options);
+        $fullData = $data + [
+            'credentials' => [
+                'token' => 'aT0ken' . time(),
+                'secret' => 'AS3crEt' . time(),
+                'expires' => 1458423682
+            ],
+            'avatar' => 'http://localhost/avatar.jpg' . time(),
+            'link' => 'facebook-link' . time(),
+            'bio' => 'This is a sample bio' . time(),
+            'raw' => [
+                'bio' => 'This is a raw bio',
+                'extra' => 'value',
+                'foo' => 'bar',
+            ]
+        ];
+        $accountBefore = $this->Table->SocialAccounts->find()->where([
+            'SocialAccounts.reference' => $data['id'],
+            'SocialAccounts.provider' => $data['provider']
+        ])->firstOrFail();
+        $result = $this->Behavior->socialLogin($fullData + [], $options);
         $this->assertEquals($result->id, '00000000-0000-0000-0000-000000000002');
         $this->assertTrue($result->active);
+
+        $account = $this->Table->SocialAccounts->find()->where([
+            'SocialAccounts.reference' => $data['id'],
+            'SocialAccounts.provider' => $data['provider']
+        ])->firstOrFail();
+
+        $this->assertEquals($fullData['avatar'], $account->avatar);
+        $this->assertEquals($fullData['link'], $account->link);
+        $this->assertEquals($fullData['bio'], $account->description);
+        $this->assertEquals($fullData['raw'], unserialize($account->data));
+        $this->assertEquals($fullData['credentials']['token'], $account->token);
+        $this->assertEquals($fullData['credentials']['secret'], $account->token_secret);
+        $this->assertNotEmpty($account->token_expires);
+        $this->assertNotEquals($accountBefore->token_expires, $account->token_expires);
+        $this->assertSame($accountBefore->id, $account->id);
+        $this->assertSame($accountBefore->active, $account->active);
     }
 
     /**

@@ -15,9 +15,10 @@ namespace CakeDC\Users\Controller\Traits;
 
 use CakeDC\Auth\Social\MapUser;
 use CakeDC\Auth\Social\Service\ServiceFactory;
+use CakeDC\Users\Plugin;
 
 /**
- * Ações para "linkar" contas sociais
+ * Actions to allow user to link social accounts
  *
  */
 trait LinkSocialTrait
@@ -32,12 +33,17 @@ trait LinkSocialTrait
      */
     public function linkSocial($alias = null)
     {
-        return $this->redirect(
-            (new ServiceFactory())
+        $authUrl = (new ServiceFactory())
                 ->setRedirectUriField('callbackLinkSocialUri')
                 ->createFromProvider($alias)
-                ->getAuthorizationUrl($this->getRequest())
-        );
+                ->getAuthorizationUrl($this->getRequest());
+
+        $this->dispatchEvent(Plugin::EVENT_BEFORE_SOCIAL_LOGIN_REDIRECT, [
+            'location' => $authUrl,
+            'request' => $this->request,
+        ]);
+
+        return $this->redirect($authUrl);
     }
 
     /**

@@ -235,6 +235,7 @@ class PluginTest extends TestCase
         $actualService = $plugin->getAuthenticationService($request);
         $this->assertSame($service, $actualService);
     }
+
     /**
      * testGetAuthenticationService
      *

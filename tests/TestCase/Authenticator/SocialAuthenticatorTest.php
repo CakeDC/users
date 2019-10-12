@@ -507,6 +507,7 @@ class SocialAuthenticatorTest extends TestCase
             ],
         ];
     }
+
     /**
      * Test authenticate method with successfull authentication
      *

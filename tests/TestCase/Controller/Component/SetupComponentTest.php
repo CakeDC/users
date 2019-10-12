@@ -75,6 +75,7 @@ class SetupComponentTest extends TestCase
             [false, false, false],
         ];
     }
+
     /**
      * Test initial setup
      *

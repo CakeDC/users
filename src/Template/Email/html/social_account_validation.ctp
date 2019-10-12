@@ -18,6 +18,7 @@
         $text = __d('cake_d_c/users', 'Activate your social login here');
         $activationUrl = [
             '_full' => true,
+            'prefix' => false,
             'plugin' => 'CakeDC/Users',
             'controller' => 'SocialAccounts',
             'action' => 'validateAccount',

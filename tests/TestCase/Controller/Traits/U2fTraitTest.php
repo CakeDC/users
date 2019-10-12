@@ -38,6 +38,7 @@ class U2fTraitTest extends BaseTraitTest
     public $fixtures = [
         'plugin.CakeDC/Users.Users',
     ];
+
     /**
      * setup
      *
@@ -104,6 +105,7 @@ class U2fTraitTest extends BaseTraitTest
             [$withRegistration, ['action' => 'u2fAuthenticate']],
         ];
     }
+
     /**
      * Test u2f method
      *
@@ -475,6 +477,7 @@ class U2fTraitTest extends BaseTraitTest
             [$withWhoutRegistration, ['action' => 'u2fRegister']],
         ];
     }
+
     /**
      * Test u2fAuthenticate method redirect cases
      *

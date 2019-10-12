@@ -42,6 +42,7 @@ trait U2fTrait
 
         return $this->redirect($url);
     }
+
     /**
      * U2f entry point
      *

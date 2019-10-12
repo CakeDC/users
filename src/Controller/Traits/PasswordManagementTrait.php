@@ -32,44 +32,67 @@ trait PasswordManagementTrait
 
     /**
      * Change password
+     * Can be used while logged in for own password, as a superuser on any user, or while not logged in for reset
+     * reset password with session key (email token has already been validated)
+     *
+     * @param int|string|null $id user_id, null for logged in user id
      *
      * @return mixed
      */
-    public function changePassword()
+    public function changePassword($id = null)
     {
         $user = $this->getUsersTable()->newEntity([], ['validate' => false]);
         $identity = $this->getRequest()->getAttribute('identity');
         $identity = $identity ?? [];
-        $id = $identity['id'] ?? null;
+        $userId = $identity['id'] ?? null;
 
-        if (!empty($id)) {
-            $user->id = $id;
-            $validatePassword = true;
-            //@todo add to the documentation: list of routes used
-            $redirect = Configure::read('Users.Profile.route');
-        } else {
-            $user->id = $this->getRequest()->getSession()->read(Configure::read('Users.Key.Session.resetPasswordUserId'));
-            $validatePassword = false;
-            if (!$user->id) {
-                $this->Flash->error(__d('cake_d_c/users', 'User was not found'));
-                $this->redirect($this->Authentication->getConfig('loginAction'));
+        if ($userId) {
+            if ($id && $identity['is_superuser'] && Configure::read('Users.Superuser.allowedToChangePasswords')) {
+                // superuser editing any account's password
+                $user->id = $id;
+                $validatePassword = false;
+                $redirect = ['action' => 'index'];
+            } elseif (!$id || $id === $userId) {
+                // normal user editing own password
+                $user->id = $userId;
+                $validatePassword = true;
+                $redirect = Configure::read('Users.Profile.route');
+            } else {
+                $this->Flash->error(__d('CakeDC/Users', 'Changing another user\'s password is not allowed'));
+                $this->redirect(Configure::read('Users.Profile.route'));
 
                 return;
             }
-            //@todo add to the documentation: list of routes used
+        } else {
+            // password reset
+            $user->id = $this->getRequest()->getSession()->read(Configure::read('Users.Key.Session.resetPasswordUserId'));
+            $validatePassword = false;
             $redirect = $this->Authentication->getConfig('loginAction');
+            if (!$user->id) {
+                $this->Flash->error(__d('cake_d_c/users', 'User was not found'));
+                $this->redirect($redirect);
+
+                return;
+            }
         }
         $this->set('validatePassword', $validatePassword);
         if ($this->getRequest()->is(['post', 'put'])) {
             try {
                 $validator = $this->getUsersTable()->validationPasswordConfirm(new Validator());
-                if (!empty($id)) {
+                if ($validatePassword) {
                     $validator = $this->getUsersTable()->validationCurrentPassword($validator);
                 }
                 $user = $this->getUsersTable()->patchEntity(
                     $user,
                     $this->getRequest()->getData(),
-                    ['validate' => $validator]
+                    [
+                        'validate' => $validator,
+                        'accessibleFields' => [
+                            'current_password' => true,
+                            'password' => true,
+                            'password_confirm' => true,
+                        ]
+                    ]
                 );
 
                 if ($user->getErrors()) {
