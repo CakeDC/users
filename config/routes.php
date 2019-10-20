@@ -8,14 +8,15 @@
  * @copyright Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
+use CakeDC\Users\Utility\UsersUrl;
 use Cake\Core\Configure;
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
-
-Router::plugin('CakeDC/Users', ['path' => '/users'], function (RouteBuilder $routes) {
+//Use custom path if url is customized
+$baseUsersPath = UsersUrl::isCustom() ? '/users-base' : '/users';
+Router::plugin('CakeDC/Users', ['path' => $baseUsersPath], function (RouteBuilder $routes) {
     $routes->fallbacks('DashedRoute');
 });
-
 Router::connect('/accounts/validate/*', [
     'plugin' => 'CakeDC/Users',
     'controller' => 'SocialAccounts',
@@ -23,25 +24,13 @@ Router::connect('/accounts/validate/*', [
 ]);
 // Google Authenticator related routes
 if (Configure::read('OneTimePasswordAuthenticator.login')) {
-    Router::connect('/verify', ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'verify']);
+    Router::connect('/verify', UsersUrl::actionUrl('verify'));
 
-    Router::connect('/resetOneTimePasswordAuthenticator', [
-        'plugin' => 'CakeDC/Users',
-        'controller' => 'Users',
-        'action' => 'resetOneTimePasswordAuthenticator'
-    ]);
+    Router::connect('/resetOneTimePasswordAuthenticator', UsersUrl::actionUrl('resetOneTimePasswordAuthenticator'));
 }
 
-Router::connect('/profile/*', ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile']);
-Router::connect('/login', ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
-Router::connect('/logout', ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'logout']);
-Router::connect('/link-social/*', [
-    'controller' => 'Users',
-    'action' => 'linkSocial',
-    'plugin' => 'CakeDC/Users',
-]);
-Router::connect('/callback-link-social/*', [
-    'controller' => 'Users',
-    'action' => 'callbackLinkSocial',
-    'plugin' => 'CakeDC/Users',
-]);
+Router::connect('/profile/*', UsersUrl::actionUrl('profile'));
+Router::connect('/login', UsersUrl::actionUrl('login'));
+Router::connect('/logout', UsersUrl::actionUrl('logout'));
+Router::connect('/link-social/*', UsersUrl::actionUrl('linkSocial'));
+Router::connect('/callback-link-social/*', UsersUrl::actionUrl('callbackLinkSocial'));

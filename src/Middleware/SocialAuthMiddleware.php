@@ -106,7 +106,7 @@ class SocialAuthMiddleware
      */
     protected function responseWithActionLocation(ResponseInterface $response, $action)
     {
-        $url = Router::url((new UsersUrl())->actionUrl($action));
+        $url = Router::url(UsersUrl::actionUrl($action));
 
         return $response->withLocation($url);
     }
