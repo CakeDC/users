@@ -439,7 +439,7 @@ class PluginTest extends TestCase
     public function testBootstrap($urlConfigKey, $expectedUrl)
     {
         $actual = Configure::read($urlConfigKey);
-        $this->assertEquals($expectedUrl, $actual);
+        $this->assertSame($expectedUrl, $actual);
     }
 
     /**
@@ -450,34 +450,34 @@ class PluginTest extends TestCase
     public function dataProviderConfigUsersUrls()
     {
         $defaultVerifyAction = [
+            'prefix' => false,
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'verify',
-            'prefix' => false,
         ];
         $defaultProfileAction = [
             'prefix' => false,
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
-            'action' => 'profile'
+            'action' => 'profile',
         ];
         $defaultU2fStartAction = [
+            'prefix' => false,
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'u2f',
-            'prefix' => false,
         ];
         $defaultLoginAction = [
+            'prefix' => false,
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'login',
-            'prefix' => false,
         ];
         $defaultOauthPath = [
+            'prefix' => false,
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'socialLogin',
-            'prefix' => false
         ];
         return [
             ['Users.Profile.route', $defaultProfileAction],

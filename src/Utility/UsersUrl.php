@@ -38,6 +38,21 @@ class UsersUrl
      */
     public static function actionUrl($action, $extra = [])
     {
+        $params = static::actionParams($action);
+        $params['prefix'] = $params['prefix'] ?: false;
+        $params['plugin'] = $params['plugin'] ?: false;
+
+        return $params + $extra;
+    }
+
+    /**
+     * Get an user action route. This should not be user for links like HtmlHelper::link
+     *
+     * @param string $action user action
+     * @return array
+     */
+    public static function actionParams($action)
+    {
         $prefix = null;
         $controller = Configure::read('Users.controller', 'CakeDC/Users.Users');
         list($plugin, $controller) = pluginSplit($controller);
@@ -47,7 +62,7 @@ class UsersUrl
             $prefix = $parts[0];
         }
 
-        return compact('prefix', 'plugin', 'controller', 'action') + $extra;
+        return compact('prefix', 'plugin', 'controller', 'action');
     }
 
     /**
@@ -60,8 +75,8 @@ class UsersUrl
      */
     public static function checkActionOnRequest($action, ServerRequest $request)
     {
-        $url = static::actionUrl($action);
-        foreach ($url as $param => $value) {
+        $route = static::actionParams($action);
+        foreach ($route as $param => $value) {
             if ($request->getParam($param, null) !== $value) {
                 return false;
             }
@@ -104,7 +119,7 @@ class UsersUrl
             'Auth.Authenticators.Cookie.loginUrl' => $loginAction,
             'Auth.Authenticators.SocialPendingEmail.loginUrl' => $loginAction,
             'Auth.AuthorizationMiddleware.unauthorizedHandler.url' => $loginAction,
-            'OAuth.path' => static::actionUrl('socialLogin'),
+            'OAuth.path' => static::actionParams('socialLogin'),
         ];
     }
 }

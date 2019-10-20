@@ -24,13 +24,13 @@ Router::connect('/accounts/validate/*', [
 ]);
 // Google Authenticator related routes
 if (Configure::read('OneTimePasswordAuthenticator.login')) {
-    Router::connect('/verify', UsersUrl::actionUrl('verify'));
+    Router::connect('/verify', UsersUrl::actionParams('verify'));
 
-    Router::connect('/resetOneTimePasswordAuthenticator', UsersUrl::actionUrl('resetOneTimePasswordAuthenticator'));
+    Router::connect('/resetOneTimePasswordAuthenticator', UsersUrl::actionParams('resetOneTimePasswordAuthenticator'));
 }
 
-Router::connect('/profile/*', UsersUrl::actionUrl('profile'));
-Router::connect('/login', UsersUrl::actionUrl('login'));
-Router::connect('/logout', UsersUrl::actionUrl('logout'));
-Router::connect('/link-social/*', UsersUrl::actionUrl('linkSocial'));
-Router::connect('/callback-link-social/*', UsersUrl::actionUrl('callbackLinkSocial'));
+Router::connect('/profile/*', UsersUrl::actionParams('profile'));
+Router::connect('/login', UsersUrl::actionParams('login'));
+Router::connect('/logout', UsersUrl::actionParams('logout'));
+Router::connect('/link-social/*', UsersUrl::actionParams('linkSocial'));
+Router::connect('/callback-link-social/*', UsersUrl::actionParams('callbackLinkSocial'));
