@@ -76,7 +76,32 @@ class UsersUrlTest extends TestCase
             ['add', ['prefix' => false, 'plugin' => false, 'controller' => 'Users', 'action' => 'add'], 'Users'],
             ['edit', ['prefix' => false, 'plugin' => false, 'controller' => 'Users', 'action' => 'edit'], 'Users'],
             ['delete', ['prefix' => false, 'plugin' => false, 'controller' => 'Users', 'action' => 'delete'], 'Users'],
-            ['socialEmail', ['prefix' => false, 'plugin' => false, 'controller' => 'Users', 'action' => 'socialEmail'], 'Users']
+            ['socialEmail', ['prefix' => false, 'plugin' => false, 'controller' => 'Users', 'action' => 'socialEmail'], 'Users'],
+
+            ['verify', ['prefix' => 'Admin', 'plugin' => false, 'controller' => 'Users', 'action' => 'verify'], 'Admin/Users'],
+            ['linkSocial', ['prefix' => 'Admin', 'plugin' => false, 'controller' => 'Users', 'action' => 'linkSocial'], 'Admin/Users'],
+            ['callbackLinkSocial', ['prefix' => 'Admin', 'plugin' => false, 'controller' => 'Users', 'action' => 'callbackLinkSocial'], 'Admin/Users'],
+            ['socialLogin', ['prefix' => 'Admin', 'plugin' => false, 'controller' => 'Users', 'action' => 'socialLogin'], 'Admin/Users'],
+            ['login', ['prefix' => 'Admin', 'plugin' => false, 'controller' => 'Users', 'action' => 'login'], 'Admin/Users'],
+            ['logout', ['prefix' => 'Admin', 'plugin' => false, 'controller' => 'Users', 'action' => 'logout'], 'Admin/Users'],
+            ['getUsersTable', ['prefix' => 'Admin', 'plugin' => false, 'controller' => 'Users', 'action' => 'getUsersTable'], 'Admin/Users'],
+            ['setUsersTable', ['prefix' => 'Admin', 'plugin' => false, 'controller' => 'Users', 'action' => 'setUsersTable'], 'Admin/Users'],
+            ['profile', ['prefix' => 'Admin', 'plugin' => false, 'controller' => 'Users', 'action' => 'profile'], 'Admin/Users'],
+            ['validateReCaptcha', ['prefix' => 'Admin', 'plugin' => false, 'controller' => 'Users', 'action' => 'validateReCaptcha'], 'Admin/Users'],
+            ['register', ['prefix' => 'Admin', 'plugin' => false, 'controller' => 'Users', 'action' => 'register'], 'Admin/Users'],
+            ['validateEmail', ['prefix' => 'Admin', 'plugin' => false, 'controller' => 'Users', 'action' => 'validateEmail'], 'Admin/Users'],
+            ['changePassword', ['prefix' => 'Admin', 'plugin' => false, 'controller' => 'Users', 'action' => 'changePassword'], 'Admin/Users'],
+            ['resetPassword', ['prefix' => 'Admin', 'plugin' => false, 'controller' => 'Users', 'action' => 'resetPassword'], 'Admin/Users'],
+            ['requestResetPassword', ['prefix' => 'Admin', 'plugin' => false, 'controller' => 'Users', 'action' => 'requestResetPassword'], 'Admin/Users'],
+            ['resetOneTimePasswordAuthenticator', ['prefix' => 'Admin', 'plugin' => false, 'controller' => 'Users', 'action' => 'resetOneTimePasswordAuthenticator'], 'Admin/Users'],
+            ['validate', ['prefix' => 'Admin', 'plugin' => false, 'controller' => 'Users', 'action' => 'validate'], 'Admin/Users'],
+            ['resendTokenValidation', ['prefix' => 'Admin', 'plugin' => false, 'controller' => 'Users', 'action' => 'resendTokenValidation'], 'Admin/Users'],
+            ['index', ['prefix' => 'Admin', 'plugin' => false, 'controller' => 'Users', 'action' => 'index'], 'Admin/Users'],
+            ['view', ['prefix' => 'Admin', 'plugin' => false, 'controller' => 'Users', 'action' => 'view'], 'Admin/Users'],
+            ['add', ['prefix' => 'Admin', 'plugin' => false, 'controller' => 'Users', 'action' => 'add'], 'Admin/Users'],
+            ['edit', ['prefix' => 'Admin', 'plugin' => false, 'controller' => 'Users', 'action' => 'edit'], 'Admin/Users'],
+            ['delete', ['prefix' => 'Admin', 'plugin' => false, 'controller' => 'Users', 'action' => 'delete'], 'Admin/Users'],
+            ['socialEmail', ['prefix' => 'Admin', 'plugin' => false, 'controller' => 'Users', 'action' => 'socialEmail'], 'Admin/Users']
         ];
     }
 
@@ -91,9 +116,8 @@ class UsersUrlTest extends TestCase
      */
     public function testActionUrl($action, $expected, $controller = null)
     {
-        $UsersUrl = new UsersUrl();
         Configure::write('Users.controller', $controller);
-        $actual = $UsersUrl->actionUrl($action);
+        $actual = UsersUrl::actionUrl($action);
         $this->assertEquals($expected, $actual);
     }
 
@@ -119,7 +143,7 @@ class UsersUrlTest extends TestCase
             ],
             [
                 'socialLogin',
-                ['plugin' => false, 'controller' => 'Users', 'action' => 'socialLogin', 'provider' => 'facebook'],
+                ['plugin' => null, 'controller' => 'Users', 'action' => 'socialLogin', 'provider' => 'facebook'],
                 'CakeDC/Users.Users',
                 false,
             ],
@@ -131,7 +155,7 @@ class UsersUrlTest extends TestCase
             ],
             [
                 'socialLogin',
-                ['plugin' => false, 'controller' => 'Users', 'action' => 'socialLogin', 'provider' => 'facebook'],
+                ['plugin' => null, 'controller' => 'Users', 'action' => 'socialLogin', 'provider' => 'facebook'],
                 'Users',
                 true,
             ],
@@ -151,14 +175,13 @@ class UsersUrlTest extends TestCase
      */
     public function testCheckActionOnRequest($action, $params, $controller, $expected)
     {
-        $UsersUrl = new UsersUrl();
         Configure::write('Users.controller', $controller);
 
         $uri = new Uri('/auth/facebook');
         $request = ServerRequestFactory::fromGlobals();
         $request = $request->withUri($uri);
         $request = $request->withAttribute('params', $params);
-        $actual = $UsersUrl->checkActionOnRequest($action, $request);
+        $actual = UsersUrl::checkActionOnRequest($action, $request);
         $this->assertSame($expected, $actual);
     }
 }
