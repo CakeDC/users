@@ -479,6 +479,7 @@ class PluginTest extends TestCase
             'controller' => 'Users',
             'action' => 'socialLogin',
         ];
+
         return [
             ['Users.Profile.route', $defaultProfileAction],
             ['OneTimePasswordAuthenticator.verifyAction', $defaultVerifyAction],

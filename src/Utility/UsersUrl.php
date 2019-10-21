@@ -28,6 +28,7 @@ class UsersUrl
 
         return $controller !== 'CakeDC/Users.Users';
     }
+
     /**
      * Get an user action url
      *
