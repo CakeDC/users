@@ -158,6 +158,21 @@ needed to setup correct url/route for authentication.
 
 Note you'll need to **copy the Plugin templates** you need into your project src/Template/MyUsers/[action].ctp
 
+You may also need to load some helpers in your AppView:
+
+```php
+   /**
+     * Initialization hook method.
+     *
+     * @return void
+     */
+    public function initialize()
+    {
+        $this->loadHelper('CakeDC/Users.AuthLink');
+        $this->loadHelper('CakeDC/Users.User');
+    }
+```
+
 Extending the Features in your controller
 -----------------------------
 
