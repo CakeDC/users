@@ -13,9 +13,9 @@ namespace CakeDC\Users\Controller;
 
 use CakeDC\Users\Exception\AccountAlreadyActiveException;
 use CakeDC\Users\Model\Table\SocialAccountsTable;
+use CakeDC\Users\Utility\UsersUrl;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Http\Response;
-use CakeDC\Users\Utility\UsersUrl;
 
 /**
  * SocialAccounts Controller
