@@ -474,7 +474,7 @@ class PluginTest extends TestCase
             'action' => 'login',
         ];
         $defaultOauthPath = [
-            'prefix' => false,
+            'prefix' => null,
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'socialLogin',
