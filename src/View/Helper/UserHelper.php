@@ -11,6 +11,7 @@
 
 namespace CakeDC\Users\View\Helper;
 
+use CakeDC\Users\Utility\UsersUrl;
 use Cake\Core\Configure;
 use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
@@ -100,9 +101,10 @@ class UserHelper extends Helper
      */
     public function logout($message = null, $options = [])
     {
-        return $this->AuthLink->link(empty($message) ? __d('cake_d_c/users', 'Logout') : $message, [
-            'prefix' => false, 'plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'logout',
-        ], $options);
+        $url = UsersUrl::actionUrl('logout');
+        $title = empty($message) ? __d('cake_d_c/users', 'Logout') : $message;
+
+        return $this->AuthLink->link($title, $url, $options);
     }
 
     /**
