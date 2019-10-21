@@ -15,6 +15,7 @@ use CakeDC\Users\Exception\AccountAlreadyActiveException;
 use CakeDC\Users\Model\Table\SocialAccountsTable;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Http\Response;
+use CakeDC\Users\Utility\UsersUrl;
 
 /**
  * SocialAccounts Controller
@@ -59,7 +60,7 @@ class SocialAccountsController extends AppController
             $this->Flash->error(__d('cake_d_c/users', 'Social Account could not be validated'));
         }
 
-        return $this->redirect(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
+        return $this->redirect(UsersUrl::actionUrl('login'));
     }
 
     /**
@@ -87,6 +88,6 @@ class SocialAccountsController extends AppController
             $this->Flash->error(__d('cake_d_c/users', 'Email could not be resent'));
         }
 
-        return $this->redirect(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
+        return $this->redirect(UsersUrl::actionUrl('login'));
     }
 }
