@@ -123,12 +123,30 @@ class MyUsersController extends AppController
 {
     use LoginTrait;
     use RegisterTrait;
+    
+    /**
+     * Initialize
+     *
+     * @return void
+     */
+    public function initialize()
+    {
+        parent::initialize();
+        $this->loadComponent('CakeDC/Users.Setup');
+        if ($this->components()->has('Security')) {
+            $this->Security->setConfig(
+                'unlockedActions',
+                ['login', 'u2fRegister', 'u2fRegisterFinish', 'u2fAuthenticate', 'u2fAuthenticateFinish']
+            );
+        }
+    }
 
-//add your new actions, override, etc here
+    //add your new actions, override, etc here
 }
 ```
 
-Don't forget to update the `Users.controller` configuration in `users.php`
+Don't forget to update the `Users.controller` configuration in `users.php` this is
+needed to setup correct url/route for authentication.
 
 ```php
     'Users' => [
@@ -158,18 +176,13 @@ use Cake\Http\Exception\NotFoundException;
 trait ImpersonateTrait
 {
     /**
-     * Adding a new feature as an example: Impersonate another user
+     * Adding a new feature as an example: Review user
      *
-     * @param type $userId
+     * @param string $userId
      */
-    public function impersonate($userId)
+    public function review($userId)
     {
-        $user = $this->getUsersTable()->find()
-                ->where(['id' => $userId])
-                ->hydrate(false)
-                ->first();
-        $this->Auth->setUser($user);
-        return $this->redirect('/');
+        //Your review logic
     }
 }
 ```
