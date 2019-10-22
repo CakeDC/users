@@ -439,7 +439,7 @@ class LoginTraitTest extends BaseTraitTest
         } else {
             $this->Trait->expects($this->once())
                 ->method('redirect')
-                ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login'])
+                ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login', 'prefix' => false])
                 ->will($this->returnValue(new Response()));
             $result = $this->Trait->$method();
             $this->assertInstanceOf(Response::class, $result);

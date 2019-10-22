@@ -18,6 +18,18 @@ class UsersUrl
 {
 
     /**
+     * Check if users url uses a custom controller.
+     *
+     * @return bool
+     */
+    public static function isCustom()
+    {
+        $controller = Configure::read('Users.controller', 'CakeDC/Users.Users');
+
+        return $controller !== 'CakeDC/Users.Users';
+    }
+
+    /**
      * Get an user action url
      *
      * @param string $action user action
@@ -25,14 +37,33 @@ class UsersUrl
      *
      * @return array
      */
-    public function actionUrl($action, $extra = [])
+    public static function actionUrl($action, $extra = [])
     {
-        $prefix = false;
+        $params = static::actionParams($action);
+        $params['prefix'] = $params['prefix'] ?: false;
+        $params['plugin'] = $params['plugin'] ?: false;
+
+        return $params + $extra;
+    }
+
+    /**
+     * Get an user action route. This should not be user for links like HtmlHelper::link
+     *
+     * @param string $action user action
+     * @return array
+     */
+    public static function actionParams($action)
+    {
+        $prefix = null;
         $controller = Configure::read('Users.controller', 'CakeDC/Users.Users');
         list($plugin, $controller) = pluginSplit($controller);
-        $plugin = $plugin ? $plugin : false;
+        $parts = explode('/', $controller);
+        if (isset($parts[1])) {
+            $controller = $parts[1];
+            $prefix = $parts[0];
+        }
 
-        return compact('prefix', 'plugin', 'controller', 'action') + $extra;
+        return compact('prefix', 'plugin', 'controller', 'action');
     }
 
     /**
@@ -43,15 +74,53 @@ class UsersUrl
      *
      * @return bool
      */
-    public function checkActionOnRequest($action, ServerRequest $request)
+    public static function checkActionOnRequest($action, ServerRequest $request)
     {
-        $url = $this->actionUrl($action);
-        foreach ($url as $param => $value) {
-            if ($request->getParam($param) !== $value) {
+        $route = static::actionParams($action);
+        foreach ($route as $param => $value) {
+            if ($request->getParam($param, null) !== $value) {
                 return false;
             }
         }
 
         return true;
+    }
+
+    /**
+     * Setup needed config urls but without overwriting
+     *
+     * @return void
+     */
+    public static function setupConfigUrls()
+    {
+        $urls = self::getDefaultConfigUrls();
+        foreach ($urls as $configKey => $url) {
+            if (!Configure::check($configKey)) {
+                Configure::write($configKey, $url);
+            }
+        }
+    }
+
+    /**
+     * Get a list of default config urls using static::actionUrl method for users url.
+     *
+     * @return array
+     */
+    private static function getDefaultConfigUrls()
+    {
+        $loginAction = static::actionUrl('login');
+
+        return [
+            'Users.Profile.route' => static::actionUrl('profile'),
+            'OneTimePasswordAuthenticator.verifyAction' => static::actionUrl('verify'),
+            'U2f.startAction' => static::actionUrl('u2f'),
+            'Auth.AuthenticationComponent.loginAction' => $loginAction,
+            'Auth.AuthenticationComponent.logoutRedirect' => $loginAction,
+            'Auth.Authenticators.Form.loginUrl' => $loginAction,
+            'Auth.Authenticators.Cookie.loginUrl' => $loginAction,
+            'Auth.Authenticators.SocialPendingEmail.loginUrl' => $loginAction,
+            'Auth.AuthorizationMiddleware.unauthorizedHandler.url' => $loginAction,
+            'OAuth.path' => static::actionParams('socialLogin'),
+        ];
     }
 }
