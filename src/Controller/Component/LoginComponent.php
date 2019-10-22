@@ -18,6 +18,7 @@ use Cake\Controller\Component;
 use Cake\Core\Configure;
 use CakeDC\Auth\Authentication\AuthenticationService;
 use CakeDC\Users\Plugin;
+use CakeDC\Users\Utility\UsersUrl;
 
 /**
  * LoginFailure component
@@ -81,7 +82,7 @@ class LoginComponent extends Component
             return null;
         }
 
-        return $controller->redirect(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
+        return $controller->redirect(UsersUrl::actionUrl('login'));
     }
 
     /**

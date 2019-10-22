@@ -13,7 +13,10 @@
  */
 use Cake\Core\Configure;
 use Cake\Routing\RouteBuilder;
-$routes->plugin('CakeDC/Users', ['path' => '/users'], function (RouteBuilder $routes) {
+use CakeDC\Users\Utility\UsersUrl;
+//Use custom path if url is customized
+$baseUsersPath = UsersUrl::isCustom() ? '/users-base' : '/users';
+$routes->plugin('CakeDC/Users', ['path' => $baseUsersPath], function (RouteBuilder $routes) {
     $routes->fallbacks('DashedRoute');
 });
 
@@ -24,28 +27,16 @@ $routes->connect('/accounts/validate/*', [
 ]);
 // Google Authenticator related routes
 if (Configure::read('OneTimePasswordAuthenticator.login')) {
-    $routes->connect('/verify', ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'verify']);
+    $routes->connect('/verify', UsersUrl::actionParams('verify'));
 
-    $routes->connect('/resetOneTimePasswordAuthenticator', [
-        'plugin' => 'CakeDC/Users',
-        'controller' => 'Users',
-        'action' => 'resetOneTimePasswordAuthenticator'
-    ]);
+    $routes->connect('/resetOneTimePasswordAuthenticator', UsersUrl::actionParams('resetOneTimePasswordAuthenticator'));
 }
 
-$routes->connect('/profile/*', ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile']);
-$routes->connect('/login', ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
-$routes->connect('/logout', ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'logout']);
-$routes->connect('/link-social/*', [
-    'controller' => 'Users',
-    'action' => 'linkSocial',
-    'plugin' => 'CakeDC/Users',
-]);
-$routes->connect('/callback-link-social/*', [
-    'controller' => 'Users',
-    'action' => 'callbackLinkSocial',
-    'plugin' => 'CakeDC/Users',
-]);
+$routes->connect('/profile/*', UsersUrl::actionParams('profile'));
+$routes->connect('/login', UsersUrl::actionParams('login'));
+$routes->connect('/logout', UsersUrl::actionParams('logout'));
+$routes->connect('/link-social/*', UsersUrl::actionParams('linkSocial'));
+$routes->connect('/callback-link-social/*', UsersUrl::actionParams('callbackLinkSocial'));
 $oauthPath = Configure::read('OAuth.path');
 if (is_array($oauthPath)) {
     $routes->scope('/auth', function (RouteBuilder $routes) use ($oauthPath) {

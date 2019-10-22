@@ -91,7 +91,7 @@ class SocialAccountsControllerTest extends TestCase
     {
         $this->Controller->expects($this->once())
                 ->method('redirect')
-                ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
+                ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login', 'prefix' => false]);
         $this->Controller->validateAccount('Facebook', 'reference-1-1234', 'token-1234');
         $this->assertEquals('Account validated successfully', $this->Controller->getRequest()->getSession()->read('Flash.flash.0.message'));
     }
@@ -105,7 +105,7 @@ class SocialAccountsControllerTest extends TestCase
     {
         $this->Controller->expects($this->once())
                 ->method('redirect')
-                ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
+                ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login', 'prefix' => false]);
         $this->Controller->validateAccount('Facebook', 'reference-1-1234', 'token-not-found');
         $this->assertEquals('Invalid token and/or social account', $this->Controller->getRequest()->getSession()->read('Flash.flash.0.message'));
     }
@@ -119,7 +119,7 @@ class SocialAccountsControllerTest extends TestCase
     {
         $this->Controller->expects($this->once())
                 ->method('redirect')
-                ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
+                ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login', 'prefix' => false]);
         $this->Controller->validateAccount('Twitter', 'reference-1-1234', 'token-1234');
         $this->assertEquals('Social Account already active', $this->Controller->getRequest()->getSession()->read('Flash.flash.0.message'));
     }
@@ -141,7 +141,7 @@ class SocialAccountsControllerTest extends TestCase
                 ->will($this->returnValue(true));
         $this->Controller->expects($this->once())
                 ->method('redirect')
-                ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
+                ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login', 'prefix' => false]);
 
         $this->Controller->resendValidation('Facebook', 'reference-1-1234');
         $this->assertEquals('Email sent successfully', $this->Controller->getRequest()->getSession()->read('Flash.flash.0.message'));
@@ -164,7 +164,7 @@ class SocialAccountsControllerTest extends TestCase
                 ->will($this->returnValue(false));
         $this->Controller->expects($this->once())
                 ->method('redirect')
-                ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
+                ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login', 'prefix' => false]);
 
         $this->Controller->resendValidation('Facebook', 'reference-1-1234');
         $this->assertEquals('Email could not be sent', $this->Controller->getRequest()->getSession()->read('Flash.flash.0.message'));
@@ -179,7 +179,7 @@ class SocialAccountsControllerTest extends TestCase
     {
         $this->Controller->expects($this->once())
                 ->method('redirect')
-                ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
+                ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login', 'prefix' => false]);
         $this->Controller->resendValidation('Facebook', 'reference-invalid');
         $this->assertEquals('Invalid account', $this->Controller->getRequest()->getSession()->read('Flash.flash.0.message'));
     }
@@ -193,7 +193,7 @@ class SocialAccountsControllerTest extends TestCase
     {
         $this->Controller->expects($this->once())
                 ->method('redirect')
-                ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
+                ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login', 'prefix' => false]);
         $this->Controller->validateAccount('Twitter', 'reference-1-1234', 'token-1234');
         $this->assertEquals('Social Account already active', $this->Controller->getRequest()->getSession()->read('Flash.flash.0.message'));
     }

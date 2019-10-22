@@ -455,4 +455,71 @@ class PluginTest extends TestCase
         $actualService = $plugin->getAuthorizationService($request);
         $this->assertSame($service, $actualService);
     }
+
+    /**
+     * test bootstrap method
+     *
+     * @param string $urlConfigKey The url config key.
+     * @param array $expectedUrl The expected url value for $urlConfigKey.
+     * @dataProvider dataProviderConfigUsersUrls
+     * @return void
+     */
+    public function testBootstrap($urlConfigKey, $expectedUrl)
+    {
+        $actual = Configure::read($urlConfigKey);
+        $this->assertSame($expectedUrl, $actual);
+    }
+
+    /**
+     * Data provider for users urls
+     *
+     * @return array
+     */
+    public function dataProviderConfigUsersUrls()
+    {
+        $defaultVerifyAction = [
+            'prefix' => false,
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+            'action' => 'verify',
+        ];
+        $defaultProfileAction = [
+            'prefix' => false,
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+            'action' => 'profile',
+        ];
+        $defaultU2fStartAction = [
+            'prefix' => false,
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+            'action' => 'u2f',
+        ];
+        $defaultLoginAction = [
+            'prefix' => false,
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+            'action' => 'login',
+        ];
+        $defaultOauthPath = [
+            'prefix' => null,
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+            'action' => 'socialLogin',
+        ];
+
+        return [
+            ['Users.Profile.route', $defaultProfileAction],
+            ['OneTimePasswordAuthenticator.verifyAction', $defaultVerifyAction],
+            ['U2f.startAction', $defaultU2fStartAction],
+            ['Auth.AuthenticationComponent.loginAction', $defaultLoginAction],
+            ['Auth.AuthenticationComponent.logoutRedirect', $defaultLoginAction],
+            ['Auth.AuthenticationComponent.loginRedirect', '/'],
+            ['Auth.Authenticators.Form.loginUrl', $defaultLoginAction],
+            ['Auth.Authenticators.Cookie.loginUrl', $defaultLoginAction],
+            ['Auth.Authenticators.SocialPendingEmail.loginUrl', $defaultLoginAction],
+            ['Auth.AuthorizationMiddleware.unauthorizedHandler.url', $defaultLoginAction],
+            ['OAuth.path', $defaultOauthPath],
+        ];
+    }
 }

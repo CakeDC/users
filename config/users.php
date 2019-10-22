@@ -62,7 +62,6 @@ $config = [
         'Profile' => [
             // Allow view other users profiles
             'viewOthers' => true,
-            'route' => ['prefix' => false, 'plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile'],
         ],
         'Key' => [
             'Session' => [
@@ -102,12 +101,6 @@ $config = [
     ],
     'OneTimePasswordAuthenticator' => [
         'checker' => \CakeDC\Auth\Authentication\DefaultOneTimePasswordAuthenticationChecker::class,
-        'verifyAction' => [
-            'plugin' => 'CakeDC/Users',
-            'controller' => 'Users',
-            'action' => 'verify',
-            'prefix' => false,
-        ],
         'login' => false,
         'issuer' => null,
         // The number of digits the resulting codes will be
@@ -124,12 +117,6 @@ $config = [
     'U2f' => [
         'enabled' => false,
         'checker' => \CakeDC\Auth\Authentication\DefaultU2fAuthenticationChecker::class,
-        'startAction' => [
-            'plugin' => 'CakeDC/Users',
-            'controller' => 'Users',
-            'action' => 'u2f',
-            'prefix' => false,
-        ]
     ],
     // default configuration used to auto-load the Auth Component, override to change the way Auth works
     'Auth' => [
@@ -138,18 +125,6 @@ $config = [
         ],
         'AuthenticationComponent' => [
             'load' => true,
-        'loginAction' => [
-            'plugin' => 'CakeDC/Users',
-            'controller' => 'Users',
-            'action' => 'login',
-                'prefix' => false,
-        ],
-            'logoutRedirect' => [
-                'plugin' => 'CakeDC/Users',
-                'controller' => 'Users',
-                'action' => 'login',
-                'prefix' => false,
-            ],
             'loginRedirect' => '/',
             'requireIdentity' => false
         ],
@@ -162,13 +137,7 @@ $config = [
             'Form' => [
                 'className' => 'CakeDC/Auth.Form',
                 'urlChecker' => 'Authentication.CakeRouter',
-                'loginUrl' => [
-                    'plugin' => 'CakeDC/Users',
-                    'controller' => 'Users',
-                    'action' => 'login',
-                    'prefix' => false,
-                ]
-    ],
+            ],
             'Token' => [
                 'className' => 'Authentication.Token',
                 'skipTwoFactorVerify' => true,
@@ -185,12 +154,6 @@ $config = [
                     'httpOnly' => true,
                 ],
                 'urlChecker' => 'Authentication.CakeRouter',
-                'loginUrl' => [
-                    'plugin' => 'CakeDC/Users',
-                    'controller' => 'Users',
-                    'action' => 'login',
-                    'prefix' => false,
-                ]
             ],
             'Social' => [
                 'className' => 'CakeDC/Users.Social',
@@ -237,11 +200,6 @@ $config = [
                     'ForbiddenException' => 'Authorization\Exception\ForbiddenException',
                 ],
                 'className' => 'Authorization.CakeRedirect',
-                'url' => [
-                    'plugin' => 'CakeDC/Users',
-                    'controller' => 'Users',
-                    'action' => 'login',
-                ]
             ]
         ],
         'AuthorizationComponent' => [
@@ -253,7 +211,6 @@ $config = [
         ]
     ],
     'OAuth' => [
-        'path' => ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'socialLogin', 'prefix' => null],
         'providers' => [
             'facebook' => [
                 'service' => 'CakeDC\Auth\Social\Service\OAuth2Service',

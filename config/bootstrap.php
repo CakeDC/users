@@ -9,6 +9,7 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
+use CakeDC\Users\Utility\UsersUrl;
 use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
@@ -17,6 +18,8 @@ Configure::load('CakeDC/Users.users');
 collection((array)Configure::read('Users.config'))->each(function ($file) {
     Configure::load($file);
 });
+UsersUrl::setupConfigUrls();
+
 $locator = TableRegistry::getTableLocator();
 foreach (['Users', 'CakeDC/Users.Users'] as $modelKey) {
     if (!$locator->exists($modelKey)) {

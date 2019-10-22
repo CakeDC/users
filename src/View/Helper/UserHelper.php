@@ -17,6 +17,7 @@ use Cake\Core\Configure;
 use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
 use Cake\View\Helper;
+use CakeDC\Users\Utility\UsersUrl;
 
 /**
  * User helper
@@ -108,9 +109,10 @@ class UserHelper extends Helper
      */
     public function logout($message = null, $options = [])
     {
-        return $this->AuthLink->link(empty($message) ? __d('cake_d_c/users', 'Logout') : $message, [
-            'prefix' => false, 'plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'logout',
-        ], $options);
+        $url = UsersUrl::actionUrl('logout');
+        $title = empty($message) ? __d('cake_d_c/users', 'Logout') : $message;
+
+        return $this->AuthLink->link($title, $url, $options);
     }
 
     /**
@@ -164,7 +166,11 @@ class UserHelper extends Helper
             );
         }
         $this->addReCaptchaScript();
-        $this->Form->unlockField('g-recaptcha-response');
+        try {
+            $this->Form->unlockField('g-recaptcha-response');
+        } catch (\Exception $e) {
+
+        }
 
         return $this->Html->tag('div', '', [
             'class' => 'g-recaptcha',
