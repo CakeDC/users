@@ -70,7 +70,6 @@ class Application extends BaseApplication
 
         // Load a plugin with a vendor namespace by 'short name'
         $this->addPlugin('CakeDC/Users');
-        Configure::write('Users.config', ['users']);
     }
 }
 ```
