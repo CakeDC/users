@@ -69,7 +69,7 @@ class Application extends BaseApplication
         parent::bootstrap();
 
         // Load a plugin with a vendor namespace by 'short name'
-        $this->addPlugin('CakeDC/Users');
+        $this->addPlugin('CakeDC/Users', ['routes' => true]);
         Configure::write('Users.config', ['users']);
     }
 }
