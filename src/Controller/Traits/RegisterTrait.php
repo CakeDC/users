@@ -12,6 +12,7 @@
 namespace CakeDC\Users\Controller\Traits;
 
 use CakeDC\Users\Plugin;
+use CakeDC\Users\Utility\UsersUrl;
 use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
 use Cake\Http\Exception\NotFoundException;
@@ -142,7 +143,7 @@ trait RegisterTrait
         }
         $this->Flash->success($message);
 
-        return $this->redirect(['action' => 'login']);
+        return $this->redirect(UsersUrl::actionUrl('login'));
     }
 
     /**
