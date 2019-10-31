@@ -7,6 +7,12 @@ CakeDC Users Plugin
 [![Latest Version](https://poser.pugx.org/CakeDC/users/v/stable.png)](https://packagist.org/packages/CakeDC/users)
 [![License](https://poser.pugx.org/CakeDC/users/license.svg)](https://packagist.org/packages/CakeDC/users)
 
+Warning
+-------
+
+**OUTDATED branch, please use the specific develop branch for each version, for example 8.x for the version 8 development**
+
+
 Versions and branches
 ---------------------
 
