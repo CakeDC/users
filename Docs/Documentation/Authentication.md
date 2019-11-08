@@ -62,7 +62,8 @@ For example if you add JWT authenticator you can set:
 
 ```
 $authenticators = Configure::read('Auth.Authenticators');
-$authenticators['Authentication.Jwt'] = [
+$authenticators['Jwt'] = [
+    'className' => 'Authentication.Jwt',
     'queryParam' => 'token',
     'skipTwoFactorVerify' => true,
 ]; 
