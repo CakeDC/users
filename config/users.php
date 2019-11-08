@@ -133,7 +133,7 @@ $config = [
                 'className' => 'Authentication.Session',
                 'skipTwoFactorVerify' => true,
                 'sessionKey' => 'Auth',
-        ],
+            ],
             'Form' => [
                 'className' => 'CakeDC/Auth.Form',
                 'urlChecker' => 'Authentication.CakeRouter',

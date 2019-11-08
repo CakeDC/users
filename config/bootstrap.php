@@ -26,6 +26,16 @@ foreach (['Users', 'CakeDC/Users.Users'] as $modelKey) {
         $locator->setConfig($modelKey, ['className' => Configure::read('Users.table')]);
     }
 }
-if (Configure::check('Auth.authenticate') || Configure::check('Auth.authorize')) {
-    trigger_error("Users plugin configurations keys Auth.authenticate and Auth.authorize were removed, please check migration guide https://github.com/CakeDC/users/blob/master/Docs/Documentation/MigrationGuide.md'");
+$oldConfigs = [
+    'Users.auth',
+    'Users.Social.authenticator',
+    'Users.GoogleAuthenticator',
+    'GoogleAuthenticator',
+    'Auth.authenticate',
+    'Auth.authorize',
+];
+foreach ($oldConfigs as $configKey) {
+    if (Configure::check($configKey)) {
+        trigger_error(__("Users plugin configuration key \"{0}\" was removed, please check migration guide https://github.com/CakeDC/users/blob/master/Docs/Documentation/Migration/8.x-9.0.md", $configKey));
+    }
 }

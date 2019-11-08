@@ -32,18 +32,6 @@ The default configuration for Auth.AuthenticationComponent is:
 ```
 [
     'load' => true,
-    'loginAction' => [
-        'plugin' => 'CakeDC/Users',
-        'controller' => 'Users',
-        'action' => 'login',
-        'prefix' => false,
-    ],
-    'logoutRedirect' => [
-        'plugin' => 'CakeDC/Users',
-        'controller' => 'Users',
-        'action' => 'login',
-        'prefix' => false,
-    ],
     'loginRedirect' => '/',
     'requireIdentity' => false
 ]
@@ -74,7 +62,8 @@ For example if you add JWT authenticator you can set:
 
 ```
 $authenticators = Configure::read('Auth.Authenticators');
-$authenticators['Authentication.Jwt'] = [
+$authenticators['Jwt'] = [
+    'className' => 'Authentication.Jwt',
     'queryParam' => 'token',
     'skipTwoFactorVerify' => true,
 ]; 
@@ -103,13 +92,28 @@ As you add more authenticators you may need to add identifiers, please check ide
 The default value for Auth.Identifiers is:
 ```
 [
-    'Authentication.Password' => [],
-    "CakeDC/Users.Social" => [
-        'authFinder' => 'all'
-    ], at load authentication
-      service step method from plugin object
-    'Authentication.Token' => [
-        'tokenField' => 'api_token'
+    'Password' => [
+        'className' => 'Authentication.Password',
+        'fields' => [
+            'username' => ['username', 'email'],
+            'password' => 'password'
+        ],
+        'resolver' => [
+            'className' => 'Authentication.Orm',
+            'finder' => 'active'
+        ],
+    ],
+    "Social" => [
+        'className' => 'CakeDC/Users.Social',
+        'authFinder' => 'active'
+    ],
+    'Token' => [
+        'className' => 'Authentication.Token',
+        'tokenField' => 'api_token',
+        'resolver' => [
+            'className' => 'Authentication.Orm',
+            'finder' => 'active'
+        ],
     ]
 ]
 ```
