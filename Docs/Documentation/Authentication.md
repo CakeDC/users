@@ -32,18 +32,6 @@ The default configuration for Auth.AuthenticationComponent is:
 ```
 [
     'load' => true,
-    'loginAction' => [
-        'plugin' => 'CakeDC/Users',
-        'controller' => 'Users',
-        'action' => 'login',
-        'prefix' => false,
-    ],
-    'logoutRedirect' => [
-        'plugin' => 'CakeDC/Users',
-        'controller' => 'Users',
-        'action' => 'login',
-        'prefix' => false,
-    ],
     'loginRedirect' => '/',
     'requireIdentity' => false
 ]
