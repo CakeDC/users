@@ -28,12 +28,7 @@ The default configuration for authorization middleware is:
             'MissingIdentityException' => 'Authorization\Exception\MissingIdentityException',
             'ForbiddenException' => 'Authorization\Exception\ForbiddenException',
         ],
-        'className' => 'Authorization.CakeRedirect',
-        'url' => [
-            'plugin' => 'CakeDC/Users',
-            'controller' => 'Users',
-            'action' => 'login',
-        ]
+        'className' => 'Authorization.CakeRedirect',        
     ]
 ],
 ```
