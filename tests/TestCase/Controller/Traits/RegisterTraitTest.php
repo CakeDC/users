@@ -115,9 +115,6 @@ class RegisterTraitTest extends BaseTraitTest
             ->method('redirect');
         $this->Trait->getRequest()->expects($this->never())
             ->method('is');
-        $this->Trait->getRequest()->expects($this->once())
-            ->method('getData')
-            ->will($this->returnValue([]));
 
         $this->Trait->register();
         $this->assertEquals(0, $this->table->find()->where(['username' => 'testRegistration'])->count());
