@@ -1,16 +1,26 @@
 language: php
-services:
-  - postgresql
-  - mysql
+
+dist: xenial
+
 php:
   - 7.2
   - 7.3
-
+  - '7.4snapshot'
+ 
 sudo: false
+
+services:
+  - postgresql
+  - mysql
+
+cache:
+  directories:
+    - vendor
+    - $HOME/.composer/cache 
 
 env:
   matrix:
-    - DB=mysql db_dsn='mysql://travis@127.0.0.1/cakephp_test'
+    - DB=mysql db_dsn='mysql://root@127.0.0.1/cakephp_test?init[]=SET sql_mode = "STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION"'
     - DB=pgsql db_dsn='postgres://postgres@127.0.0.1/cakephp_test'
     - DB=sqlite db_dsn='sqlite:///:memory:'
 
@@ -33,8 +43,8 @@ matrix:
 before_script:
   - if [[ $TRAVIS_PHP_VERSION != 7.3 ]]; then phpenv config-rm xdebug.ini; fi
   - composer install --prefer-dist --no-interaction
-  - sh -c "if [ '$DB' = 'mysql' ]; then mysql -e 'CREATE DATABASE cakephp_test; GRANT ALL PRIVILEGES ON cakephp_test.* TO travis@localhost;'; fi"
-  - sh -c "if [ '$DB' = 'pgsql' ]; then psql -c 'CREATE DATABASE cakephp_test;' -U postgres; fi"
+  - if [[ $DB == 'mysql' ]]; then mysql -u root -e 'CREATE DATABASE cakephp_test;'; fi
+  - if [[ $DB == 'pgsql' ]]; then psql -c 'CREATE DATABASE cakephp_test;' -U postgres; fi
   - if [[ $PHPSTAN = 1 ]]; then composer stan-setup; fi
 
 script:

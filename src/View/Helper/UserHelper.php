@@ -169,7 +169,6 @@ class UserHelper extends Helper
         try {
             $this->Form->unlockField('g-recaptcha-response');
         } catch (\Exception $e) {
-
         }
 
         return $this->Html->tag('div', '', [
