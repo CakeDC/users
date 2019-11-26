@@ -46,9 +46,7 @@
         "yubico/u2flib-server": "^1.0",
         "php-coveralls/php-coveralls": "^2.1",
         "league/oauth1-client": "^1.7",
-        "cakephp/cakephp-codesniffer": "dev-next",
-        "phpstan/phpstan": "0.11",
-        "vimeo/psalm": "3.0"
+        "cakephp/cakephp-codesniffer": "dev-next"
     },
     "suggest": {
         "league/oauth1-client": "Provides Social Authentication with Twitter",
@@ -77,12 +75,16 @@
             "@cs-check",
             "@test"
         ],
-        "cs-check": "phpcs -p --standard=vendor/cakephp/cakephp-codesniffer/CakePHP src/ tests/",
-        "cs-fix": "phpcbf --standard=vendor/cakephp/cakephp-codesniffer/CakePHP src/ tests/",
+        "analyse": [
+            "@stan",
+            "@psalm"
+         ],
+        "cs-check": "phpcs -n -p --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests",
+        "cs-fix": "phpcbf --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests",
         "test": "phpunit --stderr",
-        "stan": "phpstan analyse src/ && psalm --show-info=false",
-        "psalm": "psalm --show-info=false",
-        "stan-setup": "cp composer.json composer.backup && composer require --dev phpstan/phpstan:^0.11 vimeo/psalm:^3.0 && mv composer.backup composer.json", 
+        "stan": "phpstan analyse src/",
+        "psalm": "php vendor/psalm/phar/psalm.phar --show-info=false src/ ",
+        "stan-setup": "cp composer.json composer.backup && composer require --dev phpstan/phpstan-shim:^0.11.18 psalm/phar:^3.5  && mv composer.backup composer.json",
         "rector": "rector process src/",
         "rector-setup": "cp composer.json composer.backup && composer require --dev rector/rector:^0.4.11 && mv composer.backup composer.json", 
         "coverage-test": "phpunit --stderr --coverage-clover=clover.xml"
