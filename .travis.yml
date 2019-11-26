@@ -36,12 +36,11 @@ matrix:
 
     - php: 7.3
       env: PHPSTAN=1 DEFAULT=0
-	  
+
     - php: 7.3
-      env: COVERAGE=1 DEFAULT=0 DB=mysql db_dsn='mysql://travis@0.0.0.0/cakephp_test'
+      env: COVERAGE=1 DEFAULT=0 DB=mysql db_dsn='mysql://root@127.0.0.1/cakephp_test?init[]=SET sql_mode = "STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION"'
 
 before_script:
-  - if [[ $TRAVIS_PHP_VERSION != 7.3 ]]; then phpenv config-rm xdebug.ini; fi
   - composer install --prefer-dist --no-interaction
   - if [[ $DB == 'mysql' ]]; then mysql -u root -e 'CREATE DATABASE cakephp_test;'; fi
   - if [[ $DB == 'pgsql' ]]; then psql -c 'CREATE DATABASE cakephp_test;' -U postgres; fi
@@ -52,6 +51,9 @@ script:
   - if [[ $COVERAGE = 1 ]]; then composer coverage-test; fi
   - if [[ $PHPCS = 1 ]]; then composer cs-check; fi
   - if [[ $PHPSTAN = 1 ]]; then composer stan; fi
+
+after_success:
+  - if [[ $COVERAGE = 1 ]]; then bash <(curl -s https://codecov.io/bash); fi
 
 notifications:
   email: false
