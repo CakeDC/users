@@ -125,7 +125,7 @@ class LoginComponent extends Component
      * Determine redirect url after user identified
      *
      * @param array $user user data after identified
-     * @return \Cake\Http\Response
+     * @return \Cake\Http\Response|null
      */
     protected function afterIdentifyUser($user)
     {

@@ -71,20 +71,23 @@
         }
     },
     "scripts": {
-        "check": [
-            "@cs-check",
-            "@test"
-        ],
         "analyse": [
             "@stan",
             "@psalm"
          ],
+        "check": [
+            "@cs-check",
+            "@test",
+            "@analyse"
+        ],
         "cs-check": "phpcs -n -p --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests",
         "cs-fix": "phpcbf --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests",
         "test": "phpunit --stderr",
         "stan": "phpstan analyse src/",
         "psalm": "php vendor/psalm/phar/psalm.phar --show-info=false src/ ",
         "stan-setup": "cp composer.json composer.backup && composer require --dev phpstan/phpstan-shim:^0.11.18 psalm/phar:^3.5  && mv composer.backup composer.json",
+        "stan-rebuild-baseline": "phpstan analyse --configuration phpstan.neon --error-format baselineNeon src/ > phpstan-baseline.neon",
+        "psalm-rebuild-baseline": "php vendor/psalm/phar/psalm.phar --show-info=false  --set-baseline=psalm-baseline.xml  src/",
         "rector": "rector process src/",
         "rector-setup": "cp composer.json composer.backup && composer require --dev rector/rector:^0.4.11 && mv composer.backup composer.json", 
         "coverage-test": "phpunit --stderr --coverage-clover=clover.xml"
