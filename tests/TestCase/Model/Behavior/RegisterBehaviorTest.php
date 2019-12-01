@@ -204,6 +204,30 @@ class RegisterBehaviorTest extends TestCase
     }
 
     /**
+     * Test register method
+     *
+     * @return void
+     */
+    public function testValidateRegisterUsernameBlackList()
+    {
+        $user = [
+            'username' => 'admin',
+            'email' => 'testuser@test.com',
+            'password' => 'password',
+            'password_confirm' => 'password',
+            'first_name' => 'test',
+            'last_name' => 'user',
+            'tos' => 1
+        ];
+        Configure::write('Users.Username.blackList', ['admin']);
+        $result = $this->Table->register($this->Table->newEntity(), $user, [
+            'token_expiration' => 3600,
+            'validate_email' => 0
+        ]);
+        $this->assertFalse($result);        
+    }
+
+    /**
      * Test ActivateUser method
      *
      * @return void

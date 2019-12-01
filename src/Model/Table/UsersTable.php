@@ -34,6 +34,11 @@ class UsersTable extends Table
      * @var bool
      */
     public $isValidateEmail = false;
+    
+    /**
+     * @var array
+     */
+    public $usernameBlackList = [];
 
     /**
      * Field additional_data is json
@@ -192,6 +197,16 @@ class UsersTable extends Table
             ]);
         }
 
+        if ($this->usernameBlackList) {
+            $rules->add(
+                function ($entity, $options) {
+                    return !in_array($entity->username, $this->usernameBlackList);
+                }, 
+                '_blackList',
+                ['errorField' => 'username', 'message' => 'Username invalid']
+            );
+        }
+        
         return $rules;
     }
 }
