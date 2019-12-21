@@ -14,7 +14,8 @@ Versions and branches
 | :-------------: | :------------------------: | :--:  | :---- |
 | 3.7             | [master](https://github.com/cakedc/users/tree/master)                      | 8.5.1 | stable |
 | 3.7             | [develop](https://github.com/cakedc/users/tree/develop)                      | - | unstable |
-| ^3.7            | [8.5](https://github.com/cakedc/users/tree/8.next)                      | 8.5.1 | stable |
+| ^4.0            | [8.5](https://github.com/cakedc/users/tree/9.next)                      | 9.0.0 | stable |
+| ^3.7  <4.0      | [8.5](https://github.com/cakedc/users/tree/8.next)                      | 8.5.1 | stable |
 | 3.6             | [8.1](https://github.com/cakedc/users/tree/8.1.0)                      | 8.1.0 | stable |
 | 3.5             | [6.x](https://github.com/cakedc/users/tree/6.x)                      | 6.0.1 | stable |
 | 3.4             | [5.x](https://github.com/cakedc/users/tree/5.x)                      | 5.2.0 | stable |
