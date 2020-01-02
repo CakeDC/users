@@ -14,11 +14,6 @@
 use Cake\Core\Configure;
 use Cake\Routing\RouteBuilder;
 use CakeDC\Users\Utility\UsersUrl;
-//Use custom path if url is customized
-$baseUsersPath = UsersUrl::isCustom() ? '/users-base' : '/users';
-$routes->plugin('CakeDC/Users', ['path' => $baseUsersPath], function (RouteBuilder $routes) {
-    $routes->fallbacks('DashedRoute');
-});
 
 $routes->connect('/accounts/validate/*', [
     'plugin' => 'CakeDC/Users',
@@ -37,6 +32,8 @@ $routes->connect('/login', UsersUrl::actionParams('login'));
 $routes->connect('/logout', UsersUrl::actionParams('logout'));
 $routes->connect('/link-social/*', UsersUrl::actionParams('linkSocial'));
 $routes->connect('/callback-link-social/*', UsersUrl::actionParams('callbackLinkSocial'));
+$routes->connect('/register', UsersUrl::actionParams('register'));
+
 $oauthPath = Configure::read('OAuth.path');
 if (is_array($oauthPath)) {
     $routes->scope('/auth', function (RouteBuilder $routes) use ($oauthPath) {
@@ -47,3 +44,9 @@ if (is_array($oauthPath)) {
         );
     });
 }
+
+$routes->connect('/social-accounts/:action/*', [
+    'plugin' => 'CakeDC/Users',
+    'controller' => 'SocialAccounts',
+]);
+$routes->connect('/users/:action/*', UsersUrl::actionParams(null));
