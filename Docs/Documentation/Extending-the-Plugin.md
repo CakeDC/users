@@ -156,7 +156,7 @@ needed to setup correct url/route for authentication.
         // ...
 ```
 
-Note you'll need to **copy the Plugin templates** you need into your project src/Template/MyUsers/[action].ctp
+Note you'll need to **copy the Plugin templates** you need into your project templates/MyUsers/[action].php
 
 You may also need to load some helpers in your AppView:
 
@@ -205,9 +205,9 @@ Updating the Templates
 -------------------
 
 Use the standard CakePHP conventions to override Plugin views using your application views
-http://book.cakephp.org/3.0/en/plugins.html#overriding-plugin-templates-from-inside-your-application
+https://book.cakephp.org/4/en/plugins.html#overriding-plugin-templates-from-inside-your-application
 
-`{project_dir}/src/Template/Plugin/CakeDC/Users/Users/{templates_in_here}`
+`{project_dir}/templates/plugin/CakeDC/Users/Users/{templates_in_here}`
 
 Updating the Emails
 -------------------
@@ -239,7 +239,7 @@ class MyUsersMailer extends UsersMailer
 * Configure the Plugin to use this new mailer class in bootstrap or users.php
 `Configure::write('Users.Email.mailerClass', \App\Mailer\MyUsersMailer::class);`
 
-* Create the file `src/Template/Email/text/custom_template_in_app_namespace.ctp`
+* Create the file `templates/email/text/custom_template_in_app_namespace.php`
 with your custom contents. Note you can also prepare an html version of the file,
 change the template, or do any other customization in the `MyUsersMailer` method.
 

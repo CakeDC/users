@@ -170,7 +170,7 @@ You need to configure 2 things:
 ```
 
 * Override the login.php template to change the Form->control to "email". 
-Add (or copy from the [/templates/Users/login.php](../../templates/Users/login.php)) the file login.php to path /src/Template/Plugin/CakeDC/Users/Users/login.php 
+Add (or copy from the [/templates/Users/login.php](../../templates/Users/login.php)) the file login.php to path /templates/plugin/CakeDC/Users/Users/login.php 
 and ensure it has the following content
 
 ```php
