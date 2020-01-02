@@ -7,7 +7,7 @@ Extending the Model (Table/Entity)
 Create a new Table and Entity in your app, matching the table you want to use for storing the
 users data. Check the initial users migration to know the default columns expected in the table.
 If your column names doesn't match the columns in your current table, you could use the Entity to
-match the colums using accessors & mutators as described here http://book.cakephp.org/3.0/en/orm/entities.html#accessors-mutators
+match the colums using accessors & mutators as described here https://book.cakephp.org/4/en/orm/entities.html#accessors-mutators
 
 Example: we are going to use a custom table ```my_users``` in our application , which has a field named ``is_active`` instead of the default ``active``.
 * Create a new Table under src/Model/Table/MyUsersTable.php
