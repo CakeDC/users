@@ -13,6 +13,8 @@ namespace CakeDC\Users\Test\TestCase\View\Helper;
 
 use CakeDC\Users\View\Helper\AuthLinkHelper;
 use Cake\Http\ServerRequest;
+use Cake\ORM\TableRegistry;
+use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use Cake\View\View;
 
@@ -21,6 +23,16 @@ use Cake\View\View;
  */
 class AuthLinkHelperTest extends TestCase
 {
+    use IntegrationTestTrait;
+
+    /**
+     * Fixtures
+     *
+     * @var array
+     */
+    public $fixtures = [
+        'plugin.CakeDC/Users.Users',
+    ];
 
     /**
      * Test subject
@@ -129,5 +141,113 @@ class AuthLinkHelperTest extends TestCase
     {
         $actual = $this->AuthLink->getRequest();
         $this->assertInstanceOf(ServerRequest::class, $actual);
+    }
+
+    /**
+     * Test post link with delete user method
+     * Logged as Super user
+     *
+     * @return void
+     */
+    public function testPostLinkAuthorizedAllowedTrueLoggedAsAdmin()
+    {
+        $this->userTable = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
+        $this->session(
+            [
+                'Auth' => [
+                    'User' => $this->userTable->get('00000000-0000-0000-0000-000000000001'),
+                ],
+            ]
+        );
+        $url = [
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+            'action' => 'delete',
+            '00000000-0000-0000-0000-000000000010',
+        ];
+
+        $this->AuthLink->expects($this->once())
+            ->method('isAuthorized')
+            ->with(
+                $this->equalTo($url)
+            )
+            ->will($this->returnValue(true));
+
+        $link = $this->AuthLink->postLink('Post Link Title', $url, [
+                'allowed' => true,
+                'class' => 'link-class',
+                'confirm' => 'confirmation message',
+            ]);
+
+        $this->assertContains('confirmation message', $link);
+        $this->assertContains('Post Link Title', $link);
+    }
+
+    /**
+     * Test post link with delete user method
+     * Logged as normal user
+     *
+     * @return void
+     */
+    public function testPostLinkAuthorizedAllowedFalseLoggedWithoutRole()
+    {
+        $this->userTable = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
+        $this->session(
+            [
+                'Auth' => [
+                    'User' => $this->userTable->get('00000000-0000-0000-0000-000000000004'),
+                ],
+            ]
+        );
+        $url = [
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+            'action' => 'delete',
+            '00000000-0000-0000-0000-000000000010',
+        ];
+
+        $this->AuthLink->expects($this->once())
+            ->method('isAuthorized')
+            ->with(
+                $this->equalTo($url)
+            )
+            ->will($this->returnValue(false));
+
+        $link = $this->AuthLink->postLink('Post Link Title', $url, [
+                'allowed' => true,
+                'class' => 'link-class',
+                'confirm' => 'confirmation message',
+            ]);
+
+        $this->assertFalse($link);
+    }
+
+    /**
+     * Test post link with delete user method
+     *
+     * @return void
+     */
+    public function testPostLinkAuthorizedAllowedFalse()
+    {
+        $url = [
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+            'action' => 'delete',
+            '00000000-0000-0000-0000-000000000010',
+        ];
+
+        $this->AuthLink->expects($this->once())
+            ->method('isAuthorized')
+            ->with(
+                $this->equalTo($url)
+            )
+            ->will($this->returnValue(false));
+
+        $link = $this->AuthLink->postLink('Post Link Title', $url, [
+            'allowed' => true,
+            'class' => 'link-class',
+            'confirm' => 'confirmation message',
+        ]);
+        $this->assertFalse($link);
     }
 }
