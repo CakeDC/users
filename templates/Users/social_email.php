@@ -8,10 +8,12 @@
  * @copyright Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
+
+use CakeDC\Users\Model\Entity\User;
 ?>
 <div class="users form">
     <?= $this->Flash->render() ?>
-    <?= $this->Form->create('User') ?>
+    <?= $this->Form->create(new User) ?>
     <fieldset>
         <legend><?= __d('cake_d_c/users', 'Please enter your email') ?></legend>
         <?= $this->Form->control('email') ?>
