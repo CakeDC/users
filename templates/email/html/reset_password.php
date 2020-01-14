@@ -9,14 +9,10 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-$activationUrl = [
+$activationUrl = \CakeDC\Users\Utility\UsersUrl::actionUrl('resetPassword', [
     '_full' => true,
-    'prefix' => false,
-    'plugin' => 'CakeDC/Users',
-    'controller' => 'Users',
-    'action' => 'resetPassword',
     isset($token) ? $token : ''
-];
+]);
 ?>
 <p>
     <?= __d('cake_d_c/users', "Hi {0}", isset($first_name) ? $first_name : '') ?>,
