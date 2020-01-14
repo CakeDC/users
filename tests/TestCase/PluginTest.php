@@ -320,7 +320,7 @@ class PluginTest extends TestCase
         $this->assertEquals($expected, $actual);
 
         /**
-         * @var \Authentication\Authenticator\AuthenticatorCollection $authenticators
+         * @var \Authentication\Identifier\IdentifierCollection $identifiers
          */
         $identifiers = $service->identifiers();
         $expected = [

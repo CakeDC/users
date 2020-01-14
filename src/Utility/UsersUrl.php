@@ -46,6 +46,7 @@ class UsersUrl
 
         return $params + $extra;
     }
+
     /**
      * Get an user action route. This should not be user for links like HtmlHelper::link
      *
