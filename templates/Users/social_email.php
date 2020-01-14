@@ -11,10 +11,10 @@
 ?>
 <div class="users form">
     <?= $this->Flash->render() ?>
-    <?= $this->Form->create('User') ?>
+    <?= $this->Form->create() ?>
     <fieldset>
         <legend><?= __d('cake_d_c/users', 'Please enter your email') ?></legend>
-        <?= $this->Form->control('email') ?>
+        <?= $this->Form->control('email', ['type' => 'email', 'required' => true]) ?>
     </fieldset>
     <?= $this->Form->button(__d('cake_d_c/users', 'Submit')); ?>
     <?= $this->Form->end() ?>
