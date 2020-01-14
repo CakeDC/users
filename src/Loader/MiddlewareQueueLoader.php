@@ -113,13 +113,10 @@ class MiddlewareQueueLoader
         if (Configure::read('Auth.Authorization.enable') === false) {
             return $middlewareQueue;
         }
-
         $middlewareQueue->add(new AuthorizationMiddleware($plugin, Configure::read('Auth.AuthorizationMiddleware')));
-        
         if (Configure::read('Auth.AuthorizationMiddleware.requireAuthorizationCheck') !== false) {
             $middlewareQueue->add(new RequestAuthorizationMiddleware());
         }
-
 
         return $middlewareQueue;
     }
