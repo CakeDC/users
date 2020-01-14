@@ -46,6 +46,16 @@ class UsersUrl
 
         return $params + $extra;
     }
+    /**
+     * Get an user action route. This should not be user for links like HtmlHelper::link
+     *
+     * @param string $action user action
+     * @return array
+     */
+    public static function actionRouteParams($action)
+    {
+        return array_filter(static::actionParams($action));
+    }
 
     /**
      * Get an user action route. This should not be user for links like HtmlHelper::link
