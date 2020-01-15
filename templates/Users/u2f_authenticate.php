@@ -8,7 +8,7 @@
     <div class="row">
         <div class="col-xs-offset-1 col-xs-10 col-sm-offset-2 col-sm-8 col-md-6 col-md-offset-3">
             <div class="users form well well-lg">
-                <?= $this->Form->create(false, [
+                <?= $this->Form->create(null, [
                     'url' => [
                         'action' => 'u2fAuthenticateFinish',
                         '?' => $this->request->getQueryParams()
