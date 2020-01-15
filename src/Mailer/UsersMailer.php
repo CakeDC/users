@@ -38,7 +38,7 @@ class UsersMailer extends Mailer
         $viewVars = [
             'activationUrl' => UsersUrl::actionUrl('validateEmail', [
                 '_full' => true,
-                $user->token
+                $user->token,
             ]),
         ] + $user->toArray();
 
@@ -69,7 +69,7 @@ class UsersMailer extends Mailer
         $viewVars = [
             'activationUrl' => UsersUrl::actionUrl('resetPassword', [
                 '_full' => true,
-                $user->token
+                $user->token,
             ]),
         ] + $user->toArray();
 
