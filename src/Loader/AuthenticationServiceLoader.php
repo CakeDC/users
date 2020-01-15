@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,8 +13,8 @@
 
 namespace CakeDC\Users\Loader;
 
-use CakeDC\Auth\Authentication\AuthenticationService;
 use Cake\Core\Configure;
+use CakeDC\Auth\Authentication\AuthenticationService;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
@@ -26,7 +28,7 @@ class AuthenticationServiceLoader
      * Load the authentication service with authenticators from config Auth.Authenticators,
      * and identifiers from config Auth.Identifiers.
      *
-     * @param ServerRequestInterface $request The request.
+     * @param \Psr\Http\Message\ServerRequestInterface $request The request.
      * @return \CakeDC\Auth\Authentication\AuthenticationService
      */
     public function __invoke(ServerRequestInterface $request)
@@ -49,7 +51,7 @@ class AuthenticationServiceLoader
     {
         $identifiers = Configure::read('Auth.Identifiers');
         foreach ($identifiers as $key => $item) {
-            list($identifier, $options) = $this->_getItemLoadData($item, $key);
+            [$identifier, $options] = $this->_getItemLoadData($item, $key);
 
             $service->loadIdentifier($identifier, $options);
         }
@@ -67,7 +69,7 @@ class AuthenticationServiceLoader
         $authenticators = Configure::read('Auth.Authenticators');
 
         foreach ($authenticators as $key => $item) {
-            list($authenticator, $options) = $this->_getItemLoadData($item, $key);
+            [$authenticator, $options] = $this->_getItemLoadData($item, $key);
 
             $service->loadAuthenticator($authenticator, $options);
         }
@@ -82,7 +84,10 @@ class AuthenticationServiceLoader
      */
     protected function loadTwoFactorAuthenticator($service)
     {
-        if (Configure::read('OneTimePasswordAuthenticator.login') !== false || Configure::read('U2f.enabled') !== false) {
+        if (
+            Configure::read('OneTimePasswordAuthenticator.login') !== false
+            || Configure::read('U2f.enabled') !== false
+        ) {
             $service->loadAuthenticator('CakeDC/Auth.TwoFactor', [
                 'skipTwoFactorVerify' => true,
             ]);

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -22,7 +24,7 @@ class ReCaptchaTraitTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\Traits\ReCaptchaTrait')
@@ -35,7 +37,7 @@ class ReCaptchaTraitTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
     }
@@ -55,17 +57,18 @@ class ReCaptchaTraitTest extends TestCase
                 ->setMethods(['isSuccess'])
                 ->disableOriginalConstructor()
                 ->getMock();
-        $Response->expects($this->any())
+        $Response->expects($this->once())
             ->method('isSuccess')
             ->will($this->returnValue(true));
-        $ReCaptcha->expects($this->any())
+        $ReCaptcha->expects($this->once())
             ->method('verify')
             ->with('value')
             ->will($this->returnValue($Response));
-        $this->Trait->expects($this->any())
+        $this->Trait->expects($this->once())
             ->method('_getReCaptchaInstance')
             ->will($this->returnValue($ReCaptcha));
-        $this->Trait->validateReCaptcha('value', '255.255.255.255');
+        $actual = $this->Trait->validateReCaptcha('value', '255.255.255.255');
+        $this->assertTrue($actual);
     }
 
     /**
@@ -83,17 +86,18 @@ class ReCaptchaTraitTest extends TestCase
                 ->setMethods(['isSuccess'])
                 ->disableOriginalConstructor()
                 ->getMock();
-        $Response->expects($this->any())
+        $Response->expects($this->once())
             ->method('isSuccess')
             ->will($this->returnValue(false));
-        $ReCaptcha->expects($this->any())
+        $ReCaptcha->expects($this->once())
             ->method('verify')
             ->with('invalid')
             ->will($this->returnValue($Response));
-        $this->Trait->expects($this->any())
+        $this->Trait->expects($this->once())
             ->method('_getReCaptchaInstance')
             ->will($this->returnValue($ReCaptcha));
-        $this->Trait->validateReCaptcha('invalid', '255.255.255.255');
+        $actual = $this->Trait->validateReCaptcha('invalid', '255.255.255.255');
+        $this->assertFalse($actual);
     }
 
     public function testGetRecaptchaInstance()

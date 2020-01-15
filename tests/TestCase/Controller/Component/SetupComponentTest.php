@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,11 +13,11 @@
 
 namespace CakeDC\Users\Test\TestCase\Controller\Component;
 
-use CakeDC\Users\Controller\Component\SetupComponent;
 use Cake\Controller\ComponentRegistry;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\TestSuite\TestCase;
+use CakeDC\Users\Controller\Component\SetupComponent;
 
 /**
  * Class SetupComponentTest
@@ -23,7 +25,6 @@ use Cake\TestSuite\TestCase;
  */
 class SetupComponentTest extends TestCase
 {
-
     /**
      * Test subject
      *
@@ -41,7 +42,7 @@ class SetupComponentTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->Controller = new Controller();
@@ -52,7 +53,7 @@ class SetupComponentTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->Controller, $this->Component);
 
@@ -71,7 +72,7 @@ class SetupComponentTest extends TestCase
             [false, true, true],
             [true, false, true],
             [true, true, false],
-            [false, false, false]
+            [false, false, false],
         ];
     }
 

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,15 +13,15 @@
 
 namespace CakeDC\Users\Test\TestCase\Exception;
 
-use CakeDC\Users\Exception\MissingEmailException;
 use Cake\TestSuite\TestCase;
+use CakeDC\Users\Exception\MissingEmailException;
 
 class MissingEmailExceptionTest extends TestCase
 {
     /**
      * Setup
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
     }
@@ -27,7 +29,7 @@ class MissingEmailExceptionTest extends TestCase
     /**
      * Tear Down
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
     }

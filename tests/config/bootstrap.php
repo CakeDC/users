@@ -9,30 +9,32 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
+use Cake\Core\Configure;
+
 class_alias('CakeDC\Users\Test\App\Controller\AppController', 'App\Controller\AppController');
 
-// Ensure default test connection is defined
+Configure::write('App', [
+    'namespace' => 'Users\Test\App',
+    'encoding' => 'UTF-8',
+    'base' => false,
+    'baseUrl' => false,
+    'dir' => 'src',
+    'webroot' => WEBROOT_DIR,
+    'wwwRoot' => WWW_ROOT,
+    'fullBaseUrl' => 'http://localhost',
+    'imageBaseUrl' => 'img/',
+    'jsBaseUrl' => 'js/',
+    'cssBaseUrl' => 'css/',
+    'paths' => [
+        'plugins' => [dirname(APP) . DS . 'plugins' . DS],
+        'templates' => [dirname(APP) . 'templates' . DS],
+    ],
+]);
 if (!getenv('db_dsn')) {
     putenv('db_dsn=sqlite:///:memory:');
 }
 
 Cake\Datasource\ConnectionManager::setConfig('test', [
     'url' => getenv('db_dsn'),
-//    'className' => 'Cake\Database\Connection',
-//    'driver' => 'Cake\Database\Driver\Postgres',
-//    'persistent' => true,
-//    'host' => 'localhost',
-//    'username' => 'my_app',
-//    'password' => null,
-//    'database' => 'test',
-//    'schema' => 'public',
-//    'port' => 5432,
-//    'encoding' => 'utf8',
-//    'flags' => [],
-//    'init' => [],
-    'timezone' => 'UTC'
-]);
-
-\Cake\Core\Configure::write('App.paths.templates', [
-    APP . 'Template/',
+    'timezone' => 'UTC',
 ]);

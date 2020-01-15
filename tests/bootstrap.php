@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -17,10 +19,8 @@
  * installed as a dependency of an application.
  */
 
-use Cake\Cache\Cache;
 use Cake\Core\Configure;
 use Cake\Core\Plugin;
-use Cake\Datasource\ConnectionManager;
 
 $findRoot = function ($root) {
     do {
@@ -56,10 +56,7 @@ define('CAKE', CORE_PATH . 'src' . DS);
 require ROOT . '/vendor/cakephp/cakephp/src/basics.php';
 require ROOT . '/vendor/autoload.php';
 
-Cake\Core\Configure::write('App', ['namespace' => 'Users\Test\App']);
-
 Cake\Core\Configure::write('debug', true);
-Cake\Core\Configure::write('App.encoding', 'UTF-8');
 
 ini_set('intl.default_locale', 'en_US');
 
@@ -90,11 +87,42 @@ $cache = [
 
 Cake\Cache\Cache::setConfig($cache);
 Cake\Core\Configure::write('Session', [
-    'defaults' => 'php'
+    'defaults' => 'php',
 ]);
+
+Configure::write('App', [
+    'namespace' => 'Users\Test\App',
+    'encoding' => 'UTF-8',
+    'base' => false,
+    'baseUrl' => false,
+    'dir' => 'src',
+    'webroot' => WEBROOT_DIR,
+    'wwwRoot' => WWW_ROOT,
+    'fullBaseUrl' => 'http://localhost',
+    'imageBaseUrl' => 'img/',
+    'jsBaseUrl' => 'js/',
+    'cssBaseUrl' => 'css/',
+    'paths' => [
+        'plugins' => [dirname(APP) . DS . 'plugins' . DS],
+        'templates' => [dirname(APP) . 'templates' . DS],
+    ],
+]);
+
+// \Cake\Core\Configure::write('App.paths.templates', [
+    // APP . 'Template/',
+// ]);
+
 
 //init router
 \Cake\Routing\Router::reload();
+
+Plugin::getCollection()->add(new \CakeDC\Users\Plugin([
+    'path' => dirname(dirname(__FILE__)) . DS,
+    'routes' => true,
+]));
+if (file_exists($root . '/config/bootstrap.php')) {
+    require $root . '/config/bootstrap.php';
+}
 
 $app = new \CakeDC\Users\Test\TestApplication(__DIR__ . DS . 'config');
 $app->bootstrap();

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,15 +13,14 @@
 
 namespace CakeDC\Users\Test\TestCase\Utility;
 
-use CakeDC\Users\Utility\UsersUrl;
 use Cake\Core\Configure;
 use Cake\Http\ServerRequestFactory;
 use Cake\TestSuite\TestCase;
+use CakeDC\Users\Utility\UsersUrl;
 use Zend\Diactoros\Uri;
 
 class UsersUrlTest extends TestCase
 {
-
     /**
      * Data provider for test testActionRoute
      *
@@ -101,7 +102,7 @@ class UsersUrlTest extends TestCase
             ['add', ['prefix' => 'Admin', 'plugin' => null, 'controller' => 'Users', 'action' => 'add'], 'Admin/Users'],
             ['edit', ['prefix' => 'Admin', 'plugin' => null, 'controller' => 'Users', 'action' => 'edit'], 'Admin/Users'],
             ['delete', ['prefix' => 'Admin', 'plugin' => null, 'controller' => 'Users', 'action' => 'delete'], 'Admin/Users'],
-            ['socialEmail', ['prefix' => 'Admin', 'plugin' => null, 'controller' => 'Users', 'action' => 'socialEmail'], 'Admin/Users']
+            ['socialEmail', ['prefix' => 'Admin', 'plugin' => null, 'controller' => 'Users', 'action' => 'socialEmail'], 'Admin/Users'],
         ];
     }
 
@@ -202,7 +203,7 @@ class UsersUrlTest extends TestCase
             ['add', ['prefix' => 'Admin', 'plugin' => false, 'controller' => 'Users', 'action' => 'add'], 'Admin/Users'],
             ['edit', ['prefix' => 'Admin', 'plugin' => false, 'controller' => 'Users', 'action' => 'edit'], 'Admin/Users'],
             ['delete', ['prefix' => 'Admin', 'plugin' => false, 'controller' => 'Users', 'action' => 'delete'], 'Admin/Users'],
-            ['socialEmail', ['prefix' => 'Admin', 'plugin' => false, 'controller' => 'Users', 'action' => 'socialEmail'], 'Admin/Users']
+            ['socialEmail', ['prefix' => 'Admin', 'plugin' => false, 'controller' => 'Users', 'action' => 'socialEmail'], 'Admin/Users'],
         ];
     }
 
@@ -234,7 +235,7 @@ class UsersUrlTest extends TestCase
                 'socialLogin',
                 ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'socialLogin', 'provider' => 'facebook'],
                 null,
-                true
+                true,
             ],
             [
                 'socialLogin',

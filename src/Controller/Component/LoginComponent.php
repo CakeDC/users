@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -12,18 +14,17 @@
 namespace CakeDC\Users\Controller\Component;
 
 use Authentication\Authenticator\ResultInterface;
+use Cake\Controller\Component;
+use Cake\Core\Configure;
 use CakeDC\Auth\Authentication\AuthenticationService;
 use CakeDC\Users\Plugin;
 use CakeDC\Users\Utility\UsersUrl;
-use Cake\Controller\Component;
-use Cake\Core\Configure;
 
 /**
  * LoginFailure component
  */
 class LoginComponent extends Component
 {
-
     /**
      * Default configuration.
      *
@@ -87,8 +88,8 @@ class LoginComponent extends Component
     /**
      * Get the target authenticator result for current login action
      *
-     * @param AuthenticationService $service authentication service.
-     * @return ResultInterface|null
+     * @param \CakeDC\Auth\Authentication\AuthenticationService $service authentication service.
+     * @return \Authentication\Authenticator\ResultInterface|null
      */
     public function getTargetAuthenticatorResult(AuthenticationService $service)
     {
@@ -106,10 +107,10 @@ class LoginComponent extends Component
     /**
      * Get the error message for result status
      *
-     * @param ResultInterface|null $result Result object;
+     * @param \Authentication\Authenticator\ResultInterface|null $result Result object;
      * @return string
      */
-    public function getErrorMessage(ResultInterface $result = null)
+    public function getErrorMessage(?ResultInterface $result = null)
     {
         $messagesMap = $this->getConfig('messages');
 
@@ -124,16 +125,16 @@ class LoginComponent extends Component
      * Determine redirect url after user identified
      *
      * @param array $user user data after identified
-     * @return \Cake\Http\Response
+     * @return \Cake\Http\Response|null
      */
     protected function afterIdentifyUser($user)
     {
         $event = $this->getController()->dispatchEvent(Plugin::EVENT_AFTER_LOGIN, ['user' => $user]);
-        if (is_array($event->result)) {
-            return $this->getController()->redirect($event->result);
+        if (is_array($event->getResult())) {
+            return $this->getController()->redirect($event->getResult());
         }
 
-        $query = $this->getController()->request->getQueryParams();
+        $query = $this->getController()->getRequest()->getQueryParams();
         $redirectUrl = $this->getController()->Authentication->getConfig('loginRedirect');
         if (isset($query['redirect'])) {
             $redirectUrl = $query['redirect'];

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -10,16 +12,16 @@
  */
 namespace CakeDC\Users\Test\TestCase\Identifier;
 
+use Cake\TestSuite\TestCase;
 use CakeDC\Auth\Social\Mapper\Facebook;
 use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Identifier\SocialIdentifier;
-use Cake\TestSuite\TestCase;
 
 class SocialIdentifierTest extends TestCase
 {
     public $fixtures = [
         'plugin.CakeDC/Users.Users',
-        'plugin.CakeDC/Users.SocialAccounts'
+        'plugin.CakeDC/Users.SocialAccounts',
     ];
 
     /**
@@ -53,7 +55,7 @@ class SocialIdentifierTest extends TestCase
 
         $Token = new \League\OAuth2\Client\Token\AccessToken([
             'access_token' => 'test-token',
-            'expires' => 1490988496
+            'expires' => 1490988496,
         ]);
 
         $data = [
@@ -65,29 +67,29 @@ class SocialIdentifierTest extends TestCase
             'email' => 'test@gmail.com',
             'hometown' => [
                 'id' => '108226049197930',
-                'name' => 'Madrid'
+                'name' => 'Madrid',
             ],
             'picture' => [
                 'data' => [
                     'url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
-                    'is_silhouette' => false
-                ]
+                    'is_silhouette' => false,
+                ],
             ],
             'cover' => [
                 'source' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
-                'id' => '1'
+                'id' => '1',
             ],
             'gender' => 'male',
             'locale' => 'en_US',
             'link' => 'https://www.facebook.com/app_scoped_user_id/1/',
             'timezone' => -5,
             'age_range' => [
-                'min' => 21
+                'min' => 21,
             ],
             'bio' => 'I am the best test user in the world.',
             'picture_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
             'is_silhouette' => false,
-            'cover_photo_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg'
+            'cover_photo_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
         ];
 
         $mapper = new Facebook();
@@ -110,11 +112,11 @@ class SocialIdentifierTest extends TestCase
     {
         $Token = new \League\OAuth2\Client\Token\AccessToken([
             'access_token' => 'test-token',
-            'expires' => 1490988496
+            'expires' => 1490988496,
         ]);
 
         $identifier = $this->getMockBuilder(SocialIdentifier::class)->setMethods([
-            'createOrGetUser'
+            'createOrGetUser',
         ])->getMock();
         $identifier->expects($this->once())
             ->method('createOrGetUser')
@@ -129,18 +131,18 @@ class SocialIdentifierTest extends TestCase
             'email' => 'test@gmail.com',
             'hometown' => [
                 'id' => '108226049197930',
-                'name' => 'Madrid'
+                'name' => 'Madrid',
             ],
             'locale' => 'en_US',
             'link' => 'https://www.facebook.com/app_scoped_user_id/1/',
             'timezone' => -5,
             'age_range' => [
-                'min' => 21
+                'min' => 21,
             ],
             'bio' => 'I am the best test user in the world.',
             'picture_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
             'is_silhouette' => false,
-            'cover_photo_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg'
+            'cover_photo_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
         ];
 
         $mapper = new Facebook();
@@ -160,7 +162,7 @@ class SocialIdentifierTest extends TestCase
     {
         $Token = new \League\OAuth2\Client\Token\AccessToken([
             'access_token' => 'test-token',
-            'expires' => 1490988496
+            'expires' => 1490988496,
         ]);
 
         $data = [
@@ -171,18 +173,18 @@ class SocialIdentifierTest extends TestCase
             'last_name' => 'User',
             'hometown' => [
                 'id' => '108226049197930',
-                'name' => 'Madrid'
+                'name' => 'Madrid',
             ],
             'locale' => 'en_US',
             'link' => 'https://www.facebook.com/app_scoped_user_id/1/',
             'timezone' => -5,
             'age_range' => [
-                'min' => 21
+                'min' => 21,
             ],
             'bio' => 'I am the best test user in the world.',
             'picture_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
             'is_silhouette' => false,
-            'cover_photo_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg'
+            'cover_photo_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
         ];
 
         $identifier = new SocialIdentifier([]);

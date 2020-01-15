@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,12 +13,13 @@
 
 namespace CakeDC\Users\Test\TestCase\View\Helper;
 
-use CakeDC\Users\Model\Entity\SocialAccount;
-use CakeDC\Users\View\Helper\UserHelper;
 use Cake\Core\Configure;
 use Cake\Http\ServerRequest;
 use Cake\I18n\I18n;
+use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
+use CakeDC\Users\Model\Entity\SocialAccount;
+use CakeDC\Users\View\Helper\UserHelper;
 
 /**
  * Users\View\Helper\UserHelper Test Case
@@ -33,7 +36,7 @@ class UserHelperTest extends TestCase
     /**
      * Keep original config Users.Social.login
      *
-     * @var boolean
+     * @var bool
      */
     private $socialLogin;
 
@@ -52,7 +55,7 @@ class UserHelperTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         if ($this->oauthConfig === null) {
             $this->oauthConfig = (array)Configure::read('OAuth');
@@ -81,7 +84,7 @@ class UserHelperTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         Configure::write('OAuth', $this->oauthConfig);
         Configure::write('Users.Social.login', $this->socialLogin);
@@ -97,6 +100,12 @@ class UserHelperTest extends TestCase
      */
     public function testLogout()
     {
+        Router::connect('/logout', [
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+            'action' => 'logout',
+        ]);
+
         $result = $this->User->logout();
         $expected = '<a href="/logout">Logout</a>';
         $this->assertEquals($expected, $result);
@@ -109,6 +118,12 @@ class UserHelperTest extends TestCase
      */
     public function testLogoutDifferentMessage()
     {
+        Router::connect('/logout', [
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+            'action' => 'logout',
+        ]);
+
         $result = $this->User->logout('Sign Out');
         $expected = '<a href="/logout">Sign Out</a>';
         $this->assertEquals($expected, $result);
@@ -121,6 +136,12 @@ class UserHelperTest extends TestCase
      */
     public function testLogoutWithOptions()
     {
+        Router::connect('/logout', [
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+            'action' => 'logout',
+        ]);
+
         $result = $this->User->logout('Sign Out', ['class' => 'logout']);
         $expected = '<a href="/logout" class="logout">Sign Out</a>';
         $this->assertEquals($expected, $result);
@@ -133,6 +154,12 @@ class UserHelperTest extends TestCase
      */
     public function testWelcome()
     {
+        Router::connect('/profile', [
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+            'action' => 'profile',
+        ]);
+
         $session = $this->getMockBuilder('Cake\Http\Session')
                 ->setMethods(['read'])
                 ->getMock();
@@ -197,6 +224,7 @@ class UserHelperTest extends TestCase
         Configure::write('Users.reCaptcha.theme', 'light');
         Configure::write('Users.reCaptcha.size', 'normal');
         Configure::write('Users.reCaptcha.tabindex', '3');
+        $this->User->Form->create();
         $result = $this->User->addReCaptcha();
         $this->assertEquals('<div class="g-recaptcha" data-sitekey="testKey" data-theme="light" data-size="normal" data-tabindex="3"></div>', $result);
     }
@@ -304,8 +332,8 @@ class UserHelperTest extends TestCase
                 'active' => false,
                 'data' => '',
                 'created' => '2015-05-22 21:52:44',
-                'modified' => '2015-05-22 21:52:44'
-            ])
+                'modified' => '2015-05-22 21:52:44',
+            ]),
         ];
         $actual = $this->User->socialConnectLinkList($socialAccounts);
         $expected = '<a class="btn btn-social btn-facebook disabled"><span class="fa fa-facebook"></span> Connected with Facebook</a>';
@@ -343,8 +371,8 @@ class UserHelperTest extends TestCase
                 'active' => false,
                 'data' => '',
                 'created' => '2015-05-22 21:52:44',
-                'modified' => '2015-05-22 21:52:44'
-            ])
+                'modified' => '2015-05-22 21:52:44',
+            ]),
         ];
         $actual = $this->User->socialConnectLinkList($socialAccounts);
         $expected = '';
@@ -375,8 +403,8 @@ class UserHelperTest extends TestCase
                 'active' => false,
                 'data' => '',
                 'created' => '2015-05-22 21:52:44',
-                'modified' => '2015-05-22 21:52:44'
-            ])
+                'modified' => '2015-05-22 21:52:44',
+            ]),
         ];
         $actual = $this->User->socialConnectLinkList($socialAccounts);
         $expected = '';

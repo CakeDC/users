@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,8 +13,8 @@
 
 namespace CakeDC\Users\Test\TestCase\Exception;
 
-use CakeDC\Users\Exception\AccountNotActiveException;
 use Cake\TestSuite\TestCase;
+use CakeDC\Users\Exception\AccountNotActiveException;
 
 class AccountNotActiveExceptionTest extends TestCase
 {
@@ -21,7 +23,7 @@ class AccountNotActiveExceptionTest extends TestCase
     /**
      * Setup
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
     }
@@ -29,7 +31,7 @@ class AccountNotActiveExceptionTest extends TestCase
     /**
      * Tear Down
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
     }

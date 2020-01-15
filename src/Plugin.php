@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,56 +13,63 @@
 
 namespace CakeDC\Users;
 
+use Authentication\AuthenticationServiceInterface;
 use Authentication\AuthenticationServiceProviderInterface;
+use Authorization\AuthorizationServiceInterface;
 use Authorization\AuthorizationServiceProviderInterface;
 use Cake\Core\BasePlugin;
 use Cake\Core\Configure;
-use Psr\Http\Message\ResponseInterface;
+use Cake\Http\MiddlewareQueue;
 use Psr\Http\Message\ServerRequestInterface;
 
 class Plugin extends BasePlugin implements AuthenticationServiceProviderInterface, AuthorizationServiceProviderInterface
 {
-    const EVENT_AFTER_LOGIN = 'Users.Authentication.afterLogin';
-    const EVENT_BEFORE_LOGOUT = 'Users.Authentication.beforeLogout';
-    const EVENT_AFTER_LOGOUT = 'Users.Authentication.afterLogout';
+    /**
+     * Plugin name.
+     *
+     * @var string
+     */
+    protected $name = 'CakeDC/Users';
+    public const EVENT_AFTER_LOGIN = 'Users.Authentication.afterLogin';
+    public const EVENT_BEFORE_LOGOUT = 'Users.Authentication.beforeLogout';
+    public const EVENT_AFTER_LOGOUT = 'Users.Authentication.afterLogout';
 
-    const EVENT_BEFORE_REGISTER = 'Users.Global.beforeRegister';
-    const EVENT_AFTER_REGISTER = 'Users.Global.afterRegister';
-    const EVENT_AFTER_CHANGE_PASSWORD = 'Users.Global.afterResetPassword';
-    const EVENT_BEFORE_SOCIAL_LOGIN_USER_CREATE = 'Users.Global.beforeSocialLoginUserCreate';
-    const EVENT_BEFORE_SOCIAL_LOGIN_REDIRECT = 'Users.Global.beforeSocialLoginRedirect';
-    const EVENT_SOCIAL_LOGIN_EXISTING_ACCOUNT = 'Users.Global.socialLoginExistingAccount';
-    const EVENT_ON_EXPIRED_TOKEN = 'Users.Global.onExpiredToken';
-    const EVENT_AFTER_RESEND_TOKEN_VALIDATION = 'Users.Global.afterResendTokenValidation';
+    public const EVENT_BEFORE_REGISTER = 'Users.Global.beforeRegister';
+    public const EVENT_AFTER_REGISTER = 'Users.Global.afterRegister';
+    public const EVENT_AFTER_CHANGE_PASSWORD = 'Users.Global.afterResetPassword';
+    public const EVENT_BEFORE_SOCIAL_LOGIN_USER_CREATE = 'Users.Global.beforeSocialLoginUserCreate';
+    public const EVENT_BEFORE_SOCIAL_LOGIN_REDIRECT = 'Users.Global.beforeSocialLoginRedirect';
+    public const EVENT_SOCIAL_LOGIN_EXISTING_ACCOUNT = 'Users.Global.socialLoginExistingAccount';
+    public const EVENT_ON_EXPIRED_TOKEN = 'Users.Global.onExpiredToken';
+    public const EVENT_AFTER_RESEND_TOKEN_VALIDATION = 'Users.Global.afterResendTokenValidation';
 
     /**
      * Returns an authentication service instance.
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request Request
-     * @param \Psr\Http\Message\ResponseInterface $response Response
      * @return \Authentication\AuthenticationServiceInterface
      */
-    public function getAuthenticationService(ServerRequestInterface $request, ResponseInterface $response)
+    public function getAuthenticationService(ServerRequestInterface $request): AuthenticationServiceInterface
     {
         $key = 'Auth.Authentication.serviceLoader';
 
-        return $this->loadService($request, $response, $key);
+        return $this->loadService($request, $key);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getAuthorizationService(ServerRequestInterface $request, ResponseInterface $response)
+    public function getAuthorizationService(ServerRequestInterface $request): AuthorizationServiceInterface
     {
         $key = 'Auth.Authorization.serviceLoader';
 
-        return $this->loadService($request, $response, $key);
+        return $this->loadService($request, $key);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function middleware($middlewareQueue)
+    public function middleware(MiddlewareQueue $middlewareQueue): MiddlewareQueue
     {
         $loader = $this->getLoader('Users.middlewareQueueLoader');
 
@@ -70,17 +79,16 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
     /**
      * Load a service defined in configuration $loaderKey
      *
-     * @param ServerRequestInterface $request The request.
-     * @param ResponseInterface $response The response.
+     * @param \Psr\Http\Message\ServerRequestInterface $request The request.
      * @param string $loaderKey service loader key
      *
      * @return mixed
      */
-    protected function loadService(ServerRequestInterface $request, ResponseInterface $response, $loaderKey)
+    protected function loadService(ServerRequestInterface $request, $loaderKey)
     {
         $serviceLoader = $this->getLoader($loaderKey);
 
-        return $serviceLoader($request, $response);
+        return $serviceLoader($request);
     }
 
     /**

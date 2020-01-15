@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -14,14 +16,14 @@ namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 use Authentication\Authenticator\Result;
 use Authentication\Authenticator\SessionAuthenticator;
 use Authentication\Identifier\IdentifierCollection;
-use CakeDC\Auth\Authentication\Failure;
-use CakeDC\Auth\Authenticator\FormAuthenticator;
-use CakeDC\Users\Authenticator\SocialAuthenticator;
-use CakeDC\Users\Controller\Component\LoginComponent;
 use Cake\Controller\ComponentRegistry;
 use Cake\Event\Event;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
+use CakeDC\Auth\Authentication\Failure;
+use CakeDC\Auth\Authenticator\FormAuthenticator;
+use CakeDC\Users\Authenticator\SocialAuthenticator;
+use CakeDC\Users\Controller\Component\LoginComponent;
 
 class SocialTraitTest extends BaseTraitTest
 {
@@ -30,16 +32,16 @@ class SocialTraitTest extends BaseTraitTest
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
-        $this->traitClassName = 'CakeDC\Users\Controller\Traits\SocialTrait';
+        $this->traitClassName = 'CakeDC\Users\Controller\UsersController';
         $this->traitMockMethods = ['dispatchEvent', 'isStopped', 'redirect', 'getUsersTable', 'set'];
 
         parent::setUp();
         $request = new ServerRequest();
-        $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\Traits\SocialTrait')
-            ->setMethods(['dispatchEvent', 'redirect', 'set', 'loadComponent', 'getRequest'])
-            ->getMockForTrait();
+        $this->Trait = $this->getMockBuilder($this->traitClassName)
+            ->setMethods(['dispatchEvent', 'redirect', 'set', 'loadComponent'])
+            ->getMock();
 
         $this->Trait->request = $request;
     }
@@ -49,7 +51,7 @@ class SocialTraitTest extends BaseTraitTest
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
     }
@@ -62,7 +64,7 @@ class SocialTraitTest extends BaseTraitTest
     public function testSocialEmailSuccess()
     {
         $identifiers = new IdentifierCollection([
-            'CakeDC/Users.Social'
+            'CakeDC/Users.Social',
         ]);
         $FormAuth = new FormAuthenticator($identifiers);
         $SessionAuth = new SessionAuthenticator($identifiers);
@@ -74,16 +76,16 @@ class SocialTraitTest extends BaseTraitTest
         $formFailure = new Failure(
             $FormAuth,
             new Result(null, Result::FAILURE_CREDENTIALS_MISSING, [
-                'Password' => []
+                'Password' => [],
             ])
         );
         $failures = [$sessionFailure, $formFailure];
 
         $this->_mockDispatchEvent(new Event('event'));
-        $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
+        $this->Trait->setRequest($this->getMockBuilder('Cake\Http\ServerRequest')
             ->setMethods(['is'])
-            ->getMock();
-        $this->Trait->request->expects($this->any())
+            ->getMock());
+        $this->Trait->getRequest()->expects($this->any())
             ->method('is')
             ->with('post')
             ->will($this->returnValue(true));
@@ -96,9 +98,6 @@ class SocialTraitTest extends BaseTraitTest
             ->method('redirect')
             ->with($this->successLoginRedirect)
             ->will($this->returnValue(new Response()));
-        $this->Trait->expects($this->any())
-            ->method('getRequest')
-            ->will($this->returnValue($this->Trait->request));
 
         $registry = new ComponentRegistry();
         $config = [
@@ -112,9 +111,9 @@ class SocialTraitTest extends BaseTraitTest
                 SocialAuthenticator::FAILURE_ACCOUNT_NOT_ACTIVE => __d(
                     'cake_d_c/users',
                     'Your social account has not been validated yet. Please check your inbox for instructions'
-                )
+                ),
             ],
-            'targetAuthenticator' => SocialAuthenticator::class
+            'targetAuthenticator' => SocialAuthenticator::class,
         ];
         $Login = $this->getMockBuilder(LoginComponent::class)
             ->setMethods(['getController'])

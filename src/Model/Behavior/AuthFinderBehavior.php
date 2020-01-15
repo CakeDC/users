@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -13,7 +15,6 @@ namespace CakeDC\Users\Model\Behavior;
 
 use Cake\ORM\Behavior;
 use Cake\ORM\Query;
-use Cake\Utility\Hash;
 
 /**
  * Implement finders used by Auth
@@ -23,8 +24,8 @@ class AuthFinderBehavior extends Behavior
     /**
      * Custom finder to filter active users
      *
-     * @param Query $query Query object to modify
-     * @return Query
+     * @param \Cake\ORM\Query $query Query object to modify
+     * @return \Cake\ORM\Query
      */
     public function findActive(Query $query)
     {
@@ -36,14 +37,14 @@ class AuthFinderBehavior extends Behavior
     /**
      * Custom finder to log in users
      *
-     * @param Query $query Query object to modify
+     * @param \Cake\ORM\Query $query Query object to modify
      * @param array $options Query options
-     * @return Query
+     * @return \Cake\ORM\Query
      * @throws \BadMethodCallException
      */
     public function findAuth(Query $query, array $options = [])
     {
-        $identifier = Hash::get($options, 'username');
+        $identifier = $options['username'] ?? null;
         if (empty($identifier)) {
             throw new \BadMethodCallException(__d('cake_d_c/users', 'Missing \'username\' in options data'));
         }

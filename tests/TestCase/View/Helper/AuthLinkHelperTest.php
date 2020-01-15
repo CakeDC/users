@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -14,6 +16,7 @@ namespace CakeDC\Users\Test\TestCase\View\Helper;
 use CakeDC\Users\View\Helper\AuthLinkHelper;
 use Cake\Http\ServerRequest;
 use Cake\ORM\TableRegistry;
+use Cake\Routing\Router;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use Cake\View\View;
@@ -46,10 +49,10 @@ class AuthLinkHelperTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
-        $view = new View();
+        $view = new View(new ServerRequest());
         $this->AuthLink = $this->getMockBuilder(AuthLinkHelper::class)
             ->setMethods(['isAuthorized'])
             ->setConstructorArgs([$view])
@@ -61,7 +64,7 @@ class AuthLinkHelperTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->AuthLink);
 
@@ -86,7 +89,7 @@ class AuthLinkHelperTest extends TestCase
             ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile'],
             ['before' => 'before_', 'after' => '_after', 'class' => 'link-class']
         );
-        $this->assertFalse($result);
+        $this->assertEmpty($result);
     }
 
     /**
@@ -96,6 +99,11 @@ class AuthLinkHelperTest extends TestCase
      */
     public function testLinkAuthorizedHappy()
     {
+        Router::connect('/profile', [
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+            'action' => 'profile',
+        ]);
         $this->AuthLink->expects($this->once())
             ->method('isAuthorized')
             ->with(
@@ -129,7 +137,7 @@ class AuthLinkHelperTest extends TestCase
     public function testLinkAuthorizedAllowedFalse()
     {
         $link = $this->AuthLink->link('title', '/', ['allowed' => false, 'before' => 'before_', 'after' => '_after', 'class' => 'link-class']);
-        $this->assertFalse($link);
+        $this->assertEmpty($link);
     }
 
     /**

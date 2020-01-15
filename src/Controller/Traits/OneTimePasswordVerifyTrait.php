@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,10 +13,9 @@
 
 namespace CakeDC\Users\Controller\Traits;
 
+use Cake\Core\Configure;
 use CakeDC\Auth\Authentication\AuthenticationService;
 use CakeDC\Auth\Authenticator\TwoFactorAuthenticator;
-use Cake\Core\Configure;
-use Cake\Utility\Hash;
 
 trait OneTimePasswordVerifyTrait
 {
@@ -32,15 +33,17 @@ trait OneTimePasswordVerifyTrait
         $loginAction = array_merge(
             Configure::read('Auth.AuthenticationComponent.loginAction'),
             [
-                '?' => $this->request->getQueryParams()
+                '?' => $this->getRequest()->getQueryParams(),
             ]
         );
         if (!$this->isVerifyAllowed()) {
             return $this->redirect($loginAction);
         }
 
-        $temporarySession = $this->request->getSession()->read(AuthenticationService::TWO_FACTOR_VERIFY_SESSION_KEY);
-        $secretVerified = Hash::get($temporarySession, 'secret_verified');
+        $temporarySession = $this->getRequest()->getSession()->read(
+            AuthenticationService::TWO_FACTOR_VERIFY_SESSION_KEY
+        );
+        $secretVerified = $temporarySession['secret_verified'] ?? null;
         // showing QR-code until shared secret is verified
         if (!$secretVerified) {
             $secret = $this->onVerifyGetSecret($temporarySession);
@@ -55,7 +58,7 @@ trait OneTimePasswordVerifyTrait
             $this->set(compact('secretDataUri'));
         }
 
-        if ($this->request->is('post')) {
+        if ($this->getRequest()->is('post')) {
             return $this->onPostVerifyCode($loginAction);
         }
     }
@@ -70,16 +73,26 @@ trait OneTimePasswordVerifyTrait
     {
         if (!Configure::read('OneTimePasswordAuthenticator.login')) {
             $message = __d('cake_d_c/users', 'Please enable Google Authenticator first.');
-            $this->Flash->error($message, 'default', [], 'auth');
+            $this->Flash->error($message, [
+                'key' => 'auth',
+                'element' => 'default',
+                'params' => [],
+            ]);
 
             return false;
         }
 
-        $temporarySession = $this->request->getSession()->read(AuthenticationService::TWO_FACTOR_VERIFY_SESSION_KEY);
+        $temporarySession = $this->getRequest()->getSession()->read(
+            AuthenticationService::TWO_FACTOR_VERIFY_SESSION_KEY
+        );
 
         if (empty($temporarySession) || !isset($temporarySession['id'])) {
             $message = __d('cake_d_c/users', 'Could not find user data');
-            $this->Flash->error($message, 'default', [], 'auth');
+            $this->Flash->error($message, [
+                'key' => 'auth',
+                'element' => 'default',
+                'params' => [],
+            ]);
 
             return false;
         }
@@ -110,11 +123,16 @@ trait OneTimePasswordVerifyTrait
                 ->where(['id' => $user['id']]);
             $query->execute();
             $user['secret'] = $secret;
-            $this->request->getSession()->write(AuthenticationService::TWO_FACTOR_VERIFY_SESSION_KEY, $user);
+            $this->getRequest()->getSession()->write(AuthenticationService::TWO_FACTOR_VERIFY_SESSION_KEY, $user);
         } catch (\Exception $e) {
-            $this->request->getSession()->destroy();
+            $this->getRequest()->getSession()->destroy();
             $this->log($e);
-            $this->Flash->error(__d('cake_d_c/users', 'Could not verify, please try again'), 'default', [], 'auth');
+            $message = __d('cake_d_c/users', 'Could not verify, please try again');
+            $this->Flash->error($message, [
+                'key' => 'auth',
+                'element' => 'default',
+                'params' => [],
+            ]);
 
             return '';
         }
@@ -132,8 +150,8 @@ trait OneTimePasswordVerifyTrait
     protected function onPostVerifyCode($loginAction)
     {
         $codeVerified = false;
-        $verificationCode = $this->request->getData('code');
-        $user = $this->request->getSession()->read(AuthenticationService::TWO_FACTOR_VERIFY_SESSION_KEY);
+        $verificationCode = $this->getRequest()->getData('code');
+        $user = $this->getRequest()->getSession()->read(AuthenticationService::TWO_FACTOR_VERIFY_SESSION_KEY);
         $entity = $this->getUsersTable()->get($user['id']);
 
         if (!empty($entity['secret'])) {
@@ -141,9 +159,13 @@ trait OneTimePasswordVerifyTrait
         }
 
         if (!$codeVerified) {
-            $this->request->getSession()->destroy();
+            $this->getRequest()->getSession()->destroy();
             $message = __d('cake_d_c/users', 'Verification code is invalid. Try again');
-            $this->Flash->error($message, 'default', [], 'auth');
+            $this->Flash->error($message, [
+                'key' => 'auth',
+                'element' => 'default',
+                'params' => [],
+            ]);
 
             return $this->redirect($loginAction);
         }
@@ -170,8 +192,8 @@ trait OneTimePasswordVerifyTrait
                 ->execute();
         }
 
-        $this->request->getSession()->delete(AuthenticationService::TWO_FACTOR_VERIFY_SESSION_KEY);
-        $this->request->getSession()->write(TwoFactorAuthenticator::USER_SESSION_KEY, $user);
+        $this->getRequest()->getSession()->delete(AuthenticationService::TWO_FACTOR_VERIFY_SESSION_KEY);
+        $this->getRequest()->getSession()->write(TwoFactorAuthenticator::USER_SESSION_KEY, $user);
 
         return $this->redirect($loginAction);
     }

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -14,12 +16,12 @@ namespace CakeDC\Users\Loader;
 use Authentication\Middleware\AuthenticationMiddleware;
 use Authorization\Middleware\AuthorizationMiddleware;
 use Authorization\Middleware\RequestAuthorizationMiddleware;
+use Cake\Core\Configure;
+use Cake\Http\MiddlewareQueue;
 use CakeDC\Auth\Middleware\TwoFactorMiddleware;
 use CakeDC\Users\Middleware\SocialAuthMiddleware;
 use CakeDC\Users\Middleware\SocialEmailMiddleware;
 use CakeDC\Users\Plugin;
-use Cake\Core\Configure;
-use Cake\Http\MiddlewareQueue;
 
 /**
  * Class MiddlewareQueueLoader
@@ -54,7 +56,7 @@ class MiddlewareQueueLoader
     /**
      * Load social middlewares if enabled. Based on config 'Users.Social.login'
      *
-     * @param MiddlewareQueue $middlewareQueue The middleware queue to update.
+     * @param \Cake\Http\MiddlewareQueue $middlewareQueue The middleware queue to update.
      *
      * @return void
      */
@@ -90,7 +92,10 @@ class MiddlewareQueueLoader
      */
     protected function load2faMiddleware(MiddlewareQueue $middlewareQueue)
     {
-        if (Configure::read('OneTimePasswordAuthenticator.login') !== false || Configure::read('U2f.enabled') !== false) {
+        if (
+            Configure::read('OneTimePasswordAuthenticator.login') !== false
+            || Configure::read('U2f.enabled') !== false
+        ) {
             $middlewareQueue->add(TwoFactorMiddleware::class);
         }
     }

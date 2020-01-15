@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -16,7 +18,6 @@ use Cake\Http\ServerRequest;
 
 class UsersUrl
 {
-
     /**
      * Check if users url uses a custom controller.
      *
@@ -56,7 +57,7 @@ class UsersUrl
     {
         $prefix = null;
         $controller = Configure::read('Users.controller', 'CakeDC/Users.Users');
-        list($plugin, $controller) = pluginSplit($controller);
+        [$plugin, $controller] = pluginSplit($controller);
         $parts = explode('/', $controller);
         if (isset($parts[1])) {
             $controller = $parts[1];
@@ -70,7 +71,7 @@ class UsersUrl
      * Check if the action is the one from a request
      *
      * @param string $action users action
-     * @param Request $request the request
+     * @param \Cake\Http\ServerRequest $request the request
      *
      * @return bool
      */

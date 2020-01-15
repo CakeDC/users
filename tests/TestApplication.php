@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,6 +13,8 @@
 
 namespace CakeDC\Users\Test;
 
+use Cake\Http\MiddlewareQueue;
+
 /**
  * Class TestApplication
  *
@@ -18,7 +22,6 @@ namespace CakeDC\Users\Test;
  */
 class TestApplication extends \Cake\Http\BaseApplication
 {
-
     /**
      * Setup the middleware queue
      *
@@ -26,20 +29,32 @@ class TestApplication extends \Cake\Http\BaseApplication
      *
      * @return \Cake\Http\MiddlewareQueue
      */
-    public function middleware($middleware)
+
+    /**
+     * Setup the middleware queue your application will use.
+     *
+     * @param \Cake\Http\MiddlewareQueue $middlewareQueue The middleware queue to setup.
+     * @return \Cake\Http\MiddlewareQueue The updated middleware queue.
+     */
+    public function middleware(MiddlewareQueue $middlewareQueue): MiddlewareQueue
     {
-        return $middleware;
+        $middlewareQueue
+            ->add(ErrorHandlerMiddleware::class)
+            ->add(AssetMiddleware::class)
+            ->add(new RoutingMiddleware($this, null));
+
+        return $middlewareQueue;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function bootstrap()
+    public function bootstrap(): void
     {
         parent::bootstrap();
         $this->addPlugin('CakeDC/Users', [
             'path' => dirname(dirname(__FILE__)) . DS,
-            'routes' => true
+            'routes' => true,
         ]);
     }
 }

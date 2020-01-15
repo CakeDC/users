@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -15,15 +17,15 @@ use Authentication\Authenticator\Result;
 use Authentication\Authenticator\SessionAuthenticator;
 use Authentication\Identifier\IdentifierCollection;
 use Authentication\Identifier\PasswordIdentifier;
-use CakeDC\Auth\Authentication\Failure;
-use CakeDC\Auth\Authenticator\FormAuthenticator;
-use CakeDC\Users\Authenticator\SocialAuthenticator;
-use CakeDC\Users\Controller\Component\LoginComponent;
 use Cake\Auth\DefaultPasswordHasher;
 use Cake\Controller\ComponentRegistry;
 use Cake\Event\Event;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
+use CakeDC\Auth\Authentication\Failure;
+use CakeDC\Auth\Authenticator\FormAuthenticator;
+use CakeDC\Users\Authenticator\SocialAuthenticator;
+use CakeDC\Users\Controller\Component\LoginComponent;
 
 class LoginTraitTest extends BaseTraitTest
 {
@@ -32,23 +34,21 @@ class LoginTraitTest extends BaseTraitTest
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
-        $this->traitClassName = 'CakeDC\Users\Controller\Traits\LoginTrait';
+        $this->traitClassName = 'CakeDC\Users\Controller\UsersController';
         $this->traitMockMethods = ['dispatchEvent', 'isStopped', 'redirect', 'getUsersTable', 'set'];
 
         parent::setUp();
-        $request = new ServerRequest();
-        $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\Traits\LoginTrait')
-            ->setMethods(['dispatchEvent', 'redirect', 'set', 'loadComponent', 'getRequest'])
-            ->getMockForTrait();
+        $this->Trait->setRequest(new ServerRequest());
+        $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\UsersController')
+            ->setMethods(['dispatchEvent', 'redirect', 'set', 'loadComponent'])
+            ->getMock();
 
         $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
             ->setMethods(['setConfig'])
             ->disableOriginalConstructor()
             ->getMock();
-
-        $this->Trait->request = $request;
     }
 
     /**
@@ -56,7 +56,7 @@ class LoginTraitTest extends BaseTraitTest
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
     }
@@ -78,33 +78,36 @@ class LoginTraitTest extends BaseTraitTest
         $failures = [$sessionFailure];
 
         $this->_mockDispatchEvent(new Event('event'));
+
+        $request = $this->getMockBuilder('Cake\Http\ServerRequest')
+            ->setMethods(['is'])
+            ->getMock();
+
         $this->_mockRequestPost();
-        $this->Trait->request->expects($this->never())
+        $this->Trait->getRequest()->expects($this->never())
             ->method('getData');
+        $this->Trait->setRequest($request);
 
         $this->_mockFlash();
         $user = $this->Trait->getUsersTable()->get('00000000-0000-0000-0000-000000000002');
         $passwordBefore = $user['password'];
         $this->assertNotEmpty($passwordBefore);
-        $this->_mockAuthentication($user, $failures);
+        $this->_mockAuthentication($user->toArray(), $failures);
         $this->Trait->Flash->expects($this->never())
             ->method('error');
         $this->Trait->expects($this->once())
             ->method('redirect')
             ->with($this->successLoginRedirect)
             ->will($this->returnValue(new Response()));
-        $this->Trait->expects($this->any())
-            ->method('getRequest')
-            ->will($this->returnValue($this->Trait->request));
 
         $registry = new ComponentRegistry();
         $config = [
             'component' => 'CakeDC/Users.Login',
             'defaultMessage' => __d('cake_d_c/users', 'Username or password is incorrect'),
             'messages' => [
-                FormAuthenticator::FAILURE_INVALID_RECAPTCHA => __d('cake_d_c/users', 'Invalid reCaptcha')
+                FormAuthenticator::FAILURE_INVALID_RECAPTCHA => __d('cake_d_c/users', 'Invalid reCaptcha'),
             ],
-            'targetAuthenticator' => FormAuthenticator::class
+            'targetAuthenticator' => FormAuthenticator::class,
         ];
         $Login = $this->getMockBuilder(LoginComponent::class)
             ->setMethods(['getController'])
@@ -134,7 +137,7 @@ class LoginTraitTest extends BaseTraitTest
      *
      * @return void
      */
-    public function testLoginRehash2()
+    public function testLoginRehash()
     {
         $passwordIdentifier = $this->getMockBuilder(PasswordIdentifier::class)
             ->setMethods(['needsPasswordRehash'])
@@ -156,7 +159,7 @@ class LoginTraitTest extends BaseTraitTest
         $userPassword = 'testLoginRehash' . time();
         $this->_mockDispatchEvent(new Event('event'));
         $this->_mockRequestPost();
-        $this->Trait->request->expects($this->once())
+        $this->Trait->getRequest()->expects($this->once())
             ->method('getData')
             ->with($this->equalTo('password'))
             ->willReturn($userPassword);
@@ -165,25 +168,22 @@ class LoginTraitTest extends BaseTraitTest
         $user = $this->Trait->getUsersTable()->get('00000000-0000-0000-0000-000000000002');
         $passwordBefore = $user['password'];
         $this->assertNotEmpty($passwordBefore);
-        $this->_mockAuthentication($user, $failures, $identifiers);
+        $this->_mockAuthentication($user->toArray(), $failures, $identifiers);
         $this->Trait->Flash->expects($this->never())
             ->method('error');
         $this->Trait->expects($this->once())
             ->method('redirect')
             ->with($this->successLoginRedirect)
             ->will($this->returnValue(new Response()));
-        $this->Trait->expects($this->any())
-            ->method('getRequest')
-            ->will($this->returnValue($this->Trait->request));
 
         $registry = new ComponentRegistry();
         $config = [
             'component' => 'CakeDC/Users.Login',
             'defaultMessage' => __d('cake_d_c/users', 'Username or password is incorrect'),
             'messages' => [
-                FormAuthenticator::FAILURE_INVALID_RECAPTCHA => __d('cake_d_c/users', 'Invalid reCaptcha')
+                FormAuthenticator::FAILURE_INVALID_RECAPTCHA => __d('cake_d_c/users', 'Invalid reCaptcha'),
             ],
-            'targetAuthenticator' => FormAuthenticator::class
+            'targetAuthenticator' => FormAuthenticator::class,
         ];
         $Login = $this->getMockBuilder(LoginComponent::class)
             ->setMethods(['getController'])
@@ -219,10 +219,11 @@ class LoginTraitTest extends BaseTraitTest
     public function testLoginGet()
     {
         $this->_mockDispatchEvent(new Event('event'));
-        $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
+        $request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->setMethods(['is'])
             ->getMock();
-        $this->Trait->request->expects($this->once())
+        $this->Trait->setRequest($request);
+        $request->expects($this->once())
             ->method('is')
             ->with('post')
             ->will($this->returnValue(false));
@@ -244,9 +245,9 @@ class LoginTraitTest extends BaseTraitTest
             'component' => 'CakeDC/Users.Login',
             'defaultMessage' => __d('cake_d_c/users', 'Username or password is incorrect'),
             'messages' => [
-                FormAuthenticator::FAILURE_INVALID_RECAPTCHA => __d('cake_d_c/users', 'Invalid reCaptcha')
+                FormAuthenticator::FAILURE_INVALID_RECAPTCHA => __d('cake_d_c/users', 'Invalid reCaptcha'),
             ],
-            'targetAuthenticator' => FormAuthenticator::class
+            'targetAuthenticator' => FormAuthenticator::class,
         ];
         $Login = $this->getMockBuilder(LoginComponent::class)
             ->setMethods(['getController'])
@@ -256,9 +257,9 @@ class LoginTraitTest extends BaseTraitTest
         $Login->expects($this->any())
             ->method('getController')
             ->will($this->returnValue($this->Trait));
-        $this->Trait->expects($this->any())
-            ->method('getRequest')
-            ->will($this->returnValue($this->Trait->request));
+        // $this->Trait->expects($this->any())
+            // ->method('getRequest')
+            // ->will($this->returnValue($request));
         $this->Trait->expects($this->any())
             ->method('loadComponent')
             ->with(
@@ -283,7 +284,7 @@ class LoginTraitTest extends BaseTraitTest
             ->disableOriginalConstructor()
             ->getMock();
         $this->_mockAuthentication([
-            'id' => 1
+            'id' => 1,
         ]);
         $this->Trait->expects($this->once())
             ->method('redirect')
@@ -314,9 +315,9 @@ class LoginTraitTest extends BaseTraitTest
                 SocialAuthenticator::FAILURE_ACCOUNT_NOT_ACTIVE => __d(
                     'cake_d_c/users',
                     'Your social account has not been validated yet. Please check your inbox for instructions'
-                )
+                ),
             ],
-            'targetAuthenticator' => SocialAuthenticator::class
+            'targetAuthenticator' => SocialAuthenticator::class,
         ];
         $loginConfig = [
             'component' => 'CakeDC/Users.Login',
@@ -324,7 +325,7 @@ class LoginTraitTest extends BaseTraitTest
             'messages' => [
                 FormAuthenticator::FAILURE_INVALID_RECAPTCHA => __d('cake_d_c/users', 'Invalid reCaptcha'),
             ],
-            'targetAuthenticator' => FormAuthenticator::class
+            'targetAuthenticator' => FormAuthenticator::class,
         ];
 
         return [
@@ -333,36 +334,36 @@ class LoginTraitTest extends BaseTraitTest
                 SocialAuthenticator::FAILURE_USER_NOT_ACTIVE,
                 'Your user has not been validated yet. Please check your inbox for instructions',
                 'socialLogin',
-                $socialLoginConfig
+                $socialLoginConfig,
             ],
             [
                 SocialAuthenticator::class,
                 SocialAuthenticator::FAILURE_ACCOUNT_NOT_ACTIVE,
                 'Your social account has not been validated yet. Please check your inbox for instructions',
                 'socialLogin',
-                $socialLoginConfig
+                $socialLoginConfig,
             ],
             [
                 SocialAuthenticator::class,
                 Result::FAILURE_IDENTITY_NOT_FOUND,
                 'Could not proceed with social account. Please try again',
                 'socialLogin',
-                $socialLoginConfig
+                $socialLoginConfig,
             ],
             [
                 FormAuthenticator::class,
                 Result::FAILURE_IDENTITY_NOT_FOUND,
                 'Username or password is incorrect',
                 'login',
-                $loginConfig
+                $loginConfig,
             ],
             [
                 FormAuthenticator::class,
                 FormAuthenticator::FAILURE_INVALID_RECAPTCHA,
                 'Invalid reCaptcha',
                 'login',
-                $loginConfig
-            ]
+                $loginConfig,
+            ],
         ];
     }
 
@@ -375,7 +376,7 @@ class LoginTraitTest extends BaseTraitTest
     public function testLogin($AuthClass, $resultStatus, $message, $method, $failureConfig)
     {
         $identifiers = new IdentifierCollection([
-            'CakeDC/Users.Social'
+            'CakeDC/Users.Social',
         ]);
         $FormAuth = new FormAuthenticator($identifiers);
         $SessionAuth = new SessionAuthenticator($identifiers);
@@ -388,7 +389,7 @@ class LoginTraitTest extends BaseTraitTest
         $formFailure = new Failure(
             $FormAuth,
             new Result(null, $resultStatus, [
-                'Password' => []
+                'Password' => [],
             ])
         );
         $socialFailure = new Failure(
@@ -398,21 +399,21 @@ class LoginTraitTest extends BaseTraitTest
         $failures = [$sessionFailure, $formFailure, $socialFailure];
 
         $this->_mockDispatchEvent(new Event('event'));
-        $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
+
+        $request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->setMethods(['is'])
             ->getMock();
-        $this->Trait->request->expects($this->any())
+        $request->expects($this->any())
             ->method('is')
             ->with('post')
             ->will($this->returnValue(true));
+        $this->Trait->setRequest($request);
+
         $this->_mockFlash();
         $this->_mockAuthentication(null, $failures);
         $this->Trait->Flash->expects($this->once())
             ->method('error')
             ->with($message);
-        $this->Trait->expects($this->any())
-            ->method('getRequest')
-            ->will($this->returnValue($this->Trait->request));
 
         $registry = new ComponentRegistry();
         $Login = $this->getMockBuilder(LoginComponent::class)
@@ -454,7 +455,7 @@ class LoginTraitTest extends BaseTraitTest
     public function testSocialLoginSuccess()
     {
         $identifiers = new IdentifierCollection([
-            'CakeDC/Users.Social'
+            'CakeDC/Users.Social',
         ]);
         $FormAuth = new FormAuthenticator($identifiers);
         $SessionAuth = new SessionAuthenticator($identifiers);
@@ -466,19 +467,21 @@ class LoginTraitTest extends BaseTraitTest
         $formFailure = new Failure(
             $FormAuth,
             new Result(null, Result::FAILURE_CREDENTIALS_MISSING, [
-                'Password' => []
+                'Password' => [],
             ])
         );
         $failures = [$sessionFailure, $formFailure];
 
         $this->_mockDispatchEvent(new Event('event'));
-        $this->Trait->request = $this->getMockBuilder('Cake\Http\ServerRequest')
+
+        $request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->setMethods(['is'])
             ->getMock();
-        $this->Trait->request->expects($this->any())
+        $request->expects($this->any())
             ->method('is')
             ->with('post')
             ->will($this->returnValue(true));
+        $this->Trait->setRequest($request);
 
         $this->_mockFlash();
         $this->_mockAuthentication(['id' => 1], $failures);
@@ -488,9 +491,6 @@ class LoginTraitTest extends BaseTraitTest
             ->method('redirect')
             ->with($this->successLoginRedirect)
             ->will($this->returnValue(new Response()));
-        $this->Trait->expects($this->any())
-            ->method('getRequest')
-            ->will($this->returnValue($this->Trait->request));
 
         $registry = new ComponentRegistry();
         $config = [
@@ -504,9 +504,9 @@ class LoginTraitTest extends BaseTraitTest
                 SocialAuthenticator::FAILURE_ACCOUNT_NOT_ACTIVE => __d(
                     'cake_d_c/users',
                     'Your social account has not been validated yet. Please check your inbox for instructions'
-                )
+                ),
             ],
-            'targetAuthenticator' => SocialAuthenticator::class
+            'targetAuthenticator' => SocialAuthenticator::class,
         ];
         $Login = $this->getMockBuilder(LoginComponent::class)
             ->setMethods(['getController'])

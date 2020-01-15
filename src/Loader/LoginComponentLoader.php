@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -10,7 +12,6 @@
  */
 namespace CakeDC\Users\Loader;
 
-use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Utility\Hash;
 
@@ -19,7 +20,7 @@ class LoginComponentLoader
     /**
      * Load the login component for form login
      *
-     * @param Controller $controller Target controller
+     * @param \Cake\Controller\Controller $controller Target controller
      * @return \CakeDC\Users\Controller\Component\LoginComponent|\Cake\Controller\Component
      * @throws \Exception
      */
@@ -31,7 +32,7 @@ class LoginComponentLoader
             'messages' => [
                 'FAILURE_INVALID_RECAPTCHA' => __d('cake_d_c/users', 'Invalid reCaptcha'),
             ],
-            'targetAuthenticator' => 'CakeDC\Auth\Authenticator\FormAuthenticator'
+            'targetAuthenticator' => 'CakeDC\Auth\Authenticator\FormAuthenticator',
         ];
 
         return self::createComponent($controller, 'Auth.FormLoginFailure', $config);
@@ -40,7 +41,7 @@ class LoginComponentLoader
     /**
      * Load the login component for social login
      *
-     * @param Controller $controller Target controller
+     * @param \Cake\Controller\Controller $controller Target controller
      * @return \CakeDC\Users\Controller\Component\LoginComponent|\Cake\Controller\Component
      * @throws \Exception
      */
@@ -57,9 +58,9 @@ class LoginComponentLoader
                 'FAILURE_ACCOUNT_NOT_ACTIVE' => __d(
                     'cake_d_c/users',
                     'Your social account has not been validated yet. Please check your inbox for instructions'
-                )
+                ),
             ],
-            'targetAuthenticator' => 'CakeDC\Users\Authenticator\SocialAuthenticator'
+            'targetAuthenticator' => 'CakeDC\Users\Authenticator\SocialAuthenticator',
         ];
 
         return self::createComponent($controller, 'Auth.SocialLoginFailure', $config);
@@ -68,7 +69,7 @@ class LoginComponentLoader
     /**
      * Create the component using base $config and the one from $key
      *
-     * @param Controller $controller Target controller
+     * @param \Cake\Controller\Controller $controller Target controller
      * @param string $key configuration key
      * @param array $config base configuration
      *

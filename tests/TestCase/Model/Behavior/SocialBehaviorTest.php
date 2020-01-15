@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -12,6 +14,9 @@
 namespace CakeDC\Users\Test\TestCase\Model\Behavior;
 
 use Cake\TestSuite\TestCase;
+use CakeDC\Users\Exception\AccountNotActiveException;
+use CakeDC\Users\Exception\MissingEmailException;
+use CakeDC\Users\Exception\UserNotActiveException;
 
 /**
  * Test Case
@@ -25,7 +30,7 @@ class SocialBehaviorTest extends TestCase
      */
     public $fixtures = [
         'plugin.CakeDC/Users.SocialAccounts',
-        'plugin.CakeDC/Users.Users'
+        'plugin.CakeDC/Users.Users',
     ];
 
     /**
@@ -33,7 +38,7 @@ class SocialBehaviorTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->Table = $this->getMockForModel('CakeDC/Users.Users', ['save']);
@@ -48,7 +53,7 @@ class SocialBehaviorTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->Table, $this->Behavior, $this->Email);
         parent::tearDown();
@@ -142,23 +147,23 @@ class SocialBehaviorTest extends TestCase
                         'email' => 'email@example.com',
                         'picture' => [
                             'data' => [
-                                'url' => 'data-url'
-                            ]
-                        ]
+                                'url' => 'data-url',
+                            ],
+                        ],
                     ],
                     'credentials' => [
                         'token' => 'token',
                         'secret' => null,
-                        'expires' => 1458423682
+                        'expires' => 1458423682,
                     ],
                     'validated' => true,
                     'link' => 'facebook-link',
-                    'provider' => 'Facebook'
+                    'provider' => 'Facebook',
                 ],
                 'options' => [
                     'use_email' => true,
                     'validate_email' => true,
-                    'token_expiration' => 3600
+                    'token_expiration' => 3600,
                 ],
                 'result' => [
                     'first_name' => 'First name',
@@ -181,13 +186,13 @@ class SocialBehaviorTest extends TestCase
                             'token_secret' => null,
                             'token_expires' => '2016-03-19 21:41:22',
                             'data' => '-',
-                            'active' => true
-                        ]
+                            'active' => true,
+                        ],
                     ],
                     'activation_date' => '2016-01-20 15:45:09',
                     'active' => true,
-                ]
-                ]
+                ],
+                ],
 
         ];
     }
@@ -212,7 +217,7 @@ class SocialBehaviorTest extends TestCase
             'credentials' => [
                 'token' => 'aT0ken' . time(),
                 'secret' => 'AS3crEt' . time(),
-                'expires' => 1458423682
+                'expires' => 1458423682,
             ],
             'avatar' => 'http://localhost/avatar.jpg' . time(),
             'link' => 'facebook-link' . time(),
@@ -221,11 +226,11 @@ class SocialBehaviorTest extends TestCase
                 'bio' => 'This is a raw bio',
                 'extra' => 'value',
                 'foo' => 'bar',
-            ]
+            ],
         ];
         $accountBefore = $this->Table->SocialAccounts->find()->where([
             'SocialAccounts.reference' => $data['id'],
-            'SocialAccounts.provider' => $data['provider']
+            'SocialAccounts.provider' => $data['provider'],
         ])->firstOrFail();
         $result = $this->Behavior->socialLogin($fullData + [], $options);
         $this->assertEquals($result->id, '00000000-0000-0000-0000-000000000002');
@@ -233,7 +238,7 @@ class SocialBehaviorTest extends TestCase
 
         $account = $this->Table->SocialAccounts->find()->where([
             'SocialAccounts.reference' => $data['id'],
-            'SocialAccounts.provider' => $data['provider']
+            'SocialAccounts.provider' => $data['provider'],
         ])->firstOrFail();
 
         $this->assertEquals($fullData['avatar'], $account->avatar);
@@ -258,14 +263,14 @@ class SocialBehaviorTest extends TestCase
             'provider' => [
                 'data' => [
                     'id' => 'reference-2-1',
-                    'provider' => 'Facebook'
+                    'provider' => 'Facebook',
                 ],
                 'options' => [
                     'use_email' => true,
                     'validate_email' => true,
-                    'token_expiration' => 3600
+                    'token_expiration' => 3600,
                 ],
-            ]
+            ],
 
         ];
     }
@@ -273,11 +278,11 @@ class SocialBehaviorTest extends TestCase
     /**
      * Test socialLogin with existing and active user and not active social account
      *
-     * @expectedException CakeDC\Users\Exception\AccountNotActiveException
      * @dataProvider providerSocialLoginExistingAndNotActiveAccount
      */
     public function testSocialLoginExistingNotActiveReference($data, $options)
     {
+        $this->expectException(AccountNotActiveException::class);
         $this->Behavior->expects($this->never())
             ->method('generateUniqueUsername');
 
@@ -299,14 +304,14 @@ class SocialBehaviorTest extends TestCase
             'provider' => [
                 'data' => [
                     'id' => 'reference-1-1234',
-                    'provider' => 'Facebook'
+                    'provider' => 'Facebook',
                 ],
                 'options' => [
                     'use_email' => true,
                     'validate_email' => true,
-                    'token_expiration' => 3600
+                    'token_expiration' => 3600,
                 ],
-            ]
+            ],
 
         ];
     }
@@ -314,11 +319,11 @@ class SocialBehaviorTest extends TestCase
     /**
      * Test socialLogin with existing and active account but not active user
      *
-     * @expectedException CakeDC\Users\Exception\UserNotActiveException
      * @dataProvider providerSocialLoginExistingAccountNotActiveUser
      */
     public function testSocialLoginExistingReferenceNotActiveUser($data, $options)
     {
+        $this->expectException(UserNotActiveException::class);
         $this->Behavior->expects($this->never())
             ->method('generateUniqueUsername');
 
@@ -340,14 +345,14 @@ class SocialBehaviorTest extends TestCase
             'provider' => [
                 'data' => [
                     'id' => 'reference-1-1234',
-                    'provider' => 'Twitter'
+                    'provider' => 'Twitter',
                 ],
                 'options' => [
                     'use_email' => true,
                     'validate_email' => true,
-                    'token_expiration' => 3600
+                    'token_expiration' => 3600,
                 ],
-            ]
+            ],
 
         ];
     }
@@ -356,10 +361,10 @@ class SocialBehaviorTest extends TestCase
      * Test socialLogin with facebook and not existing user
      *
      * @dataProvider providerFacebookSocialLoginNoEmail
-     * @expectedException CakeDC\Users\Exception\MissingEmailException
      */
     public function testSocialLoginNoEmail($data, $options)
     {
+        $this->expectException(MissingEmailException::class);
         $this->Behavior->socialLogin($data, $options);
     }
 
@@ -379,14 +384,14 @@ class SocialBehaviorTest extends TestCase
                     'last_name' => 'Last name',
                     'validated' => true,
                     'link' => 'facebook-link',
-                    'provider' => 'Facebook'
+                    'provider' => 'Facebook',
                 ],
                 'options' => [
                     'use_email' => true,
                     'validate_email' => true,
-                    'token_expiration' => 3600
+                    'token_expiration' => 3600,
                 ],
-            ]
+            ],
 
         ];
     }
@@ -416,7 +421,7 @@ class SocialBehaviorTest extends TestCase
         return [
             ['username', 'username'],
             ['user-1', 'user-10'],
-            ['user-5', 'user-50']
+            ['user-5', 'user-50'],
 
         ];
     }

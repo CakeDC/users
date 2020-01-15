@@ -19,7 +19,6 @@ use Cake\TestSuite\Fixture\TestFixture;
  */
 class SocialAccountsFixture extends TestFixture
 {
-
     /**
      * Fields
      *
@@ -72,7 +71,7 @@ class SocialAccountsFixture extends TestFixture
             'active' => false,
             'data' => '',
             'created' => '2015-05-22 21:52:44',
-            'modified' => '2015-05-22 21:52:44'
+            'modified' => '2015-05-22 21:52:44',
         ],
         [
             'id' => '00000000-0000-0000-0000-000000000002',
@@ -88,7 +87,7 @@ class SocialAccountsFixture extends TestFixture
             'active' => true,
             'data' => '',
             'created' => '2015-05-22 21:52:44',
-            'modified' => '2015-05-22 21:52:44'
+            'modified' => '2015-05-22 21:52:44',
         ],
         [
             'id' => '00000000-0000-0000-0000-000000000003',
@@ -104,7 +103,7 @@ class SocialAccountsFixture extends TestFixture
             'active' => true,
             'data' => '',
             'created' => '2015-05-22 21:52:44',
-            'modified' => '2015-05-22 21:52:44'
+            'modified' => '2015-05-22 21:52:44',
         ],
         [
             'id' => '00000000-0000-0000-0000-000000000004',
@@ -120,7 +119,7 @@ class SocialAccountsFixture extends TestFixture
             'active' => false,
             'data' => '',
             'created' => '2015-05-22 21:52:44',
-            'modified' => '2015-05-22 21:52:44'
+            'modified' => '2015-05-22 21:52:44',
         ],
         [
             'id' => '00000000-0000-0000-0000-000000000005',
@@ -136,7 +135,7 @@ class SocialAccountsFixture extends TestFixture
             'active' => false,
             'data' => '',
             'created' => '2015-05-22 21:52:44',
-            'modified' => '2015-05-22 21:52:44'
+            'modified' => '2015-05-22 21:52:44',
         ],
     ];
 }

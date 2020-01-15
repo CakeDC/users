@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -15,7 +17,6 @@ use Cake\Controller\Component\AuthComponent;
 use Cake\Core\Configure;
 use Cake\Datasource\Exception\InvalidPrimaryKeyException;
 use Cake\Datasource\Exception\RecordNotFoundException;
-use Cake\Utility\Hash;
 
 /**
  * Covers the profile action
@@ -24,7 +25,6 @@ use Cake\Utility\Hash;
  */
 trait ProfileTrait
 {
-
     /**
      * Profile action
      * @param mixed $id Profile id object.
@@ -32,18 +32,18 @@ trait ProfileTrait
      */
     public function profile($id = null)
     {
-        $identity = $this->request->getAttribute('identity');
-        $identity = isset($identity) ? $identity : [];
-        $loggedUserId = Hash::get($identity, 'id');
+        $identity = $this->getRequest()->getAttribute('identity');
+        $identity = $identity ?? [];
+        $loggedUserId = $identity['id'] ?? null;
         $isCurrentUser = false;
         if (!Configure::read('Users.Profile.viewOthers') || empty($id)) {
             $id = $loggedUserId;
         }
         try {
             $appContain = (array)Configure::read('Auth.authenticate.' . AuthComponent::ALL . '.contain');
-            $socialContain = Configure::read('Users.Social.login') ? ['SocialAccounts']: [];
+            $socialContain = Configure::read('Users.Social.login') ? ['SocialAccounts'] : [];
             $user = $this->getUsersTable()->get($id, [
-                    'contain' => array_merge((array)$appContain, (array)$socialContain)
+                    'contain' => array_merge((array)$appContain, (array)$socialContain),
                 ]);
             $this->set('avatarPlaceholder', Configure::read('Users.Avatar.placeholder'));
             if ($user->id === $loggedUserId) {
@@ -52,11 +52,11 @@ trait ProfileTrait
         } catch (RecordNotFoundException $ex) {
             $this->Flash->error(__d('cake_d_c/users', 'User was not found'));
 
-            return $this->redirect($this->request->referer());
+            return $this->redirect($this->getRequest()->referer());
         } catch (InvalidPrimaryKeyException $ex) {
             $this->Flash->error(__d('cake_d_c/users', 'Not authorized, please login first'));
 
-            return $this->redirect($this->request->referer());
+            return $this->redirect($this->getRequest()->referer());
         }
         $this->set(compact('user', 'isCurrentUser'));
         $this->set('_serialize', ['user', 'isCurrentUser']);

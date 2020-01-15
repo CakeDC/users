@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,15 +13,14 @@
 
 namespace CakeDC\Users\Model\Behavior;
 
-use CakeDC\Users\Exception\UserAlreadyActiveException;
-use CakeDC\Users\Exception\UserNotActiveException;
-use CakeDC\Users\Exception\UserNotFoundException;
-use CakeDC\Users\Exception\WrongPasswordException;
 use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Mailer\MailerAwareTrait;
-use Cake\Utility\Hash;
+use CakeDC\Users\Exception\UserAlreadyActiveException;
+use CakeDC\Users\Exception\UserNotActiveException;
+use CakeDC\Users\Exception\UserNotFoundException;
+use CakeDC\Users\Exception\WrongPasswordException;
 
 /**
  * Covers the password management features
@@ -36,8 +37,8 @@ class PasswordBehavior extends BaseTokenBehavior
      *
      * @return string
      * @throws \InvalidArgumentException
-     * @throws UserNotFoundException
-     * @throws UserAlreadyActiveException
+     * @throws \CakeDC\Users\Exception\UserNotFoundException
+     * @throws \CakeDC\Users\Exception\UserAlreadyActiveException
      */
     public function resetToken($reference, array $options = [])
     {
@@ -45,7 +46,7 @@ class PasswordBehavior extends BaseTokenBehavior
             throw new \InvalidArgumentException(__d('cake_d_c/users', "Reference cannot be null"));
         }
 
-        $expiration = Hash::get($options, 'expiration');
+        $expiration = $options['expiration'] ?? null;
         if (empty($expiration)) {
             throw new \InvalidArgumentException(__d('cake_d_c/users', "Token expiration cannot be empty"));
         }
@@ -55,22 +56,22 @@ class PasswordBehavior extends BaseTokenBehavior
         if (empty($user)) {
             throw new UserNotFoundException(__d('cake_d_c/users', "User not found"));
         }
-        if (Hash::get($options, 'checkActive')) {
+        if ($options['checkActive'] ?? false) {
             if ($user->active) {
                 throw new UserAlreadyActiveException(__d('cake_d_c/users', "User account already validated"));
             }
             $user->active = false;
             $user->activation_date = null;
         }
-        if (Hash::get($options, 'ensureActive')) {
+        if ($options['ensureActive'] ?? false) {
             if (!$user['active']) {
                 throw new UserNotActiveException(__d('cake_d_c/users', "User not active"));
             }
         }
         $user->updateToken($expiration);
         $saveResult = $this->_table->save($user);
-        if (Hash::get($options, 'sendEmail')) {
-            switch (Hash::get($options, 'type')) {
+        if ($options['sendEmail'] ?? false) {
+            switch ($options['type'] ?? null) {
                 case 'email':
                     $this->_sendValidationEmail($user);
                     break;
@@ -86,7 +87,7 @@ class PasswordBehavior extends BaseTokenBehavior
     /**
      * Send the reset password related email link
      *
-     * @param EntityInterface $user user
+     * @param \Cake\Datasource\EntityInterface $user user
      * @return void
      */
     protected function _sendResetPasswordEmail($user)
@@ -99,7 +100,7 @@ class PasswordBehavior extends BaseTokenBehavior
     /**
      * Wrapper for mailer
      *
-     * @param EntityInterface $user user
+     * @param \Cake\Datasource\EntityInterface $user user
      * @return void
      */
     protected function _sendValidationEmail($user)
@@ -124,15 +125,15 @@ class PasswordBehavior extends BaseTokenBehavior
     /**
      * Change password method
      *
-     * @param EntityInterface $user user data.
-     * @throws WrongPasswordException
+     * @param \Cake\Datasource\EntityInterface $user user data.
+     * @throws \CakeDC\Users\Exception\WrongPasswordException
      * @return mixed
      */
     public function changePassword(EntityInterface $user)
     {
         try {
             $currentUser = $this->_table->get($user->id, [
-                'contain' => []
+                'contain' => [],
             ]);
         } catch (RecordNotFoundException $e) {
             throw new UserNotFoundException(__d('cake_d_c/users', "User not found"));

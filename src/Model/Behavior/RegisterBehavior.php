@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,15 +13,14 @@
 
 namespace CakeDC\Users\Model\Behavior;
 
-use CakeDC\Users\Exception\TokenExpiredException;
-use CakeDC\Users\Exception\UserAlreadyActiveException;
-use CakeDC\Users\Exception\UserNotFoundException;
 use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\Event;
 use Cake\Mailer\MailerAwareTrait;
-use Cake\Utility\Hash;
 use Cake\Validation\Validator;
+use CakeDC\Users\Exception\TokenExpiredException;
+use CakeDC\Users\Exception\UserAlreadyActiveException;
+use CakeDC\Users\Exception\UserNotFoundException;
 
 /**
  * Covers the user registration
@@ -34,7 +35,7 @@ class RegisterBehavior extends BaseTokenBehavior
      * @param array $config The configuration settings provided to this behavior.
      * @return void
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         parent::initialize($config);
         $this->validateEmail = (bool)Configure::read('Users.Email.validate');
@@ -44,19 +45,20 @@ class RegisterBehavior extends BaseTokenBehavior
     /**
      * Registers an user.
      *
-     * @param EntityInterface $user User information
+     * @param \Cake\Datasource\EntityInterface $user User information
      * @param array $data User information
      * @param array $options ['tokenExpiration]
-     * @return bool|EntityInterface
+     * @return bool|\Cake\Datasource\EntityInterface
      */
     public function register($user, $data, $options)
     {
-        $validateEmail = Hash::get($options, 'validate_email');
-        $tokenExpiration = Hash::get($options, 'token_expiration');
+        $validateEmail = $options['validate_email'] ?? null;
+        $tokenExpiration = $options['token_expiration'] ?? null;
+        $validator = $options['validator'] ?? null;
         $user = $this->_table->patchEntity(
             $user,
             $data,
-            ['validate' => Hash::get($options, 'validator') ?: $this->getRegisterValidators($options)]
+            ['validate' => $validator ?: $this->getRegisterValidators($options)]
         );
         $user['role'] = Configure::read('Users.Registration.defaultRole') ?: 'user';
         $user->validated = false;
@@ -76,9 +78,9 @@ class RegisterBehavior extends BaseTokenBehavior
      *
      * @param string $token toke to be validated.
      * @param null $callback function that will be returned.
-     * @throws TokenExpiredException when token has expired.
-     * @throws UserNotFoundException when user isn't found.
-     * @return EntityInterface $user
+     * @throws \CakeDC\Users\Exception\TokenExpiredException when token has expired.
+     * @throws \CakeDC\Users\Exception\UserNotFoundException when user isn't found.
+     * @return \Cake\Datasource\EntityInterface $user
      */
     public function validate($token, $callback = null)
     {
@@ -92,7 +94,7 @@ class RegisterBehavior extends BaseTokenBehavior
         if ($user->tokenExpired()) {
             throw new TokenExpiredException(__d('cake_d_c/users', "Token has already expired user with no token"));
         }
-        if (!method_exists($this, $callback)) {
+        if (!method_exists($this, (string)$callback)) {
             return $user;
         }
 
@@ -102,9 +104,9 @@ class RegisterBehavior extends BaseTokenBehavior
     /**
      * Activates an user
      *
-     * @param EntityInterface $user user object.
+     * @param \Cake\Datasource\EntityInterface $user user object.
      * @return mixed User entity or bool false if the user could not be activated
-     * @throws UserAlreadyActiveException
+     * @throws \CakeDC\Users\Exception\UserAlreadyActiveException
      */
     public function activateUser(EntityInterface $user)
     {
@@ -122,10 +124,10 @@ class RegisterBehavior extends BaseTokenBehavior
     /**
      * buildValidator
      *
-     * @param Event $event event
-     * @param Validator $validator validator
+     * @param \Cake\Event\Event $event event
+     * @param \Cake\Validation\Validator $validator validator
      * @param string $name name
-     * @return Validator
+     * @return \Cake\Validation\Validator
      */
     public function buildValidator(Event $event, Validator $validator, $name)
     {
@@ -139,9 +141,9 @@ class RegisterBehavior extends BaseTokenBehavior
     /**
      * Email validator
      *
-     * @param Validator $validator Validator instance.
+     * @param \Cake\Validation\Validator $validator Validator instance.
      * @param bool $validateEmail true when email needs to be required
-     * @return Validator
+     * @return \Cake\Validation\Validator
      */
     protected function _emailValidator(Validator $validator, $validateEmail)
     {
@@ -158,8 +160,8 @@ class RegisterBehavior extends BaseTokenBehavior
     /**
      * Tos validator
      *
-     * @param Validator $validator Validator instance.
-     * @return Validator
+     * @param \Cake\Validation\Validator $validator Validator instance.
+     * @return \Cake\Validation\Validator
      */
     protected function _tosValidator(Validator $validator)
     {
@@ -174,12 +176,12 @@ class RegisterBehavior extends BaseTokenBehavior
      * Returns the list of validators
      *
      * @param array $options Array of options ['validate_email' => true/false, 'use_tos' => true/false]
-     * @return Validator
+     * @return \Cake\Validation\Validator
      */
     public function getRegisterValidators($options)
     {
-        $validateEmail = Hash::get($options, 'validate_email');
-        $useTos = Hash::get($options, 'use_tos');
+        $validateEmail = $options['validate_email'] ?? null;
+        $useTos = $options['use_tos'] ?? null;
 
         $validator = $this->_table->validationDefault(new Validator());
         $validator = $this->_table->validationRegister($validator);
@@ -197,7 +199,7 @@ class RegisterBehavior extends BaseTokenBehavior
     /**
      * Wrapper for mailer
      *
-     * @param EntityInterface $user user
+     * @param \Cake\Datasource\EntityInterface $user user
      * @return void
      */
     protected function _sendValidationEmail($user)
