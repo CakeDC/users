@@ -74,7 +74,7 @@ class UsersMailerTest extends TestCase
                 'controller' => 'Users',
                 'action' => 'validateEmail',
                 '_full' => true,
-                '12345678'
+                '12345678',
             ],
             'first_name' => 'FirstName',
             'last_name' => 'Bond',
@@ -117,7 +117,7 @@ class UsersMailerTest extends TestCase
                 'action' => 'validateAccount',
                 'Facebook',
                 'reference-1-1234',
-                'token-1234'
+                'token-1234',
             ],
         ];
 
@@ -149,7 +149,7 @@ class UsersMailerTest extends TestCase
                 'controller' => 'Users',
                 'action' => 'resetPassword',
                 '_full' => true,
-                '12345'
+                '12345',
             ],
             'first_name' => 'FirstName',
             'email' => 'test@example.com',
