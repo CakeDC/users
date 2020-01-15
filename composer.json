@@ -46,7 +46,7 @@
         "yubico/u2flib-server": "^1.0",
         "php-coveralls/php-coveralls": "^2.1",
         "league/oauth1-client": "^1.7",
-        "cakephp/cakephp-codesniffer": "dev-next"
+        "cakephp/cakephp-codesniffer": "dev-master"
     },
     "suggest": {
         "league/oauth1-client": "Provides Social Authentication with Twitter",

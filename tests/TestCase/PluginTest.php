@@ -319,9 +319,6 @@ class PluginTest extends TestCase
         }
         $this->assertEquals($expected, $actual);
 
-        /**
-         * @var \Authentication\Authenticator\AuthenticatorCollection $authenticators
-         */
         $identifiers = $service->identifiers();
         $expected = [
             PasswordIdentifier::class => [
