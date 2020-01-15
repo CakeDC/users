@@ -32,8 +32,7 @@
         "cakephp/cakephp": "^4.0.0",
         "cakedc/auth": "^6.0.0",
         "cakephp/authorization": "^2.0.0",
-        "cakephp/authentication": "^2.0.0",
-        "cakephp/cakephp-codesniffer": "dev-master"
+        "cakephp/authentication": "^2.0.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.0",
@@ -46,7 +45,8 @@
         "robthree/twofactorauth": "^1.6",
         "yubico/u2flib-server": "^1.0",
         "php-coveralls/php-coveralls": "^2.1",
-        "league/oauth1-client": "^1.7"
+        "league/oauth1-client": "^1.7",
+        "cakephp/cakephp-codesniffer": "^4.0"
     },
     "suggest": {
         "league/oauth1-client": "Provides Social Authentication with Twitter",
