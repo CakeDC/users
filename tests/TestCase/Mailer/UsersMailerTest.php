@@ -73,29 +73,35 @@ class UsersMailerTest extends TestCase
      */
     public function testValidation()
     {
+        $this->UsersMailer = new UsersMailer();
         $table = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
-        $data = [
+        $expectedViewVars = [
+            'activationUrl' => [
+                'prefix' => false,
+                'plugin' => 'CakeDC/Users',
+                'controller' => 'Users',
+                'action' => 'validateEmail',
+                '_full' => true,
+                '12345678'
+            ],
             'first_name' => 'FirstName',
+            'last_name' => 'Bond',
             'email' => 'test@example.com',
-            'token' => '12345',
+            'token' => '12345678',
         ];
-        $user = $table->newEntity($data);
-        $this->Email->expects($this->once())
-            ->method('setTo')
-            ->with($user['email'])
-            ->will($this->returnValue($this->Email));
 
-        $this->Email->expects($this->once())
-            ->method('setSubject')
-            ->with('FirstName, Your account validation link')
-            ->will($this->returnValue($this->Email));
-
-        $this->UsersMailer->expects($this->once())
-            ->method('setViewVars')
-            ->with($data)
-            ->will($this->returnValue($this->UsersMailer));
-
+        $user = $table->newEntity([
+            'first_name' => 'FirstName',
+            'last_name' => 'Bond',
+            'email' => 'test@example.com',
+            'token' => '12345678',
+        ]);
         $this->invokeMethod($this->UsersMailer, 'validation', [$user]);
+        $this->assertSame(['test@example.com' => 'test@example.com'], $this->UsersMailer->getTo());
+        $this->assertSame('FirstName, Your account validation link', $this->UsersMailer->getSubject());
+        $this->assertSame(Message::MESSAGE_BOTH, $this->UsersMailer->getEmailFormat());
+        $this->assertSame($expectedViewVars, $this->UsersMailer->viewBuilder()->getVars());
+        $this->assertSame('CakeDC/Users.validation', $this->UsersMailer->viewBuilder()->getTemplate());
     }
 
     /**
