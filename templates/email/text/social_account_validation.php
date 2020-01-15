@@ -8,17 +8,6 @@
  * @copyright Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
-
-$activationUrl = [
-    '_full' => true,
-    'prefix' => false,
-    'plugin' => 'CakeDC/Users',
-    'controller' => 'SocialAccounts',
-    'action' => 'validateAccount',
-    $socialAccount['provider'],
-    $socialAccount['reference'],
-    $socialAccount['token'],
-];
 ?>
 <?= __d('cake_d_c/users', "Hi {0}", $user['first_name']) ?>,
 
