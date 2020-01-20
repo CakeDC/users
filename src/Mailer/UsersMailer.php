@@ -102,9 +102,9 @@ class UsersMailer extends Mailer
             'plugin' => 'CakeDC/Users',
             'controller' => 'SocialAccounts',
             'action' => 'validateAccount',
-            $socialAccount['provider'],
-            $socialAccount['reference'],
-            $socialAccount['token'],
+            $socialAccount['provider'] ?? null,
+            $socialAccount['reference'] ?? null,
+            $socialAccount['token'] ?? null,
         ];
         $this
             ->setTo($user['email'])
