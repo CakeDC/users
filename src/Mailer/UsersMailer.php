@@ -43,10 +43,10 @@ class UsersMailer extends Mailer
         ] + $user->toArray();
 
         $this
-             ->setTo($user['email'])
-             ->setSubject($firstName . $subject)
+            ->setTo($user['email'])
+            ->setSubject($firstName . $subject)
             ->setEmailFormat(Message::MESSAGE_BOTH)
-             ->setViewVars($viewVars);
+            ->setViewVars($viewVars);
 
         $this->viewBuilder()
             ->setTemplate('CakeDC/Users.validation');
