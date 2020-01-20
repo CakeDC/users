@@ -48,7 +48,7 @@ class UsersUrl
     }
 
     /**
-     * Get an user action route. This should not be user for links like HtmlHelper::link
+     * Get an user action route. This should not be used for links like HtmlHelper::link
      *
      * @param string $action user action
      * @return array
@@ -59,7 +59,7 @@ class UsersUrl
     }
 
     /**
-     * Get an user action route. This should not be user for links like HtmlHelper::link
+     * Get an user action route. This should not be used for links like HtmlHelper::link
      *
      * @param string $action user action
      * @return array
