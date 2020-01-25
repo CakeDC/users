@@ -46,7 +46,7 @@
         "yubico/u2flib-server": "^1.0",
         "php-coveralls/php-coveralls": "^2.1",
         "league/oauth1-client": "^1.7",
-        "cakephp/cakephp-codesniffer": "dev-next"
+        "cakephp/cakephp-codesniffer": "^4.0"
     },
     "suggest": {
         "league/oauth1-client": "Provides Social Authentication with Twitter",
@@ -85,11 +85,11 @@
         "test": "phpunit --stderr",
         "stan": "phpstan analyse src/",
         "psalm": "php vendor/psalm/phar/psalm.phar --show-info=false src/ ",
-        "stan-setup": "cp composer.json composer.backup && composer require --dev phpstan/phpstan-shim:^0.11.18 psalm/phar:^3.5  && mv composer.backup composer.json",
+        "stan-setup": "cp composer.json composer.backup && composer require --dev phpstan/phpstan:^0.12 psalm/phar:^3.5 && mv composer.backup composer.json",
         "stan-rebuild-baseline": "phpstan analyse --configuration phpstan.neon --error-format baselineNeon src/ > phpstan-baseline.neon",
         "psalm-rebuild-baseline": "php vendor/psalm/phar/psalm.phar --show-info=false  --set-baseline=psalm-baseline.xml  src/",
         "rector": "rector process src/",
-        "rector-setup": "cp composer.json composer.backup && composer require --dev rector/rector:^0.4.11 && mv composer.backup composer.json", 
+        "rector-setup": "cp composer.json composer.backup && composer require --dev rector/rector:^0.4.11 && mv composer.backup composer.json",
         "coverage-test": "phpunit --stderr --coverage-clover=clover.xml"
     }
 }

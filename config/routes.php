@@ -22,17 +22,17 @@ $routes->connect('/accounts/validate/*', [
 ]);
 // Google Authenticator related routes
 if (Configure::read('OneTimePasswordAuthenticator.login')) {
-    $routes->connect('/verify', UsersUrl::actionParams('verify'));
+    $routes->connect('/verify', UsersUrl::actionRouteParams('verify'));
 
-    $routes->connect('/resetOneTimePasswordAuthenticator', UsersUrl::actionParams('resetOneTimePasswordAuthenticator'));
+    $routes->connect('/resetOneTimePasswordAuthenticator', UsersUrl::actionRouteParams('resetOneTimePasswordAuthenticator'));
 }
 
-$routes->connect('/profile/*', UsersUrl::actionParams('profile'));
-$routes->connect('/login', UsersUrl::actionParams('login'));
-$routes->connect('/logout', UsersUrl::actionParams('logout'));
-$routes->connect('/link-social/*', UsersUrl::actionParams('linkSocial'));
-$routes->connect('/callback-link-social/*', UsersUrl::actionParams('callbackLinkSocial'));
-$routes->connect('/register', UsersUrl::actionParams('register'));
+$routes->connect('/profile/*', UsersUrl::actionRouteParams('profile'));
+$routes->connect('/login', UsersUrl::actionRouteParams('login'));
+$routes->connect('/logout', UsersUrl::actionRouteParams('logout'));
+$routes->connect('/link-social/*', UsersUrl::actionRouteParams('linkSocial'));
+$routes->connect('/callback-link-social/*', UsersUrl::actionRouteParams('callbackLinkSocial'));
+$routes->connect('/register', UsersUrl::actionRouteParams('register'));
 
 $oauthPath = Configure::read('OAuth.path');
 if (is_array($oauthPath)) {
@@ -49,4 +49,4 @@ $routes->connect('/social-accounts/:action/*', [
     'plugin' => 'CakeDC/Users',
     'controller' => 'SocialAccounts',
 ]);
-$routes->connect('/users/:action/*', UsersUrl::actionParams(null));
+$routes->connect('/users/:action/*', UsersUrl::actionRouteParams(null));
