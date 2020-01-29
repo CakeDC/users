@@ -12,8 +12,11 @@ declare(strict_types=1);
  */
 namespace CakeDC\Users\Test\TestCase\Email;
 
+use Cake\Mailer\Message;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use CakeDC\Users\Mailer\UsersMailer;
+use CakeDC\Users\Model\Entity\User;
 
 /**
  * Test Case
@@ -29,6 +32,10 @@ class UsersMailerTest extends TestCase
         'plugin.CakeDC/Users.SocialAccounts',
         'plugin.CakeDC/Users.Users',
     ];
+    /**
+     * @var UsersMailer
+     */
+    private $UsersMailer;
 
     /**
      * setUp
@@ -37,15 +44,8 @@ class UsersMailerTest extends TestCase
      */
     public function setUp(): void
     {
+        $this->UsersMailer = new UsersMailer();
         parent::setUp();
-        $this->Email = $this->getMockBuilder('Cake\Mailer\Message')
-            ->setMethods(['setTo', 'setSubject', 'setViewVars', 'setTemplate'])
-            ->getMock();
-
-        $this->UsersMailer = $this->getMockBuilder('CakeDC\Users\Mailer\UsersMailer')
-            ->setMethods(['setViewVars'])
-            ->getMock();
-        $this->UsersMailer->setMessage($this->Email);
     }
 
     /**
@@ -56,7 +56,6 @@ class UsersMailerTest extends TestCase
     public function tearDown(): void
     {
         unset($this->UsersMailer);
-        unset($this->Email);
         parent::tearDown();
     }
 
@@ -68,28 +67,33 @@ class UsersMailerTest extends TestCase
     public function testValidation()
     {
         $table = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
-        $data = [
+        $expectedViewVars = [
+            'activationUrl' => [
+                'prefix' => false,
+                'plugin' => 'CakeDC/Users',
+                'controller' => 'Users',
+                'action' => 'validateEmail',
+                '_full' => true,
+                '12345678',
+            ],
             'first_name' => 'FirstName',
+            'last_name' => 'Bond',
             'email' => 'test@example.com',
-            'token' => '12345',
+            'token' => '12345678',
         ];
-        $user = $table->newEntity($data);
-        $this->Email->expects($this->once())
-            ->method('setTo')
-            ->with($user['email'])
-            ->will($this->returnValue($this->Email));
 
-        $this->Email->expects($this->once())
-            ->method('setSubject')
-            ->with('FirstName, Your account validation link')
-            ->will($this->returnValue($this->Email));
-
-        $this->UsersMailer->expects($this->once())
-            ->method('setViewVars')
-            ->with($data)
-            ->will($this->returnValue($this->UsersMailer));
-
+        $user = $table->newEntity([
+            'first_name' => 'FirstName',
+            'last_name' => 'Bond',
+            'email' => 'test@example.com',
+            'token' => '12345678',
+        ]);
         $this->invokeMethod($this->UsersMailer, 'validation', [$user]);
+        $this->assertSame(['test@example.com' => 'test@example.com'], $this->UsersMailer->getTo());
+        $this->assertSame('FirstName, Your account validation link', $this->UsersMailer->getSubject());
+        $this->assertSame(Message::MESSAGE_BOTH, $this->UsersMailer->getEmailFormat());
+        $this->assertSame($expectedViewVars, $this->UsersMailer->viewBuilder()->getVars());
+        $this->assertSame('CakeDC/Users.validation', $this->UsersMailer->viewBuilder()->getTemplate());
     }
 
     /**
@@ -101,23 +105,28 @@ class UsersMailerTest extends TestCase
     {
         $social = TableRegistry::getTableLocator()->get('CakeDC/Users.SocialAccounts')
             ->get('00000000-0000-0000-0000-000000000001', ['contain' => 'Users']);
-
-        $this->Email->expects($this->once())
-            ->method('setTo')
-            ->with('user-1@test.com')
-            ->will($this->returnValue($this->Email));
-
-        $this->Email->expects($this->once())
-            ->method('setSubject')
-            ->with('first1, Your social account validation link')
-            ->will($this->returnValue($this->Email));
-
-        $this->UsersMailer->expects($this->once())
-            ->method('setViewVars')
-            ->with(['user' => $social->user, 'socialAccount' => $social])
-            ->will($this->returnValue($this->UsersMailer));
+        $this->assertInstanceOf(User::class, $social->user);
+        $expectedViewVars = [
+            'user' => $social->user,
+            'socialAccount' => $social,
+            'activationUrl' => [
+                '_full' => true,
+                'prefix' => false,
+                'plugin' => 'CakeDC/Users',
+                'controller' => 'SocialAccounts',
+                'action' => 'validateAccount',
+                'Facebook',
+                'reference-1-1234',
+                'token-1234',
+            ],
+        ];
 
         $this->invokeMethod($this->UsersMailer, 'socialAccountValidation', [$social->user, $social]);
+        $this->assertSame(['user-1@test.com' => 'user-1@test.com'], $this->UsersMailer->getTo());
+        $this->assertSame('first1, Your social account validation link', $this->UsersMailer->getSubject());
+        $this->assertSame(Message::MESSAGE_BOTH, $this->UsersMailer->getEmailFormat());
+        $this->assertSame($expectedViewVars, $this->UsersMailer->viewBuilder()->getVars());
+        $this->assertSame('CakeDC/Users.socialAccountValidation', $this->UsersMailer->viewBuilder()->getTemplate());
     }
 
     /**
@@ -128,28 +137,31 @@ class UsersMailerTest extends TestCase
     public function testResetPassword()
     {
         $table = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
-        $data = [
+        $user = $table->newEntity([
+            'first_name' => 'FirstName',
+            'email' => 'test@example.com',
+            'token' => '12345',
+        ]);
+        $expectedViewVars = [
+            'activationUrl' => [
+                'prefix' => false,
+                'plugin' => 'CakeDC/Users',
+                'controller' => 'Users',
+                'action' => 'resetPassword',
+                '_full' => true,
+                '12345',
+            ],
             'first_name' => 'FirstName',
             'email' => 'test@example.com',
             'token' => '12345',
         ];
-        $user = $table->newEntity($data);
-        $this->Email->expects($this->once())
-            ->method('setTo')
-            ->with($user['email'])
-            ->will($this->returnValue($this->Email));
-
-        $this->Email->expects($this->once())
-            ->method('setSubject')
-            ->with('FirstName, Your reset password link')
-            ->will($this->returnValue($this->Email));
-
-        $this->UsersMailer->expects($this->once())
-            ->method('setViewVars')
-            ->with($data)
-            ->will($this->returnValue($this->UsersMailer));
 
         $this->invokeMethod($this->UsersMailer, 'resetPassword', [$user]);
+        $this->assertSame(['test@example.com' => 'test@example.com'], $this->UsersMailer->getTo());
+        $this->assertSame('FirstName, Your reset password link', $this->UsersMailer->getSubject());
+        $this->assertSame(Message::MESSAGE_BOTH, $this->UsersMailer->getEmailFormat());
+        $this->assertSame($expectedViewVars, $this->UsersMailer->viewBuilder()->getVars());
+        $this->assertSame('CakeDC/Users.resetPassword', $this->UsersMailer->viewBuilder()->getTemplate());
     }
 
     /**

@@ -8,15 +8,6 @@
  * @copyright Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
-
-$activationUrl = [
-    '_full' => true,
-    'prefix' => false,
-    'plugin' => 'CakeDC/Users',
-    'controller' => 'Users',
-    'action' => 'resetPassword',
-    isset($token) ? $token : ''
-];
 ?>
 <?= __d('cake_d_c/users', "Hi {0}", isset($first_name) ? $first_name : '') ?>,
 

@@ -14,6 +14,8 @@ namespace CakeDC\Users\Mailer;
 
 use Cake\Datasource\EntityInterface;
 use Cake\Mailer\Mailer;
+use Cake\Mailer\Message;
+use CakeDC\Users\Utility\UsersUrl;
 
 /**
  * User Mailer
@@ -33,11 +35,21 @@ class UsersMailer extends Mailer
         // un-hide the token to be able to send it in the email content
         $user->setHidden(['password', 'token_expires', 'api_token']);
         $subject = __d('cake_d_c/users', 'Your account validation link');
+        $viewVars = [
+            'activationUrl' => UsersUrl::actionUrl('validateEmail', [
+                '_full' => true,
+                $user['token'],
+            ]),
+        ] + $user->toArray();
+
         $this
-             ->setTo($user['email'])
-             ->setSubject($firstName . $subject)
-             ->setViewVars($user->toArray())
-             ->viewBuilder()->setTemplate('CakeDC/Users.validation');
+            ->setTo($user['email'])
+            ->setSubject($firstName . $subject)
+            ->setEmailFormat(Message::MESSAGE_BOTH)
+            ->setViewVars($viewVars);
+
+        $this->viewBuilder()
+            ->setTemplate('CakeDC/Users.validation');
     }
 
     /**
@@ -54,10 +66,18 @@ class UsersMailer extends Mailer
         // un-hide the token to be able to send it in the email content
         $user->setHidden(['password', 'token_expires', 'api_token']);
 
+        $viewVars = [
+            'activationUrl' => UsersUrl::actionUrl('resetPassword', [
+                '_full' => true,
+                $user['token'],
+            ]),
+        ] + $user->toArray();
+
         $this
             ->setTo($user['email'])
             ->setSubject($subject)
-            ->setViewVars($user->toArray());
+            ->setEmailFormat(Message::MESSAGE_BOTH)
+            ->setViewVars($viewVars);
         $this
             ->viewBuilder()
             ->setTemplate('CakeDC/Users.resetPassword');
@@ -76,10 +96,21 @@ class UsersMailer extends Mailer
         $firstName = isset($user['first_name']) ? $user['first_name'] . ', ' : '';
         // note: we control the space after the username in the previous line
         $subject = __d('cake_d_c/users', '{0}Your social account validation link', $firstName);
+        $activationUrl = [
+            '_full' => true,
+            'prefix' => false,
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'SocialAccounts',
+            'action' => 'validateAccount',
+            $socialAccount['provider'] ?? null,
+            $socialAccount['reference'] ?? null,
+            $socialAccount['token'] ?? null,
+        ];
         $this
             ->setTo($user['email'])
             ->setSubject($subject)
-            ->setViewVars(compact('user', 'socialAccount'));
+            ->setEmailFormat(Message::MESSAGE_BOTH)
+            ->setViewVars(compact('user', 'socialAccount', 'activationUrl'));
         $this
             ->viewBuilder()
             ->setTemplate('CakeDC/Users.socialAccountValidation');
