@@ -15,8 +15,6 @@ namespace CakeDC\Users\Test\TestCase\View\Helper;
 
 use Cake\Http\ServerRequest;
 use Cake\Routing\Router;
-use Cake\ORM\TableRegistry;
-use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use Cake\View\View;
 use CakeDC\Users\View\Helper\AuthLinkHelper;
@@ -148,26 +146,17 @@ class AuthLinkHelperTest extends TestCase
      */
     public function testPostLinkAuthorizedAllowedTrueLoggedAsAdmin()
     {
-        $this->userTable = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
-        $this->session(
-            [
-                'Auth' => [
-                    'User' => $this->userTable->get('00000000-0000-0000-0000-000000000001'),
-                ],
-            ]
-        );
         $url = [
+            'prefix' => false,
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'delete',
             '00000000-0000-0000-0000-000000000010',
         ];
 
-        $this->AuthLink->expects($this->once())
-            ->method('isAuthorized')
-            ->with(
-                $this->equalTo($url)
-            )
+        $this->AuthLink->expects($this->any())
+            ->method('allowMethod')
+            ->with(['post', 'delete'])
             ->will($this->returnValue(true));
 
         $link = $this->AuthLink->postLink('Post Link Title', $url, [
@@ -188,15 +177,8 @@ class AuthLinkHelperTest extends TestCase
      */
     public function testPostLinkAuthorizedAllowedFalseLoggedWithoutRole()
     {
-        $this->userTable = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
-        $this->session(
-            [
-                'Auth' => [
-                    'User' => $this->userTable->get('00000000-0000-0000-0000-000000000004'),
-                ],
-            ]
-        );
         $url = [
+            'prefix' => false,
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'delete',
@@ -227,6 +209,7 @@ class AuthLinkHelperTest extends TestCase
     public function testPostLinkAuthorizedAllowedFalse()
     {
         $url = [
+            'prefix' => false,
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'delete',
