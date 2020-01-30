@@ -14,7 +14,7 @@ use Cake\Core\Configure;
 class_alias('CakeDC\Users\Test\App\Controller\AppController', 'App\Controller\AppController');
 
 Configure::write('App', [
-    'namespace' => 'Users\Test\App',
+    'namespace' => 'TestApp',
     'encoding' => 'UTF-8',
     'base' => false,
     'baseUrl' => false,
@@ -27,9 +27,11 @@ Configure::write('App', [
     'cssBaseUrl' => 'css/',
     'paths' => [
         'plugins' => [dirname(APP) . DS . 'plugins' . DS],
-        'templates' => [dirname(APP) . 'templates' . DS],
+        'templates' => [dirname(APP) . DS . 'templates' . DS],
     ],
 ]);
+\Cake\Utility\Security::setSalt('yoyz186elmi66ab9pz4imbb3tgy9vnsgsfgwe2r8tyxbbfdygu9e09tlxyg8p7dq');
+
 if (!getenv('db_dsn')) {
     putenv('db_dsn=sqlite:///:memory:');
 }
