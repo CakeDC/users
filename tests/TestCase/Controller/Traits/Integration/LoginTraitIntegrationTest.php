@@ -36,6 +36,17 @@ class LoginTraitIntegrationTest extends TestCase
      *
      * @return void
      */
+    public function testRedirectToLogin()
+    {
+        $this->get('/pages/home');
+        $this->assertRedirect('/login?redirect=http%3A%2F%2Flocalhost%2Fpages%2Fhome');
+    }
+
+    /**
+     * Test login action with get request
+     *
+     * @return void
+     */
     public function testLoginGetRequest()
     {
         $this->get('/login');
