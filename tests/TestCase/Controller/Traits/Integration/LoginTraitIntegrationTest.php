@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Test\TestCase\Controller\Traits\Integration;
 
-
-use Cake\Core\Configure;
+use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
@@ -30,6 +29,21 @@ class LoginTraitIntegrationTest extends TestCase
     public $fixtures = [
         'plugin.CakeDC/Users.Users',
     ];
+
+    /**
+     * Sets up the session as a logged in user for an user with id $id
+     *
+     * @param $id
+     * @return void
+     */
+    public function loginAsUserId($id)
+    {
+        $user = TableRegistry::getTableLocator()
+            ->get('CakeDC/Users.Users')
+            ->get($id);
+
+        $this->session(['Auth' => $user]);
+    }
 
     /**
      * Test login action with get request
@@ -96,5 +110,28 @@ class LoginTraitIntegrationTest extends TestCase
             'password' => '12345'
         ]);
         $this->assertRedirect('/pages/home');
+    }
+
+    /**
+     * Test logout action
+     *
+     * @return void
+     */
+    public function testLogout()
+    {
+        $this->loginAsUserId('00000000-0000-0000-0000-000000000002');
+        $this->get('/logout');
+        $this->assertRedirect('/login');
+    }
+
+    /**
+     * Test logout action
+     *
+     * @return void
+     */
+    public function testLogoutNoUser()
+    {
+        $this->get('/logout');
+        $this->assertRedirect('/login');
     }
 }
