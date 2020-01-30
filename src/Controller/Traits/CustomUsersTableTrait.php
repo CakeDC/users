@@ -23,6 +23,9 @@ use Cake\ORM\TableRegistry;
  */
 trait CustomUsersTableTrait
 {
+    /**
+     * @var \Cake\ORM\Table|null
+     */
     protected $_usersTable = null;
 
     /**

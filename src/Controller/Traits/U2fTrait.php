@@ -148,6 +148,8 @@ trait U2fTrait
         $authenticateRequest = $this->createU2fLib()->getAuthenticateData([$data['registration']]);
         $this->getRequest()->getSession()->write('U2f.authenticateRequest', json_encode($authenticateRequest));
         $this->set(compact('authenticateRequest'));
+
+        return null;
     }
 
     /**
