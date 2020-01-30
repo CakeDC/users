@@ -15,7 +15,6 @@ namespace CakeDC\Users\Test\TestCase\Controller\Traits\Integration;
 
 
 use Cake\Core\Configure;
-use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
@@ -85,6 +84,6 @@ class LoginTraitIntegrationTest extends TestCase
             'username' => 'user-2',
             'password' => '12345'
         ]);
-        $this->assertRedirect('/');
+        $this->assertRedirect('/pages/home');
     }
 }

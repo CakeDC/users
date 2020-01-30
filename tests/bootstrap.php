@@ -100,6 +100,18 @@ if (file_exists($root . '/config/bootstrap.php')) {
     require $root . '/config/bootstrap.php';
 }
 
+
+if (!getenv('db_dsn')) {
+    putenv('db_dsn=sqlite:///:memory:');
+}
+
+Cake\Datasource\ConnectionManager::setConfig('test', [
+    'url' => getenv('db_dsn'),
+    'timezone' => 'UTC',
+]);
+
+class_alias('CakeDC\Users\Test\App\Controller\AppController', 'App\Controller\AppController');
+
 $app = new \CakeDC\Users\Test\TestApplication(__DIR__ . DS . 'config');
 $app->bootstrap();
 $app->pluginBootstrap();

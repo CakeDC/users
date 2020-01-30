@@ -1,8 +1,7 @@
 <?php
+/** @var \Cake\Routing\RouteBuilder $routes */
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
 
-Router::extensions('json');
-Router::scope('/', function (RouteBuilder $routes) {
-    $routes->fallbacks();
-});
+$routes->setRouteClass(DashedRoute::class);
+

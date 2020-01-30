@@ -11,8 +11,6 @@
 
 use Cake\Core\Configure;
 
-class_alias('CakeDC\Users\Test\App\Controller\AppController', 'App\Controller\AppController');
-
 Configure::write('App', [
     'namespace' => 'TestApp',
     'encoding' => 'UTF-8',
@@ -32,11 +30,3 @@ Configure::write('App', [
 ]);
 \Cake\Utility\Security::setSalt('yoyz186elmi66ab9pz4imbb3tgy9vnsgsfgwe2r8tyxbbfdygu9e09tlxyg8p7dq');
 
-if (!getenv('db_dsn')) {
-    putenv('db_dsn=sqlite:///:memory:');
-}
-
-Cake\Datasource\ConnectionManager::setConfig('test', [
-    'url' => getenv('db_dsn'),
-    'timezone' => 'UTC',
-]);

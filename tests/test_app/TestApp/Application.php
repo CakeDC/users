@@ -32,6 +32,15 @@ class Application extends BaseApplication
     }
 
     /**
+     * @inheritDoc
+     */
+    public function pluginBootstrap(): void
+    {
+        Configure::write('Users.config', ['users']);
+        parent::pluginBootstrap();
+    }
+
+    /**
      * Setup the middleware queue your application will use.
      *
      * @param \Cake\Http\MiddlewareQueue $middlewareQueue The middleware queue to setup.
