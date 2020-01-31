@@ -115,3 +115,4 @@ class_alias('CakeDC\Users\Test\App\Controller\AppController', 'App\Controller\Ap
 $app = new \CakeDC\Users\Test\TestApplication(__DIR__ . DS . 'config');
 $app->bootstrap();
 $app->pluginBootstrap();
+session_id('cli');

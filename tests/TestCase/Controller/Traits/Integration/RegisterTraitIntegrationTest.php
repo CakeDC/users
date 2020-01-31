@@ -62,7 +62,6 @@ class RegisterTraitIntegrationTest extends TestCase
     {
         $this->enableRetainFlashMessages();
         $this->enableSecurityToken();
-        $this->enableCsrfToken();
         $data = [
             'username' => 'user1',
             'email' => 'use1sample@example.com',
@@ -100,7 +99,6 @@ class RegisterTraitIntegrationTest extends TestCase
         $this->assertFalse($Table->exists(['username' => 'user1']));
         $this->enableRetainFlashMessages();
         $this->enableSecurityToken();
-        $this->enableCsrfToken();
         $data = [
             'username' => 'user1',
             'email' => 'use1sample@example.com',
