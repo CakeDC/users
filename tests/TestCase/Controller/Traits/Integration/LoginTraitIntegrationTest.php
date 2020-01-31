@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Test\TestCase\Controller\Traits\Integration;
 
+use Cake\Core\Configure;
+use Cake\Event\EventManager;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
@@ -61,6 +63,36 @@ class LoginTraitIntegrationTest extends TestCase
      *
      * @return void
      */
+    public function testLoginGetRequestNoSocialLogin()
+    {
+        EventManager::instance()->on('TestApp.afterPluginBootstrap', function() {
+            Configure::write(['Users.Social.login' => false]);
+        });
+
+        $this->get('/login');
+        $this->assertResponseOk();
+        $this->assertResponseNotContains('Username or password is incorrect');
+        $this->assertResponseContains('<form method="post" accept-charset="utf-8" action="/login">');
+        $this->assertResponseContains('<legend>Please enter your username and password</legend>');
+        $this->assertResponseContains('<input type="text" name="username" required="required" id="username"/>');
+        $this->assertResponseContains('<input type="password" name="password" required="required" id="password"/>');
+        $this->assertResponseContains('<input type="checkbox" name="remember_me" value="1" checked="checked" id="remember-me">');
+        $this->assertResponseContains('<button type="submit">Login</button>');
+        $this->assertResponseContains('<a href="/register">Register</a>');
+        $this->assertResponseContains('<a href="/users/request-reset-password">Reset Password</a>');
+
+        $this->assertResponseNotContains('auth/facebook');
+        $this->assertResponseNotContains('auth/twitter');
+        $this->assertResponseNotContains('auth/google');
+        $this->assertResponseNotContains('auth/cognito');
+        $this->assertResponseNotContains('auth/amazon');
+    }
+
+    /**
+     * Test login action with get request
+     *
+     * @return void
+     */
     public function testLoginGetRequest()
     {
         $this->get('/login');
@@ -74,10 +106,16 @@ class LoginTraitIntegrationTest extends TestCase
         $this->assertResponseContains('<button type="submit">Login</button>');
         $this->assertResponseContains('<a href="/register">Register</a>');
         $this->assertResponseContains('<a href="/users/request-reset-password">Reset Password</a>');
+
+        $this->assertResponseContains('<a href="/auth/facebook" class="btn btn-social btn-facebook"><i class="fa fa-facebook"></i>Sign in with Facebook</a>');
+        $this->assertResponseContains('<a href="/auth/twitter" class="btn btn-social btn-twitter"><i class="fa fa-twitter"></i>Sign in with Twitter</a>');
+        $this->assertResponseContains('<a href="/auth/google" class="btn btn-social btn-google"><i class="fa fa-google"></i>Sign in with Google</a>');
+        $this->assertResponseNotContains('/auth/cognito');
+        $this->assertResponseNotContains('/auth/amazon');
     }
 
     /**
-     * Test login action with get request
+     * Test login action with post request
      *
      * @return void
      */
@@ -98,7 +136,7 @@ class LoginTraitIntegrationTest extends TestCase
     }
 
     /**
-     * Test login action with get request
+     * Test login action with post request
      *
      * @return void
      */
@@ -110,6 +148,42 @@ class LoginTraitIntegrationTest extends TestCase
             'password' => '12345'
         ]);
         $this->assertRedirect('/pages/home');
+    }
+
+    /**
+     * Test login action with post request
+     *
+     * @return void
+     */
+    public function testLoginPostRequestRightPasswordIsEnabledOTP()
+    {
+        EventManager::instance()->on('TestApp.afterPluginBootstrap', function() {
+            Configure::write(['OneTimePasswordAuthenticator.login' => true]);
+        });
+        $this->enableRetainFlashMessages();
+        $this->post('/login', [
+            'username' => 'user-2',
+            'password' => '12345'
+        ]);
+        $this->assertRedirect('/verify');
+    }
+
+    /**
+     * Test login action with post request
+     *
+     * @return void
+     */
+    public function testLoginPostRequestRightPasswordIsEnabledU2f()
+    {
+        EventManager::instance()->on('TestApp.afterPluginBootstrap', function() {
+            Configure::write(['U2f.enabled' => true]);
+        });
+        $this->enableRetainFlashMessages();
+        $this->post('/login', [
+            'username' => 'user-2',
+            'password' => '12345'
+        ]);
+        $this->assertRedirect('/users/u2f');
     }
 
     /**
