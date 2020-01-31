@@ -23,7 +23,7 @@ use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Exception\UserNotFoundException;
 use CakeDC\Users\Model\Behavior\PasswordBehavior;
 use CakeDC\Users\Model\Entity\User;
-use CakeDC\Users\Test\App\Mailer\OverrideMailer;
+use TestApp\Mailer\OverrideMailer;
 
 /**
  * Test Case
