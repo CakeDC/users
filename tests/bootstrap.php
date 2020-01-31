@@ -108,7 +108,7 @@ Cake\Datasource\ConnectionManager::setConfig('test', [
     'timezone' => 'UTC',
 ]);
 
-class_alias('CakeDC\Users\Test\App\Controller\AppController', 'App\Controller\AppController');
+class_alias('TestApp\Controller\AppController', 'App\Controller\AppController');
 
 $app = new \CakeDC\Users\Test\TestApplication(__DIR__ . DS . 'config');
 $app->bootstrap();
