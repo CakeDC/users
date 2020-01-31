@@ -74,7 +74,7 @@ class SimpleCrudTraitIntegrationTest extends TestCase
         $this->assertFlashMessage('Changing another user\'s password is not allowed');
         $this->assertRedirect('/profile');
 
-        EventManager::instance()->on(Application::EVENT_AFTER_PLUGIN_BOOTSTRAP, function() {
+        EventManager::instance()->on(Application::EVENT_AFTER_PLUGIN_BOOTSTRAP, function () {
             Configure::write('Users.Superuser.allowedToChangePasswords', true);
         });
         $this->get('/users/change-password/00000000-0000-0000-0000-000000000005');
@@ -87,7 +87,7 @@ class SimpleCrudTraitIntegrationTest extends TestCase
         $this->enableSecurityToken();
         $this->post('/users/change-password/00000000-0000-0000-0000-000000000005', [
             'password' => '123456',
-            'password_confirm' => '123456'
+            'password_confirm' => '123456',
         ]);
         $this->assertRedirect('/users/index');
         $this->assertFlashMessage('Password has been changed successfully');
@@ -108,7 +108,7 @@ class SimpleCrudTraitIntegrationTest extends TestCase
             'username' => 'my-new-username',
             'email' => 'crud.email992@example.com',
             'first_name' => 'Joe',
-            'last_name' => 'Doe K'
+            'last_name' => 'Doe K',
         ]);
         $this->assertRedirect('/users/index');
         $this->assertFlashMessage('The User has been saved');

@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -21,7 +22,7 @@ use CakeDC\Users\Plugin;
 
 class Application extends BaseApplication
 {
-    const EVENT_AFTER_PLUGIN_BOOTSTRAP = 'TestApp.afterPluginBootstrap';
+    public const EVENT_AFTER_PLUGIN_BOOTSTRAP = 'TestApp.afterPluginBootstrap';
 
     /**
      * @inheritDoc
@@ -29,7 +30,21 @@ class Application extends BaseApplication
     public function bootstrap(): void
     {
         parent::bootstrap();
-
+        if (!\Cake\Mailer\TransportFactory::getConfig('default')) {
+            \Cake\Mailer\TransportFactory::setConfig([
+                'default' => [
+                    'className' => \Cake\Mailer\Transport\DebugTransport::class,
+                ],
+            ]);
+        }
+        if (!\Cake\Mailer\Email::getConfig('default')) {
+            \Cake\Mailer\Email::setConfig([
+                'default' => [
+                    'transport' => 'default',
+                    'from' => 'you@localhost',
+                ],
+            ]);
+        }
         $this->addPlugin(Plugin::class);
     }
 

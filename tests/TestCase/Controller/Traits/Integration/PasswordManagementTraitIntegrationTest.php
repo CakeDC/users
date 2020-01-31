@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace CakeDC\Users\Test\TestCase\Controller\Traits\Integration;
 
 use Cake\Core\Configure;
-use Cake\Event\EventManager;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
@@ -71,9 +70,9 @@ class PasswordManagementTraitIntegrationTest extends TestCase
         $this->assertRedirect('/users/change-password');
 
         $fieldName = Configure::read('Users.Key.Session.resetPasswordUserId');
-        $this->assertSession($userAfter->id , $fieldName);
+        $this->assertSession($userAfter->id, $fieldName);
         $this->session([
-            $fieldName => $userAfter->id
+            $fieldName => $userAfter->id,
         ]);
         $this->get('/users/change-password');
         $this->assertResponseOk();
@@ -86,7 +85,7 @@ class PasswordManagementTraitIntegrationTest extends TestCase
 
         $this->post('/users/change-password', [
             'password' => '9080706050',
-            'password_confirm' => '9080706050'
+            'password_confirm' => '9080706050',
         ]);
         $this->assertRedirect('/login');
         $this->assertFlashMessage('Password has been changed successfully');

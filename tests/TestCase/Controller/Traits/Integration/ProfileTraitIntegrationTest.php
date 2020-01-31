@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Test\TestCase\Controller\Traits\Integration;
 
-use Cake\Core\Configure;
-use Cake\Event\EventManager;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
@@ -72,7 +70,7 @@ class ProfileTraitIntegrationTest extends TestCase
         $this->enableSecurityToken();
         $this->post('/users/change-password', [
             'password' => '98765432102',
-            'password_confirm' => '98765432102'
+            'password_confirm' => '98765432102',
         ]);
         $this->assertRedirect('/profile');
         $this->assertFlashMessage('Password has been changed successfully');

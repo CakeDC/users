@@ -65,7 +65,7 @@ class LoginTraitIntegrationTest extends TestCase
      */
     public function testLoginGetRequestNoSocialLogin()
     {
-        EventManager::instance()->on('TestApp.afterPluginBootstrap', function() {
+        EventManager::instance()->on('TestApp.afterPluginBootstrap', function () {
             Configure::write(['Users.Social.login' => false]);
         });
 
@@ -123,7 +123,7 @@ class LoginTraitIntegrationTest extends TestCase
     {
         $this->post('/login', [
             'username' => 'user-2',
-            'password' => '123456789'
+            'password' => '123456789',
         ]);
         $this->assertResponseOk();
         $this->assertResponseContains('Username or password is incorrect');
@@ -145,7 +145,7 @@ class LoginTraitIntegrationTest extends TestCase
         $this->enableRetainFlashMessages();
         $this->post('/login', [
             'username' => 'user-2',
-            'password' => '12345'
+            'password' => '12345',
         ]);
         $this->assertRedirect('/pages/home');
     }
@@ -157,13 +157,13 @@ class LoginTraitIntegrationTest extends TestCase
      */
     public function testLoginPostRequestRightPasswordIsEnabledOTP()
     {
-        EventManager::instance()->on('TestApp.afterPluginBootstrap', function() {
+        EventManager::instance()->on('TestApp.afterPluginBootstrap', function () {
             Configure::write(['OneTimePasswordAuthenticator.login' => true]);
         });
         $this->enableRetainFlashMessages();
         $this->post('/login', [
             'username' => 'user-2',
-            'password' => '12345'
+            'password' => '12345',
         ]);
         $this->assertRedirect('/verify');
     }
@@ -175,13 +175,13 @@ class LoginTraitIntegrationTest extends TestCase
      */
     public function testLoginPostRequestRightPasswordIsEnabledU2f()
     {
-        EventManager::instance()->on('TestApp.afterPluginBootstrap', function() {
+        EventManager::instance()->on('TestApp.afterPluginBootstrap', function () {
             Configure::write(['U2f.enabled' => true]);
         });
         $this->enableRetainFlashMessages();
         $this->post('/login', [
             'username' => 'user-2',
-            'password' => '12345'
+            'password' => '12345',
         ]);
         $this->assertRedirect('/users/u2f');
     }

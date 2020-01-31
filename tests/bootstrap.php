@@ -19,7 +19,6 @@ declare(strict_types=1);
  * installed as a dependency of an application.
  */
 
-use Cake\Core\Configure;
 use Cake\Core\Plugin;
 
 $findRoot = function ($root) {
@@ -99,7 +98,6 @@ Plugin::getCollection()->add(new \CakeDC\Users\Plugin([
 if (file_exists($root . '/config/bootstrap.php')) {
     require $root . '/config/bootstrap.php';
 }
-
 
 if (!getenv('db_dsn')) {
     putenv('db_dsn=sqlite:///:memory:');

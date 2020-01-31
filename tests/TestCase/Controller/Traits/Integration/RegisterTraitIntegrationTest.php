@@ -30,7 +30,6 @@ class RegisterTraitIntegrationTest extends TestCase
         'plugin.CakeDC/Users.Users',
     ];
 
-
     /**
      * Test register action
      *
@@ -69,7 +68,7 @@ class RegisterTraitIntegrationTest extends TestCase
             'password_confirm' => '11',
             'first_name' => '',
             'last_name' => '',
-            'tos' => '0'
+            'tos' => '0',
         ];
         $this->post('/register', $data);
         $this->assertResponseOk();
@@ -106,7 +105,7 @@ class RegisterTraitIntegrationTest extends TestCase
             'password_confirm' => '123456',
             'first_name' => '',
             'last_name' => '',
-            'tos' => '0'
+            'tos' => '0',
         ];
         $this->post('/register', $data);
         $this->assertRedirect('/login');

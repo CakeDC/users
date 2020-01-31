@@ -28,16 +28,4 @@ Configure::write('App', [
         'templates' => [dirname(APP) . DS . 'templates' . DS],
     ],
 ]);
-\Cake\Mailer\TransportFactory::setConfig([
-    'default' => [
-        'className' => \Cake\Mailer\Transport\DebugTransport::class,
-    ],
-]);
-\Cake\Mailer\Email::setConfig([
-    'default' => [
-        'transport' => 'default',
-        'from' => 'you@localhost',
-    ],
-]);
 \Cake\Utility\Security::setSalt('yoyz186elmi66ab9pz4imbb3tgy9vnsgsfgwe2r8tyxbbfdygu9e09tlxyg8p7dq');
-
