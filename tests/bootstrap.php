@@ -19,7 +19,6 @@ declare(strict_types=1);
  * installed as a dependency of an application.
  */
 
-use Cake\Core\Configure;
 use Cake\Core\Plugin;
 
 $findRoot = function ($root) {
@@ -40,12 +39,14 @@ if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
 }
 define('ROOT', $root);
-define('APP_DIR', 'App');
+define('APP_DIR', 'TestApp');
 define('WEBROOT_DIR', 'webroot');
-define('APP', ROOT . '/tests/App/');
-define('CONFIG', ROOT . '/tests/config/');
-define('WWW_ROOT', ROOT . DS . WEBROOT_DIR . DS);
 define('TESTS', ROOT . DS . 'tests' . DS);
+define('TEST_APP', TESTS . 'test_app' . DS);
+define('APP', TEST_APP . 'TestApp' . DS);
+define('WWW_ROOT', TEST_APP . 'webroot' . DS);
+define('CONFIG', TEST_APP . 'config' . DS);
+
 define('TMP', ROOT . DS . 'tmp' . DS);
 define('LOGS', TMP . 'logs' . DS);
 define('CACHE', TMP . 'cache' . DS);
@@ -90,32 +91,6 @@ Cake\Core\Configure::write('Session', [
     'defaults' => 'php',
 ]);
 
-Configure::write('App', [
-    'namespace' => 'Users\Test\App',
-    'encoding' => 'UTF-8',
-    'base' => false,
-    'baseUrl' => false,
-    'dir' => 'src',
-    'webroot' => WEBROOT_DIR,
-    'wwwRoot' => WWW_ROOT,
-    'fullBaseUrl' => 'http://localhost',
-    'imageBaseUrl' => 'img/',
-    'jsBaseUrl' => 'js/',
-    'cssBaseUrl' => 'css/',
-    'paths' => [
-        'plugins' => [dirname(APP) . DS . 'plugins' . DS],
-        'templates' => [dirname(APP) . 'templates' . DS],
-    ],
-]);
-
-// \Cake\Core\Configure::write('App.paths.templates', [
-    // APP . 'Template/',
-// ]);
-
-
-//init router
-\Cake\Routing\Router::reload();
-
 Plugin::getCollection()->add(new \CakeDC\Users\Plugin([
     'path' => dirname(dirname(__FILE__)) . DS,
     'routes' => true,
@@ -124,6 +99,18 @@ if (file_exists($root . '/config/bootstrap.php')) {
     require $root . '/config/bootstrap.php';
 }
 
+if (!getenv('db_dsn')) {
+    putenv('db_dsn=sqlite:///:memory:');
+}
+
+Cake\Datasource\ConnectionManager::setConfig('test', [
+    'url' => getenv('db_dsn'),
+    'timezone' => 'UTC',
+]);
+
+class_alias('CakeDC\Users\Test\App\Controller\AppController', 'App\Controller\AppController');
+
 $app = new \CakeDC\Users\Test\TestApplication(__DIR__ . DS . 'config');
 $app->bootstrap();
 $app->pluginBootstrap();
+session_id('cli');

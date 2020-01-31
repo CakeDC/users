@@ -2,7 +2,9 @@ includes:
     - phpstan-baseline.neon
 
 parameters:
-    level: 7
+    level: 6
+    checkMissingIterableValueType: false
+    checkGenericClassInNonGenericObjectType: false
     autoload_files:
         - tests/bootstrap.php
     ignoreErrors:
