@@ -21,6 +21,7 @@ use CakeDC\Users\Plugin;
 
 class Application extends BaseApplication
 {
+    const EVENT_AFTER_PLUGIN_BOOTSTRAP = 'TestApp.afterPluginBootstrap';
 
     /**
      * @inheritDoc
@@ -39,7 +40,7 @@ class Application extends BaseApplication
     {
         Configure::write('Users.config', ['users']);
         parent::pluginBootstrap();
-        $this->dispatchEvent('TestApp.afterPluginBootstrap');
+        $this->dispatchEvent(static::EVENT_AFTER_PLUGIN_BOOTSTRAP);
     }
 
     /**
