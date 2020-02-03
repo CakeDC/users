@@ -2,6 +2,11 @@ Changelog
 =========
 Releases for CakePHP 4
 -------------
+* 9.0.1
+  * Improved routes
+  * Improved integration tests
+  * Fixed warnings related to arguments in function calls
+  
 * 9.0.0
    * Migration to CakePHP 4
    * Compatible with cakephp/authentication
