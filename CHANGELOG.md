@@ -11,8 +11,8 @@ Releases for CakePHP 4
    * Migration to CakePHP 4
    * Compatible with cakephp/authentication
    * Compatible with cakephp/authorization
-   * Added/removed/changed some configurations to work with new authentication/authorization plugins, please check Migration guide for more info.
-   * Events constants were moved/removed from AuthComponent to Plugin class and their values was also updated, please check Migration guide for more info.
+   * Added/removed/changed some configurations to work with new authentication/authorization plugins, [please check Migration guide for more info](https://github.com/CakeDC/users/blob/9.next/Docs/Documentation/Migration/8.x-9.0.md).
+   * Events constants were moved/removed from AuthComponent to Plugin class and their values was also updated, [please check Migration guide for more info](https://github.com/CakeDC/users/blob/9.next/Docs/Documentation/Migration/8.x-9.0.md).
    * Migrated usage of AuthComponent to Authorization/Authentication plugins.
 
 Releases for CakePHP 3
