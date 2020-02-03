@@ -108,9 +108,26 @@ Cake\Datasource\ConnectionManager::setConfig('test', [
     'timezone' => 'UTC',
 ]);
 
-class_alias('CakeDC\Users\Test\App\Controller\AppController', 'App\Controller\AppController');
+class_alias('TestApp\Controller\AppController', 'App\Controller\AppController');
 
-$app = new \CakeDC\Users\Test\TestApplication(__DIR__ . DS . 'config');
-$app->bootstrap();
-$app->pluginBootstrap();
+\Cake\Core\Configure::write('App', [
+    'namespace' => 'TestApp',
+    'encoding' => 'UTF-8',
+    'base' => false,
+    'baseUrl' => false,
+    'dir' => 'src',
+    'webroot' => WEBROOT_DIR,
+    'wwwRoot' => WWW_ROOT,
+    'fullBaseUrl' => 'http://localhost',
+    'imageBaseUrl' => 'img/',
+    'jsBaseUrl' => 'js/',
+    'cssBaseUrl' => 'css/',
+    'paths' => [
+        'plugins' => [dirname(APP) . DS . 'plugins' . DS],
+        'templates' => [dirname(APP) . DS . 'templates' . DS],
+    ],
+]);
+\Cake\Utility\Security::setSalt('yoyz186elmi66ab9pz4imbb3tgy9vnsgsfgwe2r8tyxbbfdygu9e09tlxyg8p7dq');
+
+Plugin::getCollection()->add(new \CakeDC\Users\Plugin());
 session_id('cli');

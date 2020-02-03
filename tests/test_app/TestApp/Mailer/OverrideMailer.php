@@ -11,7 +11,7 @@ declare(strict_types=1);
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace CakeDC\Users\Test\App\Mailer;
+namespace TestApp\Mailer;
 
 use Cake\Datasource\EntityInterface;
 use CakeDC\Users\Mailer\UsersMailer;
