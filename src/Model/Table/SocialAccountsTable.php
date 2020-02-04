@@ -1,17 +1,18 @@
 <?php
+declare(strict_types=1);
+
 /**
- * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * @copyright Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 namespace CakeDC\Users\Model\Table;
 
-use Cake\Core\Configure;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -19,17 +20,18 @@ use Cake\Validation\Validator;
 
 /**
  * SocialAccounts Model
+ *
+ * @mixin \CakeDC\Users\Model\Behavior\SocialAccountBehavior
  */
 class SocialAccountsTable extends Table
 {
-
     /**
      * Constants
      */
-    const PROVIDER_TWITTER = 'Twitter';
-    const PROVIDER_FACEBOOK = 'Facebook';
-    const PROVIDER_INSTAGRAM = 'Instagram';
-    const PROVIDER_LINKEDIN = 'LinkedIn';
+    public const PROVIDER_TWITTER = 'Twitter';
+    public const PROVIDER_FACEBOOK = 'Facebook';
+    public const PROVIDER_INSTAGRAM = 'Instagram';
+    public const PROVIDER_LINKEDIN = 'LinkedIn';
 
     /**
      * Initialize method
@@ -37,7 +39,7 @@ class SocialAccountsTable extends Table
      * @param array $config The configuration for the Table.
      * @return void
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         parent::initialize($config);
 
@@ -51,55 +53,55 @@ class SocialAccountsTable extends Table
     /**
      * Default validation rules.
      *
-     * @param Validator $validator Validator instance.
-     * @return Validator
+     * @param \Cake\Validation\Validator $validator Validator instance.
+     * @return \Cake\Validation\Validator
      */
-    public function validationDefault(Validator $validator)
+    public function validationDefault(Validator $validator): Validator
     {
         $validator
             ->add('id', 'valid', ['rule' => 'uuid'])
-            ->allowEmpty('id', 'create');
+            ->allowEmptyString('id', null, 'create');
 
         $validator
             ->requirePresence('provider', 'create')
-            ->notEmpty('provider');
+            ->notEmptyString('provider');
 
         $validator
-            ->allowEmpty('username');
+            ->allowEmptyString('username');
 
         $validator
             ->requirePresence('reference', 'create')
-            ->notEmpty('reference');
+            ->notEmptyString('reference');
 
         $validator
             ->requirePresence('link', 'create')
-            ->notEmpty('reference');
+            ->notEmptyString('reference');
 
         $validator
-            ->allowEmpty('avatar');
+            ->allowEmptyString('avatar');
 
         $validator
-            ->allowEmpty('description');
+            ->allowEmptyString('description');
 
         $validator
             ->requirePresence('token', 'create')
-            ->notEmpty('token');
+            ->notEmptyString('token');
 
         $validator
-            ->allowEmpty('token_secret');
+            ->allowEmptyString('token_secret');
 
         $validator
             ->add('token_expires', 'valid', ['rule' => 'datetime'])
-            ->allowEmpty('token_expires');
+            ->allowEmptyString('token_expires');
 
         $validator
             ->add('active', 'valid', ['rule' => 'boolean'])
             ->requirePresence('active', 'create')
-            ->notEmpty('active');
+            ->notBlank('active');
 
         $validator
             ->requirePresence('data', 'create')
-            ->notEmpty('data');
+            ->notBlank('data');
 
         return $validator;
     }
@@ -108,10 +110,10 @@ class SocialAccountsTable extends Table
      * Returns a rules checker object that will be used for validating
      * application integrity.
      *
-     * @param RulesChecker $rules The rules object to be modified.
-     * @return RulesChecker
+     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @return \Cake\ORM\RulesChecker
      */
-    public function buildRules(RulesChecker $rules)
+    public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->existsIn(['user_id'], 'Users'));
 
@@ -121,13 +123,13 @@ class SocialAccountsTable extends Table
     /**
      * Finder for active social accounts
      *
-     * @param Query $query query
+     * @param \Cake\ORM\Query $query query
      * @return \Cake\ORM\Query
      */
     public function findActive(Query $query)
     {
         return $query->where([
-            $this->aliasField('active') => true
+            $this->aliasField('active') => true,
         ]);
     }
 }

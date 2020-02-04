@@ -1,22 +1,19 @@
 <?php
+declare(strict_types=1);
+
 /**
- * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * @copyright Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 namespace CakeDC\Users\Test\TestCase\Model\Table;
 
-use CakeDC\Users\Model\Table\SocialAccountsTable;
-use CakeDC\Users\Model\Table\UsersTable;
-use Cake\Event\Event;
-use Cake\Mailer\Email;
 use Cake\ORM\TableRegistry;
-use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 
 /**
@@ -24,7 +21,6 @@ use Cake\TestSuite\TestCase;
  */
 class SocialAccountsTableTest extends TestCase
 {
-
     /**
      * Fixtures
      *
@@ -32,7 +28,7 @@ class SocialAccountsTableTest extends TestCase
      */
     public $fixtures = [
         'plugin.CakeDC/Users.SocialAccounts',
-        'plugin.CakeDC/Users.Users'
+        'plugin.CakeDC/Users.Users',
     ];
 
     /**
@@ -40,7 +36,7 @@ class SocialAccountsTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->SocialAccounts = TableRegistry::getTableLocator()->get('CakeDC/Users.SocialAccounts');
@@ -51,7 +47,7 @@ class SocialAccountsTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->SocialAccounts);
 

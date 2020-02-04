@@ -1,11 +1,13 @@
 <?php
+declare(strict_types=1);
+
 /**
- * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * @copyright Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -17,10 +19,7 @@
  * installed as a dependency of an application.
  */
 
-use Cake\Cache\Cache;
-use Cake\Core\Configure;
 use Cake\Core\Plugin;
-use Cake\Datasource\ConnectionManager;
 
 $findRoot = function ($root) {
     do {
@@ -40,12 +39,14 @@ if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
 }
 define('ROOT', $root);
-define('APP_DIR', 'App');
+define('APP_DIR', 'TestApp');
 define('WEBROOT_DIR', 'webroot');
-define('APP', ROOT . '/tests/App/');
-define('CONFIG', ROOT . '/tests/config/');
-define('WWW_ROOT', ROOT . DS . WEBROOT_DIR . DS);
 define('TESTS', ROOT . DS . 'tests' . DS);
+define('TEST_APP', TESTS . 'test_app' . DS);
+define('APP', TEST_APP . 'TestApp' . DS);
+define('WWW_ROOT', TEST_APP . 'webroot' . DS);
+define('CONFIG', TEST_APP . 'config' . DS);
+
 define('TMP', ROOT . DS . 'tmp' . DS);
 define('LOGS', TMP . 'logs' . DS);
 define('CACHE', TMP . 'cache' . DS);
@@ -56,10 +57,7 @@ define('CAKE', CORE_PATH . 'src' . DS);
 require ROOT . '/vendor/cakephp/cakephp/src/basics.php';
 require ROOT . '/vendor/autoload.php';
 
-Cake\Core\Configure::write('App', ['namespace' => 'Users\Test\App']);
-
 Cake\Core\Configure::write('debug', true);
-Cake\Core\Configure::write('App.encoding', 'UTF-8');
 
 ini_set('intl.default_locale', 'en_US');
 
@@ -90,47 +88,46 @@ $cache = [
 
 Cake\Cache\Cache::setConfig($cache);
 Cake\Core\Configure::write('Session', [
-    'defaults' => 'php'
+    'defaults' => 'php',
 ]);
-
-//init router
-\Cake\Routing\Router::reload();
 
 Plugin::getCollection()->add(new \CakeDC\Users\Plugin([
     'path' => dirname(dirname(__FILE__)) . DS,
-    'routes' => true
+    'routes' => true,
 ]));
 if (file_exists($root . '/config/bootstrap.php')) {
     require $root . '/config/bootstrap.php';
 }
 
-Cake\Routing\DispatcherFactory::add('Routing');
-Cake\Routing\DispatcherFactory::add('ControllerFactory');
-
-class_alias('CakeDC\Users\Test\App\Controller\AppController', 'App\Controller\AppController');
-
-// Ensure default test connection is defined
 if (!getenv('db_dsn')) {
     putenv('db_dsn=sqlite:///:memory:');
 }
 
 Cake\Datasource\ConnectionManager::setConfig('test', [
     'url' => getenv('db_dsn'),
-//    'className' => 'Cake\Database\Connection',
-//    'driver' => 'Cake\Database\Driver\Postgres',
-//    'persistent' => true,
-//    'host' => 'localhost',
-//    'username' => 'my_app',
-//    'password' => null,
-//    'database' => 'test',
-//    'schema' => 'public',
-//    'port' => 5432,
-//    'encoding' => 'utf8',
-//    'flags' => [],
-//    'init' => [],
-    'timezone' => 'UTC'
+    'timezone' => 'UTC',
 ]);
 
-\Cake\Core\Configure::write('App.paths.templates', [
-    APP . 'Template/',
+class_alias('TestApp\Controller\AppController', 'App\Controller\AppController');
+
+\Cake\Core\Configure::write('App', [
+    'namespace' => 'TestApp',
+    'encoding' => 'UTF-8',
+    'base' => false,
+    'baseUrl' => false,
+    'dir' => 'src',
+    'webroot' => WEBROOT_DIR,
+    'wwwRoot' => WWW_ROOT,
+    'fullBaseUrl' => 'http://localhost',
+    'imageBaseUrl' => 'img/',
+    'jsBaseUrl' => 'js/',
+    'cssBaseUrl' => 'css/',
+    'paths' => [
+        'plugins' => [dirname(APP) . DS . 'plugins' . DS],
+        'templates' => [dirname(APP) . DS . 'templates' . DS],
+    ],
 ]);
+\Cake\Utility\Security::setSalt('yoyz186elmi66ab9pz4imbb3tgy9vnsgsfgwe2r8tyxbbfdygu9e09tlxyg8p7dq');
+
+Plugin::getCollection()->add(new \CakeDC\Users\Plugin());
+session_id('cli');

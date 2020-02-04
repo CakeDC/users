@@ -1,22 +1,22 @@
 <?php
+declare(strict_types=1);
+
 /**
- * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * @copyright Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
-use CakeDC\Users\Test\TestCase\Controller\Traits\BaseTraitTest;
 use Cake\Core\Configure;
-use Cake\Core\Plugin;
 use Cake\Event\Event;
-use Cake\Mailer\Email;
-use Cake\ORM\TableRegistry;
+use Cake\Http\Exception\NotFoundException;
+use Cake\Routing\Router;
 
 class RegisterTraitTest extends BaseTraitTest
 {
@@ -25,9 +25,9 @@ class RegisterTraitTest extends BaseTraitTest
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
-        $this->traitClassName = 'CakeDC\Users\Controller\Traits\RegisterTrait';
+        $this->traitClassName = 'CakeDC\Users\Controller\UsersController';
         $this->traitMockMethods = ['validate', 'dispatchEvent', 'set', 'validateReCaptcha', 'redirect'];
         $this->mockDefaultEmail = true;
         parent::setUp();
@@ -38,7 +38,7 @@ class RegisterTraitTest extends BaseTraitTest
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
     }
@@ -64,9 +64,15 @@ class RegisterTraitTest extends BaseTraitTest
      */
     public function testRegister()
     {
+        Router::connect('/users/validate-email/*', [
+             'plugin' => 'CakeDC/Users',
+             'controller' => 'Users',
+             'action' => 'validateEmail',
+         ]);
+
         $this->assertEquals(0, $this->table->find()->where(['username' => 'testRegistration'])->count());
         $this->_mockRequestPost();
-        $this->_mockAuth();
+        $this->_mockAuthentication();
         $this->_mockFlash();
         $this->_mockDispatchEvent();
         $this->Trait->Flash->expects($this->once())
@@ -75,14 +81,14 @@ class RegisterTraitTest extends BaseTraitTest
         $this->Trait->expects($this->once())
             ->method('redirect')
             ->with(['action' => 'login']);
-        $this->Trait->request->expects($this->once())
+        $this->Trait->getRequest()->expects($this->once())
             ->method('getData')
             ->will($this->returnValue([
                 'username' => 'testRegistration',
                 'password' => 'password',
                 'email' => 'test-registration@example.com',
                 'password_confirm' => 'password',
-                'tos' => 1
+                'tos' => 1,
             ]));
 
         $this->Trait->register();
@@ -99,7 +105,7 @@ class RegisterTraitTest extends BaseTraitTest
     {
         $this->assertEquals(0, $this->table->find()->where(['username' => 'testRegistration'])->count());
         $this->_mockRequestPost();
-        $this->_mockAuth();
+        $this->_mockAuthentication();
         $this->_mockFlash();
         $this->_mockDispatchEvent(new Event('Users.Component.UsersAuth.beforeRegister'), ['username' => 'hello']);
         $this->Trait->Flash->expects($this->once())
@@ -107,7 +113,7 @@ class RegisterTraitTest extends BaseTraitTest
             ->with('The user could not be saved');
         $this->Trait->expects($this->never())
             ->method('redirect');
-        $this->Trait->request->expects($this->never())
+        $this->Trait->getRequest()->expects($this->never())
             ->method('is');
 
         $this->Trait->register();
@@ -121,20 +127,26 @@ class RegisterTraitTest extends BaseTraitTest
      */
     public function testRegisterWithEventSuccessResult()
     {
+        Router::connect('/users/validate-email/*', [
+             'plugin' => 'CakeDC/Users',
+             'controller' => 'Users',
+             'action' => 'validateEmail',
+         ]);
+
         $data = [
             'username' => 'testRegistration',
             'password' => 'password',
             'email' => 'test-registration@example.com',
             'password_confirm' => 'password',
-            'tos' => 1
+            'tos' => 1,
         ];
 
         $this->assertEquals(0, $this->table->find()->where(['username' => 'testRegistration'])->count());
         $this->_mockRequestPost();
-        $this->_mockAuth();
+        $this->_mockAuthentication();
         $this->_mockFlash();
         $this->_mockDispatchEvent(new Event('Users.Component.UsersAuth.beforeRegister'), $data);
-        $this->Trait->request->expects($this->once())
+        $this->Trait->getRequest()->expects($this->once())
             ->method('getData')
             ->will($this->returnValue($data));
         $this->Trait->Flash->expects($this->once())
@@ -143,7 +155,7 @@ class RegisterTraitTest extends BaseTraitTest
         $this->Trait->expects($this->once())
             ->method('redirect')
             ->with(['action' => 'login']);
-        $this->Trait->request->expects($this->never())
+        $this->Trait->getRequest()->expects($this->never())
             ->method('is');
 
         $this->Trait->register();
@@ -157,10 +169,16 @@ class RegisterTraitTest extends BaseTraitTest
      */
     public function testRegisterReCaptcha()
     {
+        Router::connect('/users/validate-email/*', [
+             'plugin' => 'CakeDC/Users',
+             'controller' => 'Users',
+             'action' => 'validateEmail',
+         ]);
+
         Configure::write('Users.reCaptcha.registration', true);
         $this->assertEquals(0, $this->table->find()->where(['username' => 'testRegistration'])->count());
         $this->_mockRequestPost();
-        $this->_mockAuth();
+        $this->_mockAuthentication();
         $this->_mockFlash();
         $this->_mockDispatchEvent();
         $this->Trait->Flash->expects($this->once())
@@ -172,7 +190,7 @@ class RegisterTraitTest extends BaseTraitTest
         $this->Trait->expects($this->once())
             ->method('redirect')
             ->with(['action' => 'login']);
-        $this->Trait->request->expects($this->at(0))
+        $this->Trait->getRequest()->expects($this->at(0))
             ->method('getData')
             ->with()
             ->will($this->returnValue([
@@ -180,7 +198,7 @@ class RegisterTraitTest extends BaseTraitTest
                 'password' => 'password',
                 'email' => 'test-registration@example.com',
                 'password_confirm' => 'password',
-                'tos' => 1
+                'tos' => 1,
             ]));
 
         $this->Trait->register();
@@ -198,7 +216,7 @@ class RegisterTraitTest extends BaseTraitTest
         Configure::write('Users.reCaptcha.registration', true);
         $this->assertEquals(0, $this->table->find()->where(['username' => 'testRegistration'])->count());
         $this->_mockRequestPost();
-        $this->_mockAuth();
+        $this->_mockAuthentication();
         $this->_mockFlash();
         $this->_mockDispatchEvent();
         $this->Trait->Flash->expects($this->once())
@@ -209,7 +227,7 @@ class RegisterTraitTest extends BaseTraitTest
             ->will($this->returnValue(true));
         $this->Trait->expects($this->never())
             ->method('redirect');
-        $this->Trait->request->expects($this->at(0))
+        $this->Trait->getRequest()->expects($this->at(0))
             ->method('getData')
             ->with()
             ->will($this->returnValue([
@@ -217,7 +235,7 @@ class RegisterTraitTest extends BaseTraitTest
                 'password' => 'password',
                 'email' => 'test-registration@example.com',
                 'password_confirm' => 'not-matching',
-                'tos' => 1
+                'tos' => 1,
             ]));
 
         $this->Trait->register();
@@ -235,7 +253,7 @@ class RegisterTraitTest extends BaseTraitTest
         Configure::write('Users.reCaptcha.registration', true);
         $this->assertEquals(0, $this->table->find()->where(['username' => 'testRegistration'])->count());
         $this->_mockRequestPost();
-        $this->_mockAuth();
+        $this->_mockAuthentication();
         $this->_mockFlash();
         $this->_mockDispatchEvent();
         $this->Trait->Flash->expects($this->once())
@@ -244,7 +262,7 @@ class RegisterTraitTest extends BaseTraitTest
         $this->Trait->expects($this->once())
             ->method('validateRecaptcha')
             ->will($this->returnValue(false));
-        $this->Trait->request->expects($this->at(0))
+        $this->Trait->getRequest()->expects($this->at(0))
             ->method('getData')
             ->with()
             ->will($this->returnValue([
@@ -252,7 +270,7 @@ class RegisterTraitTest extends BaseTraitTest
                 'password' => 'password',
                 'email' => 'test-registration@example.com',
                 'password_confirm' => 'password',
-                'tos' => 1
+                'tos' => 1,
             ]));
 
         $this->Trait->register();
@@ -269,7 +287,7 @@ class RegisterTraitTest extends BaseTraitTest
     {
         $this->assertEquals(0, $this->table->find()->where(['username' => 'testRegistration'])->count());
         $this->_mockRequestGet();
-        $this->_mockAuth();
+        $this->_mockAuthentication();
         $this->_mockFlash();
         $this->_mockDispatchEvent();
         $this->Trait->Flash->expects($this->never())
@@ -290,10 +308,16 @@ class RegisterTraitTest extends BaseTraitTest
      */
     public function testRegisterRecaptchaDisabled()
     {
+        Router::connect('/users/validate-email/*', [
+             'plugin' => 'CakeDC/Users',
+             'controller' => 'Users',
+             'action' => 'validateEmail',
+         ]);
+
         Configure::write('Users.Registration.reCaptcha', false);
         $this->assertEquals(0, $this->table->find()->where(['username' => 'testRegistration'])->count());
         $this->_mockRequestPost();
-        $this->_mockAuth();
+        $this->_mockAuthentication();
         $this->_mockFlash();
         $this->_mockDispatchEvent();
         $this->Trait->Flash->expects($this->once())
@@ -304,7 +328,7 @@ class RegisterTraitTest extends BaseTraitTest
         $this->Trait->expects($this->once())
             ->method('redirect')
             ->with(['action' => 'login']);
-        $this->Trait->request->expects($this->at(0))
+        $this->Trait->getRequest()->expects($this->at(0))
             ->method('getData')
             ->with()
             ->will($this->returnValue([
@@ -312,7 +336,7 @@ class RegisterTraitTest extends BaseTraitTest
                 'password' => 'password',
                 'email' => 'test-registration@example.com',
                 'password_confirm' => 'password',
-                'tos' => 1
+                'tos' => 1,
             ]));
 
         $this->Trait->register();
@@ -324,13 +348,13 @@ class RegisterTraitTest extends BaseTraitTest
      * test
      *
      * @return void
-     * @expectedException Cake\Http\Exception\NotFoundException
      */
     public function testRegisterNotEnabled()
     {
+        $this->expectException(NotFoundException::class);
         Configure::write('Users.Registration.active', false);
         $this->_mockRequestPost();
-        $this->_mockAuth();
+        $this->_mockAuthentication();
         $this->_mockFlash();
         $this->_mockDispatchEvent();
         $this->Trait->register();
@@ -343,6 +367,12 @@ class RegisterTraitTest extends BaseTraitTest
      */
     public function testRegisterLoggedInUserAllowed()
     {
+        Router::connect('/users/validate-email/*', [
+             'plugin' => 'CakeDC/Users',
+             'controller' => 'Users',
+             'action' => 'validateEmail',
+         ]);
+
         Configure::write('Users.Registration.allowLoggedIn', true);
         $this->assertEquals(0, $this->table->find()->where(['username' => 'testRegistration'])->count());
         $this->_mockRequestPost();
@@ -355,7 +385,7 @@ class RegisterTraitTest extends BaseTraitTest
         $this->Trait->expects($this->once())
             ->method('redirect')
             ->with(['action' => 'login']);
-        $this->Trait->request->expects($this->at(0))
+        $this->Trait->getRequest()->expects($this->at(0))
             ->method('getData')
             ->with()
             ->will($this->returnValue([
@@ -363,7 +393,7 @@ class RegisterTraitTest extends BaseTraitTest
                 'password' => 'password',
                 'email' => 'test-registration@example.com',
                 'password_confirm' => 'password',
-                'tos' => 1
+                'tos' => 1,
             ]));
 
         $this->Trait->register();
@@ -390,7 +420,7 @@ class RegisterTraitTest extends BaseTraitTest
         $this->Trait->expects($this->once())
             ->method('redirect')
             ->with(Configure::read('Users.Profile.route'));
-        $this->Trait->request->expects($this->never())
+        $this->Trait->getRequest()->expects($this->never())
             ->method('getData')
             ->with();
 

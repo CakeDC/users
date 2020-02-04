@@ -1,18 +1,18 @@
 <?php
+declare(strict_types=1);
+
 /**
- * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * @copyright Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 namespace CakeDC\Users\Controller\Traits;
 
-use Cake\Http\Exception\NotFoundException;
-use Cake\Http\Response;
 use Cake\Utility\Inflector;
 
 /**
@@ -41,14 +41,14 @@ trait SimpleCrudTrait
      *
      * @param string|null $id User id.
      * @return void
-     * @throws NotFoundException When record not found.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
     public function view($id = null)
     {
         $table = $this->loadModel();
         $tableAlias = $table->getAlias();
         $entity = $table->get($id, [
-            'contain' => []
+            'contain' => [],
         ]);
         $this->set($tableAlias, $entity);
         $this->set('tableAlias', $tableAlias);
@@ -64,21 +64,21 @@ trait SimpleCrudTrait
     {
         $table = $this->loadModel();
         $tableAlias = $table->getAlias();
-        $entity = $table->newEntity();
+        $entity = $table->newEntity([]);
         $this->set($tableAlias, $entity);
         $this->set('tableAlias', $tableAlias);
         $this->set('_serialize', [$tableAlias, 'tableAlias']);
-        if (!$this->request->is('post')) {
+        if (!$this->getRequest()->is('post')) {
             return;
         }
-        $entity = $table->patchEntity($entity, $this->request->getData());
+        $entity = $table->patchEntity($entity, $this->getRequest()->getData());
         $singular = Inflector::singularize(Inflector::humanize($tableAlias));
         if ($table->save($entity)) {
-            $this->Flash->success(__d('CakeDC/Users', 'The {0} has been saved', $singular));
+            $this->Flash->success(__d('cake_d_c/users', 'The {0} has been saved', $singular));
 
             return $this->redirect(['action' => 'index']);
         }
-        $this->Flash->error(__d('CakeDC/Users', 'The {0} could not be saved', $singular));
+        $this->Flash->error(__d('cake_d_c/users', 'The {0} could not be saved', $singular));
     }
 
     /**
@@ -86,51 +86,51 @@ trait SimpleCrudTrait
      *
      * @param string|null $id User id.
      * @return mixed Redirects on successful edit, renders view otherwise.
-     * @throws NotFoundException When record not found.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
     public function edit($id = null)
     {
         $table = $this->loadModel();
         $tableAlias = $table->getAlias();
         $entity = $table->get($id, [
-            'contain' => []
+            'contain' => [],
         ]);
         $this->set($tableAlias, $entity);
         $this->set('tableAlias', $tableAlias);
         $this->set('_serialize', [$tableAlias, 'tableAlias']);
-        if (!$this->request->is(['patch', 'post', 'put'])) {
+        if (!$this->getRequest()->is(['patch', 'post', 'put'])) {
             return;
         }
-        $entity = $table->patchEntity($entity, $this->request->getData());
+        $entity = $table->patchEntity($entity, $this->getRequest()->getData());
         $singular = Inflector::singularize(Inflector::humanize($tableAlias));
         if ($table->save($entity)) {
-            $this->Flash->success(__d('CakeDC/Users', 'The {0} has been saved', $singular));
+            $this->Flash->success(__d('cake_d_c/users', 'The {0} has been saved', $singular));
 
             return $this->redirect(['action' => 'index']);
         }
-        $this->Flash->error(__d('CakeDC/Users', 'The {0} could not be saved', $singular));
+        $this->Flash->error(__d('cake_d_c/users', 'The {0} could not be saved', $singular));
     }
 
     /**
      * Delete method
      *
      * @param string|null $id User id.
-     * @return Response Redirects to index.
-     * @throws NotFoundException When record not found.
+     * @return \Cake\Http\Response Redirects to index.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
     public function delete($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
+        $this->getRequest()->allowMethod(['post', 'delete']);
         $table = $this->loadModel();
         $tableAlias = $table->getAlias();
         $entity = $table->get($id, [
-            'contain' => []
+            'contain' => [],
         ]);
         $singular = Inflector::singularize(Inflector::humanize($tableAlias));
         if ($table->delete($entity)) {
-            $this->Flash->success(__d('CakeDC/Users', 'The {0} has been deleted', $singular));
+            $this->Flash->success(__d('cake_d_c/users', 'The {0} has been deleted', $singular));
         } else {
-            $this->Flash->error(__d('CakeDC/Users', 'The {0} could not be deleted', $singular));
+            $this->Flash->error(__d('cake_d_c/users', 'The {0} could not be deleted', $singular));
         }
 
         return $this->redirect(['action' => 'index']);

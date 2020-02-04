@@ -1,29 +1,31 @@
 <?php
+declare(strict_types=1);
+
 /**
- * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * @copyright Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
-use CakeDC\Users\Controller\Component\GoogleAuthenticatorComponent;
-use CakeDC\Users\Controller\Component\UsersAuthComponent;
-use CakeDC\Users\Controller\Traits\LoginTrait;
-use CakeDC\Users\Exception\AccountNotActiveException;
-use CakeDC\Users\Exception\MissingEmailException;
-use CakeDC\Users\Exception\UserNotActiveException;
-use Cake\Controller\Controller;
-use Cake\Core\Configure;
+use Authentication\Authenticator\Result;
+use Authentication\Authenticator\SessionAuthenticator;
+use Authentication\Identifier\IdentifierCollection;
+use Authentication\Identifier\PasswordIdentifier;
+use Cake\Auth\DefaultPasswordHasher;
+use Cake\Controller\ComponentRegistry;
 use Cake\Event\Event;
+use Cake\Http\Response;
 use Cake\Http\ServerRequest;
-use Cake\Network\Request;
-use Cake\ORM\Entity;
-use Cake\TestSuite\TestCase;
+use CakeDC\Auth\Authentication\Failure;
+use CakeDC\Auth\Authenticator\FormAuthenticator;
+use CakeDC\Users\Authenticator\SocialAuthenticator;
+use CakeDC\Users\Controller\Component\LoginComponent;
 
 class LoginTraitTest extends BaseTraitTest
 {
@@ -32,23 +34,21 @@ class LoginTraitTest extends BaseTraitTest
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
-        $this->traitClassName = 'CakeDC\Users\Controller\Traits\LoginTrait';
+        $this->traitClassName = 'CakeDC\Users\Controller\UsersController';
         $this->traitMockMethods = ['dispatchEvent', 'isStopped', 'redirect', 'getUsersTable', 'set'];
 
         parent::setUp();
-        $request = new ServerRequest();
-        $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\Traits\LoginTrait')
-            ->setMethods(['dispatchEvent', 'redirect', 'set'])
-            ->getMockForTrait();
+        $this->Trait->setRequest(new ServerRequest());
+        $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\UsersController')
+            ->setMethods(['dispatchEvent', 'redirect', 'set', 'loadComponent'])
+            ->getMock();
 
         $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
             ->setMethods(['setConfig'])
             ->disableOriginalConstructor()
             ->getMock();
-
-        $this->Trait->request = $request;
     }
 
     /**
@@ -56,7 +56,7 @@ class LoginTraitTest extends BaseTraitTest
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
     }
@@ -68,39 +68,68 @@ class LoginTraitTest extends BaseTraitTest
      */
     public function testLoginHappy()
     {
+        $identifiers = new IdentifierCollection();
+        $SessionAuth = new SessionAuthenticator($identifiers);
+
+        $sessionFailure = new Failure(
+            $SessionAuth,
+            new Result(null, Result::FAILURE_IDENTITY_NOT_FOUND)
+        );
+        $failures = [$sessionFailure];
+
         $this->_mockDispatchEvent(new Event('event'));
-        $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
+
+        $request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->setMethods(['is'])
             ->getMock();
-        $this->Trait->request->expects($this->any())
-            ->method('is')
-            ->with('post')
-            ->will($this->returnValue(true));
-        $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
-            ->setMethods(['user', 'identify', 'setUser', 'redirectUrl'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $user = [
-            'id' => 1,
-        ];
-        $redirectLoginOK = '/';
-        $this->Trait->Auth->expects($this->at(0))
-            ->method('identify')
-            ->will($this->returnValue($user));
-        $this->Trait->Auth->expects($this->at(1))
-            ->method('setUser')
-            ->with($user);
-        $this->Trait->Auth->expects($this->at(2))
-            ->method('redirectUrl')
-            ->will($this->returnValue($redirectLoginOK));
+
+        $this->_mockRequestPost();
+        $this->Trait->getRequest()->expects($this->never())
+            ->method('getData');
+        $this->Trait->setRequest($request);
+
+        $this->_mockFlash();
+        $user = $this->Trait->getUsersTable()->get('00000000-0000-0000-0000-000000000002');
+        $passwordBefore = $user['password'];
+        $this->assertNotEmpty($passwordBefore);
+        $this->_mockAuthentication($user->toArray(), $failures);
+        $this->Trait->Flash->expects($this->never())
+            ->method('error');
         $this->Trait->expects($this->once())
             ->method('redirect')
-            ->with($redirectLoginOK);
-        $this->Trait->GoogleAuthenticator = $this->getMockBuilder(GoogleAuthenticatorComponent::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['createSecret', 'getQRCodeImageAsDataUri'])
+            ->with($this->successLoginRedirect)
+            ->will($this->returnValue(new Response()));
+
+        $registry = new ComponentRegistry();
+        $config = [
+            'component' => 'CakeDC/Users.Login',
+            'defaultMessage' => __d('cake_d_c/users', 'Username or password is incorrect'),
+            'messages' => [
+                FormAuthenticator::FAILURE_INVALID_RECAPTCHA => __d('cake_d_c/users', 'Invalid reCaptcha'),
+            ],
+            'targetAuthenticator' => FormAuthenticator::class,
+        ];
+        $Login = $this->getMockBuilder(LoginComponent::class)
+            ->setMethods(['getController'])
+            ->setConstructorArgs([$registry, $config])
             ->getMock();
-        $this->Trait->login();
+
+        $Login->expects($this->any())
+            ->method('getController')
+            ->will($this->returnValue($this->Trait));
+        $this->Trait->expects($this->any())
+            ->method('loadComponent')
+            ->with(
+                $this->equalTo('CakeDC/Users.Login'),
+                $this->equalTo($config)
+            )
+            ->will($this->returnValue($Login));
+
+        $result = $this->Trait->login();
+        $this->assertInstanceOf(Response::class, $result);
+        $userAfter = $this->Trait->getUsersTable()->get('00000000-0000-0000-0000-000000000002');
+        $passwordAfter = $userAfter['password'];
+        $this->assertSame($passwordBefore, $passwordAfter);
     }
 
     /**
@@ -110,168 +139,76 @@ class LoginTraitTest extends BaseTraitTest
      */
     public function testLoginRehash()
     {
-        $this->_mockDispatchEvent(new Event('event'));
-        $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
-            ->setMethods(['is'])
-            ->getMock();
-        $this->Trait->request->expects($this->any())
-            ->method('is')
-            ->with('post')
-            ->will($this->returnValue(true));
-        $authenticate = $this->getMockBuilder('Cake\Auth\FormAuthenticate')
+        $passwordIdentifier = $this->getMockBuilder(PasswordIdentifier::class)
             ->setMethods(['needsPasswordRehash'])
-            ->disableOriginalConstructor()
             ->getMock();
-        $authenticate->expects($this->any())
+        $passwordIdentifier->expects($this->once())
             ->method('needsPasswordRehash')
-            ->will($this->returnValue(true));
-        $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
-            ->setMethods(['user', 'identify', 'setUser', 'redirectUrl', 'authenticationProvider'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $user = [
-            'id' => '00000000-0000-0000-0000-000000000001',
-        ];
-        $redirectLoginOK = '/';
-        $this->Trait->Auth->expects($this->at(0))
-            ->method('identify')
-            ->will($this->returnValue($user));
-        $this->Trait->Auth->expects($this->atMost(2))
-            ->method('authenticationProvider')
-            ->will($this->returnValue($authenticate));
-        $this->Trait->Auth->expects($this->at(3))
-            ->method('setUser')
-            ->with($user);
-        $this->Trait->Auth->expects($this->at(4))
-            ->method('redirectUrl')
-            ->will($this->returnValue($redirectLoginOK));
+            ->willReturn(true);
+        $identifiers = new IdentifierCollection([]);
+        $identifiers->set('Password', $passwordIdentifier);
+
+        $SessionAuth = new SessionAuthenticator($identifiers);
+
+        $sessionFailure = new Failure(
+            $SessionAuth,
+            new Result(null, Result::FAILURE_IDENTITY_NOT_FOUND)
+        );
+        $failures = [$sessionFailure];
+
+        $userPassword = 'testLoginRehash' . time();
+        $this->_mockDispatchEvent(new Event('event'));
+        $this->_mockRequestPost();
+        $this->Trait->getRequest()->expects($this->once())
+            ->method('getData')
+            ->with($this->equalTo('password'))
+            ->willReturn($userPassword);
+
+        $this->_mockFlash();
+        $user = $this->Trait->getUsersTable()->get('00000000-0000-0000-0000-000000000002');
+        $passwordBefore = $user['password'];
+        $this->assertNotEmpty($passwordBefore);
+        $this->_mockAuthentication($user->toArray(), $failures, $identifiers);
+        $this->Trait->Flash->expects($this->never())
+            ->method('error');
         $this->Trait->expects($this->once())
             ->method('redirect')
-            ->with($redirectLoginOK);
-        $this->Trait->GoogleAuthenticator = $this->getMockBuilder(GoogleAuthenticatorComponent::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['createSecret', 'getQRCodeImageAsDataUri'])
-            ->getMock();
-        $this->Trait->login();
-    }
+            ->with($this->successLoginRedirect)
+            ->will($this->returnValue(new Response()));
 
-    /**
-     * test
-     *
-     * @return void
-     */
-    public function testAfterIdentifyEmptyUser()
-    {
-        $this->_mockDispatchEvent(new Event('event'));
-        $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
-            ->setMethods(['is'])
+        $registry = new ComponentRegistry();
+        $config = [
+            'component' => 'CakeDC/Users.Login',
+            'defaultMessage' => __d('cake_d_c/users', 'Username or password is incorrect'),
+            'messages' => [
+                FormAuthenticator::FAILURE_INVALID_RECAPTCHA => __d('cake_d_c/users', 'Invalid reCaptcha'),
+            ],
+            'targetAuthenticator' => FormAuthenticator::class,
+        ];
+        $Login = $this->getMockBuilder(LoginComponent::class)
+            ->setMethods(['getController'])
+            ->setConstructorArgs([$registry, $config])
             ->getMock();
-        $this->Trait->request->expects($this->any())
-            ->method('is')
-            ->with('post')
-            ->will($this->returnValue(true));
-        $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
-            ->setMethods(['user', 'identify', 'setUser', 'redirectUrl'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $user = [];
-        $this->Trait->Auth->expects($this->once())
-            ->method('identify')
-            ->will($this->returnValue($user));
-        $this->Trait->Flash = $this->getMockBuilder('Cake\Controller\Component\FlashComponent')
-            ->setMethods(['error'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->Trait->Flash->expects($this->once())
-            ->method('error')
-            ->with('Username or password is incorrect', 'default', [], 'auth');
-        $this->Trait->GoogleAuthenticator = $this->getMockBuilder(GoogleAuthenticatorComponent::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['createSecret', 'getQRCodeImageAsDataUri'])
-            ->getMock();
-        $this->Trait->login();
-    }
 
-    /**
-     * test
-     *
-     * @return void
-     */
-    public function testAfterIdentifyEmptyUserSocialLogin()
-    {
-        $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\Traits\LoginTrait')
-            ->setMethods(['dispatchEvent', 'redirect', '_isSocialLogin'])
-            ->getMockForTrait();
+        $Login->expects($this->any())
+            ->method('getController')
+            ->will($this->returnValue($this->Trait));
         $this->Trait->expects($this->any())
-            ->method('_isSocialLogin')
-            ->will($this->returnValue(true));
-        $this->_mockDispatchEvent(new Event('event'));
-        $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
-            ->setMethods(['is'])
-            ->getMock();
-        $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
-            ->setMethods(['user', 'identify', 'setUser', 'redirectUrl'])
-            ->disableOriginalConstructor()
-            ->getMock();
+            ->method('loadComponent')
+            ->with(
+                $this->equalTo('CakeDC/Users.Login'),
+                $this->equalTo($config)
+            )
+            ->will($this->returnValue($Login));
 
-        $this->Trait->login();
-    }
-
-    /**
-     * test
-     *
-     * @return void
-     */
-    public function testLoginBeforeLoginReturningArray()
-    {
-        $user = [
-            'id' => 1
-        ];
-        $event = new Event('event');
-        $event->result = $user;
-        $this->Trait->expects($this->at(0))
-            ->method('dispatchEvent')
-            ->with(UsersAuthComponent::EVENT_BEFORE_LOGIN)
-            ->will($this->returnValue($event));
-        $this->Trait->expects($this->at(1))
-            ->method('dispatchEvent')
-            ->with(UsersAuthComponent::EVENT_AFTER_LOGIN)
-            ->will($this->returnValue(new Event('name')));
-        $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
-            ->setMethods(['setUser', 'redirectUrl'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $redirectLoginOK = '/';
-        $this->Trait->Auth->expects($this->once())
-            ->method('setUser')
-            ->with($user);
-        $this->Trait->Auth->expects($this->once())
-            ->method('redirectUrl')
-            ->will($this->returnValue($redirectLoginOK));
-        $this->Trait->expects($this->once())
-            ->method('redirect')
-            ->with($redirectLoginOK);
-        $this->Trait->login();
-    }
-
-    /**
-     * test
-     *
-     * @return void
-     */
-    public function testLoginBeforeLoginReturningStoppedEvent()
-    {
-        $event = new Event('event');
-        $event->result = '/';
-        $event->stopPropagation();
-        $this->Trait->expects($this->at(0))
-            ->method('dispatchEvent')
-            ->with(UsersAuthComponent::EVENT_BEFORE_LOGIN)
-            ->will($this->returnValue($event));
-        $this->Trait->expects($this->once())
-            ->method('redirect')
-            ->with('/');
-        $this->Trait->login();
+        $result = $this->Trait->login();
+        $this->assertInstanceOf(Response::class, $result);
+        $userAfter = $this->Trait->getUsersTable()->get('00000000-0000-0000-0000-000000000002');
+        $passwordAfter = $userAfter['password'];
+        $this->assertNotEquals($passwordBefore, $passwordAfter);
+        $passwordHasher = new DefaultPasswordHasher();
+        $check = $passwordHasher->check($userPassword, $passwordAfter);
+        $this->assertTrue($check);
     }
 
     /**
@@ -282,26 +219,56 @@ class LoginTraitTest extends BaseTraitTest
     public function testLoginGet()
     {
         $this->_mockDispatchEvent(new Event('event'));
-        $socialLogin = Configure::read('Users.Social.login');
-        Configure::write('Users.Social.login', false);
-        $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
-            ->setMethods(['user'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
+        $request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->setMethods(['is'])
+            ->getMock();
+        $this->Trait->setRequest($request);
+        $request->expects($this->once())
+            ->method('is')
+            ->with('post')
+            ->will($this->returnValue(false));
+        $this->Trait->Flash = $this->getMockBuilder('Cake\Controller\Component\FlashComponent')
+            ->setMethods(['error'])
             ->disableOriginalConstructor()
             ->getMock();
-        $this->Trait->request->expects($this->at(0))
-            ->method('is')
-            ->with('post')
-            ->will($this->returnValue(false));
-        $this->Trait->request->expects($this->at(1))
-            ->method('is')
-            ->with('post')
-            ->will($this->returnValue(false));
+
+        $this->Trait->Flash->expects($this->never())
+            ->method('error');
+
+        $this->Trait->expects($this->never())
+            ->method('redirect');
+
+        $this->_mockAuthentication();
+
+        $registry = new ComponentRegistry();
+        $config = [
+            'component' => 'CakeDC/Users.Login',
+            'defaultMessage' => __d('cake_d_c/users', 'Username or password is incorrect'),
+            'messages' => [
+                FormAuthenticator::FAILURE_INVALID_RECAPTCHA => __d('cake_d_c/users', 'Invalid reCaptcha'),
+            ],
+            'targetAuthenticator' => FormAuthenticator::class,
+        ];
+        $Login = $this->getMockBuilder(LoginComponent::class)
+            ->setMethods(['getController'])
+            ->setConstructorArgs([$registry, $config])
+            ->getMock();
+
+        $Login->expects($this->any())
+            ->method('getController')
+            ->will($this->returnValue($this->Trait));
+        // $this->Trait->expects($this->any())
+            // ->method('getRequest')
+            // ->will($this->returnValue($request));
+        $this->Trait->expects($this->any())
+            ->method('loadComponent')
+            ->with(
+                $this->equalTo('CakeDC/Users.Login'),
+                $this->equalTo($config)
+            )
+            ->will($this->returnValue($Login));
+
         $this->Trait->login();
-        Configure::write('Users.Social.login', $socialLogin);
     }
 
     /**
@@ -316,13 +283,12 @@ class LoginTraitTest extends BaseTraitTest
             ->setMethods(['logout', 'user'])
             ->disableOriginalConstructor()
             ->getMock();
-        $redirectLogoutOK = '/';
-        $this->Trait->Auth->expects($this->once())
-            ->method('logout')
-            ->will($this->returnValue($redirectLogoutOK));
+        $this->_mockAuthentication([
+            'id' => 1,
+        ]);
         $this->Trait->expects($this->once())
             ->method('redirect')
-            ->with($redirectLogoutOK);
+            ->with($this->logoutRedirect);
         $this->Trait->Flash = $this->getMockBuilder('Cake\Controller\Component\FlashComponent')
             ->setMethods(['success'])
             ->disableOriginalConstructor()
@@ -334,532 +300,231 @@ class LoginTraitTest extends BaseTraitTest
     }
 
     /**
-     * test
-     *
-     * @return void
+     * Data provider for testLogin
      */
-    public function testFailedSocialLoginMissingEmail()
+    public function dataProviderLogin()
     {
-        $event = new Entity();
-        $event->data = [
-            'exception' => new MissingEmailException('Email not present'),
-            'rawData' => [
-                'id' => 11111,
-                'username' => 'user-1'
-            ]
-        ];
-        $this->_mockFlash();
-        $this->_mockRequestGet();
-        $this->Trait->Flash->expects($this->once())
-            ->method('success')
-            ->with('Please enter your email');
-
-        $this->Trait->expects($this->once())
-            ->method('redirect')
-            ->with(['prefix' => false, 'plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'socialEmail']);
-
-        $this->Trait->failedSocialLogin($event->data['exception'], $event->data['rawData'], true);
-    }
-
-    /**
-     * test
-     *
-     * @return void
-     */
-    public function testFailedSocialUserNotActive()
-    {
-        $event = new Entity();
-        $event->data = [
-            'exception' => new UserNotActiveException('Facebook user-1'),
-            'rawData' => [
-                'id' => 111111,
-                'username' => 'user-1'
-            ]
-        ];
-        $this->_mockFlash();
-        $this->_mockRequestGet();
-        $this->Trait->Flash->expects($this->once())
-            ->method('success')
-            ->with('Your user has not been validated yet. Please check your inbox for instructions');
-
-        $this->Trait->expects($this->once())
-            ->method('redirect')
-            ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
-
-        $this->Trait->failedSocialLogin($event->data['exception'], $event->data['rawData'], true);
-    }
-
-    /**
-     * test
-     *
-     * @return void
-     */
-    public function testFailedSocialUserAccountNotActive()
-    {
-        $event = new Entity();
-        $event->data = [
-            'exception' => new AccountNotActiveException('Facebook user-1'),
-            'rawData' => [
-                'id' => 111111,
-                'username' => 'user-1'
-            ]
-        ];
-        $this->_mockFlash();
-        $this->_mockRequestGet();
-        $this->Trait->Flash->expects($this->once())
-            ->method('success')
-            ->with('Your social account has not been validated yet. Please check your inbox for instructions');
-
-        $this->Trait->expects($this->once())
-            ->method('redirect')
-            ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
-
-        $this->Trait->failedSocialLogin($event->data['exception'], $event->data['rawData'], true);
-    }
-
-    /**
-     * test
-     *
-     * @return void
-     */
-    public function testFailedSocialUserAccount()
-    {
-        $event = new Entity();
-        $event->data = [
-            'rawData' => [
-                'id' => 111111,
-                'username' => 'user-1'
-            ]
-        ];
-        $this->_mockFlash();
-        $this->_mockRequestGet();
-        $this->Trait->Flash->expects($this->once())
-            ->method('success')
-            ->with('Issues trying to log in with your social account');
-
-        $this->Trait->expects($this->once())
-            ->method('redirect')
-            ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login']);
-
-        $this->Trait->failedSocialLogin(null, $event->data['rawData'], true);
-    }
-
-    /**
-     * testVerifyHappy
-     *
-     */
-    public function testVerifyHappy()
-    {
-        Configure::write('Users.GoogleAuthenticator.login', true);
-
-        $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
-            ->setMethods(['is', 'getData', 'allow', 'getSession'])
-            ->getMock();
-        $this->Trait->request->expects($this->once())
-            ->method('is')
-            ->with('post')
-            ->will($this->returnValue(false));
-
-        $this->_mockSession([
-            'temporarySession' => [
-                'id' => 1,
-                'secret_verified' => 1,
-            ]
-        ]);
-        $this->Trait->verify();
-    }
-
-    /**
-     * testVerifyNoUser
-     *
-     */
-    public function testVerifyNoUser()
-    {
-        Configure::write('Users.GoogleAuthenticator.login', true);
-
-        $this->Trait->request = $this->getMockBuilder('Cake\Network\Request')
-            ->setMethods(['is', 'getData', 'allow', 'getSession'])
-            ->getMock();
-        $this->Trait->request->expects($this->never())
-            ->method('is')
-            ->with('post');
-        $this->_mockSession([]);
-        $this->_mockFlash();
-        $this->Trait->Flash->expects($this->once())
-            ->method('error')
-            ->with('Invalid request.');
-        $this->Trait->GoogleAuthenticator = $this->getMockBuilder(GoogleAuthenticatorComponent::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['createSecret', 'getQRCodeImageAsDataUri'])
-            ->getMock();
-        $this->Trait->verify();
-    }
-
-    /**
-     * testVerifyHappy
-     *
-     */
-    public function testVerifyNotEnabled()
-    {
-        $this->_mockFlash();
-        Configure::write('Users.GoogleAuthenticator.login', false);
-        $this->Trait->GoogleAuthenticator = $this->getMockBuilder(GoogleAuthenticatorComponent::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['createSecret', 'getQRCodeImageAsDataUri'])
-            ->getMock();
-        $this->Trait->Flash->expects($this->once())
-            ->method('error')
-            ->with('Please enable Google Authenticator first.');
-        $this->Trait->verify();
-    }
-
-    /**
-     * testVerifyHappy
-     *
-     */
-    public function testVerifyGetShowQR()
-    {
-        Configure::write('Users.GoogleAuthenticator.login', true);
-
-        $this->Trait->GoogleAuthenticator = $this->getMockBuilder(GoogleAuthenticatorComponent::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['createSecret', 'getQRCodeImageAsDataUri'])
-            ->getMock();
-
-        $this->Trait->request = $this->getMockBuilder(ServerRequest::class)
-            ->setMethods(['is', 'getData', 'allow', 'getSession'])
-            ->getMock();
-        $this->Trait->request->expects($this->once())
-            ->method('is')
-            ->with('post')
-            ->will($this->returnValue(false));
-        $this->_mockSession([
-            'temporarySession' => [
-                'id' => '00000000-0000-0000-0000-000000000001',
-                'email' => 'email@example.com',
-                'secret_verified' => 0,
-            ]
-        ]);
-        $this->Trait->GoogleAuthenticator->expects($this->at(0))
-            ->method('createSecret')
-            ->will($this->returnValue('newSecret'));
-        $this->Trait->GoogleAuthenticator->expects($this->at(1))
-            ->method('getQRCodeImageAsDataUri')
-            ->with('email@example.com', 'newSecret')
-            ->will($this->returnValue('newDataUriGenerated'));
-        $this->Trait->expects($this->at(0))
-            ->method('set')
-            ->with(['secretDataUri' => 'newDataUriGenerated']);
-        $this->Trait->verify();
-    }
-
-    /**
-     * Tests that a GET request causes a a new secret to be generated in case it's
-     * not already present in the session.
-     */
-    public function testVerifyGetGeneratesNewSecret()
-    {
-        Configure::write('Users.GoogleAuthenticator.login', true);
-
-        $this->Trait->GoogleAuthenticator = $this
-            ->getMockBuilder(GoogleAuthenticatorComponent::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['createSecret', 'getQRCodeImageAsDataUri'])
-            ->getMock();
-
-        $this->Trait->request = $this
-            ->getMockBuilder(ServerRequest::class)
-            ->setMethods(['is', 'getData', 'allow', 'getSession'])
-            ->getMock();
-        $this->Trait->request
-            ->expects($this->once())
-            ->method('is')
-            ->with('post')
-            ->will($this->returnValue(false));
-
-        $this->Trait->GoogleAuthenticator
-            ->expects($this->at(0))
-            ->method('createSecret')
-            ->will($this->returnValue('newSecret'));
-        $this->Trait->GoogleAuthenticator
-            ->expects($this->at(1))
-            ->method('getQRCodeImageAsDataUri')
-            ->with('email@example.com', 'newSecret')
-            ->will($this->returnValue('newDataUriGenerated'));
-
-        $session = $this->_mockSession([
-            'temporarySession' => [
-                'id' => '00000000-0000-0000-0000-000000000001',
-                'email' => 'email@example.com',
-                'secret_verified' => false,
-            ]
-        ]);
-        $this->Trait->verify();
-
-        $this->assertEquals(
-            [
-                'temporarySession' => [
-                    'id' => '00000000-0000-0000-0000-000000000001',
-                    'email' => 'email@example.com',
-                    'secret_verified' => false,
-                    'secret' => 'newSecret'
-                ]
+        $socialLoginConfig = [
+            'component' => 'CakeDC/Users.Login',
+            'defaultMessage' => __d('cake_d_c/users', 'Could not proceed with social account. Please try again'),
+            'messages' => [
+                SocialAuthenticator::FAILURE_USER_NOT_ACTIVE => __d(
+                    'cake_d_c/users',
+                    'Your user has not been validated yet. Please check your inbox for instructions'
+                ),
+                SocialAuthenticator::FAILURE_ACCOUNT_NOT_ACTIVE => __d(
+                    'cake_d_c/users',
+                    'Your social account has not been validated yet. Please check your inbox for instructions'
+                ),
             ],
-            $session->read()
-        );
-    }
-
-    /**
-     * Tests that a GET request does not cause a new secret to be generated in case
-     * it's already present in the session.
-     */
-    public function testVerifyGetDoesNotGenerateNewSecret()
-    {
-        Configure::write('Users.GoogleAuthenticator.login', true);
-
-        $this->Trait->GoogleAuthenticator = $this
-            ->getMockBuilder(GoogleAuthenticatorComponent::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['createSecret', 'getQRCodeImageAsDataUri'])
-            ->getMock();
-
-        $this->Trait->request = $this
-            ->getMockBuilder(ServerRequest::class)
-            ->setMethods(['is', 'getData', 'allow', 'getSession'])
-            ->getMock();
-        $this->Trait->request
-            ->expects($this->once())
-            ->method('is')
-            ->with('post')
-            ->will($this->returnValue(false));
-
-        $this->Trait->GoogleAuthenticator
-            ->expects($this->never())
-            ->method('createSecret');
-        $this->Trait->GoogleAuthenticator
-            ->expects($this->at(0))
-            ->method('getQRCodeImageAsDataUri')
-            ->with('email@example.com', 'alreadyPresentSecret')
-            ->will($this->returnValue('newDataUriGenerated'));
-
-        $session = $this->_mockSession([
-            'temporarySession' => [
-                'id' => '00000000-0000-0000-0000-000000000001',
-                'email' => 'email@example.com',
-                'secret_verified' => false,
-                'secret' => 'alreadyPresentSecret'
-            ]
-        ]);
-        $this->Trait->verify();
-
-        $this->assertEquals(
-            [
-                'temporarySession' => [
-                    'id' => '00000000-0000-0000-0000-000000000001',
-                    'email' => 'email@example.com',
-                    'secret_verified' => false,
-                    'secret' => 'alreadyPresentSecret'
-                ]
+            'targetAuthenticator' => SocialAuthenticator::class,
+        ];
+        $loginConfig = [
+            'component' => 'CakeDC/Users.Login',
+            'defaultMessage' => __d('cake_d_c/users', 'Username or password is incorrect'),
+            'messages' => [
+                FormAuthenticator::FAILURE_INVALID_RECAPTCHA => __d('cake_d_c/users', 'Invalid reCaptcha'),
             ],
-            $session->read()
-        );
+            'targetAuthenticator' => FormAuthenticator::class,
+        ];
+
+        return [
+            [
+                SocialAuthenticator::class,
+                SocialAuthenticator::FAILURE_USER_NOT_ACTIVE,
+                'Your user has not been validated yet. Please check your inbox for instructions',
+                'socialLogin',
+                $socialLoginConfig,
+            ],
+            [
+                SocialAuthenticator::class,
+                SocialAuthenticator::FAILURE_ACCOUNT_NOT_ACTIVE,
+                'Your social account has not been validated yet. Please check your inbox for instructions',
+                'socialLogin',
+                $socialLoginConfig,
+            ],
+            [
+                SocialAuthenticator::class,
+                Result::FAILURE_IDENTITY_NOT_FOUND,
+                'Could not proceed with social account. Please try again',
+                'socialLogin',
+                $socialLoginConfig,
+            ],
+            [
+                FormAuthenticator::class,
+                Result::FAILURE_IDENTITY_NOT_FOUND,
+                'Username or password is incorrect',
+                'login',
+                $loginConfig,
+            ],
+            [
+                FormAuthenticator::class,
+                FormAuthenticator::FAILURE_INVALID_RECAPTCHA,
+                'Invalid reCaptcha',
+                'login',
+                $loginConfig,
+            ],
+        ];
     }
 
     /**
-     * Tests that posting a valid code causes verification to succeed.
+     * test socialLogin/login failure
+     *
+     * @dataProvider dataProviderLogin
+     * @return void
      */
-    public function testVerifyPostValidCode()
+    public function testLogin($AuthClass, $resultStatus, $message, $method, $failureConfig)
     {
-        Configure::write('Users.GoogleAuthenticator.login', true);
+        $identifiers = new IdentifierCollection([
+            'CakeDC/Users.Social',
+        ]);
+        $FormAuth = new FormAuthenticator($identifiers);
+        $SessionAuth = new SessionAuthenticator($identifiers);
+        $SocialAuth = new $AuthClass($identifiers);
+
+        $sessionFailure = new Failure(
+            $SessionAuth,
+            new Result(null, Result::FAILURE_IDENTITY_NOT_FOUND)
+        );
+        $formFailure = new Failure(
+            $FormAuth,
+            new Result(null, $resultStatus, [
+                'Password' => [],
+            ])
+        );
+        $socialFailure = new Failure(
+            $SocialAuth,
+            new Result(null, $resultStatus)
+        );
+        $failures = [$sessionFailure, $formFailure, $socialFailure];
 
         $this->_mockDispatchEvent(new Event('event'));
-        $this->Trait->GoogleAuthenticator = $this->getMockBuilder(GoogleAuthenticatorComponent::class)
-             ->disableOriginalConstructor()
-             ->setMethods(['createSecret', 'verifyCode', 'getQRCodeImageAsDataUri'])
-             ->getMock();
 
-        $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
-              ->setMethods(['setUser', 'redirectUrl'])
-              ->disableOriginalConstructor()
-              ->getMock();
-
-        $this->Trait->request = $this->getMockBuilder(ServerRequest::class)
-             ->setMethods(['is', 'getData', 'allow', 'getSession'])
-             ->getMock();
-        $this->Trait->request->expects($this->once())
-             ->method('is')
-             ->with('post')
-             ->will($this->returnValue(true));
-        $this->Trait->request->expects($this->once())
-             ->method('getData')
-             ->with('code')
-             ->will($this->returnValue('123456'));
-
-        $this->Trait->GoogleAuthenticator
-            ->expects($this->never())
-            ->method('createSecret');
-        $this->Trait->GoogleAuthenticator
-            ->expects($this->at(0))
-            ->method('getQRCodeImageAsDataUri')
-            ->with('email@example.com', 'yyy')
-            ->will($this->returnValue('newDataUriGenerated'));
-        $this->Trait->GoogleAuthenticator
-            ->expects($this->at(1))
-             ->method('verifyCode')
-             ->with('yyy', '123456')
-             ->will($this->returnValue(true));
-
-        $this->Trait->Auth
-            ->expects($this->at(0))
-            ->method('setUser')
-            ->with([
-                'id' => '00000000-0000-0000-0000-000000000001',
-                'email' => 'email@example.com',
-                'secret_verified' => true
-            ]);
-        $this->Trait->Auth
-            ->expects($this->at(1))
-            ->method('redirectUrl')
-            ->will($this->returnValue('/'));
-
-        $this->assertFalse($this->table->exists([
-            'id' => '00000000-0000-0000-0000-000000000001',
-            'secret_verified' => true
-        ]));
-
-        $session = $this->_mockSession([
-            'temporarySession' => [
-                'id' => '00000000-0000-0000-0000-000000000001',
-                'email' => 'email@example.com',
-                'secret_verified' => false,
-                'secret' => 'yyy'
-            ]
-        ]);
-        $this->Trait->verify();
-
-        $this->assertTrue($this->table->exists([
-            'id' => '00000000-0000-0000-0000-000000000001',
-            'secret_verified' => true
-        ]));
-
-        $this->assertEmpty($session->read());
-    }
-
-    /**
-     * Tests that posting and invalid code causes verification to fail.
-     */
-    public function testVerifyPostInvalidCode()
-    {
-        Configure::write('Users.GoogleAuthenticator.login', true);
-
-        $this->Trait->GoogleAuthenticator = $this
-            ->getMockBuilder(GoogleAuthenticatorComponent::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['createSecret', 'verifyCode', 'getQRCodeImageAsDataUri'])
+        $request = $this->getMockBuilder('Cake\Http\ServerRequest')
+            ->setMethods(['is'])
             ->getMock();
-
-        $this->Trait->Auth = $this
-            ->getMockBuilder('Cake\Controller\Component\AuthComponent')
-            ->setMethods(['setUser'])
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->Trait->Flash = $this
-            ->getMockBuilder('Cake\Controller\Component\FlashComponent')
-            ->setMethods(['error'])
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->Trait->request = $this
-            ->getMockBuilder(ServerRequest::class)
-            ->setMethods(['is', 'getData', 'allow', 'getSession'])
-            ->getMock();
-        $this->Trait->request
-            ->expects($this->once())
+        $request->expects($this->any())
             ->method('is')
             ->with('post')
             ->will($this->returnValue(true));
-        $this->Trait->request
-            ->expects($this->once())
-            ->method('getData')
-            ->with('code')
-            ->will($this->returnValue('invalid'));
+        $this->Trait->setRequest($request);
 
-        $this->Trait->GoogleAuthenticator
-            ->expects($this->never())
-            ->method('createSecret');
-        $this->Trait->GoogleAuthenticator
-            ->expects($this->at(0))
-            ->method('getQRCodeImageAsDataUri')
-            ->with('email@example.com', 'yyy')
-            ->will($this->returnValue('newDataUriGenerated'));
-        $this->Trait->GoogleAuthenticator
-            ->expects($this->at(1))
-            ->method('verifyCode')
-            ->with('yyy', 'invalid')
-            ->will($this->returnValue(false));
-
-        $this->Trait->Auth
-            ->expects($this->never())
-            ->method('setUser');
-
-        $this->Trait->Flash
-            ->expects($this->once())
+        $this->_mockFlash();
+        $this->_mockAuthentication(null, $failures);
+        $this->Trait->Flash->expects($this->once())
             ->method('error')
-            ->with('Verification code is invalid. Try again', 'default', [], 'auth');
+            ->with($message);
 
-        $this->Trait
-            ->expects($this->once())
-            ->method('redirect')
-            ->with([
-                'plugin' => 'CakeDC/Users',
-                'controller' => 'Users',
-                'action' => 'login',
-                'prefix' => false,
-                '?' => []
-            ]);
+        $registry = new ComponentRegistry();
+        $Login = $this->getMockBuilder(LoginComponent::class)
+            ->setMethods(['getController'])
+            ->setConstructorArgs([$registry, $failureConfig])
+            ->getMock();
 
-        $this->assertFalse($this->table->exists([
-            'id' => '00000000-0000-0000-0000-000000000001',
-            'secret_verified' => true
-        ]));
+        $Login->expects($this->any())
+            ->method('getController')
+            ->will($this->returnValue($this->Trait));
+        $this->Trait->expects($this->any())
+            ->method('loadComponent')
+            ->with(
+                $this->equalTo('CakeDC/Users.Login'),
+                $this->equalTo($failureConfig)
+            )
+            ->will($this->returnValue($Login));
 
-        $session = $this->_mockSession([
-            'temporarySession' => [
-                'id' => '00000000-0000-0000-0000-000000000001',
-                'email' => 'email@example.com',
-                'secret_verified' => false,
-                'secret' => 'yyy'
-            ]
-        ]);
-        $this->Trait->verify();
-
-        $this->assertFalse($this->table->exists([
-            'id' => '00000000-0000-0000-0000-000000000001',
-            'secret_verified' => true
-        ]));
-
-        $this->assertEmpty($session->read());
+        if ($method === 'login') {
+            $this->Trait->expects($this->never())
+                ->method('redirect');
+            $result = $this->Trait->$method();
+            $this->assertNull($result);
+        } else {
+            $this->Trait->expects($this->once())
+                ->method('redirect')
+                ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login', 'prefix' => false])
+                ->will($this->returnValue(new Response()));
+            $result = $this->Trait->$method();
+            $this->assertInstanceOf(Response::class, $result);
+        }
     }
 
     /**
-     * Mock session and mock session attributes
+     * test socialLogin success
      *
-     * @return \Cake\Http\Session
+     * @return void
      */
-    protected function _mockSession($attributes)
+    public function testSocialLoginSuccess()
     {
-        $session = new \Cake\Http\Session();
+        $identifiers = new IdentifierCollection([
+            'CakeDC/Users.Social',
+        ]);
+        $FormAuth = new FormAuthenticator($identifiers);
+        $SessionAuth = new SessionAuthenticator($identifiers);
 
-        foreach ($attributes as $field => $value) {
-            $session->write($field, $value);
-        }
+        $sessionFailure = new Failure(
+            $SessionAuth,
+            new Result(null, Result::FAILURE_IDENTITY_NOT_FOUND)
+        );
+        $formFailure = new Failure(
+            $FormAuth,
+            new Result(null, Result::FAILURE_CREDENTIALS_MISSING, [
+                'Password' => [],
+            ])
+        );
+        $failures = [$sessionFailure, $formFailure];
 
-        $this->Trait->request
-            ->expects($this->any())
-            ->method('getSession')
-            ->willReturn($session);
+        $this->_mockDispatchEvent(new Event('event'));
 
-        return $session;
+        $request = $this->getMockBuilder('Cake\Http\ServerRequest')
+            ->setMethods(['is'])
+            ->getMock();
+        $request->expects($this->any())
+            ->method('is')
+            ->with('post')
+            ->will($this->returnValue(true));
+        $this->Trait->setRequest($request);
+
+        $this->_mockFlash();
+        $this->_mockAuthentication(['id' => 1], $failures);
+        $this->Trait->Flash->expects($this->never())
+            ->method('error');
+        $this->Trait->expects($this->once())
+            ->method('redirect')
+            ->with($this->successLoginRedirect)
+            ->will($this->returnValue(new Response()));
+
+        $registry = new ComponentRegistry();
+        $config = [
+            'component' => 'CakeDC/Users.Login',
+            'defaultMessage' => __d('cake_d_c/users', 'Could not proceed with social account. Please try again'),
+            'messages' => [
+                SocialAuthenticator::FAILURE_USER_NOT_ACTIVE => __d(
+                    'cake_d_c/users',
+                    'Your user has not been validated yet. Please check your inbox for instructions'
+                ),
+                SocialAuthenticator::FAILURE_ACCOUNT_NOT_ACTIVE => __d(
+                    'cake_d_c/users',
+                    'Your social account has not been validated yet. Please check your inbox for instructions'
+                ),
+            ],
+            'targetAuthenticator' => SocialAuthenticator::class,
+        ];
+        $Login = $this->getMockBuilder(LoginComponent::class)
+            ->setMethods(['getController'])
+            ->setConstructorArgs([$registry, $config])
+            ->getMock();
+
+        $Login->expects($this->any())
+            ->method('getController')
+            ->will($this->returnValue($this->Trait));
+        $this->Trait->expects($this->any())
+            ->method('loadComponent')
+            ->with(
+                $this->equalTo('CakeDC/Users.Login'),
+                $this->equalTo($config)
+            )
+            ->will($this->returnValue($Login));
+
+        $result = $this->Trait->socialLogin();
+        $this->assertInstanceOf(Response::class, $result);
     }
 }

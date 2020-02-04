@@ -18,7 +18,7 @@ composer require league/oauth2-linkedin:@stable
 composer require league/oauth1-client:@stable
 ```
 
-NOTE: you'll need to enable social login in your bootstrap.php file if you want to use it, social
+NOTE: you'll need to enable social login if you want to use it, social
 login is disabled by default. Check the [Configuration](Configuration.md#configuration-for-social-login) page for more details.
 
 ```
@@ -40,41 +40,30 @@ If you want to use Google Authenticator features...
 composer require robthree/twofactorauth:"^1.5.2"
 ```
 
-NOTE: you'll need to enable `Users.GoogleAuthenticator.login`
+NOTE: you'll need to enable `OneTimePasswordAuthenticator.login`
 
 ```
-Configure::write('Users.GoogleAuthenticator.login', true);
+Configure::write('OneTimePasswordAuthenticator.login', true);
 ```
 
 Load the Plugin
 -----------
 
-Ensure the Users Plugin is loaded in your config/bootstrap.php file
+Ensure the Users Plugin is loaded in your src/Application.php file
 
 ```
-Plugin::load('CakeDC/Users', ['routes' => true, 'bootstrap' => true]);
-```
-
-In CakePHP 3.8 , this method is deprecated, load the plugin in /src/Application.php :
-
-```
-// In src/Application.php. Requires at least 3.6.0
-namespace App;
-use Cake\Http\BaseApplication;
-
-class Application extends BaseApplication 
-{
+    /**
+     * {@inheritdoc}
+     */
     public function bootstrap()
     {
         parent::bootstrap();
 
-        // Load a plugin with a vendor namespace by 'short name'
-        $this->addPlugin('CakeDC/Users');
-        Configure::write('Users.config', ['users']);
+        $this->addPlugin(\CakeDC\Users\Plugin::class);
+        // Uncomment the line below to load your custom users.php config file
+        //Configure::write('Users.config', ['users']);
     }
-}
 ```
-
 
 Creating Required Tables
 ------------------------
@@ -97,10 +86,10 @@ bin/cake users addSuperuser
 Customization
 ----------
 
-config/bootstrap.php
+Application::bootstrap
 ```
+$this->addPlugin(\CakeDC\Users\Plugin::class);
 Configure::write('Users.config', ['users']);
-Plugin::load('CakeDC/Users', ['routes' => true, 'bootstrap' => true]);
 Configure::write('Users.Social.login', true); //to enable social login
 ```
 
@@ -123,20 +112,3 @@ IMPORTANT: Remember you'll need to configure your social login application **cal
 Note: using social authentication is not required.
 
 For more details, check the Configuration doc page
-
-Load the UsersAuth Component
----------------------
-
-Load the Component in your src/Controller/AppController.php, and use the passed Component configuration to customize the Users Plugin:
-
-```
-    public function initialize()
-    {
-        parent::initialize();
-
-        // Important: add the 'enableBeforeRedirect' config or or disable deprecation warnings
-        $this->loadComponent('RequestHandler', ['enableBeforeRedirect' => false]);
-        $this->loadComponent('Flash');                
-        $this->loadComponent('CakeDC/Users.UsersAuth');
-    }
-```

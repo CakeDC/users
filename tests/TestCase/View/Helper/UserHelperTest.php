@@ -1,29 +1,25 @@
 <?php
+declare(strict_types=1);
+
 /**
- * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * @copyright Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 namespace CakeDC\Users\Test\TestCase\View\Helper;
 
-use CakeDC\Users\Model\Entity\SocialAccount;
-use CakeDC\Users\View\Helper\UserHelper;
-use Cake\Core\App;
 use Cake\Core\Configure;
-use Cake\Core\Plugin;
-use Cake\Event\Event;
 use Cake\Http\ServerRequest;
 use Cake\I18n\I18n;
-use Cake\Network\Request;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
-use Cake\View\Helper\HtmlHelper;
-use Cake\View\View;
+use CakeDC\Users\Model\Entity\SocialAccount;
+use CakeDC\Users\View\Helper\UserHelper;
 
 /**
  * Users\View\Helper\UserHelper Test Case
@@ -40,16 +36,26 @@ class UserHelperTest extends TestCase
     /**
      * Keep original config Users.Social.login
      *
-     * @var boolean
+     * @var bool
      */
     private $socialLogin;
+
+    /**
+     * @var \CakeDC\Users\View\Helper\UserHelper
+     */
+    private $User;
+
+    /**
+     * @var \CakeDC\Users\View\Helper\AuthLinkHelper
+     */
+    private $AuthLink;
 
     /**
      * setUp method
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         if ($this->oauthConfig === null) {
             $this->oauthConfig = (array)Configure::read('OAuth');
@@ -78,7 +84,7 @@ class UserHelperTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         Configure::write('OAuth', $this->oauthConfig);
         Configure::write('Users.Social.login', $this->socialLogin);
@@ -94,6 +100,12 @@ class UserHelperTest extends TestCase
      */
     public function testLogout()
     {
+        Router::connect('/logout', [
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+            'action' => 'logout',
+        ]);
+
         $result = $this->User->logout();
         $expected = '<a href="/logout">Logout</a>';
         $this->assertEquals($expected, $result);
@@ -106,6 +118,12 @@ class UserHelperTest extends TestCase
      */
     public function testLogoutDifferentMessage()
     {
+        Router::connect('/logout', [
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+            'action' => 'logout',
+        ]);
+
         $result = $this->User->logout('Sign Out');
         $expected = '<a href="/logout">Sign Out</a>';
         $this->assertEquals($expected, $result);
@@ -118,6 +136,12 @@ class UserHelperTest extends TestCase
      */
     public function testLogoutWithOptions()
     {
+        Router::connect('/logout', [
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+            'action' => 'logout',
+        ]);
+
         $result = $this->User->logout('Sign Out', ['class' => 'logout']);
         $expected = '<a href="/logout" class="logout">Sign Out</a>';
         $this->assertEquals($expected, $result);
@@ -130,6 +154,12 @@ class UserHelperTest extends TestCase
      */
     public function testWelcome()
     {
+        Router::connect('/profile', [
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+            'action' => 'profile',
+        ]);
+
         $session = $this->getMockBuilder('Cake\Http\Session')
                 ->setMethods(['read'])
                 ->getMock();
@@ -143,14 +173,14 @@ class UserHelperTest extends TestCase
             ->with('Auth.User.first_name')
             ->will($this->returnValue('david'));
 
-        $request = $this->getMockBuilder('Cake\Network\Request')
+        $request = $this->getMockBuilder('Cake\Http\ServerRequest')
                 ->setMethods(['getSession'])
                 ->getMock();
-        $this->User->getView()->setRequest($request);
-        $this->User->getView()->getRequest()->expects($this->any())
+        $request->expects($this->any())
             ->method('getSession')
             ->will($this->returnValue($session));
 
+        $this->User->getView()->setRequest($request);
         $expected = '<span class="welcome">Welcome, <a href="/profile">david</a></span>';
         $result = $this->User->welcome();
         $this->assertEquals($expected, $result);
@@ -171,14 +201,14 @@ class UserHelperTest extends TestCase
             ->with('Auth.User.id')
             ->will($this->returnValue(null));
 
-        $request = $this->getMockBuilder('Cake\Network\Request')
+        $request = $this->getMockBuilder('Cake\Http\ServerRequest')
                 ->setMethods(['getSession'])
                 ->getMock();
-        $this->User->getView()->setRequest($request);
-        $this->User->getView()->getRequest()->expects($this->any())
+        $request->expects($this->any())
             ->method('getSession')
             ->will($this->returnValue($session));
 
+        $this->User->getView()->setRequest($request);
         $result = $this->User->welcome();
         $this->assertEmpty($result);
     }
@@ -194,6 +224,7 @@ class UserHelperTest extends TestCase
         Configure::write('Users.reCaptcha.theme', 'light');
         Configure::write('Users.reCaptcha.size', 'normal');
         Configure::write('Users.reCaptcha.tabindex', '3');
+        $this->User->Form->create();
         $result = $this->User->addReCaptcha();
         $this->assertEquals('<div class="g-recaptcha" data-sitekey="testKey" data-theme="light" data-size="normal" data-tabindex="3"></div>', $result);
     }
@@ -301,8 +332,8 @@ class UserHelperTest extends TestCase
                 'active' => false,
                 'data' => '',
                 'created' => '2015-05-22 21:52:44',
-                'modified' => '2015-05-22 21:52:44'
-            ])
+                'modified' => '2015-05-22 21:52:44',
+            ]),
         ];
         $actual = $this->User->socialConnectLinkList($socialAccounts);
         $expected = '<a class="btn btn-social btn-facebook disabled"><span class="fa fa-facebook"></span> Connected with Facebook</a>';
@@ -340,8 +371,8 @@ class UserHelperTest extends TestCase
                 'active' => false,
                 'data' => '',
                 'created' => '2015-05-22 21:52:44',
-                'modified' => '2015-05-22 21:52:44'
-            ])
+                'modified' => '2015-05-22 21:52:44',
+            ]),
         ];
         $actual = $this->User->socialConnectLinkList($socialAccounts);
         $expected = '';
@@ -372,8 +403,8 @@ class UserHelperTest extends TestCase
                 'active' => false,
                 'data' => '',
                 'created' => '2015-05-22 21:52:44',
-                'modified' => '2015-05-22 21:52:44'
-            ])
+                'modified' => '2015-05-22 21:52:44',
+            ]),
         ];
         $actual = $this->User->socialConnectLinkList($socialAccounts);
         $expected = '';

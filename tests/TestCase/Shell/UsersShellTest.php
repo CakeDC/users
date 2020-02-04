@@ -1,21 +1,24 @@
 <?php
+declare(strict_types=1);
+
 /**
- * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * @copyright Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 namespace CakeDC\Users\Test\TestCase\Shell;
 
-use CakeDC\Users\Shell\UsersShell;
 use Cake\Console\ConsoleOutput;
+use Cake\Console\Exception\StopException;
 use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use CakeDC\Users\Shell\UsersShell;
 
 class UsersShellTest extends TestCase
 {
@@ -34,7 +37,7 @@ class UsersShellTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->out = new ConsoleOutput();
@@ -62,7 +65,7 @@ class UsersShellTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
         unset($this->Shell);
@@ -272,12 +275,11 @@ class UsersShellTest extends TestCase
 
     /**
      * Reset all passwords
-     *
-     * @expectedException \Cake\Console\Exception\StopException
-     * @expectedExceptionMessage Please enter a password.
      */
     public function testResetAllPasswordsNoPassingParams()
     {
+        $this->expectException(StopException::class);
+        $this->expectExceptionMessage('Please enter a password.');
         $this->Shell->runCommand(['resetAllPasswords']);
     }
 
@@ -288,7 +290,7 @@ class UsersShellTest extends TestCase
      */
     public function testResetPassword()
     {
-        $user = $this->Users->newEntity();
+        $user = $this->Users->newEntity([]);
         $user->username = 'user-1';
         $user->password = 'password';
 
@@ -368,7 +370,7 @@ class UsersShellTest extends TestCase
             '--username=custom',
             '--password=12345678',
             '--email=custom@example.com',
-            '--role=custom'
+            '--role=custom',
         ]);
         $user = $this->Users->findByUsername('custom')->first();
         $this->assertSame('custom', $user['role']);

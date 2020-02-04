@@ -7,7 +7,7 @@ Extending the Model (Table/Entity)
 Create a new Table and Entity in your app, matching the table you want to use for storing the
 users data. Check the initial users migration to know the default columns expected in the table.
 If your column names doesn't match the columns in your current table, you could use the Entity to
-match the colums using accessors & mutators as described here http://book.cakephp.org/3.0/en/orm/entities.html#accessors-mutators
+match the colums using accessors & mutators as described here https://book.cakephp.org/4/en/orm/entities.html#accessors-mutators
 
 Example: we are going to use a custom table ```my_users``` in our application , which has a field named ``is_active`` instead of the default ``active``.
 * Create a new Table under src/Model/Table/MyUsersTable.php
@@ -116,7 +116,6 @@ namespace App\Controller;
 use App\Controller\AppController;
 use App\Model\Table\MyUsersTable;
 use Cake\Event\Event;
-use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use CakeDC\Users\Controller\Traits\LoginTrait;
 use CakeDC\Users\Controller\Traits\RegisterTrait;
 
@@ -124,12 +123,30 @@ class MyUsersController extends AppController
 {
     use LoginTrait;
     use RegisterTrait;
+    
+    /**
+     * Initialize
+     *
+     * @return void
+     */
+    public function initialize()
+    {
+        parent::initialize();
+        $this->loadComponent('CakeDC/Users.Setup');
+        if ($this->components()->has('Security')) {
+            $this->Security->setConfig(
+                'unlockedActions',
+                ['login', 'u2fRegister', 'u2fRegisterFinish', 'u2fAuthenticate', 'u2fAuthenticateFinish']
+            );
+        }
+    }
 
-//add your new actions, override, etc here
+    //add your new actions, override, etc here
 }
 ```
 
-Don't forget to update the `Users.controller` configuration in `users.php`
+Don't forget to update the `Users.controller` configuration in `users.php` this is
+needed to setup correct url/route for authentication.
 
 ```php
     'Users' => [
@@ -139,7 +156,22 @@ Don't forget to update the `Users.controller` configuration in `users.php`
         // ...
 ```
 
-Note you'll need to **copy the Plugin templates** you need into your project src/Template/MyUsers/[action].ctp
+Note you'll need to **copy the Plugin templates** you need into your project templates/MyUsers/[action].php
+
+You may also need to load some helpers in your AppView:
+
+```php
+   /**
+     * Initialization hook method.
+     *
+     * @return void
+     */
+    public function initialize()
+    {
+        $this->loadHelper('CakeDC/Users.AuthLink');
+        $this->loadHelper('CakeDC/Users.User');
+    }
+```
 
 Extending the Features in your controller
 -----------------------------
@@ -159,18 +191,13 @@ use Cake\Http\Exception\NotFoundException;
 trait ImpersonateTrait
 {
     /**
-     * Adding a new feature as an example: Impersonate another user
+     * Adding a new feature as an example: Review user
      *
-     * @param type $userId
+     * @param string $userId
      */
-    public function impersonate($userId)
+    public function review($userId)
     {
-        $user = $this->getUsersTable()->find()
-                ->where(['id' => $userId])
-                ->hydrate(false)
-                ->first();
-        $this->Auth->setUser($user);
-        return $this->redirect('/');
+        //Your review logic
     }
 }
 ```
@@ -178,9 +205,9 @@ Updating the Templates
 -------------------
 
 Use the standard CakePHP conventions to override Plugin views using your application views
-http://book.cakephp.org/3.0/en/plugins.html#overriding-plugin-templates-from-inside-your-application
+https://book.cakephp.org/4/en/plugins.html#overriding-plugin-templates-from-inside-your-application
 
-`{project_dir}/src/Template/Plugin/CakeDC/Users/Users/{templates_in_here}`
+`{project_dir}/templates/plugin/CakeDC/Users/Users/{templates_in_here}`
 
 Updating the Emails
 -------------------
@@ -212,7 +239,7 @@ class MyUsersMailer extends UsersMailer
 * Configure the Plugin to use this new mailer class in bootstrap or users.php
 `Configure::write('Users.Email.mailerClass', \App\Mailer\MyUsersMailer::class);`
 
-* Create the file `src/Template/Email/text/custom_template_in_app_namespace.ctp`
+* Create the file `templates/email/text/custom_template_in_app_namespace.php`
 with your custom contents. Note you can also prepare an html version of the file,
 change the template, or do any other customization in the `MyUsersMailer` method.
 

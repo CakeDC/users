@@ -1,25 +1,26 @@
 <?php
+declare(strict_types=1);
+
 /**
- * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * @copyright Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 namespace CakeDC\Users\Model\Behavior;
 
-use CakeDC\Users\Exception\UserAlreadyActiveException;
-use CakeDC\Users\Exception\UserNotActiveException;
-use CakeDC\Users\Exception\UserNotFoundException;
-use CakeDC\Users\Exception\WrongPasswordException;
 use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Mailer\MailerAwareTrait;
-use Cake\Utility\Hash;
+use CakeDC\Users\Exception\UserAlreadyActiveException;
+use CakeDC\Users\Exception\UserNotActiveException;
+use CakeDC\Users\Exception\UserNotFoundException;
+use CakeDC\Users\Exception\WrongPasswordException;
 
 /**
  * Covers the password management features
@@ -36,41 +37,41 @@ class PasswordBehavior extends BaseTokenBehavior
      *
      * @return string
      * @throws \InvalidArgumentException
-     * @throws UserNotFoundException
-     * @throws UserAlreadyActiveException
+     * @throws \CakeDC\Users\Exception\UserNotFoundException
+     * @throws \CakeDC\Users\Exception\UserAlreadyActiveException
      */
     public function resetToken($reference, array $options = [])
     {
         if (empty($reference)) {
-            throw new \InvalidArgumentException(__d('CakeDC/Users', "Reference cannot be null"));
+            throw new \InvalidArgumentException(__d('cake_d_c/users', "Reference cannot be null"));
         }
 
-        $expiration = Hash::get($options, 'expiration');
+        $expiration = $options['expiration'] ?? null;
         if (empty($expiration)) {
-            throw new \InvalidArgumentException(__d('CakeDC/Users', "Token expiration cannot be empty"));
+            throw new \InvalidArgumentException(__d('cake_d_c/users', "Token expiration cannot be empty"));
         }
 
         $user = $this->_getUser($reference);
 
         if (empty($user)) {
-            throw new UserNotFoundException(__d('CakeDC/Users', "User not found"));
+            throw new UserNotFoundException(__d('cake_d_c/users', "User not found"));
         }
-        if (Hash::get($options, 'checkActive')) {
+        if ($options['checkActive'] ?? false) {
             if ($user->active) {
-                throw new UserAlreadyActiveException(__d('CakeDC/Users', "User account already validated"));
+                throw new UserAlreadyActiveException(__d('cake_d_c/users', "User account already validated"));
             }
             $user->active = false;
             $user->activation_date = null;
         }
-        if (Hash::get($options, 'ensureActive')) {
+        if ($options['ensureActive'] ?? false) {
             if (!$user['active']) {
-                throw new UserNotActiveException(__d('CakeDC/Users', "User not active"));
+                throw new UserNotActiveException(__d('cake_d_c/users', "User not active"));
             }
         }
         $user->updateToken($expiration);
         $saveResult = $this->_table->save($user);
-        if (Hash::get($options, 'sendEmail')) {
-            switch (Hash::get($options, 'type')) {
+        if ($options['sendEmail'] ?? false) {
+            switch ($options['type'] ?? null) {
                 case 'email':
                     $this->_sendValidationEmail($user);
                     break;
@@ -86,7 +87,7 @@ class PasswordBehavior extends BaseTokenBehavior
     /**
      * Send the reset password related email link
      *
-     * @param EntityInterface $user user
+     * @param \Cake\Datasource\EntityInterface $user user
      * @return void
      */
     protected function _sendResetPasswordEmail($user)
@@ -99,7 +100,7 @@ class PasswordBehavior extends BaseTokenBehavior
     /**
      * Wrapper for mailer
      *
-     * @param EntityInterface $user user
+     * @param \Cake\Datasource\EntityInterface $user user
      * @return void
      */
     protected function _sendValidationEmail($user)
@@ -124,27 +125,27 @@ class PasswordBehavior extends BaseTokenBehavior
     /**
      * Change password method
      *
-     * @param EntityInterface $user user data.
-     * @throws WrongPasswordException
+     * @param \Cake\Datasource\EntityInterface $user user data.
+     * @throws \CakeDC\Users\Exception\WrongPasswordException
      * @return mixed
      */
     public function changePassword(EntityInterface $user)
     {
         try {
             $currentUser = $this->_table->get($user->id, [
-                'contain' => []
+                'contain' => [],
             ]);
         } catch (RecordNotFoundException $e) {
-            throw new UserNotFoundException(__d('CakeDC/Users', "User not found"));
+            throw new UserNotFoundException(__d('cake_d_c/users', "User not found"));
         }
 
         if (!empty($user->current_password)) {
             if (!$user->checkPassword($user->current_password, $currentUser->password)) {
-                throw new WrongPasswordException(__d('CakeDC/Users', 'The current password does not match'));
+                throw new WrongPasswordException(__d('cake_d_c/users', 'The current password does not match'));
             }
             if ($user->current_password === $user->password_confirm) {
                 throw new WrongPasswordException(__d(
-                    'CakeDC/Users',
+                    'cake_d_c/users',
                     'You cannot use the current password as the new one'
                 ));
             }

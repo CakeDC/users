@@ -1,5 +1,19 @@
 Changelog
 =========
+Releases for CakePHP 4
+-------------
+* 9.0.1
+  * Improved routes
+  * Improved integration tests
+  * Fixed warnings related to arguments in function calls
+  
+* 9.0.0
+   * Migration to CakePHP 4
+   * Compatible with cakephp/authentication
+   * Compatible with cakephp/authorization
+   * Added/removed/changed some configurations to work with new authentication/authorization plugins, [please check Migration guide for more info](https://github.com/CakeDC/users/blob/9.next/Docs/Documentation/Migration/8.x-9.0.md).
+   * Events constants were moved/removed from AuthComponent to Plugin class and their values was also updated, [please check Migration guide for more info](https://github.com/CakeDC/users/blob/9.next/Docs/Documentation/Migration/8.x-9.0.md).
+   * Migrated usage of AuthComponent to Authorization/Authentication plugins.
 
 Releases for CakePHP 3
 -------------

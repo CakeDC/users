@@ -1,23 +1,25 @@
 <?php
+declare(strict_types=1);
+
 /**
- * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * @copyright Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 namespace CakeDC\Users\Test\TestCase\Model\Table;
 
-use CakeDC\Users\Model\Table\SocialAccountsTable;
 use Cake\Mailer\Email;
 use Cake\Mailer\TransportFactory;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
-use InvalidArgumentException;
+use CakeDC\Users\Exception\AccountNotActiveException;
+use CakeDC\Users\Model\Table\SocialAccountsTable;
 
 /**
  * Users\Model\Table\UsersTable Test Case
@@ -31,7 +33,7 @@ class UsersTableTest extends TestCase
      */
     public $fixtures = [
         'plugin.CakeDC/Users.Users',
-        'plugin.CakeDC/Users.SocialAccounts'
+        'plugin.CakeDC/Users.SocialAccounts',
     ];
 
     /**
@@ -39,7 +41,7 @@ class UsersTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->Users = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
@@ -49,7 +51,7 @@ class UsersTableTest extends TestCase
         TransportFactory::setConfig('test', ['className' => 'Debug']);
         Email::setConfig('default', [
             'transport' => 'test',
-            'from' => 'cakedc@example.com'
+            'from' => 'cakedc@example.com',
         ]);
     }
 
@@ -58,7 +60,7 @@ class UsersTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->Users);
         Router::fullBaseUrl($this->fullBaseBackup);
@@ -81,9 +83,9 @@ class UsersTableTest extends TestCase
             'password_confirm' => 'password',
             'first_name' => 'test',
             'last_name' => 'user',
-            'tos' => 1
+            'tos' => 1,
         ];
-        $result = $this->Users->register($this->Users->newEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 0]);
+        $result = $this->Users->register($this->Users->newEntity([]), $user, ['token_expiration' => 3600, 'validate_email' => 0]);
         $this->assertTrue($result->active);
     }
 
@@ -95,7 +97,7 @@ class UsersTableTest extends TestCase
     public function testValidateRegisterEmptyUser()
     {
         $user = [];
-        $result = $this->Users->register($this->Users->newEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1]);
+        $result = $this->Users->register($this->Users->newEntity([]), $user, ['token_expiration' => 3600, 'validate_email' => 1]);
         $this->assertFalse($result);
     }
 
@@ -106,6 +108,12 @@ class UsersTableTest extends TestCase
      */
     public function testValidateRegisterValidateEmail()
     {
+        Router::connect('/users/validate-email/*', [
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+            'action' => 'validateEmail',
+        ]);
+
         $user = [
             'username' => 'testuser',
             'email' => 'testuser@test.com',
@@ -113,9 +121,9 @@ class UsersTableTest extends TestCase
             'password_confirm' => 'password',
             'first_name' => 'test',
             'last_name' => 'user',
-            'tos' => 1
+            'tos' => 1,
         ];
-        $result = $this->Users->register($this->Users->newEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1]);
+        $result = $this->Users->register($this->Users->newEntity([]), $user, ['token_expiration' => 3600, 'validate_email' => 1]);
         $this->assertNotEmpty($result);
         $this->assertFalse($result->active);
     }
@@ -133,7 +141,7 @@ class UsersTableTest extends TestCase
             'first_name' => 'test',
             'last_name' => 'user',
         ];
-        $userEntity = $this->Users->newEntity();
+        $userEntity = $this->Users->newEntity([]);
         $this->Users->register($userEntity, $user, ['token_expiration' => 3600, 'validate_email' => 1, 'use_tos' => 1]);
         $this->assertEquals(['tos' => ['_required' => 'This field is required']], $userEntity->getErrors());
     }
@@ -144,6 +152,12 @@ class UsersTableTest extends TestCase
      */
     public function testValidateRegisterNoTosRequired()
     {
+        Router::connect('/users/validate-email/*', [
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+            'action' => 'validateEmail',
+        ]);
+
         $user = [
             'username' => 'testuser',
             'email' => 'testuser@test.com',
@@ -152,7 +166,7 @@ class UsersTableTest extends TestCase
             'first_name' => 'test',
             'last_name' => 'user',
         ];
-        $result = $this->Users->register($this->Users->newEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1, 'use_tos' => 0]);
+        $result = $this->Users->register($this->Users->newEntity([]), $user, ['token_expiration' => 3600, 'validate_email' => 1, 'use_tos' => 0]);
         $this->assertNotEmpty($result);
     }
 
@@ -182,13 +196,13 @@ class UsersTableTest extends TestCase
                 'gender' => 'female',
                 'verified' => 1,
                 'user_email' => 'user-2@test.com',
-                'link' => 'link'
-            ]
+                'link' => 'link',
+            ],
         ];
         $options = [
             'use_email' => 1,
             'validate_email' => 1,
-            'token_expiration' => 3600
+            'token_expiration' => 3600,
         ];
         $result = $this->Users->socialLogin($data, $options);
         $this->assertEquals('user-2@test.com', $result->email);
@@ -197,11 +211,10 @@ class UsersTableTest extends TestCase
 
     /**
      * Test socialLogin
-     *
-     * @expectedException CakeDC\Users\Exception\AccountNotActiveException
      */
     public function testSocialLoginInactiveAccount()
     {
+        $this->expectException(AccountNotActiveException::class);
         $data = [
             'provider' => SocialAccountsTable::PROVIDER_TWITTER,
             'email' => 'hello@test.com',
@@ -213,12 +226,12 @@ class UsersTableTest extends TestCase
                 'gender' => 'female',
                 'verified' => 1,
                 'user_email' => 'hello@test.com',
-            ]
+            ],
         ];
         $options = [
             'use_email' => 1,
             'validate_email' => 1,
-            'token_expiration' => 3600
+            'token_expiration' => 3600,
         ];
         $result = $this->Users->socialLogin($data, $options);
         $this->assertEquals('user-2@test.com', $result->email);
@@ -227,11 +240,10 @@ class UsersTableTest extends TestCase
 
     /**
      * Test socialLogin
-     *
-     * @expectedException InvalidArgumentException
      */
     public function testSocialLoginCreateNewAccountWithNoCredentials()
     {
+        $this->expectException(\InvalidArgumentException::class);
         $data = [
             'provider' => SocialAccountsTable::PROVIDER_TWITTER,
             'email' => 'user@test.com',
@@ -250,7 +262,7 @@ class UsersTableTest extends TestCase
         $options = [
             'use_email' => 0,
             'validate_email' => 1,
-            'token_expiration' => 3600
+            'token_expiration' => 3600,
         ];
         $result = $this->Users->socialLogin($data, $options);
         $this->assertFalse($result);
@@ -275,25 +287,25 @@ class UsersTableTest extends TestCase
                 'last_name' => 'Last Name',
                 'gender' => 'male',
                 'user_email' => 'user@test.com',
-                'twitter' => 'link'
+                'twitter' => 'link',
             ],
             'info' => [
                 'first_name' => 'First Name',
                 'last_name' => 'Last Name',
-                'urls' => ['twitter' => 'twitter']
+                'urls' => ['twitter' => 'twitter'],
             ],
             'validated' => true,
             'credentials' => [
                 'token' => 'token',
                 'token_secret' => 'secret',
-                'token_expires' => ''
+                'token_expires' => '',
             ],
         ];
 
         $options = [
             'use_email' => 0,
             'validate_email' => 0,
-            'token_expiration' => 3600
+            'token_expiration' => 3600,
         ];
         $result = $this->Users->socialLogin($data, $options);
         $this->assertNotEmpty($result);

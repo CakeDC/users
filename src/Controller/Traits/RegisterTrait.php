@@ -1,21 +1,23 @@
 <?php
+declare(strict_types=1);
+
 /**
- * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * @copyright Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 namespace CakeDC\Users\Controller\Traits;
 
-use CakeDC\Users\Controller\Component\UsersAuthComponent;
 use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
+use CakeDC\Users\Plugin;
 
 /**
  * Covers registration features and email token validation
@@ -29,7 +31,7 @@ trait RegisterTrait
     /**
      * Register a new user
      *
-     * @throws NotFoundException
+     * @throws \Cake\Http\Exception\NotFoundException
      * @return mixed
      */
     public function register()
@@ -38,62 +40,66 @@ trait RegisterTrait
             throw new NotFoundException();
         }
 
-        $userId = $this->Auth->user('id');
+        $identity = $this->getRequest()->getAttribute('identity');
+        $identity = $identity ?? [];
+        $userId = $identity['id'] ?? null;
         if (!empty($userId) && !Configure::read('Users.Registration.allowLoggedIn')) {
-            $this->Flash->error(__d('CakeDC/Users', 'You must log out to register a new user account'));
+            $this->Flash->error(__d('cake_d_c/users', 'You must log out to register a new user account'));
 
             return $this->redirect(Configure::read('Users.Profile.route'));
         }
 
         $usersTable = $this->getUsersTable();
-        $user = $usersTable->newEntity();
+        $user = $usersTable->newEntity([]);
         $validateEmail = (bool)Configure::read('Users.Email.validate');
         $useTos = (bool)Configure::read('Users.Tos.required');
         $tokenExpiration = Configure::read('Users.Token.expiration');
         $options = [
             'token_expiration' => $tokenExpiration,
             'validate_email' => $validateEmail,
-            'use_tos' => $useTos
+            'use_tos' => $useTos,
         ];
-        $requestData = $this->request->getData();
-        $event = $this->dispatchEvent(UsersAuthComponent::EVENT_BEFORE_REGISTER, [
+        $requestData = $this->getRequest()->getData();
+        $event = $this->dispatchEvent(Plugin::EVENT_BEFORE_REGISTER, [
             'usersTable' => $usersTable,
             'options' => $options,
             'userEntity' => $user,
         ]);
 
-        if ($event->result instanceof EntityInterface) {
-            $data = $event->result->toArray();
-            $data['password'] = $requestData['password']; //since password is a hidden property
-            if ($userSaved = $usersTable->register($user, $data, $options)) {
+        $result = $event->getResult();
+        if ($result instanceof EntityInterface) {
+            $data = $result->toArray();
+            $data['password'] = $requestData['password'] ?? null; //since password is a hidden property
+            $userSaved = $usersTable->register($user, $data, $options);
+            if ($userSaved) {
                 return $this->_afterRegister($userSaved);
             } else {
                 $this->set(compact('user'));
-                $this->Flash->error(__d('CakeDC/Users', 'The user could not be saved'));
+                $this->Flash->error(__d('cake_d_c/users', 'The user could not be saved'));
 
                 return;
             }
         }
         if ($event->isStopped()) {
-            return $this->redirect($event->result);
+            return $this->redirect($event->getResult());
         }
 
         $this->set(compact('user'));
         $this->set('_serialize', ['user']);
 
-        if (!$this->request->is('post')) {
+        if (!$this->getRequest()->is('post')) {
             return;
         }
 
         if (!$this->_validateRegisterPost()) {
-            $this->Flash->error(__d('CakeDC/Users', 'Invalid reCaptcha'));
+            $this->Flash->error(__d('cake_d_c/users', 'Invalid reCaptcha'));
 
             return;
         }
 
         $userSaved = $usersTable->register($user, $requestData, $options);
         if (!$userSaved) {
-            $this->Flash->error(__d('CakeDC/Users', 'The user could not be saved'));
+            $this->Flash->error(__d('cake_d_c/users', 'The user could not be saved'));
 
             return;
         }
@@ -113,29 +119,30 @@ trait RegisterTrait
         }
 
         return $this->validateReCaptcha(
-            $this->request->getData('g-recaptcha-response'),
-            $this->request->clientIp()
+            $this->getRequest()->getData('g-recaptcha-response'),
+            $this->getRequest()->clientIp()
         );
     }
 
     /**
      * Prepare flash messages after registration, and dispatch afterRegister event
      *
-     * @param EntityInterface $userSaved User entity saved
-     * @return Response
+     * @param \Cake\Datasource\EntityInterface $userSaved User entity saved
+     * @return \Cake\Http\Response
      */
     protected function _afterRegister(EntityInterface $userSaved)
     {
         $validateEmail = (bool)Configure::read('Users.Email.validate');
-        $message = __d('CakeDC/Users', 'You have registered successfully, please log in');
+        $message = __d('cake_d_c/users', 'You have registered successfully, please log in');
         if ($validateEmail) {
-            $message = __d('CakeDC/Users', 'Please validate your account before log in');
+            $message = __d('cake_d_c/users', 'Please validate your account before log in');
         }
-        $event = $this->dispatchEvent(UsersAuthComponent::EVENT_AFTER_REGISTER, [
-            'user' => $userSaved
+        $event = $this->dispatchEvent(Plugin::EVENT_AFTER_REGISTER, [
+            'user' => $userSaved,
         ]);
-        if ($event->result instanceof Response) {
-            return $event->result;
+        $result = $event->getResult();
+        if ($result instanceof Response) {
+            return $result;
         }
         $this->Flash->success($message);
 

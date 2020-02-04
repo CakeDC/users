@@ -1,25 +1,22 @@
 <?php
+declare(strict_types=1);
+
 /**
- * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * @copyright Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 namespace CakeDC\Users\Test\TestCase\Model\Behavior;
 
-use CakeDC\Users\Exception\UserAlreadyActiveException;
-use CakeDC\Users\Model\Behavior\AuthFinderBehavior;
-use CakeDC\Users\Model\Table\UsersTable;
-use Cake\Mailer\Email;
 use Cake\ORM\TableRegistry;
-use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Hash;
-use InvalidArgumentException;
+use CakeDC\Users\Model\Behavior\AuthFinderBehavior;
 
 /**
  * Test Case
@@ -40,7 +37,7 @@ class AuthFinderBehaviorTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->table = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
@@ -52,7 +49,7 @@ class AuthFinderBehaviorTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->table, $this->Behavior);
         parent::tearDown();
@@ -72,13 +69,12 @@ class AuthFinderBehaviorTest extends TestCase
 
     /**
      * Test findAuth method.
-     *
-     * @expectedException \BadMethodCallException
-     * @expectedExceptionMessage  Missing 'username' in options data
      */
     public function testFindAuthBadMethodCallException()
     {
-        $user = $this->table->find('auth');
+        $this->expectException(\BadMethodCallException::class);
+        $this->expectExceptionMessage("Missing 'username' in options data");
+        $this->table->find('auth');
     }
 
     /**

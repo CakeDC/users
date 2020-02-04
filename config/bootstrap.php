@@ -1,19 +1,16 @@
 <?php
 /**
- * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * @copyright Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
+use CakeDC\Users\Utility\UsersUrl;
 use Cake\Core\Configure;
-use Cake\Core\Exception\MissingPluginException;
-use Cake\Core\Plugin;
-use Cake\Event\EventManager;
-use Cake\Log\Log;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 
@@ -21,24 +18,24 @@ Configure::load('CakeDC/Users.users');
 collection((array)Configure::read('Users.config'))->each(function ($file) {
     Configure::load($file);
 });
-if (!TableRegistry::getTableLocator()->exists('Users')) {
-    TableRegistry::getTableLocator()->setConfig('Users', ['className' => Configure::read('Users.table')]);
-}
-if (!TableRegistry::getTableLocator()->exists('CakeDC/Users.Users')) {
-    TableRegistry::getTableLocator()->setConfig('CakeDC/Users.Users', ['className' => Configure::read('Users.table')]);
-}
+UsersUrl::setupConfigUrls();
 
-if (Configure::check('Users.auth')) {
-    Configure::write('Auth.authenticate.all.userModel', Configure::read('Users.table'));
+$locator = TableRegistry::getTableLocator();
+foreach (['Users', 'CakeDC/Users.Users'] as $modelKey) {
+    if (!$locator->exists($modelKey)) {
+        $locator->setConfig($modelKey, ['className' => Configure::read('Users.table')]);
+    }
 }
-
-$oauthPath = Configure::read('OAuth.path');
-if (is_array($oauthPath)) {
-    Router::scope('/auth', function ($routes) use ($oauthPath) {
-        $routes->connect(
-            '/:provider',
-            $oauthPath,
-            ['provider' => implode('|', array_keys(Configure::read('OAuth.providers')))]
-        );
-    });
+$oldConfigs = [
+    'Users.auth',
+    'Users.Social.authenticator',
+    'Users.GoogleAuthenticator',
+    'GoogleAuthenticator',
+    'Auth.authenticate',
+    'Auth.authorize',
+];
+foreach ($oldConfigs as $configKey) {
+    if (Configure::check($configKey)) {
+        trigger_error(__("Users plugin configuration key \"{0}\" was removed, please check migration guide https://github.com/CakeDC/users/blob/master/Docs/Documentation/Migration/8.x-9.0.md", $configKey));
+    }
 }

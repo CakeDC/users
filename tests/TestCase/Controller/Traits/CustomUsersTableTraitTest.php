@@ -1,11 +1,13 @@
 <?php
+declare(strict_types=1);
+
 /**
- * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * @copyright Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -16,7 +18,7 @@ use Cake\TestSuite\TestCase;
 
 class CustomUsersTableTraitTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->controller = $this->getMockBuilder('Cake\Controller\Controller')
@@ -25,7 +27,7 @@ class CustomUsersTableTraitTest extends TestCase
         $this->controller->Trait = $this->getMockForTrait('CakeDC\Users\Controller\Traits\CustomUsersTableTrait');
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
     }

@@ -1,20 +1,24 @@
 <?php
+declare(strict_types=1);
+
 /**
- * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * @copyright Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 namespace CakeDC\Users\Test\TestCase\Model\Behavior;
 
-use CakeDC\Users\Model\Table\SocialAccountsTable;
+use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Event\Event;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use CakeDC\Users\Exception\AccountAlreadyActiveException;
+use CakeDC\Users\Model\Table\SocialAccountsTable;
 
 /**
  * Test Case
@@ -28,7 +32,7 @@ class SocialAccountBehaviorTest extends TestCase
      */
     public $fixtures = [
         'plugin.CakeDC/Users.SocialAccounts',
-        'plugin.CakeDC/Users.Users'
+        'plugin.CakeDC/Users.Users',
     ];
 
     /**
@@ -36,7 +40,7 @@ class SocialAccountBehaviorTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->Table = TableRegistry::getTableLocator()->get('CakeDC/Users.SocialAccounts');
@@ -48,7 +52,7 @@ class SocialAccountBehaviorTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->Table, $this->Behavior, $this->Email);
         parent::tearDown();
@@ -69,31 +73,28 @@ class SocialAccountBehaviorTest extends TestCase
 
     /**
      * Test validateEmail method
-     *
-     * @expectedException \Cake\Datasource\Exception\RecordNotFoundException
      */
     public function testValidateEmailInvalidToken()
     {
+        $this->expectException(RecordNotFoundException::class);
         $this->Behavior->validateAccount(1, 'reference-1234', 'invalid-token');
     }
 
     /**
      * Test validateEmail method
-     *
-     * @expectedException \Cake\Datasource\Exception\RecordNotFoundException
      */
     public function testValidateEmailInvalidUser()
     {
+        $this->expectException(RecordNotFoundException::class);
         $this->Behavior->validateAccount(1, 'invalid-user', 'token-1234');
     }
 
     /**
      * Test validateEmail method
-     *
-     * @expectedException CakeDC\Users\Exception\AccountAlreadyActiveException
      */
     public function testValidateEmailActiveAccount()
     {
+        $this->expectException(AccountAlreadyActiveException::class);
         $this->Behavior->validateAccount(SocialAccountsTable::PROVIDER_TWITTER, 'reference-1-1234', 'token-1234');
     }
 
@@ -107,7 +108,7 @@ class SocialAccountBehaviorTest extends TestCase
     {
         $event = new Event('eventName');
         $entity = $this->Table->find()->first();
-        $this->assertTrue($this->Behavior->afterSave($event, $entity, []));
+        $this->assertTrue($this->Behavior->afterSave($event, $entity, new \ArrayObject([])));
     }
 
     /**
@@ -120,7 +121,7 @@ class SocialAccountBehaviorTest extends TestCase
     {
         $event = new Event('eventName');
         $entity = $this->Table->findById('00000000-0000-0000-0000-000000000003')->first();
-        $this->assertTrue($this->Behavior->afterSave($event, $entity, []));
+        $this->assertTrue($this->Behavior->afterSave($event, $entity, new \ArrayObject([])));
     }
 
     /**
@@ -133,6 +134,6 @@ class SocialAccountBehaviorTest extends TestCase
     {
         $event = new Event('eventName');
         $entity = $this->Table->findById('00000000-0000-0000-0000-000000000002')->first();
-        $this->assertTrue($this->Behavior->afterSave($event, $entity, []));
+        $this->assertTrue($this->Behavior->afterSave($event, $entity, new \ArrayObject([])));
     }
 }

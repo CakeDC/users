@@ -1,34 +1,49 @@
 <?php
+declare(strict_types=1);
+
 /**
- * Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2010 - 2017, Cake Development Corporation (https://www.cakedc.com)
+ * @copyright Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 namespace CakeDC\Users\Model\Table;
 
-use Cake\Database\Schema\TableSchema;
-use Cake\ORM\Query;
+use Cake\Database\Schema\TableSchemaInterface;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
-use Cake\Utility\Hash;
 use Cake\Validation\Validator;
 
 /**
  * Users Model
+ *
+ * @method \CakeDC\Users\Model\Entity\User get($primaryKey, $options = [])
+ * @method \CakeDC\Users\Model\Entity\User newEntity($data = null, array $options = [])
+ * @method \CakeDC\Users\Model\Entity\User[] newEntities(array $data, array $options = [])
+ * @method \CakeDC\Users\Model\Entity\User|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \CakeDC\Users\Model\Entity\User|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \CakeDC\Users\Model\Entity\User patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \CakeDC\Users\Model\Entity\User[] patchEntities($entities, array $data, array $options = [])
+ * @method \CakeDC\Users\Model\Entity\User findOrCreate($search, callable $callback = null, $options = [])
+ *
+ * @mixin \CakeDC\Users\Model\Behavior\AuthFinderBehavior
+ * @mixin \CakeDC\Users\Model\Behavior\LinkSocialBehavior
+ * @mixin \CakeDC\Users\Model\Behavior\PasswordBehavior
+ * @mixin \CakeDC\Users\Model\Behavior\RegisterBehavior
+ * @mixin \CakeDC\Users\Model\Behavior\SocialAccountBehavior
+ * @mixin \CakeDC\Users\Model\Behavior\SocialBehavior
  */
 class UsersTable extends Table
 {
-
     /**
      * Role Constants
      */
-    const ROLE_USER = 'user';
-    const ROLE_ADMIN = 'admin';
+    public const ROLE_USER = 'user';
+    public const ROLE_ADMIN = 'admin';
 
     /**
      * Flag to set email check in buildRules or not
@@ -40,10 +55,10 @@ class UsersTable extends Table
     /**
      * Field additional_data is json
      *
-     * @param \Cake\Database\Schema\TableSchema $schema The table definition fetched from database.
-     * @return \Cake\Database\Schema\TableSchema the altered schema
+     * @param \Cake\Database\Schema\TableSchemaInterface $schema The table definition fetched from database.
+     * @return \Cake\Database\Schema\TableSchemaInterface the altered schema
      */
-    protected function _initializeSchema(TableSchema $schema)
+    protected function _initializeSchema(TableSchemaInterface $schema): TableSchemaInterface
     {
         $schema->setColumnType('additional_data', 'json');
 
@@ -56,7 +71,7 @@ class UsersTable extends Table
      * @param array $config The configuration for the Table.
      * @return void
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         parent::initialize($config);
 
@@ -71,29 +86,32 @@ class UsersTable extends Table
         $this->addBehavior('CakeDC/Users.AuthFinder');
         $this->hasMany('SocialAccounts', [
             'foreignKey' => 'user_id',
-            'className' => 'CakeDC/Users.SocialAccounts'
+            'className' => 'CakeDC/Users.SocialAccounts',
         ]);
     }
 
     /**
      * Adds some rules for password confirm
-     * @param Validator $validator Cake validator object.
-     * @return Validator
+     * @param \Cake\Validation\Validator $validator Cake validator object.
+     * @return \Cake\Validation\Validator
      */
     public function validationPasswordConfirm(Validator $validator)
     {
         $validator
             ->requirePresence('password_confirm', 'create')
-            ->notEmpty('password_confirm');
+            ->notBlank('password_confirm');
 
         $validator
             ->requirePresence('password', 'create')
-            ->notEmpty('password')
+            ->notBlank('password')
             ->add('password', [
                 'password_confirm_check' => [
                     'rule' => ['compareWith', 'password_confirm'],
-                    'message' => __d('CakeDC/Users', 'Your password does not match your confirm password. Please try again'),
-                    'allowEmpty' => false
+                    'message' => __d(
+                        'cake_d_c/users',
+                        'Your password does not match your confirm password. Please try again'
+                    ),
+                    'allowEmpty' => false,
                 ]]);
 
         return $validator;
@@ -102,13 +120,13 @@ class UsersTable extends Table
     /**
      * Adds rules for current password
      *
-     * @param Validator $validator Cake validator object.
-     * @return Validator
+     * @param \Cake\Validation\Validator $validator Cake validator object.
+     * @return \Cake\Validation\Validator
      */
     public function validationCurrentPassword(Validator $validator)
     {
         $validator
-            ->notEmpty('current_password');
+            ->notBlank('current_password');
 
         return $validator;
     }
@@ -116,54 +134,54 @@ class UsersTable extends Table
     /**
      * Default validation rules.
      *
-     * @param Validator $validator Validator instance.
-     * @return Validator
+     * @param \Cake\Validation\Validator $validator Validator instance.
+     * @return \Cake\Validation\Validator
      */
-    public function validationDefault(Validator $validator)
+    public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->allowEmpty('id', 'create');
+            ->allowEmptyString('id', null, 'create');
 
         $validator
             ->requirePresence('username', 'create')
-            ->notEmpty('username');
+            ->notEmptyString('username');
 
         $validator
             ->requirePresence('password', 'create')
-            ->notEmpty('password');
+            ->notEmptyString('password');
 
         $validator
-            ->allowEmpty('first_name');
+            ->allowEmptyString('first_name');
 
         $validator
-            ->allowEmpty('last_name');
+            ->allowEmptyString('last_name');
 
         $validator
-            ->allowEmpty('token');
+            ->allowEmptyString('token');
 
         $validator
             ->add('token_expires', 'valid', ['rule' => 'datetime'])
-            ->allowEmpty('token_expires');
+            ->allowEmptyDateTime('token_expires');
 
         $validator
-            ->allowEmpty('api_token');
+            ->allowEmptyString('api_token');
 
         $validator
             ->add('activation_date', 'valid', ['rule' => 'datetime'])
-            ->allowEmpty('activation_date');
+            ->allowEmptyDateTime('activation_date');
 
         $validator
             ->add('tos_date', 'valid', ['rule' => 'datetime'])
-            ->allowEmpty('tos_date');
+            ->allowEmptyDateTime('tos_date');
 
         return $validator;
     }
 
     /**
      * Wrapper for all validation rules for register
-     * @param Validator $validator Cake validator object.
+     * @param \Cake\Validation\Validator $validator Cake validator object.
      *
-     * @return Validator
+     * @return \Cake\Validation\Validator
      */
     public function validationRegister(Validator $validator)
     {
@@ -177,20 +195,20 @@ class UsersTable extends Table
      * Returns a rules checker object that will be used for validating
      * application integrity.
      *
-     * @param RulesChecker $rules The rules object to be modified.
-     * @return RulesChecker
+     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @return \Cake\ORM\RulesChecker
      */
-    public function buildRules(RulesChecker $rules)
+    public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->isUnique(['username']), '_isUnique', [
             'errorField' => 'username',
-            'message' => __d('CakeDC/Users', 'Username already exists')
+            'message' => __d('cake_d_c/users', 'Username already exists'),
         ]);
 
         if ($this->isValidateEmail) {
             $rules->add($rules->isUnique(['email']), '_isUnique', [
                 'errorField' => 'email',
-                'message' => __d('CakeDC/Users', 'Email already exists')
+                'message' => __d('cake_d_c/users', 'Email already exists'),
             ]);
         }
 
