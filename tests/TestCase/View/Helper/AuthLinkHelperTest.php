@@ -153,20 +153,20 @@ class AuthLinkHelperTest extends TestCase
             'action' => 'delete',
             '00000000-0000-0000-0000-000000000010',
         ];
-
-        $this->AuthLink->expects($this->any())
-            ->method('allowMethod')
-            ->with(['post', 'delete'])
+        Router::connect('/profile', $url);
+        $this->AuthLink->expects($this->once())
+            ->method('isAuthorized')
+            ->with(
+                $this->equalTo($url)
+            )
             ->will($this->returnValue(true));
-
         $link = $this->AuthLink->postLink('Post Link Title', $url, [
-                'allowed' => true,
-                'class' => 'link-class',
-                'confirm' => 'confirmation message',
-            ]);
-
-        $this->assertContains('confirmation message', $link);
-        $this->assertContains('Post Link Title', $link);
+            'allowed' => true,
+            'class' => 'link-class',
+            'confirm' => 'confirmation message',
+        ]);
+        $this->assertStringContainsString('data-confirm-message="confirmation message"', $link);
+        $this->assertStringContainsString('Post Link Title', $link);
     }
 
     /**
