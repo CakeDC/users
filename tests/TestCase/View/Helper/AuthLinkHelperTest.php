@@ -63,7 +63,7 @@ class AuthLinkHelperTest extends TestCase
      *
      * @return void
      */
-    public function testLinkFalseWithMock()
+    public function testLinkFalseWithMock(): void
     {
         $this->AuthLink->expects($this->once())
             ->method('isAuthorized')
@@ -84,7 +84,7 @@ class AuthLinkHelperTest extends TestCase
      *
      * @return void
      */
-    public function testLinkAuthorizedHappy()
+    public function testLinkAuthorizedHappy(): void
     {
         Router::connect('/profile', [
             'plugin' => 'CakeDC/Users',
@@ -110,7 +110,7 @@ class AuthLinkHelperTest extends TestCase
      *
      * @return void
      */
-    public function testLinkAuthorizedAllowedTrue()
+    public function testLinkAuthorizedAllowedTrue(): void
     {
         $link = $this->AuthLink->link('title', '/', ['allowed' => true, 'before' => 'before_', 'after' => '_after', 'class' => 'link-class']);
         $this->assertSame('before_<a href="/" class="link-class">title</a>_after', $link);
@@ -121,7 +121,7 @@ class AuthLinkHelperTest extends TestCase
      *
      * @return void
      */
-    public function testLinkAuthorizedAllowedFalse()
+    public function testLinkAuthorizedAllowedFalse(): void
     {
         $link = $this->AuthLink->link('title', '/', ['allowed' => false, 'before' => 'before_', 'after' => '_after', 'class' => 'link-class']);
         $this->assertEmpty($link);
@@ -132,7 +132,7 @@ class AuthLinkHelperTest extends TestCase
      *
      * @retunr void
      */
-    public function testGetRequest()
+    public function testGetRequest(): void
     {
         $actual = $this->AuthLink->getRequest();
         $this->assertInstanceOf(ServerRequest::class, $actual);
@@ -144,7 +144,7 @@ class AuthLinkHelperTest extends TestCase
      *
      * @return void
      */
-    public function testPostLinkAuthorizedAllowedTrueLoggedAsAdmin()
+    public function testPostLinkAuthorizedAllowedTrueLoggedAsAdmin(): void
     {
         $url = [
             'plugin' => 'CakeDC/Users',
@@ -174,7 +174,7 @@ class AuthLinkHelperTest extends TestCase
      *
      * @return void
      */
-    public function testPostLinkAuthorizedAllowedFalseLoggedWithoutRole()
+    public function testPostLinkAuthorizedAllowedFalseLoggedWithoutRole(): void
     {
         $url = [
             'prefix' => false,
@@ -197,7 +197,7 @@ class AuthLinkHelperTest extends TestCase
                 'confirm' => 'confirmation message',
             ]);
 
-        $this->assertFalse($link);
+        $this->assertEmpty($link);
     }
 
     /**
@@ -205,7 +205,7 @@ class AuthLinkHelperTest extends TestCase
      *
      * @return void
      */
-    public function testPostLinkAuthorizedAllowedFalse()
+    public function testPostLinkAuthorizedAllowedFalse(): void
     {
         $url = [
             'prefix' => false,
@@ -227,6 +227,6 @@ class AuthLinkHelperTest extends TestCase
             'class' => 'link-class',
             'confirm' => 'confirmation message',
         ]);
-        $this->assertFalse($link);
+        $this->assertEmpty($link);
     }
 }

@@ -58,15 +58,15 @@ class AuthLinkHelper extends HtmlHelper
      * Write the link only if user is authorized.
      *
      * @param string $title Link's title
-     * @param [type] $url Link's url
+     * @param string|array $url Link's url
      * @param array $options Link's options
-     * @return string|bool Link as a string or false.
+     * @return string Link as a string.
      */
-    public function postLink($title, $url = null, array $options = [])
+    public function postLink($title, $url = null, array $options = []): string
     {
         return $this->isAuthorized($url)
                     ? $this->Form->postLink($title, $url, $options)
-                    : false;
+                    : '';
     }
 
     /**
