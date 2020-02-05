@@ -147,13 +147,12 @@ class AuthLinkHelperTest extends TestCase
     public function testPostLinkAuthorizedAllowedTrueLoggedAsAdmin()
     {
         $url = [
-            'prefix' => false,
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'delete',
             '00000000-0000-0000-0000-000000000010',
         ];
-        Router::connect('/profile', $url);
+        Router::connect('/Users/delete/00000000-0000-0000-0000-000000000010', $url);
         $this->AuthLink->expects($this->once())
             ->method('isAuthorized')
             ->with(
