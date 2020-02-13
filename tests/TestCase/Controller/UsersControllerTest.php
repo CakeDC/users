@@ -39,7 +39,7 @@ class UsersControllerTest extends TestCase
      */
     public function testUnauthorizedRedirectCustomCallable()
     {
-        Configure::write('Auth.AuthorizationMiddleware.unauthorizedHandler.url', function($request, $options) {
+        Configure::write('Auth.AuthorizationMiddleware.unauthorizedHandler.url', function ($request, $options) {
             $this->assertInstanceOf(ServerRequest::class, $request);
             $this->assertIsArray($options);
 
@@ -47,8 +47,8 @@ class UsersControllerTest extends TestCase
         });
         $this->configRequest([
             'headers' => [
-                'REFERER' => 'http://localhost/profile'
-            ]
+                'REFERER' => 'http://localhost/profile',
+            ],
         ]);
         $this->get('/users/index');
         $this->assertRedirect('/my/custom/url/');
@@ -63,8 +63,8 @@ class UsersControllerTest extends TestCase
     {
         $this->configRequest([
             'headers' => [
-                'REFERER' => 'http://localhost/profile'
-            ]
+                'REFERER' => 'http://localhost/profile',
+            ],
         ]);
         $this->get('/users/index');
         $this->assertRedirect('/login?redirect=http%3A%2F%2Flocalhost%2Fusers%2Findex');
@@ -85,8 +85,8 @@ class UsersControllerTest extends TestCase
         $this->session(['Auth' => $user]);
         $this->configRequest([
             'headers' => [
-                'REFERER' => 'http://localhost/profile'
-            ]
+                'REFERER' => 'http://localhost/profile',
+            ],
         ]);
         $this->get('/users/index');
         $this->assertRedirect('/profile');
