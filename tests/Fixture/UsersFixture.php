@@ -137,7 +137,7 @@ class UsersFixture extends TestFixture
                 'id' => '00000000-0000-0000-0000-000000000004',
                 'username' => 'user-4',
                 'email' => '4@example.com',
-                'password' => 'Lorem ipsum dolor sit amet',
+                'password' => '$2y$10$Nvu7ipP.z8tiIl75OdUvt.86vuG6iKMoHIOc7O7mboFI85hSyTEde',
                 'first_name' => 'FirstName4',
                 'last_name' => 'Lorem ipsum dolor sit amet',
                 'token' => 'token-4',

@@ -140,11 +140,41 @@ class LoginTraitIntegrationTest extends TestCase
      *
      * @return void
      */
-    public function testLoginPostRequestRightPassword()
+    public function testLoginPostRequestRightPasswordWithBaseRedirectUrl()
+    {
+        $this->enableRetainFlashMessages();
+        $this->post('/login?redirect=http://localhost/articles', [
+            'username' => 'user-2',
+            'password' => '12345',
+        ]);
+        $this->assertRedirect('http://localhost/articles');
+    }
+
+    /**
+     * Test login action with post request
+     *
+     * @return void
+     */
+    public function testLoginPostRequestRightPasswordNoBaseRedirectUrl()
     {
         $this->enableRetainFlashMessages();
         $this->post('/login', [
             'username' => 'user-2',
+            'password' => '12345',
+        ]);
+        $this->assertRedirect('/pages/home');
+    }
+
+    /**
+     * Test login action with post request
+     *
+     * @return void
+     */
+    public function testLoginPostRequestRightPasswordWithBaseRedirectUrlButCantAccess()
+    {
+        $this->enableRetainFlashMessages();
+        $this->post('/login?redirect=http://localhost/articles', [
+            'username' => 'user-4',
             'password' => '12345',
         ]);
         $this->assertRedirect('/pages/home');
