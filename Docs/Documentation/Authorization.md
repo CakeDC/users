@@ -30,9 +30,37 @@ The default configuration for authorization middleware is:
 ```
 
 You can check the configuration options available for authorization middleware at the
-[official documentation](https://github.com/cakephp/authorization/blob/master/docs/Middleware.md)
+[official documentation](https://github.com/cakephp/authorization/blob/master/docs/Middleware.md).
 
+The `CakeDC/Users.DefaultRedirect` allows the option 'url' to be a normal cake url or callback to let
+you create a custom logic to retrieve the unauthorized redirect url.
 
+```
+[
+    'unauthorizedHandler' => [
+        'className' => 'CakeDC/Users.DefaultRedirect',
+        'url' => [
+            'plugin' => false,
+            'prefix' => false,
+            'controller' => 'Pages',
+            'action' => 'home'
+         ]
+    ]
+],
+```
+OR
+```
+[
+    'unauthorizedHandler' => [
+        'className' => 'CakeDC/Users.DefaultRedirect',
+        'url' => function($request, $options) {
+              //custom logic
+
+              return $url;
+        }
+    ]
+],
+```
 Authorization Component
 -----------------------
 We autoload the authorization component at users controller using the default configuration,
