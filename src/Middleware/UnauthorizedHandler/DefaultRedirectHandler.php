@@ -36,6 +36,7 @@ class DefaultRedirectHandler extends CakeRedirectHandler
             'ForbiddenException' => ForbiddenException::class,
         ],
         'url' => [
+            'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'login',
         ],
