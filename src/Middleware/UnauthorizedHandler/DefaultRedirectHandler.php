@@ -16,6 +16,7 @@ namespace CakeDC\Users\Middleware\UnauthorizedHandler;
 use Authorization\Exception\ForbiddenException;
 use Authorization\Exception\MissingIdentityException;
 use Authorization\Middleware\UnauthorizedHandler\CakeRedirectHandler;
+use Cake\Http\ServerRequest;
 use Cake\Routing\Router;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -52,7 +53,7 @@ class DefaultRedirectHandler extends CakeRedirectHandler
             return $url($request, $options);
         }
 
-        if ($request->getAttribute('identity')) {
+        if ($request->getAttribute('identity') && $request instanceof ServerRequest) {
             return $request->referer() ?? '/';
         }
 
