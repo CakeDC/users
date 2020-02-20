@@ -60,6 +60,8 @@ class LoginComponent extends Component
         if ($request->is('post') || $errorOnlyPost === false) {
             return $this->handleFailure($redirectFailure);
         }
+
+        return null;
     }
 
     /**
@@ -157,10 +159,10 @@ class LoginComponent extends Component
         $indentifiersNames = (array)Configure::read('Auth.PasswordRehash.identifiers');
         foreach ($indentifiersNames as $indentifierName) {
             /**
-             * @var \Authentication\PasswordHasher\PasswordHasherTrait $checker |null
+             * @var \Authentication\Identifier\AbstractIdentifier|null $checker
              */
             $checker = $service->identifiers()->get($indentifierName);
-            if (!$checker || !$checker->needsPasswordRehash()) {
+            if (!$checker || method_exists($checker, 'needsPasswordRehash') && !$checker->needsPasswordRehash()) {
                 continue;
             }
             $password = $request->getData('password');

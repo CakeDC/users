@@ -67,7 +67,8 @@
     "autoload-dev": {
         "psr-4": {
             "CakeDC\\Users\\Test\\": "tests",
-            "CakeDC\\Users\\Test\\Fixture\\": "tests"
+            "CakeDC\\Users\\Test\\Fixture\\": "tests",
+            "TestApp\\": "tests/test_app/TestApp/"
         }
     },
     "scripts": {
@@ -85,7 +86,7 @@
         "test": "phpunit --stderr",
         "stan": "phpstan analyse src/",
         "psalm": "php vendor/psalm/phar/psalm.phar --show-info=false src/ ",
-        "stan-setup": "cp composer.json composer.backup && composer require --dev phpstan/phpstan:^0.12.0 psalm/phar:^3.7 && mv composer.backup composer.json",
+        "stan-setup": "cp composer.json composer.backup && composer require --dev phpstan/phpstan:^0.12.7 psalm/phar:~3.8.0 && mv composer.backup composer.json",
         "stan-rebuild-baseline": "phpstan analyse --configuration phpstan.neon --error-format baselineNeon src/ > phpstan-baseline.neon",
         "psalm-rebuild-baseline": "php vendor/psalm/phar/psalm.phar --show-info=false  --set-baseline=psalm-baseline.xml  src/",
         "rector": "rector process src/",
