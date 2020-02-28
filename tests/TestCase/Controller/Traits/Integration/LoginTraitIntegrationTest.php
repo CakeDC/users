@@ -54,8 +54,10 @@ class LoginTraitIntegrationTest extends TestCase
      */
     public function testRedirectToLogin()
     {
+        $this->enableRetainFlashMessages();
         $this->get('/pages/home');
         $this->assertRedirect('/login?redirect=http%3A%2F%2Flocalhost%2Fpages%2Fhome');
+        $this->assertFlashMessage('You are not authorized to access that location.');
     }
 
     /**
