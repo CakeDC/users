@@ -23,6 +23,7 @@ $cakeDescription = 'My Test App';
     <div id="container">
         <div id="header">
             <h1><?= $this->Html->link($cakeDescription, 'https://cakephp.org'); ?></h1>
+            <?= $this->User->welcome()?>
         </div>
         <div id="content">
 
