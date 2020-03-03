@@ -164,8 +164,8 @@ class UserHelperTest extends TestCase
         $user = [
             'id' => 2,
             'first_name' => 'John',
-            'last_name' =>  'Doe',
-            'username' => 'j04n.d09'
+            'last_name' => 'Doe',
+            'username' => 'j04n.d09',
         ];
         $identity = new Identity($user);
         $request = new ServerRequest();
@@ -191,8 +191,8 @@ class UserHelperTest extends TestCase
 
         $user = [
             'id' => 2,
-            'last_name' =>  'Doe',
-            'username' => 'j04n.d09'
+            'last_name' => 'Doe',
+            'username' => 'j04n.d09',
         ];
         $identity = new Identity($user);
         $request = new ServerRequest();
