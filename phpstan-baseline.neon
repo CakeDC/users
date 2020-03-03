@@ -8,11 +8,6 @@ parameters:
 			path: src\Controller\Component\LoginComponent.php
 
 		-
-			message: "#^Negated boolean expression is always false\\.$#"
-			count: 1
-			path: src\Controller\Component\LoginComponent.php
-
-		-
 			message: "#^Call to an undefined method Cake\\\\Controller\\\\Controller\\:\\:getUsersTable\\(\\)\\.$#"
 			count: 1
 			path: src\Controller\Component\LoginComponent.php
@@ -23,29 +18,9 @@ parameters:
 			path: src\Controller\SocialAccountsController.php
 
 		-
-			message: "#^Method CakeDC\\\\Users\\\\Controller\\\\SocialAccountsController\\:\\:validateAccount\\(\\) should return Cake\\\\Http\\\\Response but returns Cake\\\\Http\\\\Response\\|null\\.$#"
-			count: 1
-			path: src\Controller\SocialAccountsController.php
-
-		-
 			message: "#^Call to an undefined method CakeDC\\\\Users\\\\Model\\\\Table\\\\SocialAccountsTable\\:\\:resendValidation\\(\\)\\.$#"
 			count: 1
 			path: src\Controller\SocialAccountsController.php
-
-		-
-			message: "#^Parameter \\#1 \\$provider of method CakeDC\\\\Auth\\\\Social\\\\Service\\\\ServiceFactory\\:\\:createFromProvider\\(\\) expects string, string\\|null given\\.$#"
-			count: 2
-			path: src\Controller\UsersController.php
-
-		-
-			message: "#^Method CakeDC\\\\Users\\\\Controller\\\\UsersController\\:\\:linkSocial\\(\\) should return Cake\\\\Http\\\\Response but returns Cake\\\\Http\\\\Response\\|null\\.$#"
-			count: 1
-			path: src\Controller\UsersController.php
-
-		-
-			message: "#^Method CakeDC\\\\Users\\\\Controller\\\\UsersController\\:\\:callbackLinkSocial\\(\\) should return Cake\\\\Http\\\\Response but returns Cake\\\\Http\\\\Response\\|null\\.$#"
-			count: 2
-			path: src\Controller\UsersController.php
 
 		-
 			message: "#^Call to an undefined method Cake\\\\ORM\\\\Table\\:\\:linkSocialAccount\\(\\)\\.$#"
@@ -63,11 +38,6 @@ parameters:
 			path: src\Controller\UsersController.php
 
 		-
-			message: "#^Cannot assign offset 'secret_verified' to array\\|string\\|null\\.$#"
-			count: 1
-			path: src\Controller\UsersController.php
-
-		-
 			message: "#^Parameter \\#1 \\$user of method CakeDC\\\\Users\\\\Controller\\\\UsersController\\:\\:onVerifyGetSecret\\(\\) expects CakeDC\\\\Users\\\\Model\\\\Entity\\\\User, array\\|string\\|null given\\.$#"
 			count: 1
 			path: src\Controller\UsersController.php
@@ -78,32 +48,7 @@ parameters:
 			path: src\Controller\UsersController.php
 
 		-
-			message: "#^Offset 'email' does not exist on array\\|string\\|null\\.$#"
-			count: 1
-			path: src\Controller\UsersController.php
-
-		-
-			message: "#^Cannot assign offset 'id' to array\\|string\\.$#"
-			count: 1
-			path: src\Controller\UsersController.php
-
-		-
-			message: "#^Offset 'id' does not exist on array\\|string\\|null\\.$#"
-			count: 1
-			path: src\Controller\UsersController.php
-
-		-
-			message: "#^Method CakeDC\\\\Users\\\\Controller\\\\UsersController\\:\\:onPostVerifyCode\\(\\) should return Cake\\\\Http\\\\Response but returns Cake\\\\Http\\\\Response\\|null\\.$#"
-			count: 1
-			path: src\Controller\UsersController.php
-
-		-
 			message: "#^Parameter \\#2 \\$user of method CakeDC\\\\Users\\\\Controller\\\\UsersController\\:\\:onPostVerifyCodeOkay\\(\\) expects CakeDC\\\\Users\\\\Model\\\\Entity\\\\User, array\\|string\\|null given\\.$#"
-			count: 1
-			path: src\Controller\UsersController.php
-
-		-
-			message: "#^Method CakeDC\\\\Users\\\\Controller\\\\UsersController\\:\\:onPostVerifyCodeOkay\\(\\) should return Cake\\\\Http\\\\Response but returns Cake\\\\Http\\\\Response\\|null\\.$#"
 			count: 1
 			path: src\Controller\UsersController.php
 
@@ -128,11 +73,6 @@ parameters:
 			path: src\Controller\UsersController.php
 
 		-
-			message: "#^Method CakeDC\\\\Users\\\\Controller\\\\UsersController\\:\\:requestResetPassword\\(\\) should return Cake\\\\Http\\\\Response\\|void but returns Cake\\\\Http\\\\Response\\|null\\.$#"
-			count: 1
-			path: src\Controller\UsersController.php
-
-		-
 			message: "#^Parameter \\#2 \\$options of method Cake\\\\Controller\\\\Component\\\\FlashComponent\\:\\:success\\(\\) expects array, string given\\.$#"
 			count: 1
 			path: src\Controller\UsersController.php
@@ -140,11 +80,6 @@ parameters:
 		-
 			message: "#^Parameter \\#2 \\$options of method Cake\\\\Controller\\\\Component\\\\FlashComponent\\:\\:error\\(\\) expects array, string given\\.$#"
 			count: 1
-			path: src\Controller\UsersController.php
-
-		-
-			message: "#^Parameter \\#1 \\$url of method Cake\\\\Controller\\\\Controller\\:\\:redirect\\(\\) expects array\\|Psr\\\\Http\\\\Message\\\\UriInterface\\|string, string\\|null given\\.$#"
-			count: 3
 			path: src\Controller\UsersController.php
 
 		-
@@ -158,32 +93,7 @@ parameters:
 			path: src\Controller\UsersController.php
 
 		-
-			message: "#^Method CakeDC\\\\Users\\\\Controller\\\\UsersController\\:\\:_afterRegister\\(\\) should return Cake\\\\Http\\\\Response but returns Cake\\\\Http\\\\Response\\|null\\.$#"
-			count: 1
-			path: src\Controller\UsersController.php
-
-		-
 			message: "#^Parameter \\#1 \\$object of method Cake\\\\Controller\\\\Controller\\:\\:paginate\\(\\) expects Cake\\\\ORM\\\\Query\\|Cake\\\\ORM\\\\Table\\|string\\|null, Cake\\\\Datasource\\\\RepositoryInterface given\\.$#"
-			count: 1
-			path: src\Controller\UsersController.php
-
-		-
-			message: "#^Method CakeDC\\\\Users\\\\Controller\\\\UsersController\\:\\:delete\\(\\) should return Cake\\\\Http\\\\Response but returns Cake\\\\Http\\\\Response\\|null\\.$#"
-			count: 1
-			path: src\Controller\UsersController.php
-
-		-
-			message: "#^Method CakeDC\\\\Users\\\\Controller\\\\UsersController\\:\\:redirectWithQuery\\(\\) should return Cake\\\\Http\\\\Response but returns Cake\\\\Http\\\\Response\\|null\\.$#"
-			count: 1
-			path: src\Controller\UsersController.php
-
-		-
-			message: "#^Parameter \\#1 \\$json of function json_decode expects string, array\\|string\\|null given\\.$#"
-			count: 2
-			path: src\Controller\UsersController.php
-
-		-
-			message: "#^Cannot assign offset 'id' to array\\|string\\|null\\.$#"
 			count: 1
 			path: src\Controller\UsersController.php
 
@@ -198,11 +108,6 @@ parameters:
 			path: src\Controller\UsersController.php
 
 		-
-			message: "#^Method CakeDC\\\\Users\\\\Controller\\\\UsersController\\:\\:validate\\(\\) should return Cake\\\\Http\\\\Response but returns Cake\\\\Http\\\\Response\\|null\\.$#"
-			count: 3
-			path: src\Controller\UsersController.php
-
-		-
 			message: "#^Method CakeDC\\\\Users\\\\Authenticator\\\\SocialPendingEmailAuthenticator\\:\\:_getReCaptchaInstance\\(\\) should return ReCaptcha\\\\ReCaptcha but returns null\\.$#"
 			count: 1
 			path: src\Authenticator\SocialPendingEmailAuthenticator.php
@@ -211,11 +116,6 @@ parameters:
 			message: "#^Call to an undefined method Cake\\\\ORM\\\\Table\\:\\:socialLogin\\(\\)\\.$#"
 			count: 1
 			path: src\Identifier\SocialIdentifier.php
-
-		-
-			message: "#^Parameter \\#1 \\$object of function get_class expects object, Throwable\\|null given\\.$#"
-			count: 1
-			path: src\Middleware\SocialAuthMiddleware.php
 
 		-
 			message: "#^Parameter \\#2 \\$request of method CakeDC\\\\Users\\\\Utility\\\\UsersUrl\\:\\:checkActionOnRequest\\(\\) expects Cake\\\\Http\\\\ServerRequest, Psr\\\\Http\\\\Message\\\\ServerRequestInterface given\\.$#"
@@ -239,11 +139,6 @@ parameters:
 
 		-
 			message: "#^Call to an undefined method Cake\\\\Datasource\\\\EntityInterface\\:\\:updateToken\\(\\)\\.$#"
-			count: 1
-			path: src\Model\Behavior\BaseTokenBehavior.php
-
-		-
-			message: "#^Method CakeDC\\\\Users\\\\Model\\\\Behavior\\\\BaseTokenBehavior\\:\\:_removeValidationToken\\(\\) should return Cake\\\\Datasource\\\\EntityInterface but returns Cake\\\\Datasource\\\\EntityInterface\\|false\\.$#"
 			count: 1
 			path: src\Model\Behavior\BaseTokenBehavior.php
 
@@ -313,11 +208,6 @@ parameters:
 			path: src\Model\Behavior\RegisterBehavior.php
 
 		-
-			message: "#^Method CakeDC\\\\Users\\\\Model\\\\Behavior\\\\RegisterBehavior\\:\\:validate\\(\\) should return Cake\\\\Datasource\\\\EntityInterface but returns array\\|Cake\\\\Datasource\\\\EntityInterface\\.$#"
-			count: 1
-			path: src\Model\Behavior\RegisterBehavior.php
-
-		-
 			message: "#^Access to an undefined property Cake\\\\Datasource\\\\EntityInterface\\:\\:\\$active\\.$#"
 			count: 1
 			path: src\Model\Behavior\RegisterBehavior.php
@@ -336,11 +226,6 @@ parameters:
 			message: "#^Call to an undefined method Cake\\\\ORM\\\\Table\\:\\:validationRegister\\(\\)\\.$#"
 			count: 1
 			path: src\Model\Behavior\RegisterBehavior.php
-
-		-
-			message: "#^Parameter \\#2 \\$user of method CakeDC\\\\Users\\\\Model\\\\Behavior\\\\SocialAccountBehavior\\:\\:sendSocialValidationEmail\\(\\) expects Cake\\\\Datasource\\\\EntityInterface, array\\|Cake\\\\Datasource\\\\EntityInterface given\\.$#"
-			count: 1
-			path: src\Model\Behavior\SocialAccountBehavior.php
 
 		-
 			message: "#^Cannot access property \\$token on array\\|Cake\\\\Datasource\\\\EntityInterface\\.$#"
@@ -373,28 +258,13 @@ parameters:
 			path: src\Model\Behavior\SocialAccountBehavior.php
 
 		-
-			message: "#^Parameter \\#1 \\$socialAccount of method CakeDC\\\\Users\\\\Model\\\\Behavior\\\\SocialAccountBehavior\\:\\:sendSocialValidationEmail\\(\\) expects Cake\\\\Datasource\\\\EntityInterface, array\\|Cake\\\\Datasource\\\\EntityInterface given\\.$#"
-			count: 1
-			path: src\Model\Behavior\SocialAccountBehavior.php
-
-		-
 			message: "#^Access to an undefined property CakeDC\\\\Users\\\\Model\\\\Entity\\\\SocialAccount\\:\\:\\$active\\.$#"
-			count: 1
-			path: src\Model\Behavior\SocialAccountBehavior.php
-
-		-
-			message: "#^Method CakeDC\\\\Users\\\\Model\\\\Behavior\\\\SocialAccountBehavior\\:\\:_activateAccount\\(\\) should return Cake\\\\Datasource\\\\EntityInterface but returns Cake\\\\Datasource\\\\EntityInterface\\|false\\.$#"
 			count: 1
 			path: src\Model\Behavior\SocialAccountBehavior.php
 
 		-
 			message: "#^Access to an undefined property Cake\\\\ORM\\\\Table\\:\\:\\$SocialAccounts\\.$#"
 			count: 4
-			path: src\Model\Behavior\SocialBehavior.php
-
-		-
-			message: "#^Parameter \\#2 \\$existingUser of method CakeDC\\\\Users\\\\Model\\\\Behavior\\\\SocialBehavior\\:\\:_populateUser\\(\\) expects Cake\\\\Datasource\\\\EntityInterface, array\\|Cake\\\\Datasource\\\\EntityInterface\\|null given\\.$#"
-			count: 1
 			path: src\Model\Behavior\SocialBehavior.php
 
 		-
@@ -408,52 +278,12 @@ parameters:
 			path: src\Model\Behavior\SocialBehavior.php
 
 		-
-			message: "#^PHPDoc tag @property has invalid value \\(\\\\Cake\\\\I18n\\\\Time token_expires\\)\\: Unexpected token \"token_expires\", expected TOKEN_VARIABLE at offset 167$#"
-			count: 1
-			path: src\Model\Entity\User.php
-
-		-
-			message: "#^PHPDoc tag @property has invalid value \\(array additional_data\\)\\: Unexpected token \"additional_data\", expected TOKEN_VARIABLE at offset 226$#"
-			count: 1
-			path: src\Model\Entity\User.php
-
-		-
-			message: "#^PHPDoc tag @property has invalid value \\(string token\\)\\: Unexpected token \"token\", expected TOKEN_VARIABLE at offset 201$#"
-			count: 1
-			path: src\Model\Entity\User.php
-
-		-
 			message: "#^Method CakeDC\\\\Users\\\\Model\\\\Entity\\\\User\\:\\:_setTos\\(\\) should return bool but returns string\\.$#"
 			count: 1
 			path: src\Model\Entity\User.php
 
 		-
-			message: "#^Access to an undefined property CakeDC\\\\Users\\\\Model\\\\Entity\\\\User\\:\\:\\$social_accounts\\.$#"
-			count: 1
-			path: src\Model\Entity\User.php
-
-		-
-			message: "#^Access to an undefined property CakeDC\\\\Users\\\\Model\\\\Entity\\\\User\\:\\:\\$additional_data\\.$#"
-			count: 1
-			path: src\Model\Entity\User.php
-
-		-
-			message: "#^Access to an undefined property CakeDC\\\\Users\\\\Model\\\\Entity\\\\User\\:\\:\\$token_expires\\.$#"
-			count: 1
-			path: src\Model\Entity\User.php
-
-		-
-			message: "#^Access to an undefined property CakeDC\\\\Users\\\\Model\\\\Entity\\\\User\\:\\:\\$token\\.$#"
-			count: 1
-			path: src\Model\Entity\User.php
-
-		-
 			message: "#^Property CakeDC\\\\Users\\\\Shell\\\\UsersShell\\:\\:\\$Users \\(CakeDC\\\\Users\\\\Model\\\\Table\\\\UsersTable\\) does not accept Cake\\\\Datasource\\\\RepositoryInterface\\.$#"
-			count: 1
-			path: src\Shell\UsersShell.php
-
-		-
-			message: "#^Cannot access property \\$role on bool\\|CakeDC\\\\Users\\\\Model\\\\Entity\\\\User\\.$#"
 			count: 1
 			path: src\Shell\UsersShell.php
 
@@ -468,13 +298,11 @@ parameters:
 			path: src\Shell\UsersShell.php
 
 		-
-			message: "#^Method CakeDC\\\\Users\\\\Shell\\\\UsersShell\\:\\:_changeUserActive\\(\\) should return bool but returns bool\\|CakeDC\\\\Users\\\\Model\\\\Entity\\\\User\\.$#"
-			count: 1
-			path: src\Shell\UsersShell.php
-
-		-
 			message: "#^Call to an undefined method CakeDC\\\\Users\\\\Model\\\\Table\\\\UsersTable\\:\\:generateUniqueUsername\\(\\)\\.$#"
 			count: 1
 			path: src\Shell\UsersShell.php
 
-
+		-
+			message: "#^Parameter \\#1 \\$message of method Cake\\\\Controller\\\\Controller\\:\\:log\\(\\)\\ expects string, Exception given.$#"
+			count: 1
+			path: src\Controller\Traits\OneTimePasswordVerifyTrait.php

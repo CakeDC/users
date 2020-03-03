@@ -21,6 +21,7 @@ use Cake\Core\Configure;
         echo $this->Form->control('email', ['label' => __d('cake_d_c/users', 'Email')]);
         echo $this->Form->control('password', ['label' => __d('cake_d_c/users', 'Password')]);
         echo $this->Form->control('password_confirm', [
+            'required' => true,
             'type' => 'password',
             'label' => __d('cake_d_c/users', 'Confirm password')
         ]);

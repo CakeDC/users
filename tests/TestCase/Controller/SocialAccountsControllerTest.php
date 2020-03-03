@@ -57,12 +57,9 @@ class SocialAccountsControllerTest extends TestCase
         $request = $request->withParam('plugin', 'CakeDC/Users');
 
         $this->Controller = $this->getMockBuilder('CakeDC\Users\Controller\SocialAccountsController')
-                ->setMethods(['redirect', 'render'])
+                ->onlyMethods(['redirect', 'render'])
                 ->setConstructorArgs([$request, null, 'SocialAccounts'])
                 ->getMock();
-        $this->Controller->SocialAccounts = $this->getMockForModel('CakeDC\Users.SocialAccounts', ['sendSocialValidationEmail'], [
-            'className' => 'CakeDC\Users\Model\Table\SocialAccountsTable',
-        ]);
     }
 
     /**
@@ -132,7 +129,7 @@ class SocialAccountsControllerTest extends TestCase
     public function testResendValidationHappy()
     {
         $behaviorMock = $this->getMockBuilder('CakeDC\Users\Model\Behavior\SocialAccountBehavior')
-                ->setMethods(['sendSocialValidationEmail'])
+                ->onlyMethods(['sendSocialValidationEmail'])
                 ->setConstructorArgs([$this->Controller->SocialAccounts])
                 ->getMock();
         $this->Controller->SocialAccounts->behaviors()->set('SocialAccount', $behaviorMock);
@@ -155,7 +152,7 @@ class SocialAccountsControllerTest extends TestCase
     public function testResendValidationEmailError()
     {
         $behaviorMock = $this->getMockBuilder('CakeDC\Users\Model\Behavior\SocialAccountBehavior')
-                ->setMethods(['sendSocialValidationEmail'])
+                ->onlyMethods(['sendSocialValidationEmail'])
                 ->setConstructorArgs([$this->Controller->SocialAccounts])
                 ->getMock();
         $this->Controller->SocialAccounts->behaviors()->set('SocialAccount', $behaviorMock);

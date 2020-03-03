@@ -84,10 +84,10 @@ class RegisterBehavior extends BaseTokenBehavior
      */
     public function validate($token, $callback = null)
     {
-        $user = $this->_table->find()
+        $user = $token ? $this->_table->find()
             ->select(['token_expires', 'id', 'active', 'token'])
             ->where(['token' => $token])
-            ->first();
+            ->first() : null;
         if (empty($user)) {
             throw new UserNotFoundException(__d('cake_d_c/users', "User not found for the given token and email."));
         }

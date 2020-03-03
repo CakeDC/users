@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -95,7 +96,8 @@ class UsersFixture extends TestFixture
                 'id' => '00000000-0000-0000-0000-000000000002',
                 'username' => 'user-2',
                 'email' => 'user-2@test.com',
-                'password' => '12345',
+                //The password real value is 12345
+                'password' => '$2y$10$Nvu7ipP.z8tiIl75OdUvt.86vuG6iKMoHIOc7O7mboFI85hSyTEde',
                 'first_name' => 'user',
                 'last_name' => 'second',
                 'token' => '6614f65816754310a5f0553436dd89e9',
@@ -135,7 +137,7 @@ class UsersFixture extends TestFixture
                 'id' => '00000000-0000-0000-0000-000000000004',
                 'username' => 'user-4',
                 'email' => '4@example.com',
-                'password' => 'Lorem ipsum dolor sit amet',
+                'password' => '$2y$10$Nvu7ipP.z8tiIl75OdUvt.86vuG6iKMoHIOc7O7mboFI85hSyTEde',
                 'first_name' => 'FirstName4',
                 'last_name' => 'Lorem ipsum dolor sit amet',
                 'token' => 'token-4',

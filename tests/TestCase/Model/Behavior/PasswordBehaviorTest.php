@@ -15,6 +15,7 @@ namespace CakeDC\Users\Test\TestCase\Model\Behavior;
 
 use Cake\Core\Configure;
 use Cake\Mailer\Email;
+use Cake\Mailer\Mailer;
 use Cake\Mailer\TransportFactory;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
@@ -23,7 +24,7 @@ use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Exception\UserNotFoundException;
 use CakeDC\Users\Model\Behavior\PasswordBehavior;
 use CakeDC\Users\Model\Entity\User;
-use CakeDC\Users\Test\App\Mailer\OverrideMailer;
+use TestApp\Mailer\OverrideMailer;
 
 /**
  * Test Case
@@ -56,7 +57,8 @@ class PasswordBehaviorTest extends TestCase
         TransportFactory::drop('test');
         TransportFactory::setConfig('test', ['className' => 'Debug']);
         //$this->configEmail = Email::getConfig('default');
-        Email::setConfig('default', [
+        Mailer::drop('default');
+        Mailer::setConfig('default', [
             'transport' => 'test',
             'from' => 'cakedc@example.com',
         ]);

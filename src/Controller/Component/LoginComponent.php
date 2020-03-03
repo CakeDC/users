@@ -16,7 +16,9 @@ namespace CakeDC\Users\Controller\Component;
 use Authentication\Authenticator\ResultInterface;
 use Cake\Controller\Component;
 use Cake\Core\Configure;
+use Cake\Http\ServerRequest;
 use CakeDC\Auth\Authentication\AuthenticationService;
+use CakeDC\Auth\Traits\IsAuthorizedTrait;
 use CakeDC\Users\Plugin;
 use CakeDC\Users\Utility\UsersUrl;
 
@@ -25,6 +27,8 @@ use CakeDC\Users\Utility\UsersUrl;
  */
 class LoginComponent extends Component
 {
+    use IsAuthorizedTrait;
+
     /**
      * Default configuration.
      *
@@ -35,6 +39,16 @@ class LoginComponent extends Component
         'messages' => [],
         'targetAuthenticator' => null,
     ];
+
+    /**
+     * Gets the request instance.
+     *
+     * @return \Cake\Http\ServerRequest
+     */
+    public function getRequest(): ServerRequest
+    {
+        return $this->getController()->getRequest();
+    }
 
     /**
      * Handle login, if success redirect to 'AuthenticationComponent.loginRedirect' or show error
@@ -60,6 +74,8 @@ class LoginComponent extends Component
         if ($request->is('post') || $errorOnlyPost === false) {
             return $this->handleFailure($redirectFailure);
         }
+
+        return null;
     }
 
     /**
@@ -136,7 +152,7 @@ class LoginComponent extends Component
 
         $query = $this->getController()->getRequest()->getQueryParams();
         $redirectUrl = $this->getController()->Authentication->getConfig('loginRedirect');
-        if (isset($query['redirect'])) {
+        if ($this->isAuthorized($query['redirect'] ?? null)) {
             $redirectUrl = $query['redirect'];
         }
 
@@ -157,10 +173,10 @@ class LoginComponent extends Component
         $indentifiersNames = (array)Configure::read('Auth.PasswordRehash.identifiers');
         foreach ($indentifiersNames as $indentifierName) {
             /**
-             * @var \Authentication\PasswordHasher\PasswordHasherTrait $checker |null
+             * @var \Authentication\Identifier\AbstractIdentifier|null $checker
              */
             $checker = $service->identifiers()->get($indentifierName);
-            if (!$checker || !$checker->needsPasswordRehash()) {
+            if (!$checker || method_exists($checker, 'needsPasswordRehash') && !$checker->needsPasswordRehash()) {
                 continue;
             }
             $password = $request->getData('password');
