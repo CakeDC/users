@@ -7,12 +7,6 @@ CakeDC Users Plugin
 [![Latest Version](https://poser.pugx.org/CakeDC/users/v/stable.png)](https://packagist.org/packages/CakeDC/users)
 [![License](https://poser.pugx.org/CakeDC/users/license.svg)](https://packagist.org/packages/CakeDC/users)
 
-Warning
--------
-
-**OUTDATED branch, please use the specific develop branch for each version, for example 8.x for the version 8 development**
-
-
 Versions and branches
 ---------------------
 
@@ -38,7 +32,7 @@ It covers the following features:
 * Remember me (Cookie) via https://github.com/CakeDC/auth
 * Manage user's profile
 * Admin management
-* Yubico U2F for Two-Factor Authentication 
+* Yubico U2F for Two-Factor Authentication
 * One-Time Password for Two-Factor Authentication
 
 The plugin is here to provide users related features following 2 approaches:
