@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Test\TestCase\View\Helper;
 
+use Authentication\Identity;
 use Cake\Core\Configure;
 use Cake\Http\ServerRequest;
 use Cake\I18n\I18n;
@@ -160,28 +161,44 @@ class UserHelperTest extends TestCase
             'action' => 'profile',
         ]);
 
-        $session = $this->getMockBuilder('Cake\Http\Session')
-                ->setMethods(['read'])
-                ->getMock();
-        $session->expects($this->at(0))
-            ->method('read')
-            ->with('Auth.User.id')
-            ->will($this->returnValue(2));
-
-        $session->expects($this->at(1))
-            ->method('read')
-            ->with('Auth.User.first_name')
-            ->will($this->returnValue('david'));
-
-        $request = $this->getMockBuilder('Cake\Http\ServerRequest')
-                ->setMethods(['getSession'])
-                ->getMock();
-        $request->expects($this->any())
-            ->method('getSession')
-            ->will($this->returnValue($session));
-
+        $user = [
+            'id' => 2,
+            'first_name' => 'John',
+            'last_name' =>  'Doe',
+            'username' => 'j04n.d09'
+        ];
+        $identity = new Identity($user);
+        $request = new ServerRequest();
+        $request = $request->withAttribute('identity', $identity);
         $this->User->getView()->setRequest($request);
-        $expected = '<span class="welcome">Welcome, <a href="/profile">david</a></span>';
+        $expected = '<span class="welcome">Welcome, <a href="/profile">John</a></span>';
+        $result = $this->User->welcome();
+        $this->assertEquals($expected, $result);
+    }
+
+    /**
+     * Test link
+     *
+     * @return void
+     */
+    public function testWelcomeWillDisplayUsernameInstead()
+    {
+        Router::connect('/profile', [
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+            'action' => 'profile',
+        ]);
+
+        $user = [
+            'id' => 2,
+            'last_name' =>  'Doe',
+            'username' => 'j04n.d09'
+        ];
+        $identity = new Identity($user);
+        $request = new ServerRequest();
+        $request = $request->withAttribute('identity', $identity);
+        $this->User->getView()->setRequest($request);
+        $expected = '<span class="welcome">Welcome, <a href="/profile">j04n.d09</a></span>';
         $result = $this->User->welcome();
         $this->assertEquals($expected, $result);
     }
@@ -193,21 +210,7 @@ class UserHelperTest extends TestCase
      */
     public function testWelcomeNotLoggedInUser()
     {
-        $session = $this->getMockBuilder('Cake\Http\Session')
-                ->setMethods(['read'])
-                ->getMock();
-        $session->expects($this->at(0))
-            ->method('read')
-            ->with('Auth.User.id')
-            ->will($this->returnValue(null));
-
-        $request = $this->getMockBuilder('Cake\Http\ServerRequest')
-                ->setMethods(['getSession'])
-                ->getMock();
-        $request->expects($this->any())
-            ->method('getSession')
-            ->will($this->returnValue($session));
-
+        $request = new ServerRequest();
         $this->User->getView()->setRequest($request);
         $result = $this->User->welcome();
         $this->assertEmpty($result);
