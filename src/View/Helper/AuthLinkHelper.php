@@ -23,6 +23,8 @@ class AuthLinkHelper extends HtmlHelper
 {
     use IsAuthorizedTrait;
 
+    public $helpers = ['Url', 'Form'];
+
     /**
      * Generate a link if the target url is authorized for the logged in user
      *
@@ -49,6 +51,22 @@ class AuthLinkHelper extends HtmlHelper
         }
 
         return '';
+    }
+
+    /**
+     * Wrapper for FormHelper.postLink.
+     * Write the link only if user is authorized.
+     *
+     * @param string $title Link's title
+     * @param string|array $url Link's url
+     * @param array $options Link's options
+     * @return string Link as a string.
+     */
+    public function postLink($title, $url = null, array $options = []): string
+    {
+        return $this->isAuthorized($url)
+                    ? $this->Form->postLink($title, $url, $options)
+                    : '';
     }
 
     /**
