@@ -32,8 +32,14 @@ The default configuration for authorization middleware is:
 You can check the configuration options available for authorization middleware at the
 [official documentation](https://github.com/cakephp/authorization/blob/master/docs/Middleware.md).
 
-The `CakeDC/Users.DefaultRedirect` offers additional config, you can customize the flash message and set 'url' as a normal cake url or callback to let
-you create a custom logic to retrieve the unauthorized redirect url.
+The `CakeDC/Users.DefaultRedirect` offers additional behavior and config:
+  * If logged user access unauthorized url he is redirected to referer url or '/' if no referer url
+  * If not logged user access unauthorized url he is redirected to configured url (default to login)
+  * on login we only use the redirect url from querystring 'redirect' if user can access the target url
+  * App can configure a callbable for 'url' option to define a custom logic to retrieve the url for unauthorized redirect
+  * App can configure a flash message
+
+You could do the following to set a custom url and flash message:
 
 ```
 [
