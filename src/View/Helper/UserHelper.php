@@ -117,18 +117,18 @@ class UserHelper extends Helper
 
     /**
      * Welcome display
-     * @return mixed
+     * @return string|null
      */
     public function welcome()
     {
-        $userId = $this->getView()->getRequest()->getSession()->read('Auth.User.id');
-        if (empty($userId)) {
-            return;
+        $identity = $this->getView()->getRequest()->getAttribute('identity');
+        if (!$identity) {
+            return null;
         }
 
         $profileUrl = Configure::read('Users.Profile.route');
-        $session = $this->getView()->getRequest()->getSession();
-        $title = $session->read('Auth.User.first_name') ?: $session->read('Auth.User.username');
+        $title = $identity['first_name'] ?? null;
+        $title = $title ?: ($identity['username'] ?? null);
         $title = is_array($title) ? '-' : (string)$title;
         $label = __d(
             'cake_d_c/users',

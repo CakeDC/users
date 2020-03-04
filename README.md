@@ -12,8 +12,8 @@ Versions and branches
 
 | CakePHP | CakeDC Users Plugin | Tag   | Notes |
 | :-------------: | :------------------------: | :--:  | :---- |
-| ^4.0            | [master](https://github.com/cakedc/users/tree/master)                      | 9.0.1 | stable |
-| ^4.0            | [9.0](https://github.com/cakedc/users/tree/9.next)                      | 9.0.1 | stable |
+| ^4.0            | [master](https://github.com/cakedc/users/tree/master)                      | 9.0.2 | stable |
+| ^4.0            | [9.0](https://github.com/cakedc/users/tree/9.next)                      | 9.0.2 | stable |
 | ^3.7  <4.0      | [8.5](https://github.com/cakedc/users/tree/8.next)                      | 8.5.1 | stable |
 | 3.7             | [develop](https://github.com/cakedc/users/tree/develop)                      | - | unstable |
 | 3.6             | [8.1](https://github.com/cakedc/users/tree/8.1.0)                      | 8.1.0 | stable |
@@ -32,7 +32,7 @@ It covers the following features:
 * Remember me (Cookie) via https://github.com/CakeDC/auth
 * Manage user's profile
 * Admin management
-* Yubico U2F for Two-Factor Authentication 
+* Yubico U2F for Two-Factor Authentication
 * One-Time Password for Two-Factor Authentication
 
 The plugin is here to provide users related features following 2 approaches:

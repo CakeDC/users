@@ -195,11 +195,7 @@ $config = [
         ],
         'AuthorizationMiddleware' => [
             'unauthorizedHandler' => [
-                'exceptions' => [
-                    'MissingIdentityException' => 'Authorization\Exception\MissingIdentityException',
-                    'ForbiddenException' => 'Authorization\Exception\ForbiddenException',
-                ],
-                'className' => 'Authorization.CakeRedirect',
+                'className' => 'CakeDC/Users.DefaultRedirect',
             ]
         ],
         'AuthorizationComponent' => [
