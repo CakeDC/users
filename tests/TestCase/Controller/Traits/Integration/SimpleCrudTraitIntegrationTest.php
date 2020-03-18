@@ -50,6 +50,7 @@ class SimpleCrudTraitIntegrationTest extends TestCase
         $this->enableRetainFlashMessages();
         $this->get('/users/index');
         $this->assertResponseOk();
+        $this->assertResponseContains('<span class="welcome">Welcome, <a href="/profile">user</a></span>');
         $this->assertResponseContains('<a href="/users/add">New Users</a>');
         $this->assertResponseContains('<td>user-1</td>');
         $this->assertResponseContains('<td>user-1@test.com</td>');

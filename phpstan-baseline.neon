@@ -302,4 +302,12 @@ parameters:
 			count: 1
 			path: src\Shell\UsersShell.php
 
+		-
+			message: "#^Parameter \\#1 \\$message of method Cake\\\\Controller\\\\Controller\\:\\:log\\(\\)\\ expects string, Exception given.$#"
+			count: 1
+			path: src\Controller\Traits\OneTimePasswordVerifyTrait.php
 
+		-
+			message: "#^Access to an undefined property CakeDC\\\\Users\\\\View\\\\Helper\\\\AuthLinkHelper\\:\\:\\$Form\\.$#"
+			count: 1
+			path: src\View\Helper\AuthLinkHelper.php

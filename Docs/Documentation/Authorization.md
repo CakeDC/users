@@ -24,36 +24,78 @@ The default configuration for authorization middleware is:
 ```
 [
     'unauthorizedHandler' => [
-        'exceptions' => [
-            'MissingIdentityException' => 'Authorization\Exception\MissingIdentityException',
-            'ForbiddenException' => 'Authorization\Exception\ForbiddenException',
-        ],
-        'className' => 'Authorization.CakeRedirect',        
+        'className' => 'CakeDC/Users.DefaultRedirect',
     ]
 ],
 ```
 
-You can check the configuration options available for authorization middleware at the 
-[official documentation](https://github.com/cakephp/authorization/blob/master/docs/Middleware.md)
+You can check the configuration options available for authorization middleware at the
+[official documentation](https://github.com/cakephp/authorization/blob/master/docs/Middleware.md).
 
+The `CakeDC/Users.DefaultRedirect` offers additional behavior and config:
+  * If logged user access unauthorized url he is redirected to referer url or '/' if no referer url
+  * If not logged user access unauthorized url he is redirected to configured url (default to login)
+  * on login we only use the redirect url from querystring 'redirect' if user can access the target url
+  * App can configure a callable for 'url' option to define a custom logic to retrieve the url for unauthorized redirect
+  * App can configure a flash message
 
+You could do the following to set a custom url and flash message:
+
+```
+[
+    'unauthorizedHandler' => [
+        'className' => 'CakeDC/Users.DefaultRedirect',
+        'url' => [
+            'plugin' => false,
+            'prefix' => false,
+            'controller' => 'Pages',
+            'action' => 'home'
+        ],
+        'flash' => [
+            'message' => 'My custom message',
+            'key' => 'flash',
+            'element' => 'flash/error',
+            'params' => [],
+        ],
+    ]
+],
+```
+OR
+```
+[
+    'unauthorizedHandler' => [
+        'className' => 'CakeDC/Users.DefaultRedirect',
+        'url' => function($request, $options) {
+              //custom logic
+
+              return $url;
+        },
+        'flash' => [
+            'message' => 'My custom message',
+            'key' => 'flash',
+            'element' => 'flash/error',
+            'params' => [],
+        ],
+    ]
+],
+```
 Authorization Component
 -----------------------
 We autoload the authorization component at users controller using the default configuration,
 if you don't want the plugin to autoload it, you can do:
 ```
 Configure::write('Auth.AuthorizationComponent.enabled', false);
-``` 
+```
 
-You can check the configuration options available for authorization component at the 
+You can check the configuration options available for authorization component at the
 [official documentation](https://github.com/cakephp/authorization/blob/master/docs/Component.md)
 
-Authorization Service Loader 
+Authorization Service Loader
 -----------------------------
 To make the integration with cakephp/authorization easier we load the resolvers OrmResolver and MapResolver.
 The MapResolver resolves ServerRequest request object to check access permission using Superuser and Rbac policies.
 
-If the configuration is not enough for your project you may create a custom loader extending the 
+If the configuration is not enough for your project you may create a custom loader extending the
 default provided.
 
 - Create file src/Loader/AppAuthorizationServiceLoader.php
@@ -61,9 +103,9 @@ default provided.
 ```
 <?php
 namespace App\Loader;
- 
+
 use \CakeDC\Users\Loader\AuthorizationServiceLoader;
- 
+
 class AppAuthorizationServiceLoader
 {
     /**

@@ -63,6 +63,7 @@ class ProfileTraitIntegrationTest extends TestCase
         $this->assertResponseNotContains('<td>Google</td>');
         $this->assertResponseNotContains('/link-social/amazon');
         $this->assertResponseNotContains('<td>Amazon</td>');
+        $this->assertResponseContains('<span class="welcome">Welcome, <a href="/profile">first1</a></span>');
 
         $this->get('/users/change-password');
         $this->assertResponseOk();
