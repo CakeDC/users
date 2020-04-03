@@ -1,19 +1,19 @@
-# LANGUAGE translation of CakePHP Application
-# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Ukrainian translation of CakePHP Application
+# Copyright 2020 Yaroslav Kontsevyi <yaroslav@ua-biz.info>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "POT-Creation-Date: 2019-01-10 14:38+0000\n"
 "PO-Revision-Date: 2020-04-03 14:57+0300\n"
-"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"Language-Team: CakeDC <contact@cakedc.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
 "X-Generator: Poedit 2.3\n"
-"Last-Translator: \n"
+"Last-Translator: Yaroslav Kontsevyi <yaroslav@ua-biz.info>\n"
 "Language: uk\n"
 
 #: Controller/SocialAccountsController.php:50
