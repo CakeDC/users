@@ -2,6 +2,9 @@ Changelog
 =========
 Releases for CakePHP 4
 -------------
+* Next
+  * Ukrainian (uk) by @yarkm13
+  
 * 9.0.2
   * Added a custom Unauthorized Handler
     * If logged user access unauthorized url he is redirected to referer url or '/' if no referer url
