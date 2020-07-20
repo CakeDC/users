@@ -59,7 +59,7 @@ trait PasswordManagementTrait
                 $redirect = Configure::read('Users.Profile.route');
             } else {
                 $this->Flash->error(
-                    __d('CakeDC/Users', 'Changing another user\'s password is not allowed')
+                    __d('cake_d_c/users', 'Changing another user\'s password is not allowed')
                 );
                 $this->redirect(Configure::read('Users.Profile.route'));
 
