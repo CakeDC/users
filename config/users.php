@@ -92,7 +92,7 @@ $config = [
             'Cookie' => [
                 'name' => 'remember_me',
                 'Config' => [
-                    'expire' => new DateTime('+1 month'),
+                    'expire' => new \DateTime('+1 month'),
                     'httpOnly' => true,
                 ]
             ]
@@ -150,7 +150,7 @@ $config = [
                 'skipTwoFactorVerify' => true,
                 'rememberMeField' => 'remember_me',
                 'cookie' => [
-                    'expire' => new DateTime('+1 month'),
+                    'expire' => new \DateTime('+1 month'),
                     'httpOnly' => true,
                 ],
                 'urlChecker' => 'Authentication.CakeRouter',
