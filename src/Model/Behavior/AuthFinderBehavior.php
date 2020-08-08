@@ -51,7 +51,7 @@ class AuthFinderBehavior extends Behavior
         $where = $query->clause('where') ?: [];
         $query
             ->where(function ($exp) use ($identifier, $where) {
-                $or = $exp->or_([$this->_table->aliasField('email') => $identifier]);
+                $or = $exp->or([$this->_table->aliasField('email') => $identifier]);
 
                 return $or->add($where);
             }, [], true)
