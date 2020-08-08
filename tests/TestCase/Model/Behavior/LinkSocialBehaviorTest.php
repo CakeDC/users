@@ -69,7 +69,6 @@ class LinkSocialBehaviorTest extends TestCase
      * @param array  $data   Test input data
      * @param string $userId User id to add social account
      * @param array  $result Expected result
-     *
      * @author Marcelo Rocha <marcelo@promosapiens.com.br>
      * @return void
      * @dataProvider providerFacebookLinkSocialAccount
@@ -160,7 +159,6 @@ class LinkSocialBehaviorTest extends TestCase
      *
      * @param array  $data   Test input data
      * @param string $userId User id to add social account
-     *
      * @author Marcelo Rocha <marcelo@promosapiens.com.br>
      * @return void
      * @dataProvider providerFacebookLinkSocialAccountErrorSaving
@@ -256,7 +254,6 @@ class LinkSocialBehaviorTest extends TestCase
      * @param array  $data   Test input data
      * @param string $userId User id to add social account
      * @param array  $result Expected result
-     *
      * @author Marcelo Rocha <marcelo@promosapiens.com.br>
      * @return void
      * @dataProvider providerFacebookLinkSocialAccountAccountExists

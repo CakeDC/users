@@ -34,7 +34,6 @@ class PasswordBehavior extends BaseTokenBehavior
      *
      * @param string $reference User username or email
      * @param array $options checkActive, sendEmail, expiration
-     *
      * @return string
      * @throws \InvalidArgumentException
      * @throws \CakeDC\Users\Exception\UserNotFoundException
@@ -43,29 +42,29 @@ class PasswordBehavior extends BaseTokenBehavior
     public function resetToken($reference, array $options = [])
     {
         if (empty($reference)) {
-            throw new \InvalidArgumentException(__d('cake_d_c/users', "Reference cannot be null"));
+            throw new \InvalidArgumentException(__d('cake_d_c/users', 'Reference cannot be null'));
         }
 
         $expiration = $options['expiration'] ?? null;
         if (empty($expiration)) {
-            throw new \InvalidArgumentException(__d('cake_d_c/users', "Token expiration cannot be empty"));
+            throw new \InvalidArgumentException(__d('cake_d_c/users', 'Token expiration cannot be empty'));
         }
 
         $user = $this->_getUser($reference);
 
         if (empty($user)) {
-            throw new UserNotFoundException(__d('cake_d_c/users', "User not found"));
+            throw new UserNotFoundException(__d('cake_d_c/users', 'User not found'));
         }
         if ($options['checkActive'] ?? false) {
             if ($user->active) {
-                throw new UserAlreadyActiveException(__d('cake_d_c/users', "User account already validated"));
+                throw new UserAlreadyActiveException(__d('cake_d_c/users', 'User account already validated'));
             }
             $user->active = false;
             $user->activation_date = null;
         }
         if ($options['ensureActive'] ?? false) {
             if (!$user['active']) {
-                throw new UserNotActiveException(__d('cake_d_c/users', "User not active"));
+                throw new UserNotActiveException(__d('cake_d_c/users', 'User not active'));
             }
         }
         $user->updateToken($expiration);
@@ -136,7 +135,7 @@ class PasswordBehavior extends BaseTokenBehavior
                 'contain' => [],
             ]);
         } catch (RecordNotFoundException $e) {
-            throw new UserNotFoundException(__d('cake_d_c/users', "User not found"));
+            throw new UserNotFoundException(__d('cake_d_c/users', 'User not found'));
         }
 
         if (!empty($user->current_password)) {

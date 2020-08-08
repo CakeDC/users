@@ -36,7 +36,6 @@ trait PasswordManagementTrait
      * reset password with session key (email token has already been validated)
      *
      * @param int|string|null $id user_id, null for logged in user id
-     *
      * @return mixed
      */
     public function changePassword($id = null)

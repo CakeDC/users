@@ -89,10 +89,10 @@ class RegisterBehavior extends BaseTokenBehavior
             ->where(['token' => $token])
             ->first() : null;
         if (empty($user)) {
-            throw new UserNotFoundException(__d('cake_d_c/users', "User not found for the given token and email."));
+            throw new UserNotFoundException(__d('cake_d_c/users', 'User not found for the given token and email.'));
         }
         if ($user->tokenExpired()) {
-            throw new TokenExpiredException(__d('cake_d_c/users', "Token has already expired user with no token"));
+            throw new TokenExpiredException(__d('cake_d_c/users', 'Token has already expired user with no token'));
         }
         if (!method_exists($this, (string)$callback)) {
             return $user;
@@ -111,7 +111,7 @@ class RegisterBehavior extends BaseTokenBehavior
     public function activateUser(EntityInterface $user)
     {
         if ($user->active) {
-            throw new UserAlreadyActiveException(__d('cake_d_c/users', "User account already validated"));
+            throw new UserAlreadyActiveException(__d('cake_d_c/users', 'User account already validated'));
         }
         $user->activation_date = new \DateTime();
         $user->token_expires = null;

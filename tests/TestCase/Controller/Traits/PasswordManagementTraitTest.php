@@ -411,7 +411,6 @@ class PasswordManagementTraitTest extends BaseTraitTest
 
     /**
      * @dataProvider ensureUserActiveForResetPasswordFeature
-     *
      * @return void
      */
     public function testEnsureUserActiveForResetPasswordFeature($ensureActive)
@@ -451,7 +450,6 @@ class PasswordManagementTraitTest extends BaseTraitTest
 
     /**
      * @dataProvider ensureOneTimePasswordAuthenticatorResets
-     *
      * @return void
      */
     public function testRequestGoogleAuthTokenResetWithValidUser($userId, $entityId, $method, $msg)

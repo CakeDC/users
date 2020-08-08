@@ -19,6 +19,7 @@ class UserNotFoundException extends RecordNotFoundException
 {
     /**
      * UserNotFoundException constructor.
+     *
      * @param string $message message
      * @param int $code code
      * @param null $previous previous

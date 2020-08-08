@@ -191,7 +191,6 @@ class RegisterBehaviorTest extends TestCase
 
     /**
      * Test register method
-     *
      */
     public function testValidateRegisterTosRequired()
     {

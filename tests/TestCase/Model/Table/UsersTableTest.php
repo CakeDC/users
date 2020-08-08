@@ -270,7 +270,6 @@ class UsersTableTest extends TestCase
 
     /**
      * Test socialLogin
-     *
      */
     public function testSocialLoginCreateNewAccount()
     {

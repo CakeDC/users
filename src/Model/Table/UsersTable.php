@@ -29,7 +29,6 @@ use Cake\Validation\Validator;
  * @method \CakeDC\Users\Model\Entity\User patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \CakeDC\Users\Model\Entity\User[] patchEntities($entities, array $data, array $options = [])
  * @method \CakeDC\Users\Model\Entity\User findOrCreate($search, callable $callback = null, $options = [])
- *
  * @mixin \CakeDC\Users\Model\Behavior\AuthFinderBehavior
  * @mixin \CakeDC\Users\Model\Behavior\LinkSocialBehavior
  * @mixin \CakeDC\Users\Model\Behavior\PasswordBehavior
@@ -92,6 +91,7 @@ class UsersTable extends Table
 
     /**
      * Adds some rules for password confirm
+     *
      * @param \Cake\Validation\Validator $validator Cake validator object.
      * @return \Cake\Validation\Validator
      */
@@ -179,8 +179,8 @@ class UsersTable extends Table
 
     /**
      * Wrapper for all validation rules for register
-     * @param \Cake\Validation\Validator $validator Cake validator object.
      *
+     * @param \Cake\Validation\Validator $validator Cake validator object.
      * @return \Cake\Validation\Validator
      */
     public function validationRegister(Validator $validator)

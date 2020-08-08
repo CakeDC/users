@@ -18,12 +18,12 @@ use CakeDC\Users\Mailer\UsersMailer;
 
 /**
  * Override default mailer class to test customization
- *
  */
 class OverrideMailer extends UsersMailer
 {
     /**
      * Override the resetPassword email with a custom template and subject
+     *
      * @param EntityInterface $user
      * @return array|void
      */

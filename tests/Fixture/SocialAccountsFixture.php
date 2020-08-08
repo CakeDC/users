@@ -15,7 +15,6 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 /**
  * AccountsFixture
- *
  */
 class SocialAccountsFixture extends TestFixture
 {

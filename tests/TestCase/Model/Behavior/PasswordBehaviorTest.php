@@ -28,6 +28,7 @@ use TestApp\Mailer\OverrideMailer;
 
 /**
  * Test Case
+ *
  * @property \CakeDC\Users\Model\Behavior\PasswordBehavior Behavior
  */
 class PasswordBehaviorTest extends TestCase
@@ -79,7 +80,6 @@ class PasswordBehaviorTest extends TestCase
 
     /**
      * Test resetToken
-     *
      */
     public function testResetToken()
     {
@@ -99,7 +99,6 @@ class PasswordBehaviorTest extends TestCase
 
     /**
      * Test resetToken
-     *
      */
     public function testResetTokenSendEmail()
     {

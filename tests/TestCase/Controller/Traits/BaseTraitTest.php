@@ -24,18 +24,16 @@ use Cake\Event\Event;
 use Cake\Mailer\Email;
 use Cake\Mailer\TransportFactory;
 use Cake\ORM\Entity;
-use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use CakeDC\Auth\Authentication\AuthenticationService;
 use CakeDC\Users\Model\Entity\User;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit_Framework_MockObject_RuntimeException;
 
 /**
  * Class BaseTraitTest
- * @package CakeDC\Users\Test\TestCase\Controller\Traits
  *
+ * @package CakeDC\Users\Test\TestCase\Controller\Traits
  */
 abstract class BaseTraitTest extends TestCase
 {
@@ -93,7 +91,7 @@ abstract class BaseTraitTest extends TestCase
                     ->will($this->returnValue($this->table));
         } catch (PHPUnit_Framework_MockObject_RuntimeException $ex) {
             debug($ex);
-            $this->fail("Unit tests extending BaseTraitTest should declare the trait class name in the \$traitClassName variable before calling setUp()");
+            $this->fail('Unit tests extending BaseTraitTest should declare the trait class name in the $traitClassName variable before calling setUp()');
         }
 
         if ($this->mockDefaultEmail) {

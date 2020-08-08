@@ -15,10 +15,10 @@ namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
 use Cake\Datasource\Exception\InvalidPrimaryKeyException;
 use Cake\Datasource\Exception\RecordNotFoundException;
-use CakeDC\Users\Controller\Traits\SimpleCrudTrait;
 
 /**
  * Class SimpleCrudTraitTest
+ *
  * @package CakeDC\Users\Test\TestCase\Controller\Traits
  */
 class SimpleCrudTraitTest extends BaseTraitTest

@@ -15,7 +15,6 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 /**
  * PostUsers Fixture
- *
  */
 class PostsUsersFixture extends TestFixture
 {

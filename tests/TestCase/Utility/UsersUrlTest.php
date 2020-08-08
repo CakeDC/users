@@ -372,7 +372,6 @@ class UsersUrlTest extends TestCase
      * @param array $params request params
      * @param string $controller users controller
      * @param bool $expected result expected
-     *
      * @dataProvider dataProviderCheckActionOnRequest
      * @return void
      */

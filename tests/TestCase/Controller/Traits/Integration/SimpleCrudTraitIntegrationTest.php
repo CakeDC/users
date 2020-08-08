@@ -93,7 +93,7 @@ class SimpleCrudTraitIntegrationTest extends TestCase
         $this->assertRedirect('/users/index');
         $this->assertFlashMessage('Password has been changed successfully');
 
-        $this->get("/users/edit/00000000-0000-0000-0000-000000000006");
+        $this->get('/users/edit/00000000-0000-0000-0000-000000000006');
         $this->assertResponseContains('<input type="text" name="username" required="required');
         $this->assertResponseContains('id="username" value="user-6"');
         $this->assertResponseContains('<input type="email" name="email" required="required');
@@ -105,7 +105,7 @@ class SimpleCrudTraitIntegrationTest extends TestCase
         $this->assertResponseContains('<a href="/users/index">List Users</a>');
 
         $this->enableSecurityToken();
-        $this->post("/users/edit/00000000-0000-0000-0000-000000000006", [
+        $this->post('/users/edit/00000000-0000-0000-0000-000000000006', [
             'username' => 'my-new-username',
             'email' => 'crud.email992@example.com',
             'first_name' => 'Joe',
@@ -113,7 +113,7 @@ class SimpleCrudTraitIntegrationTest extends TestCase
         ]);
         $this->assertRedirect('/users/index');
         $this->assertFlashMessage('The User has been saved');
-        $this->get("/users/view/00000000-0000-0000-0000-000000000006");
+        $this->get('/users/view/00000000-0000-0000-0000-000000000006');
         $this->assertResponseOk();
         $this->assertResponseContains('>00000000-0000-0000-0000-000000000006<');
         $this->assertResponseContains('>my-new-username<');

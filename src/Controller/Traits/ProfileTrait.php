@@ -27,6 +27,7 @@ trait ProfileTrait
 {
     /**
      * Profile action
+     *
      * @param mixed $id Profile id object.
      * @return mixed
      */
