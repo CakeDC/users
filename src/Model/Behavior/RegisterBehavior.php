@@ -30,6 +30,15 @@ class RegisterBehavior extends BaseTokenBehavior
     use MailerAwareTrait;
 
     /**
+     * @var bool
+     */
+    protected $validateEmail;
+    /**
+     * @var bool
+     */
+    protected $useTos;
+
+    /**
      * Constructor hook method.
      *
      * @param array $config The configuration settings provided to this behavior.
