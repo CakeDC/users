@@ -13,13 +13,14 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\View\Helper;
 
+use Cake\View\Helper\FormHelper;
 use Cake\View\Helper\HtmlHelper;
 use CakeDC\Auth\Traits\IsAuthorizedTrait;
 
 /**
  * AuthLink helper
  *
- * @property \Cake\View\Helper\FormHelper $Form
+ * @property FormHelper $Form
  */
 class AuthLinkHelper extends HtmlHelper
 {
