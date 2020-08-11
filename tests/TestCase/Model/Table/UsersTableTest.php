@@ -85,7 +85,7 @@ class UsersTableTest extends TestCase
             'last_name' => 'user',
             'tos' => 1,
         ];
-        $result = $this->Users->register($this->Users->newEntity([]), $user, ['token_expiration' => 3600, 'validate_email' => 0]);
+        $result = $this->Users->register($this->Users->newEmptyEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 0]);
         $this->assertTrue($result->active);
     }
 
@@ -97,7 +97,7 @@ class UsersTableTest extends TestCase
     public function testValidateRegisterEmptyUser()
     {
         $user = [];
-        $result = $this->Users->register($this->Users->newEntity([]), $user, ['token_expiration' => 3600, 'validate_email' => 1]);
+        $result = $this->Users->register($this->Users->newEmptyEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1]);
         $this->assertFalse($result);
     }
 
@@ -123,7 +123,7 @@ class UsersTableTest extends TestCase
             'last_name' => 'user',
             'tos' => 1,
         ];
-        $result = $this->Users->register($this->Users->newEntity([]), $user, ['token_expiration' => 3600, 'validate_email' => 1]);
+        $result = $this->Users->register($this->Users->newEmptyEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1]);
         $this->assertNotEmpty($result);
         $this->assertFalse($result->active);
     }
@@ -141,7 +141,7 @@ class UsersTableTest extends TestCase
             'first_name' => 'test',
             'last_name' => 'user',
         ];
-        $userEntity = $this->Users->newEntity([]);
+        $userEntity = $this->Users->newEmptyEntity();
         $this->Users->register($userEntity, $user, ['token_expiration' => 3600, 'validate_email' => 1, 'use_tos' => 1]);
         $this->assertEquals(['tos' => ['_required' => 'This field is required']], $userEntity->getErrors());
     }
@@ -166,7 +166,7 @@ class UsersTableTest extends TestCase
             'first_name' => 'test',
             'last_name' => 'user',
         ];
-        $result = $this->Users->register($this->Users->newEntity([]), $user, ['token_expiration' => 3600, 'validate_email' => 1, 'use_tos' => 0]);
+        $result = $this->Users->register($this->Users->newEmptyEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1, 'use_tos' => 0]);
         $this->assertNotEmpty($result);
     }
 
@@ -270,7 +270,6 @@ class UsersTableTest extends TestCase
 
     /**
      * Test socialLogin
-     *
      */
     public function testSocialLoginCreateNewAccount()
     {

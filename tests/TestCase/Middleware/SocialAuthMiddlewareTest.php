@@ -213,7 +213,7 @@ class SocialAuthMiddlewareTest extends TestCase
     public function dataProviderSocialAuthenticationException()
     {
         $missingEmail = [
-            new MissingEmailException("Missing email"),
+            new MissingEmailException('Missing email'),
             [
                 'key' => 'flash',
                 'element' => 'Flash/error',
@@ -224,7 +224,7 @@ class SocialAuthMiddlewareTest extends TestCase
             true,
         ];
         $unknown = [
-            new UnexpectedValueException("User not active"),
+            new UnexpectedValueException('User not active'),
             [
                 'key' => 'flash',
                 'element' => 'Flash/error',

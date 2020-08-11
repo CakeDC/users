@@ -176,6 +176,7 @@ class User extends Entity
 
     /**
      * Generate token_expires and token in a user
+     *
      * @param int $tokenExpiration seconds to expire the token from Now
      * @return void
      */

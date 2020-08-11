@@ -30,7 +30,6 @@ trait U2fTrait
      * Perform redirect keeping current query string
      *
      * @param array $url base url
-     *
      * @return \Cake\Http\Response
      */
     public function redirectWithQuery($url)

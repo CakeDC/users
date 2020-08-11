@@ -34,7 +34,6 @@ class LinkSocialBehavior extends Behavior
      *
      * @param \Cake\Datasource\EntityInterface $user User to link.
      * @param array $data Social account information.
-     *
      * @return \Cake\Datasource\EntityInterface
      */
     public function linkSocialAccount(EntityInterface $user, $data)
@@ -66,7 +65,6 @@ class LinkSocialBehavior extends Behavior
      * @param \Cake\Datasource\EntityInterface $user User to link.
      * @param array $data Social account information.
      * @param \Cake\Datasource\EntityInterface $socialAccount to update or create.
-     *
      * @return \Cake\Datasource\EntityInterface
      */
     protected function createOrUpdateSocialAccount(EntityInterface $user, $data, $socialAccount)
@@ -107,7 +105,6 @@ class LinkSocialBehavior extends Behavior
      *
      * @param \Cake\Datasource\EntityInterface $socialAccount to populate.
      * @param array $data Social account information.
-     *
      * @return \Cake\Datasource\EntityInterface
      */
     protected function populateSocialAccount($socialAccount, $data)

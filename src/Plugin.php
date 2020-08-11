@@ -57,7 +57,7 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function getAuthorizationService(ServerRequestInterface $request): AuthorizationServiceInterface
     {
@@ -67,7 +67,7 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function middleware(MiddlewareQueue $middlewareQueue): MiddlewareQueue
     {
@@ -81,7 +81,6 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request The request.
      * @param string $loaderKey service loader key
-     *
      * @return mixed
      */
     protected function loadService(ServerRequestInterface $request, $loaderKey)

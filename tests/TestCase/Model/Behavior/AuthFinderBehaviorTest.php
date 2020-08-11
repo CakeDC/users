@@ -57,7 +57,6 @@ class AuthFinderBehaviorTest extends TestCase
 
     /**
      * Test findActive method.
-     *
      */
     public function testFindActive()
     {

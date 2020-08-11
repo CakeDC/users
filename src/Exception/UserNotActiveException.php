@@ -19,6 +19,7 @@ class UserNotActiveException extends Exception
 {
     /**
      * UserNotActiveException constructor.
+     *
      * @param array|string $message message
      * @param int $code code
      * @param null $previous previous

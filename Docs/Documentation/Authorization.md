@@ -130,5 +130,5 @@ class AppAuthorizationServiceLoader
 - Change the authorization service loader:
 
 ```
-Configure::write('Authorization.serviceLoader', \App\Loader\AppAuthorizationServiceLoader::class);
+Configure::write('Auth.Authorization.serviceLoader', \App\Loader\AppAuthorizationServiceLoader::class);
 ```

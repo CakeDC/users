@@ -89,7 +89,6 @@ class DefaultRedirectHandler extends CakeRedirectHandler
      *
      * @param \Cake\Http\Session $session The CakePHP session.
      * @param array $options Defined options.
-     *
      * @return void
      */
     protected function addFlashMessage(Session $session, $options): void

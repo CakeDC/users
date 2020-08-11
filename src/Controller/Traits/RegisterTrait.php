@@ -50,7 +50,7 @@ trait RegisterTrait
         }
 
         $usersTable = $this->getUsersTable();
-        $user = $usersTable->newEntity([]);
+        $user = $usersTable->newEmptyEntity();
         $validateEmail = (bool)Configure::read('Users.Email.validate');
         $useTos = (bool)Configure::read('Users.Tos.required');
         $tokenExpiration = Configure::read('Users.Token.expiration');

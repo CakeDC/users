@@ -21,6 +21,7 @@ use CakeDC\Users\Controller\Component\SetupComponent;
 
 /**
  * Class SetupComponentTest
+ *
  * @package CakeDC\Users\Test\TestCase\Controller\Component
  */
 class SetupComponentTest extends TestCase

@@ -92,7 +92,7 @@ class RegisterBehaviorTest extends TestCase
             'last_name' => 'user',
             'tos' => 1,
         ];
-        $result = $this->Table->register($this->Table->newEntity([]), $user, ['token_expiration' => 3600, 'validate_email' => 0]);
+        $result = $this->Table->register($this->Table->newEmptyEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 0]);
         $this->assertTrue($result->active);
     }
 
@@ -104,7 +104,7 @@ class RegisterBehaviorTest extends TestCase
     public function testValidateRegisterEmptyUser()
     {
         $user = [];
-        $result = $this->Table->register($this->Table->newEntity([]), $user, ['token_expiration' => 3600, 'validate_email' => 1]);
+        $result = $this->Table->register($this->Table->newEmptyEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1]);
         $this->assertFalse($result);
     }
 
@@ -130,7 +130,7 @@ class RegisterBehaviorTest extends TestCase
             'last_name' => 'user',
             'tos' => 1,
         ];
-        $result = $this->Table->register($this->Table->newEntity([]), $user, ['token_expiration' => 3600, 'validate_email' => 1]);
+        $result = $this->Table->register($this->Table->newEmptyEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1]);
         $this->assertNotEmpty($result);
         $this->assertFalse($result->active);
         $this->assertNotEmpty($result->tos_date);
@@ -177,7 +177,7 @@ class RegisterBehaviorTest extends TestCase
 
         $this->Table->expects($this->once())
                 ->method('patchEntity')
-                ->with($this->Table->newEntity([]), $user, ['validate' => 'custom'])
+                ->with($this->Table->newEmptyEntity(), $user, ['validate' => 'custom'])
                 ->will($this->returnValue($entityUser));
 
         $this->Table->expects($this->once())
@@ -185,13 +185,12 @@ class RegisterBehaviorTest extends TestCase
                 ->with($entityUser)
                 ->will($this->returnValue($entityUser));
 
-        $result = $this->Behavior->register($this->Table->newEntity([]), $user, ['validator' => 'custom', 'validate_email' => 1]);
+        $result = $this->Behavior->register($this->Table->newEmptyEntity(), $user, ['validator' => 'custom', 'validate_email' => 1]);
         $this->assertNotEmpty($result->tos_date);
     }
 
     /**
      * Test register method
-     *
      */
     public function testValidateRegisterTosRequired()
     {
@@ -203,7 +202,7 @@ class RegisterBehaviorTest extends TestCase
             'first_name' => 'test',
             'last_name' => 'user',
         ];
-        $result = $this->Table->register($this->Table->newEntity([]), $user, ['token_expiration' => 3600, 'validate_email' => 1, 'use_tos' => 1]);
+        $result = $this->Table->register($this->Table->newEmptyEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1, 'use_tos' => 1]);
         $this->assertFalse($result);
     }
 
@@ -228,7 +227,7 @@ class RegisterBehaviorTest extends TestCase
             'first_name' => 'test',
             'last_name' => 'user',
         ];
-        $result = $this->Table->register($this->Table->newEntity([]), $user, ['token_expiration' => 3600, 'validate_email' => 1, 'use_tos' => 0]);
+        $result = $this->Table->register($this->Table->newEmptyEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1, 'use_tos' => 0]);
         $this->assertNotEmpty($result);
     }
 
@@ -313,7 +312,7 @@ class RegisterBehaviorTest extends TestCase
             'tos' => 1,
         ];
         Configure::write('Users.Registration.defaultRole', false);
-        $result = $this->Table->register($this->Table->newEntity([]), $user, [
+        $result = $this->Table->register($this->Table->newEmptyEntity(), $user, [
             'token_expiration' => 3600,
             'validate_email' => 0,
         ]);
@@ -337,7 +336,7 @@ class RegisterBehaviorTest extends TestCase
             'tos' => 1,
         ];
         Configure::write('Users.Registration.defaultRole', 'emperor');
-        $result = $this->Table->register($this->Table->newEntity([]), $user, [
+        $result = $this->Table->register($this->Table->newEmptyEntity(), $user, [
             'token_expiration' => 3600,
             'validate_email' => 0,
         ]);
