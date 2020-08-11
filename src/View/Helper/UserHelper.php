@@ -185,24 +185,6 @@ class UserHelper extends Helper
     }
 
     /**
-     * Returns true if the target url is authorized for the logged in user
-     *
-     * @deprecated Since 3.2.1. Use AuthLinkHelper::link() instead
-     *
-     * @param string|array|null $url url that the user is making request.
-     * @return bool
-     */
-    public function isAuthorized($url = null)
-    {
-        trigger_error(
-            'UserHelper::isAuthorized() deprecated since 3.2.1. Use AuthLinkHelper::isAuthorized() instead',
-            E_USER_DEPRECATED
-        );
-
-        return $this->AuthLink->isAuthorized($url);
-    }
-
-    /**
      * Create links for all social providers enabled social link (connect)
      *
      * @param string $name        Provider name in lowercase
