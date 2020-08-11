@@ -38,18 +38,8 @@ parameters:
 			path: src\Controller\UsersController.php
 
 		-
-			message: "#^Parameter \\#1 \\$user of method CakeDC\\\\Users\\\\Controller\\\\UsersController\\:\\:onVerifyGetSecret\\(\\) expects CakeDC\\\\Users\\\\Model\\\\Entity\\\\User, array\\|string\\|null given\\.$#"
-			count: 1
-			path: src\Controller\UsersController.php
-
-		-
 			message: "#^Access to an undefined property CakeDC\\\\Users\\\\Controller\\\\UsersController\\:\\:\\$OneTimePasswordAuthenticator\\.$#"
 			count: 3
-			path: src\Controller\UsersController.php
-
-		-
-			message: "#^Parameter \\#2 \\$user of method CakeDC\\\\Users\\\\Controller\\\\UsersController\\:\\:onPostVerifyCodeOkay\\(\\) expects CakeDC\\\\Users\\\\Model\\\\Entity\\\\User, array\\|string\\|null given\\.$#"
-			count: 1
 			path: src\Controller\UsersController.php
 
 		-
@@ -183,16 +173,6 @@ parameters:
 			path: src\Model\Behavior\PasswordBehavior.php
 
 		-
-			message: "#^Access to an undefined property CakeDC\\\\Users\\\\Model\\\\Behavior\\\\RegisterBehavior\\:\\:\\$validateEmail\\.$#"
-			count: 4
-			path: src\Model\Behavior\RegisterBehavior.php
-
-		-
-			message: "#^Access to an undefined property CakeDC\\\\Users\\\\Model\\\\Behavior\\\\RegisterBehavior\\:\\:\\$useTos\\.$#"
-			count: 1
-			path: src\Model\Behavior\RegisterBehavior.php
-
-		-
 			message: "#^Access to an undefined property Cake\\\\Datasource\\\\EntityInterface\\:\\:\\$validated\\.$#"
 			count: 1
 			path: src\Model\Behavior\RegisterBehavior.php
@@ -293,21 +273,7 @@ parameters:
 			path: src\Shell\UsersShell.php
 
 		-
-			message: "#^Call to an undefined method CakeDC\\\\Users\\\\Model\\\\Table\\\\UsersTable\\:\\:resetToken\\(\\)\\.$#"
-			count: 1
-			path: src\Shell\UsersShell.php
-
-		-
-			message: "#^Call to an undefined method CakeDC\\\\Users\\\\Model\\\\Table\\\\UsersTable\\:\\:generateUniqueUsername\\(\\)\\.$#"
-			count: 1
-			path: src\Shell\UsersShell.php
-
-		-
 			message: "#^Parameter \\#1 \\$message of method Cake\\\\Controller\\\\Controller\\:\\:log\\(\\)\\ expects string, Exception given.$#"
 			count: 1
 			path: src\Controller\Traits\OneTimePasswordVerifyTrait.php
 
-		-
-			message: "#^Access to an undefined property CakeDC\\\\Users\\\\View\\\\Helper\\\\AuthLinkHelper\\:\\:\\$Form\\.$#"
-			count: 1
-			path: src\View\Helper\AuthLinkHelper.php
