@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Controller;
 
-use Cake\Controller\Component\SecurityComponent;
 use CakeDC\Users\Controller\Traits\LinkSocialTrait;
 use CakeDC\Users\Controller\Traits\LoginTrait;
 use CakeDC\Users\Controller\Traits\OneTimePasswordVerifyTrait;
@@ -28,7 +27,7 @@ use CakeDC\Users\Controller\Traits\U2fTrait;
  * Users Controller
  *
  * @property \CakeDC\Users\Model\Table\UsersTable $Users
- * @property SecurityComponent $Security
+ * @property \Cake\Controller\Component\SecurityComponent $Security
  */
 class UsersController extends AppController
 {
