@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -14,11 +16,9 @@ namespace CakeDC\Users\Controller\Traits;
 use CakeDC\Auth\Social\MapUser;
 use CakeDC\Auth\Social\Service\ServiceFactory;
 use CakeDC\Users\Plugin;
-use Cake\Utility\Hash;
 
 /**
  * Actions to allow user to link social accounts
- *
  */
 trait LinkSocialTrait
 {
@@ -26,7 +26,6 @@ trait LinkSocialTrait
      *  Init link and auth process against provider
      *
      * @param string $alias of the provider.
-     *
      * @throws \Cake\Http\Exception\NotFoundException Quando o provider informado não existe
      * @return  \Cake\Http\Response Redirects on successful
      */
@@ -35,7 +34,7 @@ trait LinkSocialTrait
         $authUrl = (new ServiceFactory())
                 ->setRedirectUriField('callbackLinkSocialUri')
                 ->createFromProvider($alias)
-                ->getAuthorizationUrl($this->request);
+                ->getAuthorizationUrl($this->getRequest());
 
         $this->dispatchEvent(Plugin::EVENT_BEFORE_SOCIAL_LOGIN_REDIRECT, [
             'location' => $authUrl,
@@ -49,7 +48,6 @@ trait LinkSocialTrait
      * Callback to get user information from provider
      *
      * @param string $alias of the provider.
-     *
      * @throws \Cake\Http\Exception\NotFoundException Quando o provider informado não existe
      * @return  \Cake\Http\Response Redirects to profile if okay or error
      */
@@ -58,20 +56,20 @@ trait LinkSocialTrait
         $message = __d('cake_d_c/users', 'Could not associate account, please try again.');
         try {
             $server = (new ServiceFactory())
-                ->setRedirectUriField('callbackLinkSocialUri')
-                ->createFromProvider($alias);
+            ->setRedirectUriField('callbackLinkSocialUri')
+            ->createFromProvider($alias);
 
-            if (!$server->isGetUserStep($this->request)) {
+            if (!$server->isGetUserStep($this->getRequest())) {
                 $this->Flash->error($message);
 
                 return $this->redirect(['action' => 'profile']);
             }
-            $data = $server->getUser($this->request);
+            $data = $server->getUser($this->getRequest());
             $mapper = new MapUser();
             $data = $mapper($server, $data);
-            $identity = $this->request->getAttribute('identity');
-            $identity = isset($identity) ? $identity : [];
-            $userId = Hash::get($identity, 'id');
+            $identity = $this->getRequest()->getAttribute('identity');
+            $identity = $identity ?? [];
+            $userId = $identity['id'] ?? null;
             $user = $this->getUsersTable()->get($userId);
 
             $this->getUsersTable()->linkSocialAccount($user, $data);
@@ -83,7 +81,7 @@ trait LinkSocialTrait
             }
         } catch (\Exception $e) {
             $log = sprintf(
-                "Error linking social account: %s %s",
+                'Error linking social account: %s %s',
                 $e->getMessage(),
                 $e
             );

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -18,10 +20,18 @@ use Cake\Utility\Security;
 
 /**
  * User Entity.
+ *
+ * @property string $email
+ * @property string $role
+ * @property string $username
+ * @property bool $is_superuser
+ * @property \Cake\I18n\Time $token_expires
+ * @property string $token
+ * @property array $additional_data
+ * @property \CakeDC\Users\Model\Entity\SocialAccount[] $social_accounts
  */
 class User extends Entity
 {
-
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -88,7 +98,7 @@ class User extends Entity
     {
         $PasswordHasher = $this->getPasswordHasher();
 
-        return $PasswordHasher->hash($password);
+        return $PasswordHasher->hash((string)$password);
     }
 
     /**
@@ -103,7 +113,7 @@ class User extends Entity
             $passwordHasher = '\Cake\Auth\DefaultPasswordHasher';
         }
 
-        return new $passwordHasher;
+        return new $passwordHasher();
     }
 
     /**
@@ -142,8 +152,8 @@ class User extends Entity
     protected function _getAvatar()
     {
         $avatar = null;
-        if (!empty($this->_properties['social_accounts'][0])) {
-            $avatar = $this->_properties['social_accounts'][0]['avatar'];
+        if (isset($this->social_accounts[0])) {
+            $avatar = $this->social_accounts[0]['avatar'];
         }
 
         return $avatar;
@@ -166,6 +176,7 @@ class User extends Entity
 
     /**
      * Generate token_expires and token in a user
+     *
      * @param int $tokenExpiration seconds to expire the token from Now
      * @return void
      */

@@ -20,23 +20,22 @@ collection((array)Configure::read('Users.config'))->each(function ($file) {
 });
 UsersUrl::setupConfigUrls();
 
-if (!TableRegistry::getTableLocator()->exists('Users')) {
-    TableRegistry::getTableLocator()->setConfig('Users', ['className' => Configure::read('Users.table')]);
+$locator = TableRegistry::getTableLocator();
+foreach (['Users', 'CakeDC/Users.Users'] as $modelKey) {
+    if (!$locator->exists($modelKey)) {
+        $locator->setConfig($modelKey, ['className' => Configure::read('Users.table')]);
+    }
 }
-if (!TableRegistry::getTableLocator()->exists('CakeDC/Users.Users')) {
-    TableRegistry::getTableLocator()->setConfig('CakeDC/Users.Users', ['className' => Configure::read('Users.table')]);
-}
-
-if (Configure::check('Auth.authenticate') || Configure::check('Auth.authorize')) {
-    trigger_error("Users plugin configurations keys Auth.authenticate and Auth.authorize were removed, please check migration guide https://github.com/CakeDC/users/blob/master/Docs/Documentation/MigrationGuide.md'");
-}
-$oauthPath = Configure::read('OAuth.path');
-if (is_array($oauthPath)) {
-    Router::scope('/auth', function ($routes) use ($oauthPath) {
-        $routes->connect(
-            '/:provider',
-            $oauthPath,
-            ['provider' => implode('|', array_keys(Configure::read('OAuth.providers')))]
-        );
-    });
+$oldConfigs = [
+    'Users.auth',
+    'Users.Social.authenticator',
+    'Users.GoogleAuthenticator',
+    'GoogleAuthenticator',
+    'Auth.authenticate',
+    'Auth.authorize',
+];
+foreach ($oldConfigs as $configKey) {
+    if (Configure::check($configKey)) {
+        trigger_error(__("Users plugin configuration key \"{0}\" was removed, please check migration guide https://github.com/CakeDC/users/blob/master/Docs/Documentation/Migration/8.x-9.0.md", $configKey));
+    }
 }

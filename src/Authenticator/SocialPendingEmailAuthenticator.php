@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -13,11 +15,10 @@ namespace CakeDC\Users\Authenticator;
 
 use Authentication\Authenticator\AbstractAuthenticator;
 use Authentication\Authenticator\Result;
+use Authentication\Authenticator\ResultInterface;
 use Authentication\UrlChecker\UrlCheckerTrait;
-use CakeDC\Users\Controller\Traits\ReCaptchaTrait;
 use Cake\Core\Configure;
-use Cake\Utility\Hash;
-use Psr\Http\Message\ResponseInterface;
+use CakeDC\Users\Controller\Traits\ReCaptchaTrait;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
@@ -27,12 +28,15 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 class SocialPendingEmailAuthenticator extends AbstractAuthenticator
 {
-
     use ReCaptchaTrait;
     use SocialAuthTrait;
     use UrlCheckerTrait;
 
-    const FAILURE_INVALID_RECAPTCHA = 'FAILURE_INVALID_RECAPTCHA';
+    public const FAILURE_INVALID_RECAPTCHA = 'FAILURE_INVALID_RECAPTCHA';
+
+    public const FAILURE_ACCOUNT_NOT_ACTIVE = 'FAILURE_ACCOUNT_NOT_ACTIVE';
+
+    public const FAILURE_USER_NOT_ACTIVE = 'FAILURE_USER_NOT_ACTIVE';
 
     /**
      * Default config for this object.
@@ -46,7 +50,7 @@ class SocialPendingEmailAuthenticator extends AbstractAuthenticator
         'loginUrl' => [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
-            'action' => 'socialEmail'
+            'action' => 'socialEmail',
         ],
         'urlChecker' => 'Authentication.CakeRouter',
     ];
@@ -64,7 +68,7 @@ class SocialPendingEmailAuthenticator extends AbstractAuthenticator
                 'Login URL `%s` did not match `%s`.',
                 (string)$request->getUri(),
                 implode('` or `', (array)$this->getConfig('loginUrl'))
-            )
+            ),
         ];
 
         return new Result(null, Result::FAILURE_OTHER, $errors);
@@ -76,17 +80,16 @@ class SocialPendingEmailAuthenticator extends AbstractAuthenticator
      * there is no post data, either username or password is missing, or if the scope conditions have not been met.
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request The request that contains login information.
-     * @param \Psr\Http\Message\ResponseInterface $response Unused response object.
      * @return \Authentication\Authenticator\ResultInterface
      */
-    public function authenticate(ServerRequestInterface $request, ResponseInterface $response)
+    public function authenticate(ServerRequestInterface $request): ResultInterface
     {
         if (!$this->_checkUrl($request)) {
             return $this->_buildLoginUrlErrorResult($request);
         }
-        $rawData = $request->getSession()->read(Configure::read('Users.Key.Session.social'));
+        $rawData = $request->getAttribute('session')->read(Configure::read('Users.Key.Session.social'));
         $body = $request->getParsedBody();
-        $email = Hash::get($body, 'email');
+        $email = $body['email'] ?? null;
 
         if (empty($rawData) || empty($email)) {
             return new Result(null, Result::FAILURE_CREDENTIALS_MISSING);

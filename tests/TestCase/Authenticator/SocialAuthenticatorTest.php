@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -12,6 +14,10 @@ namespace CakeDC\Users\Test\TestCase\Authenticator;
 
 use Authentication\Authenticator\Result;
 use Authentication\Identifier\IdentifierCollection;
+use Cake\Core\Configure;
+use Cake\Http\Response;
+use Cake\Http\ServerRequestFactory;
+use Cake\TestSuite\TestCase;
 use CakeDC\Auth\Social\MapUser;
 use CakeDC\Auth\Social\Service\ServiceFactory;
 use CakeDC\Users\Authenticator\SocialAuthenticator;
@@ -20,10 +26,6 @@ use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\SocialAuthenticationException;
 use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Model\Entity\User;
-use Cake\Core\Configure;
-use Cake\Http\Response;
-use Cake\Http\ServerRequestFactory;
-use Cake\TestSuite\TestCase;
 use League\OAuth2\Client\Provider\FacebookUser;
 use Zend\Diactoros\Uri;
 
@@ -34,10 +36,9 @@ use Zend\Diactoros\Uri;
  */
 class SocialAuthenticatorTest extends TestCase
 {
-
     public $fixtures = [
         'plugin.CakeDC/Users.Users',
-        'plugin.CakeDC/Users.SocialAccounts'
+        'plugin.CakeDC/Users.SocialAccounts',
     ];
 
     /**
@@ -57,7 +58,7 @@ class SocialAuthenticatorTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -68,11 +69,11 @@ class SocialAuthenticatorTest extends TestCase
                 'linkSocialUri' => '/link-social/facebook',
                 'callbackLinkSocialUri' => '/callback-link-social/facebook',
                 'clientId' => '10003030300303',
-                'clientSecret' => 'secretpassword'
+                'clientSecret' => 'secretpassword',
             ],
-            []
+            [],
         ])->setMethods([
-            'getAccessToken', 'getState', 'getAuthorizationUrl', 'getResourceOwner'
+            'getAccessToken', 'getState', 'getAuthorizationUrl', 'getResourceOwner',
         ])->getMock();
 
         $config = [
@@ -86,7 +87,7 @@ class SocialAuthenticatorTest extends TestCase
                 'linkSocialUri' => '/link-social/facebook',
                 'callbackLinkSocialUri' => '/callback-link-social/facebook',
                 'clientId' => '10003030300303',
-                'clientSecret' => 'secretpassword'
+                'clientSecret' => 'secretpassword',
             ],
             'collaborators' => [],
             'signature' => null,
@@ -95,8 +96,8 @@ class SocialAuthenticatorTest extends TestCase
                 'plugin' => 'CakeDC/Users',
                 'controller' => 'Users',
                 'action' => 'socialLogin',
-                'prefix' => null
-            ]
+                'prefix' => null,
+            ],
         ];
         Configure::write('OAuth.providers.facebook', $config);
 
@@ -114,18 +115,18 @@ class SocialAuthenticatorTest extends TestCase
         $this->Request = $this->Request->withUri($uri);
         $this->Request = $this->Request->withQueryParams([
             'code' => 'ZPO9972j3092304230',
-            'state' => '__TEST_STATE__'
+            'state' => '__TEST_STATE__',
         ]);
         $this->Request = $this->Request->withAttribute('params', [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'socialLogin',
-            'provider' => 'facebook'
+            'provider' => 'facebook',
         ]);
         $this->Request->getSession()->write('oauth2state', '__TEST_STATE__');
 
         $identifiers = new IdentifierCollection([
-            'CakeDC/Users.Social'
+            'CakeDC/Users.Social',
         ]);
         $Authenticator = new SocialAuthenticator($identifiers);
         $Response = new Response();
@@ -147,19 +148,19 @@ class SocialAuthenticatorTest extends TestCase
         $this->Request = $this->Request->withUri($uri);
         $this->Request = $this->Request->withQueryParams([
             'code' => 'ZPO9972j3092304230',
-            'state' => '__TEST_STATE__'
+            'state' => '__TEST_STATE__',
         ]);
         $this->Request = $this->Request->withAttribute('params', [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'socialLogin',
-            'provider' => 'facebook'
+            'provider' => 'facebook',
         ]);
         $this->Request->getSession()->write('oauth2state', '__TEST_STATE__');
 
         $Token = new \League\OAuth2\Client\Token\AccessToken([
             'access_token' => 'test-token',
-            'expires' => 1490988496
+            'expires' => 1490988496,
         ]);
 
         $user = new FacebookUser([
@@ -170,29 +171,29 @@ class SocialAuthenticatorTest extends TestCase
             'email' => 'test@gmail.com',
             'hometown' => [
                 'id' => '108226049197930',
-                'name' => 'Madrid'
+                'name' => 'Madrid',
             ],
             'picture' => [
                 'data' => [
                     'url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
-                    'is_silhouette' => false
-                ]
+                    'is_silhouette' => false,
+                ],
             ],
             'cover' => [
                 'source' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
-                'id' => '1'
+                'id' => '1',
             ],
             'gender' => 'male',
             'locale' => 'en_US',
             'link' => 'https://www.facebook.com/app_scoped_user_id/1/',
             'timezone' => -5,
             'age_range' => [
-                'min' => 21
+                'min' => 21,
             ],
             'bio' => 'I am the best test user in the world.',
             'picture_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
             'is_silhouette' => false,
-            'cover_photo_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg'
+            'cover_photo_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
         ]);
 
         $this->Provider->expects($this->never())
@@ -219,7 +220,7 @@ class SocialAuthenticatorTest extends TestCase
         $service = (new ServiceFactory())->createFromProvider('facebook');
         $this->Request = $this->Request->withAttribute('socialService', $service);
         $identifiers = new IdentifierCollection([
-            'CakeDC/Users.Social'
+            'CakeDC/Users.Social',
         ]);
         $Authenticator = new SocialAuthenticator($identifiers);
         $Response = new Response();
@@ -242,19 +243,19 @@ class SocialAuthenticatorTest extends TestCase
         $this->Request = $this->Request->withUri($uri);
         $this->Request = $this->Request->withQueryParams([
             'code' => 'ZPO9972j3092304230',
-            'state' => '__TEST_STATE__'
+            'state' => '__TEST_STATE__',
         ]);
         $this->Request = $this->Request->withAttribute('params', [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'socialLogin',
-            'provider' => 'facebook'
+            'provider' => 'facebook',
         ]);
         $this->Request->getSession()->write('oauth2state', '__TEST_STATE__');
 
         $Token = new \League\OAuth2\Client\Token\AccessToken([
             'access_token' => 'test-token',
-            'expires' => 1490988496
+            'expires' => 1490988496,
         ]);
 
         $this->Provider->expects($this->never())
@@ -281,7 +282,7 @@ class SocialAuthenticatorTest extends TestCase
         $service = (new ServiceFactory())->createFromProvider('facebook');
         $this->Request = $this->Request->withAttribute('socialService', $service);
         $identifiers = new IdentifierCollection([
-            'CakeDC/Users.Social'
+            'CakeDC/Users.Social',
         ]);
         $Authenticator = new SocialAuthenticator($identifiers);
         $Response = new Response();
@@ -303,19 +304,19 @@ class SocialAuthenticatorTest extends TestCase
         $this->Request = $this->Request->withUri($uri);
         $this->Request = $this->Request->withQueryParams([
             'code' => 'ZPO9972j3092304230',
-            'state' => '__TEST_STATE__'
+            'state' => '__TEST_STATE__',
         ]);
         $this->Request = $this->Request->withAttribute('params', [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'socialLogin',
-            'provider' => 'facebook'
+            'provider' => 'facebook',
         ]);
         $this->Request->getSession()->write('oauth2state', '__TEST_STATE__');
 
         $Token = new \League\OAuth2\Client\Token\AccessToken([
             'access_token' => 'test-token',
-            'expires' => 1490988496
+            'expires' => 1490988496,
         ]);
 
         $user = new FacebookUser([
@@ -325,29 +326,29 @@ class SocialAuthenticatorTest extends TestCase
             'last_name' => 'User',
             'hometown' => [
                 'id' => '108226049197930',
-                'name' => 'Madrid'
+                'name' => 'Madrid',
             ],
             'picture' => [
                 'data' => [
                     'url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
-                    'is_silhouette' => false
-                ]
+                    'is_silhouette' => false,
+                ],
             ],
             'cover' => [
                 'source' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
-                'id' => '1'
+                'id' => '1',
             ],
             'gender' => 'male',
             'locale' => 'en_US',
             'link' => 'https://www.facebook.com/app_scoped_user_id/1/',
             'timezone' => -5,
             'age_range' => [
-                'min' => 21
+                'min' => 21,
             ],
             'bio' => 'I am the best test user in the world.',
             'picture_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
             'is_silhouette' => false,
-            'cover_photo_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg'
+            'cover_photo_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
         ]);
 
         $this->Provider->expects($this->never())
@@ -374,7 +375,7 @@ class SocialAuthenticatorTest extends TestCase
         $service = (new ServiceFactory())->createFromProvider('facebook');
         $this->Request = $this->Request->withAttribute('socialService', $service);
         $identifiers = new IdentifierCollection([
-            'CakeDC/Users.Social'
+            'CakeDC/Users.Social',
         ]);
         $Authenticator = new SocialAuthenticator($identifiers);
         $Response = new Response();
@@ -385,7 +386,7 @@ class SocialAuthenticatorTest extends TestCase
             $rawData = ['token' => $Token] + $user->toArray();
             $mapper = new MapUser();
             $expected = [
-                'rawData' => $mapper($service, $rawData)
+                'rawData' => $mapper($service, $rawData),
             ];
             $actual = $e->getAttributes();
             $this->assertEquals($expected, $actual);
@@ -408,19 +409,19 @@ class SocialAuthenticatorTest extends TestCase
         $this->Request = $this->Request->withUri($uri);
         $this->Request = $this->Request->withQueryParams([
             'code' => 'ZPO9972j3092304230',
-            'state' => '__TEST_STATE__'
+            'state' => '__TEST_STATE__',
         ]);
         $this->Request = $this->Request->withAttribute('params', [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'socialLogin',
-            'provider' => 'facebook'
+            'provider' => 'facebook',
         ]);
         $this->Request->getSession()->write('oauth2state', '__TEST_STATE__');
 
         $Token = new \League\OAuth2\Client\Token\AccessToken([
             'access_token' => 'test-token',
-            'expires' => 1490988496
+            'expires' => 1490988496,
         ]);
 
         $user = new FacebookUser([
@@ -430,29 +431,29 @@ class SocialAuthenticatorTest extends TestCase
             'last_name' => 'User',
             'hometown' => [
                 'id' => '108226049197930',
-                'name' => 'Madrid'
+                'name' => 'Madrid',
             ],
             'picture' => [
                 'data' => [
                     'url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
-                    'is_silhouette' => false
-                ]
+                    'is_silhouette' => false,
+                ],
             ],
             'cover' => [
                 'source' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
-                'id' => '1'
+                'id' => '1',
             ],
             'gender' => 'male',
             'locale' => 'en_US',
             'link' => 'https://www.facebook.com/app_scoped_user_id/1/',
             'timezone' => -5,
             'age_range' => [
-                'min' => 21
+                'min' => 21,
             ],
             'bio' => 'I am the best test user in the world.',
             'picture_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
             'is_silhouette' => false,
-            'cover_photo_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg'
+            'cover_photo_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
         ]);
 
         $this->Provider->expects($this->never())
@@ -491,6 +492,7 @@ class SocialAuthenticatorTest extends TestCase
 
     /**
      * Data provider for testAuthenticateErrorException
+     *
      * @return array
      */
     public function dataProviderAuthenticateErrorException()
@@ -498,12 +500,12 @@ class SocialAuthenticatorTest extends TestCase
         return [
             [
                 new AccountNotActiveException('Not Active'),
-                SocialAuthenticator::FAILURE_ACCOUNT_NOT_ACTIVE
+                SocialAuthenticator::FAILURE_ACCOUNT_NOT_ACTIVE,
             ],
             [
                 new UserNotActiveException('Not Active'),
-                SocialAuthenticator::FAILURE_USER_NOT_ACTIVE
-            ]
+                SocialAuthenticator::FAILURE_USER_NOT_ACTIVE,
+            ],
         ];
     }
 
@@ -512,7 +514,6 @@ class SocialAuthenticatorTest extends TestCase
      *
      * @param \Exception $exception thrown exception
      * @param string $status expected status from Result object
-     *
      * @dataProvider dataProviderAuthenticateErrorException
      * @return void
      */
@@ -522,19 +523,19 @@ class SocialAuthenticatorTest extends TestCase
         $this->Request = $this->Request->withUri($uri);
         $this->Request = $this->Request->withQueryParams([
             'code' => 'ZPO9972j3092304230',
-            'state' => '__TEST_STATE__'
+            'state' => '__TEST_STATE__',
         ]);
         $this->Request = $this->Request->withAttribute('params', [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'socialLogin',
-            'provider' => 'facebook'
+            'provider' => 'facebook',
         ]);
         $this->Request->getSession()->write('oauth2state', '__TEST_STATE__');
 
         $Token = new \League\OAuth2\Client\Token\AccessToken([
             'access_token' => 'test-token',
-            'expires' => 1490988496
+            'expires' => 1490988496,
         ]);
 
         $user = new FacebookUser([
@@ -545,29 +546,29 @@ class SocialAuthenticatorTest extends TestCase
             'email' => 'test@gmail.com',
             'hometown' => [
                 'id' => '108226049197930',
-                'name' => 'Madrid'
+                'name' => 'Madrid',
             ],
             'picture' => [
                 'data' => [
                     'url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
-                    'is_silhouette' => false
-                ]
+                    'is_silhouette' => false,
+                ],
             ],
             'cover' => [
                 'source' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
-                'id' => '1'
+                'id' => '1',
             ],
             'gender' => 'male',
             'locale' => 'en_US',
             'link' => 'https://www.facebook.com/app_scoped_user_id/1/',
             'timezone' => -5,
             'age_range' => [
-                'min' => 21
+                'min' => 21,
             ],
             'bio' => 'I am the best test user in the world.',
             'picture_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
             'is_silhouette' => false,
-            'cover_photo_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg'
+            'cover_photo_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
         ]);
 
         $this->Provider->expects($this->never())

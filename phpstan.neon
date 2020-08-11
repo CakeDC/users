@@ -1,7 +1,16 @@
+includes:
+    - phpstan-baseline.neon
+
 parameters:
-    level: 4
-    autoload_files:
+    level: 6
+    checkMissingIterableValueType: false
+    checkGenericClassInNonGenericObjectType: false
+    bootstrapFiles:
         - tests/bootstrap.php
+    excludes_analyse:
+        - src/Controller/SocialAccountsController.php
+        - src/Controller/UsersAccountsController.php
+        - src/Controller/AppAccountsController.php
     ignoreErrors:
 
 services:

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,13 +13,12 @@
 
 namespace CakeDC\Users\Controller\Traits;
 
+use Cake\Core\Configure;
+use Cake\Validation\Validator;
 use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Exception\UserNotFoundException;
 use CakeDC\Users\Exception\WrongPasswordException;
 use CakeDC\Users\Plugin;
-use Cake\Core\Configure;
-use Cake\Utility\Hash;
-use Cake\Validation\Validator;
 use Exception;
 
 /**
@@ -35,15 +36,14 @@ trait PasswordManagementTrait
      * reset password with session key (email token has already been validated)
      *
      * @param int|string|null $id user_id, null for logged in user id
-     *
      * @return mixed
      */
     public function changePassword($id = null)
     {
-        $user = $this->getUsersTable()->newEntity();
-        $identity = $this->request->getAttribute('identity');
-        $identity = isset($identity) ? $identity : [];
-        $userId = Hash::get($identity, 'id');
+        $user = $this->getUsersTable()->newEntity([], ['validate' => false]);
+        $identity = $this->getRequest()->getAttribute('identity');
+        $identity = $identity ?? [];
+        $userId = $identity['id'] ?? null;
 
         if ($userId) {
             if ($id && $identity['is_superuser'] && Configure::read('Users.Superuser.allowedToChangePasswords')) {
@@ -57,14 +57,18 @@ trait PasswordManagementTrait
                 $validatePassword = true;
                 $redirect = Configure::read('Users.Profile.route');
             } else {
-                $this->Flash->error(__d('CakeDC/Users', 'Changing another user\'s password is not allowed'));
+                $this->Flash->error(
+                    __d('cake_d_c/users', 'Changing another user\'s password is not allowed')
+                );
                 $this->redirect(Configure::read('Users.Profile.route'));
 
                 return;
             }
         } else {
             // password reset
-            $user->id = $this->request->getSession()->read(Configure::read('Users.Key.Session.resetPasswordUserId'));
+            $user->id = $this->getRequest()->getSession()->read(
+                Configure::read('Users.Key.Session.resetPasswordUserId')
+            );
             $validatePassword = false;
             $redirect = $this->Authentication->getConfig('loginAction');
             if (!$user->id) {
@@ -75,7 +79,7 @@ trait PasswordManagementTrait
             }
         }
         $this->set('validatePassword', $validatePassword);
-        if ($this->request->is(['post', 'put'])) {
+        if ($this->getRequest()->is(['post', 'put'])) {
             try {
                 $validator = $this->getUsersTable()->validationPasswordConfirm(new Validator());
                 if ($validatePassword) {
@@ -83,14 +87,14 @@ trait PasswordManagementTrait
                 }
                 $user = $this->getUsersTable()->patchEntity(
                     $user,
-                    $this->request->getData(),
+                    $this->getRequest()->getData(),
                     [
                         'validate' => $validator,
                         'accessibleFields' => [
                             'current_password' => true,
                             'password' => true,
                             'password_confirm' => true,
-                        ]
+                        ],
                     ]
                 );
 
@@ -100,8 +104,8 @@ trait PasswordManagementTrait
                     $result = $this->getUsersTable()->changePassword($user);
                     if ($result) {
                         $event = $this->dispatchEvent(Plugin::EVENT_AFTER_CHANGE_PASSWORD, ['user' => $result]);
-                        if (!empty($event) && is_array($event->result)) {
-                            return $this->redirect($event->result);
+                        if (!empty($event) && is_array($event->getResult())) {
+                            return $this->redirect($event->getResult());
                         }
                         $this->Flash->success(__d('cake_d_c/users', 'Password has been changed successfully'));
 
@@ -141,20 +145,20 @@ trait PasswordManagementTrait
      */
     public function requestResetPassword()
     {
-        $this->set('user', $this->getUsersTable()->newEntity());
+        $this->set('user', $this->getUsersTable()->newEntity([], ['validate' => false]));
         $this->set('_serialize', ['user']);
-        if (!$this->request->is('post')) {
+        if (!$this->getRequest()->is('post')) {
             return;
         }
 
-        $reference = $this->request->getData('reference');
+        $reference = $this->getRequest()->getData('reference');
         try {
             $resetUser = $this->getUsersTable()->resetToken($reference, [
                 'expiration' => Configure::read('Users.Token.expiration'),
                 'checkActive' => false,
                 'sendEmail' => true,
                 'ensureActive' => Configure::read('Users.Registration.ensureActive'),
-                'type' => 'password'
+                'type' => 'password',
             ]);
             if ($resetUser) {
                 $msg = __d('cake_d_c/users', 'Please check your email to continue with password reset process');
@@ -186,7 +190,7 @@ trait PasswordManagementTrait
      */
     public function resetOneTimePasswordAuthenticator($id = null)
     {
-        if ($this->request->is('post')) {
+        if ($this->getRequest()->is('post')) {
             try {
                 $query = $this->getUsersTable()->query();
                 $query->update()
@@ -197,11 +201,10 @@ trait PasswordManagementTrait
                 $message = __d('cake_d_c/users', 'Google Authenticator token was successfully reset');
                 $this->Flash->success($message, 'default');
             } catch (\Exception $e) {
-                $message = $e->getMessage();
-                $this->Flash->error($message, 'default');
+                $this->Flash->error(__d('cake_d_c/users', 'Could not reset Google Authenticator'), 'default');
             }
         }
 
-        return $this->redirect($this->request->referer());
+        return $this->redirect($this->getRequest()->referer());
     }
 }

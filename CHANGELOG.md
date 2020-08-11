@@ -1,5 +1,36 @@
 Changelog
 =========
+Releases for CakePHP 4
+-------------
+* Next
+  * 
+
+* 9.0.3
+  * Ukrainian (uk) by @yarkm13
+  * Docs improvements
+  * Fix DebugKit permissions issues
+  
+* 9.0.2
+  * Added a custom Unauthorized Handler
+    * If logged user access unauthorized url he is redirected to referer url or '/' if no referer url
+    * If not logged user access unauthorized url he is redirected to configured url (default to login)
+    * on login we only use the redirect url from querystring 'redirect' if user can access the target url
+    * App can configure a callable for 'url' option to define a custom logic to retrieve the url for unauthorized redirect
+  * Added postLink method to AuthLinkHelper
+  * UserHelper::welcome now works with request's attribute 'identity'
+
+* 9.0.1
+  * Improved routes
+  * Improved integration tests
+  * Fixed warnings related to arguments in function calls
+
+* 9.0.0
+   * Migration to CakePHP 4
+   * Compatible with cakephp/authentication
+   * Compatible with cakephp/authorization
+   * Added/removed/changed some configurations to work with new authentication/authorization plugins, [please check Migration guide for more info](https://github.com/CakeDC/users/blob/9.next/Docs/Documentation/Migration/8.x-9.0.md).
+   * Events constants were moved/removed from AuthComponent to Plugin class and their values was also updated, [please check Migration guide for more info](https://github.com/CakeDC/users/blob/9.next/Docs/Documentation/Migration/8.x-9.0.md).
+   * Migrated usage of AuthComponent to Authorization/Authentication plugins.
 
 Releases for CakePHP 3
 -------------
@@ -13,7 +44,7 @@ Releases for CakePHP 3
 
 * 8.4.0
   * Rehash password if needed at login
-  
+
 * 8.3.0
   * Bootstrap don't need to listen for EVENT_FAILED_SOCIAL_LOGIN
 
@@ -30,7 +61,7 @@ Releases for CakePHP 3
   * Updated to latest version of Google OAuth
   * Added plugin object
   * Fixed action changePassword to work with post or put request
- 
+
 * 8.0.2
   * Add default role for users registered via social login
 
@@ -45,14 +76,14 @@ Releases for CakePHP 3
   * Added new translations
   * Improved customization options for recaptcha integration
 
-* 7.0.2 
+* 7.0.2
   * Fixed an issue with 2FA only working on the second try
 
-* 7.0.1 
+* 7.0.1
   * Fixed a security issue in 2 factor authentication, reported by @ndm2
   * Updated to cakedc/auth ^3.0
   * Documentation fixes
-  
+
 * 7.0.0
   * Removed deprecations for CakePHP 3.6
   * Added a new `UsersAuthComponent::EVENT_AFTER_CHANGE_PASSWORD`
@@ -65,7 +96,7 @@ Releases for CakePHP 3
   * Updated Facebook Graph version to 2.8
   * Fixed flash error messages on logic
   * Added link social account feature for twitter
-  * Switched to codecov  
+  * Switched to codecov
 
 * 5.2.0
   * Compatible with 3.5, deprecations will be removed in next major version of the plugin
@@ -117,7 +148,7 @@ Releases for CakePHP 3
 * 4.1.2
   * Fix RememberMe redirect
   * Fix AuthLink rendering inside Cells
-  
+
 * 4.1.1
   * Add missing password field in add user
 
@@ -134,7 +165,7 @@ Releases for CakePHP 3
   * Fixed RegisterBehavior api, make getRegisterValidators public.
 
 * 3.2.3
-  * Added compatibility with CakePHP 3.3+ 
+  * Added compatibility with CakePHP 3.3+
   * Fixed several bugs, including regression issue with Facebook login & improvements
 
 * 3.2.2
@@ -147,7 +178,7 @@ Releases for CakePHP 3
   * Improved registration and reset password user already logged in logic
   * Several bugfixes
   * AuthLinkHelper added to render links if user is allowed only
-  
+
 * 3.1.5
   * SocialAuthenticate improvements
   * Authorize Rules. Owner rule

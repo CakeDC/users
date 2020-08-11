@@ -1,0 +1,4 @@
+# rector.yaml
+services:
+    Rector\Php\Rector\FunctionLike\ParamTypeDeclarationRector: ~
+    Rector\Php\Rector\FunctionLike\ReturnTypeDeclarationRector: ~

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -19,7 +21,6 @@ use Cake\TestSuite\TestCase;
  */
 class SocialAccountsTableTest extends TestCase
 {
-
     /**
      * Fixtures
      *
@@ -27,7 +28,7 @@ class SocialAccountsTableTest extends TestCase
      */
     public $fixtures = [
         'plugin.CakeDC/Users.SocialAccounts',
-        'plugin.CakeDC/Users.Users'
+        'plugin.CakeDC/Users.Users',
     ];
 
     /**
@@ -35,7 +36,7 @@ class SocialAccountsTableTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->SocialAccounts = TableRegistry::getTableLocator()->get('CakeDC/Users.SocialAccounts');
@@ -46,7 +47,7 @@ class SocialAccountsTableTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->SocialAccounts);
 

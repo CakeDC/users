@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -15,11 +16,9 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 /**
  * UsersFixture
- *
  */
 class UsersFixture extends TestFixture
 {
-
     /**
      * Fields
      *
@@ -61,7 +60,7 @@ class UsersFixture extends TestFixture
      *
      * @return void
      */
-    public function init()
+    public function init(): void
     {
         $this->records = [
             [
@@ -88,15 +87,16 @@ class UsersFixture extends TestFixture
                         'keyHandle' => 'fake key handle',
                         'publicKey' => 'afdoaj0-23u423-ad ujsf-as8-0-afsd',
                         'certificate' => '23jdsfoasdj0f9sa082304823423',
-                        'counter' => 1
-                    ]
-                ])
+                        'counter' => 1,
+                    ],
+                ]),
             ],
             [
                 'id' => '00000000-0000-0000-0000-000000000002',
                 'username' => 'user-2',
                 'email' => 'user-2@test.com',
-                'password' => '12345',
+                //The password real value is 12345
+                'password' => '$2y$10$Nvu7ipP.z8tiIl75OdUvt.86vuG6iKMoHIOc7O7mboFI85hSyTEde',
                 'first_name' => 'user',
                 'last_name' => 'second',
                 'token' => '6614f65816754310a5f0553436dd89e9',
@@ -110,7 +110,7 @@ class UsersFixture extends TestFixture
                 'is_superuser' => true,
                 'role' => 'admin',
                 'created' => '2015-06-24 17:33:54',
-                'modified' => '2015-06-24 17:33:54'
+                'modified' => '2015-06-24 17:33:54',
             ],
             [
                 'id' => '00000000-0000-0000-0000-000000000003',
@@ -128,16 +128,15 @@ class UsersFixture extends TestFixture
                 'is_superuser' => true,
                 'tos_date' => '2015-06-24 17:33:54',
                 'active' => false,
-                'is_superuser' => true,
                 'role' => 'admin',
                 'created' => '2015-06-24 17:33:54',
-                'modified' => '2015-06-24 17:33:54'
+                'modified' => '2015-06-24 17:33:54',
             ],
             [
                 'id' => '00000000-0000-0000-0000-000000000004',
                 'username' => 'user-4',
                 'email' => '4@example.com',
-                'password' => 'Lorem ipsum dolor sit amet',
+                'password' => '$2y$10$Nvu7ipP.z8tiIl75OdUvt.86vuG6iKMoHIOc7O7mboFI85hSyTEde',
                 'first_name' => 'FirstName4',
                 'last_name' => 'Lorem ipsum dolor sit amet',
                 'token' => 'token-4',
@@ -149,10 +148,9 @@ class UsersFixture extends TestFixture
                 'is_superuser' => false,
                 'tos_date' => '2015-06-24 17:33:54',
                 'active' => true,
-                'is_superuser' => false,
                 'role' => 'Lorem ipsum dolor sit amet',
                 'created' => '2015-06-24 17:33:54',
-                'modified' => '2015-06-24 17:33:54'
+                'modified' => '2015-06-24 17:33:54',
             ],
             [
                 'id' => '00000000-0000-0000-0000-000000000005',
@@ -172,7 +170,7 @@ class UsersFixture extends TestFixture
                 'is_superuser' => false,
                 'role' => 'user',
                 'created' => '2015-06-24 17:33:54',
-                'modified' => '2015-06-24 17:33:54'
+                'modified' => '2015-06-24 17:33:54',
             ],
             [
                 'id' => '00000000-0000-0000-0000-000000000006',
@@ -192,7 +190,7 @@ class UsersFixture extends TestFixture
                 'is_superuser' => false,
                 'role' => 'user',
                 'created' => '2015-06-24 17:33:54',
-                'modified' => '2015-06-24 17:33:54'
+                'modified' => '2015-06-24 17:33:54',
             ],
             [
                 'id' => '00000000-0000-0000-0000-000000000007',
@@ -212,7 +210,7 @@ class UsersFixture extends TestFixture
                 'is_superuser' => false,
                 'role' => 'Lorem ipsum dolor sit amet',
                 'created' => '2015-06-24 17:33:54',
-                'modified' => '2015-06-24 17:33:54'
+                'modified' => '2015-06-24 17:33:54',
             ],
             [
                 'id' => '00000000-0000-0000-0000-000000000008',
@@ -232,7 +230,7 @@ class UsersFixture extends TestFixture
                 'is_superuser' => false,
                 'role' => 'Lorem ipsum dolor sit amet',
                 'created' => '2015-06-24 17:33:54',
-                'modified' => '2015-06-24 17:33:54'
+                'modified' => '2015-06-24 17:33:54',
             ],
             [
                 'id' => '00000000-0000-0000-0000-000000000009',
@@ -252,7 +250,7 @@ class UsersFixture extends TestFixture
                 'is_superuser' => false,
                 'role' => 'Lorem ipsum dolor sit amet',
                 'created' => '2015-06-24 17:33:54',
-                'modified' => '2015-06-24 17:33:54'
+                'modified' => '2015-06-24 17:33:54',
             ],
             [
                 'id' => '00000000-0000-0000-0000-000000000010',
@@ -272,7 +270,7 @@ class UsersFixture extends TestFixture
                 'is_superuser' => false,
                 'role' => 'Lorem ipsum dolor sit amet',
                 'created' => '2015-06-24 17:33:54',
-                'modified' => '2015-06-24 17:33:54'
+                'modified' => '2015-06-24 17:33:54',
             ],
         ];
 

@@ -18,7 +18,7 @@ composer require league/oauth2-linkedin:@stable
 composer require league/oauth1-client:@stable
 ```
 
-NOTE: you'll need to enable social login in your bootstrap.php file if you want to use it, social
+NOTE: you'll need to enable social login if you want to use it, social
 login is disabled by default. Check the [Configuration](Configuration.md#configuration-for-social-login) page for more details.
 
 ```
@@ -60,29 +60,10 @@ Ensure the Users Plugin is loaded in your src/Application.php file
         parent::bootstrap();
 
         $this->addPlugin(\CakeDC\Users\Plugin::class);
+        // Uncomment the line below to load your custom users.php config file
+        //Configure::write('Users.config', ['users']);
     }
 ```
-
-In CakePHP 3.8 , this method is deprecated, load the plugin in /src/Application.php :
-
-```
-// In src/Application.php. Requires at least 3.6.0
-namespace App;
-use Cake\Http\BaseApplication;
-
-class Application extends BaseApplication 
-{
-    public function bootstrap()
-    {
-        parent::bootstrap();
-
-        // Load a plugin with a vendor namespace by 'short name'
-        $this->addPlugin('CakeDC/Users');
-        Configure::write('Users.config', ['users']);
-    }
-}
-```
-
 
 Creating Required Tables
 ------------------------
@@ -105,10 +86,10 @@ bin/cake users addSuperuser
 Customization
 ----------
 
-config/bootstrap.php
+Application::bootstrap
 ```
+$this->addPlugin(\CakeDC\Users\Plugin::class);
 Configure::write('Users.config', ['users']);
-Plugin::load('CakeDC/Users', ['routes' => true, 'bootstrap' => true]);
 Configure::write('Users.Social.login', true); //to enable social login
 ```
 

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -12,7 +14,6 @@ namespace CakeDC\Users\Controller\Component;
 
 use Cake\Controller\Component;
 use Cake\Core\Configure;
-use Cake\Utility\Hash;
 
 class SetupComponent extends Component
 {
@@ -20,9 +21,10 @@ class SetupComponent extends Component
      * Initialize
      *
      * @param array $config component configuration
+     * @return void
      * @throws \Exception
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         parent::initialize($config);
         $this->loadAuthComponents($this->getController());
@@ -38,7 +40,7 @@ class SetupComponent extends Component
     protected function loadAuthComponents($controller)
     {
         $authenticationConfig = Configure::read('Auth.AuthenticationComponent');
-        if (Hash::get($authenticationConfig, 'load')) {
+        if ($authenticationConfig['load'] ?? false) {
             unset($authenticationConfig['config']);
             $controller->loadComponent('Authentication.Authentication', $authenticationConfig);
         }

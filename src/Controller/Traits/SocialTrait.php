@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -12,7 +14,6 @@
 namespace CakeDC\Users\Controller\Traits;
 
 use CakeDC\Users\Loader\LoginComponentLoader;
-use Cake\Http\Exception\NotFoundException;
 
 /**
  * Covers registration features and email token validation
@@ -24,7 +25,7 @@ trait SocialTrait
     /**
      * Render the social email form
      *
-     * @throws NotFoundException
+     * @throws \Cake\Http\Exception\NotFoundException
      * @return mixed
      */
     public function socialEmail()

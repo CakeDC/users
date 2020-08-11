@@ -169,13 +169,15 @@ You need to configure 2 things:
     Configure::write('Auth.Identifiers', $identifiers);
 ```
 
-* Override the login.ctp template to change the Form->control to "email". Add (or copy from the https://github.com/CakeDC/users/blob/master/src/Template/Users/login.ctp) the file login.ctp to path /src/Template/Plugin/CakeDC/Users/Users/login.ctp and ensure it has the following content
+* Override the login.php template to change the Form->control to "email". 
+Add (or copy from the [/templates/Users/login.php](../../templates/Users/login.php)) the file login.php to path /templates/plugin/CakeDC/Users/Users/login.php 
+and ensure it has the following content
 
 ```php
         // ... inside the Form
         <?= $this->Form->control('email', ['required' => true]) ?>
         <?= $this->Form->control('password', ['required' => true]) ?>
-        // ... rest of your login.ctp code
+        // ... rest of your login.php code
 ```
 
 
@@ -187,24 +189,24 @@ Email Templates
 To modify the templates as needed copy them to your application
 
 ```
-cp -r vendor/cakedc/users/src/Template/Email/* src/Template/Plugin/CakeDC/Users/Email/
+cp -r vendor/cakedc/users/templates/email/ templates/plugin/CakeDC/Users/email/
 ```
 
-Then customize the email templates as you need under the src/Template/Plugin/CakeDC/Users/Email/ directory
+Then customize the email templates as you need under the templates/Plugin/CakeDC/Users/email/ directory
 
 Plugin Templates
 ---------------
 
 Similar to Email Templates customization, follow the CakePHP conventions to put your new templates under
-src/Template/Plugin/CakeDC/Users/[Controller]/[view].ctp
+templates/plugin/CakeDC/Users/[Controller]/[view].php
 
-Check http://book.cakephp.org/3.0/en/plugins.html#overriding-plugin-templates-from-inside-your-application
+Check https://book.cakephp.org/4/en/plugins.html#overriding-plugin-templates-from-inside-your-application
 
 Flash Messages
 ---------------
 
 To modify the flash messages, use the standard PO file provided by the plugin and customize the messages
-Check http://book.cakephp.org/3.0/en/core-libraries/internationalization-and-localization.html#setting-up-translations
+Check https://book.cakephp.org/4/en/core-libraries/internationalization-and-localization.html#setting-up-translations
 for more details about how the PO files should be managed in your application.
 
 We've included an updated POT file with all the `Users` domain keys for your customization.

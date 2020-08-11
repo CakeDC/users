@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -12,17 +14,20 @@
 namespace CakeDC\Users\Controller\Component;
 
 use Authentication\Authenticator\ResultInterface;
-use CakeDC\Auth\Authentication\AuthenticationService;
-use CakeDC\Users\Plugin;
-use CakeDC\Users\Utility\UsersUrl;
 use Cake\Controller\Component;
 use Cake\Core\Configure;
+use Cake\Http\ServerRequest;
+use CakeDC\Auth\Authentication\AuthenticationService;
+use CakeDC\Auth\Traits\IsAuthorizedTrait;
+use CakeDC\Users\Plugin;
+use CakeDC\Users\Utility\UsersUrl;
 
 /**
  * LoginFailure component
  */
 class LoginComponent extends Component
 {
+    use IsAuthorizedTrait;
 
     /**
      * Default configuration.
@@ -34,6 +39,16 @@ class LoginComponent extends Component
         'messages' => [],
         'targetAuthenticator' => null,
     ];
+
+    /**
+     * Gets the request instance.
+     *
+     * @return \Cake\Http\ServerRequest
+     */
+    public function getRequest(): ServerRequest
+    {
+        return $this->getController()->getRequest();
+    }
 
     /**
      * Handle login, if success redirect to 'AuthenticationComponent.loginRedirect' or show error
@@ -59,13 +74,14 @@ class LoginComponent extends Component
         if ($request->is('post') || $errorOnlyPost === false) {
             return $this->handleFailure($redirectFailure);
         }
+
+        return null;
     }
 
     /**
      * Handle login failure
      *
      * @param bool $redirect should redirect?
-     *
      * @return \Cake\Http\Response|null
      */
     public function handleFailure($redirect = true)
@@ -87,8 +103,8 @@ class LoginComponent extends Component
     /**
      * Get the target authenticator result for current login action
      *
-     * @param AuthenticationService $service authentication service.
-     * @return ResultInterface|null
+     * @param \CakeDC\Auth\Authentication\AuthenticationService $service authentication service.
+     * @return \Authentication\Authenticator\ResultInterface|null
      */
     public function getTargetAuthenticatorResult(AuthenticationService $service)
     {
@@ -106,10 +122,10 @@ class LoginComponent extends Component
     /**
      * Get the error message for result status
      *
-     * @param ResultInterface|null $result Result object;
+     * @param \Authentication\Authenticator\ResultInterface|null $result Result object;
      * @return string
      */
-    public function getErrorMessage(ResultInterface $result = null)
+    public function getErrorMessage(?ResultInterface $result = null)
     {
         $messagesMap = $this->getConfig('messages');
 
@@ -124,18 +140,18 @@ class LoginComponent extends Component
      * Determine redirect url after user identified
      *
      * @param array $user user data after identified
-     * @return \Cake\Http\Response
+     * @return \Cake\Http\Response|null
      */
     protected function afterIdentifyUser($user)
     {
         $event = $this->getController()->dispatchEvent(Plugin::EVENT_AFTER_LOGIN, ['user' => $user]);
-        if (is_array($event->result)) {
-            return $this->getController()->redirect($event->result);
+        if (is_array($event->getResult())) {
+            return $this->getController()->redirect($event->getResult());
         }
 
-        $query = $this->getController()->request->getQueryParams();
+        $query = $this->getController()->getRequest()->getQueryParams();
         $redirectUrl = $this->getController()->Authentication->getConfig('loginRedirect');
-        if (isset($query['redirect'])) {
+        if ($this->isAuthorized($query['redirect'] ?? null)) {
             $redirectUrl = $query['redirect'];
         }
 
@@ -148,7 +164,6 @@ class LoginComponent extends Component
      * @param \CakeDC\Auth\Authentication\AuthenticationService $service Authentication service
      * @param \CakeDC\Users\Model\Entity\User $user User entity.
      * @param \Cake\Http\ServerRequest $request The http request.
-     *
      * @return void
      */
     protected function handlePasswordRehash($service, $user, \Cake\Http\ServerRequest $request)
@@ -156,10 +171,10 @@ class LoginComponent extends Component
         $indentifiersNames = (array)Configure::read('Auth.PasswordRehash.identifiers');
         foreach ($indentifiersNames as $indentifierName) {
             /**
-             * @var \Authentication\PasswordHasher\PasswordHasherTrait $checker |null
+             * @var \Authentication\Identifier\AbstractIdentifier|null $checker
              */
             $checker = $service->identifiers()->get($indentifierName);
-            if (!$checker || !$checker->needsPasswordRehash()) {
+            if (!$checker || method_exists($checker, 'needsPasswordRehash') && !$checker->needsPasswordRehash()) {
                 continue;
             }
             $password = $request->getData('password');

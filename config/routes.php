@@ -8,29 +8,45 @@
  * @copyright Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
-use CakeDC\Users\Utility\UsersUrl;
+/**
+ * @var \Cake\Routing\RouteBuilder $routes
+ */
 use Cake\Core\Configure;
 use Cake\Routing\RouteBuilder;
-use Cake\Routing\Router;
-//Use custom path if url is customized
-$baseUsersPath = UsersUrl::isCustom() ? '/users-base' : '/users';
-Router::plugin('CakeDC/Users', ['path' => $baseUsersPath], function (RouteBuilder $routes) {
-    $routes->fallbacks('DashedRoute');
-});
-Router::connect('/accounts/validate/*', [
+use CakeDC\Users\Utility\UsersUrl;
+
+$routes->connect('/accounts/validate/*', [
     'plugin' => 'CakeDC/Users',
     'controller' => 'SocialAccounts',
     'action' => 'validate'
 ]);
 // Google Authenticator related routes
 if (Configure::read('OneTimePasswordAuthenticator.login')) {
-    Router::connect('/verify', UsersUrl::actionParams('verify'));
+    $routes->connect('/verify', UsersUrl::actionRouteParams('verify'));
 
-    Router::connect('/resetOneTimePasswordAuthenticator', UsersUrl::actionParams('resetOneTimePasswordAuthenticator'));
+    $routes->connect('/resetOneTimePasswordAuthenticator', UsersUrl::actionRouteParams('resetOneTimePasswordAuthenticator'));
 }
 
-Router::connect('/profile/*', UsersUrl::actionParams('profile'));
-Router::connect('/login', UsersUrl::actionParams('login'));
-Router::connect('/logout', UsersUrl::actionParams('logout'));
-Router::connect('/link-social/*', UsersUrl::actionParams('linkSocial'));
-Router::connect('/callback-link-social/*', UsersUrl::actionParams('callbackLinkSocial'));
+$routes->connect('/profile/*', UsersUrl::actionRouteParams('profile'));
+$routes->connect('/login', UsersUrl::actionRouteParams('login'));
+$routes->connect('/logout', UsersUrl::actionRouteParams('logout'));
+$routes->connect('/link-social/*', UsersUrl::actionRouteParams('linkSocial'));
+$routes->connect('/callback-link-social/*', UsersUrl::actionRouteParams('callbackLinkSocial'));
+$routes->connect('/register', UsersUrl::actionRouteParams('register'));
+
+$oauthPath = Configure::read('OAuth.path');
+if (is_array($oauthPath)) {
+    $routes->scope('/auth', function (RouteBuilder $routes) use ($oauthPath) {
+        $routes->connect(
+            '/:provider',
+            $oauthPath,
+            ['provider' => implode('|', array_keys(Configure::read('OAuth.providers')))]
+        );
+    });
+}
+
+$routes->connect('/social-accounts/:action/*', [
+    'plugin' => 'CakeDC/Users',
+    'controller' => 'SocialAccounts',
+]);
+$routes->connect('/users/:action/*', UsersUrl::actionRouteParams(null));

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -15,7 +17,6 @@ use App\Controller\AppController as BaseController;
 
 /**
  * AppController for Users Plugin
- *
  */
 class AppController extends BaseController
 {
@@ -24,7 +25,7 @@ class AppController extends BaseController
      *
      * @return void
      */
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
         $this->loadComponent('Security');

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,12 +13,11 @@
 
 namespace CakeDC\Users\Controller\Traits;
 
-use CakeDC\Users\Plugin;
 use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
-use Cake\Utility\Hash;
+use CakeDC\Users\Plugin;
 
 /**
  * Covers registration features and email token validation
@@ -30,7 +31,7 @@ trait RegisterTrait
     /**
      * Register a new user
      *
-     * @throws NotFoundException
+     * @throws \Cake\Http\Exception\NotFoundException
      * @return mixed
      */
     public function register()
@@ -39,9 +40,9 @@ trait RegisterTrait
             throw new NotFoundException();
         }
 
-        $identity = $this->request->getAttribute('identity');
-        $identity = isset($identity) ? $identity : [];
-        $userId = Hash::get($identity, 'id');
+        $identity = $this->getRequest()->getAttribute('identity');
+        $identity = $identity ?? [];
+        $userId = $identity['id'] ?? null;
         if (!empty($userId) && !Configure::read('Users.Registration.allowLoggedIn')) {
             $this->Flash->error(__d('cake_d_c/users', 'You must log out to register a new user account'));
 
@@ -49,26 +50,28 @@ trait RegisterTrait
         }
 
         $usersTable = $this->getUsersTable();
-        $user = $usersTable->newEntity();
+        $user = $usersTable->newEmptyEntity();
         $validateEmail = (bool)Configure::read('Users.Email.validate');
         $useTos = (bool)Configure::read('Users.Tos.required');
         $tokenExpiration = Configure::read('Users.Token.expiration');
         $options = [
             'token_expiration' => $tokenExpiration,
             'validate_email' => $validateEmail,
-            'use_tos' => $useTos
+            'use_tos' => $useTos,
         ];
-        $requestData = $this->request->getData();
+        $requestData = $this->getRequest()->getData();
         $event = $this->dispatchEvent(Plugin::EVENT_BEFORE_REGISTER, [
             'usersTable' => $usersTable,
             'options' => $options,
             'userEntity' => $user,
         ]);
 
-        if ($event->result instanceof EntityInterface) {
-            $data = $event->result->toArray();
-            $data['password'] = $requestData['password']; //since password is a hidden property
-            if ($userSaved = $usersTable->register($user, $data, $options)) {
+        $result = $event->getResult();
+        if ($result instanceof EntityInterface) {
+            $data = $result->toArray();
+            $data['password'] = $requestData['password'] ?? null; //since password is a hidden property
+            $userSaved = $usersTable->register($user, $data, $options);
+            if ($userSaved) {
                 return $this->_afterRegister($userSaved);
             } else {
                 $this->set(compact('user'));
@@ -78,13 +81,13 @@ trait RegisterTrait
             }
         }
         if ($event->isStopped()) {
-            return $this->redirect($event->result);
+            return $this->redirect($event->getResult());
         }
 
         $this->set(compact('user'));
         $this->set('_serialize', ['user']);
 
-        if (!$this->request->is('post')) {
+        if (!$this->getRequest()->is('post')) {
             return;
         }
 
@@ -116,16 +119,16 @@ trait RegisterTrait
         }
 
         return $this->validateReCaptcha(
-            $this->request->getData('g-recaptcha-response'),
-            $this->request->clientIp()
+            $this->getRequest()->getData('g-recaptcha-response'),
+            $this->getRequest()->clientIp()
         );
     }
 
     /**
      * Prepare flash messages after registration, and dispatch afterRegister event
      *
-     * @param EntityInterface $userSaved User entity saved
-     * @return Response
+     * @param \Cake\Datasource\EntityInterface $userSaved User entity saved
+     * @return \Cake\Http\Response
      */
     protected function _afterRegister(EntityInterface $userSaved)
     {
@@ -135,10 +138,11 @@ trait RegisterTrait
             $message = __d('cake_d_c/users', 'Please validate your account before log in');
         }
         $event = $this->dispatchEvent(Plugin::EVENT_AFTER_REGISTER, [
-            'user' => $userSaved
+            'user' => $userSaved,
         ]);
-        if ($event->result instanceof Response) {
-            return $event->result;
+        $result = $event->getResult();
+        if ($result instanceof Response) {
+            return $result;
         }
         $this->Flash->success($message);
 

@@ -92,7 +92,7 @@ $config = [
             'Cookie' => [
                 'name' => 'remember_me',
                 'Config' => [
-                    'expires' => '1 month',
+                    'expire' => new \DateTime('+1 month'),
                     'httpOnly' => true,
                 ]
             ]
@@ -150,7 +150,7 @@ $config = [
                 'skipTwoFactorVerify' => true,
                 'rememberMeField' => 'remember_me',
                 'cookie' => [
-                    'expires' => '1 month',
+                    'expire' => new \DateTime('+1 month'),
                     'httpOnly' => true,
                 ],
                 'urlChecker' => 'Authentication.CakeRouter',
@@ -195,11 +195,7 @@ $config = [
         ],
         'AuthorizationMiddleware' => [
             'unauthorizedHandler' => [
-                'exceptions' => [
-                    'MissingIdentityException' => 'Authorization\Exception\MissingIdentityException',
-                    'ForbiddenException' => 'Authorization\Exception\ForbiddenException',
-                ],
-                'className' => 'Authorization.CakeRedirect',
+                'className' => 'CakeDC/Users.DefaultRedirect',
             ]
         ],
         'AuthorizationComponent' => [
@@ -269,7 +265,7 @@ $config = [
                 'service' => 'CakeDC\Auth\Social\Service\OAuth2Service',
                 'className' => 'Luchianenco\OAuth2\Client\Provider\Amazon',
                 'mapper' => 'CakeDC\Auth\Social\Mapper\Amazon',
-                'options' => [
+                 'options' => [
                     'redirectUri' => Router::fullBaseUrl() . '/auth/amazon',
                     'linkSocialUri' => Router::fullBaseUrl() . '/link-social/amazon',
                     'callbackLinkSocialUri' => Router::fullBaseUrl() . '/callback-link-social/amazon',

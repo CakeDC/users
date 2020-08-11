@@ -7,20 +7,15 @@ CakeDC Users Plugin
 [![Latest Version](https://poser.pugx.org/CakeDC/users/v/stable.png)](https://packagist.org/packages/CakeDC/users)
 [![License](https://poser.pugx.org/CakeDC/users/license.svg)](https://packagist.org/packages/CakeDC/users)
 
-Warning
--------
-
-**OUTDATED branch, please use the specific develop branch for each version, for example 8.x for the version 8 development**
-
-
 Versions and branches
 ---------------------
 
 | CakePHP | CakeDC Users Plugin | Tag   | Notes |
 | :-------------: | :------------------------: | :--:  | :---- |
-| 3.7             | [master](https://github.com/cakedc/users/tree/master)                      | 8.5.1 | stable |
-| 3.7             | [develop](https://github.com/cakedc/users/tree/develop)                      | - | unstable |
-| ^3.7            | [8.5](https://github.com/cakedc/users/tree/8.next)                      | 8.5.1 | stable |
+| ^4.0            | [master](https://github.com/cakedc/users/tree/master)                      | 9.0.3 | stable |
+| ^4.0            | [9.0](https://github.com/cakedc/users/tree/9.next)                      | 9.0.3 | stable |
+| ^3.7  <4.0      | [8.5](https://github.com/cakedc/users/tree/8.next)                      | 8.5.1 | stable |
+| ^3.7  <4.0      | [develop](https://github.com/cakedc/users/tree/develop)                 | - | unstable |
 | 3.6             | [8.1](https://github.com/cakedc/users/tree/8.1.0)                      | 8.1.0 | stable |
 | 3.5             | [6.x](https://github.com/cakedc/users/tree/6.x)                      | 6.0.1 | stable |
 | 3.4             | [5.x](https://github.com/cakedc/users/tree/5.x)                      | 5.2.0 | stable |
@@ -37,7 +32,7 @@ It covers the following features:
 * Remember me (Cookie) via https://github.com/CakeDC/auth
 * Manage user's profile
 * Admin management
-* Yubico U2F for Two-Factor Authentication 
+* Yubico U2F for Two-Factor Authentication
 * One-Time Password for Two-Factor Authentication
 
 The plugin is here to provide users related features following 2 approaches:
@@ -56,8 +51,8 @@ Another decision made was limiting the plugin dependencies on other packages as 
 Requirements
 ------------
 
-* CakePHP 3.6.0+
-* PHP 5.6+
+* CakePHP 4.0+
+* PHP 7.2+
 
 Documentation
 -------------

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,13 +13,14 @@
 
 namespace CakeDC\Users\Test\TestCase\Middleware;
 
-use CakeDC\Auth\Social\Mapper\Facebook;
-use CakeDC\Users\Middleware\SocialEmailMiddleware;
 use Cake\Core\Configure;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
+use Cake\Http\Runner;
 use Cake\Http\ServerRequestFactory;
 use Cake\TestSuite\TestCase;
+use CakeDC\Auth\Social\Mapper\Facebook;
+use CakeDC\Users\Middleware\SocialEmailMiddleware;
 use League\OAuth2\Client\Provider\FacebookUser;
 use Zend\Diactoros\Uri;
 
@@ -25,7 +28,7 @@ class SocialEmailMiddlewareTest extends TestCase
 {
     public $fixtures = [
         'plugin.CakeDC/Users.Users',
-        'plugin.CakeDC/Users.SocialAccounts'
+        'plugin.CakeDC/Users.SocialAccounts',
     ];
 
     /**
@@ -40,7 +43,7 @@ class SocialEmailMiddlewareTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -54,7 +57,7 @@ class SocialEmailMiddlewareTest extends TestCase
                 'linkSocialUri' => '/link-social/facebook',
                 'callbackLinkSocialUri' => '/callback-link-social/facebook',
                 'clientId' => '10003030300303',
-                'clientSecret' => 'secretpassword'
+                'clientSecret' => 'secretpassword',
             ],
             'collaborators' => [],
             'signature' => null,
@@ -63,8 +66,8 @@ class SocialEmailMiddlewareTest extends TestCase
                 'plugin' => 'CakeDC/Users',
                 'controller' => 'Users',
                 'action' => 'socialLogin',
-                'prefix' => null
-            ]
+                'prefix' => null,
+            ],
         ];
         Configure::write('OAuth.providers.facebook', $config);
 
@@ -76,7 +79,7 @@ class SocialEmailMiddlewareTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
 
@@ -92,7 +95,7 @@ class SocialEmailMiddlewareTest extends TestCase
     {
         $Token = new \League\OAuth2\Client\Token\AccessToken([
             'access_token' => 'test-token',
-            'expires' => 1490988496
+            'expires' => 1490988496,
         ]);
 
         $user = new FacebookUser([
@@ -103,29 +106,29 @@ class SocialEmailMiddlewareTest extends TestCase
             'email' => null,
             'hometown' => [
                 'id' => '108226049197930',
-                'name' => 'Madrid'
+                'name' => 'Madrid',
             ],
             'picture' => [
                 'data' => [
                     'url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
-                    'is_silhouette' => false
-                ]
+                    'is_silhouette' => false,
+                ],
             ],
             'cover' => [
                 'source' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
-                'id' => '1'
+                'id' => '1',
             ],
             'gender' => 'male',
             'locale' => 'en_US',
             'link' => 'https://www.facebook.com/app_scoped_user_id/1/',
             'timezone' => -5,
             'age_range' => [
-                'min' => 21
+                'min' => 21,
             ],
             'bio' => 'I am the best test user in the world.',
             'picture_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
             'is_silhouette' => false,
-            'cover_photo_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg'
+            'cover_photo_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
         ]);
         $user = [
                 'token' => $Token,
@@ -148,12 +151,17 @@ class SocialEmailMiddlewareTest extends TestCase
 
         $Middleware = new SocialEmailMiddleware();
         $response = new Response();
-        $next = function ($request, $response) {
-            return compact('request', 'response');
-        };
+        $response = $response->withStringBody(__METHOD__ . time());
+        $handler = $this->getMockBuilder(Runner::class)
+            ->setMethods(['handle'])
+            ->getMock();
+        $handler->expects($this->once())
+            ->method('handle')
+            ->with($this->equalTo($this->Request))
+            ->willReturn($response);
 
-        $result = $Middleware($this->Request, $response, $next);
-        $this->assertTrue(is_array($result));
+        $result = $Middleware->process($this->Request, $handler);
+        $this->assertSame($response, $result);
         $this->assertEmpty($this->Request->getSession()->read('Auth'));
         $this->assertEmpty($this->Request->getSession()->read('Users.successSocialLogin'));
     }
@@ -168,7 +176,7 @@ class SocialEmailMiddlewareTest extends TestCase
         $uri = new Uri('/auth/facebook');
         $this->Request = $this->Request->withUri($uri);
         $this->Request = $this->Request->withParsedBody([
-            'email' => 'example@example.com'
+            'email' => 'example@example.com',
         ]);
         $this->Request = $this->Request->withMethod('POST');
         $this->Request = $this->Request->withAttribute('params', [
@@ -179,12 +187,15 @@ class SocialEmailMiddlewareTest extends TestCase
 
         $Middleware = new SocialEmailMiddleware();
         $response = new Response();
-        $next = function ($request, $response) {
-            return compact('request', 'response');
-        };
+        $response = $response->withStringBody(__METHOD__ . time());
+        $handler = $this->getMockBuilder(Runner::class)
+            ->setMethods(['handle'])
+            ->getMock();
+        $handler->expects($this->never())
+            ->method('handle');
 
         $this->expectException(NotFoundException::class);
-        $Middleware($this->Request, $response, $next);
+        $Middleware->process($this->Request, $handler);
     }
 
     /**
@@ -196,7 +207,7 @@ class SocialEmailMiddlewareTest extends TestCase
     {
         $Token = new \League\OAuth2\Client\Token\AccessToken([
             'access_token' => 'test-token',
-            'expires' => 1490988496
+            'expires' => 1490988496,
         ]);
 
         $user = new FacebookUser([
@@ -207,29 +218,29 @@ class SocialEmailMiddlewareTest extends TestCase
             'email' => null,
             'hometown' => [
                 'id' => '108226049197930',
-                'name' => 'Madrid'
+                'name' => 'Madrid',
             ],
             'picture' => [
                 'data' => [
                     'url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
-                    'is_silhouette' => false
-                ]
+                    'is_silhouette' => false,
+                ],
             ],
             'cover' => [
                 'source' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
-                'id' => '1'
+                'id' => '1',
             ],
             'gender' => 'male',
             'locale' => 'en_US',
             'link' => 'https://www.facebook.com/app_scoped_user_id/1/',
             'timezone' => -5,
             'age_range' => [
-                'min' => 21
+                'min' => 21,
             ],
             'bio' => 'I am the best test user in the world.',
             'picture_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
             'is_silhouette' => false,
-            'cover_photo_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg'
+            'cover_photo_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
         ]);
         $user = [
             'token' => $Token,
@@ -245,7 +256,7 @@ class SocialEmailMiddlewareTest extends TestCase
         $uri = new Uri('/auth/facebook');
         $this->Request = $this->Request->withUri($uri);
         $this->Request = $this->Request->withParsedBody([
-            'email' => 'example@example.com'
+            'email' => 'example@example.com',
         ]);
         $this->Request = $this->Request->withMethod('POST');
         $this->Request = $this->Request->withAttribute('params', [
@@ -256,14 +267,18 @@ class SocialEmailMiddlewareTest extends TestCase
 
         $Middleware = new SocialEmailMiddleware();
         $response = new Response();
-        $next = function ($request, $response) {
-            return compact('request', 'response');
-        };
+        $response = $response->withStringBody(__METHOD__ . time());
+        $handler = $this->getMockBuilder(Runner::class)
+            ->setMethods(['handle'])
+            ->getMock();
+        $handler->expects($this->once())
+            ->method('handle')
+            ->with($this->equalTo($this->Request))
+            ->willReturn($response);
 
-        $result = $Middleware($this->Request, $response, $next);
-        $this->assertTrue(is_array($result));
+        $result = $Middleware->process($this->Request, $handler);
+        $this->assertSame($response, $result);
 
-        $this->assertEquals(200, $result['response']->getStatusCode());
         $actual = $this->Request->getSession()->read(Configure::read('Users.Key.Session.social'));
         $this->assertSame($user, $actual);
     }
@@ -277,7 +292,7 @@ class SocialEmailMiddlewareTest extends TestCase
     {
         $Token = new \League\OAuth2\Client\Token\AccessToken([
             'access_token' => 'test-token',
-            'expires' => 1490988496
+            'expires' => 1490988496,
         ]);
 
         $user = new FacebookUser([
@@ -288,29 +303,29 @@ class SocialEmailMiddlewareTest extends TestCase
             'email' => null,
             'hometown' => [
                 'id' => '108226049197930',
-                'name' => 'Madrid'
+                'name' => 'Madrid',
             ],
             'picture' => [
                 'data' => [
                     'url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
-                    'is_silhouette' => false
-                ]
+                    'is_silhouette' => false,
+                ],
             ],
             'cover' => [
                 'source' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
-                'id' => '1'
+                'id' => '1',
             ],
             'gender' => 'male',
             'locale' => 'en_US',
             'link' => 'https://www.facebook.com/app_scoped_user_id/1/',
             'timezone' => -5,
             'age_range' => [
-                'min' => 21
+                'min' => 21,
             ],
             'bio' => 'I am the best test user in the world.',
             'picture_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
             'is_silhouette' => false,
-            'cover_photo_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg'
+            'cover_photo_url' => 'https://scontent.xx.fbcdn.net/v/test.jpg',
         ]);
         $user = [
                 'token' => $Token,
@@ -334,14 +349,17 @@ class SocialEmailMiddlewareTest extends TestCase
 
         $Middleware = new SocialEmailMiddleware();
         $response = new Response();
-        $next = function ($request, $response) {
-            return compact('request', 'response');
-        };
+        $response = $response->withStringBody(__METHOD__ . time());
+        $handler = $this->getMockBuilder(Runner::class)
+            ->setMethods(['handle'])
+            ->getMock();
+        $handler->expects($this->once())
+            ->method('handle')
+            ->with($this->equalTo($this->Request))
+            ->willReturn($response);
 
-        $result = $Middleware($this->Request, $response, $next);
-        $this->assertTrue(is_array($result));
-
-        $this->assertEquals(200, $result['response']->getStatusCode());
+        $result = $Middleware->process($this->Request, $handler);
+        $this->assertSame($response, $result);
         $this->assertEmpty($this->Request->getSession()->read('Auth'));
     }
 
@@ -354,15 +372,16 @@ class SocialEmailMiddlewareTest extends TestCase
     {
         $Middleware = new SocialEmailMiddleware();
         $response = new Response();
-        $next = function ($request, $response) {
-            return compact('request', 'response');
-        };
+        $response = $response->withStringBody(__METHOD__ . time());
+        $handler = $this->getMockBuilder(Runner::class)
+            ->setMethods(['handle'])
+            ->getMock();
+        $handler->expects($this->once())
+            ->method('handle')
+            ->with($this->equalTo($this->Request))
+            ->willReturn($response);
 
-        $result = $Middleware($this->Request, $response, $next);
-        $this->assertTrue(is_array($result));
-
-        $this->assertEquals(200, $result['response']->getStatusCode());
-        $this->assertSame($response, $result['response']);
-        $this->assertSame($this->Request, $result['request']);
+        $result = $Middleware->process($this->Request, $handler);
+        $this->assertSame($response, $result);
     }
 }

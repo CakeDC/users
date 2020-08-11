@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -15,11 +17,11 @@ use Authorization\AuthorizationService;
 use Authorization\Policy\MapResolver;
 use Authorization\Policy\OrmResolver;
 use Authorization\Policy\ResolverCollection;
+use Cake\Core\Configure;
+use Cake\Http\ServerRequest;
 use CakeDC\Auth\Policy\CollectionPolicy;
 use CakeDC\Auth\Policy\RbacPolicy;
 use CakeDC\Auth\Policy\SuperuserPolicy;
-use Cake\Core\Configure;
-use Cake\Http\ServerRequest;
 use Psr\Http\Message\ServerRequestInterface;
 
 class AuthorizationServiceLoader
@@ -27,8 +29,8 @@ class AuthorizationServiceLoader
     /**
      * Load the authorization service with OrmResolver and Map Resolver for RbacPolicy
      *
-     * @param ServerRequestInterface $request The request.
-     * @return AuthorizationService
+     * @param \Psr\Http\Message\ServerRequestInterface $request The request.
+     * @return \Authorization\AuthorizationService
      */
     public function __invoke(ServerRequestInterface $request)
     {
@@ -37,7 +39,7 @@ class AuthorizationServiceLoader
             ServerRequest::class,
             new CollectionPolicy([
                 SuperuserPolicy::class,
-                new RbacPolicy(Configure::read('Auth.RbacPolicy'))
+                new RbacPolicy(Configure::read('Auth.RbacPolicy')),
             ])
         );
 
@@ -45,7 +47,7 @@ class AuthorizationServiceLoader
 
         $resolver = new ResolverCollection([
             $map,
-            $orm
+            $orm,
         ]);
 
         return new AuthorizationService($resolver);

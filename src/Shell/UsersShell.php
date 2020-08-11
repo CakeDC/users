@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,22 +13,20 @@
 
 namespace CakeDC\Users\Shell;
 
-use CakeDC\Users\Model\Entity\User;
-use CakeDC\Users\Model\Table\UsersTable;
 use Cake\Console\ConsoleOptionParser;
 use Cake\Console\Shell;
 use Cake\Core\Configure;
 use Cake\Utility\Hash;
 use Cake\Utility\Text;
+use CakeDC\Users\Model\Entity\User;
 
 /**
  * Shell with utilities for the Users Plugin
  *
- * @property UsersTable Users
+ * @property \CakeDC\Users\Model\Table\UsersTable $Users
  */
 class UsersShell extends Shell
 {
-
     /**
      * Work as a seed for username generator
      *
@@ -34,63 +34,62 @@ class UsersShell extends Shell
      */
     protected $_usernameSeed = [
         'aayla', 'admiral', 'anakin', 'chewbacca',
-        'darthvader', 'hansolo', 'luke', 'obiwan', 'leia', 'r2d2'
+        'darthvader', 'hansolo', 'luke', 'obiwan', 'leia', 'r2d2',
     ];
+
+    /**
+     * @return \Cake\Console\ConsoleOptionParser
+     */
+    public function getOptionParser(): ConsoleOptionParser
+    {
+        $parser = parent::getOptionParser();
+        $parser->setDescription(__d('cake_d_c/users', 'Utilities for CakeDC Users Plugin'))
+            ->addSubcommand('activateUser', [
+                'help' => __d('cake_d_c/users', 'Activate an specific user'),
+            ])
+            ->addSubcommand('addSuperuser', [
+                'help' => __d('cake_d_c/users', 'Add a new superadmin user for testing purposes'),
+            ])
+            ->addSubcommand('addUser', [
+                'help' => __d('cake_d_c/users', 'Add a new user'),
+            ])
+            ->addSubcommand('changeRole', [
+                'help' => __d('cake_d_c/users', 'Change the role for an specific user'),
+            ])
+            ->addSubcommand('deactivateUser', [
+                'help' => __d('cake_d_c/users', 'Deactivate an specific user'),
+            ])
+            ->addSubcommand('deleteUser', [
+                'help' => __d('cake_d_c/users', 'Delete an specific user'),
+            ])
+            ->addSubcommand('passwordEmail', [
+                'help' => __d('cake_d_c/users', 'Reset the password via email'),
+            ])
+            ->addSubcommand('resetAllPasswords', [
+                'help' => __d('cake_d_c/users', 'Reset the password for all users'),
+            ])
+            ->addSubcommand('resetPassword', [
+                'help' => __d('cake_d_c/users', 'Reset the password for an specific user'),
+            ])
+            ->addOptions([
+                'username' => ['short' => 'u', 'help' => 'The username for the new user'],
+                'password' => ['short' => 'p', 'help' => 'The password for the new user'],
+                'email' => ['short' => 'e', 'help' => 'The email for the new user'],
+                'role' => ['short' => 'r', 'help' => 'The role for the new user'],
+            ]);
+
+        return $parser;
+    }
 
     /**
      * initialize callback
      *
      * @return void
      */
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
         $this->Users = $this->loadModel(Configure::read('Users.table'));
-    }
-
-    /**
-     *
-     * @return ConsoleOptionParser
-     */
-    public function getOptionParser()
-    {
-        $parser = parent::getOptionParser();
-        $parser->setDescription(__d('cake_d_c/users', 'Utilities for CakeDC Users Plugin'))
-            ->addSubcommand('activateUser', [
-                'help' => __d('cake_d_c/users', 'Activate an specific user')
-            ])
-            ->addSubcommand('addSuperuser', [
-                'help' => __d('cake_d_c/users', 'Add a new superadmin user for testing purposes')
-            ])
-            ->addSubcommand('addUser', [
-                'help' => __d('cake_d_c/users', 'Add a new user')
-            ])
-            ->addSubcommand('changeRole', [
-                'help' => __d('cake_d_c/users', 'Change the role for an specific user')
-            ])
-            ->addSubcommand('deactivateUser', [
-                'help' => __d('cake_d_c/users', 'Deactivate an specific user')
-            ])
-            ->addSubcommand('deleteUser', [
-                'help' => __d('cake_d_c/users', 'Delete an specific user')
-            ])
-            ->addSubcommand('passwordEmail', [
-                'help' => __d('cake_d_c/users', 'Reset the password via email')
-            ])
-            ->addSubcommand('resetAllPasswords', [
-                'help' => __d('cake_d_c/users', 'Reset the password for all users')
-            ])
-            ->addSubcommand('resetPassword', [
-                'help' => __d('cake_d_c/users', 'Reset the password for an specific user')
-            ])
-            ->addOptions([
-                'username' => ['short' => 'u', 'help' => 'The username for the new user'],
-                'password' => ['short' => 'p', 'help' => 'The password for the new user'],
-                'email' => ['short' => 'e', 'help' => 'The email for the new user'],
-                'role' => ['short' => 'r', 'help' => 'The role for the new user']
-            ]);
-
-        return $parser;
     }
 
     /**
@@ -113,7 +112,7 @@ class UsersShell extends Shell
         $this->_createUser([
             'username' => 'superadmin',
             'role' => 'superuser',
-            'is_superuser' => true
+            'is_superuser' => true,
         ]);
     }
 
@@ -159,7 +158,7 @@ class UsersShell extends Shell
             $this->abort(__d('cake_d_c/users', 'Please enter a password.'));
         }
         $data = [
-            'password' => $password
+            'password' => $password,
         ];
         $this->_updateUser($username, $data);
         $this->out(__d('cake_d_c/users', 'Password changed for user: {0}', $username));
@@ -187,7 +186,7 @@ class UsersShell extends Shell
             $this->abort(__d('cake_d_c/users', 'Please enter a role.'));
         }
         $data = [
-            'role' => $role
+            'role' => $role,
         ];
         $savedUser = $this->_updateUser($username, $data);
         $this->out(__d('cake_d_c/users', 'Role changed for user: {0}', $username));
@@ -241,10 +240,16 @@ class UsersShell extends Shell
             'sendEmail' => true,
         ]);
         if ($resetUser) {
-            $msg = __d('cake_d_c/users', 'Please ask the user to check the email to continue with password reset process');
+            $msg = __d(
+                'cake_d_c/users',
+                'Please ask the user to check the email to continue with password reset process'
+            );
             $this->out($msg);
         } else {
-            $msg = __d('cake_d_c/users', 'The password token could not be generated. Please try again');
+            $msg = __d(
+                'cake_d_c/users',
+                'The password token could not be generated. Please try again'
+            );
             $this->abort($msg);
         }
     }
@@ -262,7 +267,7 @@ class UsersShell extends Shell
             $this->abort(__d('cake_d_c/users', 'Please enter a username.'));
         }
         $data = [
-            'active' => $active
+            'active' => $active,
         ];
 
         return $this->_updateUser($username, $data);
@@ -303,7 +308,7 @@ class UsersShell extends Shell
         $userEntity->role = $role;
         $savedUser = $this->Users->save($userEntity);
 
-        if (!empty($savedUser)) {
+        if (is_object($savedUser)) {
             if ($savedUser->is_superuser) {
                 $this->out(__d('cake_d_c/users', 'Superuser added:'));
             } else {
@@ -328,14 +333,19 @@ class UsersShell extends Shell
      *
      * @param string $username username
      * @param array $data data
-     * @return bool
+     * @return \CakeDC\Users\Model\Entity\User|bool
      */
     protected function _updateUser($username, $data)
     {
         $user = $this->Users->find()->where(['username' => $username])->first();
-        if (empty($user)) {
+        if (!is_object($user)) {
             $this->abort(__d('cake_d_c/users', 'The user was not found.'));
+
+            return false;
         }
+        /**
+         * @var \Cake\Datasource\EntityInterface $user
+         */
         $user = $this->Users->patchEntity($user, $data);
         collection($data)->filter(function ($value, $field) use ($user) {
             return !$user->isAccessible($field);
@@ -358,7 +368,10 @@ class UsersShell extends Shell
         if (empty($username)) {
             $this->abort(__d('cake_d_c/users', 'Please enter a username.'));
         }
-        $user = $this->Users->find()->where(['username' => $username])->first();
+        /**
+         * @var \Cake\Datasource\EntityInterface $user
+         */
+        $user = $this->Users->find()->where(['username' => $username])->firstOrFail();
         if (isset($this->Users->SocialAccounts)) {
             $this->Users->SocialAccounts->deleteAll(['user_id' => $user->id]);
         }
@@ -397,7 +410,7 @@ class UsersShell extends Shell
      */
     protected function _generatedHashedPassword($password)
     {
-        return (new User)->hashPassword($password);
+        return (new User())->hashPassword($password);
     }
 
     //add filters LIKE in username and email to some tasks

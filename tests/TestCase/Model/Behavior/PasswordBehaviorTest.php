@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,18 +13,22 @@
 
 namespace CakeDC\Users\Test\TestCase\Model\Behavior;
 
-use CakeDC\Users\Model\Behavior\PasswordBehavior;
-use CakeDC\Users\Model\Entity\User;
-use CakeDC\Users\Test\App\Mailer\OverrideMailer;
 use Cake\Core\Configure;
 use Cake\Mailer\Email;
+use Cake\Mailer\Mailer;
 use Cake\Mailer\TransportFactory;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
-use InvalidArgumentException;
+use CakeDC\Users\Exception\UserAlreadyActiveException;
+use CakeDC\Users\Exception\UserNotActiveException;
+use CakeDC\Users\Exception\UserNotFoundException;
+use CakeDC\Users\Model\Behavior\PasswordBehavior;
+use CakeDC\Users\Model\Entity\User;
+use TestApp\Mailer\OverrideMailer;
 
 /**
  * Test Case
+ *
  * @property \CakeDC\Users\Model\Behavior\PasswordBehavior Behavior
  */
 class PasswordBehaviorTest extends TestCase
@@ -41,7 +47,7 @@ class PasswordBehaviorTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->table = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
@@ -52,9 +58,10 @@ class PasswordBehaviorTest extends TestCase
         TransportFactory::drop('test');
         TransportFactory::setConfig('test', ['className' => 'Debug']);
         //$this->configEmail = Email::getConfig('default');
-        Email::setConfig('default', [
+        Mailer::drop('default');
+        Mailer::setConfig('default', [
             'transport' => 'test',
-            'from' => 'cakedc@example.com'
+            'from' => 'cakedc@example.com',
         ]);
     }
 
@@ -63,7 +70,7 @@ class PasswordBehaviorTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->table, $this->Behavior);
         Email::drop('default');
@@ -73,7 +80,6 @@ class PasswordBehaviorTest extends TestCase
 
     /**
      * Test resetToken
-     *
      */
     public function testResetToken()
     {
@@ -93,7 +99,6 @@ class PasswordBehaviorTest extends TestCase
 
     /**
      * Test resetToken
-     *
      */
     public function testResetTokenSendEmail()
     {
@@ -106,7 +111,7 @@ class PasswordBehaviorTest extends TestCase
             'expiration' => 3600,
             'checkActive' => true,
             'sendEmail' => true,
-            'type' => 'password'
+            'type' => 'password',
         ]);
         $this->assertNotEquals($token, $result->token);
         $this->assertNotEquals($tokenExpires, $result->token_expires);
@@ -116,44 +121,40 @@ class PasswordBehaviorTest extends TestCase
 
     /**
      * Test resetToken
-     *
-     * @expectedException InvalidArgumentException
      */
     public function testResetTokenWithNullParams()
     {
+        $this->expectException(\InvalidArgumentException::class);
         $this->Behavior->resetToken(null);
     }
 
     /**
      * Test resetTokenNoExpiration
-     *
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Token expiration cannot be empty
      */
     public function testResetTokenNoExpiration()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Token expiration cannot be empty');
         $this->Behavior->resetToken('ref');
     }
 
     /**
      * Test resetToken
-     *
-     * @expectedException \CakeDC\Users\Exception\UserNotFoundException
      */
     public function testResetTokenNotExistingUser()
     {
+        $this->expectException(UserNotFoundException::class);
         $this->Behavior->resetToken('user-not-found', [
-            'expiration' => 3600
+            'expiration' => 3600,
         ]);
     }
 
     /**
      * Test resetToken
-     *
-     * @expectedException \CakeDC\Users\Exception\UserAlreadyActiveException
      */
     public function testResetTokenUserAlreadyActive()
     {
+        $this->expectException(UserAlreadyActiveException::class);
         $activeUser = TableRegistry::getTableLocator()->get('CakeDC/Users.Users')->findByUsername('user-4')->first();
         $this->assertTrue($activeUser->active);
         $this->table = $this->getMockForModel('CakeDC/Users.Users', ['save']);
@@ -169,15 +170,14 @@ class PasswordBehaviorTest extends TestCase
 
     /**
      * Test resetToken
-     *
-     * @expectedException \CakeDC\Users\Exception\UserNotActiveException
      */
     public function testResetTokenUserNotActive()
     {
+        $this->expectException(UserNotActiveException::class);
         $this->table->findByUsername('user-1')->firstOrFail();
         $this->Behavior->resetToken('user-1', [
             'ensureActive' => true,
-            'expiration' => 3600
+            'expiration' => 3600,
         ]);
     }
 
@@ -189,7 +189,7 @@ class PasswordBehaviorTest extends TestCase
         $user = TableRegistry::getTableLocator()->get('CakeDC/Users.Users')->findByUsername('user-2')->first();
         $result = $this->Behavior->resetToken('user-2', [
             'ensureActive' => true,
-            'expiration' => 3600
+            'expiration' => 3600,
         ]);
         $this->assertEquals($user->id, $result->id);
     }
@@ -222,19 +222,21 @@ class PasswordBehaviorTest extends TestCase
             ->setConstructorArgs([$this->table])
             ->setMethods(['getMailer'])
             ->getMock();
+        $responseEmail = ['headers' => ['A' => 111, 'B' => 33], 'message' => 'My message' . time()];
         $overrideMailer->expects($this->once())
             ->method('send')
             ->with('resetPassword')
-            ->willReturn(true);
+            ->willReturn($responseEmail);
         $this->Behavior->expects($this->once())
             ->method('getMailer')
             ->with(OverrideMailer::class)
             ->willReturn($overrideMailer);
-        $this->Behavior->resetToken('user-1', [
+        $result = $this->Behavior->resetToken('user-1', [
             'expiration' => 3600,
             'checkActive' => true,
             'sendEmail' => true,
-            'type' => 'password'
+            'type' => 'password',
         ]);
+        $this->assertInstanceOf(User::class, $result);
     }
 }

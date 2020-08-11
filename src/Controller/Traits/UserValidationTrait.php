@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,12 +13,11 @@
 
 namespace CakeDC\Users\Controller\Traits;
 
+use Cake\Core\Configure;
 use CakeDC\Users\Exception\TokenExpiredException;
 use CakeDC\Users\Exception\UserAlreadyActiveException;
 use CakeDC\Users\Exception\UserNotFoundException;
 use CakeDC\Users\Plugin;
-use Cake\Core\Configure;
-use Cake\Http\Response;
 use Exception;
 
 /**
@@ -31,7 +32,7 @@ trait UserValidationTrait
      *
      * @param string $type 'email' or 'password' to validate the user
      * @param string $token token
-     * @return Response
+     * @return \Cake\Http\Response
      */
     public function validate($type = null, $token = null)
     {
@@ -53,7 +54,7 @@ trait UserValidationTrait
                     $result = $this->getUsersTable()->validate($token);
                     if (!empty($result)) {
                         $this->Flash->success(__d('cake_d_c/users', 'Reset password token was validated successfully'));
-                        $this->request->getSession()->write(
+                        $this->getRequest()->getSession()->write(
                             Configure::read('Users.Key.Session.resetPasswordUserId'),
                             $result->id
                         );
@@ -70,8 +71,8 @@ trait UserValidationTrait
             $this->Flash->error(__d('cake_d_c/users', 'Invalid token or user account already validated'));
         } catch (TokenExpiredException $ex) {
             $event = $this->dispatchEvent(Plugin::EVENT_ON_EXPIRED_TOKEN, ['type' => $type]);
-            if (!empty($event) && is_array($event->result)) {
-                return $this->redirect($event->result);
+            if (!empty($event) && is_array($event->getResult())) {
+                return $this->redirect($event->getResult());
             }
             $this->Flash->error(__d('cake_d_c/users', 'Token already expired'));
         }
@@ -86,22 +87,25 @@ trait UserValidationTrait
      */
     public function resendTokenValidation()
     {
-        $this->set('user', $this->getUsersTable()->newEntity());
+        $this->set('user', $this->getUsersTable()->newEntity([], ['validate' => false]));
         $this->set('_serialize', ['user']);
-        if (!$this->request->is('post')) {
+        if (!$this->getRequest()->is('post')) {
             return;
         }
-        $reference = $this->request->getData('reference');
+        $reference = $this->getRequest()->getData('reference');
         try {
-            if ($this->getUsersTable()->resetToken($reference, [
+            if (
+                $this->getUsersTable()->resetToken($reference, [
                 'expiration' => Configure::read('Users.Token.expiration'),
                 'checkActive' => true,
                 'sendEmail' => true,
-                'type' => 'email'
-            ])) {
+                'type' => 'email',
+                ])
+            ) {
                 $event = $this->dispatchEvent(Plugin::EVENT_AFTER_RESEND_TOKEN_VALIDATION);
-                if (!empty($event) && is_array($event->result)) {
-                    return $this->redirect($event->result);
+                $result = $event->getResult();
+                if (!empty($event) && is_array($result)) {
+                    return $this->redirect($result);
                 }
                 $this->Flash->success(__d(
                     'cake_d_c/users',

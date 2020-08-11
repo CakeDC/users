@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -22,8 +24,7 @@ trait SocialAuthTrait
 {
     /**
      * @param array $rawData social user raw data
-     *
-     * @return Result
+     * @return \Authentication\Authenticator\Result
      */
     protected function identify($rawData)
     {

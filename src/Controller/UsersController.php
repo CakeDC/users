@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -20,14 +22,12 @@ use CakeDC\Users\Controller\Traits\RegisterTrait;
 use CakeDC\Users\Controller\Traits\SimpleCrudTrait;
 use CakeDC\Users\Controller\Traits\SocialTrait;
 use CakeDC\Users\Controller\Traits\U2fTrait;
-use CakeDC\Users\Model\Table\UsersTable;
-use Cake\Core\Configure;
-use Cake\Utility\Hash;
 
 /**
  * Users Controller
  *
- * @property UsersTable $Users
+ * @property \CakeDC\Users\Model\Table\UsersTable $Users
+ * @property \Cake\Controller\Component\SecurityComponent $Security
  */
 class UsersController extends AppController
 {
@@ -46,7 +46,7 @@ class UsersController extends AppController
      *
      * @return void
      */
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
         if ($this->components()->has('Security')) {

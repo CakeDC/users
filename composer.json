@@ -26,15 +26,16 @@
         "issues": "https://github.com/CakeDC/users/issues",
         "source": "https://github.com/CakeDC/users"
     },
+    "minimum-stability": "dev",
     "require": {
-        "cakephp/cakephp": "^3.6",
-        "cakedc/auth": "dev-develop",
-        "cakephp/authentication": "^1.0",
-        "cakephp/authorization": "^1.0"
+        "php": ">=7.2.0",
+        "cakephp/cakephp": "^4.0.0",
+        "cakedc/auth": "^6.0.0",
+        "cakephp/authorization": "^2.0.0",
+        "cakephp/authentication": "^2.0.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^5.7.14|^6.0",
-        "cakephp/cakephp-codesniffer": "^3.0",
+        "phpunit/phpunit": "^8.0",
         "league/oauth2-facebook": "@stable",
         "league/oauth2-instagram": "@stable",
         "league/oauth2-google": "@stable",
@@ -42,9 +43,10 @@
         "luchianenco/oauth2-amazon": "^1.1",
         "google/recaptcha": "@stable",
         "robthree/twofactorauth": "^1.6",
+        "yubico/u2flib-server": "^1.0",
         "php-coveralls/php-coveralls": "^2.1",
         "league/oauth1-client": "^1.7",
-        "yubico/u2flib-server": "^1.0"
+        "cakephp/cakephp-codesniffer": "^4.0"
     },
     "suggest": {
         "league/oauth1-client": "Provides Social Authentication with Twitter",
@@ -65,22 +67,30 @@
     "autoload-dev": {
         "psr-4": {
             "CakeDC\\Users\\Test\\": "tests",
-            "CakeDC\\Users\\Test\\Fixture\\": "tests"
+            "CakeDC\\Users\\Test\\Fixture\\": "tests",
+            "TestApp\\": "tests/test_app/TestApp/"
         }
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
     "scripts": {
+        "analyse": [
+            "@stan",
+            "@psalm"
+         ],
         "check": [
+            "@cs-check",
             "@test",
-            "@cs-check"
+            "@analyse"
         ],
-        "cs-check": "vendor/bin/phpcs -n --colors -p --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests",
-        "cs-fix": "vendor/bin/phpcbf --colors --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests",
-        "test": "vendor/bin/phpunit --colors=always ./tests",
-        "stan": "phpstan analyse src/ && psalm --show-info=false",
-        "psalm": "psalm --show-info=false",
-        "stan-setup": "cp composer.json composer.backup && composer require --dev phpstan/phpstan:^0.11 vimeo/psalm:^3.0 && mv composer.backup composer.json",
-        "test-coverage": "phpunit --stderr --coverage-clover=clover.xml"
+        "cs-check": "phpcs -n -p --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests",
+        "cs-fix": "phpcbf --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests",
+        "test": "phpunit --stderr",
+        "stan": "phpstan analyse src/",
+        "psalm": "php vendor/psalm/phar/psalm.phar --show-info=false src/ ",
+        "stan-setup": "cp composer.json composer.backup && composer require --dev phpstan/phpstan:^0.12.7 psalm/phar:~3.8.0 && mv composer.backup composer.json",
+        "stan-rebuild-baseline": "phpstan analyse --configuration phpstan.neon --error-format baselineNeon src/ > phpstan-baseline.neon",
+        "psalm-rebuild-baseline": "php vendor/psalm/phar/psalm.phar --show-info=false  --set-baseline=psalm-baseline.xml  src/",
+        "rector": "rector process src/",
+        "rector-setup": "cp composer.json composer.backup && composer require --dev rector/rector:^0.4.11 && mv composer.backup composer.json",
+        "coverage-test": "phpunit --stderr --coverage-clover=clover.xml"
     }
 }

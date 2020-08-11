@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -11,10 +13,10 @@
 
 namespace CakeDC\Users\Test\TestCase\Model\Behavior;
 
-use CakeDC\Users\Model\Behavior\AuthFinderBehavior;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Hash;
+use CakeDC\Users\Model\Behavior\AuthFinderBehavior;
 
 /**
  * Test Case
@@ -35,7 +37,7 @@ class AuthFinderBehaviorTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->table = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
@@ -47,7 +49,7 @@ class AuthFinderBehaviorTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->table, $this->Behavior);
         parent::tearDown();
@@ -55,7 +57,6 @@ class AuthFinderBehaviorTest extends TestCase
 
     /**
      * Test findActive method.
-     *
      */
     public function testFindActive()
     {
@@ -67,12 +68,11 @@ class AuthFinderBehaviorTest extends TestCase
 
     /**
      * Test findAuth method.
-     *
-     * @expectedException \BadMethodCallException
-     * @expectedExceptionMessage  Missing 'username' in options data
      */
     public function testFindAuthBadMethodCallException()
     {
+        $this->expectException(\BadMethodCallException::class);
+        $this->expectExceptionMessage("Missing 'username' in options data");
         $this->table->find('auth');
     }
 

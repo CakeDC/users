@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -14,12 +16,12 @@ namespace CakeDC\Users\Loader;
 use Authentication\Middleware\AuthenticationMiddleware;
 use Authorization\Middleware\AuthorizationMiddleware;
 use Authorization\Middleware\RequestAuthorizationMiddleware;
+use Cake\Core\Configure;
+use Cake\Http\MiddlewareQueue;
 use CakeDC\Auth\Middleware\TwoFactorMiddleware;
 use CakeDC\Users\Middleware\SocialAuthMiddleware;
 use CakeDC\Users\Middleware\SocialEmailMiddleware;
 use CakeDC\Users\Plugin;
-use Cake\Core\Configure;
-use Cake\Http\MiddlewareQueue;
 
 /**
  * Class MiddlewareQueueLoader
@@ -39,7 +41,6 @@ class MiddlewareQueueLoader
      *
      * @param \Cake\Http\MiddlewareQueue $middlewareQueue The middleware queue to update.
      * @param \CakeDC\Users\Plugin $plugin Users plugin object
-     *
      * @return \Cake\Http\MiddlewareQueue
      */
     public function __invoke(MiddlewareQueue $middlewareQueue, Plugin $plugin)
@@ -54,8 +55,7 @@ class MiddlewareQueueLoader
     /**
      * Load social middlewares if enabled. Based on config 'Users.Social.login'
      *
-     * @param MiddlewareQueue $middlewareQueue The middleware queue to update.
-     *
+     * @param \Cake\Http\MiddlewareQueue $middlewareQueue The middleware queue to update.
      * @return void
      */
     protected function loadSocialMiddleware(MiddlewareQueue $middlewareQueue)
@@ -72,7 +72,6 @@ class MiddlewareQueueLoader
      *
      * @param \Cake\Http\MiddlewareQueue $middlewareQueue queue of middleware
      * @param \CakeDC\Users\Plugin $plugin Users plugin object
-     *
      * @return void
      */
     protected function loadAuthenticationMiddleware(MiddlewareQueue $middlewareQueue, Plugin $plugin)
@@ -85,12 +84,14 @@ class MiddlewareQueueLoader
      * Load OneTimePasswordAuthenticatorMiddleware if enabled. Based on config 'OneTimePasswordAuthenticator.login'
      *
      * @param \Cake\Http\MiddlewareQueue $middlewareQueue queue of middleware
-     *
      * @return void
      */
     protected function load2faMiddleware(MiddlewareQueue $middlewareQueue)
     {
-        if (Configure::read('OneTimePasswordAuthenticator.login') !== false || Configure::read('U2f.enabled') !== false) {
+        if (
+            Configure::read('OneTimePasswordAuthenticator.login') !== false
+            || Configure::read('U2f.enabled') !== false
+        ) {
             $middlewareQueue->add(TwoFactorMiddleware::class);
         }
     }
@@ -100,7 +101,6 @@ class MiddlewareQueueLoader
      *
      * @param \Cake\Http\MiddlewareQueue $middlewareQueue queue of middleware
      * @param \CakeDC\Users\Plugin $plugin Users plugin object
-     *
      * @return \Cake\Http\MiddlewareQueue
      */
     protected function loadAuthorizationMiddleware(MiddlewareQueue $middlewareQueue, Plugin $plugin)
@@ -108,9 +108,10 @@ class MiddlewareQueueLoader
         if (Configure::read('Auth.Authorization.enable') === false) {
             return $middlewareQueue;
         }
-
         $middlewareQueue->add(new AuthorizationMiddleware($plugin, Configure::read('Auth.AuthorizationMiddleware')));
-        $middlewareQueue->add(new RequestAuthorizationMiddleware());
+        if (Configure::read('Auth.AuthorizationMiddleware.requireAuthorizationCheck') !== false) {
+            $middlewareQueue->add(new RequestAuthorizationMiddleware());
+        }
 
         return $middlewareQueue;
     }

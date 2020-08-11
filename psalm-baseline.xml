@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files psalm-version="3.5.0@f8b8f35c031e2fad6754a961a9fad2708649d8da">
+  <file src="src/Controller/AppController.php">
+    <UndefinedClass occurrences="1">
+      <code>BaseController</code>
+    </UndefinedClass>
+  </file>
+  <file src="src/Controller/Component/LoginComponent.php">
+    <PossiblyNullReference occurrences="1">
+      <code>getConfig</code>
+    </PossiblyNullReference>
+    <UndefinedDocblockClass occurrences="2">
+      <code>$checker</code>
+      <code>$checker</code>
+    </UndefinedDocblockClass>
+    <UndefinedInterfaceMethod occurrences="1">
+      <code>getConfig</code>
+    </UndefinedInterfaceMethod>
+  </file>
+  <file src="src/Controller/SocialAccountsController.php">
+    <MissingDependency occurrences="1">
+      <code>AppController</code>
+    </MissingDependency>
+  </file>
+  <file src="src/Controller/Traits/PasswordManagementTrait.php">
+    <InvalidDocblock occurrences="1">
+      <code>public function resetOneTimePasswordAuthenticator($id = null)</code>
+    </InvalidDocblock>
+  </file>
+  <file src="src/Controller/Traits/ReCaptchaTrait.php">
+    <InvalidNullableReturnType occurrences="1">
+      <code>\ReCaptcha\ReCaptcha</code>
+    </InvalidNullableReturnType>
+  </file>
+  <file src="src/Controller/UsersController.php">
+    <MissingDependency occurrences="1">
+      <code>AppController</code>
+    </MissingDependency>
+  </file>
+  <file src="src/Identifier/SocialIdentifier.php">
+    <PropertyNotSetInConstructor occurrences="1">
+      <code>SocialIdentifier</code>
+    </PropertyNotSetInConstructor>
+  </file>
+  <file src="src/Middleware/SocialAuthMiddleware.php">
+    <PossiblyNullArgument occurrences="1">
+      <code>$exception-&gt;getPrevious()</code>
+    </PossiblyNullArgument>
+  </file>
+  <file src="src/Model/Behavior/AuthFinderBehavior.php">
+    <MissingClosureParamType occurrences="1">
+      <code>$exp</code>
+    </MissingClosureParamType>
+    <MissingClosureReturnType occurrences="1">
+      <code>function ($exp) use ($identifier, $where) {</code>
+    </MissingClosureReturnType>
+  </file>
+  <file src="src/Model/Behavior/BaseTokenBehavior.php">
+    <FalsableReturnStatement occurrences="1">
+      <code>$result</code>
+    </FalsableReturnStatement>
+    <InvalidFalsableReturnType occurrences="1">
+      <code>\Cake\Datasource\EntityInterface</code>
+    </InvalidFalsableReturnType>
+    <UndefinedInterfaceMethod occurrences="1">
+      <code>updateToken</code>
+    </UndefinedInterfaceMethod>
+  </file>
+  <file src="src/Model/Behavior/LinkSocialBehavior.php">
+    <NoInterfaceProperties occurrences="6">
+      <code>$user-&gt;id</code>
+      <code>$socialAccount-&gt;user_id</code>
+      <code>$user-&gt;id</code>
+      <code>$user-&gt;social_accounts</code>
+      <code>$socialAccount-&gt;id</code>
+      <code>$user-&gt;social_accounts</code>
+    </NoInterfaceProperties>
+    <PossiblyInvalidArgument occurrences="1">
+      <code>$socialAccount</code>
+    </PossiblyInvalidArgument>
+    <PossiblyNullArgument occurrences="1">
+      <code>$accountData['avatar']</code>
+    </PossiblyNullArgument>
+  </file>
+  <file src="src/Model/Behavior/PasswordBehavior.php">
+    <InvalidReturnStatement occurrences="1">
+      <code>$saveResult</code>
+    </InvalidReturnStatement>
+    <InvalidReturnType occurrences="1">
+      <code>string</code>
+    </InvalidReturnType>
+    <NoInterfaceProperties occurrences="4">
+      <code>$user-&gt;id</code>
+      <code>$user-&gt;current_password</code>
+      <code>$currentUser-&gt;password</code>
+      <code>$user-&gt;password_confirm</code>
+    </NoInterfaceProperties>
+    <UndefinedInterfaceMethod occurrences="1">
+      <code>checkPassword</code>
+    </UndefinedInterfaceMethod>
+  </file>
+  <file src="src/Model/Behavior/RegisterBehavior.php">
+    <InvalidReturnStatement occurrences="1">
+      <code>$user</code>
+    </InvalidReturnStatement>
+    <MissingClosureParamType occurrences="1">
+      <code>$context</code>
+    </MissingClosureParamType>
+    <NoInterfaceProperties occurrences="5">
+      <code>$user-&gt;validated</code>
+      <code>$user-&gt;active</code>
+      <code>$user-&gt;activation_date</code>
+      <code>$user-&gt;token_expires</code>
+      <code>$user-&gt;active</code>
+    </NoInterfaceProperties>
+    <PossiblyInvalidMethodCall occurrences="1">
+      <code>tokenExpired</code>
+    </PossiblyInvalidMethodCall>
+    <PossiblyNullArgument occurrences="2">
+      <code>$validateEmail</code>
+      <code>$tokenExpiration</code>
+    </PossiblyNullArgument>
+    <UndefinedInterfaceMethod occurrences="1">
+      <code>tokenExpired</code>
+    </UndefinedInterfaceMethod>
+    <UndefinedPropertyAssignment occurrences="1">
+      <code>$this-&gt;_table-&gt;isValidateEmail</code>
+    </UndefinedPropertyAssignment>
+    <UndefinedThisPropertyAssignment occurrences="3">
+      <code>$this-&gt;validateEmail</code>
+      <code>$this-&gt;useTos</code>
+      <code>$this-&gt;validateEmail</code>
+    </UndefinedThisPropertyAssignment>
+    <UndefinedThisPropertyFetch occurrences="1">
+      <code>$this-&gt;validateEmail</code>
+    </UndefinedThisPropertyFetch>
+  </file>
+  <file src="src/Model/Behavior/SocialAccountBehavior.php">
+    <FalsableReturnStatement occurrences="1">
+      <code>$result</code>
+    </FalsableReturnStatement>
+    <InvalidArgument occurrences="1">
+      <code>$socialAccount</code>
+    </InvalidArgument>
+    <InvalidFalsableReturnType occurrences="1">
+      <code>\Cake\Datasource\EntityInterface</code>
+    </InvalidFalsableReturnType>
+    <InvalidReturnStatement occurrences="1">
+      <code>$this-&gt;sendSocialValidationEmail($socialAccount, $socialAccount-&gt;user)</code>
+    </InvalidReturnStatement>
+    <InvalidReturnType occurrences="1">
+      <code>\CakeDC\Users\Model\Entity\User</code>
+    </InvalidReturnType>
+    <LessSpecificReturnStatement occurrences="1">
+      <code>$this-&gt;_activateAccount($socialAccount)</code>
+    </LessSpecificReturnStatement>
+    <MoreSpecificReturnType occurrences="1">
+      <code>\CakeDC\Users\Model\Entity\User</code>
+    </MoreSpecificReturnType>
+    <NoInterfaceProperties occurrences="4">
+      <code>$socialAccount-&gt;token</code>
+      <code>$socialAccount-&gt;active</code>
+      <code>$socialAccount-&gt;active</code>
+      <code>$socialAccount-&gt;user</code>
+    </NoInterfaceProperties>
+    <PossiblyInvalidArgument occurrences="2">
+      <code>$user</code>
+      <code>$socialAccount</code>
+    </PossiblyInvalidArgument>
+  </file>
+  <file src="src/Model/Behavior/SocialBehavior.php">
+    <InvalidScalarArgument occurrences="1">
+      <code>$tokenExpiration</code>
+    </InvalidScalarArgument>
+    <NoInterfaceProperties occurrences="1">
+      <code>$existingAccount-&gt;user</code>
+    </NoInterfaceProperties>
+    <PossiblyInvalidArgument occurrences="1">
+      <code>$existingUser</code>
+    </PossiblyInvalidArgument>
+    <PossiblyNullArgument occurrences="6">
+      <code>$useEmail</code>
+      <code>$validateEmail</code>
+      <code>$tokenExpiration</code>
+      <code>$userData['username'] ?? null</code>
+      <code>$userData['username'] ?? null</code>
+      <code>$accountData['avatar']</code>
+    </PossiblyNullArgument>
+    <PossiblyUndefinedVariable occurrences="2">
+      <code>$userData</code>
+      <code>$userData</code>
+    </PossiblyUndefinedVariable>
+    <PropertyNotSetInConstructor occurrences="1">
+      <code>SocialBehavior</code>
+    </PropertyNotSetInConstructor>
+    <UndefinedPropertyAssignment occurrences="1">
+      <code>$this-&gt;_table-&gt;isValidateEmail</code>
+    </UndefinedPropertyAssignment>
+  </file>
+  <file src="src/Model/Entity/User.php">
+    <InvalidReturnStatement occurrences="1">
+      <code>$tos</code>
+    </InvalidReturnStatement>
+    <InvalidReturnType occurrences="1">
+      <code>bool</code>
+    </InvalidReturnType>
+  </file>
+  <file src="src/Model/Table/SocialAccountsTable.php">
+    <PropertyNotSetInConstructor occurrences="1">
+      <code>SocialAccountsTable</code>
+    </PropertyNotSetInConstructor>
+  </file>
+  <file src="src/Model/Table/UsersTable.php">
+    <ImplementedReturnTypeMismatch occurrences="1">
+      <code>\CakeDC\Users\Model\Entity\User|bool</code>
+    </ImplementedReturnTypeMismatch>
+    <PropertyNotSetInConstructor occurrences="1">
+      <code>UsersTable</code>
+    </PropertyNotSetInConstructor>
+  </file>
+  <file src="src/Plugin.php">
+    <PropertyNotSetInConstructor occurrences="1">
+      <code>Plugin</code>
+    </PropertyNotSetInConstructor>
+  </file>
+  <file src="src/Shell/UsersShell.php">
+    <DeprecatedClass occurrences="3">
+      <code>Shell</code>
+      <code>parent::getOptionParser()</code>
+      <code>parent::initialize()</code>
+    </DeprecatedClass>
+    <InvalidPropertyFetch occurrences="2">
+      <code>$user-&gt;username</code>
+      <code>$user-&gt;username</code>
+    </InvalidPropertyFetch>
+    <InvalidReturnStatement occurrences="1">
+      <code>$this-&gt;_updateUser($username, $data)</code>
+    </InvalidReturnStatement>
+    <InvalidReturnType occurrences="1">
+      <code>bool</code>
+    </InvalidReturnType>
+    <MissingClosureParamType occurrences="6">
+      <code>$error</code>
+      <code>$field</code>
+      <code>$value</code>
+      <code>$field</code>
+      <code>$value</code>
+      <code>$field</code>
+    </MissingClosureParamType>
+    <NoInterfaceProperties occurrences="1">
+      <code>$user-&gt;id</code>
+    </NoInterfaceProperties>
+    <PossiblyInvalidPropertyFetch occurrences="1">
+      <code>$savedUser-&gt;role</code>
+    </PossiblyInvalidPropertyFetch>
+    <PropertyNotSetInConstructor occurrences="1">
+      <code>UsersShell</code>
+    </PropertyNotSetInConstructor>
+    <UndefinedThisPropertyAssignment occurrences="1">
+      <code>$this-&gt;Users</code>
+    </UndefinedThisPropertyAssignment>
+  </file>
+  <file src="src/View/Helper/AuthLinkHelper.php">
+    <MoreSpecificImplementedParamType occurrences="1">
+      <code>$title</code>
+    </MoreSpecificImplementedParamType>
+    <PropertyNotSetInConstructor occurrences="1">
+      <code>AuthLinkHelper</code>
+    </PropertyNotSetInConstructor>
+  </file>
+  <file src="src/View/Helper/UserHelper.php">
+    <PossiblyInvalidArgument occurrences="2">
+      <code>$options['options']</code>
+      <code>$options['options']</code>
+    </PossiblyInvalidArgument>
+  </file>
+  <file src="vendor/cakephp/cakephp/src/Console/Shell.php">
+    <UninitializedProperty occurrences="1">
+      <code>$this-&gt;name</code>
+    </UninitializedProperty>
+  </file>
+  <file src="vendor/cakephp/cakephp/src/Mailer/MailerAwareTrait.php">
+    <MoreSpecificReturnType occurrences="1">
+      <code>\Cake\Mailer\Mailer</code>
+    </MoreSpecificReturnType>
+  </file>
+  <file src="vendor/cakephp/cakephp/src/ORM/Behavior.php">
+    <PossiblyNullIterator occurrences="1">
+      <code>$indexed</code>
+    </PossiblyNullIterator>
+  </file>
+</files>

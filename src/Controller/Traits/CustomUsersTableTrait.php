@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -17,16 +19,18 @@ use Cake\ORM\TableRegistry;
 
 /**
  * Customize Users Table
- *
  */
 trait CustomUsersTableTrait
 {
+    /**
+     * @var \Cake\ORM\Table|null
+     */
     protected $_usersTable = null;
 
     /**
      * Gets the users table instance
      *
-     * @return Table
+     * @return \Cake\ORM\Table
      */
     public function getUsersTable()
     {
@@ -41,7 +45,7 @@ trait CustomUsersTableTrait
     /**
      * Set the users table
      *
-     * @param Table $table table
+     * @param \Cake\ORM\Table $table table
      * @return void
      */
     public function setUsersTable(Table $table)

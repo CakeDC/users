@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -16,13 +18,18 @@ use Cake\Event\Event;
 class UserValidationTraitTest extends BaseTraitTest
 {
     /**
+     * @var \CakeDC\Users\Controller\UsersController
+     */
+    public $Trait;
+
+    /**
      * setup
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
-        $this->traitClassName = 'CakeDC\Users\Controller\Traits\UserValidationTrait';
+        $this->traitClassName = 'CakeDC\Users\Controller\UsersController';
         $this->traitMockMethods = ['dispatchEvent', 'isStopped', 'redirect', 'getUsersTable', 'set'];
         $this->mockDefaultEmail = true;
         parent::setUp();
@@ -91,9 +98,9 @@ class UserValidationTraitTest extends BaseTraitTest
     public function testValidateTokenExpiredWithOnExpiredEvent()
     {
         $event = new Event('event');
-        $event->result = [
+        $event->setResult([
             'action' => 'newAction',
-        ];
+        ]);
         $this->Trait->expects($this->once())
             ->method('dispatchEvent')
             ->will($this->returnValue($event));
@@ -151,7 +158,7 @@ class UserValidationTraitTest extends BaseTraitTest
     {
         $this->_mockRequestPost();
         $this->_mockFlash();
-        $this->Trait->request->expects($this->once())
+        $this->Trait->getRequest()->expects($this->once())
                 ->method('getData')
                 ->with('reference')
                 ->will($this->returnValue('user-3'));
@@ -174,15 +181,15 @@ class UserValidationTraitTest extends BaseTraitTest
     {
         $this->_mockRequestPost();
         $this->_mockFlash();
-        $this->Trait->request->expects($this->once())
+        $this->Trait->getRequest()->expects($this->once())
             ->method('getData')
             ->with('reference')
             ->will($this->returnValue('user-3'));
 
         $event = new Event('event');
-        $event->result = [
+        $event->setResult([
             'action' => 'newAction',
-        ];
+        ]);
         $this->Trait->expects($this->once())
             ->method('dispatchEvent')
             ->will($this->returnValue($event));
@@ -202,7 +209,7 @@ class UserValidationTraitTest extends BaseTraitTest
     {
         $this->_mockRequestPost();
         $this->_mockFlash();
-        $this->Trait->request->expects($this->once())
+        $this->Trait->getRequest()->expects($this->once())
                 ->method('getData')
                 ->with('reference')
                 ->will($this->returnValue('user-4'));
@@ -225,7 +232,7 @@ class UserValidationTraitTest extends BaseTraitTest
     {
         $this->_mockRequestPost();
         $this->_mockFlash();
-        $this->Trait->request->expects($this->once())
+        $this->Trait->getRequest()->expects($this->once())
                 ->method('getData')
                 ->with('reference')
                 ->will($this->returnValue('not-found'));

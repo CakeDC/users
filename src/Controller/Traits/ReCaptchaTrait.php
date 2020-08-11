@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -20,7 +22,6 @@ use Cake\Core\Configure;
  */
 trait ReCaptchaTrait
 {
-
     /**
      * Validates reCaptcha response
      *
@@ -43,7 +44,7 @@ trait ReCaptchaTrait
     /**
      * Create reCaptcha instance if enabled in configuration
      *
-     * @return \ReCaptcha\ReCaptcha
+     * @return \ReCaptcha\ReCaptcha|null
      */
     protected function _getReCaptchaInstance()
     {

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -26,7 +28,7 @@ class SocialAccountsControllerTest extends TestCase
      */
     public $fixtures = [
         'plugin.CakeDC/Users.SocialAccounts',
-        'plugin.CakeDC/Users.Users'
+        'plugin.CakeDC/Users.Users',
     ];
 
     /**
@@ -34,7 +36,7 @@ class SocialAccountsControllerTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -48,19 +50,16 @@ class SocialAccountsControllerTest extends TestCase
         Email::drop('default');
         Email::setConfig('default', [
             'transport' => 'test',
-            'from' => 'cakedc@example.com'
+            'from' => 'cakedc@example.com',
         ]);
 
-        $request = new ServerRequest('/users/users/index');
+        $request = new ServerRequest(['url' => '/users/users/index']);
         $request = $request->withParam('plugin', 'CakeDC/Users');
 
         $this->Controller = $this->getMockBuilder('CakeDC\Users\Controller\SocialAccountsController')
-                ->setMethods(['redirect', 'render'])
+                ->onlyMethods(['redirect', 'render'])
                 ->setConstructorArgs([$request, null, 'SocialAccounts'])
                 ->getMock();
-        $this->Controller->SocialAccounts = $this->getMockForModel('CakeDC\Users.SocialAccounts', ['sendSocialValidationEmail'], [
-            'className' => 'CakeDC\Users\Model\Table\SocialAccountsTable'
-        ]);
     }
 
     /**
@@ -68,7 +67,7 @@ class SocialAccountsControllerTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         Email::drop('default');
         TransportFactory::drop('test');
@@ -91,7 +90,7 @@ class SocialAccountsControllerTest extends TestCase
                 ->method('redirect')
                 ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login', 'prefix' => false]);
         $this->Controller->validateAccount('Facebook', 'reference-1-1234', 'token-1234');
-        $this->assertEquals('Account validated successfully', $this->Controller->request->getSession()->read('Flash.flash.0.message'));
+        $this->assertEquals('Account validated successfully', $this->Controller->getRequest()->getSession()->read('Flash.flash.0.message'));
     }
 
     /**
@@ -105,7 +104,7 @@ class SocialAccountsControllerTest extends TestCase
                 ->method('redirect')
                 ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login', 'prefix' => false]);
         $this->Controller->validateAccount('Facebook', 'reference-1-1234', 'token-not-found');
-        $this->assertEquals('Invalid token and/or social account', $this->Controller->request->getSession()->read('Flash.flash.0.message'));
+        $this->assertEquals('Invalid token and/or social account', $this->Controller->getRequest()->getSession()->read('Flash.flash.0.message'));
     }
 
     /**
@@ -119,7 +118,7 @@ class SocialAccountsControllerTest extends TestCase
                 ->method('redirect')
                 ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login', 'prefix' => false]);
         $this->Controller->validateAccount('Twitter', 'reference-1-1234', 'token-1234');
-        $this->assertEquals('Social Account already active', $this->Controller->request->getSession()->read('Flash.flash.0.message'));
+        $this->assertEquals('Social Account already active', $this->Controller->getRequest()->getSession()->read('Flash.flash.0.message'));
     }
 
     /**
@@ -130,7 +129,7 @@ class SocialAccountsControllerTest extends TestCase
     public function testResendValidationHappy()
     {
         $behaviorMock = $this->getMockBuilder('CakeDC\Users\Model\Behavior\SocialAccountBehavior')
-                ->setMethods(['sendSocialValidationEmail'])
+                ->onlyMethods(['sendSocialValidationEmail'])
                 ->setConstructorArgs([$this->Controller->SocialAccounts])
                 ->getMock();
         $this->Controller->SocialAccounts->behaviors()->set('SocialAccount', $behaviorMock);
@@ -142,7 +141,7 @@ class SocialAccountsControllerTest extends TestCase
                 ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login', 'prefix' => false]);
 
         $this->Controller->resendValidation('Facebook', 'reference-1-1234');
-        $this->assertEquals('Email sent successfully', $this->Controller->request->getSession()->read('Flash.flash.0.message'));
+        $this->assertEquals('Email sent successfully', $this->Controller->getRequest()->getSession()->read('Flash.flash.0.message'));
     }
 
     /**
@@ -153,7 +152,7 @@ class SocialAccountsControllerTest extends TestCase
     public function testResendValidationEmailError()
     {
         $behaviorMock = $this->getMockBuilder('CakeDC\Users\Model\Behavior\SocialAccountBehavior')
-                ->setMethods(['sendSocialValidationEmail'])
+                ->onlyMethods(['sendSocialValidationEmail'])
                 ->setConstructorArgs([$this->Controller->SocialAccounts])
                 ->getMock();
         $this->Controller->SocialAccounts->behaviors()->set('SocialAccount', $behaviorMock);
@@ -165,7 +164,7 @@ class SocialAccountsControllerTest extends TestCase
                 ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login', 'prefix' => false]);
 
         $this->Controller->resendValidation('Facebook', 'reference-1-1234');
-        $this->assertEquals('Email could not be sent', $this->Controller->request->getSession()->read('Flash.flash.0.message'));
+        $this->assertEquals('Email could not be sent', $this->Controller->getRequest()->getSession()->read('Flash.flash.0.message'));
     }
 
     /**
@@ -179,7 +178,7 @@ class SocialAccountsControllerTest extends TestCase
                 ->method('redirect')
                 ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login', 'prefix' => false]);
         $this->Controller->resendValidation('Facebook', 'reference-invalid');
-        $this->assertEquals('Invalid account', $this->Controller->request->getSession()->read('Flash.flash.0.message'));
+        $this->assertEquals('Invalid account', $this->Controller->getRequest()->getSession()->read('Flash.flash.0.message'));
     }
 
     /**
@@ -193,6 +192,6 @@ class SocialAccountsControllerTest extends TestCase
                 ->method('redirect')
                 ->with(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'login', 'prefix' => false]);
         $this->Controller->validateAccount('Twitter', 'reference-1-1234', 'token-1234');
-        $this->assertEquals('Social Account already active', $this->Controller->request->getSession()->read('Flash.flash.0.message'));
+        $this->assertEquals('Social Account already active', $this->Controller->getRequest()->getSession()->read('Flash.flash.0.message'));
     }
 }
