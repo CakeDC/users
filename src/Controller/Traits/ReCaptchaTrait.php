@@ -44,7 +44,7 @@ trait ReCaptchaTrait
     /**
      * Create reCaptcha instance if enabled in configuration
      *
-     * @return \ReCaptcha\ReCaptcha
+     * @return \ReCaptcha\ReCaptcha|null
      */
     protected function _getReCaptchaInstance()
     {

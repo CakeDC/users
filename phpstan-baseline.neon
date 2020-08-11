@@ -1,5 +1,3 @@
-
-
 parameters:
 	ignoreErrors:
 		-
@@ -73,11 +71,6 @@ parameters:
 			path: src\Controller\UsersController.php
 
 		-
-			message: "#^Method CakeDC\\\\Users\\\\Controller\\\\UsersController\\:\\:_getReCaptchaInstance\\(\\) should return ReCaptcha\\\\ReCaptcha but returns null\\.$#"
-			count: 1
-			path: src\Controller\UsersController.php
-
-		-
 			message: "#^Call to an undefined method Cake\\\\ORM\\\\Table\\:\\:register\\(\\)\\.$#"
 			count: 2
 			path: src\Controller\UsersController.php
@@ -96,11 +89,6 @@ parameters:
 			message: "#^Call to an undefined method Cake\\\\ORM\\\\Table\\:\\:validate\\(\\)\\.$#"
 			count: 2
 			path: src\Controller\UsersController.php
-
-		-
-			message: "#^Method CakeDC\\\\Users\\\\Authenticator\\\\SocialPendingEmailAuthenticator\\:\\:_getReCaptchaInstance\\(\\) should return ReCaptcha\\\\ReCaptcha but returns null\\.$#"
-			count: 1
-			path: src\Authenticator\SocialPendingEmailAuthenticator.php
 
 		-
 			message: "#^Call to an undefined method Cake\\\\ORM\\\\Table\\:\\:socialLogin\\(\\)\\.$#"
