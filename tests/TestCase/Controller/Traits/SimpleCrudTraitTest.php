@@ -16,6 +16,11 @@ namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 use Cake\Datasource\Exception\InvalidPrimaryKeyException;
 use Cake\Datasource\Exception\RecordNotFoundException;
 
+/**
+ * Class SimpleCrudTraitTest
+ *
+ * @package CakeDC\Users\Test\TestCase\Controller\Traits
+ */
 class SimpleCrudTraitTest extends BaseTraitTest
 {
     public $viewVars;
@@ -127,7 +132,7 @@ class SimpleCrudTraitTest extends BaseTraitTest
         $this->_mockRequestGet();
         $this->Trait->add();
         $expected = [
-            'Users' => $this->table->newEntity([]),
+            'Users' => $this->table->newEmptyEntity(),
             'tableAlias' => 'Users',
             '_serialize' => [
                 'Users',

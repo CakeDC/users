@@ -17,7 +17,6 @@ use App\Controller\AppController as BaseController;
 
 /**
  * AppController for Users Plugin
- *
  */
 class AppController extends BaseController
 {

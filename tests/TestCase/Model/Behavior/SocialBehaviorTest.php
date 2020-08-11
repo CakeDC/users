@@ -126,7 +126,6 @@ class SocialBehaviorTest extends TestCase
 
     /**
      * Provider for socialLogin with facebook and not existing user
-     *
      */
     public function providerFacebookSocialLogin()
     {
@@ -255,7 +254,6 @@ class SocialBehaviorTest extends TestCase
 
     /**
      * Provider for socialLogin with facebook with existing and active user
-     *
      */
     public function providerFacebookSocialLoginExistingReference()
     {
@@ -296,7 +294,6 @@ class SocialBehaviorTest extends TestCase
 
     /**
      * Provider for socialLogin with existing and active user and not active social account
-     *
      */
     public function providerSocialLoginExistingAndNotActiveAccount()
     {
@@ -337,7 +334,6 @@ class SocialBehaviorTest extends TestCase
 
     /**
      * Provider for socialLogin with existing and active account but not active user
-     *
      */
     public function providerSocialLoginExistingAccountNotActiveUser()
     {
@@ -370,7 +366,6 @@ class SocialBehaviorTest extends TestCase
 
     /**
      * Provider for socialLogin with facebook and not existing user
-     *
      */
     public function providerFacebookSocialLoginNoEmail()
     {
@@ -414,7 +409,6 @@ class SocialBehaviorTest extends TestCase
 
     /**
      * Provider for socialLogin with facebook and not existing user
-     *
      */
     public function providerGenerateUsername()
     {

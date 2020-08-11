@@ -38,7 +38,6 @@ class UsersShell extends Shell
     ];
 
     /**
-     *
      * @return \Cake\Console\ConsoleOptionParser
      */
     public function getOptionParser(): ConsoleOptionParser

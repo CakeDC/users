@@ -30,6 +30,11 @@ use CakeDC\Auth\Authentication\AuthenticationService;
 use CakeDC\Users\Model\Entity\User;
 use PHPUnit_Framework_MockObject_RuntimeException;
 
+/**
+ * Class BaseTraitTest
+ *
+ * @package CakeDC\Users\Test\TestCase\Controller\Traits
+ */
 abstract class BaseTraitTest extends TestCase
 {
     /**
@@ -57,6 +62,16 @@ abstract class BaseTraitTest extends TestCase
     public $loginAction = '/login-page';
 
     /**
+     * @var MockObject
+     */
+    public $Trait;
+
+    /**
+     * @var Table
+     */
+    public $table;
+
+    /**
      * SetUp and create Trait
      *
      * @return void
@@ -76,7 +91,7 @@ abstract class BaseTraitTest extends TestCase
                     ->will($this->returnValue($this->table));
         } catch (PHPUnit_Framework_MockObject_RuntimeException $ex) {
             debug($ex);
-            $this->fail("Unit tests extending BaseTraitTest should declare the trait class name in the \$traitClassName variable before calling setUp()");
+            $this->fail('Unit tests extending BaseTraitTest should declare the trait class name in the $traitClassName variable before calling setUp()');
         }
 
         if ($this->mockDefaultEmail) {

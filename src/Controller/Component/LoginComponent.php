@@ -82,7 +82,6 @@ class LoginComponent extends Component
      * Handle login failure
      *
      * @param bool $redirect should redirect?
-     *
      * @return \Cake\Http\Response|null
      */
     public function handleFailure($redirect = true)
@@ -165,7 +164,6 @@ class LoginComponent extends Component
      * @param \CakeDC\Auth\Authentication\AuthenticationService $service Authentication service
      * @param \CakeDC\Users\Model\Entity\User $user User entity.
      * @param \Cake\Http\ServerRequest $request The http request.
-     *
      * @return void
      */
     protected function handlePasswordRehash($service, $user, \Cake\Http\ServerRequest $request)

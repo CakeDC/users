@@ -19,7 +19,6 @@ use CakeDC\Users\Plugin;
 
 /**
  * Actions to allow user to link social accounts
- *
  */
 trait LinkSocialTrait
 {
@@ -27,7 +26,6 @@ trait LinkSocialTrait
      *  Init link and auth process against provider
      *
      * @param string $alias of the provider.
-     *
      * @throws \Cake\Http\Exception\NotFoundException Quando o provider informado não existe
      * @return  \Cake\Http\Response Redirects on successful
      */
@@ -50,7 +48,6 @@ trait LinkSocialTrait
      * Callback to get user information from provider
      *
      * @param string $alias of the provider.
-     *
      * @throws \Cake\Http\Exception\NotFoundException Quando o provider informado não existe
      * @return  \Cake\Http\Response Redirects to profile if okay or error
      */
@@ -84,7 +81,7 @@ trait LinkSocialTrait
             }
         } catch (\Exception $e) {
             $log = sprintf(
-                "Error linking social account: %s %s",
+                'Error linking social account: %s %s',
                 $e->getMessage(),
                 $e
             );

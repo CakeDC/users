@@ -492,6 +492,7 @@ class SocialAuthenticatorTest extends TestCase
 
     /**
      * Data provider for testAuthenticateErrorException
+     *
      * @return array
      */
     public function dataProviderAuthenticateErrorException()
@@ -513,7 +514,6 @@ class SocialAuthenticatorTest extends TestCase
      *
      * @param \Exception $exception thrown exception
      * @param string $status expected status from Result object
-     *
      * @dataProvider dataProviderAuthenticateErrorException
      * @return void
      */

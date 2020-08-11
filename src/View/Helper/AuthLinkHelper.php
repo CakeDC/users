@@ -18,6 +18,8 @@ use CakeDC\Auth\Traits\IsAuthorizedTrait;
 
 /**
  * AuthLink helper
+ *
+ * @property \Cake\View\Helper\FormHelper $Form
  */
 class AuthLinkHelper extends HtmlHelper
 {

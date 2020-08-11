@@ -27,6 +27,7 @@ use CakeDC\Users\Controller\Traits\U2fTrait;
  * Users Controller
  *
  * @property \CakeDC\Users\Model\Table\UsersTable $Users
+ * @property \Cake\Controller\Component\SecurityComponent $Security
  */
 class UsersController extends AppController
 {
