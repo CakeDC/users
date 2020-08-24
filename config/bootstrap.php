@@ -15,6 +15,10 @@ use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 
 Configure::load('CakeDC/Users.users');
+if (file_exists(CONFIG . 'users.php')) {
+    Configure::load('users');
+}
+
 collection((array)Configure::read('Users.config'))->each(function ($file) {
     Configure::load($file);
 });
