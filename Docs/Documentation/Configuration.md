@@ -165,7 +165,7 @@ You need to configure 2 things:
 
 ```php
     $identifiers = Configure::read('Auth.Identifiers');
-    $identifiers['Authentication.Password']['fields']['username'] = 'email';
+    $identifiers['Password']['fields']['username'] = 'email';
     Configure::write('Auth.Identifiers', $identifiers);
 ```
 
