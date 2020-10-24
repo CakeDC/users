@@ -20,7 +20,7 @@ Setup
 Create the Facebook/Twitter applications you want to use and setup the configuration like this:
 
 Config/bootstrap.php
-```
+```php
 Configure::write('OAuth.providers.facebook.options.clientId', 'YOUR APP ID');
 Configure::write('OAuth.providers.facebook.options.clientSecret', 'YOUR APP SECRET');
 
@@ -30,7 +30,7 @@ Configure::write('OAuth.providers.twitter.options.clientSecret', 'YOUR APP SECRE
 
 You can also change the default settings for social authenticate:
 
-```
+```php
 Configure::write('Users', [
     'Email' => [
         //determines if the user should include email
@@ -65,7 +65,7 @@ In most situations you would not need to change any Oauth setting besides applic
 
 For new facebook aps you must use the graphApiVersion 2.8 or greater:
 
-```
+```php
 Configure::write('OAuth.providers.facebook.options.graphApiVersion', 'v2.8');
 ```
 
@@ -75,7 +75,7 @@ User Helper
 You can use the helper included with the plugin to create Facebook/Twitter buttons:
 
 In templates
-```
+```php
 $this->User->facebookLogin();
 
 $this->User->twitterLogin();
@@ -124,7 +124,7 @@ The social identifier "CakeDC/Users.Social", works with data provider by both so
 it is responsible of finding or creating a user registry for the social user data request.
 By default it'll fetch user data with finder 'all', but you can use a custom one. Add this to your
 Application class, after CakeDC/Users Plugin is loaded.
-```
+```php
     $identifiers = Configure::read('Auth.Identifiers');
     $identifiers['CakeDC/Users.Social']['authFinder'] = 'customSocialAuth';
     Configure::write('Auth.Identifiers', $identifiers);
@@ -139,12 +139,12 @@ There are two custom messages (Auth.SocialLoginFailure.messages) and one default
 
 
 To use a custom component to handle the login, do:
-```
+```php
 Configure::write('Auth.SocialLoginFailure.component', 'MyLoginA');
 ``` 
 
 The default configuration is:
-```
+```php
 [
     ...
     'Auth' => [
