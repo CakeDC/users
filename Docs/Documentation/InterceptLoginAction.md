@@ -6,7 +6,7 @@ some specific login, like redirect user to another url or set user data.
 A simple way to intercept the login action is by creating a custom middleware, the following
 example shows how to set user data and redirect to anothe url.
 
-```
+```php
 <?php
 namespace App\Middleware;
 
