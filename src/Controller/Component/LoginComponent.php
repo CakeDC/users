@@ -21,6 +21,7 @@ use CakeDC\Auth\Authentication\AuthenticationService;
 use CakeDC\Auth\Traits\IsAuthorizedTrait;
 use CakeDC\Users\Plugin;
 use CakeDC\Users\Utility\UsersUrl;
+use Psr\Http\Message\UriInterface;
 
 /**
  * LoginFailure component
@@ -145,7 +146,7 @@ class LoginComponent extends Component
     protected function afterIdentifyUser($user)
     {
         $event = $this->getController()->dispatchEvent(Plugin::EVENT_AFTER_LOGIN, ['user' => $user]);
-        if (is_array($event->getResult())) {
+        if (is_array($event->getResult()) || is_string($event->getResult()) || $event->getResult() instanceof UriInterface) {
             return $this->getController()->redirect($event->getResult());
         }
 
