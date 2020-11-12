@@ -13,26 +13,13 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Test\TestCase;
 
-use Authentication\Authenticator\SessionAuthenticator;
-use Authentication\Authenticator\TokenAuthenticator;
-use Authentication\Identifier\JwtSubjectIdentifier;
-use Authentication\Identifier\PasswordIdentifier;
-use Authentication\Identifier\TokenIdentifier;
 use Authentication\Middleware\AuthenticationMiddleware;
-use Authorization\AuthorizationService;
 use Authorization\Middleware\AuthorizationMiddleware;
 use Authorization\Middleware\RequestAuthorizationMiddleware;
-use Authorization\Policy\ResolverCollection;
 use Cake\Core\Configure;
 use Cake\Http\MiddlewareQueue;
-use Cake\Http\Response;
-use Cake\Http\ServerRequest;
-use Cake\Http\ServerRequestFactory;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
-use CakeDC\Auth\Authentication\AuthenticationService as CakeDCAuthenticationService;
-use CakeDC\Auth\Authenticator\FormAuthenticator;
-use CakeDC\Auth\Authenticator\TwoFactorAuthenticator;
 use CakeDC\Auth\Middleware\TwoFactorMiddleware;
 use CakeDC\Users\Middleware\SocialAuthMiddleware;
 use CakeDC\Users\Middleware\SocialEmailMiddleware;

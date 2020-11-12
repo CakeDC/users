@@ -23,7 +23,6 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 trait ServiceProviderLoaderTrait
 {
-
     /**
      * Load a service defined in configuration $loaderKey
      *
