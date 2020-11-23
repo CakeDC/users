@@ -19,7 +19,6 @@ use Cake\ORM\TableRegistry;
 
 /**
  * Customize Users Table
- *
  */
 trait CustomUsersTableTrait
 {

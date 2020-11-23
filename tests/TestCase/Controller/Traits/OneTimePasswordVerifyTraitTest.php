@@ -59,7 +59,6 @@ class OneTimePasswordVerifyTraitTest extends BaseTraitTest
 
     /**
      * testVerifyHappy
-     *
      */
     public function testVerifyHappy()
     {
@@ -87,7 +86,6 @@ class OneTimePasswordVerifyTraitTest extends BaseTraitTest
 
     /**
      * testVerifyHappy
-     *
      */
     public function testVerifyNotEnabled()
     {
@@ -106,7 +104,6 @@ class OneTimePasswordVerifyTraitTest extends BaseTraitTest
 
     /**
      * testVerifyHappy
-     *
      */
     public function testVerifyGetShowQR()
     {

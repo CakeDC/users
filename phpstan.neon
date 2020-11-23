@@ -5,8 +5,12 @@ parameters:
     level: 6
     checkMissingIterableValueType: false
     checkGenericClassInNonGenericObjectType: false
-    autoload_files:
+    bootstrapFiles:
         - tests/bootstrap.php
+    excludes_analyse:
+        - src/Controller/SocialAccountsController.php
+        - src/Controller/UsersAccountsController.php
+        - src/Controller/AppAccountsController.php
     ignoreErrors:
 
 services:

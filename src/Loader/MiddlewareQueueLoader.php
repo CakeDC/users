@@ -41,7 +41,6 @@ class MiddlewareQueueLoader
      *
      * @param \Cake\Http\MiddlewareQueue $middlewareQueue The middleware queue to update.
      * @param \CakeDC\Users\Plugin $plugin Users plugin object
-     *
      * @return \Cake\Http\MiddlewareQueue
      */
     public function __invoke(MiddlewareQueue $middlewareQueue, Plugin $plugin)
@@ -57,7 +56,6 @@ class MiddlewareQueueLoader
      * Load social middlewares if enabled. Based on config 'Users.Social.login'
      *
      * @param \Cake\Http\MiddlewareQueue $middlewareQueue The middleware queue to update.
-     *
      * @return void
      */
     protected function loadSocialMiddleware(MiddlewareQueue $middlewareQueue)
@@ -74,7 +72,6 @@ class MiddlewareQueueLoader
      *
      * @param \Cake\Http\MiddlewareQueue $middlewareQueue queue of middleware
      * @param \CakeDC\Users\Plugin $plugin Users plugin object
-     *
      * @return void
      */
     protected function loadAuthenticationMiddleware(MiddlewareQueue $middlewareQueue, Plugin $plugin)
@@ -87,7 +84,6 @@ class MiddlewareQueueLoader
      * Load OneTimePasswordAuthenticatorMiddleware if enabled. Based on config 'OneTimePasswordAuthenticator.login'
      *
      * @param \Cake\Http\MiddlewareQueue $middlewareQueue queue of middleware
-     *
      * @return void
      */
     protected function load2faMiddleware(MiddlewareQueue $middlewareQueue)
@@ -105,7 +101,6 @@ class MiddlewareQueueLoader
      *
      * @param \Cake\Http\MiddlewareQueue $middlewareQueue queue of middleware
      * @param \CakeDC\Users\Plugin $plugin Users plugin object
-     *
      * @return \Cake\Http\MiddlewareQueue
      */
     protected function loadAuthorizationMiddleware(MiddlewareQueue $middlewareQueue, Plugin $plugin)

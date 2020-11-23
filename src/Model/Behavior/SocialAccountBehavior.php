@@ -101,11 +101,11 @@ class SocialAccountBehavior extends Behavior
 
         if (!empty($socialAccount) && $socialAccount->token === $token) {
             if ($socialAccount->active) {
-                throw new AccountAlreadyActiveException(__d('cake_d_c/users', "Account already validated"));
+                throw new AccountAlreadyActiveException(__d('cake_d_c/users', 'Account already validated'));
             }
         } else {
             throw new RecordNotFoundException(
-                __d('cake_d_c/users', "Account not found for the given token and email.")
+                __d('cake_d_c/users', 'Account not found for the given token and email.')
             );
         }
 
@@ -131,12 +131,12 @@ class SocialAccountBehavior extends Behavior
         if (!empty($socialAccount)) {
             if ($socialAccount->active) {
                 throw new AccountAlreadyActiveException(
-                    __d('cake_d_c/users', "Account already validated")
+                    __d('cake_d_c/users', 'Account already validated')
                 );
             }
         } else {
             throw new RecordNotFoundException(
-                __d('cake_d_c/users', "Account not found for the given token and email.")
+                __d('cake_d_c/users', 'Account not found for the given token and email.')
             );
         }
 

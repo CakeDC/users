@@ -104,7 +104,6 @@ trait OneTimePasswordVerifyTrait
      * Get the Google Authenticator secret of user, if not exists try to create one and save
      *
      * @param \CakeDC\Users\Model\Entity\User $user user data present on session
-     *
      * @return string if empty the creation has failed
      */
     protected function onVerifyGetSecret($user)
@@ -144,7 +143,6 @@ trait OneTimePasswordVerifyTrait
      * Handle the action when user post the form with code
      *
      * @param array $loginAction url to login page used in redirect
-     *
      * @return \Cake\Http\Response
      */
     protected function onPostVerifyCode($loginAction)
@@ -178,7 +176,6 @@ trait OneTimePasswordVerifyTrait
      *
      * @param array $loginAction url to login page used in redirect
      * @param \CakeDC\Users\Model\Entity\User $user user data present on session
-     *
      * @return \Cake\Http\Response
      */
     protected function onPostVerifyCodeOkay($loginAction, $user)

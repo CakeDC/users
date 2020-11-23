@@ -36,7 +36,6 @@ trait PasswordManagementTrait
      * reset password with session key (email token has already been validated)
      *
      * @param int|string|null $id user_id, null for logged in user id
-     *
      * @return mixed
      */
     public function changePassword($id = null)
@@ -59,7 +58,7 @@ trait PasswordManagementTrait
                 $redirect = Configure::read('Users.Profile.route');
             } else {
                 $this->Flash->error(
-                    __d('CakeDC/Users', 'Changing another user\'s password is not allowed')
+                    __d('cake_d_c/users', 'Changing another user\'s password is not allowed')
                 );
                 $this->redirect(Configure::read('Users.Profile.route'));
 

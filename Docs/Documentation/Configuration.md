@@ -165,7 +165,7 @@ You need to configure 2 things:
 
 ```php
     $identifiers = Configure::read('Auth.Identifiers');
-    $identifiers['Authentication.Password']['fields']['username'] = 'email';
+    $identifiers['Password']['fields']['username'] = 'email';
     Configure::write('Auth.Identifiers', $identifiers);
 ```
 
@@ -210,3 +210,37 @@ Check https://book.cakephp.org/4/en/core-libraries/internationalization-and-loca
 for more details about how the PO files should be managed in your application.
 
 We've included an updated POT file with all the `Users` domain keys for your customization.
+
+Password Hasher customization
+-----------------------------
+
+Override the `Auth.Identifiers.Password` key in configuration adding a `passwordHasher` key https://book.cakephp.org/authentication/2/en/password-hashers.html#upgrading-hashing-algorithms
+
+For example:
+
+```php
+    'Auth.Identifiers' => [
+        'Password' => [
+            'className' => 'Authentication.Password',
+            'fields' => [
+                'username' => ['username', 'email'],
+                'password' => 'password',
+            ],
+            'resolver' => [
+                'className' => 'Authentication.Orm',
+                'finder' => 'active',
+            ],
+            'passwordHasher' => [
+                'className' => 'Authentication.Fallback',
+                'hashers' => [
+                    'Authentication.Default',
+                    [
+                        'className' => 'Authentication.Legacy',
+                        'hashType' => 'md5',
+                        'salt' => false, // turn off default usage of salt
+                    ],
+                ],
+            ],
+        ],
+    ],
+```

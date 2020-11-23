@@ -2,6 +2,20 @@ Changelog
 =========
 Releases for CakePHP 4
 -------------
+* Next
+  * 
+
+* 9.0.4
+  * Fixed deprecations and stan issues
+  * Improved docs
+  * Fixed issue where RememberMe cookie
+  * Fixed deprecated UserHelper::isAuthorized
+
+* 9.0.3
+  * Ukrainian (uk) by @yarkm13
+  * Docs improvements
+  * Fix DebugKit permissions issues
+  
 * 9.0.2
   * Added a custom Unauthorized Handler
     * If logged user access unauthorized url he is redirected to referer url or '/' if no referer url

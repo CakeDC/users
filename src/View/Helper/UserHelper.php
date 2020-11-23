@@ -117,6 +117,7 @@ class UserHelper extends Helper
 
     /**
      * Welcome display
+     *
      * @return string|null
      */
     public function welcome()
@@ -141,6 +142,7 @@ class UserHelper extends Helper
 
     /**
      * Add reCaptcha script
+     *
      * @return void
      */
     public function addReCaptchaScript()
@@ -152,6 +154,7 @@ class UserHelper extends Helper
 
     /**
      * Add reCaptcha to the form
+     *
      * @return mixed
      */
     public function addReCaptcha()
@@ -184,7 +187,6 @@ class UserHelper extends Helper
      * Generate a link if the target url is authorized for the logged in user
      *
      * @deprecated Since 3.2.1. Use AuthLinkHelper::link() instead
-     *
      * @param string $title link's title.
      * @param string|array|null $url url that the user is making request.
      * @param array $options Array with option data.
@@ -201,30 +203,11 @@ class UserHelper extends Helper
     }
 
     /**
-     * Returns true if the target url is authorized for the logged in user
-     *
-     * @deprecated Since 3.2.1. Use AuthLinkHelper::link() instead
-     *
-     * @param string|array|null $url url that the user is making request.
-     * @return bool
-     */
-    public function isAuthorized($url = null)
-    {
-        trigger_error(
-            'UserHelper::isAuthorized() deprecated since 3.2.1. Use AuthLinkHelper::isAuthorized() instead',
-            E_USER_DEPRECATED
-        );
-
-        return $this->AuthLink->isAuthorized($url);
-    }
-
-    /**
      * Create links for all social providers enabled social link (connect)
      *
      * @param string $name        Provider name in lowercase
      * @param array  $provider    Provider configuration
      * @param bool   $isConnected User is connected with this provider
-     *
      * @return string
      */
     public function socialConnectLink($name, $provider, $isConnected = false)
@@ -253,15 +236,14 @@ class UserHelper extends Helper
      * Create links for all social providers enabled social link (connect)
      *
      * @param array $socialAccounts All social accounts connected by a user.
-     *
      * @return string
      */
     public function socialConnectLinkList($socialAccounts = [])
     {
         if (!Configure::read('Users.Social.login')) {
-            return "";
+            return '';
         }
-        $html = "";
+        $html = '';
         $connectedProviders = array_map(
             function ($item) {
                 return strtolower($item->provider);

@@ -35,7 +35,6 @@ class UsersUrl
      *
      * @param string $action user action
      * @param array $extra extra url attributes
-     *
      * @return array
      */
     public static function actionUrl($action, $extra = [])
@@ -83,7 +82,6 @@ class UsersUrl
      *
      * @param string $action users action
      * @param \Cake\Http\ServerRequest $request the request
-     *
      * @return bool
      */
     public static function checkActionOnRequest($action, ServerRequest $request)

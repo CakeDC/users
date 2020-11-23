@@ -72,7 +72,6 @@ class LoginComponentLoader
      * @param \Cake\Controller\Controller $controller Target controller
      * @param string $key configuration key
      * @param array $config base configuration
-     *
      * @return \CakeDC\Users\Controller\Component\LoginComponent|\Cake\Controller\Component
      * @throws \Exception
      */

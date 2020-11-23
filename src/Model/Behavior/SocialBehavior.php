@@ -27,7 +27,6 @@ use InvalidArgumentException;
 
 /**
  * Covers social features
- *
  */
 class SocialBehavior extends BaseTokenBehavior
 {
@@ -213,7 +212,7 @@ class SocialBehavior extends BaseTokenBehavior
             $userData['password'] = $this->randomString();
             $userData['avatar'] = $data['avatar'] ?? null;
             $userData['validated'] = !empty($dataValidated);
-            $userData['tos_date'] = date("Y-m-d H:i:s");
+            $userData['tos_date'] = date('Y-m-d H:i:s');
             $userData['gender'] = $data['gender'] ?? null;
             $userData['social_accounts'][] = $accountData;
 
@@ -263,7 +262,6 @@ class SocialBehavior extends BaseTokenBehavior
      *
      * @param \Cake\ORM\Query $query The base query.
      * @param array $options Find options with email key.
-     *
      * @return \Cake\ORM\Query
      */
     public function findExistingForSocialLogin(\Cake\ORM\Query $query, array $options)
@@ -277,7 +275,6 @@ class SocialBehavior extends BaseTokenBehavior
      * Extract the account data to insert/update
      *
      * @param array $data Social data.
-     *
      * @throws \Exception
      * @return array
      */

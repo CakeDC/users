@@ -17,6 +17,7 @@ trait RandomStringTrait
 {
     /**
      * Generates random string
+     *
      * @param int $length String size.
      * @return string
      */
@@ -25,7 +26,7 @@ trait RandomStringTrait
         if (!is_numeric($length) || $length <= 0) {
             $length = 10;
         }
-        $string = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        $string = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
         return substr(str_shuffle($string), 0, $length);
     }

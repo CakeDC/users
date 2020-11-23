@@ -64,7 +64,7 @@ trait SimpleCrudTrait
     {
         $table = $this->loadModel();
         $tableAlias = $table->getAlias();
-        $entity = $table->newEntity([]);
+        $entity = $table->newEmptyEntity();
         $this->set($tableAlias, $entity);
         $this->set('tableAlias', $tableAlias);
         $this->set('_serialize', [$tableAlias, 'tableAlias']);

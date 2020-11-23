@@ -61,7 +61,6 @@ class AuthenticationServiceLoader
      * Load the authenticators defined at config Auth.Authenticators
      *
      * @param \CakeDC\Auth\Authentication\AuthenticationService $service Authentication service to load identifiers
-     *
      * @return void
      */
     protected function loadAuthenticators($service)
@@ -79,7 +78,6 @@ class AuthenticationServiceLoader
      * Load the CakeDC/Auth.TwoFactor based on config OneTimePasswordAuthenticator.login
      *
      * @param \CakeDC\Auth\Authentication\AuthenticationService $service Authentication service to load identifiers
-     *
      * @return void
      */
     protected function loadTwoFactorAuthenticator($service)

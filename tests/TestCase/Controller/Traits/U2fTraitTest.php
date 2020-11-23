@@ -111,7 +111,6 @@ class U2fTraitTest extends BaseTraitTest
      *
      * @param array $userData session user data
      * @param mixed $redirect expetected redirect
-     *
      * @dataProvider dataProviderU2User
      * @return void
      */
@@ -163,7 +162,7 @@ class U2fTraitTest extends BaseTraitTest
             ->setMethods(['getRegisterData'])
             ->getMock();
 
-        $registerRequest = new RegisterRequest("sample chalange", "https://localhost");
+        $registerRequest = new RegisterRequest('sample chalange', 'https://localhost');
         $signs = [
             ['fake' => new \stdClass()],
             ['fake2' => new \stdClass()],
@@ -223,7 +222,6 @@ class U2fTraitTest extends BaseTraitTest
      *
      * @param array $userData session user data
      * @param mixed $redirect expetected redirect
-     *
      * @dataProvider dataProviderU2fRegisterRedirect
      * @return void
      */
@@ -285,7 +283,7 @@ class U2fTraitTest extends BaseTraitTest
             ->setMethods(['doRegister'])
             ->getMock();
 
-        $registerRequest = new RegisterRequest("sample chalange", "https://localhost");
+        $registerRequest = new RegisterRequest('sample chalange', 'https://localhost');
         $registerRequest = json_decode(json_encode($registerRequest));
         $signs = [
             ['fake' => new \stdClass()],
@@ -296,9 +294,9 @@ class U2fTraitTest extends BaseTraitTest
             'fakeB' => 'fakevalueb',
         ]));
         $registration = new Registration();
-        $registration->certificate = "user registration cert " . time();
+        $registration->certificate = 'user registration cert ' . time();
         $registration->counter = 1;
-        $registration->publicKey = "pub skska08u90234230990";
+        $registration->publicKey = 'pub skska08u90234230990';
         $registration->keyHandle = 'hahdofa02390423udu9ma0dumfá0dsufm2um9432uu903u923';
 
         $this->Trait->getRequest()->expects($this->once())
@@ -355,9 +353,9 @@ class U2fTraitTest extends BaseTraitTest
         $this->assertEquals(json_encode($registration), json_encode($savedRegistration));
 
         $registration = new Registration();
-        $registration->certificate = "user registration cert " . time();
+        $registration->certificate = 'user registration cert ' . time();
         $registration->counter = 1;
-        $registration->publicKey = "pub skska08u90234230990";
+        $registration->publicKey = 'pub skska08u90234230990';
         $registration->keyHandle = 'hahdofa02390423udu9ma0dumfá0dsufm2um9432uu903u923';
     }
 
@@ -383,16 +381,16 @@ class U2fTraitTest extends BaseTraitTest
             ->setMethods(['doRegister'])
             ->getMock();
 
-        $registerRequest = new RegisterRequest("sample chalange", "https://localhost");
+        $registerRequest = new RegisterRequest('sample chalange', 'https://localhost');
         $registerRequest = json_decode(json_encode($registerRequest));
         $registerResponse = json_decode(json_encode([
             'fakeA' => 'fakevaluea',
             'fakeB' => 'fakevalueb',
         ]));
         $registration = new Registration();
-        $registration->certificate = "user registration cert " . time();
+        $registration->certificate = 'user registration cert ' . time();
         $registration->counter = 1;
-        $registration->publicKey = "pub skska08u90234230990";
+        $registration->publicKey = 'pub skska08u90234230990';
         $registration->keyHandle = 'hahdofa02390423udu9ma0dumfá0dsufm2um9432uu903u923';
 
         $this->Trait->getRequest()->expects($this->once())
@@ -453,9 +451,9 @@ class U2fTraitTest extends BaseTraitTest
         $this->assertNull($savedRegistration);
 
         $registration = new Registration();
-        $registration->certificate = "user registration cert " . time();
+        $registration->certificate = 'user registration cert ' . time();
         $registration->counter = 1;
-        $registration->publicKey = "pub skska08u90234230990";
+        $registration->publicKey = 'pub skska08u90234230990';
         $registration->keyHandle = 'hahdofa02390423udu9ma0dumfá0dsufm2um9432uu903u923';
     }
 
@@ -483,7 +481,6 @@ class U2fTraitTest extends BaseTraitTest
      *
      * @param array $userData session user data
      * @param mixed $redirect expetected redirect
-     *
      * @dataProvider dataProviderU2fAuthenticateRedirectCustomUser
      * @return void
      */

@@ -38,7 +38,6 @@ class UsersShell extends Shell
     ];
 
     /**
-     *
      * @return \Cake\Console\ConsoleOptionParser
      */
     public function getOptionParser(): ConsoleOptionParser
@@ -341,8 +340,6 @@ class UsersShell extends Shell
         $user = $this->Users->find()->where(['username' => $username])->first();
         if (!is_object($user)) {
             $this->abort(__d('cake_d_c/users', 'The user was not found.'));
-
-            return false;
         }
         /**
          * @var \Cake\Datasource\EntityInterface $user

@@ -1,0 +1,800 @@
+# Ukrainian translation of CakePHP Application
+# Copyright 2020 Yaroslav Kontsevyi <yaroslav@ua-biz.info>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2019-01-10 14:38+0000\n"
+"PO-Revision-Date: 2020-04-03 14:57+0300\n"
+"Language-Team: CakeDC <contact@cakedc.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+"X-Generator: Poedit 2.3\n"
+"Last-Translator: Yaroslav Kontsevyi <yaroslav@ua-biz.info>\n"
+"Language: uk\n"
+
+#: Controller/SocialAccountsController.php:50
+msgid "Account validated successfully"
+msgstr "Обліковий запис успішно підтверджено"
+
+#: Controller/SocialAccountsController.php:52
+msgid "Account could not be validated"
+msgstr "Не вдалося підтвердити обліковий запис"
+
+#: Controller/SocialAccountsController.php:55
+msgid "Invalid token and/or social account"
+msgstr "Недійсний маркер та / або соціальний акаунт"
+
+#: Controller/SocialAccountsController.php:57;85
+msgid "Social Account already active"
+msgstr "Соціальний акаунт вже активний"
+
+#: Controller/SocialAccountsController.php:59
+msgid "Social Account could not be validated"
+msgstr "Не вдалося підтвердити соціальний обліковий запис"
+
+#: Controller/SocialAccountsController.php:78
+msgid "Email sent successfully"
+msgstr "Електронна пошта відправлена успішно"
+
+#: Controller/SocialAccountsController.php:80
+msgid "Email could not be sent"
+msgstr "Не вдалося надіслати електронну пошту"
+
+#: Controller/SocialAccountsController.php:83
+msgid "Invalid account"
+msgstr "Недійсний обліковий запис"
+
+#: Controller/SocialAccountsController.php:87
+msgid "Email could not be resent"
+msgstr "Не вдалося відіслати електронний лист"
+
+#: Controller/Traits/LinkSocialTrait.php:52
+msgid "Could not associate account, please try again."
+msgstr "Неможливо пов’язати обліковий запис. Повторіть спробу."
+
+#: Controller/Traits/LinkSocialTrait.php:76
+msgid "Social account was associated."
+msgstr "Соціальний акаунт успішно активовано."
+
+#: Controller/Traits/LoginTrait.php:73
+msgid "You've successfully logged out"
+msgstr "Ви успішно вийшли"
+
+#: Controller/Traits/OneTimePasswordVerifyTrait.php:71
+msgid "Please enable Google Authenticator first."
+msgstr "Спершу ввімкніть Google Authenticator."
+
+#: Controller/Traits/OneTimePasswordVerifyTrait.php:80
+msgid "Could not find user data"
+msgstr "Не вдалося знайти дані користувача"
+
+#: Controller/Traits/OneTimePasswordVerifyTrait.php:116
+msgid "Could not verify, please try again"
+msgstr "Неможливо підтвердити. Повторіть спробу"
+
+#: Controller/Traits/OneTimePasswordVerifyTrait.php:144
+msgid "Verification code is invalid. Try again"
+msgstr "Код підтвердження недійсний. Спробуйте ще раз"
+
+#: Controller/Traits/PasswordManagementTrait.php:53;91
+#: Controller/Traits/ProfileTrait.php:53
+msgid "User was not found"
+msgstr "Користувача не знайдено"
+
+#: Controller/Traits/PasswordManagementTrait.php:75;87;95
+msgid "Password could not be changed"
+msgstr "Не вдалося змінити пароль"
+
+#: Controller/Traits/PasswordManagementTrait.php:83
+msgid "Password has been changed successfully"
+msgstr "Пароль успішно змінено"
+
+#: Controller/Traits/PasswordManagementTrait.php:137
+msgid "Please check your email to continue with password reset process"
+msgstr "Будь ласка, перевірте вашу електронну пошту для відновлення пароля"
+
+#: Controller/Traits/PasswordManagementTrait.php:140 Shell/UsersShell.php:247
+msgid "The password token could not be generated. Please try again"
+msgstr "Не вдалося створити маркер пароля. Будь ласка спробуйте ще раз"
+
+#: Controller/Traits/PasswordManagementTrait.php:146
+#: Controller/Traits/UserValidationTrait.php:116
+msgid "User {0} was not found"
+msgstr "Користувача {0} не знайдено"
+
+#: Controller/Traits/PasswordManagementTrait.php:148
+msgid "The user is not active"
+msgstr "Користувач неактивний"
+
+#: Controller/Traits/PasswordManagementTrait.php:150
+#: Controller/Traits/UserValidationTrait.php:111;120
+msgid "Token could not be reset"
+msgstr "Не вдалося скинути маркер"
+
+#: Controller/Traits/PasswordManagementTrait.php:174
+msgid "Google Authenticator token was successfully reset"
+msgstr "Маркер Google Authenticator успішно скинуто"
+
+#: Controller/Traits/ProfileTrait.php:57
+msgid "Not authorized, please login first"
+msgstr "Не дозволено, спочатку увійдіть"
+
+#: Controller/Traits/RegisterTrait.php:46
+msgid "You must log out to register a new user account"
+msgstr "Ви повинні вийти з системи, щоб зареєструвати новий обліковий запис"
+
+#: Controller/Traits/RegisterTrait.php:75;99
+msgid "The user could not be saved"
+msgstr "Користувача не вдалося зберегти"
+
+#: Controller/Traits/RegisterTrait.php:92 Loader/LoginComponentLoader.php:32
+msgid "Invalid reCaptcha"
+msgstr "Недійсна reCaptcha"
+
+#: Controller/Traits/RegisterTrait.php:133
+msgid "You have registered successfully, please log in"
+msgstr "Ви успішно зареєструвались, будь ласка, увійдіть"
+
+#: Controller/Traits/RegisterTrait.php:135
+msgid "Please validate your account before log in"
+msgstr "Будь ласка, підтвердьте свій обліковий запис, перш ніж увійти"
+
+#: Controller/Traits/SimpleCrudTrait.php:77;107
+msgid "The {0} has been saved"
+msgstr "Успішно збережено {0}"
+
+#: Controller/Traits/SimpleCrudTrait.php:81;111
+msgid "The {0} could not be saved"
+msgstr "Не вдалося зберегти {0}"
+
+#: Controller/Traits/SimpleCrudTrait.php:131
+msgid "The {0} has been deleted"
+msgstr "{0} видалено"
+
+#: Controller/Traits/SimpleCrudTrait.php:133
+msgid "The {0} could not be deleted"
+msgstr "{0} не може бути видалено"
+
+#: Controller/Traits/UserValidationTrait.php:44
+msgid "User account validated successfully"
+msgstr "Обліковий запис успішно підтверджено"
+
+#: Controller/Traits/UserValidationTrait.php:46
+msgid "User account could not be validated"
+msgstr "Не вдалося підтвердити обліковий запис"
+
+#: Controller/Traits/UserValidationTrait.php:49
+msgid "User already active"
+msgstr "Користувач вже активний"
+
+#: Controller/Traits/UserValidationTrait.php:55
+msgid "Reset password token was validated successfully"
+msgstr "Маркер скидання пароля успішно перевірено"
+
+#: Controller/Traits/UserValidationTrait.php:63
+msgid "Reset password token could not be validated"
+msgstr "Маркер скидання пароля не може бути перевірений"
+
+#: Controller/Traits/UserValidationTrait.php:67
+msgid "Invalid validation type"
+msgstr "Недійсний тип перевірки"
+
+#: Controller/Traits/UserValidationTrait.php:70
+msgid "Invalid token or user account already validated"
+msgstr "Недійсний маркер або обліковий запис користувача вже підтверджено"
+
+#: Controller/Traits/UserValidationTrait.php:76
+msgid "Token already expired"
+msgstr "Маркер вже сплив"
+
+#: Controller/Traits/UserValidationTrait.php:106
+msgid "Token has been reset successfully. Please check your email."
+msgstr "Маркер успішно скинуто. Будь ласка, перевірте свою електронну пошту."
+
+#: Controller/Traits/UserValidationTrait.php:118
+msgid "User {0} is already active"
+msgstr "Користувач {0} вже активний"
+
+#: Loader/LoginComponentLoader.php:30
+msgid "Username or password is incorrect"
+msgstr "Ім'я користувача або пароль невірні"
+
+#: Loader/LoginComponentLoader.php:51
+msgid "Could not proceed with social account. Please try again"
+msgstr ""
+"Не вдалось продовжити використання соціального облікового запису. Будь ласка "
+"спробуйте ще раз"
+
+#: Loader/LoginComponentLoader.php:53
+msgid ""
+"Your user has not been validated yet. Please check your inbox for "
+"instructions"
+msgstr ""
+"Користувача ще не підтверджено. Будь ласка, перевірте вашу поштову скриньку "
+"для інструкцій"
+
+#: Loader/LoginComponentLoader.php:57
+msgid ""
+"Your social account has not been validated yet. Please check your inbox for "
+"instructions"
+msgstr ""
+"Ваш соціальний обліковий запис ще не перевірено. Будь ласка, перевірте вашу "
+"поштову скриньку для інструкцій"
+
+#: Mailer/UsersMailer.php:33
+msgid "Your account validation link"
+msgstr "Посилання для перевірки облікового запису"
+
+#: Mailer/UsersMailer.php:51
+msgid "{0}Your reset password link"
+msgstr "{0} Ваше посилання для скидання пароля"
+
+#: Mailer/UsersMailer.php:74
+msgid "{0}Your social account validation link"
+msgstr "{0} Посилання для перевірки облікового запису"
+
+#: Middleware/SocialAuthMiddleware.php:65 Template/Users/social_email.ctp:16
+msgid "Please enter your email"
+msgstr "Введіть адресу електронної пошти"
+
+#: Middleware/SocialAuthMiddleware.php:75
+msgid "Could not identify your account, please try again"
+msgstr "Не вдалося визначити обліковий запис, будь ласка, спробуйте ще раз"
+
+#: Model/Behavior/AuthFinderBehavior.php:48
+msgid "Missing 'username' in options data"
+msgstr "«Ім'я користувача» відсутнє в параметрах даних"
+
+#: Model/Behavior/LinkSocialBehavior.php:53
+msgid "Social account already associated to another user"
+msgstr "Соціальний обліковий запис, вже пов'язаний з іншим користувачем"
+
+#: Model/Behavior/PasswordBehavior.php:45
+msgid "Reference cannot be null"
+msgstr "Посилання не може бути пустим"
+
+#: Model/Behavior/PasswordBehavior.php:50
+msgid "Token expiration cannot be empty"
+msgstr "Термін дії маркера не може бути пустим"
+
+#: Model/Behavior/PasswordBehavior.php:56;138
+msgid "User not found"
+msgstr "Користувача не знайдено"
+
+#: Model/Behavior/PasswordBehavior.php:60
+#: Model/Behavior/RegisterBehavior.php:112
+msgid "User account already validated"
+msgstr "Обліковий запис користувача вже підтверджено"
+
+#: Model/Behavior/PasswordBehavior.php:67
+msgid "User not active"
+msgstr "Користувач не активний"
+
+#: Model/Behavior/PasswordBehavior.php:143
+msgid "The current password does not match"
+msgstr "Поточний пароль не збігається"
+
+#: Model/Behavior/PasswordBehavior.php:146
+msgid "You cannot use the current password as the new one"
+msgstr "Не можна використовувати поточний пароль як новий"
+
+#: Model/Behavior/RegisterBehavior.php:90
+msgid "User not found for the given token and email."
+msgstr "Не знайдено користувача з цим маркером та адресою електронної пошти."
+
+#: Model/Behavior/RegisterBehavior.php:93
+msgid "Token has already expired user with no token"
+msgstr "Маркер вже сплив, користувач без маркера"
+
+#: Model/Behavior/RegisterBehavior.php:151
+msgid "This field is required"
+msgstr "Це поле обов‘язкове"
+
+#: Model/Behavior/SocialAccountBehavior.php:102;129
+msgid "Account already validated"
+msgstr "Обліковий запис вже підтверджено"
+
+#: Model/Behavior/SocialAccountBehavior.php:105;132
+msgid "Account not found for the given token and email."
+msgstr "Не знайдено користувача з цим маркером та адресою електронної пошти."
+
+#: Model/Behavior/SocialBehavior.php:83
+msgid "Unable to login user with reference {0}"
+msgstr "Не вдається ввійти за посиланням {0}"
+
+#: Model/Behavior/SocialBehavior.php:122
+msgid "Email not present"
+msgstr "Електронна пошта відсутня"
+
+#: Model/Table/UsersTable.php:79
+msgid "Your password does not match your confirm password. Please try again"
+msgstr "Ваш пароль не відповідає підтвердженню. Будь ласка, спробуйте ще раз"
+
+#: Model/Table/UsersTable.php:171
+msgid "Username already exists"
+msgstr "Такий користувач вже існує"
+
+#: Model/Table/UsersTable.php:177
+msgid "Email already exists"
+msgstr "Електронна пошта вже існує"
+
+#: Shell/UsersShell.php:58
+msgid "Utilities for CakeDC Users Plugin"
+msgstr "Утиліти для плагіна CakeDC Users"
+
+#: Shell/UsersShell.php:60
+msgid "Activate an specific user"
+msgstr "Активація конкретного користувача"
+
+#: Shell/UsersShell.php:63
+msgid "Add a new superadmin user for testing purposes"
+msgstr "Додавання нового користувача superadmin для цілей тестування"
+
+#: Shell/UsersShell.php:66
+msgid "Add a new user"
+msgstr "Додати нового користувача"
+
+#: Shell/UsersShell.php:69
+msgid "Change the role for an specific user"
+msgstr "Змінення ролі для певного користувача"
+
+#: Shell/UsersShell.php:72
+msgid "Deactivate an specific user"
+msgstr "Деактивувати конкретного користувача"
+
+#: Shell/UsersShell.php:75
+msgid "Delete an specific user"
+msgstr "Видалення конкретного користувача"
+
+#: Shell/UsersShell.php:78
+msgid "Reset the password via email"
+msgstr "Скинути пароль за допомогою електронної пошти"
+
+#: Shell/UsersShell.php:81
+msgid "Reset the password for all users"
+msgstr "Скидання пароля для всіх користувачів"
+
+#: Shell/UsersShell.php:84
+msgid "Reset the password for an specific user"
+msgstr "Скидання пароля для певного користувача"
+
+#: Shell/UsersShell.php:133;159
+msgid "Please enter a password."
+msgstr "Будь ласка, введіть пароль."
+
+#: Shell/UsersShell.php:137
+msgid "Password changed for all users"
+msgstr "Пароль змінено для всіх користувачів"
+
+#: Shell/UsersShell.php:138;166
+msgid "New password: {0}"
+msgstr "Новий пароль: {0}"
+
+#: Shell/UsersShell.php:156;184;262;359
+msgid "Please enter a username."
+msgstr "Введіть ім'я користувача."
+
+#: Shell/UsersShell.php:165
+msgid "Password changed for user: {0}"
+msgstr "Пароль змінено для користувача: {0}"
+
+#: Shell/UsersShell.php:187
+msgid "Please enter a role."
+msgstr "Будь ласка, введіть роль."
+
+#: Shell/UsersShell.php:193
+msgid "Role changed for user: {0}"
+msgstr "Роль змінено для користувача: {0}"
+
+#: Shell/UsersShell.php:194
+msgid "New role: {0}"
+msgstr "Нова роль: {0}"
+
+#: Shell/UsersShell.php:209
+msgid "User was activated: {0}"
+msgstr "Користувач був активований: {0}"
+
+#: Shell/UsersShell.php:224
+msgid "User was de-activated: {0}"
+msgstr "Користувач був де-активований: {0}"
+
+#: Shell/UsersShell.php:236
+msgid "Please enter a username or email."
+msgstr "Введіть ім'я користувача або email."
+
+#: Shell/UsersShell.php:244
+msgid ""
+"Please ask the user to check the email to continue with password reset "
+"process"
+msgstr ""
+"Будь ласка, зверніться до користувача, щоб перевірити електронну пошту для "
+"продовження процесу скидання пароля"
+
+#: Shell/UsersShell.php:308
+msgid "Superuser added:"
+msgstr "Superuser-а додано:"
+
+#: Shell/UsersShell.php:310
+msgid "User added:"
+msgstr "Користувача додано:"
+
+#: Shell/UsersShell.php:312
+msgid "Id: {0}"
+msgstr "Id: {0}"
+
+#: Shell/UsersShell.php:313
+msgid "Username: {0}"
+msgstr "Користувач: {0}"
+
+#: Shell/UsersShell.php:314
+msgid "Email: {0}"
+msgstr "Електронна пошта: {0}"
+
+#: Shell/UsersShell.php:315
+msgid "Role: {0}"
+msgstr "Роль: {0}"
+
+#: Shell/UsersShell.php:316
+msgid "Password: {0}"
+msgstr "Пароль: {0}"
+
+#: Shell/UsersShell.php:318
+msgid "User could not be added:"
+msgstr "Не вдалося додати користувача:"
+
+#: Shell/UsersShell.php:321
+msgid "Field: {0} Error: {1}"
+msgstr "Поле: {0} Помилка: {1}"
+
+#: Shell/UsersShell.php:337
+msgid "The user was not found."
+msgstr "Користувача не знайдено."
+
+#: Shell/UsersShell.php:367
+msgid "The user {0} was not deleted. Please try again"
+msgstr "Користувача {0} не видалено. Будь ласка, спробуйте ще раз"
+
+#: Shell/UsersShell.php:369
+msgid "The user {0} was deleted successfully"
+msgstr "Користувача {0} успішно видалено"
+
+#: Template/Email/html/reset_password.ctp:21
+#: Template/Email/html/social_account_validation.ctp:14
+#: Template/Email/html/validation.ctp:21
+#: Template/Email/text/reset_password.ctp:20
+#: Template/Email/text/social_account_validation.ctp:22
+#: Template/Email/text/validation.ctp:20
+msgid "Hi {0}"
+msgstr "Вітаємо {0}"
+
+#: Template/Email/html/reset_password.ctp:24
+msgid "Reset your password here"
+msgstr "Скинути пароль"
+
+#: Template/Email/html/reset_password.ctp:27
+#: Template/Email/html/social_account_validation.ctp:32
+#: Template/Email/html/validation.ctp:27
+msgid ""
+"If the link is not correctly displayed, please copy the following address in "
+"your web browser {0}"
+msgstr ""
+"Якщо посилання не відображається належним чином, скопіюйте наступну адресу у "
+"веб-переглядач {0}"
+
+#: Template/Email/html/reset_password.ctp:34
+#: Template/Email/html/social_account_validation.ctp:39
+#: Template/Email/html/validation.ctp:34
+#: Template/Email/text/reset_password.ctp:28
+#: Template/Email/text/social_account_validation.ctp:30
+#: Template/Email/text/validation.ctp:28
+msgid "Thank you"
+msgstr "Дякуємо"
+
+#: Template/Email/html/social_account_validation.ctp:18
+msgid "Activate your social login here"
+msgstr "Активуйте свій соціальний логін тут"
+
+#: Template/Email/html/validation.ctp:24
+msgid "Activate your account here"
+msgstr "Активуйте свій акаунт тут"
+
+#: Template/Email/text/reset_password.ctp:22
+#: Template/Email/text/validation.ctp:22
+msgid "Please copy the following address in your web browser {0}"
+msgstr "Будь ласка, скопіюйте наступну адресу у веб-переглядач {0}"
+
+#: Template/Email/text/social_account_validation.ctp:24
+msgid ""
+"Please copy the following address in your web browser to activate your "
+"social login {0}"
+msgstr ""
+"Будь ласка, скопіюйте наступну адресу у веб-браузер, щоб активувати ваш "
+"соціальний логін {0}"
+
+#: Template/Users/add.ctp:13 Template/Users/edit.ctp:17
+#: Template/Users/index.ctp:13;26 Template/Users/view.ctp:15
+msgid "Actions"
+msgstr "Дії"
+
+#: Template/Users/add.ctp:15 Template/Users/edit.ctp:28
+#: Template/Users/view.ctp:23
+msgid "List Users"
+msgstr "Перелік користувачів"
+
+#: Template/Users/add.ctp:21 Template/Users/register.ctp:18
+msgid "Add User"
+msgstr "Створити користувача"
+
+#: Template/Users/add.ctp:23 Template/Users/edit.ctp:36
+#: Template/Users/index.ctp:22 Template/Users/login.ctp:20
+#: Template/Users/profile.ctp:30 Template/Users/register.ctp:20
+#: Template/Users/view.ctp:33
+msgid "Username"
+msgstr "Iм'я користувача"
+
+#: Template/Users/add.ctp:24 Template/Users/edit.ctp:37
+#: Template/Users/index.ctp:23 Template/Users/profile.ctp:32
+#: Template/Users/register.ctp:21 Template/Users/view.ctp:35
+msgid "Email"
+msgstr "Електронна пошта"
+
+#: Template/Users/add.ctp:25 Template/Users/login.ctp:21
+#: Template/Users/register.ctp:22
+msgid "Password"
+msgstr "Пароль"
+
+#: Template/Users/add.ctp:26 Template/Users/edit.ctp:38
+#: Template/Users/index.ctp:24 Template/Users/register.ctp:27
+msgid "First name"
+msgstr "Ім‘я"
+
+#: Template/Users/add.ctp:27 Template/Users/edit.ctp:39
+#: Template/Users/index.ctp:25 Template/Users/register.ctp:28
+msgid "Last name"
+msgstr "Прізвище"
+
+#: Template/Users/add.ctp:30 Template/Users/edit.ctp:54
+#: Template/Users/view.ctp:49;74
+msgid "Active"
+msgstr "Активний"
+
+#: Template/Users/add.ctp:34 Template/Users/change_password.ctp:25
+#: Template/Users/edit.ctp:58 Template/Users/register.ctp:37
+#: Template/Users/request_reset_password.ctp:8
+#: Template/Users/resend_token_validation.ctp:20
+#: Template/Users/social_email.ctp:19
+msgid "Submit"
+msgstr "Відправити"
+
+#: Template/Users/change_password.ctp:5
+msgid "Please enter the new password"
+msgstr "Будь ласка, введіть пароль"
+
+#: Template/Users/change_password.ctp:10
+msgid "Current password"
+msgstr "Теперішний пароль"
+
+#: Template/Users/change_password.ctp:16
+msgid "New password"
+msgstr "Новий пароль"
+
+#: Template/Users/change_password.ctp:21 Template/Users/register.ctp:25
+msgid "Confirm password"
+msgstr "Повторити пароль"
+
+#: Template/Users/edit.ctp:22 Template/Users/index.ctp:40
+msgid "Delete"
+msgstr "Видалити"
+
+#: Template/Users/edit.ctp:24 Template/Users/index.ctp:40
+#: Template/Users/view.ctp:21
+msgid "Are you sure you want to delete # {0}?"
+msgstr "Впевнені, що хочете видалити # {0}?"
+
+#: Template/Users/edit.ctp:34 Template/Users/view.ctp:17
+msgid "Edit User"
+msgstr "Редагувати користувача"
+
+#: Template/Users/edit.ctp:40 Template/Users/view.ctp:43
+msgid "Token"
+msgstr "Маркер"
+
+#: Template/Users/edit.ctp:42
+msgid "Token expires"
+msgstr "Маркер спилв"
+
+#: Template/Users/edit.ctp:45
+msgid "API token"
+msgstr "Маркер API"
+
+#: Template/Users/edit.ctp:48
+msgid "Activation date"
+msgstr "Дата активації"
+
+#: Template/Users/edit.ctp:51
+msgid "TOS date"
+msgstr "Дата приймання умов"
+
+#: Template/Users/edit.ctp:64
+msgid "Reset Google Authenticator Token"
+msgstr "Скинути маркер Google Authenticator"
+
+#: Template/Users/edit.ctp:70
+msgid "Are you sure you want to reset token for user \"{0}\"?"
+msgstr "Ви дійсно бажаєте скинути маркер для користувача \"{0}\"?"
+
+#: Template/Users/index.ctp:15
+msgid "New {0}"
+msgstr "Створити {0}"
+
+#: Template/Users/index.ctp:37
+msgid "View"
+msgstr "Перегляд"
+
+#: Template/Users/index.ctp:38
+msgid "Change password"
+msgstr "Змінити пароль"
+
+#: Template/Users/index.ctp:39
+msgid "Edit"
+msgstr "Редагувати"
+
+#: Template/Users/index.ctp:49
+msgid "previous"
+msgstr "попередня"
+
+#: Template/Users/index.ctp:51
+msgid "next"
+msgstr "наступна"
+
+#: Template/Users/login.ctp:19
+msgid "Please enter your username and password"
+msgstr "Введіть ім'я користувача і пароль"
+
+#: Template/Users/login.ctp:29
+msgid "Remember me"
+msgstr "Запам‘ятати мене"
+
+#: Template/Users/login.ctp:37
+msgid "Register"
+msgstr "Реєстрація"
+
+#: Template/Users/login.ctp:43
+msgid "Reset Password"
+msgstr "Скинути пароль"
+
+#: Template/Users/login.ctp:48
+msgid "Login"
+msgstr "Ввійти"
+
+#: Template/Users/profile.ctp:21
+msgid "{0} {1}"
+msgstr "{0} {1}"
+
+#: Template/Users/profile.ctp:27
+msgid "Change Password"
+msgstr "Змінити пароль"
+
+#: Template/Users/profile.ctp:38 Template/Users/view.ctp:68
+msgid "Social Accounts"
+msgstr "Соціальні акаунти"
+
+#: Template/Users/profile.ctp:42 Template/Users/view.ctp:73
+msgid "Avatar"
+msgstr "Аватар"
+
+#: Template/Users/profile.ctp:43 Template/Users/view.ctp:72
+msgid "Provider"
+msgstr "Провайдер"
+
+#: Template/Users/profile.ctp:44
+msgid "Link"
+msgstr "Посилання"
+
+#: Template/Users/profile.ctp:51
+msgid "Link to {0}"
+msgstr "Посилання на {0}"
+
+#: Template/Users/register.ctp:30
+msgid "Accept TOS conditions?"
+msgstr "Приймаєте умови сервісу?"
+
+#: Template/Users/request_reset_password.ctp:5
+msgid "Please enter your email to reset your password"
+msgstr "Введіть адресу електронної пошти для скидання пароля"
+
+#: Template/Users/resend_token_validation.ctp:15
+msgid "Resend Validation email"
+msgstr "Надислати код підтвердження ще раз"
+
+#: Template/Users/resend_token_validation.ctp:17
+msgid "Email or username"
+msgstr "Email або ім'я користувача"
+
+#: Template/Users/verify.ctp:13
+msgid "Verification Code"
+msgstr "Код підтвердження"
+
+#: Template/Users/verify.ctp:15
+msgid ""
+"<span class=\"glyphicon glyphicon-log-in\" aria-hidden=\"true\"></span> "
+"Verify"
+msgstr ""
+"<span class=\"glyphicon glyphicon-log-in\" aria-hidden=\"true\"></span> "
+"Перевірити"
+
+#: Template/Users/view.ctp:19
+msgid "Delete User"
+msgstr "Видалити користувача"
+
+#: Template/Users/view.ctp:24
+msgid "New User"
+msgstr "Новий користувач"
+
+#: Template/Users/view.ctp:31
+msgid "Id"
+msgstr "Id"
+
+#: Template/Users/view.ctp:37
+msgid "First Name"
+msgstr "Ім‘я"
+
+#: Template/Users/view.ctp:39
+msgid "Last Name"
+msgstr "Прізвище"
+
+#: Template/Users/view.ctp:41
+msgid "Role"
+msgstr "Роль"
+
+#: Template/Users/view.ctp:45
+msgid "Api Token"
+msgstr "Маркер API"
+
+#: Template/Users/view.ctp:53
+msgid "Token Expires"
+msgstr "Маркер спливає"
+
+#: Template/Users/view.ctp:55
+msgid "Activation Date"
+msgstr "Дата активації"
+
+#: Template/Users/view.ctp:57
+msgid "Tos Date"
+msgstr "Дата приймання умов"
+
+#: Template/Users/view.ctp:59;75
+msgid "Created"
+msgstr "Створено"
+
+#: Template/Users/view.ctp:61;76
+msgid "Modified"
+msgstr "Змінено"
+
+#: View/Helper/UserHelper.php:46
+msgid "Sign in with"
+msgstr "Увійти з використанням"
+
+#: View/Helper/UserHelper.php:103
+msgid "Logout"
+msgstr "Вихiд"
+
+#: View/Helper/UserHelper.php:121
+msgid "Welcome, {0}"
+msgstr "Вітаємо, {0}"
+
+#: View/Helper/UserHelper.php:151
+msgid "reCaptcha is not configured! Please configure Users.reCaptcha.key"
+msgstr "reCaptcha не налаштовано! Налаштуйте Users.reCaptcha.key"
+
+#: View/Helper/UserHelper.php:215
+msgid "Connected with {0}"
+msgstr "Під‘єднано до {0}"
+
+#: View/Helper/UserHelper.php:220
+msgid "Connect with {0}"
+msgstr "Під‘єднати до {0}"

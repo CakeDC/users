@@ -19,7 +19,6 @@ use CakeDC\Users\Utility\UsersUrl;
 
 /**
  * User Mailer
- *
  */
 class UsersMailer extends Mailer
 {
@@ -56,7 +55,6 @@ class UsersMailer extends Mailer
      * Send the reset password email to the user
      *
      * @param \Cake\Datasource\EntityInterface $user User entity
-     *
      * @return void
      */
     protected function resetPassword(EntityInterface $user)
@@ -88,7 +86,6 @@ class UsersMailer extends Mailer
      *
      * @param \Cake\Datasource\EntityInterface $user User entity
      * @param \Cake\Datasource\EntityInterface $socialAccount SocialAccount entity
-     *
      * @return void
      */
     protected function socialAccountValidation(EntityInterface $user, EntityInterface $socialAccount)
