@@ -56,6 +56,9 @@ class UsersShell extends Shell
             ->addSubcommand('changeRole', [
                 'help' => __d('cake_d_c/users', 'Change the role for an specific user'),
             ])
+            ->addSubcommand('changeApiToken', [
+                'help' => __d('cake_d_c/users', 'Change the api token for an specific user'),
+            ])
             ->addSubcommand('deactivateUser', [
                 'help' => __d('cake_d_c/users', 'Deactivate an specific user'),
             ])
@@ -191,6 +194,34 @@ class UsersShell extends Shell
         $savedUser = $this->_updateUser($username, $data);
         $this->out(__d('cake_d_c/users', 'Role changed for user: {0}', $username));
         $this->out(__d('cake_d_c/users', 'New role: {0}', $savedUser->role));
+    }
+
+    /**
+     * Change api token for a user
+     *
+     * Arguments:
+     *
+     * - Username
+     * - Token to be set
+     *
+     * @return void
+     */
+    public function changeApiToken()
+    {
+        $username = Hash::get($this->args, 0);
+        $token = Hash::get($this->args, 1);
+        if (empty($username)) {
+            $this->abort(__d('cake_d_c/users', 'Please enter a username.'));
+        }
+        if (empty($token)) {
+            $this->abort(__d('cake_d_c/users', 'Please enter a token.'));
+        }
+        $data = [
+            'api_token' => $token,
+        ];
+        $savedUser = $this->_updateUser($username, $data);
+        $this->out(__d('cake_d_c/users', 'Api token changed for user: {0}', $username));
+        $this->out(__d('cake_d_c/users', 'New token: {0}', $savedUser->api_token));
     }
 
     /**

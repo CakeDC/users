@@ -5,6 +5,9 @@ Releases for CakePHP 4
 * Next
   * 
 
+* 9.0.5
+  * Added change api token shell command
+
 * 9.0.4
   * Fixed deprecations and stan issues
   * Improved docs
