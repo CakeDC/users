@@ -16,15 +16,14 @@ Versions and branches
 | ^4.0            | [9.0](https://github.com/cakedc/users/tree/9.next)                      | 9.0.5 | stable |
 | ^3.7  <4.0      | [8.5](https://github.com/cakedc/users/tree/8.next)                      | 8.5.1 | stable |
 | ^3.7  <4.0      | [develop](https://github.com/cakedc/users/tree/develop)                 | - | unstable |
-| 3.6             | [8.1](https://github.com/cakedc/users/tree/8.1.0)                      | 8.1.0 | stable |
-| 3.5             | [6.x](https://github.com/cakedc/users/tree/6.x)                      | 6.0.1 | stable |
-| 3.4             | [5.x](https://github.com/cakedc/users/tree/5.x)                      | 5.2.0 | stable |
-| 3.3             | [4.x](https://github.com/cakedc/users/tree/4.x)                      | 4.2.0 | stable |
-| 2.x             | [2.x](https://github.com/cakedc/users/tree/2.x)                     | 2.2.0 |stable |
+| 3.6             | [8.1](https://github.com/cakedc/users/tree/8.1.0)        | 8.1.0 | stable   |
+| 3.5             | [6.x](https://github.com/cakedc/users/tree/6.x)          | 6.0.1 | stable   |
+| 3.4             | [5.x](https://github.com/cakedc/users/tree/5.x)          | 5.2.0 | stable   |
+| >=3.2.9 <3.4.0  | [4.x](https://github.com/cakedc/users/tree/4.x)          | 4.2.1 | stable   |
+| ^2.10           | [2.x](https://github.com/cakedc/users/tree/2.x)          | 2.2.0 |stable    |
 
-The **Users** plugin is back!
+The  **Users** plugin covers the following features:
 
-It covers the following features:
 * User registration
 * Login/logout
 * Social login (Facebook, Twitter, Instagram, Google, Linkedin, etc)
@@ -36,6 +35,7 @@ It covers the following features:
 * One-Time Password for Two-Factor Authentication
 
 The plugin is here to provide users related features following 2 approaches:
+
 * Quick drop-in working solution for users login/registration. Get users working in 5 minutes.
 * Extensible solution for a bigger/custom application. You'll be able to extend:
   * UsersAuth Component
