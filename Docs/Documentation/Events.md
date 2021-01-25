@@ -34,3 +34,17 @@ own business, for example
         $this->register();
         $this->render('register');
     }
+
+
+How to make an autologin using `EVENT_AFTER_EMAIL_TOKEN_VALIDATION` event
+
+```php
+EventManager::instance()->on(
+    \CakeDC\Users\Plugin::EVENT_AFTER_EMAIL_TOKEN_VALIDATION,
+    function($event){
+        $users = $this->getTableLocator()->get('Users');
+        $user = $users->get($event->getData('user')->id);
+        $this->Authentication->setIdentity($user);
+    }
+);
+```
