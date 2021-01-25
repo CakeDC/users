@@ -42,6 +42,7 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
     public const EVENT_SOCIAL_LOGIN_EXISTING_ACCOUNT = 'Users.Global.socialLoginExistingAccount';
     public const EVENT_ON_EXPIRED_TOKEN = 'Users.Global.onExpiredToken';
     public const EVENT_AFTER_RESEND_TOKEN_VALIDATION = 'Users.Global.afterResendTokenValidation';
+    public const EVENT_AFTER_EMAIL_TOKEN_VALIDATION = 'Users.Global.afterEmailTokenValidation';
 
     /**
      * Returns an authentication service instance.
