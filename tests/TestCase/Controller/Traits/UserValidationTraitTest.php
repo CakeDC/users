@@ -42,7 +42,6 @@ class UserValidationTraitTest extends BaseTraitTest
      */
     public function testValidateHappyEmail()
     {
-        $event = new Event('event');
         $this->_mockFlash();
         $user = $this->table->findByToken('token-3')->first();
         $this->assertFalse($user->active);
@@ -52,12 +51,29 @@ class UserValidationTraitTest extends BaseTraitTest
         $this->Trait->expects($this->once())
                 ->method('redirect')
                 ->with(['action' => 'login']);
-        $this->Trait->expects($this->once())
-            ->method('dispatchEvent')
-            ->will($this->returnValue($event));
         $this->Trait->validate('email', 'token-3');
         $user = $this->table->findById($user->id)->first();
         $this->assertTrue($user->active);
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testValidateHappyEmailWithAfterEmailTokenValidationEvent()
+    {
+        $event = new Event('event');
+        $event->setResult([
+            'action' => 'newAction',
+        ]);
+        $this->Trait->expects($this->once())
+            ->method('dispatchEvent')
+            ->will($this->returnValue($event));
+        $this->Trait->expects($this->once())
+            ->method('redirect')
+            ->with(['action' => 'newAction']);
+        $this->Trait->validate('email', 'token-3');
     }
 
     /**
@@ -100,7 +116,7 @@ class UserValidationTraitTest extends BaseTraitTest
      * @return void
      */
     public function testValidateTokenExpiredWithOnExpiredEvent()
-    {   
+    {
         $event = new Event('event');
         $event->setResult([
             'action' => 'newAction',
