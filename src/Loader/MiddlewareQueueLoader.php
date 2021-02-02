@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Loader;
 
+use Authentication\AuthenticationServiceProviderInterface;
 use Authentication\Middleware\AuthenticationMiddleware;
+use Authorization\AuthorizationServiceProviderInterface;
 use Authorization\Middleware\AuthorizationMiddleware;
 use Authorization\Middleware\RequestAuthorizationMiddleware;
 use Cake\Core\Configure;
@@ -21,7 +23,6 @@ use Cake\Http\MiddlewareQueue;
 use CakeDC\Auth\Middleware\TwoFactorMiddleware;
 use CakeDC\Users\Middleware\SocialAuthMiddleware;
 use CakeDC\Users\Middleware\SocialEmailMiddleware;
-use CakeDC\Users\Plugin;
 
 /**
  * Class MiddlewareQueueLoader
@@ -40,16 +41,20 @@ class MiddlewareQueueLoader
      * For 'Auth.Authorization.loadRbacMiddleware' load RbacMiddleware
      *
      * @param \Cake\Http\MiddlewareQueue $middlewareQueue The middleware queue to update.
-     * @param \CakeDC\Users\Plugin $plugin Users plugin object
+     * @param  \Authentication\AuthenticationServiceProviderInterface $authenticationServiceProvider Loads the auth service
+     * @param \Authorization\AuthorizationServiceProviderInterface $authorizationServiceProvider Loads the authorization service
      * @return \Cake\Http\MiddlewareQueue
      */
-    public function __invoke(MiddlewareQueue $middlewareQueue, Plugin $plugin)
-    {
+    public function __invoke(
+        MiddlewareQueue $middlewareQueue,
+        AuthenticationServiceProviderInterface $authenticationServiceProvider,
+        AuthorizationServiceProviderInterface $authorizationServiceProvider
+    ) {
         $this->loadSocialMiddleware($middlewareQueue);
-        $this->loadAuthenticationMiddleware($middlewareQueue, $plugin);
+        $this->loadAuthenticationMiddleware($middlewareQueue, $authenticationServiceProvider);
         $this->load2faMiddleware($middlewareQueue);
 
-        return $this->loadAuthorizationMiddleware($middlewareQueue, $plugin);
+        return $this->loadAuthorizationMiddleware($middlewareQueue, $authorizationServiceProvider);
     }
 
     /**
@@ -71,12 +76,14 @@ class MiddlewareQueueLoader
      * Load authentication middleware
      *
      * @param \Cake\Http\MiddlewareQueue $middlewareQueue queue of middleware
-     * @param \CakeDC\Users\Plugin $plugin Users plugin object
+     * @param \Authentication\AuthenticationServiceProviderInterface $authenticationServiceProvider Authentication service provider
      * @return void
      */
-    protected function loadAuthenticationMiddleware(MiddlewareQueue $middlewareQueue, Plugin $plugin)
-    {
-        $authentication = new AuthenticationMiddleware($plugin);
+    protected function loadAuthenticationMiddleware(
+        MiddlewareQueue $middlewareQueue,
+        AuthenticationServiceProviderInterface $authenticationServiceProvider
+    ) {
+        $authentication = new AuthenticationMiddleware($authenticationServiceProvider);
         $middlewareQueue->add($authentication);
     }
 
@@ -100,15 +107,22 @@ class MiddlewareQueueLoader
      * Load authorization middleware based on Auth.Authorization.
      *
      * @param \Cake\Http\MiddlewareQueue $middlewareQueue queue of middleware
-     * @param \CakeDC\Users\Plugin $plugin Users plugin object
+     * @param \Authorization\AuthorizationServiceProviderInterface $authorizationServiceProvider Authorization service provider
      * @return \Cake\Http\MiddlewareQueue
      */
-    protected function loadAuthorizationMiddleware(MiddlewareQueue $middlewareQueue, Plugin $plugin)
-    {
+    protected function loadAuthorizationMiddleware(
+        MiddlewareQueue $middlewareQueue,
+        AuthorizationServiceProviderInterface $authorizationServiceProvider
+    ) {
         if (Configure::read('Auth.Authorization.enable') === false) {
             return $middlewareQueue;
         }
-        $middlewareQueue->add(new AuthorizationMiddleware($plugin, Configure::read('Auth.AuthorizationMiddleware')));
+        $middlewareQueue->add(
+            new AuthorizationMiddleware(
+                $authorizationServiceProvider,
+                Configure::read('Auth.AuthorizationMiddleware')
+            )
+        );
         if (Configure::read('Auth.AuthorizationMiddleware.requireAuthorizationCheck') !== false) {
             $middlewareQueue->add(new RequestAuthorizationMiddleware());
         }
