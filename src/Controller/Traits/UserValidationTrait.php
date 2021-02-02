@@ -42,6 +42,10 @@ trait UserValidationTrait
                     try {
                         $result = $this->getUsersTable()->validate($token, 'activateUser');
                         if ($result) {
+                            $event = $this->dispatchEvent(Plugin::EVENT_AFTER_EMAIL_TOKEN_VALIDATION, ['user' => $result]);
+                            if (!empty($event) && is_array($event->getResult())) {
+                                return $this->redirect($event->getResult());
+                            }
                             $this->Flash->success(__d('cake_d_c/users', 'User account validated successfully'));
                         } else {
                             $this->Flash->error(__d('cake_d_c/users', 'User account could not be validated'));
