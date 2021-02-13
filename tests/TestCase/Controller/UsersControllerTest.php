@@ -51,7 +51,7 @@ class UsersControllerTest extends TestCase
             ],
         ]);
         $this->get('/users/index');
-        $this->assertRedirect('/my/custom/url/');
+        $this->assertRedirectContains('/my/custom/url/');
     }
 
     /**
@@ -67,7 +67,7 @@ class UsersControllerTest extends TestCase
             ],
         ]);
         $this->get('/users/index');
-        $this->assertRedirect('/login?redirect=http%3A%2F%2Flocalhost%2Fusers%2Findex');
+        $this->assertRedirectContains('/login?redirect=http%3A%2F%2Flocalhost%2Fusers%2Findex');
     }
 
     /**
@@ -89,6 +89,6 @@ class UsersControllerTest extends TestCase
             ],
         ]);
         $this->get('/users/index');
-        $this->assertRedirect('/profile');
+        $this->assertRedirectContains('/profile');
     }
 }
