@@ -3,7 +3,9 @@ name: CI
 on:
   push:
     branches:
-      - '*'
+      - 'master'
+      - '9.next'
+      - 'feature/github-actions'
   pull_request:
     branches:
       - '*'
