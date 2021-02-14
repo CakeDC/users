@@ -61,6 +61,26 @@ class UserValidationTraitTest extends BaseTraitTest
      *
      * @return void
      */
+    public function testValidateHappyEmailWithAfterEmailTokenValidationEvent()
+    {
+        $event = new Event('event');
+        $event->setResult([
+            'action' => 'newAction',
+        ]);
+        $this->Trait->expects($this->once())
+            ->method('dispatchEvent')
+            ->will($this->returnValue($event));
+        $this->Trait->expects($this->once())
+            ->method('redirect')
+            ->with(['action' => 'newAction']);
+        $this->Trait->validate('email', 'token-3');
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
     public function testValidateUserNotFound()
     {
         $this->_mockFlash();
