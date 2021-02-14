@@ -2,8 +2,10 @@ Changelog
 =========
 Releases for CakePHP 4
 -------------
-* Next
-  * 
+* 9.2.0
+  * Switch to github actions
+  * New event AfterEmailTokenValidation
+  * Remove deprecations
 
 * 9.0.5
   * Added change api token shell command
