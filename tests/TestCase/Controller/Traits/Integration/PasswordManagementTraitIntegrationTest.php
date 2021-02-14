@@ -45,7 +45,7 @@ class PasswordManagementTraitIntegrationTest extends TestCase
     }
 
     /**
-     * Test login action with post request
+     * Test reset password workflow
      *
      * @return void
      */
@@ -70,7 +70,6 @@ class PasswordManagementTraitIntegrationTest extends TestCase
         $this->assertRedirect('/users/change-password');
 
         $fieldName = Configure::read('Users.Key.Session.resetPasswordUserId');
-        $this->assertSession($userAfter->id, $fieldName);
         $this->session([
             $fieldName => $userAfter->id,
         ]);
