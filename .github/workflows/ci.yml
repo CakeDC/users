@@ -32,7 +32,7 @@ jobs:
       uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ matrix.php-version }}
-        extensions: mbstring, intl, apcu, pdo_${{ matrix.db-type }}, ${{ matrix.db-type }}
+        extensions: mbstring, intl, apcu, sqlite, pdo_sqlite, pdo_${{ matrix.db-type }}, ${{ matrix.db-type }}
         ini-values: apc.enable_cli = 1
         coverage: pcov
 
@@ -79,7 +79,7 @@ jobs:
 
   cs-stan:
     name: Coding Standard & Static Analysis
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
 
     steps:
     - uses: actions/checkout@v2
@@ -109,7 +109,7 @@ jobs:
       run: composer stan-setup
 
     - name: Run PHP CodeSniffer
-      run: vendor/bin/phpcs --report=checkstyle src/ tests/
+      run: composer cs-check
 
     - name: Run psalm
       if: success() || failure()
@@ -117,4 +117,4 @@ jobs:
 
     - name: Run phpstan
       if: success() || failure()
-      run: vendor/bin/phpstan.phar analyse --error-format=github
+      run: composer stan
