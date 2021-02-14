@@ -220,6 +220,12 @@ class UsersShell extends Shell
             'api_token' => $token,
         ];
         $savedUser = $this->_updateUser($username, $data);
+        if (!$savedUser) {
+            $this->err(__d('cake_d_c/users', 'User was not saved, check validation errors'));
+        }
+        /**
+         * @var User $savedUser
+         */
         $this->out(__d('cake_d_c/users', 'Api token changed for user: {0}', $username));
         $this->out(__d('cake_d_c/users', 'New token: {0}', $savedUser->api_token));
     }
