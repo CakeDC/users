@@ -1,7 +1,7 @@
 CakeDC Users Plugin
 ===================
 
-[![Build Status](https://secure.travis-ci.org/CakeDC/users.png?branch=master)](http://travis-ci.org/CakeDC/users)
+[![Build Status](https://img.shields.io/github/workflow/status/CakeDC/users/CI/master?style=flat-square)](https://github.com/CakeDC/users/actions?query=workflow%3ACI+branch%3Amaster)
 [![Coverage Status](https://img.shields.io/codecov/c/gh/CakeDC/users.svg?style=flat-square)](https://codecov.io/gh/CakeDC/users)
 [![Downloads](https://poser.pugx.org/CakeDC/users/d/total.png)](https://packagist.org/packages/CakeDC/users)
 [![Latest Version](https://poser.pugx.org/CakeDC/users/v/stable.png)](https://packagist.org/packages/CakeDC/users)

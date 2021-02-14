@@ -27,6 +27,7 @@ use Cake\Utility\Security;
  * @property bool $is_superuser
  * @property \Cake\I18n\Time $token_expires
  * @property string $token
+ * @property string $api_token
  * @property array $additional_data
  * @property \CakeDC\Users\Model\Entity\SocialAccount[] $social_accounts
  */

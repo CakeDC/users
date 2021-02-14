@@ -114,7 +114,9 @@ class LinkSocialBehavior extends Behavior
         $accountData['reference'] = $data['id'] ?? null;
         $accountData['avatar'] = $data['avatar'] ?? null;
         $accountData['link'] = $data['link'] ?? null;
-        $accountData['avatar'] = str_replace('normal', 'square', $accountData['avatar']);
+        if ($accountData['avatar'] ?? null) {
+            $accountData['avatar'] = str_replace('normal', 'square', $accountData['avatar']);
+        }
         $accountData['description'] = $data['bio'] ?? null;
         $accountData['token'] = $data['credentials']['token'] ?? null;
         $accountData['token_secret'] = $data['credentials']['secret'] ?? null;
