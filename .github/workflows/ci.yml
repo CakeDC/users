@@ -111,9 +111,9 @@ jobs:
     - name: Run PHP CodeSniffer
       run: composer cs-check
 
-    - name: Run psalm
-      if: success() || failure()
-      run: vendor/bin/psalm.phar --output-format=github
+#    - name: Run psalm
+#      if: success() || failure()
+#      run: vendor/bin/psalm.phar --output-format=github
 
     - name: Run phpstan
       if: success() || failure()
