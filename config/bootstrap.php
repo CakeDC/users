@@ -18,9 +18,14 @@ use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 
 Configure::load('CakeDC/Users.users');
-collection((array)Configure::read('Users.config'))->each(function ($file) {
-    Configure::load($file);
+collection((array)Configure::read('Users.config'))->each(function ($merge, $file) {
+	if (is_int($file)) {
+		$file = $merge;
+		$merge = true;
+	}
+    Configure::load($file, 'default', $merge);
 });
+
 if (!TableRegistry::getTableLocator()->exists('Users')) {
     TableRegistry::getTableLocator()->setConfig('Users', ['className' => Configure::read('Users.table')]);
 }
