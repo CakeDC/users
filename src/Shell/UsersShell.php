@@ -239,6 +239,7 @@ class UsersShell extends Shell
             'expiration' => Configure::read('Users.Token.expiration'),
             'checkActive' => false,
             'sendEmail' => true,
+            'type' => 'password',
         ]);
         if ($resetUser) {
             $msg = __d('CakeDC/Users', 'Please ask the user to check the email to continue with password reset process');
