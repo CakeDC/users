@@ -30,7 +30,7 @@ The default configuration for authorization middleware is:
 ```
 
 You can check the configuration options available for authorization middleware at the
-[official documentation](https://github.com/cakephp/authorization/blob/master/docs/Middleware.md).
+[official documentation](https://github.com/cakephp/authorization/blob/master/docs/en/middleware.rst).
 
 The `CakeDC/Users.DefaultRedirect` offers additional behavior and config:
   * If logged user access unauthorized url he is redirected to referer url or '/' if no referer url
