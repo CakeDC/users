@@ -2,7 +2,7 @@ AuthLinkHelper
 =============
 
 The AuthLink Helper has some methods that may be needed if you want to improve your templates and add features to your app in an easy way.
-This helper provided two methods that allow you to hide or dispay links and postLinks based on the permissions file.
+This helper provide two methods that allow you to hide or display links and postLinks based on the permissions file.
 No more permissions check in your views ! If the permissions file is update, you do not have to replicate the permissions logic in the views.
 
 Setup
