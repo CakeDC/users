@@ -41,7 +41,7 @@ trait PasswordManagementTrait
     public function changePassword($id = null)
     {
         $user = $this->getUsersTable()->newEntity([], ['validate' => false]);
-        $user->isNew(false);
+        $user->setNew(false);
 
         $identity = $this->getRequest()->getAttribute('identity');
         $identity = $identity ?? [];
