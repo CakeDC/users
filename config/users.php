@@ -98,6 +98,11 @@ $config = [
             ]
         ],
         'Superuser' => ['allowedToChangePasswords' => false], // able to reset any users password
+        // list of valid hosts to allow redirects after valid login via the `redirect` query param
+        'AllowedRedirectHosts' => [
+            'localhost',
+            \Cake\Core\Configure::read('App.fullBaseUrl'),
+        ],
     ],
     'OneTimePasswordAuthenticator' => [
         'checker' => \CakeDC\Auth\Authentication\DefaultOneTimePasswordAuthenticationChecker::class,
