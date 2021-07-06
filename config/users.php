@@ -10,7 +10,25 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
+use Cake\Core\Configure;
+use Cake\Log\Log;
 use Cake\Routing\Router;
+use Laminas\Diactoros\Uri;
+
+$allowedRedirectHosts = [
+    'localhost',
+];
+if (Configure::read('App.fullBaseUrl')) {
+    try {
+        $uri = new Uri(Configure::read('App.fullBaseUrl'));
+        $fullBaseHost = $uri->getHost();
+        if ($fullBaseHost) {
+            $allowedRedirectHosts[] = $fullBaseHost;
+        }
+    } catch (Exception $ex) {
+        Log::warning('Invalid host from App.fullBasedUrl in CakeDC/Users configuration: ' . $ex->getMessage());
+    }
+}
 
 $config = [
     'Users' => [
@@ -72,7 +90,7 @@ $config = [
             ],
             // form key to store the social auth data
             'Form' => [
-                'social' => 'social'
+                'social' => 'social',
             ],
             'Data' => [
                 // data key to store the users email
@@ -94,10 +112,12 @@ $config = [
                 'Config' => [
                     'expires' => new \DateTime('+1 month'),
                     'httponly' => true,
-                ]
-            ]
+                ],
+            ],
         ],
         'Superuser' => ['allowedToChangePasswords' => false], // able to reset any users password
+        // list of valid hosts to allow redirects after valid login via the `redirect` query param
+        'AllowedRedirectHosts' => $allowedRedirectHosts,
     ],
     'OneTimePasswordAuthenticator' => [
         'checker' => \CakeDC\Auth\Authentication\DefaultOneTimePasswordAuthenticationChecker::class,
@@ -112,7 +132,7 @@ $config = [
         // QR-code provider (more on this later)
         'qrcodeprovider' => null,
         // Random Number Generator provider (more on this later)
-        'rngprovider' => null
+        'rngprovider' => null,
     ],
     'U2f' => [
         'enabled' => false,
@@ -121,12 +141,12 @@ $config = [
     // default configuration used to auto-load the Auth Component, override to change the way Auth works
     'Auth' => [
         'Authentication' => [
-            'serviceLoader' => \CakeDC\Users\Loader\AuthenticationServiceLoader::class
+            'serviceLoader' => \CakeDC\Users\Loader\AuthenticationServiceLoader::class,
         ],
         'AuthenticationComponent' => [
             'load' => true,
             'loginRedirect' => '/',
-            'requireIdentity' => false
+            'requireIdentity' => false,
         ],
         'Authenticators' => [
             'Session' => [
@@ -162,41 +182,41 @@ $config = [
             'SocialPendingEmail' => [
                 'className' => 'CakeDC/Users.SocialPendingEmail',
                 'skipTwoFactorVerify' => true,
-            ]
+            ],
         ],
         'Identifiers' => [
             'Password' => [
                 'className' => 'Authentication.Password',
                 'fields' => [
                     'username' => ['username', 'email'],
-                    'password' => 'password'
+                    'password' => 'password',
                 ],
                 'resolver' => [
                     'className' => 'Authentication.Orm',
-                    'finder' => 'active'
+                    'finder' => 'active',
                 ],
             ],
-            "Social" => [
+            'Social' => [
                 'className' => 'CakeDC/Users.Social',
-                'authFinder' => 'active'
+                'authFinder' => 'active',
             ],
             'Token' => [
                 'className' => 'Authentication.Token',
                 'tokenField' => 'api_token',
                 'resolver' => [
                     'className' => 'Authentication.Orm',
-                    'finder' => 'active'
+                    'finder' => 'active',
                 ],
-            ]
+            ],
         ],
-        "Authorization" => [
+        'Authorization' => [
             'enable' => true,
-            'serviceLoader' => \CakeDC\Users\Loader\AuthorizationServiceLoader::class
+            'serviceLoader' => \CakeDC\Users\Loader\AuthorizationServiceLoader::class,
         ],
         'AuthorizationMiddleware' => [
             'unauthorizedHandler' => [
                 'className' => 'CakeDC/Users.DefaultRedirect',
-            ]
+            ],
         ],
         'AuthorizationComponent' => [
             'enabled' => true,
@@ -204,7 +224,7 @@ $config = [
         'RbacPolicy' => [],
         'PasswordRehash' => [
             'identifiers' => ['Password'],
-        ]
+        ],
     ],
     'OAuth' => [
         'providers' => [
@@ -218,7 +238,7 @@ $config = [
                     'redirectUri' => Router::fullBaseUrl() . '/auth/facebook',
                     'linkSocialUri' => Router::fullBaseUrl() . '/link-social/facebook',
                     'callbackLinkSocialUri' => Router::fullBaseUrl() . '/callback-link-social/facebook',
-                ]
+                ],
             ],
             'twitter' => [
                 'service' => 'CakeDC\Auth\Social\Service\OAuth1Service',
@@ -228,7 +248,7 @@ $config = [
                     'redirectUri' => Router::fullBaseUrl() . '/auth/twitter',
                     'linkSocialUri' => Router::fullBaseUrl() . '/link-social/twitter',
                     'callbackLinkSocialUri' => Router::fullBaseUrl() . '/callback-link-social/twitter',
-                ]
+                ],
             ],
             'linkedIn' => [
                 'service' => 'CakeDC\Auth\Social\Service\OAuth2Service',
@@ -238,7 +258,7 @@ $config = [
                     'redirectUri' => Router::fullBaseUrl() . '/auth/linkedIn',
                     'linkSocialUri' => Router::fullBaseUrl() . '/link-social/linkedIn',
                     'callbackLinkSocialUri' => Router::fullBaseUrl() . '/callback-link-social/linkedIn',
-                ]
+                ],
             ],
             'instagram' => [
                 'service' => 'CakeDC\Auth\Social\Service\OAuth2Service',
@@ -248,7 +268,7 @@ $config = [
                     'redirectUri' => Router::fullBaseUrl() . '/auth/instagram',
                     'linkSocialUri' => Router::fullBaseUrl() . '/link-social/instagram',
                     'callbackLinkSocialUri' => Router::fullBaseUrl() . '/callback-link-social/instagram',
-                ]
+                ],
             ],
             'google' => [
                 'service' => 'CakeDC\Auth\Social\Service\OAuth2Service',
@@ -259,7 +279,7 @@ $config = [
                     'redirectUri' => Router::fullBaseUrl() . '/auth/google',
                     'linkSocialUri' => Router::fullBaseUrl() . '/link-social/google',
                     'callbackLinkSocialUri' => Router::fullBaseUrl() . '/callback-link-social/google',
-                ]
+                ],
             ],
             'amazon' => [
                 'service' => 'CakeDC\Auth\Social\Service\OAuth2Service',
@@ -269,7 +289,7 @@ $config = [
                     'redirectUri' => Router::fullBaseUrl() . '/auth/amazon',
                     'linkSocialUri' => Router::fullBaseUrl() . '/link-social/amazon',
                     'callbackLinkSocialUri' => Router::fullBaseUrl() . '/callback-link-social/amazon',
-                ]
+                ],
             ],
             'cognito' => [
                 'service' => 'CakeDC\Auth\Social\Service\OAuth2Service',
@@ -279,11 +299,11 @@ $config = [
                     'redirectUri' => Router::fullBaseUrl() . '/auth/cognito',
                     'linkSocialUri' => Router::fullBaseUrl() . '/link-social/cognito',
                     'callbackLinkSocialUri' => Router::fullBaseUrl() . '/callback-link-social/cognito',
-                    'scope' => 'email openid'
-                ]
+                    'scope' => 'email openid',
+                ],
             ],
         ],
-    ]
+    ],
 ];
 
 return $config;

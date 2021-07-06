@@ -85,7 +85,7 @@ class UsersControllerTest extends TestCase
         $this->session(['Auth' => $user]);
         $this->configRequest([
             'headers' => [
-                'REFERER' => 'http://localhost/profile',
+                'REFERER' => 'http://example.com/profile',
             ],
         ]);
         $this->get('/users/index');
