@@ -271,6 +271,16 @@ class LoginTraitIntegrationTest extends TestCase
         $this->assertRedirect('http://example.com/login');
     }
 
+    public function testRedirectAfterLoginToFullBase(): void
+    {
+        $this->post('/login?redirect=http://example.com/login', [
+            'username' => 'user-4',
+            'password' => '12345',
+        ]);
+        // /login is authorized for this user, and example.com is in the allowed hosts
+        $this->assertRedirect('http://example.com/login');
+    }
+
     /**
      * Test redirect fails if url is not allowed
      *

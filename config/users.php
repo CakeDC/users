@@ -10,7 +10,25 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
+use Cake\Core\Configure;
+use Cake\Log\Log;
 use Cake\Routing\Router;
+use Laminas\Diactoros\Uri;
+
+$allowedRedirectHosts = [
+    'localhost',
+];
+if (Configure::read('App.fullBaseUrl')) {
+    try {
+        $uri = new Uri(Configure::read('App.fullBaseUrl'));
+        $fullBaseHost = $uri->getHost();
+        if ($fullBaseHost) {
+            $allowedRedirectHosts[] = $fullBaseHost;
+        }
+    } catch (Exception $ex) {
+        Log::warning("Invalid host from App.fullBasedUrl in CakeDC/Users configuration: " . $ex->getMessage());
+    }
+}
 
 $config = [
     'Users' => [
@@ -99,10 +117,7 @@ $config = [
         ],
         'Superuser' => ['allowedToChangePasswords' => false], // able to reset any users password
         // list of valid hosts to allow redirects after valid login via the `redirect` query param
-        'AllowedRedirectHosts' => [
-            'localhost',
-            \Cake\Core\Configure::read('App.fullBaseUrl'),
-        ],
+        'AllowedRedirectHosts' => $allowedRedirectHosts,
     ],
     'OneTimePasswordAuthenticator' => [
         'checker' => \CakeDC\Auth\Authentication\DefaultOneTimePasswordAuthenticationChecker::class,

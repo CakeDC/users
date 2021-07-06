@@ -118,7 +118,7 @@ class_alias('TestApp\Controller\AppController', 'App\Controller\AppController');
     'dir' => 'src',
     'webroot' => WEBROOT_DIR,
     'wwwRoot' => WWW_ROOT,
-    'fullBaseUrl' => 'http://localhost',
+    'fullBaseUrl' => 'http://example.com',
     'imageBaseUrl' => 'img/',
     'jsBaseUrl' => 'js/',
     'cssBaseUrl' => 'css/',
@@ -131,3 +131,8 @@ class_alias('TestApp\Controller\AppController', 'App\Controller\AppController');
 
 Plugin::getCollection()->add(new \CakeDC\Users\Plugin());
 session_id('cli');
+
+\Cake\Core\Configure::write('Users.AllowedRedirectHosts', [
+    'localhost',
+    'example.com',
+]);
