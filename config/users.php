@@ -26,7 +26,7 @@ if (Configure::read('App.fullBaseUrl')) {
             $allowedRedirectHosts[] = $fullBaseHost;
         }
     } catch (Exception $ex) {
-        Log::warning("Invalid host from App.fullBasedUrl in CakeDC/Users configuration: " . $ex->getMessage());
+        Log::warning('Invalid host from App.fullBasedUrl in CakeDC/Users configuration: ' . $ex->getMessage());
     }
 }
 
