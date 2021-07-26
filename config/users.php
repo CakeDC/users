@@ -102,7 +102,7 @@ $config = [
             'allowedToChangeRoles' => true // able to change user roles
         ],
         'AvailableRoles'=>[
-            'superadmin',
+            'superuser',
             'admin',
             'user'
         ]

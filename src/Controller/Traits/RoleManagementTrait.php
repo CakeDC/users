@@ -38,8 +38,6 @@ trait RoleManagementTrait
      */
     public function changeRole($id = null)
     {
-        $user = $this->getUsersTable()->newEntity([], ['validate' => false]);
-        $user->setNew(false);
 
         $identity = $this->getRequest()->getAttribute('identity');
         $identity = $identity ?? [];
@@ -48,11 +46,16 @@ trait RoleManagementTrait
         if ($userId) {
             if ($id && $identity['is_superuser'] && Configure::read('Users.Superuser.allowedToChangeRoles')) {
                 // superuser update user roles
-                $user->id = $id;
+                $user = $this->getUsersTable()->get($id);
+                $configRoles = Configure::read('Users.AvailableRoles');
+                $availableRoles = [];
+                foreach ($configRoles as $role) {
+                    $availableRoles[$role] = $role;
+                }
                 $redirect = ['action' => 'index'];
-            }  else {
+            } else {
                 $this->Flash->error(
-                    __d('cake_d_c/users', 'Changing another user\'s role is not allowed')
+                    __d('cake_d_c/users', 'Changing role is not allowed')
                 );
                 $this->redirect(Configure::read('Users.Profile.route'));
 
@@ -77,9 +80,11 @@ trait RoleManagementTrait
                     ]
                 );
 
+
                 if ($user->getErrors()) {
                     $this->Flash->error(__d('cake_d_c/users', 'Role could not be changed'));
                 } else {
+                    $user->is_superuser = $user->role === 'superuser';
                     $result = $this->getUsersTable()->save($user);
                     if ($result) {
                         $event = $this->dispatchEvent(Plugin::EVENT_AFTER_CHANGE_ROLE, ['user' => $result]);
@@ -100,7 +105,7 @@ trait RoleManagementTrait
                 $this->log($exception->getMessage());
             }
         }
-        $this->set(compact('user'));
+        $this->set(compact('user', 'availableRoles'));
         $this->set('_serialize', ['user']);
     }
 }
