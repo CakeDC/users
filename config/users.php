@@ -97,7 +97,15 @@ $config = [
                 ]
             ]
         ],
-        'Superuser' => ['allowedToChangePasswords' => false], // able to reset any users password
+        'Superuser' => [
+            'allowedToChangePasswords' => false,// able to reset any users password
+            'allowToChangeRoles' => false // able to change user roles
+        ],
+        'AvailableRoles'=>[
+            'superadmin',
+            'admin',
+            'user'
+        ]
     ],
     'OneTimePasswordAuthenticator' => [
         'checker' => \CakeDC\Auth\Authentication\DefaultOneTimePasswordAuthenticationChecker::class,
