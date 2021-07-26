@@ -19,6 +19,7 @@ use CakeDC\Users\Controller\Traits\OneTimePasswordVerifyTrait;
 use CakeDC\Users\Controller\Traits\ProfileTrait;
 use CakeDC\Users\Controller\Traits\ReCaptchaTrait;
 use CakeDC\Users\Controller\Traits\RegisterTrait;
+use CakeDC\Users\Controller\Traits\RoleManagementTrait;
 use CakeDC\Users\Controller\Traits\SimpleCrudTrait;
 use CakeDC\Users\Controller\Traits\SocialTrait;
 use CakeDC\Users\Controller\Traits\U2fTrait;
@@ -37,6 +38,7 @@ class UsersController extends AppController
     use ProfileTrait;
     use ReCaptchaTrait;
     use RegisterTrait;
+    use RoleManagementTrait;
     use SimpleCrudTrait;
     use SocialTrait;
     use U2fTrait;

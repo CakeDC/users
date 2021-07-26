@@ -99,7 +99,7 @@ $config = [
         ],
         'Superuser' => [
             'allowedToChangePasswords' => false,// able to reset any users password
-            'allowToChangeRoles' => false // able to change user roles
+            'allowedToChangeRoles' => true // able to change user roles
         ],
         'AvailableRoles'=>[
             'superadmin',
