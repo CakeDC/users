@@ -44,7 +44,7 @@ trait RoleManagementTrait
         $userId = $identity['id'] ?? null;
 
         if ($userId) {
-            if ($id && $identity['is_superuser'] && Configure::read('Users.Superuser.allowedToChangeRoles')) {
+            if ($id && $this->CanUserEditRole($identity)) {
                 // superuser update user roles
                 $user = $this->getUsersTable()->get($id);
                 $configRoles = Configure::read('Users.AvailableRoles');
@@ -57,7 +57,7 @@ trait RoleManagementTrait
                 $this->Flash->error(
                     __d('cake_d_c/users', 'Changing role is not allowed')
                 );
-                $this->redirect(Configure::read('Users.Profile.route'));
+                return $this->redirect(Configure::read('Users.Profile.route'));
 
                 return;
             }
@@ -65,7 +65,7 @@ trait RoleManagementTrait
             $this->Flash->error(
                 __d('cake_d_c/users', 'Login to perform this action')
             );
-            $this->redirect(Configure::read('Users.Profile.route'));
+            return $this->redirect(Configure::read('Users.Profile.route'));
         }
 
         if ($this->getRequest()->is(['post', 'put'])) {
@@ -107,5 +107,15 @@ trait RoleManagementTrait
         }
         $this->set(compact('user', 'availableRoles'));
         $this->set('_serialize', ['user']);
+    }
+
+    /**
+     * Checks and returns boolean value if the user can edit the role
+     * @param $identity
+     * @return bool
+     */
+    protected function CanUserEditRole($identity)
+    {
+        return $identity['is_superuser'] && Configure::read('Users.Superuser.allowedToChangeRoles');
     }
 }
