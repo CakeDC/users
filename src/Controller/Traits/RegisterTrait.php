@@ -31,8 +31,8 @@ trait RegisterTrait
     /**
      * Register a new user
      *
-     * @throws \Cake\Http\Exception\NotFoundException
      * @return mixed
+     * @throws \Cake\Http\Exception\NotFoundException
      */
     public function register()
     {
@@ -73,6 +73,12 @@ trait RegisterTrait
             $userSaved = $usersTable->register($user, $data, $options);
             if ($userSaved) {
                 return $this->_afterRegister($userSaved);
+            } elseif (Configure::read('Users.Registration.ShowVerboseError')) {
+                $errors = \Collection($user->getErrors())->unfold()->toArray();
+                foreach ($errors as $error) {
+                    $this->Flash->error(__($error));
+                }
+                return;
             } else {
                 $this->set(compact('user'));
                 $this->Flash->error(__d('cake_d_c/users', 'The user could not be saved'));
@@ -98,9 +104,14 @@ trait RegisterTrait
         }
 
         $userSaved = $usersTable->register($user, $requestData, $options);
-        if (!$userSaved) {
+        if (!$userSaved && Configure::read('Users.Registration.ShowVerboseError')) {
+            $errors = \Collection($user->getErrors())->unfold()->toArray();
+            foreach ($errors as $error) {
+                $this->Flash->error(__($error));
+            }
+            return;
+        } elseif (!$userSaved) {
             $this->Flash->error(__d('cake_d_c/users', 'The user could not be saved'));
-
             return;
         }
 
