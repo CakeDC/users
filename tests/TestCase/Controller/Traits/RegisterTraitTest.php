@@ -426,4 +426,69 @@ class RegisterTraitTest extends BaseTraitTest
 
         $this->Trait->register();
     }
+
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testNotShowingVerboseErrorOnRegisterWithDefaultConfig()
+    {
+        //register user and not validate the email
+       $this->testRegister();
+
+        $this->_mockRequestPost();
+        $this->_mockAuthentication();
+        $this->_mockFlash();
+        $this->_mockDispatchEvent();
+        $this->Trait->Flash->expects($this->once())
+            ->method('error')
+            ->with('The user could not be saved');
+
+        $this->Trait->getRequest()->expects($this->once())
+            ->method('getData')
+            ->will($this->returnValue([
+                'username' => 'testRegistration',
+                'password' => 'password',
+                'email' => 'test-registration@example.com',
+                'password_confirm' => 'password',
+                'tos' => 1,
+            ]));
+
+        $this->Trait->register();
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testShowingVerboseErrorOnRegisterWithUpdatedConfig()
+    {
+        //register user and not validate the email
+        $this->testRegister();
+
+        $this->_mockRequestPost();
+        $this->_mockAuthentication();
+        $this->_mockFlash();
+        $this->_mockDispatchEvent();
+
+        $this->Trait->Flash->expects($this->once())
+            ->method('error')
+            ->with('Email already exists');
+
+
+        $this->Trait->getRequest()->expects($this->once())
+            ->method('getData')
+            ->will($this->returnValue([
+                'username' => 'testRegistration1',
+                'password' => 'password',
+                'email' => 'test-registration@example.com',
+                'password_confirm' => 'password',
+                'tos' => 1,
+            ]));
+        Configure::write('Users.Registration.ShowVerboseError', true);
+        $this->Trait->register();
+    }
 }
