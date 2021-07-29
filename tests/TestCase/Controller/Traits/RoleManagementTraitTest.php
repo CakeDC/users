@@ -64,7 +64,13 @@ class RoleManagementTraitTest extends BaseTraitTest
     public function testCallingActionWithoutAuthentication()
     {
         $userId = '00000000-0000-0000-0000-000000000002';
+
         $this->_mockRequestPost();
+        $this->Trait->getRequest()
+            ->method('getData')
+            ->will($this->returnValue([
+                'role' => 'superuser',
+            ]));
         $this->_mockFlash();
         $this->Trait->Flash->expects($this->once())
             ->method('error')
@@ -80,10 +86,17 @@ class RoleManagementTraitTest extends BaseTraitTest
      */
     public function testSuperUserCannotChangeRoleWithDefaultConfig()
     {
+        $superUser = $this->table->get('00000000-0000-0000-0000-000000000001');
         $userId = '00000000-0000-0000-0000-000000000002';
         $this->_mockRequestPost();
-        $this->_mockAuthLoggedIn();
+        $this->Trait->getRequest()
+            ->method('getData')
+            ->will($this->returnValue([
+                'role' => 'superuser',
+            ]));
+        $this->_mockAuthLoggedIn($superUser->toArray());
         $this->_mockFlash();
+
         $this->Trait->Flash->expects($this->once())
             ->method('error')
             ->with('Changing role is not allowed');
@@ -97,15 +110,76 @@ class RoleManagementTraitTest extends BaseTraitTest
      */
     public function testSuperUserCanChangeRoleWithUpdatedConfig()
     {
-        Configure::write('Users.Superuser.allowedToChangeRoles',true);
         $superUser = $this->table->get('00000000-0000-0000-0000-000000000001');
         $userId = '00000000-0000-0000-0000-000000000002';
-        $this->_mockRequestPost();
-        $this->_mockAuthLoggedIn((array)$superUser);
+
+        //set the request
+        $request = $this->getMockBuilder('Cake\Http\ServerRequest')
+            ->setMethods(['is', 'getData'])
+            ->getMock();
+        $this->Trait->setRequest($request);
+        $this->Trait->getRequest()
+            ->method('is')
+            ->with(['post', 'put'])
+            ->will($this->returnValue(true));
+
+        $this->Trait->getRequest()
+            ->method('getData')
+            ->will($this->returnValue([
+                'role' => 'superuser'
+            ]));
+
+        $this->_mockAuthLoggedIn($superUser->toArray());
         $this->_mockFlash();
+
+        $this->Trait->Flash->expects($this->once())
+            ->method('success')
+            ->with('Role has been changed successfully');
+
+        //update configuration
+        Configure::write('Users.Superuser.allowedToChangeRoles', true);
+        $this->Trait->changeRole($userId);
+
+        $user = $this->table->get($userId);
+        $this->assertEquals('superuser', $user->role);
+
+    }
+
+
+    /**
+     * test superuser can change role with updated config
+     *
+     * @return void
+     */
+    public function testSuperUserCannotChangeRoleWithUpdatedConfigWhenInvalidRolePassed()
+    {
+        $superUser = $this->table->get('00000000-0000-0000-0000-000000000001');
+        $userId = '00000000-0000-0000-0000-000000000002';
+
+        //set the request
+        $request = $this->getMockBuilder('Cake\Http\ServerRequest')
+            ->setMethods(['is', 'getData'])
+            ->getMock();
+        $this->Trait->setRequest($request);
+        $this->Trait->getRequest()
+            ->method('is')
+            ->with(['post', 'put'])
+            ->will($this->returnValue(true));
+
+        $this->Trait->getRequest()
+            ->method('getData')
+            ->will($this->returnValue([
+                'role' => 'random_role'
+            ]));
+
+        $this->_mockAuthLoggedIn($superUser->toArray());
+        $this->_mockFlash();
+
         $this->Trait->Flash->expects($this->once())
             ->method('error')
-            ->with('Changing role is not allowed');
+            ->with('Role could not be changed');
+        //update configuration
+        Configure::write('Users.Superuser.allowedToChangeRoles', true);
         $this->Trait->changeRole($userId);
     }
 }

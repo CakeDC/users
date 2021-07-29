@@ -70,6 +70,9 @@ trait RoleManagementTrait
 
         if ($this->getRequest()->is(['post', 'put'])) {
             try {
+                if (!in_array($this->getRequest()->getData()['role'], $availableRoles)) {
+                    throw new Exception('Invalid role supplied');
+                }
                 $user = $this->getUsersTable()->patchEntity(
                     $user,
                     $this->getRequest()->getData(),
