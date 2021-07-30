@@ -71,10 +71,11 @@ trait RegisterTrait
             $data = $result->toArray();
             $data['password'] = $requestData['password'] ?? null; //since password is a hidden property
             $userSaved = $usersTable->register($user, $data, $options);
+            $errors = \collection($user->getErrors())->unfold()->toArray();
             if ($userSaved) {
                 return $this->_afterRegister($userSaved);
-            } elseif (Configure::read('Users.Registration.ShowVerboseError')) {
-                $errors = \Collection($user->getErrors())->unfold()->toArray();
+            } elseif (Configure::read('Users.Registration.showVerboseError') && count($errors) > 0) {
+                $this->set(compact('user'));
                 foreach ($errors as $error) {
                     $this->Flash->error(__($error));
                 }
@@ -82,7 +83,6 @@ trait RegisterTrait
             } else {
                 $this->set(compact('user'));
                 $this->Flash->error(__d('cake_d_c/users', 'The user could not be saved'));
-
                 return;
             }
         }
@@ -104,8 +104,8 @@ trait RegisterTrait
         }
 
         $userSaved = $usersTable->register($user, $requestData, $options);
-        if (!$userSaved && Configure::read('Users.Registration.ShowVerboseError')) {
-            $errors = \Collection($user->getErrors())->unfold()->toArray();
+        $errors = \collection($user->getErrors())->unfold()->toArray();
+        if (!$userSaved && Configure::read('Users.Registration.showVerboseError') && count($errors) > 0) {
             foreach ($errors as $error) {
                 $this->Flash->error(__($error));
             }

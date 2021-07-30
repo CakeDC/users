@@ -41,7 +41,7 @@ $config = [
             // default role name used in registration
             'defaultRole' => 'user',
             // show verbose error to users
-            'ShowVerboseError' => false,
+            'showVerboseError' => false,
         ],
         'reCaptcha' => [
             // reCaptcha key goes here

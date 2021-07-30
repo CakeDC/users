@@ -488,7 +488,7 @@ class RegisterTraitTest extends BaseTraitTest
                 'password_confirm' => 'password',
                 'tos' => 1,
             ]));
-        Configure::write('Users.Registration.ShowVerboseError', true);
+        Configure::write('Users.Registration.showVerboseError', true);
         $this->Trait->register();
     }
 }
