@@ -14,10 +14,8 @@ declare(strict_types=1);
 namespace CakeDC\Users\Controller\Traits;
 
 use Cake\Core\Configure;
-use Cake\Validation\Validator;
-use CakeDC\Users\Exception\UserNotActiveException;
+use CakeDC\Users\Exception\ConfigNotSetException;
 use CakeDC\Users\Exception\UserNotFoundException;
-use CakeDC\Users\Exception\WrongPasswordException;
 use CakeDC\Users\Plugin;
 use Exception;
 
@@ -44,10 +42,10 @@ trait RoleManagementTrait
         $userId = $identity['id'] ?? null;
 
         if ($userId) {
-            if ($id && $this->CanUserEditRole($identity)) {
+            if ($this->canUserEditRole($id, $identity)) {
                 // superuser update user roles
                 $user = $this->getUsersTable()->get($id);
-                $configRoles = Configure::read('Users.AvailableRoles');
+                $configRoles = $this->getConfigRoles();
                 $availableRoles = [];
                 foreach ($configRoles as $role) {
                     $availableRoles[$role] = $role;
@@ -114,11 +112,26 @@ trait RoleManagementTrait
 
     /**
      * Checks and returns boolean value if the user can edit the role
+     * @param $id - id of profile/user who's role is being changed
      * @param $identity
      * @return bool
      */
-    protected function CanUserEditRole($identity)
+    protected function canUserEditRole($id, $identity)
     {
-        return $identity['is_superuser'] && Configure::read('Users.Superuser.allowedToChangeRoles');
+        return $id && $identity['is_superuser'] && Configure::read('Users.Superuser.allowedToChangeRoles');
+    }
+
+
+    /**
+     * @return array|false[]|mixed
+     */
+    protected function getConfigRoles()
+    {
+        $configRoles = Configure::read('Users.AvailableRoles');
+        if (!$configRoles || (is_array($configRoles) && count($configRoles)) == 0) {
+            throw new ConfigNotSetException('No Available role found in the users config. please set Users.AvailableRoles');
+        }
+        return $configRoles;
+
     }
 }

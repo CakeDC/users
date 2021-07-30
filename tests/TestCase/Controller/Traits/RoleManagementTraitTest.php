@@ -13,11 +13,9 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
-use Cake\Auth\PasswordHasherFactory;
 use Cake\Core\Configure;
-use Cake\Event\Event;
 use Cake\TestSuite\IntegrationTestTrait;
-use Cake\TestSuite\TestCase;
+use CakeDC\Users\Exception\ConfigNotSetException;
 
 class RoleManagementTraitTest extends BaseTraitTest
 {
@@ -180,6 +178,42 @@ class RoleManagementTraitTest extends BaseTraitTest
             ->with('Role could not be changed');
         //update configuration
         Configure::write('Users.Superuser.allowedToChangeRoles', true);
+        $this->Trait->changeRole($userId);
+    }
+
+    /**
+     * test
+     *
+     * @return void
+     */
+    public function testErrorWhenNoConfigIsPresentForAvailableRoles()
+    {
+        $superUser = $this->table->get('00000000-0000-0000-0000-000000000001');
+        $userId = '00000000-0000-0000-0000-000000000002';
+
+        //set the request
+        $request = $this->getMockBuilder('Cake\Http\ServerRequest')
+            ->setMethods(['is', 'getData'])
+            ->getMock();
+        $this->Trait->setRequest($request);
+        $this->Trait->getRequest()
+            ->method('is')
+            ->with(['post', 'put'])
+            ->will($this->returnValue(true));
+
+        $this->Trait->getRequest()
+            ->method('getData')
+            ->will($this->returnValue([
+                'role' => 'random_role'
+            ]));
+
+        $this->_mockAuthLoggedIn($superUser->toArray());
+        $this->_mockFlash();
+
+        $this->expectException(ConfigNotSetException::class);
+        //update configuration
+        Configure::write('Users.Superuser.allowedToChangeRoles', true);
+        Configure::write('Users.AvailableRoles', []);
         $this->Trait->changeRole($userId);
     }
 }
