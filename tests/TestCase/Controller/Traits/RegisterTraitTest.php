@@ -65,10 +65,10 @@ class RegisterTraitTest extends BaseTraitTest
     public function testRegister()
     {
         Router::connect('/users/validate-email/*', [
-             'plugin' => 'CakeDC/Users',
-             'controller' => 'Users',
-             'action' => 'validateEmail',
-         ]);
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+            'action' => 'validateEmail',
+        ]);
 
         $this->assertEquals(0, $this->table->find()->where(['username' => 'testRegistration'])->count());
         $this->_mockRequestPost();
@@ -128,10 +128,10 @@ class RegisterTraitTest extends BaseTraitTest
     public function testRegisterWithEventSuccessResult()
     {
         Router::connect('/users/validate-email/*', [
-             'plugin' => 'CakeDC/Users',
-             'controller' => 'Users',
-             'action' => 'validateEmail',
-         ]);
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+            'action' => 'validateEmail',
+        ]);
 
         $data = [
             'username' => 'testRegistration',
@@ -170,10 +170,10 @@ class RegisterTraitTest extends BaseTraitTest
     public function testRegisterReCaptcha()
     {
         Router::connect('/users/validate-email/*', [
-             'plugin' => 'CakeDC/Users',
-             'controller' => 'Users',
-             'action' => 'validateEmail',
-         ]);
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+            'action' => 'validateEmail',
+        ]);
 
         Configure::write('Users.reCaptcha.registration', true);
         $this->assertEquals(0, $this->table->find()->where(['username' => 'testRegistration'])->count());
@@ -309,10 +309,10 @@ class RegisterTraitTest extends BaseTraitTest
     public function testRegisterRecaptchaDisabled()
     {
         Router::connect('/users/validate-email/*', [
-             'plugin' => 'CakeDC/Users',
-             'controller' => 'Users',
-             'action' => 'validateEmail',
-         ]);
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+            'action' => 'validateEmail',
+        ]);
 
         Configure::write('Users.Registration.reCaptcha', false);
         $this->assertEquals(0, $this->table->find()->where(['username' => 'testRegistration'])->count());
@@ -368,10 +368,10 @@ class RegisterTraitTest extends BaseTraitTest
     public function testRegisterLoggedInUserAllowed()
     {
         Router::connect('/users/validate-email/*', [
-             'plugin' => 'CakeDC/Users',
-             'controller' => 'Users',
-             'action' => 'validateEmail',
-         ]);
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+            'action' => 'validateEmail',
+        ]);
 
         Configure::write('Users.Registration.allowLoggedIn', true);
         $this->assertEquals(0, $this->table->find()->where(['username' => 'testRegistration'])->count());
@@ -427,7 +427,6 @@ class RegisterTraitTest extends BaseTraitTest
         $this->Trait->register();
     }
 
-
     /**
      * test
      *
@@ -436,7 +435,7 @@ class RegisterTraitTest extends BaseTraitTest
     public function testNotShowingVerboseErrorOnRegisterWithDefaultConfig()
     {
         //register user and not validate the email
-       $this->testRegister();
+        $this->testRegister();
 
         $this->_mockRequestPost();
         $this->_mockAuthentication();
@@ -477,7 +476,6 @@ class RegisterTraitTest extends BaseTraitTest
         $this->Trait->Flash->expects($this->once())
             ->method('error')
             ->with('Email already exists');
-
 
         $this->Trait->getRequest()->expects($this->once())
             ->method('getData')

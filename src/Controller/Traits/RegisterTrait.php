@@ -79,10 +79,12 @@ trait RegisterTrait
                 foreach ($errors as $error) {
                     $this->Flash->error(__($error));
                 }
+
                 return;
             } else {
                 $this->set(compact('user'));
                 $this->Flash->error(__d('cake_d_c/users', 'The user could not be saved'));
+
                 return;
             }
         }
@@ -109,9 +111,11 @@ trait RegisterTrait
             foreach ($errors as $error) {
                 $this->Flash->error(__($error));
             }
+
             return;
         } elseif (!$userSaved) {
             $this->Flash->error(__d('cake_d_c/users', 'The user could not be saved'));
+
             return;
         }
 
