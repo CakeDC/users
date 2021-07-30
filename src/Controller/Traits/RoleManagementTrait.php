@@ -18,6 +18,7 @@ use CakeDC\Users\Exception\ConfigNotSetException;
 use CakeDC\Users\Exception\UserNotFoundException;
 use CakeDC\Users\Plugin;
 use Exception;
+use phpDocumentor\Reflection\Types\Integer;
 
 /**
  * Covers the password management: reset, change
@@ -55,9 +56,8 @@ trait RoleManagementTrait
                 $this->Flash->error(
                     __d('cake_d_c/users', 'Changing role is not allowed')
                 );
-                return $this->redirect(Configure::read('Users.Profile.route'));
 
-                return;
+                return $this->redirect(Configure::read('Users.Profile.route'));
             }
         } else {
             $this->Flash->error(
@@ -85,7 +85,7 @@ trait RoleManagementTrait
                 if ($user->getErrors()) {
                     $this->Flash->error(__d('cake_d_c/users', 'Role could not be changed'));
                 } else {
-                    $user->is_superuser = $user->role === 'superuser';
+                    $user['is_superuser'] = $user['role'] === 'superuser';
                     $result = $this->getUsersTable()->save($user);
                     if ($result) {
                         $event = $this->dispatchEvent(Plugin::EVENT_AFTER_CHANGE_ROLE, ['user' => $result]);
@@ -112,11 +112,11 @@ trait RoleManagementTrait
 
     /**
      * Checks and returns boolean value if the user can edit the role
-     * @param $id - id of profile/user who's role is being changed
-     * @param $identity
+     * @param int|string|null $id user_id, null for logged in user id
+     * @param mixed|string $identity
      * @return bool
      */
-    protected function canUserEditRole($id, $identity)
+    protected function canUserEditRole($id,$identity)
     {
         return $id && $identity['is_superuser'] && Configure::read('Users.Superuser.allowedToChangeRoles');
     }
@@ -128,7 +128,7 @@ trait RoleManagementTrait
     protected function getConfigRoles()
     {
         $configRoles = Configure::read('Users.AvailableRoles');
-        if (!$configRoles || (is_array($configRoles) && count($configRoles)) == 0) {
+        if (!$configRoles || (is_array($configRoles) && count($configRoles) == 0)) {
             throw new ConfigNotSetException('No Available role found in the users config. please set Users.AvailableRoles');
         }
         return $configRoles;
