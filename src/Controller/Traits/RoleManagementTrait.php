@@ -116,7 +116,7 @@ trait RoleManagementTrait
      * @param mixed|string $identity
      * @return bool
      */
-    protected function canUserEditRole($id,$identity)
+    protected function canUserEditRole($id, $identity)
     {
         return $id && $identity['is_superuser'] && Configure::read('Users.Superuser.allowedToChangeRoles');
     }
@@ -128,10 +128,9 @@ trait RoleManagementTrait
     protected function getConfigRoles()
     {
         $configRoles = Configure::read('Users.AvailableRoles');
-        if (!$configRoles || (is_array($configRoles) && count($configRoles) == 0)) {
+        if (!$configRoles) {
             throw new ConfigNotSetException('No Available role found in the users config. please set Users.AvailableRoles');
         }
         return $configRoles;
-
     }
 }

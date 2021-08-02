@@ -13,19 +13,7 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Exception;
 
-use Cake\Core\Exception\Exception;
 
-class ConfigNotSetException extends Exception
+class ConfigNotSetException extends \Exception
 {
-    /**
-     * ConfigNotSetException constructor.
-     *
-     * @param array|string $message message
-     * @param int $code code
-     * @param null $previous previous
-     */
-    public function __construct($message, $code = 500, $previous = null)
-    {
-        parent::__construct($message, $code, $previous);
-    }
 }
