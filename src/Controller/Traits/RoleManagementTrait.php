@@ -16,6 +16,7 @@ namespace CakeDC\Users\Controller\Traits;
 use Cake\Core\Configure;
 use CakeDC\Users\Exception\ConfigNotSetException;
 use CakeDC\Users\Exception\UserNotFoundException;
+use CakeDC\Users\Model\Table\UsersTable;
 use CakeDC\Users\Plugin;
 use Exception;
 use phpDocumentor\Reflection\Types\Integer;
@@ -47,6 +48,10 @@ trait RoleManagementTrait
                 // superuser update user roles
                 $user = $this->getUsersTable()->get($id);
                 $configRoles = $this->getConfigRoles();
+                if (!$configRoles) {
+                    //set the defaults
+                    $configRoles = [UsersTable::ROLE_ADMIN, UsersTable::ROLE_USER];
+                }
                 $availableRoles = [];
                 foreach ($configRoles as $role) {
                     $availableRoles[$role] = $role;
@@ -128,7 +133,8 @@ trait RoleManagementTrait
     protected function getConfigRoles()
     {
         $configRoles = Configure::read('Users.AvailableRoles');
-        if (!$configRoles) {
+        if (is_array($configRoles) && count($configRoles) == 0) {
+            //if the config key is present and roles array is empty
             throw new ConfigNotSetException('No Available role found in the users config. please set Users.AvailableRoles');
         }
         return $configRoles;
