@@ -124,7 +124,7 @@ class RoleManagementTraitTest extends BaseTraitTest
         $this->Trait->getRequest()
             ->method('getData')
             ->will($this->returnValue([
-                'role' => 'superuser'
+                'role' => 'user'
             ]));
 
         $this->_mockAuthLoggedIn($superUser->toArray());
@@ -139,8 +139,7 @@ class RoleManagementTraitTest extends BaseTraitTest
         $this->Trait->changeRole($userId);
 
         $user = $this->table->get($userId);
-        $this->assertEquals('superuser', $user->role);
-
+        $this->assertEquals('user', $user->role);
     }
 
 
