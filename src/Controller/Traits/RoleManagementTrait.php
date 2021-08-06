@@ -82,6 +82,7 @@ trait RoleManagementTrait
                     [
                         'accessibleFields' => [
                             'role' => true,
+                            'is_superuser' => true,
                         ],
                     ]
                 );
@@ -90,7 +91,6 @@ trait RoleManagementTrait
                 if ($user->getErrors()) {
                     $this->Flash->error(__d('cake_d_c/users', 'Role could not be changed'));
                 } else {
-                    $user['is_superuser'] = $user['role'] === 'superuser';
                     $result = $this->getUsersTable()->save($user);
                     if ($result) {
                         $event = $this->dispatchEvent(Plugin::EVENT_AFTER_CHANGE_ROLE, ['user' => $result]);
