@@ -15,7 +15,6 @@ namespace CakeDC\Users\Model\Behavior;
 
 use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
-use Cake\Event\Event;
 use Cake\Mailer\MailerAwareTrait;
 use Cake\Validation\Validator;
 use CakeDC\Users\Exception\TokenExpiredException;

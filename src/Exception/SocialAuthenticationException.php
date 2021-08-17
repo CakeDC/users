@@ -12,8 +12,6 @@ declare(strict_types=1);
  */
 namespace CakeDC\Users\Exception;
 
-use Cake\Core\Exception\Exception;
-
 class SocialAuthenticationException extends \Cake\Core\Exception\CakeException
 {
     protected $_messageTemplate = 'Could not autheticate user';
