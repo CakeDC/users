@@ -55,7 +55,7 @@ trait OneTimePasswordVerifyTrait
                 $temporarySession['email'],
                 $secret
             );
-            $this->set(compact('secretDataUri'));
+            $this->set(['secretDataUri' => $secretDataUri]);
         }
 
         if ($this->getRequest()->is('post')) {

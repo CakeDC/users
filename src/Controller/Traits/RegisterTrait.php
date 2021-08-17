@@ -74,7 +74,7 @@ trait RegisterTrait
             if ($userSaved) {
                 return $this->_afterRegister($userSaved);
             } else {
-                $this->set(compact('user'));
+                $this->set(['user' => $user]);
                 $this->Flash->error(__d('cake_d_c/users', 'The user could not be saved'));
 
                 return;
@@ -84,7 +84,7 @@ trait RegisterTrait
             return $this->redirect($event->getResult());
         }
 
-        $this->set(compact('user'));
+        $this->set(['user' => $user]);
         $this->set('_serialize', ['user']);
 
         if (!$this->getRequest()->is('post')) {

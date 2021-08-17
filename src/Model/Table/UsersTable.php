@@ -83,10 +83,7 @@ class UsersTable extends Table
         $this->addBehavior('CakeDC/Users.Social');
         $this->addBehavior('CakeDC/Users.LinkSocial');
         $this->addBehavior('CakeDC/Users.AuthFinder');
-        $this->hasMany('SocialAccounts', [
-            'foreignKey' => 'user_id',
-            'className' => 'CakeDC/Users.SocialAccounts',
-        ]);
+        $this->hasMany('SocialAccounts')->setForeignKey('user_id')->setClassName('CakeDC/Users.SocialAccounts');
     }
 
     /**
@@ -186,9 +183,8 @@ class UsersTable extends Table
     public function validationRegister(Validator $validator)
     {
         $validator = $this->validationDefault($validator);
-        $validator = $this->validationPasswordConfirm($validator);
 
-        return $validator;
+        return $this->validationPasswordConfirm($validator);
     }
 
     /**

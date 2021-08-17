@@ -125,7 +125,7 @@ trait PasswordManagementTrait
                 $this->log($exception->getMessage());
             }
         }
-        $this->set(compact('user'));
+        $this->set(['user' => $user]);
         $this->set('_serialize', ['user']);
     }
 

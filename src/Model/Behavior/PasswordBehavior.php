@@ -62,10 +62,8 @@ class PasswordBehavior extends BaseTokenBehavior
             $user->active = false;
             $user->activation_date = null;
         }
-        if ($options['ensureActive'] ?? false) {
-            if (!$user['active']) {
-                throw new UserNotActiveException(__d('cake_d_c/users', 'User not active'));
-            }
+        if (($options['ensureActive'] ?? false) && !$user['active']) {
+            throw new UserNotActiveException(__d('cake_d_c/users', 'User not active'));
         }
         $user->updateToken($expiration);
         $saveResult = $this->_table->save($user);

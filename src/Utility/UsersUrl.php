@@ -74,7 +74,7 @@ class UsersUrl
             $prefix = $parts[0];
         }
 
-        return compact('prefix', 'plugin', 'controller', 'action');
+        return ['prefix' => $prefix, 'plugin' => $plugin, 'controller' => $controller, 'action' => $action];
     }
 
     /**

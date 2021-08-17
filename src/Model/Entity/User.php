@@ -81,7 +81,7 @@ class User extends Entity
      */
     protected function _setTos($tos)
     {
-        if ((bool)$tos === true) {
+        if ((bool)$tos) {
             $this->set('tos_date', Time::now());
         }
 
@@ -111,7 +111,7 @@ class User extends Entity
     {
         $passwordHasher = Configure::read('Users.passwordHasher');
         if (!class_exists($passwordHasher)) {
-            $passwordHasher = '\Cake\Auth\DefaultPasswordHasher';
+            $passwordHasher = \Cake\Auth\DefaultPasswordHasher::class;
         }
 
         return new $passwordHasher();
@@ -172,7 +172,7 @@ class User extends Entity
         }
         $object = (object)$this->additional_data['u2f_registration'];
 
-        return isset($object->keyHandle) ? $object : null;
+        return $object->keyHandle !== null ? $object : null;
     }
 
     /**

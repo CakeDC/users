@@ -56,12 +56,10 @@ class SocialIdentifier extends AbstractIdentifier
         }
 
         if ($user->get('social_accounts')) {
-            $this->dispatchEvent(Plugin::EVENT_AFTER_REGISTER, compact('user'));
+            $this->dispatchEvent(Plugin::EVENT_AFTER_REGISTER, ['user' => $user]);
         }
 
-        $user = $this->findUser($user)->firstOrFail();
-
-        return $user;
+        return $this->findUser($user)->firstOrFail();
     }
 
     /**

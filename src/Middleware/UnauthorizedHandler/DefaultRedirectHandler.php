@@ -107,13 +107,12 @@ class DefaultRedirectHandler extends CakeRedirectHandler
     protected function createFlashMessage($options): array
     {
         $message = (array)($options['flash'] ?? []);
-        $message += [
+
+        return $message + [
             'message' => __d('cake_d_c/users', 'You are not authorized to access that location.'),
             'key' => 'flash',
             'element' => 'flash/error',
             'params' => [],
         ];
-
-        return $message;
     }
 }

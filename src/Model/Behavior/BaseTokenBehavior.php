@@ -54,8 +54,7 @@ class BaseTokenBehavior extends Behavior
     {
         $user['token'] = null;
         $user['token_expires'] = null;
-        $result = $this->_table->save($user);
 
-        return $result;
+        return $this->_table->save($user);
     }
 }

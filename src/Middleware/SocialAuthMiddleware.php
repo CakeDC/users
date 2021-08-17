@@ -41,7 +41,7 @@ class SocialAuthMiddleware implements MiddlewareInterface
      */
     protected function onAuthenticationException(ServerRequest $request, $exception)
     {
-        $baseClassName = get_class($exception->getPrevious());
+        $baseClassName = $exception->getPrevious() !== null ? get_class($exception->getPrevious()) : self::class;
         $response = new Response();
         if ($baseClassName === MissingEmailException::class) {
             $this->setErrorMessage($request, __d('cake_d_c/users', 'Please enter your email'));

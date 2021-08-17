@@ -15,7 +15,7 @@ namespace CakeDC\Users\Exception;
 
 use Cake\Core\Exception\Exception;
 
-class WrongPasswordException extends Exception
+class WrongPasswordException extends \Cake\Core\Exception\CakeException
 {
     /**
      * WrongPasswordException constructor.
