@@ -101,6 +101,8 @@ NOTE: SOME keys were hidden in this doc page, please refer to `vendor/cakedc/use
             'ensureActive' => false,
             // default role name used in registration
             'defaultRole' => 'user',
+             // show verbose error to users
+            'showVerboseError' => false,
         ],
         'Tos' => [
             // determines if the user should include tos accepted
