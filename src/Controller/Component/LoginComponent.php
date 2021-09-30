@@ -70,6 +70,7 @@ class LoginComponent extends Component
         if ($result->isValid()) {
             $user = $request->getAttribute('identity')->getOriginalData();
             $this->handlePasswordRehash($service, $user, $request);
+            $this->updateLastLogin($user);
 
             return $this->afterIdentifyUser($user);
         }
@@ -218,4 +219,22 @@ class LoginComponent extends Component
 
         return in_array($host, Configure::read('Users.AllowedRedirectHosts'));
     }
+
+    /**
+     * Update last loging date
+     *
+     * @param \CakeDC\Users\Model\Entity\User $user User entity.
+     * @return void
+     */
+    protected function updateLastLogin($user)
+    {
+        $now = \Cake\I18n\FrozenTime::now();
+        $user->set('last_login', $now);
+        $this->getController()->getUsersTable()->updateAll(
+            ['last_login' => $now],
+            ['id' => $user->id]
+        );
+    }
+
+
 }
