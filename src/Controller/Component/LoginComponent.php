@@ -235,6 +235,4 @@ class LoginComponent extends Component
             ['id' => $user->id]
         );
     }
-
-
 }

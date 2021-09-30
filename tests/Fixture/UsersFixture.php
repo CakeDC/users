@@ -45,6 +45,7 @@ class UsersFixture extends TestFixture
         'created' => ['type' => 'datetime', 'length' => null, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
         'modified' => ['type' => 'datetime', 'length' => null, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
         'additional_data' => ['type' => 'text', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
+        'last_login' => ['type' => 'datetime', 'length' => null, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
         ],
@@ -90,6 +91,7 @@ class UsersFixture extends TestFixture
                         'counter' => 1,
                     ],
                 ]),
+                'last_login' => '2015-06-24 17:33:54',
             ],
             [
                 'id' => '00000000-0000-0000-0000-000000000002',
@@ -111,6 +113,7 @@ class UsersFixture extends TestFixture
                 'role' => 'admin',
                 'created' => '2015-06-24 17:33:54',
                 'modified' => '2015-06-24 17:33:54',
+                'last_login' => '2015-06-24 17:33:54',
             ],
             [
                 'id' => '00000000-0000-0000-0000-000000000003',
