@@ -92,6 +92,8 @@ class LoginTraitTest extends BaseTraitTest
         $user = $this->Trait->getUsersTable()->get('00000000-0000-0000-0000-000000000002');
         $passwordBefore = $user['password'];
         $this->assertNotEmpty($passwordBefore);
+        $lastLoginBefore = $user['last_login'];
+        $this->assertNotEmpty($lastLoginBefore);
         $this->_mockAuthentication($user->toArray(), $failures);
         $this->Trait->Flash->expects($this->never())
             ->method('error');
@@ -130,6 +132,11 @@ class LoginTraitTest extends BaseTraitTest
         $userAfter = $this->Trait->getUsersTable()->get('00000000-0000-0000-0000-000000000002');
         $passwordAfter = $userAfter['password'];
         $this->assertSame($passwordBefore, $passwordAfter);
+        
+        $lastLoginAfter = $userAfter['last_login'];
+        $this->assertNotEmpty($lastLoginAfter);
+        $now = \Cake\I18n\FrozenTime::now();
+        $this->assertEqualsWithDelta($lastLoginAfter->timestamp, $now->timestamp, 2);
     }
 
     /**

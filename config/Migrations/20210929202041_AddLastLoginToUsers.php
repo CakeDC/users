@@ -17,7 +17,7 @@ class AddLastLoginToUsers extends AbstractMigration
         $table = $this->table('users');
         $table->addColumn('last_login', 'datetime', [
             'default' => null,
-            'null' => false,
+            'null' => true,
         ]);
         $table->update();
     }
