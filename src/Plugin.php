@@ -32,6 +32,7 @@ class Plugin extends BasePlugin
     public const EVENT_AFTER_LOGIN = 'Users.Authentication.afterLogin';
     public const EVENT_BEFORE_LOGOUT = 'Users.Authentication.beforeLogout';
     public const EVENT_AFTER_LOGOUT = 'Users.Authentication.afterLogout';
+    public const EVENT_FAILED_LOGIN = 'Users.Authentication.failedLogin';
 
     public const EVENT_BEFORE_REGISTER = 'Users.Global.beforeRegister';
     public const EVENT_AFTER_REGISTER = 'Users.Global.afterRegister';
