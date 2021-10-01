@@ -7,7 +7,7 @@ parameters:
 
 		-
 			message: "#^Call to an undefined method Cake\\\\Controller\\\\Controller\\:\\:getUsersTable\\(\\)\\.$#"
-			count: 1
+			count: 2
 			path: src\Controller\Component\LoginComponent.php
 
 		-
