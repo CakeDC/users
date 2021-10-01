@@ -70,6 +70,7 @@ class LoginTraitTest extends BaseTraitTest
     {
         $identifiers = new IdentifierCollection();
         $SessionAuth = new SessionAuthenticator($identifiers);
+        $event = new Event('event');
 
         $sessionFailure = new Failure(
             $SessionAuth,
@@ -101,6 +102,9 @@ class LoginTraitTest extends BaseTraitTest
             ->method('redirect')
             ->with($this->successLoginRedirect)
             ->will($this->returnValue(new Response()));
+        $this->Trait->expects($this->once())
+            ->method('dispatchEvent')
+            ->will($this->returnValue($event));
 
         $registry = new ComponentRegistry();
         $config = [
