@@ -96,6 +96,11 @@ class LoginComponent extends Component
         $result = $this->getTargetAuthenticatorResult($service);
         $controller->Flash->error($this->getErrorMessage($result), ['element' => 'default', 'key' => 'auth']);
 
+        $event = $this->getController()->dispatchEvent(Plugin::EVENT_FAILED_LOGIN, ['test' => 'test']);
+        if (is_array($event->getResult())) {
+            return $controller->redirect($event->getResult());
+        }
+
         if (!$redirect) {
             return null;
         }
