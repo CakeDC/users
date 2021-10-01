@@ -132,7 +132,6 @@ class LoginTraitTest extends BaseTraitTest
         $userAfter = $this->Trait->getUsersTable()->get('00000000-0000-0000-0000-000000000002');
         $passwordAfter = $userAfter['password'];
         $this->assertSame($passwordBefore, $passwordAfter);
-        
         $lastLoginAfter = $userAfter['last_login'];
         $this->assertNotEmpty($lastLoginAfter);
         $now = \Cake\I18n\FrozenTime::now();
