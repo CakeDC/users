@@ -73,6 +73,7 @@ class RegisterBehavior extends BaseTokenBehavior
         //@todo move updateActive to afterSave?
         $user = $this->_updateActive($user, $validateEmail, $tokenExpiration);
         $this->_table->isValidateEmail = $validateEmail;
+        $this->_table->usernameBlackList = Configure::read('Users.Username.blackList', []);
         $userSaved = $this->_table->save($user);
         if ($userSaved && $validateEmail) {
             $this->_sendValidationEmail($user);
