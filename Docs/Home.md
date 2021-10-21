@@ -90,6 +90,37 @@ I want to
         ```
       </details>
   * [social login](./Documentation/SocialAuthentication.md#setup)
+  * [OTP Two-factor authenticator](./Documentation/Two-Factor-Authenticator.md)
+  * [Yubico Key U2F Two-factor authenticator](./Documentation/Yubico-U2F.md)
+  *
+    <details>
+        <summary>Authentication component</summary>
+        Add this to your config/users.php file to autoload the component (default):
+
+       ```php
+          'Auth.AuthenticationComponent.load' => true,
+       ```
+
+     To not autoload add this to your config/users.php
+
+        ```php
+          'Auth.AuthenticationComponent.load' => false,
+        ```
+    </details>
+  * <details>
+      <summary>Authorization component</summary>
+      Add this to your config/users.php file to autoload the component (default):
+
+      ```php
+        'Auth.AuthorizationComponent.enabled' => true,
+      ```
+
+      To not autoload add this to your config/users.php
+
+      ```php
+        'Auth.AuthorizationComponent.enabled' => false,
+      ```
+  </details>
 
 Migration guides
 ----------------
