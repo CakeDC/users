@@ -12,21 +12,25 @@ We currently support the following providers to perform login as well as to link
 
 Please [contact us](https://cakedc.com/contact) if you need to support another provider.
 
-The main source code for social integration is provided by ['CakeDC/auth' plugin](https://github.com/cakedc/auth) 
+The main source code for social integration is provided by ['CakeDC/auth' plugin](https://github.com/cakedc/auth)
 
 Setup
 -----
+By default social login is disabled, to enable you need to create the
+Facebook/Twitter applications you want to use and update your file config/users.php with:
 
-Create the Facebook/Twitter applications you want to use and setup the configuration like this:
-
-Config/bootstrap.php
 ```php
-Configure::write('OAuth.providers.facebook.options.clientId', 'YOUR APP ID');
-Configure::write('OAuth.providers.facebook.options.clientSecret', 'YOUR APP SECRET');
-
-Configure::write('OAuth.providers.twitter.options.clientId', 'YOUR APP ID');
-Configure::write('OAuth.providers.twitter.options.clientSecret', 'YOUR APP SECRET');
+//This enable social login (authentication)
+'Users.Social.login' => true,
+//This is the required config to setup facebook.
+'OAuth.providers.facebook.options.clientId', 'YOUR APP ID';
+'OAuth.providers.facebook.options.clientSecret', 'YOUR APP SECRET';
+//This is the required config to setup twitter
+'OAuth.providers.twitter.options.clientId', 'YOUR APP ID';
+'OAuth.providers.twitter.options.clientSecret', 'YOUR APP SECRET';
 ```
+Check optional configs at [config/users.php](./../../config/users.php) inside 'OAuth' key
+
 
 You can also change the default settings for social authenticate:
 
@@ -92,7 +96,7 @@ In your customized users table, add the SocialBehavior with the following config
 
 ```php
 $this->addBehavior('CakeDC/Users.Social', [
-    'username' => 'email' 
+    'username' => 'email'
 ]);
 ```
 Or if you extend the users table, the behavior is already loaded, so just configure it with:
@@ -141,7 +145,7 @@ There are two custom messages (Auth.SocialLoginFailure.messages) and one default
 To use a custom component to handle the login, do:
 ```php
 Configure::write('Auth.SocialLoginFailure.component', 'MyLoginA');
-``` 
+```
 
 The default configuration is:
 ```php
@@ -167,4 +171,4 @@ The default configuration is:
         ...
     ]
 ]
-``` 
+```
