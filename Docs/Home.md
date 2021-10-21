@@ -37,9 +37,10 @@ I want to
 * enable or disable
   * <details>
       <summary>email validation</summary>
+
       Add this to your config/users.php file to disable email validation
 
-     ```php
+      ```php
         'Users.Email.validate' => false,
       ```
       or this to enable (default)
@@ -49,66 +50,71 @@ I want to
       ```
     </details>
   * <details>
-        <summary>registration</summary>
-        Add this to your config/users.php file to disable registration
+      <summary>registration</summary>
 
-       ```php
-          'Users.Registration.active' => false,
-        ```
+      Add this to your config/users.php file to disable registration
+
+      ```php
+      'Users.Registration.active' => false,
+      ```
       or this to enable (default)
 
-        ```php
-          'Users.Registration.active' => true,
-        ```
+      ```php
+      'Users.Registration.active' => true,
+      ```
       </details>
   * <details>
-        <summary>reCaptcha on registration</summary>
-        To enable reCaptcha you need to register your site at google reCaptcha console
-        and add this to your config/users.php file to enable on registration:
+      <summary>reCaptcha on registration</summary>
 
-       ```php
-          'Users.reCaptcha.registration' => true,
-        ```
-       To disable (default) add this to your config/users.php
+      To enable reCaptcha you need to register your site at google reCaptcha console
+      and add this to your config/users.php file to enable on registration:
 
-        ```php
-          'Users.reCaptcha.registration' => false,
-        ```
+      ```php
+      'Users.reCaptcha.registration' => true,
+      ```
+      To disable (default) add this to your config/users.php
+
+      ```php
+      'Users.reCaptcha.registration' => false,
+      ```
       </details>
   * <details>
-        <summary>reCaptcha on login</summary>
-        To enable reCaptcha you need to register your site at google reCaptcha console
-        and add this to your config/users.php file to enable on login:
+      <summary>reCaptcha on login</summary>
 
-       ```php
-          'Users.reCaptcha.login' => true,
-        ```
-     To disable (default) add this to your config/users.php
+      To enable reCaptcha you need to register your site at google reCaptcha console
+      and add this to your config/users.php file to enable on login:
 
-        ```php
-          'Users.reCaptcha.login' => false,
-        ```
+      ```php
+      'Users.reCaptcha.login' => true,
+      ```
+      To disable (default) add this to your config/users.php
+
+      ```php
+      'Users.reCaptcha.login' => false,
+      ```
       </details>
   * [social login](./Documentation/SocialAuthentication.md#setup)
   * [OTP Two-factor authenticator](./Documentation/Two-Factor-Authenticator.md)
   * [Yubico Key U2F Two-factor authenticator](./Documentation/Yubico-U2F.md)
   *
     <details>
-        <summary>Authentication component</summary>
-        Add this to your config/users.php file to autoload the component (default):
+      <summary>Authentication component</summary>
 
-       ```php
-          'Auth.AuthenticationComponent.load' => true,
-       ```
+      Add this to your config/users.php file to autoload the component (default):
 
-     To not autoload add this to your config/users.php
+      ```php
+      'Auth.AuthenticationComponent.load' => true,
+      ```
 
-        ```php
-          'Auth.AuthenticationComponent.load' => false,
-        ```
+      To not autoload add this to your config/users.php
+
+      ```php
+      'Auth.AuthenticationComponent.load' => false,
+      ```
     </details>
   * <details>
       <summary>Authorization component</summary>
+
       Add this to your config/users.php file to autoload the component (default):
 
       ```php
