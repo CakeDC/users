@@ -27,6 +27,70 @@ Documentation
 * [Extending the Plugin](Documentation/Extending-the-Plugin.md)
 * [Translations](Documentation/Translations.md)
 
+I want to
+---------
+* extend the
+  * [model](Documentation/Extending-the-Plugin.md#extending-the-model-tableentity)
+  * [controller](Documentation/Extending-the-Plugin.md#extending-the-controller)
+  * [templates](Documentation/Extending-the-Plugin.md#updating-the-templates)
+
+* enable or disable
+  * <details>
+      <summary>email validation</summary>
+      Add this to your config/users.php file to disable email validation
+
+     ```php
+        'Users.Email.validate' => false,
+      ```
+      or this to enable (default)
+
+      ```php
+        'Users.Email.validate' => true,
+      ```
+    </details>
+  * <details>
+        <summary>registration</summary>
+        Add this to your config/users.php file to disable registration
+
+       ```php
+          'Users.Registration.active' => false,
+        ```
+      or this to enable (default)
+
+        ```php
+          'Users.Registration.active' => true,
+        ```
+      </details>
+  * <details>
+        <summary>reCaptcha on registration</summary>
+        To enable reCaptcha you need to register your site at google reCaptcha console
+        and add this to your config/users.php file to enable on registration:
+
+       ```php
+          'Users.reCaptcha.registration' => true,
+        ```
+       To disable (default) add this to your config/users.php
+
+        ```php
+          'Users.reCaptcha.registration' => false,
+        ```
+      </details>
+  * <details>
+        <summary>reCaptcha on login</summary>
+        To enable reCaptcha you need to register your site at google reCaptcha console
+        and add this to your config/users.php file to enable on login:
+
+       ```php
+          'Users.reCaptcha.login' => true,
+        ```
+     To disable (default) add this to your config/users.php
+
+        ```php
+          'Users.reCaptcha.login' => false,
+        ```
+      </details>
+  * [social login](./Documentation/SocialAuthentication.md#setup)
+
 Migration guides
 ----------------
 
