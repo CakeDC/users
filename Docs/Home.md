@@ -96,8 +96,7 @@ I want to
   * [social login](./Documentation/SocialAuthentication.md#setup)
   * [OTP Two-factor authenticator](./Documentation/Two-Factor-Authenticator.md)
   * [Yubico Key U2F Two-factor authenticator](./Documentation/Yubico-U2F.md)
-  *
-    <details>
+  * <details>
       <summary>Authentication component</summary>
 
       Add this to your config/users.php file to autoload the component (default):
@@ -125,6 +124,38 @@ I want to
 
       ```php
         'Auth.AuthorizationComponent.enabled' => false,
+      ```
+  </details>
+
+  * <details>
+      <summary>TOS validation</summary>
+
+      Add this to your config/users.php file to enable (default):
+
+      ```php
+        'Users.Tos.required' => true,
+      ```
+
+      To disable add this to your config/users.php
+
+      ```php
+        'Users.Tos.required' => false,
+      ```
+  </details>
+
+  * <details>
+      <summary>remember me</summary>
+
+      Add this to your config/users.php file to enable (default):
+
+      ```php
+        'Users.RememberMe.active' => true,
+      ```
+
+      To disable add this to your config/users.php
+
+      ```php
+        'Users.RememberMe.active' => false,
       ```
   </details>
 
