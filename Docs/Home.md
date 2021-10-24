@@ -164,6 +164,8 @@ I want to
   - [one specific action](./Documentation/Permissions.md#i-want-to-allow-access-to-one-specific-action)
   - [all actions from one controller](./Documentation/Permissions.md#i-want-to-allow-access-to-all-actions-from-one-controller)
   - [all controllers from one prefix](./Documentation/Permissions.md#i-want-to-allow-access-to-all-controllers-from-one-prefix)
+  - [entity owned by the user](./Documentation/Permissions.md#i-want-to-allow-access-to-entity-owned-by-the-user)
+  - [action using a custom logic](./Documentation/Permissions.md#i-want-to-allow-access-to-action-using-a-custom-logic)
 
 Migration guides
 ----------------
