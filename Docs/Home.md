@@ -159,6 +159,12 @@ I want to
       ```
   </details>
 
+- allow access to
+  - [public actions (non-logged user)](./Documentation/Permissions.md#i-want-to-allow-access-to-public-actions-non-logged-user)
+  - [one specific action](./Documentation/Permissions.md#i-want-to-allow-access-to-one-specific-action)
+  - [all actions from one controller](./Documentation/Permissions.md#i-want-to-allow-access-to-all-actions-from-one-controller)
+  - [all controllers from one prefix](./Documentation/Permissions.md#i-want-to-allow-access-to-all-controllers-from-one-prefix)
+
 Migration guides
 ----------------
 

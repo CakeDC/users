@@ -9,7 +9,7 @@ The Rbac policy allows you to define a list of rules at config/permissions.php
 to perform checks based on request information (prefix, plugin, controller, action, etc)
 and user data.
 
-You can find the the permission rule syntax at [CakeDC/auth documentation.](https://github.com/CakeDC/auth/blob/master/Docs/Documentation/Rbac.md#permission-rules-syntax)
+You can find the permission rule syntax at [CakeDC/auth documentation.](https://github.com/CakeDC/auth/blob/master/Docs/Documentation/Rbac.md#permission-rules-syntax)
 
 I want to allow access to public actions (non-logged user)
 ----------------------------------------------------------
@@ -100,7 +100,7 @@ return [
 ];
 ```
 
-I want to allow access to all from one prefix
+I want to allow access to all controllers from one prefix
 ---------------------------------------------
 To allow access to specific to all pages from one prefix we need to include a new rule at config/permissions.php
 using the value '*' for 'plugin', 'controller' and 'action' keys.
