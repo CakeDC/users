@@ -70,6 +70,8 @@ I want to
       and add this to your config/users.php file to enable on registration:
 
       ```php
+      'Users.reCaptcha.key' => 'YOUR RECAPTCHA KEY',
+      'Users.reCaptcha.secret' => 'YOUR RECAPTCHA SECRET',
       'Users.reCaptcha.registration' => true,
       ```
       To disable (default) add this to your config/users.php
@@ -85,6 +87,8 @@ I want to
       and add this to your config/users.php file to enable on login:
 
       ```php
+      'Users.reCaptcha.key' => 'YOUR RECAPTCHA KEY',
+      'Users.reCaptcha.secret' => 'YOUR RECAPTCHA SECRET',
       'Users.reCaptcha.login' => true,
       ```
       To disable (default) add this to your config/users.php
@@ -166,6 +170,57 @@ I want to
   - [all controllers from one prefix](./Documentation/Permissions.md#i-want-to-allow-access-to-all-controllers-from-one-prefix)
   - [entity owned by the user](./Documentation/Permissions.md#i-want-to-allow-access-to-entity-owned-by-the-user)
   - [action using a custom logic](./Documentation/Permissions.md#i-want-to-allow-access-to-action-using-a-custom-logic)
+
+- customize my login page to
+  -  <details>
+      <summary>use my template</summary>
+      Copy the login file from `{project_dir}/vendor/cakedc/users/templates/Users/`
+      to `{project_dir}/templates/plugin/CakeDC/Users/Users`.
+  </details>
+
+  -  <details>
+     <summary>use a custom finder</summary>
+     First add this to your config/users.php:
+
+     ```
+     'Auth.Identifiers.Password.resolver.finder' => 'myFinderName',
+     'Auth.Identifiers.Social.authFinder' => 'myFinderName',
+     'Auth.Identifiers.Token.resolver.finder' => 'myFinderName',
+     ```
+     Important: You must have extended the model, see how to at [Extending the Plugin](Documentation/Extending-the-Plugin.md)
+  </details>
+
+  - <details>
+     <summary>use a custom redirect url</summary>
+     To use a custom redirect url on login add this to your config/users.php:
+
+     ```
+     'Auth.AuthenticationComponent.loginRedirect' => '/some/url/',
+     ```
+     or
+     ```
+     'Auth.AuthenticationComponent.loginRedirect' => ['plugin' => false, 'controller' => 'Example', 'action' => 'home'],
+     ```
+    Important: when using array you should pass `'plugin' => false,` to match your app controller.
+  </details>
+
+  - <details>
+    <summary>enable|disable reCaptcha</summary>
+
+    To enable reCaptcha you need to register your site at google reCaptcha console
+    and add this to your config/users.php file to enable on login:
+
+    ```php
+    'Users.reCaptcha.login' => true,
+    'Users.reCaptcha.key' => 'YOUR RECAPTCHA KEY',
+    'Users.reCaptcha.secret' => 'YOUR RECAPTCHA SECRET',
+    ```
+    To disable (default) add this to your config/users.php
+    ```php
+    'Users.reCaptcha.login' => false,
+    ```
+    </details>
+
 
 Migration guides
 ----------------
