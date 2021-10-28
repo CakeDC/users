@@ -220,6 +220,8 @@ I want to
     'Users.reCaptcha.login' => false,
     ```
     </details>
+  - [use user's email to login](./Documentation/Configuration.md#using-the-users-email-to-login)
+  - [override the password hasher](./Documentation/Configuration.md#password-hasher-customization)
 
 - add custom logic before
   - [user logout](./Documentation/Events.md#i-want-to-add-custom-logic-before-user-logout)
@@ -235,6 +237,7 @@ I want to
     - [sending the token for user validation](./Documentation/Events.md#i-want-to-add-custom-logic-after-sending-the-token-for-user-validation)
     - [user email is validated](./Documentation/Events.md#i-want-to-add-custom-logic-after-user-email-is-validated)
     - [user email is validated to autologin user](./Documentation/Events.md#i-want-to-add-custom-logic-after-user-email-is-validated-to-autologin-user)
+    - [intercept login action](./Documentation/InterceptLoginAction.md)
 
 
 Migration guides
