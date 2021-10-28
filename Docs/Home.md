@@ -227,6 +227,16 @@ I want to
   - [linking social account](./Documentation/Events.md#i-want-to-add-custom-logic-before-linking-social-account)
   - [creating social account](./Documentation/Events.md#i-want-to-add-custom-logic-before-creating-social-account)
 
+- add custom logic after
+    - [user login](./Documentation/Events.md#i-want-to-add-custom-logic-after-user-login)
+    - [user logout](./Documentation/Events.md#i-want-to-add-custom-logic-after-user-logout)
+    - [user register](./Documentation/Events.md#i-want-to-add-custom-logic-after-user-register)
+    - [user changed the password](./Documentation/Events.md#i-want-to-add-custom-logic-after-user-changed-the-password)
+    - [sending the token for user validation](./Documentation/Events.md#i-want-to-add-custom-logic-after-sending-the-token-for-user-validation)
+    - [user email is validated](./Documentation/Events.md#i-want-to-add-custom-logic-after-user-email-is-validated)
+    - [user email is validated to autologin user](./Documentation/Events.md#i-want-to-add-custom-logic-after-user-email-is-validated-to-autologin-user)
+
+
 Migration guides
 ----------------
 
