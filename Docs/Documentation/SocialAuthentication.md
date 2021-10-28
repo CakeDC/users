@@ -32,21 +32,20 @@ Facebook/Twitter applications you want to use and update your file config/users.
 Check optional configs at [config/users.php](./../../config/users.php) inside 'OAuth' key
 
 
-You can also change the default settings for social authenticate:
+You can also change the default settings for social authenticate  in your config/users.php file:
 
 ```php
-Configure::write('Users', [
-    'Email' => [
+    'Users.Email' => [
         //determines if the user should include email
         'required' => true,
         //determines if registration workflow includes email validation
         'validate' => true,
     ],
-    'Social' => [
+    'Users.Social' => [
         //enable social login
         'login' => false,
     ],
-    'Key' => [
+    'Users.Key' => [
         'Session' => [
             //session key to store the social auth data
             'social' => 'Users.social',
@@ -60,7 +59,6 @@ Configure::write('Users', [
             'socialEmail' => 'info.email',
         ],
     ],
-]);
 ```
 
 If email is required and the social network does not return the user email then the user will be required to input the email. Additionally, validation could be enabled, in that case the user will be asked to validate the email before be able to login. There are some cases where the email address already exists onto database, if so, the user will receive an email and will be asked to validate the social account in the app. It is important to take into account that the user account itself will remain active and accessible by other ways (other social network account or username/password).
@@ -70,7 +68,7 @@ In most situations you would not need to change any Oauth setting besides applic
 For new facebook aps you must use the graphApiVersion 2.8 or greater:
 
 ```php
-Configure::write('OAuth.providers.facebook.options.graphApiVersion', 'v2.8');
+'OAuth.providers.facebook.options.graphApiVersion' => 'v2.8',
 ```
 
 User Helper
@@ -126,12 +124,11 @@ Social Indentifier
 ------------------
 The social identifier "CakeDC/Users.Social", works with data provider by both social authenticator,
 it is responsible of finding or creating a user registry for the social user data request.
-By default it'll fetch user data with finder 'all', but you can use a custom one. Add this to your
-Application class, after CakeDC/Users Plugin is loaded.
+By default, it'll fetch user data with finder 'all', but you can use a custom one. Add this to your
+config/users.php:
+
 ```php
-    $identifiers = Configure::read('Auth.Identifiers');
-    $identifiers['CakeDC/Users.Social']['authFinder'] = 'customSocialAuth';
-    Configure::write('Auth.Identifiers', $identifiers);
+'Auth.Identifiers.Social.authFinder' => 'customSocialAuth',
 ```
 
 
@@ -142,9 +139,9 @@ service to redirects user to an internal page or show an authentication error. I
 There are two custom messages (Auth.SocialLoginFailure.messages) and one default message (Auth.SocialLoginFailure.defaultMessage).
 
 
-To use a custom component to handle the login, do:
+To use a custom component to handle the login add this to your config/users.php file:
 ```php
-Configure::write('Auth.SocialLoginFailure.component', 'MyLoginA');
+'Auth.SocialLoginFailure.component' => 'MyLoginA',
 ```
 
 The default configuration is:

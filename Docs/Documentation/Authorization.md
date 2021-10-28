@@ -6,22 +6,25 @@ projects. We tried to allow you to start quickly without the need to configure a
 allow you to configure as much as possible.
 
 
-If you don't want the plugin to autoload setup authorization, you can do:
-```
-Configure::write('Auth.Authorization.enabled', false);
+If you don't want the plugin to autoload setup authorization, you can disable
+in your config/users.php with:
+
+```php
+'Auth.Authorization.enabled' => false,
 ```
 
 Authorization Middleware
 ------------------------
 We load the RequestAuthorization and Authorization middleware with OrmResolver and RbacProvider(work with RequestAuthorizationMiddleware).
 
-The middleware accepts some additional configurations, you can do:
-```
-Configure::write('Auth.AuthorizationMiddleware', $config);
+The middleware accepts some additional configurations, you can update in your
+config/users.php file:
+```php
+'Auth.AuthorizationMiddleware' => $config,
 ```
 
 The default configuration for authorization middleware is:
-```
+```php
 [
     'unauthorizedHandler' => [
         'className' => 'CakeDC/Users.DefaultRedirect',
@@ -41,7 +44,7 @@ The `CakeDC/Users.DefaultRedirect` offers additional behavior and config:
 
 You could do the following to set a custom url and flash message:
 
-```
+```php
 [
     'unauthorizedHandler' => [
         'className' => 'CakeDC/Users.DefaultRedirect',
@@ -61,7 +64,7 @@ You could do the following to set a custom url and flash message:
 ],
 ```
 OR
-```
+```php
 [
     'unauthorizedHandler' => [
         'className' => 'CakeDC/Users.DefaultRedirect',
@@ -82,9 +85,10 @@ OR
 Authorization Component
 -----------------------
 We autoload the authorization component at users controller using the default configuration,
-if you don't want the plugin to autoload it, you can do:
-```
-Configure::write('Auth.AuthorizationComponent.enabled', false);
+if you don't want the plugin to autoload it, you can add this to your config/users.php file:
+
+```php
+'Auth.AuthorizationComponent.enabled' => false,
 ```
 
 You can check the configuration options available for authorization component at the
@@ -100,7 +104,7 @@ default provided.
 
 - Create file src/Loader/AppAuthorizationServiceLoader.php
 
-```
+```php
 <?php
 namespace App\Loader;
 
@@ -127,8 +131,8 @@ class AppAuthorizationServiceLoader
     }
 }
 ```
-- Change the authorization service loader:
+- Add this to your config/users.php file to change the authorization service loader:
 
-```
-Configure::write('Auth.Authorization.serviceLoader', \App\Loader\AppAuthorizationServiceLoader::class);
+```php
+'Auth.Authorization.serviceLoader' => \App\Loader\AppAuthorizationServiceLoader::class,
 ```
