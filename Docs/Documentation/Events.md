@@ -253,3 +253,306 @@ class UsersListener implements EventListenerInterface
 ```php
 $this->getEventManager()->on(new \App\Event\UsersListener());
 ```
+
+I want to add custom logic after user login
+-------------------------------------------
+When adding a custom logic to execute after user login you
+have access to user data. You can also set an array as result to
+perform a custom redirect.
+
+- Create or update file src/Event/UsersListener.php:
+```php
+<?php
+
+namespace App\Event;
+
+use Cake\Datasource\ModelAwareTrait;
+use Cake\Event\EventListenerInterface;
+
+class UsersListener implements EventListenerInterface
+{
+    use ModelAwareTrait;
+
+    /**
+     * @return string[]
+     */
+    public function implementedEvents(): array
+    {
+        return [
+            \CakeDC\Users\Plugin::EVENT_AFTER_LOGIN => 'afterLogin',
+        ];
+    }
+
+    /**
+     * @param \Cake\Event\Event $event
+     */
+    public function afterLogin(\Cake\Event\Event $event)
+    {
+        $user = $event->getData('user');
+        //your custom logic
+        //$this->loadModel('SomeOptionalUserLogs')->newLogin($user);
+
+        //If you want to use a custom redirect
+        $event->setResult([
+            'plugin' => false,
+            'controller' => 'Dashboard',
+            'action' => 'home',
+        ]);
+    }
+}
+```
+- Add this at the end of your method Application::bootstrap if you have NOT done before.
+```php
+$this->getEventManager()->on(new \App\Event\UsersListener());
+```
+
+I want to add custom logic after user logout
+---------------------------------------------
+When adding a custom logic to execute after user logout you
+have access to user data and the controller object. You can also
+set an array as result to perform a custom redirect.
+
+- Create or update file src/Event/UsersListener.php:
+```php
+<?php
+
+namespace App\Event;
+
+use Cake\Event\EventListenerInterface;
+
+class UsersListener implements EventListenerInterface
+{
+    /**
+     * @return string[]
+     */
+    public function implementedEvents(): array
+    {
+        return [
+            \CakeDC\Users\Plugin::EVENT_AFTER_LOGOUT => 'afterLogout',
+        ];
+    }
+
+    /**
+     * @param \Cake\Event\Event $event
+     */
+    public function afterLogout(\Cake\Event\Event $event)
+    {
+        $user = $event->getData('user');
+        $controller = $event->getSubject();
+        //your custom logic
+
+        //If you want to use a custom redirect
+        $event->setResult([
+            'plugin' => false,
+            'controller' => 'Pages',
+            'action' => 'thankYou',
+        ]);
+    }
+}
+
+```
+- Add this at the end of your method Application::bootstrap if you have NOT done before.
+```php
+$this->getEventManager()->on(new \App\Event\UsersListener());
+```
+
+I want to add custom logic after user register
+----------------------------------------------
+When adding a custom logic to execute after user register you
+have access to user data and the controller object. You can also
+set a custom http response as result to render a different content
+or perform a custom redirect.
+
+- Create or update file src/Event/UsersListener.php:
+```php
+<?php
+
+namespace App\Event;
+
+use Cake\Event\EventListenerInterface;
+
+class UsersListener implements EventListenerInterface
+{
+    /**
+     * @return string[]
+     */
+    public function implementedEvents(): array
+    {
+        return [
+            \CakeDC\Users\Plugin::EVENT_AFTER_REGISTER => 'afterRegister',
+        ];
+    }
+
+    /**
+     * @param \Cake\Event\Event $event
+     */
+    public function afterRegister(\Cake\Event\Event $event)
+    {
+        $user = $event->getData('user');
+        $controller = $event->getSubject();
+        //your custom logic
+
+        //If you want to use a custom response to render a json.
+        $response = $controller->getResponse()->withStringBody(json_encode(['success' => true, 'id' => $user['id']]));
+        $event->setResult($response);
+
+        //or if you want to use a custom redirect.
+        $response = $controller->getResponse()->withLocation("/some/page");
+        $event->setResult($response);
+    }
+}
+
+```
+- Add this at the end of your method Application::bootstrap if you have NOT done before.
+```php
+$this->getEventManager()->on(new \App\Event\UsersListener());
+```
+
+I want to add custom logic after user changed the password
+----------------------------------------------------------
+When adding a custom logic to execute after user change the password
+you have access to some user data and the controller object. You can also
+set an array as result to perform a custom redirect.
+
+- Create or update file src/Event/UsersListener.php:
+```php
+<?php
+
+namespace App\Event;
+
+use Cake\Event\EventListenerInterface;
+
+class UsersListener implements EventListenerInterface
+{
+    /**
+     * @return string[]
+     */
+    public function implementedEvents(): array
+    {
+        return [
+            \CakeDC\Users\Plugin::EVENT_AFTER_CHANGE_PASSWORD => 'afterChangePassword',
+        ];
+    }
+
+    /**
+     * @param \Cake\Event\Event $event
+     */
+    public function afterChangePassword(\Cake\Event\Event $event)
+    {
+        $user = $event->getData('user');
+        $controller = $event->getSubject();
+        //your custom logic
+
+        //If you want to use a custom redirect
+        $event->setResult([
+            'plugin' => false,
+            'controller' => 'Pages',
+            'action' => 'infoPassword',
+        ]);
+    }
+}
+
+```
+- Add this at the end of your method Application::bootstrap if you have NOT done before.
+```php
+$this->getEventManager()->on(new \App\Event\UsersListener());
+```
+
+
+I want to add custom logic after sending the token for user validation
+----------------------------------------------------------------------
+When adding a custom logic to execute after sending the token for user
+validation you can also set an array as result to perform a custom redirect.
+
+- Create or update file src/Event/UsersListener.php:
+```php
+<?php
+
+namespace App\Event;
+
+use Cake\Event\EventListenerInterface;
+
+class UsersListener implements EventListenerInterface
+{
+    /**
+     * @return string[]
+     */
+    public function implementedEvents(): array
+    {
+        return [
+            \CakeDC\Users\Plugin::EVENT_AFTER_RESEND_TOKEN_VALIDATION => 'afterResendTokenValidation',
+        ];
+    }
+
+    /**
+     * @param \Cake\Event\Event $event
+     */
+    public function afterResendTokenValidation(\Cake\Event\Event $event)
+    {
+        $controller = $event->getSubject();
+        //your custom logic
+
+        //If you want to use a custom redirect
+        $event->setResult([
+            'plugin' => false,
+            'controller' => 'Pages',
+            'action' => 'infoValidation',
+        ]);
+    }
+}
+
+```
+- Add this at the end of your method Application::bootstrap if you have NOT done before.
+```php
+$this->getEventManager()->on(new \App\Event\UsersListener());
+```
+
+I want to add custom logic after user email is validated
+--------------------------------------------------------
+When adding a custom logic to execute after user email is validate
+you have access to some user data and the controller object. You can also
+set an array as result to perform a custom redirect.
+
+- Create or update file src/Event/UsersListener.php:
+```php
+<?php
+
+namespace App\Event;
+
+use Cake\Event\EventListenerInterface;
+
+class UsersListener implements EventListenerInterface
+{
+    /**
+     * @return string[]
+     */
+    public function implementedEvents(): array
+    {
+        return [
+            \CakeDC\Users\Plugin::EVENT_AFTER_EMAIL_TOKEN_VALIDATION => 'afterEmailTokenValidation',
+        ];
+    }
+
+    /**
+     * @param \Cake\Event\Event $event
+     */
+    public function afterEmailTokenValidation(\Cake\Event\Event $event)
+    {
+        $user = $event->getData('user');
+        $controller = $event->getSubject();
+        //your custom logic
+
+        //If you want to use a custom redirect
+        $event->setResult([
+            'plugin' => false,
+            'controller' => 'Pages',
+            'action' => 'infoPassword',
+        ]);
+    }
+}
+
+```
+- Add this at the end of your method Application::bootstrap if you have NOT done before.
+```php
+$this->getEventManager()->on(new \App\Event\UsersListener());
+```
