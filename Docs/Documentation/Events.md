@@ -14,40 +14,8 @@ The events in this plugin follow these conventions `<Plugin><Category>.<EventNam
 * `Users.Global.afterResendTokenValidation`
 
 The events allow you to inject data into the plugin on the before* plugins and use the data for your
-own business, for example
+own business.
 
-    /**
-     * beforeRegister event
-     */
-    public function eventRegister()
-    {
-        $this->eventManager()->on(Plugin::EVENT_BEFORE_REGISTER, function ($event) {
-            //the callback function should return the user data array to force register
-            return $event->data['usersTable']->newEntity([
-                'username' => 'forceEventRegister',
-                'email' => 'eventregister@example.com',
-                'password' => 'password',
-                'active' => true,
-                'tos' => true,
-            ]);
-        });
-        $this->register();
-        $this->render('register');
-    }
-
-
-How to make an autologin using `EVENT_AFTER_EMAIL_TOKEN_VALIDATION` event
-
-```php
-EventManager::instance()->on(
-    \CakeDC\Users\Plugin::EVENT_AFTER_EMAIL_TOKEN_VALIDATION,
-    function($event){
-        $users = $this->getTableLocator()->get('Users');
-        $user = $users->get($event->getData('user')->id);
-        $this->Authentication->setIdentity($user);
-    }
-);
-```
 
 I want to add custom logic before user logout
 ---------------------------------------------
@@ -548,6 +516,48 @@ class UsersListener implements EventListenerInterface
             'controller' => 'Pages',
             'action' => 'infoPassword',
         ]);
+    }
+}
+
+```
+- Add this at the end of your method Application::bootstrap if you have NOT done before.
+```php
+$this->getEventManager()->on(new \App\Event\UsersListener());
+```
+
+I want to add custom logic after user email is validated to autologin user
+--------------------------------------------------------------------------
+This is how you can autologin the user after email is validate:
+
+- Create or update file src/Event/UsersListener.php:
+```php
+<?php
+
+namespace App\Event;
+
+use Cake\Event\EventListenerInterface;
+
+class UsersListener implements EventListenerInterface
+{
+    /**
+     * @return string[]
+     */
+    public function implementedEvents(): array
+    {
+        return [
+            \CakeDC\Users\Plugin::EVENT_AFTER_EMAIL_TOKEN_VALIDATION => 'afterEmailTokenValidation',
+        ];
+    }
+
+    /**
+     * @param \Cake\Event\Event $event
+     */
+    public function afterEmailTokenValidation(\Cake\Event\Event $event)
+    {
+        $table = $this->loadModel('Users');
+        $userData = $event->getData('user');
+        $user = $table->get($userData['id']);
+        $this->Authentication->setIdentity($user);
     }
 }
 
