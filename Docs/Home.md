@@ -221,6 +221,11 @@ I want to
     ```
     </details>
 
+- add custom logic before
+  - [user logout](./Documentation/Events.md#i-want-to-add-custom-logic-before-user-logout)
+  - [user register](./Documentation/Events.md#i-want-to-add-custom-logic-before-user-register)
+  - [linking social account](./Documentation/Events.md#i-want-to-add-custom-logic-before-linking-social-account)
+  - [creating social account](./Documentation/Events.md#i-want-to-add-custom-logic-before-creating-social-account)
 
 Migration guides
 ----------------
