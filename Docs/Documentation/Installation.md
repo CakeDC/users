@@ -61,6 +61,9 @@ Ensure the Users Plugin is loaded in your src/Application.php file
     }
 ```
 
+**Important note: The plugin loads authentication and authorization plugin and
+uses RequestAuthorizationMiddleware with Rbac|Superuser policy you
+should not load then manually**
 
 Creating config files
 ---------------------
