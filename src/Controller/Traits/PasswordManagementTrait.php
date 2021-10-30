@@ -87,11 +87,12 @@ trait PasswordManagementTrait
                 if ($validatePassword) {
                     $validator = $this->getUsersTable()->validationCurrentPassword($validator);
                 }
+                $this->getUsersTable()->setValidator('current', $validator);
                 $user = $this->getUsersTable()->patchEntity(
                     $user,
                     $this->getRequest()->getData(),
                     [
-                        'validate' => $validator,
+                        'validate' => 'current',
                         'accessibleFields' => [
                             'current_password' => true,
                             'password' => true,

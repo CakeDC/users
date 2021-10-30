@@ -63,10 +63,17 @@ class RegisterBehavior extends BaseTokenBehavior
         $validateEmail = $options['validate_email'] ?? null;
         $tokenExpiration = $options['token_expiration'] ?? null;
         $validator = $options['validator'] ?? null;
+        if (is_string($validator)) {
+            $validate = $validator;
+        } else {
+            $this->_table->setValidator('current', $validator ?: $this->getRegisterValidators($options));
+            $validate = 'current';
+        }
+
         $user = $this->_table->patchEntity(
             $user,
             $data,
-            ['validate' => $validator ?: $this->getRegisterValidators($options)]
+            ['validate' => $validate]
         );
         $user['role'] = Configure::read('Users.Registration.defaultRole') ?: 'user';
         $user->validated = false;

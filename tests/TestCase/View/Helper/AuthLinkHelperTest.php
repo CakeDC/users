@@ -86,7 +86,8 @@ class AuthLinkHelperTest extends TestCase
      */
     public function testLinkAuthorizedHappy(): void
     {
-        Router::connect('/profile', [
+        $builder = Router::createRouteBuilder('/');
+        $builder->connect('/profile', [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'profile',
@@ -152,7 +153,8 @@ class AuthLinkHelperTest extends TestCase
             'action' => 'delete',
             '00000000-0000-0000-0000-000000000010',
         ];
-        Router::connect('/Users/delete/00000000-0000-0000-0000-000000000010', $url);
+        $builder = Router::createRouteBuilder('/');
+        $builder->connect('/Users/delete/00000000-0000-0000-0000-000000000010', $url);
         $this->AuthLink->expects($this->once())
             ->method('isAuthorized')
             ->with(

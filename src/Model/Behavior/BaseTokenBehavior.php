@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace CakeDC\Users\Model\Behavior;
 
 use Cake\Datasource\EntityInterface;
-use Cake\I18n\Time;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\Behavior;
 
 /**
@@ -38,7 +38,7 @@ class BaseTokenBehavior extends Behavior
             $user->updateToken($tokenExpiration);
         } else {
             $user['active'] = true;
-            $user['activation_date'] = new Time();
+            $user['activation_date'] = new FrozenTime();
         }
 
         return $user;

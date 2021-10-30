@@ -101,7 +101,8 @@ class UserHelperTest extends TestCase
      */
     public function testLogout()
     {
-        Router::connect('/logout', [
+        $builder = Router::createRouteBuilder('/');
+        $builder->connect('/logout', [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'logout',
@@ -119,7 +120,8 @@ class UserHelperTest extends TestCase
      */
     public function testLogoutDifferentMessage()
     {
-        Router::connect('/logout', [
+        $builder = Router::createRouteBuilder('/');
+        $builder->connect('/logout', [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'logout',
@@ -137,7 +139,8 @@ class UserHelperTest extends TestCase
      */
     public function testLogoutWithOptions()
     {
-        Router::connect('/logout', [
+        $builder = Router::createRouteBuilder('/');
+        $builder->connect('/logout', [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'logout',
@@ -155,7 +158,8 @@ class UserHelperTest extends TestCase
      */
     public function testWelcome()
     {
-        Router::connect('/profile', [
+        $builder = Router::createRouteBuilder('/');
+        $builder->connect('/profile', [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'profile',
@@ -183,7 +187,8 @@ class UserHelperTest extends TestCase
      */
     public function testWelcomeWillDisplayUsernameInstead()
     {
-        Router::connect('/profile', [
+        $builder = Router::createRouteBuilder('/');
+        $builder->connect('/profile', [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'profile',
@@ -251,7 +256,7 @@ class UserHelperTest extends TestCase
      */
     public function testAddReCaptchaScript()
     {
-        $this->View->expects($this->at(0))
+        $this->View->expects($this->once())
             ->method('append')
             ->with('script', $this->stringContains('https://www.google.com/recaptcha/api.js'));
         $this->User->addReCaptchaScript();

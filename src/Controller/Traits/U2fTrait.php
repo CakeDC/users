@@ -55,7 +55,6 @@ trait U2fTrait
                 'action' => 'login',
             ]);
         }
-
         if (!$data['registration']) {
             return $this->redirectWithQuery([
                 'action' => 'u2fRegister',

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace CakeDC\Users\Model\Entity;
 
 use Cake\Core\Configure;
-use Cake\I18n\Time;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\Entity;
 use Cake\Utility\Security;
 
@@ -82,7 +82,7 @@ class User extends Entity
     protected function _setTos($tos)
     {
         if ((bool)$tos) {
-            $this->set('tos_date', Time::now());
+            $this->set('tos_date', FrozenTime::now());
         }
 
         return $tos;
@@ -142,7 +142,7 @@ class User extends Entity
             return true;
         }
 
-        return new Time($this->token_expires) < Time::now();
+        return new FrozenTime($this->token_expires) < FrozenTime::now();
     }
 
     /**
@@ -167,6 +167,9 @@ class User extends Entity
      */
     protected function _getU2fRegistration()
     {
+        if (is_string($this->additional_data)) {
+            $this->additional_data = json_decode($this->additional_data, true);
+        }
         if (!isset($this->additional_data['u2f_registration'])) {
             return null;
         }
@@ -183,7 +186,7 @@ class User extends Entity
      */
     public function updateToken($tokenExpiration = 0)
     {
-        $expiration = new Time('now');
+        $expiration = new FrozenTime('now');
         $this->token_expires = $expiration->addSeconds($tokenExpiration);
         $this->token = bin2hex(Security::randomBytes(16));
     }

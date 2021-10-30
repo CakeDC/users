@@ -64,7 +64,8 @@ class RegisterTraitTest extends BaseTraitTest
      */
     public function testRegister()
     {
-        Router::connect('/users/validate-email/*', [
+        $builder = Router::createRouteBuilder('/');
+        $builder->connect('/users/validate-email/*', [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'validateEmail',
@@ -127,7 +128,8 @@ class RegisterTraitTest extends BaseTraitTest
      */
     public function testRegisterWithEventSuccessResult()
     {
-        Router::connect('/users/validate-email/*', [
+        $builder = Router::createRouteBuilder('/');
+        $builder->connect('/users/validate-email/*', [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'validateEmail',
@@ -169,7 +171,8 @@ class RegisterTraitTest extends BaseTraitTest
      */
     public function testRegisterReCaptcha()
     {
-        Router::connect('/users/validate-email/*', [
+        $builder = Router::createRouteBuilder('/');
+        $builder->connect('/users/validate-email/*', [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'validateEmail',
@@ -190,7 +193,7 @@ class RegisterTraitTest extends BaseTraitTest
         $this->Trait->expects($this->once())
             ->method('redirect')
             ->with(['action' => 'login']);
-        $this->Trait->getRequest()->expects($this->at(0))
+        $this->Trait->getRequest()->expects($this->any())
             ->method('getData')
             ->with()
             ->will($this->returnValue([
@@ -227,7 +230,7 @@ class RegisterTraitTest extends BaseTraitTest
             ->will($this->returnValue(true));
         $this->Trait->expects($this->never())
             ->method('redirect');
-        $this->Trait->getRequest()->expects($this->at(0))
+        $this->Trait->getRequest()->expects($this->any())
             ->method('getData')
             ->with()
             ->will($this->returnValue([
@@ -259,10 +262,10 @@ class RegisterTraitTest extends BaseTraitTest
         $this->Trait->Flash->expects($this->once())
             ->method('error')
             ->with('Invalid reCaptcha');
-        $this->Trait->expects($this->once())
+        $this->Trait->expects($this->any())
             ->method('validateRecaptcha')
             ->will($this->returnValue(false));
-        $this->Trait->getRequest()->expects($this->at(0))
+        $this->Trait->getRequest()->expects($this->any())
             ->method('getData')
             ->with()
             ->will($this->returnValue([
@@ -308,7 +311,8 @@ class RegisterTraitTest extends BaseTraitTest
      */
     public function testRegisterRecaptchaDisabled()
     {
-        Router::connect('/users/validate-email/*', [
+        $builder = Router::createRouteBuilder('/');
+        $builder->connect('/users/validate-email/*', [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'validateEmail',
@@ -328,7 +332,7 @@ class RegisterTraitTest extends BaseTraitTest
         $this->Trait->expects($this->once())
             ->method('redirect')
             ->with(['action' => 'login']);
-        $this->Trait->getRequest()->expects($this->at(0))
+        $this->Trait->getRequest()->expects($this->once())
             ->method('getData')
             ->with()
             ->will($this->returnValue([
@@ -367,7 +371,8 @@ class RegisterTraitTest extends BaseTraitTest
      */
     public function testRegisterLoggedInUserAllowed()
     {
-        Router::connect('/users/validate-email/*', [
+        $builder = Router::createRouteBuilder('/');
+        $builder->connect('/users/validate-email/*', [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'validateEmail',
@@ -385,7 +390,7 @@ class RegisterTraitTest extends BaseTraitTest
         $this->Trait->expects($this->once())
             ->method('redirect')
             ->with(['action' => 'login']);
-        $this->Trait->getRequest()->expects($this->at(0))
+        $this->Trait->getRequest()->expects($this->once())
             ->method('getData')
             ->with()
             ->will($this->returnValue([

@@ -95,9 +95,9 @@ class SimpleCrudTraitIntegrationTest extends TestCase
 
         $this->get('/users/edit/00000000-0000-0000-0000-000000000006');
         $this->assertResponseContains('<input type="text" name="username" required="required');
-        $this->assertResponseContains('id="username" value="user-6"');
+        $this->assertResponseContains('id="username" aria-required="true" value="user-6"');
         $this->assertResponseContains('<input type="email" name="email" required="required');
-        $this->assertResponseContains('id="email" value="6@example.com"');
+        $this->assertResponseContains('id="email" aria-required="true" value="6@example.com"');
         $this->assertResponseContains('<input type="text" name="first_name" id="first-name" value="first-user-6');
         $this->assertResponseContains('<input type="text" name="last_name" id="last-name" value="firts name 6');
         $this->assertResponseContains('<label for="active"><input type="checkbox" name="active" value="1" id="active" checked="checked">Active</label>');

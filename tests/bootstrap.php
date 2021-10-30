@@ -136,3 +136,8 @@ session_id('cli');
     'localhost',
     'example.com',
 ]);
+
+if (env('FIXTURE_SCHEMA_METADATA')) {
+    $loader = new \Cake\TestSuite\Fixture\SchemaLoader();
+    $loader->loadInternalFile(env('FIXTURE_SCHEMA_METADATA'));
+}
