@@ -25,10 +25,10 @@ use Cake\Utility\Security;
  * @property string $role
  * @property string $username
  * @property bool $is_superuser
- * @property \Cake\I18n\Time $token_expires
+ * @property \Cake\I18n\Time|\Cake\I18n\FrozenTime $token_expires
  * @property string $token
  * @property string $api_token
- * @property array $additional_data
+ * @property array|string $additional_data
  * @property \CakeDC\Users\Model\Entity\SocialAccount[] $social_accounts
  */
 class User extends Entity
