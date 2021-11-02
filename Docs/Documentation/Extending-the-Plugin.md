@@ -156,6 +156,9 @@ needed to setup correct url/route for authentication.
         // ...
 ```
 
+**You also need to update permissions rules in your file config/permissions.php
+to match the new controller.**
+
 Note you'll need to **copy the Plugin templates** you need into your project templates/MyUsers/[action].php
 
 You may also need to load some helpers in your AppView:
