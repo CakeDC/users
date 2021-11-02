@@ -2,15 +2,15 @@ Authentication
 ==============
 This plugin uses the new authentication plugin [cakephp/authentication](https://github.com/cakephp/authentication/)
 instead of CakePHP Authentication component, but don't worry, the default configuration should be enough for your
-projects. 
+projects.
 
 We've tried to simplify configuration as much as possible using defaults, but keep the ability to override them when needed.
 
 Authentication Component
 ------------------------
 
-The default behavior is to load the authentication component at UsersController, 
-defining the default urls for loginAction, loginRedirect, logoutRedirect but not requiring 
+The default behavior is to load the authentication component at UsersController,
+defining the default urls for loginAction, loginRedirect, logoutRedirect but not requiring
 the request to have a identity.
 
 If you prefer to load the component yourself you can set 'Auth.AuthenticationComponent.load':
@@ -29,7 +29,7 @@ $user = $this->Authentication->getIdentity()->getOriginalData();
 ```
 The default configuration for Auth.AuthenticationComponent is:
 
-```
+```php
 [
     'load' => true,
     'loginRedirect' => '/',
@@ -57,25 +57,23 @@ list of authenticators includes:
 
 These authenticators should be enough for your application, but you easily customize it
 setting the Auth.Authenticators config key.
-  
-For example if you add JWT authenticator you can set:
 
-```
-$authenticators = Configure::read('Auth.Authenticators');
-$authenticators['Jwt'] = [
-    'className' => 'Authentication.Jwt',
+For example if you add JWT authenticator you must add this to your config/users.php file:
+
+```php
+'Auth.Authenticators.Jwt' => [
     'queryParam' => 'token',
     'skipTwoFactorVerify' => true,
-]; 
-Configure::write('Auth.Authenticators', $authenticators);
+    'className' => 'Authentication.Jwt',
+],
+```
 
-``` 
 **You may have noticed the 'skipTwoFactorVerify' option, this option is used to identify if a authenticator should skip
 the two factor flow**
 
 The authenticators are loaded by \CakeDC\Users\Loader\AuthenticationServiceLoader class at load authentication
 service method from plugin object.
- 
+
 See the full Auth.Authenticators at config/users.php
 
 Identifiers
@@ -86,11 +84,12 @@ The identifies are defined to work correctly with the default authenticators, we
 - CakeDC/Users.Social, for Social and SocialPendingEmail authenticators
 - Authentication.Token, for TokenAuthenticator
 
-As you add more authenticators you may need to add identifiers, please check identifiers available at 
+As you add more authenticators you may need to add identifiers, please check identifiers available at
 [official documentation](https://github.com/cakephp/authentication/blob/master/docs/Identifiers.md)
 
 The default value for Auth.Identifiers is:
-```
+
+```php
 [
     'Password' => [
         'className' => 'Authentication.Password',
@@ -127,14 +126,15 @@ For both form login and social login we use a base component 'CakeDC/Users.Login
 it check the result of authentication service to redirect user to a internal page or show an authentication
 error. It provide some error messages for specific authentication result status, please check the config/users.php file.
 
-To use a custom component to handle the login you could do:
+To use a custom component to handle the login you should update your config/users.php file with:
+
+```php
+'Auth.SocialLoginFailure.component' => 'MyLoginA',
+'Auth.FormLoginFailure.component' => 'MyLoginB',
 ```
-Configure::write('Auth.SocialLoginFailure.component', 'MyLoginA');
-Configure::write('Auth.FormLoginFailure.component', 'MyLoginB');
-``` 
 
 The default configuration are:
-```
+```php
 [
     ...
     'Auth' => [
@@ -165,24 +165,24 @@ The default configuration are:
         ...
     ]
 ]
-``` 
+```
 
-Authentication Service Loader 
+Authentication Service Loader
 -----------------------------
 To make the integration with cakephp/authentication easier we load the authenticators and identifiers
 defined at Auth configuration and other components to work with social provider, two-factor authentication.
 
-If the configuration is not enough for your project you may create a custom loader extending the 
+If the configuration is not enough for your project you may create a custom loader extending the
 default provided.
 
 - Create file src/Loader/AppAuthenticationServiceLoader.php
 
-```
+```php
 <?php
 namespace App\Loader;
- 
+
 use \CakeDC\Users\Loader\AuthenticationServiceLoader;
- 
+
 class AppAuthenticationServiceLoader extends AuthenticationServiceLoader
 {
     /**
@@ -202,8 +202,8 @@ class AppAuthenticationServiceLoader extends AuthenticationServiceLoader
     }
 }
 ```
-- Change the authentication service loader:
+- Add this to your config/users.php file to change the authentication service loader:
 
-```
-Configure::write('Authentication.serviceLoader', \App\Loader\AuthenticationServiceLoader::class);
+```php
+'Auth.Authentication.serviceLoader' => \App\Loader\AuthenticationServiceLoader::class,
 ```
