@@ -88,7 +88,7 @@ You can copy the one from the plugin and add your permissions rules.***
 cd {project_dir}
 cp vendor/cakedc/users/config/permissions.php  config/permissions.php
 ```
-[Go to permission documentation for more information.](./Documentation/Permissions.md)
+[Go to permission documentation for more information.](./Permissions.md)
 
 
 Creating Required Tables
