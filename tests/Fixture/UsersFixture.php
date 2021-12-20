@@ -97,15 +97,15 @@ class UsersFixture extends TestFixture
                             'transports' => [],
                             'attestationType' => 'none',
                             'trustPath' => [
-                                'type' => 'Webauthn\TrustPath\EmptyTrustPath'
+                                'type' => 'Webauthn\TrustPath\EmptyTrustPath',
                             ],
                             'aaguid' => '00000000-0000-0000-0000-000000000000',
                             'credentialPublicKey' => Base64Url::encode('000000000000000000000000000000000000-9999999999999999999999999999999999999999-XXXXXXXXXXXXX-ZZZZZZZZZZZ'),
                             'userHandle' => Base64Url::encode('00000000-0000-0000-0000-000000000001'),
                             'counter' => 190,
-                            'otherUI' => null
+                            'otherUI' => null,
                         ],
-                    ]
+                    ],
                 ]),
             ],
             [

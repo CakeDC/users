@@ -92,7 +92,7 @@ trait Webauthn2faTrait
             $adapter = $this->getWebauthn2faAuthenticateAdapter();
             $adapter->verifyResponse();
             $redirectUrl = Configure::read('Auth.AuthenticationComponent.loginAction') + [
-                '?' => $this->getRequest()->getQueryParams()
+                '?' => $this->getRequest()->getQueryParams(),
             ];
             $this->getRequest()->getSession()->delete('Webauthn2fa');
             $this->getRequest()->getSession()->write(
@@ -102,7 +102,7 @@ trait Webauthn2faTrait
 
             return $this->getResponse()->withStringBody(json_encode([
                 'success' => true,
-                'redirectUrl' => Router::url($redirectUrl)
+                'redirectUrl' => Router::url($redirectUrl),
             ]));
         } catch (\Throwable $e) {
             $user = $this->request->getSession()->read('Webauthn2fa.User');
@@ -112,7 +112,7 @@ trait Webauthn2faTrait
     }
 
     /**
-     * @return RegisterAdapter
+     * @return \CakeDC\Users\Webauthn\RegisterAdapter
      */
     protected function getWebauthn2faRegisterAdapter(): RegisterAdapter
     {
@@ -120,7 +120,7 @@ trait Webauthn2faTrait
     }
 
     /**
-     * @return AuthenticateAdapter
+     * @return \CakeDC\Users\Webauthn\AuthenticateAdapter
      */
     protected function getWebauthn2faAuthenticateAdapter(): AuthenticateAdapter
     {

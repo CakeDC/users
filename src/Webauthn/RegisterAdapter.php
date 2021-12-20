@@ -18,7 +18,7 @@ use Webauthn\PublicKeyCredentialCreationOptions;
 class RegisterAdapter extends BaseAdapter
 {
     /**
-     * @return PublicKeyCredentialCreationOptions
+     * @return \Webauthn\PublicKeyCredentialCreationOptions
      */
     public function getOptions(): PublicKeyCredentialCreationOptions
     {
@@ -34,7 +34,6 @@ class RegisterAdapter extends BaseAdapter
         return $options;
     }
 
-
     /**
      * Verify the registration response
      *
@@ -42,9 +41,6 @@ class RegisterAdapter extends BaseAdapter
      */
     public function verifyResponse(): \Webauthn\PublicKeyCredentialSource
     {
-        /**
-         *
-         */
         $options = $this->request->getSession()->read('Webauthn2fa.registerOptions');
         $credential = $this->loadAndCheckAttestationResponse($options);
         $this->repository->saveCredentialSource($credential);
@@ -53,7 +49,7 @@ class RegisterAdapter extends BaseAdapter
     }
 
     /**
-     * @param \Webauthn\PublicKeyCredentialCreationOptions $options
+     * @param \Webauthn\PublicKeyCredentialCreationOptions $options creation options
      * @return \Webauthn\PublicKeyCredentialSource
      */
     protected function loadAndCheckAttestationResponse($options): \Webauthn\PublicKeyCredentialSource
@@ -63,6 +59,7 @@ class RegisterAdapter extends BaseAdapter
             $options,
             $this->request
         );
+
         return $credential;
     }
 }

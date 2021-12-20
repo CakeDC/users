@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace CakeDC\Users\Test\TestCase\Webauthn\Repository;
 
@@ -46,9 +47,9 @@ class UserCredentialSourceRepositoryTest extends TestCase
         $userId = '00000000-0000-0000-0000-000000000001';
         $user = $UsersTable->get($userId);
         $userEntity = new PublicKeyCredentialUserEntity(
-            'john.doe',                             // Username
-            $userId, // ID
-            'John Doe'                              // Display name
+            'john.doe',
+            $userId,
+            'John Doe'
         );
         $repository = new UserCredentialSourceRepository($user, $UsersTable);
         $credentials = $repository->findAllForUserEntity($userEntity);
@@ -57,9 +58,9 @@ class UserCredentialSourceRepositoryTest extends TestCase
 
         //Not found id
         $userEntityInvalid = new PublicKeyCredentialUserEntity(
-            'john.doe',                             // Username
-            '00000000-0000-0000-0000-000000000004', // ID
-            'John Doe'                              // Display name
+            'john.doe',
+            '00000000-0000-0000-0000-000000000004',
+            'John Doe'
         );
         $repository = new UserCredentialSourceRepository($user, $UsersTable);
         $credentials = $repository->findAllForUserEntity($userEntityInvalid);
@@ -81,21 +82,21 @@ class UserCredentialSourceRepositoryTest extends TestCase
             'transports' => [],
             'attestationType' => 'none',
             'trustPath' => [
-                'type' => 'Webauthn\TrustPath\EmptyTrustPath'
+                'type' => 'Webauthn\TrustPath\EmptyTrustPath',
             ],
             'aaguid' => '00000000-0000-0000-0000-000000000000',
             'credentialPublicKey' => Base64Url::encode('000000000000000000000000000000000000-9999999999999999999999999999999999999999-XXXXXXXXXXXXX-YYYYYYYYYYY'),
             'userHandle' => Base64Url::encode($userId),
             'counter' => 191,
-            'otherUI' => null
+            'otherUI' => null,
         ];
         $UsersTable = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
         $user = $UsersTable->get($userId);
         $firstKey = key($user->additional_data['webauthn_credentials']);
         $userEntity = new PublicKeyCredentialUserEntity(
-            'john.doe',                             // Username
-            $userId, // ID
-            'John Doe'                              // Display name
+            'john.doe',
+            $userId,
+            'John Doe'
         );
         $publicKey = PublicKeyCredentialSource::createFromArray($credentialData);
         $repository = new UserCredentialSourceRepository($user, $UsersTable);

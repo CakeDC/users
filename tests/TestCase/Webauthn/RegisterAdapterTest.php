@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace CakeDC\Users\Test\TestCase\Webauthn;
 
@@ -55,13 +56,13 @@ class RegisterAdapterTest extends TestCase
             'transports' => [],
             'attestationType' => 'none',
             'trustPath' => [
-                'type' => 'Webauthn\TrustPath\EmptyTrustPath'
+                'type' => 'Webauthn\TrustPath\EmptyTrustPath',
             ],
             'aaguid' => '00000000-0000-0000-0000-000000000000',
             'credentialPublicKey' => Base64Url::encode('000000000000000000000000000000000000-9999999999999999999999999999999999999999-XXXXXXXXXXXXX-YYYYYYYYYYY'),
             'userHandle' => Base64Url::encode($userId),
             'counter' => 191,
-            'otherUI' => null
+            'otherUI' => null,
         ];
         $credential = PublicKeyCredentialSource::createFromArray($credentialData);
         $adapter->expects($this->once())

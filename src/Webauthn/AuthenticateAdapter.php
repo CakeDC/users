@@ -19,7 +19,7 @@ use Webauthn\PublicKeyCredentialSource;
 class AuthenticateAdapter extends BaseAdapter
 {
     /**
-     * @return PublicKeyCredentialRequestOptions
+     * @return \Webauthn\PublicKeyCredentialRequestOptions
      */
     public function getOptions(): PublicKeyCredentialRequestOptions
     {
@@ -36,9 +36,9 @@ class AuthenticateAdapter extends BaseAdapter
             'Webauthn2fa.authenticateOptions',
             $options
         );
+
         return $options;
     }
-
 
     /**
      * Verify the registration response
@@ -53,8 +53,8 @@ class AuthenticateAdapter extends BaseAdapter
     }
 
     /**
-     * @param $options
-     * @return PublicKeyCredentialSource
+     * @param \Webauthn\PublicKeyCredentialRequestOptions $options request options
+     * @return \Webauthn\PublicKeyCredentialSource
      */
     protected function loadAndCheckAssertionResponse($options): PublicKeyCredentialSource
     {

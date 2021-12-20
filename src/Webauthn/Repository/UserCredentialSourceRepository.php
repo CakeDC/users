@@ -1,7 +1,7 @@
 <?php
+declare(strict_types=1);
 
 namespace CakeDC\Users\Webauthn\Repository;
-
 
 use Base64Url\Base64Url;
 use Cake\Datasource\EntityInterface;
@@ -13,17 +13,17 @@ use Webauthn\PublicKeyCredentialUserEntity;
 class UserCredentialSourceRepository implements PublicKeyCredentialSourceRepository
 {
     /**
-     * @var EntityInterface
+     * @var \Cake\Datasource\EntityInterface
      */
     private $user;
     /**
-     * @var UsersTable|null
+     * @var \CakeDC\Users\Model\Table\UsersTable|null
      */
     private $usersTable;
 
     /**
-     * @param EntityInterface $user
-     * @param UsersTable|null $usersTable
+     * @param \Cake\Datasource\EntityInterface $user The user.
+     * @param \CakeDC\Users\Model\Table\UsersTable|null $usersTable The table.
      */
     public function __construct(EntityInterface $user, ?UsersTable $usersTable = null)
     {
@@ -32,8 +32,8 @@ class UserCredentialSourceRepository implements PublicKeyCredentialSourceReposit
     }
 
     /**
-     * @param string $publicKeyCredentialId
-     * @return PublicKeyCredentialSource|null
+     * @param string $publicKeyCredentialId  Public key credential id
+     * @return \Webauthn\PublicKeyCredentialSource|null
      */
     public function findOneByCredentialId(string $publicKeyCredentialId): ?PublicKeyCredentialSource
     {
@@ -63,7 +63,7 @@ class UserCredentialSourceRepository implements PublicKeyCredentialSourceReposit
     }
 
     /**
-     * @param PublicKeyCredentialSource $publicKeyCredentialSource
+     * @param \Webauthn\PublicKeyCredentialSource $publicKeyCredentialSource Public key credential source
      */
     public function saveCredentialSource(PublicKeyCredentialSource $publicKeyCredentialSource): void
     {

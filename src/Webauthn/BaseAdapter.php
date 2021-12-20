@@ -1,9 +1,9 @@
 <?php
+declare(strict_types=1);
 
 namespace CakeDC\Users\Webauthn;
 
 use Cake\Core\Configure;
-use Cake\Datasource\EntityInterface;
 use Cake\Http\ServerRequest;
 use Cake\ORM\TableRegistry;
 use CakeDC\Users\Model\Table\UsersTable;
@@ -15,25 +15,25 @@ use Webauthn\Server;
 class BaseAdapter
 {
     /**
-     * @var ServerRequest
+     * @var \Cake\Http\ServerRequest
      */
     protected $request;
     /**
-     * @var UserCredentialSourceRepository
+     * @var \CakeDC\Users\Webauthn\Repository\UserCredentialSourceRepository
      */
     protected $repository;
     /**
-     * @var Server
+     * @var \Webauthn\Server
      */
     protected $server;
     /**
-     * @var EntityInterface|\CakeDC\Users\Model\Entity\User
+     * @var \Cake\Datasource\EntityInterface|\CakeDC\Users\Model\Entity\User
      */
     private $user;
 
     /**
-     * @param ServerRequest $request
-     * @param UsersTable|null $usersTable
+     * @param \Cake\Http\ServerRequest $request The request.
+     * @param \CakeDC\Users\Model\Table\UsersTable|null $usersTable The users table.
      */
     public function __construct(ServerRequest $request, ?UsersTable $usersTable = null)
     {
@@ -58,11 +58,10 @@ class BaseAdapter
             $rpEntity,
             $this->repository
         );
-
     }
 
     /**
-     * @return PublicKeyCredentialUserEntity
+     * @return \Webauthn\PublicKeyCredentialUserEntity
      */
     protected function getUserEntity(): PublicKeyCredentialUserEntity
     {

@@ -56,7 +56,6 @@ class Webauthn2faTraitTest extends BaseTraitTest
         Configure::write('Webauthn2fa.enabled', true);
         Configure::write('Webauthn2fa.appName', 'ACME Webauthn Server');
         Configure::write('Webauthn2fa.id', 'localhost');
-
     }
 
     /**
@@ -226,13 +225,13 @@ class Webauthn2faTraitTest extends BaseTraitTest
             'transports' => [],
             'attestationType' => 'none',
             'trustPath' => [
-                'type' => 'Webauthn\TrustPath\EmptyTrustPath'
+                'type' => 'Webauthn\TrustPath\EmptyTrustPath',
             ],
             'aaguid' => '00000000-0000-0000-0000-000000000000',
             'credentialPublicKey' => Base64Url::encode('000000000000000000000000000000000000-9999999999999999999999999999999999999999-XXXXXXXXXXXXX-YYYYYYYYYYY'),
             'userHandle' => Base64Url::encode($userId),
             'counter' => 191,
-            'otherUI' => null
+            'otherUI' => null,
         ];
         $credential = PublicKeyCredentialSource::createFromArray($credentialData);
         $adapter->expects($this->once())
@@ -300,7 +299,6 @@ class Webauthn2faTraitTest extends BaseTraitTest
         $this->expectErrorMessage('Testing error exception for webauthn2faRegister');
         $this->Trait->webauthn2faRegister();
     }
-
 
     /**
      * Test webauthn2faAuthenticateOptions
@@ -370,13 +368,13 @@ class Webauthn2faTraitTest extends BaseTraitTest
             'transports' => [],
             'attestationType' => 'none',
             'trustPath' => [
-                'type' => 'Webauthn\TrustPath\EmptyTrustPath'
+                'type' => 'Webauthn\TrustPath\EmptyTrustPath',
             ],
             'aaguid' => '00000000-0000-0000-0000-000000000000',
             'credentialPublicKey' => Base64Url::encode('000000000000000000000000000000000000-9999999999999999999999999999999999999999-XXXXXXXXXXXXX-YYYYYYYYYYY'),
             'userHandle' => Base64Url::encode($userId),
             'counter' => 191,
-            'otherUI' => null
+            'otherUI' => null,
         ];
         $credential = PublicKeyCredentialSource::createFromArray($credentialData);
         $adapter->expects($this->once())
