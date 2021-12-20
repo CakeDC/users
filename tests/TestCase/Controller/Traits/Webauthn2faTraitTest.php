@@ -18,21 +18,17 @@ use Cake\Core\Configure;
 use Cake\Http\ServerRequest;
 use Cake\Http\ServerRequestFactory;
 use Cake\ORM\TableRegistry;
-use CakeDC\Auth\Authentication\DefaultU2fAuthenticationChecker;
 use CakeDC\Users\Model\Entity\User;
 use CakeDC\Users\Webauthn\AuthenticateAdapter;
 use CakeDC\Users\Webauthn\RegisterAdapter;
-use u2flib_server\RegisterRequest;
-use u2flib_server\Registration;
-use u2flib_server\U2F;
 use Webauthn\PublicKeyCredentialSource;
 
 /**
- * Class U2fTraitTest
+ * Class Webauthn2faTraitTest
  *
  * @package App\Test\TestCase\Controller\Traits
  */
-class U2fTraitTest extends BaseTraitTest
+class Webauthn2faTraitTest extends BaseTraitTest
 {
     /**
      * Fixtures
