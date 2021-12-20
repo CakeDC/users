@@ -25,12 +25,12 @@ class UserCredentialSourceRepositoryTest extends TestCase
     {
         $UsersTable = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
         $user = $UsersTable->get('00000000-0000-0000-0000-000000000001');
-        $repository = new UserCredentialSourceRepository($user);
+        $repository = new UserCredentialSourceRepository($user, $UsersTable);
         $credential = $repository->findOneByCredentialId('12b37486-9299-4331-ac33-85b2d985b6fe');
         $this->assertInstanceOf(PublicKeyCredentialSource::class, $credential);
 
         //Not found id
-        $repository = new UserCredentialSourceRepository($user);
+        $repository = new UserCredentialSourceRepository($user, $UsersTable);
         $credential = $repository->findOneByCredentialId('some-testing-value');
         $this->assertNull($credential);
     }
@@ -50,7 +50,7 @@ class UserCredentialSourceRepositoryTest extends TestCase
             $userId, // ID
             'John Doe'                              // Display name
         );
-        $repository = new UserCredentialSourceRepository($user);
+        $repository = new UserCredentialSourceRepository($user, $UsersTable);
         $credentials = $repository->findAllForUserEntity($userEntity);
         $this->assertCount(1, $credentials);
         $this->assertInstanceOf(PublicKeyCredentialSource::class, $credentials[0]);
@@ -61,7 +61,7 @@ class UserCredentialSourceRepositoryTest extends TestCase
             '00000000-0000-0000-0000-000000000004', // ID
             'John Doe'                              // Display name
         );
-        $repository = new UserCredentialSourceRepository($user);
+        $repository = new UserCredentialSourceRepository($user, $UsersTable);
         $credentials = $repository->findAllForUserEntity($userEntityInvalid);
         $this->assertEmpty($credentials);
     }
@@ -91,16 +91,29 @@ class UserCredentialSourceRepositoryTest extends TestCase
         ];
         $UsersTable = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
         $user = $UsersTable->get($userId);
-
+        $firstKey = key($user->additional_data['webauthn_credentials']);
         $userEntity = new PublicKeyCredentialUserEntity(
             'john.doe',                             // Username
             $userId, // ID
             'John Doe'                              // Display name
         );
         $publicKey = PublicKeyCredentialSource::createFromArray($credentialData);
-        $repository = new UserCredentialSourceRepository($user);
+        $repository = new UserCredentialSourceRepository($user, $UsersTable);
         $repository->saveCredentialSource($publicKey);
         $credentials = $repository->findAllForUserEntity($userEntity);
         $this->assertCount(2, $credentials);
+        $userAfter = $UsersTable->get($user->id);
+        $this->assertArrayHasKey(
+            '12b37486-9299-4331-ac33-85b2d985b6fe',
+            $userAfter->additional_data['webauthn_credentials']
+        );
+        $this->assertArrayHasKey(
+            $firstKey,
+            $userAfter->additional_data['webauthn_credentials']
+        );
+        $this->assertCount(
+            2,
+            $userAfter->additional_data['webauthn_credentials']
+        );
     }
 }

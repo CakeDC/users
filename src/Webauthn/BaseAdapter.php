@@ -5,11 +5,10 @@ namespace CakeDC\Users\Webauthn;
 use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
 use Cake\Http\ServerRequest;
+use Cake\ORM\TableRegistry;
+use CakeDC\Users\Model\Table\UsersTable;
 use CakeDC\Users\Webauthn\Repository\UserCredentialSourceRepository;
-use Webauthn\PublicKeyCredentialCreationOptions;
-use Webauthn\PublicKeyCredentialRequestOptions;
 use Webauthn\PublicKeyCredentialRpEntity;
-use Webauthn\PublicKeyCredentialSource;
 use Webauthn\PublicKeyCredentialUserEntity;
 use Webauthn\Server;
 
@@ -27,24 +26,38 @@ class BaseAdapter
      * @var Server
      */
     protected $server;
+    /**
+     * @var EntityInterface|\CakeDC\Users\Model\Entity\User
+     */
+    private $user;
 
     /**
      * @param ServerRequest $request
+     * @param UsersTable|null $usersTable
      */
-    public function __construct(ServerRequest $request)
+    public function __construct(ServerRequest $request, ?UsersTable $usersTable = null)
     {
         $this->request = $request;
         $rpEntity = new PublicKeyCredentialRpEntity(
             Configure::read('Webauthn2fa.appName'), // The application name
             Configure::read('Webauthn2fa.id')
         );
+        /**
+         * @var \Cake\ORM\Entity $userSession
+         */
+        $userSession = $request->getSession()->read('Webauthn2fa.User');
+        $usersTable = $usersTable ?? TableRegistry::getTableLocator()
+            ->get($userSession->getSource());
+        $this->user = $usersTable->get($userSession->id);
         $this->repository = new UserCredentialSourceRepository(
-            $request->getSession()->read('Webauthn2fa.User')
+            $this->user,
+            $usersTable
         );
         $this->server = new Server(
             $rpEntity,
             $this->repository
         );
+
     }
 
     /**
@@ -66,6 +79,6 @@ class BaseAdapter
      */
     public function getUser()
     {
-        return $this->request->getSession()->read('Webauthn2fa.User');
+        return $this->user;
     }
 }

@@ -32,7 +32,7 @@ class RegisterAdapterTest extends TestCase
         $user = $UsersTable->get($userId);
         $request = ServerRequestFactory::fromGlobals();
         $request->getSession()->write('Webauthn2fa.User', $user);
-        $adapter = new RegisterAdapter($request);
+        $adapter = new RegisterAdapter($request, $UsersTable);
         $options = $adapter->getOptions();
         $this->assertInstanceOf(PublicKeyCredentialCreationOptions::class, $options);
         $this->assertSame($options, $request->getSession()->read('Webauthn2fa.registerOptions'));
