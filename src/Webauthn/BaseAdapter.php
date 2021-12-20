@@ -53,6 +53,7 @@ class BaseAdapter
             $this->user,
             $usersTable
         );
+
         $this->server = new Server(
             $rpEntity,
             $this->repository
@@ -65,7 +66,7 @@ class BaseAdapter
      */
     protected function getUserEntity(): PublicKeyCredentialUserEntity
     {
-        $user = $this->request->getSession()->read('Webauthn2fa.User');
+        $user = $this->getUser();
 
         return new PublicKeyCredentialUserEntity(
             $user->webauthn_username ?? $user->username,
@@ -80,5 +81,15 @@ class BaseAdapter
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasCredential(): bool
+    {
+        return (bool)$this->repository->findAllForUserEntity(
+            $this->getUserEntity()
+        );
     }
 }

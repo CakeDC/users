@@ -33,6 +33,7 @@ class RegisterAdapterTest extends TestCase
         $request = ServerRequestFactory::fromGlobals();
         $request->getSession()->write('Webauthn2fa.User', $user);
         $adapter = new RegisterAdapter($request, $UsersTable);
+        $this->assertFalse($adapter->hasCredential());
         $options = $adapter->getOptions();
         $this->assertInstanceOf(PublicKeyCredentialCreationOptions::class, $options);
         $this->assertSame($options, $request->getSession()->read('Webauthn2fa.registerOptions'));
@@ -78,7 +79,7 @@ class RegisterAdapterTest extends TestCase
         $key = key($credentialsList);
         $this->assertIsString($key);
         $this->assertTrue(isset($credentialsList[$key]['publicKeyCredentialId']));
-
+        $this->assertTrue($adapter->hasCredential());
         //Invalid challenge without mock
         $adapter = new RegisterAdapter($request);
         $this->expectException(\Assert\InvalidArgumentException::class);
