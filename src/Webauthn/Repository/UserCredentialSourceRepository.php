@@ -5,6 +5,7 @@ namespace CakeDC\Users\Webauthn\Repository;
 
 use Base64Url\Base64Url;
 use Cake\Datasource\EntityInterface;
+use CakeDC\Users\Model\Table\UsersTable;
 use Webauthn\PublicKeyCredentialSource;
 use Webauthn\PublicKeyCredentialSourceRepository;
 use Webauthn\PublicKeyCredentialUserEntity;
@@ -15,13 +16,19 @@ class UserCredentialSourceRepository implements PublicKeyCredentialSourceReposit
      * @var EntityInterface
      */
     private $user;
+    /**
+     * @var UsersTable|null
+     */
+    private $usersTable;
 
     /**
      * @param EntityInterface $user
+     * @param UsersTable|null $usersTable
      */
-    public function __construct(EntityInterface $user)
+    public function __construct(EntityInterface $user, ?UsersTable $usersTable = null)
     {
         $this->user = $user;
+        $this->usersTable = $usersTable;
     }
 
     /**
@@ -65,5 +72,6 @@ class UserCredentialSourceRepository implements PublicKeyCredentialSourceReposit
         $credentials[$id] = json_decode(json_encode($publicKeyCredentialSource), true);
         $this->user['additional_data'] = $this->user['additional_data'] ?? [];
         $this->user['additional_data']['webauthn_credentials'] = $credentials;
+        $this->usersTable->saveOrFail($this->user);
     }
 }
