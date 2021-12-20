@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace CakeDC\Users\Controller\Traits;
 
 use Cake\Core\Configure;
+use Cake\Http\Exception\BadRequestException;
 use Cake\Log\Log;
 use Cake\Routing\Router;
 use CakeDC\Auth\Authenticator\TwoFactorAuthenticator;
@@ -43,8 +44,14 @@ trait Webauthn2faTrait
     public function webauthn2faRegisterOptions()
     {
         $adapter = $this->getWebauthn2faRegisterAdapter();
+        if (!$adapter->hasCredential()) {
+            return $this->getResponse()
+                ->withStringBody(json_encode($adapter->getOptions()));
+        }
 
-        return $this->getResponse()->withStringBody(json_encode($adapter->getOptions()));
+        throw new BadRequestException(
+            __d('cake_d_c/users', 'User already has configured webauthn2fa')
+        );
     }
 
     /**
@@ -56,9 +63,15 @@ trait Webauthn2faTrait
     public function webauthn2faRegister(): \Cake\Http\Response
     {
         try {
-            $this->getWebauthn2faRegisterAdapter()->verifyResponse();
+            $adapter = $this->getWebauthn2faRegisterAdapter();
+            if (!$adapter->hasCredential()) {
+                $adapter->verifyResponse();
 
-            return $this->getResponse()->withStringBody(json_encode(['success' => true]));
+                return $this->getResponse()->withStringBody(json_encode(['success' => true]));
+            }
+            throw new BadRequestException(
+                __d('cake_d_c/users', 'User already has configured webauthn2fa')
+            );
         } catch (\Throwable $e) {
             $user = $this->request->getSession()->read('Webauthn2fa.User');
             Log::debug(__('Register error with webauthn for user id: {0}', $user['id'] ?? 'empty'));

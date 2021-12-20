@@ -15,6 +15,7 @@ namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
 use Base64Url\Base64Url;
 use Cake\Core\Configure;
+use Cake\Http\Exception\BadRequestException;
 use Cake\Http\ServerRequest;
 use Cake\Http\ServerRequestFactory;
 use Cake\ORM\TableRegistry;
@@ -165,6 +166,34 @@ class Webauthn2faTraitTest extends BaseTraitTest
     }
 
     /**
+     * Test webauthn2faRegisterOptions method when DON'T require register
+     *
+     * @return void
+     */
+    public function testWebauthn2faRegisterOptionsDontRequireRegister()
+    {
+        $request = $this->getMockBuilder('Cake\Http\ServerRequest')
+            ->setMethods(['getSession', 'is'])
+            ->getMock();
+        $this->Trait->setRequest($request);
+        $request->expects($this->any())
+            ->method('is')
+            ->with(
+                $this->equalTo('ssl')
+            )->will($this->returnValue(true));
+
+        $table = TableRegistry::getTableLocator()
+            ->get('CakeDC/Users.Users');
+        $user = $table->get('00000000-0000-0000-0000-000000000001');
+        $this->_mockSession([
+            'Webauthn2fa.User' => $user,
+        ]);
+        $this->expectException(BadRequestException::class);
+        $this->expectExceptionMessage('User already has configured webauthn2fa');
+        $this->Trait->webauthn2faRegisterOptions();
+    }
+
+    /**
      * Test webauthn2faRegisterOptions method
      *
      * @return void
@@ -197,6 +226,34 @@ class Webauthn2faTraitTest extends BaseTraitTest
             $user,
             $this->Trait->getRequest()->getSession()->read('Webauthn2fa.User')
         );
+    }
+
+    /**
+     * Test webauthn2faRegister method when DON'T require register
+     *
+     * @return void
+     */
+    public function testWebauthn2faRegisterDontRequireRegister()
+    {
+        $request = $this->getMockBuilder('Cake\Http\ServerRequest')
+            ->setMethods(['getSession', 'is'])
+            ->getMock();
+        $this->Trait->setRequest($request);
+        $request->expects($this->any())
+            ->method('is')
+            ->with(
+                $this->equalTo('ssl')
+            )->will($this->returnValue(true));
+
+        $table = TableRegistry::getTableLocator()
+            ->get('CakeDC/Users.Users');
+        $user = $table->get('00000000-0000-0000-0000-000000000001');
+        $this->_mockSession([
+            'Webauthn2fa.User' => $user,
+        ]);
+        $this->expectException(BadRequestException::class);
+        $this->expectExceptionMessage('User already has configured webauthn2fa');
+        $this->Trait->webauthn2faRegister();
     }
 
     /**
