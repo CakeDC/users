@@ -79,6 +79,11 @@ return [
                 'u2fRegisterFinish',
                 'u2fAuthenticate',
                 'u2fAuthenticateFinish',
+                'webauthn2fa',
+                'webauthn2faRegister',
+                'webauthn2faRegisterOptions',
+                'webauthn2faAuthenticate',
+                'webauthn2faAuthenticateOptions',
             ],
             'bypassAuth' => true,
         ],
@@ -134,6 +139,6 @@ return [
             'controller' => '*',
             'action' => '*',
             'bypassAuth' => true,
-        ],       
+        ],
     ]
 ];

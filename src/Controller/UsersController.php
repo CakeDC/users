@@ -22,6 +22,7 @@ use CakeDC\Users\Controller\Traits\RegisterTrait;
 use CakeDC\Users\Controller\Traits\SimpleCrudTrait;
 use CakeDC\Users\Controller\Traits\SocialTrait;
 use CakeDC\Users\Controller\Traits\U2fTrait;
+use CakeDC\Users\Controller\Traits\Webauthn2faTrait;
 
 /**
  * Users Controller
@@ -40,6 +41,7 @@ class UsersController extends AppController
     use SimpleCrudTrait;
     use SocialTrait;
     use U2fTrait;
+    use Webauthn2faTrait;
 
     /**
      * Initialize
@@ -52,7 +54,17 @@ class UsersController extends AppController
         if ($this->components()->has('Security')) {
             $this->Security->setConfig(
                 'unlockedActions',
-                ['login', 'u2fRegister', 'u2fRegisterFinish', 'u2fAuthenticate', 'u2fAuthenticateFinish']
+                [
+                    'login',
+                    'u2fRegister',
+                    'u2fRegisterFinish',
+                    'u2fAuthenticate',
+                    'u2fAuthenticateFinish',
+                    'webauthn2faRegister',
+                    'webauthn2faRegisterOptions',
+                    'webauthn2faAuthenticate',
+                    'webauthn2faAuthenticateOptions',
+                ]
             );
         }
     }

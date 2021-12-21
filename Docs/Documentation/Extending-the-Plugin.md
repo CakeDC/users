@@ -123,7 +123,7 @@ class MyUsersController extends AppController
 {
     use LoginTrait;
     use RegisterTrait;
-    
+
     /**
      * Initialize
      *
@@ -155,6 +155,9 @@ needed to setup correct url/route for authentication.
         'controller' => 'MyUsers',
         // ...
 ```
+
+**You also need to update permissions rules in your file config/permissions.php
+to match the new controller.**
 
 Note you'll need to **copy the Plugin templates** you need into your project templates/MyUsers/[action].php
 
@@ -212,7 +215,7 @@ https://book.cakephp.org/4/en/plugins.html#overriding-plugin-templates-from-insi
 Updating the Emails
 -------------------
 
-Extend the `\CakeDC\Users\Mailer\UsersMailer` class and override the email configuration to change the way the 
+Extend the `\CakeDC\Users\Mailer\UsersMailer` class and override the email configuration to change the way the
 emails are sent by the Plugin. We currently have:
 * validation, sent with a link to validate new users registered
 * resetPassword, sent with a link to access the reset password feature
@@ -236,8 +239,11 @@ class MyUsersMailer extends UsersMailer
     }
 }
 ```
-* Configure the Plugin to use this new mailer class in bootstrap or users.php
-`Configure::write('Users.Email.mailerClass', \App\Mailer\MyUsersMailer::class);`
+* Configure the plugin to use this new mailer class, add this in your config/users.php file:
+
+```php
+  'Users.Email.mailerClass' => \App\Mailer\MyUsersMailer::class,
+```
 
 * Create the file `templates/email/text/custom_template_in_app_namespace.php`
 with your custom contents. Note you can also prepare an html version of the file,

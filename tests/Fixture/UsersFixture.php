@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Test\Fixture;
 
+use Base64Url\Base64Url;
 use Cake\TestSuite\Fixture\TestFixture;
 
 /**
@@ -88,6 +89,22 @@ class UsersFixture extends TestFixture
                         'publicKey' => 'afdoaj0-23u423-ad ujsf-as8-0-afsd',
                         'certificate' => '23jdsfoasdj0f9sa082304823423',
                         'counter' => 1,
+                    ],
+                    'webauthn_credentials' => [
+                        'MTJiMzc0ODYtOTI5OS00MzMxLWFjMzMtODViMmQ5ODViNmZl' => [
+                            'publicKeyCredentialId' => '12b37486-9299-4331-ac33-85b2d985b6fe',
+                            'type' => 'public-key',
+                            'transports' => [],
+                            'attestationType' => 'none',
+                            'trustPath' => [
+                                'type' => 'Webauthn\TrustPath\EmptyTrustPath',
+                            ],
+                            'aaguid' => '00000000-0000-0000-0000-000000000000',
+                            'credentialPublicKey' => Base64Url::encode('000000000000000000000000000000000000-9999999999999999999999999999999999999999-XXXXXXXXXXXXX-ZZZZZZZZZZZ'),
+                            'userHandle' => Base64Url::encode('00000000-0000-0000-0000-000000000001'),
+                            'counter' => 190,
+                            'otherUI' => null,
+                        ],
                     ],
                 ]),
             ],
