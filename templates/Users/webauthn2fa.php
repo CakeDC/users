@@ -1,7 +1,8 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var object $registerRequest
+ * @var bool $isRegister
+ * @var string $username
  */
 $this->Html->script('CakeDC/Users.webauthn.js', ['block' => true]);
 $this->assign('title', __('Two-factor authentication'));
