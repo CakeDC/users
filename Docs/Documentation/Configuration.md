@@ -6,12 +6,11 @@ Overriding the default configuration
 
 For easier configuration, you can specify an array of config files to override the default plugin keys this way:
 
-config/bootstrap.php
+Make sure you loaded the plugin and is using a custom config/users.php file at Application::bootstrap
 ```
 // The following configuration setting must be set before loading the Users plugin
+$this->addPlugin(\CakeDC\Users\Plugin::class);
 Configure::write('Users.config', ['users']);
-Plugin::load('CakeDC/Users', ['routes' => true, 'bootstrap' => true]);
-Configure::write('Users.Social.login', true); //to enable social login
 ```
 
 Configuration for social login
@@ -28,13 +27,14 @@ $ composer require league/oauth1-client:@stable
 
 NOTE: twitter uses league/oauth1-client package
 
-config/bootstrap.php
-```
-Configure::write('OAuth.providers.facebook.options.clientId', 'YOUR APP ID');
-Configure::write('OAuth.providers.facebook.options.clientSecret', 'YOUR APP SECRET');
+And update your config/users.php file:
 
-Configure::write('OAuth.providers.twitter.options.clientId', 'YOUR APP ID');
-Configure::write('OAuth.providers.twitter.options.clientSecret', 'YOUR APP SECRET');
+```php
+'Users.Social.login' => true,
+'OAuth.providers.facebook.options.clientId' => 'YOUR APP ID',
+'OAuth.providers.facebook.options.clientSecret' => 'YOUR APP SECRET',
+'OAuth.providers.twitter.options.clientId' => 'YOUR APP ID',
+'OAuth.providers.twitter.options.clientSecret' => 'YOUR APP SECRET',
 ```
 
 Or use the config override option when loading the plugin (see above)
@@ -44,15 +44,18 @@ Additionally you will see you can configure two more keys for each provider:
 * linkSocialUri (default: /link-social/**provider**),
 * callbackLinkSocialUri(default: /callback-link-social/**provider**)
 
-Those keys are needed to link an existing user account to a third-party account. **Remember to add the callback to your thrid-party app** 
+Those keys are needed to link an existing user account to a third-party account. **Remember to add the callback to your thrid-party app**
 
 Configuration for reCaptcha
 ---------------------
-```
-Configure::write('Users.reCaptcha.key', 'YOUR RECAPTCHA KEY');
-Configure::write('Users.reCaptcha.secret', 'YOUR RECAPTCHA SECRET');
-Configure::write('Users.reCaptcha.registration', true); //enable on registration
-Configure::write('Users.reCaptcha.login', true); //enable on login
+To enable reCaptcha you need to register your site at google reCaptcha console
+and add this to your config/users.php file:
+
+```php
+'Users.reCaptcha.key' => 'YOUR RECAPTCHA KEY',
+'Users.reCaptcha.secret' => 'YOUR RECAPTCHA SECRET',
+'Users.reCaptcha.registration' => true, //enable on registration
+'Users.reCaptcha.login' => true, //enable on login
 ```
 
 
@@ -70,10 +73,11 @@ and [cakephp/authorization](https://github.com/cakephp/authorization) plugins we
 into their documentation for more information.
 
 Most authentication/authorization configuration is defined at 'Auth' key, for example
-if you don't want the plugin to autoload the authorization service, you could do:
+if you don't want the plugin to autoload the authorization service, you could add this
+to your config/users.php file:
 
 ```
-Configure::write('Auth.Authorization.enable', false)
+'Auth.Authorization.enable' => false,
 ```
 
 Interesting Users options and defaults
@@ -163,25 +167,17 @@ To learn more about it please check the configurations for [Authentication](Auth
 
 You need to configure 2 things (version 9.0.4):
 
-* Change the Password identifier fields and the Authenticator for Forms configuration to let it use the email instead of the username for user identify. Add this to your Application class, right before CakeDC/Users Plugin is loaded.
+* Change the Password identifier fields and the Authenticator for Forms
+configuration to let it use the email instead of the username for
+user identify. Add this to your config/users.php:
 
 ```php
-        // Load more plugins here
-        $identifiers = Configure::read('Auth.Identifiers');
-        $identifiers['Password']['fields']['username'] = 'email';
-        Configure::write('Auth.Identifiers', $identifiers);
-
-        $authenticators = Configure::read('Auth.Authenticators');
-        $authenticators['Form']['fields']['username'] = 'email';
-        Configure::write('Auth.Authenticators', $authenticators);
-
-        //Configure::write('Users.config', ['users', 'permissions']);
-        
-        $this->addPlugin(\CakeDC\Users\Plugin::class);
+'Auth.Identifiers.Password.fields.username' => 'email',
+'Auth.Authenticators.Form.fields.username' => 'email',
 ```
 
-* Override the login.php template to change the Form->control to "email". 
-Add (or copy from the [/templates/Users/login.php](../../templates/Users/login.php)) the file login.php to path /templates/plugin/CakeDC/Users/Users/login.php 
+* Override the login.php template to change the Form->control to "email".
+Add (or copy from the [/templates/Users/login.php](../../templates/Users/login.php)) the file login.php to path /templates/plugin/CakeDC/Users/Users/login.php
 and ensure it has the following content
 
 ```php

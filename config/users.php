@@ -140,6 +140,12 @@ $config = [
         'enabled' => false,
         'checker' => \CakeDC\Auth\Authentication\DefaultU2fAuthenticationChecker::class,
     ],
+    'Webauthn2fa' => [
+        'enabled' => false,
+        'appName' => null,//App must set a valid name here
+        'id' => null,//default value is the current domain
+        'checker' => \CakeDC\Auth\Authentication\DefaultWebauthn2fAuthenticationChecker::class,
+    ],
     // default configuration used to auto-load the Auth Component, override to change the way Auth works
     'Auth' => [
         'Authentication' => [

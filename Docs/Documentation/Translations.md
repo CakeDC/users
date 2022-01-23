@@ -13,6 +13,6 @@ The Plugin is translated into several languages:
 * Turkish (tr_TR) by @sayinserdar
 * Ukrainian (uk) by @yarkm13
 
-**Note:** To overwrite the plugin translations, create a file inside your project 'src/Locale/{$lang}/' folder, with the name 'Users.po' and add the strings with the new translations.
+**Note:** To overwrite the plugin translations, create a file inside your project 'resources/locales//{$lang}/' folder, with the name 'Users.po' and add the strings with the new translations.
 
 Remember to clean the translations cache!
