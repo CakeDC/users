@@ -77,7 +77,7 @@ class LoginTraitIntegrationTest extends TestCase
         $this->assertResponseContains('<form method="post" accept-charset="utf-8" action="/login">');
         $this->assertResponseContains('<legend>Please enter your username and password</legend>');
         $this->assertResponseContains('<input type="text" name="username" required="required" id="username" aria-required="true"/>');
-        $this->assertResponseContains('input type="password" name="password" required="required" id="password" aria-required="true"/>');
+        $this->assertResponseContains('<input type="password" name="password" required="required" id="password" aria-required="true"/>');
         $this->assertResponseContains('<input type="checkbox" name="remember_me" value="1" checked="checked" id="remember-me">');
         $this->assertResponseContains('<button type="submit">Login</button>');
         $this->assertResponseContains('<a href="/register">Register</a>');
@@ -103,7 +103,7 @@ class LoginTraitIntegrationTest extends TestCase
         $this->assertResponseContains('<form method="post" accept-charset="utf-8" action="/login">');
         $this->assertResponseContains('<legend>Please enter your username and password</legend>');
         $this->assertResponseContains('<input type="text" name="username" required="required" id="username" aria-required="true"/>');
-        $this->assertResponseContains('input type="password" name="password" required="required" id="password" aria-required="true"/>');
+        $this->assertResponseContains('<input type="password" name="password" required="required" id="password" aria-required="true"/>');
         $this->assertResponseContains('<input type="checkbox" name="remember_me" value="1" checked="checked" id="remember-me">');
         $this->assertResponseContains('<button type="submit">Login</button>');
         $this->assertResponseContains('<a href="/register">Register</a>');
