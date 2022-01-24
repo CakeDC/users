@@ -104,18 +104,10 @@ class Webauthn2faTraitTest extends BaseTraitTest
         $this->_mockSession([
             'Webauthn2fa.User' => $user,
         ]);
-        $this->Trait->expects($this->at(1))
+        $this->Trait
+            ->expects($this->exactly(2))
             ->method('set')
-            ->with(
-                $this->equalTo('isRegister'),
-                $this->equalTo(true)
-            );
-        $this->Trait->expects($this->at(2))
-            ->method('set')
-            ->with(
-                $this->equalTo('username'),
-                $this->equalTo('user-2')
-            );
+            ->withConsecutive(['isRegister', true], ['username', 'user-2']);
         $this->Trait->webauthn2fa();
         $this->assertSame(
             $user,
@@ -146,18 +138,10 @@ class Webauthn2faTraitTest extends BaseTraitTest
         $this->_mockSession([
             'Webauthn2fa.User' => $user,
         ]);
-        $this->Trait->expects($this->at(1))
+        $this->Trait
+            ->expects($this->exactly(2))
             ->method('set')
-            ->with(
-                $this->equalTo('isRegister'),
-                $this->equalTo(false)
-            );
-        $this->Trait->expects($this->at(2))
-            ->method('set')
-            ->with(
-                $this->equalTo('username'),
-                $this->equalTo('user-1')
-            );
+            ->withConsecutive(['isRegister', false], ['username', 'user-1']);
         $this->Trait->webauthn2fa();
         $this->assertSame(
             $user,

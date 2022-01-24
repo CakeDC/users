@@ -74,6 +74,8 @@ class UserCredentialSourceRepositoryTest extends TestCase
      */
     public function testSaveCredentialSource()
     {
+        \Cake\Database\TypeFactory::map('json', \Cake\Database\Type\JsonType::class);
+
         $publicKeyCredentialId = '12b37486-9299-4331-ac33-85b2d985b6fe';
         $userId = '00000000-0000-0000-0000-000000000001';
         $credentialData = [
