@@ -18,7 +18,7 @@ use Cake\Event\Event;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 use Cake\Http\ServerRequestFactory;
-use Cake\I18n\Time;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\TableRegistry;
 use League\OAuth2\Client\Provider\FacebookUser;
 use Zend\Diactoros\Uri;
@@ -274,7 +274,7 @@ class LinkSocialTraitTest extends BaseTraitTest
 
         $actual = $Table->SocialAccounts->find('all')->where(['reference' => '9999911112255'])->firstOrFail();
 
-        $expiresTime = new Time();
+        $expiresTime = new FrozenTime();
         $tokenExpires = $expiresTime->setTimestamp($Token->getExpires())->format('Y-m-d H:i:s');
 
         $expected = [

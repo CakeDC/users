@@ -115,7 +115,8 @@ class RegisterBehaviorTest extends TestCase
      */
     public function testValidateRegisterValidateEmailAndTos()
     {
-        Router::connect('/users/validate-email/*', [
+        $builder = Router::createRouteBuilder('/');
+        $builder->connect('/users/validate-email/*', [
              'plugin' => 'CakeDC/Users',
              'controller' => 'Users',
              'action' => 'validateEmail',
@@ -143,7 +144,8 @@ class RegisterBehaviorTest extends TestCase
      */
     public function testValidateRegisterValidatorOption()
     {
-        Router::connect('/users/validate-email/*', [
+        $builder = Router::createRouteBuilder('/');
+        $builder->connect('/users/validate-email/*', [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'validateEmail',
@@ -213,7 +215,8 @@ class RegisterBehaviorTest extends TestCase
      */
     public function testValidateRegisterNoTosRequired()
     {
-        Router::connect('/users/validate-email/*', [
+        $builder = Router::createRouteBuilder('/');
+        $builder->connect('/users/validate-email/*', [
              'plugin' => 'CakeDC/Users',
              'controller' => 'Users',
              'action' => 'validateEmail',

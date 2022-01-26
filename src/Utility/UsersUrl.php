@@ -74,7 +74,7 @@ class UsersUrl
             $prefix = $parts[0];
         }
 
-        return compact('prefix', 'plugin', 'controller', 'action');
+        return ['prefix' => $prefix, 'plugin' => $plugin, 'controller' => $controller, 'action' => $action];
     }
 
     /**
@@ -124,6 +124,7 @@ class UsersUrl
             'Users.Profile.route' => static::actionUrl('profile'),
             'OneTimePasswordAuthenticator.verifyAction' => static::actionUrl('verify'),
             'U2f.startAction' => static::actionUrl('u2f'),
+            'Webauthn2fa.startAction' => static::actionUrl('webauthn2fa'),
             'Auth.AuthenticationComponent.loginAction' => $loginAction,
             'Auth.AuthenticationComponent.logoutRedirect' => $loginAction,
             'Auth.Authenticators.Form.loginUrl' => $loginAction,

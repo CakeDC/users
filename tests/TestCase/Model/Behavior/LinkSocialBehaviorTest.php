@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Test\TestCase\Model\Behavior;
 
-use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use CakeDC\Users\Model\Behavior\LinkSocialBehavior;
+use DateTime;
 
 /**
  * App\Model\Behavior\LinkSocialBehavior Test Case
@@ -101,7 +101,7 @@ class LinkSocialBehaviorTest extends TestCase
      */
     public function providerFacebookLinkSocialAccount()
     {
-        $expiresTime = new Time();
+        $expiresTime = new DateTime();
         $tokenExpires = $expiresTime->setTimestamp(1458423682)->format('Y-m-d H:i:s');
 
         return [
@@ -195,7 +195,7 @@ class LinkSocialBehaviorTest extends TestCase
      */
     public function providerFacebookLinkSocialAccountErrorSaving()
     {
-        $expiresTime = new Time();
+        $expiresTime = new DateTime();
         $tokenExpires = $expiresTime->setTimestamp(1458423682)->format('Y-m-d H:i:s');
 
         return [
@@ -303,7 +303,7 @@ class LinkSocialBehaviorTest extends TestCase
      */
     public function providerFacebookLinkSocialAccountAccountExists()
     {
-        $expiresTime = new Time();
+        $expiresTime = new DateTime();
         $tokenExpires = $expiresTime->setTimestamp(1458423682)->format('Y-m-d H:i:s');
 
         return [

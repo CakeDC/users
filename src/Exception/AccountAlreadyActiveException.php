@@ -13,9 +13,7 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Exception;
 
-use Cake\Core\Exception\Exception;
-
-class AccountAlreadyActiveException extends Exception
+class AccountAlreadyActiveException extends \Cake\Core\Exception\CakeException
 {
     /**
      * AccountAlreadyActiveException constructor.

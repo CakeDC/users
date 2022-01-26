@@ -13,9 +13,7 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Exception;
 
-use Cake\Core\Exception\Exception;
-
-class UserNotActiveException extends Exception
+class UserNotActiveException extends \Cake\Core\Exception\CakeException
 {
     /**
      * UserNotActiveException constructor.

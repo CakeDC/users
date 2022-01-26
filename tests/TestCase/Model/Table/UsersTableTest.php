@@ -108,7 +108,8 @@ class UsersTableTest extends TestCase
      */
     public function testValidateRegisterValidateEmail()
     {
-        Router::connect('/users/validate-email/*', [
+        $builder = Router::createRouteBuilder('/');
+        $builder->connect('/users/validate-email/*', [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'validateEmail',
@@ -152,7 +153,8 @@ class UsersTableTest extends TestCase
      */
     public function testValidateRegisterNoTosRequired()
     {
-        Router::connect('/users/validate-email/*', [
+        $builder = Router::createRouteBuilder('/');
+        $builder->connect('/users/validate-email/*', [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'validateEmail',

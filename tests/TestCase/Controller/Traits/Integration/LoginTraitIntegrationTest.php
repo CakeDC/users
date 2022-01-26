@@ -76,8 +76,8 @@ class LoginTraitIntegrationTest extends TestCase
         $this->assertResponseNotContains('Username or password is incorrect');
         $this->assertResponseContains('<form method="post" accept-charset="utf-8" action="/login">');
         $this->assertResponseContains('<legend>Please enter your username and password</legend>');
-        $this->assertResponseContains('<input type="text" name="username" required="required" id="username"/>');
-        $this->assertResponseContains('<input type="password" name="password" required="required" id="password"/>');
+        $this->assertResponseContains('<input type="text" name="username" required="required" id="username" aria-required="true"/>');
+        $this->assertResponseContains('<input type="password" name="password" required="required" id="password" aria-required="true"/>');
         $this->assertResponseContains('<input type="checkbox" name="remember_me" value="1" checked="checked" id="remember-me">');
         $this->assertResponseContains('<button type="submit">Login</button>');
         $this->assertResponseContains('<a href="/register">Register</a>');
@@ -102,8 +102,8 @@ class LoginTraitIntegrationTest extends TestCase
         $this->assertResponseNotContains('Username or password is incorrect');
         $this->assertResponseContains('<form method="post" accept-charset="utf-8" action="/login">');
         $this->assertResponseContains('<legend>Please enter your username and password</legend>');
-        $this->assertResponseContains('<input type="text" name="username" required="required" id="username"/>');
-        $this->assertResponseContains('<input type="password" name="password" required="required" id="password"/>');
+        $this->assertResponseContains('<input type="text" name="username" required="required" id="username" aria-required="true"/>');
+        $this->assertResponseContains('<input type="password" name="password" required="required" id="password" aria-required="true"/>');
         $this->assertResponseContains('<input type="checkbox" name="remember_me" value="1" checked="checked" id="remember-me">');
         $this->assertResponseContains('<button type="submit">Login</button>');
         $this->assertResponseContains('<a href="/register">Register</a>');
@@ -131,8 +131,8 @@ class LoginTraitIntegrationTest extends TestCase
         $this->assertResponseContains('Username or password is incorrect');
         $this->assertResponseContains('<form method="post" accept-charset="utf-8" action="/login">');
         $this->assertResponseContains('<legend>Please enter your username and password</legend>');
-        $this->assertResponseContains('<input type="text" name="username" required="required" id="username" value="user-2"/>');
-        $this->assertResponseContains('<input type="password" name="password" required="required" id="password" value="123456789"/>');
+        $this->assertResponseContains('<input type="text" name="username" required="required" id="username" aria-required="true" value="user-2"/>');
+        $this->assertResponseContains('<input type="password" name="password" required="required" id="password" aria-required="true" value="123456789"/>');
         $this->assertResponseContains('<input type="checkbox" name="remember_me" value="1" checked="checked" id="remember-me">');
         $this->assertResponseContains('<button type="submit">Login</button>');
     }
@@ -239,5 +239,59 @@ class LoginTraitIntegrationTest extends TestCase
     {
         $this->get('/logout');
         $this->assertRedirect('/login');
+    }
+
+    /**
+     * Test redirect should not happen if the host is not defined as a known host
+     *
+     * @return void
+     */
+    public function testRedirectAfterLoginToHostUnknown()
+    {
+        $this->post('/login?redirect=http://unknown.com/', [
+            'username' => 'user-4',
+            'password' => '12345',
+        ]);
+        $this->assertRedirect('/pages/home');
+    }
+
+    /**
+     * Test redirect should happen for defaul localhost
+     *
+     * @return void
+     */
+    public function testRedirectAfterLoginToAllowedHost()
+    {
+        Configure::write('Users.AllowedRedirectHosts', ['example.com']);
+        $this->post('/login?redirect=http://example.com/login', [
+            'username' => 'user-4',
+            'password' => '12345',
+        ]);
+        // /login is authorized for this user, and example.com is in the allowed hosts
+        $this->assertRedirect('http://example.com/login');
+    }
+
+    public function testRedirectAfterLoginToFullBase(): void
+    {
+        $this->post('/login?redirect=http://example.com/login', [
+            'username' => 'user-4',
+            'password' => '12345',
+        ]);
+        // /login is authorized for this user, and example.com is in the allowed hosts
+        $this->assertRedirect('http://example.com/login');
+    }
+
+    /**
+     * Test redirect fails if url is not allowed
+     *
+     * @return void
+     */
+    public function testRedirectFailsIfUrlNotAllowed()
+    {
+        $this->post('/login?redirect=http://localhost/not-allowed', [
+            'username' => 'user-4',
+            'password' => '12345',
+        ]);
+        $this->assertRedirect('/pages/home');
     }
 }

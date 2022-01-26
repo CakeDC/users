@@ -38,7 +38,7 @@ $oauthPath = Configure::read('OAuth.path');
 if (is_array($oauthPath)) {
     $routes->scope('/auth', function (RouteBuilder $routes) use ($oauthPath) {
         $routes->connect(
-            '/:provider',
+            '/{provider}',
             $oauthPath,
             ['provider' => implode('|', array_keys(Configure::read('OAuth.providers')))]
         );
@@ -49,4 +49,4 @@ $routes->connect('/social-accounts/:action/*', [
     'plugin' => 'CakeDC/Users',
     'controller' => 'SocialAccounts',
 ]);
-$routes->connect('/users/:action/*', UsersUrl::actionRouteParams(null));
+$routes->connect('/users/{action}/*', UsersUrl::actionRouteParams(null));

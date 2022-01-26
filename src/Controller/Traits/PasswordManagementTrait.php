@@ -41,6 +41,8 @@ trait PasswordManagementTrait
     public function changePassword($id = null)
     {
         $user = $this->getUsersTable()->newEntity([], ['validate' => false]);
+        $user->setNew(false);
+
         $identity = $this->getRequest()->getAttribute('identity');
         $identity = $identity ?? [];
         $userId = $identity['id'] ?? null;
@@ -85,11 +87,12 @@ trait PasswordManagementTrait
                 if ($validatePassword) {
                     $validator = $this->getUsersTable()->validationCurrentPassword($validator);
                 }
+                $this->getUsersTable()->setValidator('current', $validator);
                 $user = $this->getUsersTable()->patchEntity(
                     $user,
                     $this->getRequest()->getData(),
                     [
-                        'validate' => $validator,
+                        'validate' => 'current',
                         'accessibleFields' => [
                             'current_password' => true,
                             'password' => true,
@@ -123,7 +126,7 @@ trait PasswordManagementTrait
                 $this->log($exception->getMessage());
             }
         }
-        $this->set(compact('user'));
+        $this->set(['user' => $user]);
         $this->set('_serialize', ['user']);
     }
 

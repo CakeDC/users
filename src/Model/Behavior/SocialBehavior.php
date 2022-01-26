@@ -135,7 +135,7 @@ class SocialBehavior extends BaseTokenBehavior
         if ($useEmail && empty($email)) {
             throw new MissingEmailException(__d('cake_d_c/users', 'Email not present'));
         } else {
-            $existingUser = $this->_table->find('existingForSocialLogin', compact('email'))->first();
+            $existingUser = $this->_table->find('existingForSocialLogin', ['email' => $email])->first();
         }
 
         $user = $this->_populateUser($data, $existingUser, $useEmail, $validateEmail, $tokenExpiration);
@@ -150,9 +150,8 @@ class SocialBehavior extends BaseTokenBehavior
         }
 
         $this->_table->isValidateEmail = $validateEmail;
-        $result = $this->_table->save($user);
 
-        return $result;
+        return $this->_table->save($user);
     }
 
     /**
@@ -169,6 +168,7 @@ class SocialBehavior extends BaseTokenBehavior
      */
     protected function _populateUser($data, $existingUser, $useEmail, $validateEmail, $tokenExpiration)
     {
+        $userData = [];
         $accountData = $this->extractAccountData($data);
         $accountData['active'] = true;
 
@@ -247,7 +247,7 @@ class SocialBehavior extends BaseTokenBehavior
                 ->where([$this->_table->aliasField($this->_username) => $username])
                 ->count();
             if ($existingUsername > 0) {
-                $username = $username . $i;
+                $username .= $i;
                 $i++;
                 continue;
             }

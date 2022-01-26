@@ -40,7 +40,7 @@ trait SocialAuthTrait
         } catch (UserNotActiveException $e) {
             return new Result(null, self::FAILURE_USER_NOT_ACTIVE);
         } catch (MissingEmailException $exception) {
-            throw new SocialAuthenticationException(compact('rawData'), null, $exception);
+            throw new SocialAuthenticationException(['rawData' => $rawData], null, $exception);
         }
     }
 }

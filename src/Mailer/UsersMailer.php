@@ -107,7 +107,7 @@ class UsersMailer extends Mailer
             ->setTo($user['email'])
             ->setSubject($subject)
             ->setEmailFormat(Message::MESSAGE_BOTH)
-            ->setViewVars(compact('user', 'socialAccount', 'activationUrl'));
+            ->setViewVars(['user' => $user, 'socialAccount' => $socialAccount, 'activationUrl' => $activationUrl]);
         $this
             ->viewBuilder()
             ->setTemplate('CakeDC/Users.socialAccountValidation');

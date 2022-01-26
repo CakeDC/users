@@ -1,5 +1,12 @@
 Changelog
 =========
+Releases for CakePHP 4.3
+
+* 11.0.0
+  * Switched tests to new cakephp schema
+  * Update to PHPUnit 9.5
+
+
 Releases for CakePHP 4
 -------------
 * 9.2.0

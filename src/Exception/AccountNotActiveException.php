@@ -13,9 +13,7 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Exception;
 
-use Cake\Core\Exception\Exception;
-
-class AccountNotActiveException extends Exception
+class AccountNotActiveException extends \Cake\Core\Exception\CakeException
 {
     protected $_messageTemplate = '/a/validate/%s/%s';
 

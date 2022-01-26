@@ -15,7 +15,6 @@ namespace CakeDC\Users\Model\Behavior;
 
 use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
-use Cake\Event\Event;
 use Cake\Mailer\MailerAwareTrait;
 use Cake\Validation\Validator;
 use CakeDC\Users\Exception\TokenExpiredException;
@@ -64,10 +63,17 @@ class RegisterBehavior extends BaseTokenBehavior
         $validateEmail = $options['validate_email'] ?? null;
         $tokenExpiration = $options['token_expiration'] ?? null;
         $validator = $options['validator'] ?? null;
+        if (is_string($validator)) {
+            $validate = $validator;
+        } else {
+            $this->_table->setValidator('current', $validator ?: $this->getRegisterValidators($options));
+            $validate = 'current';
+        }
+
         $user = $this->_table->patchEntity(
             $user,
             $data,
-            ['validate' => $validator ?: $this->getRegisterValidators($options)]
+            ['validate' => $validate]
         );
         $user['role'] = Configure::read('Users.Registration.defaultRole') ?: 'user';
         $user->validated = false;
@@ -125,9 +131,8 @@ class RegisterBehavior extends BaseTokenBehavior
         $user->activation_date = new \DateTime();
         $user->token_expires = null;
         $user->active = true;
-        $result = $this->_table->save($user);
 
-        return $result;
+        return $this->_table->save($user);
     }
 
     /**
@@ -138,7 +143,7 @@ class RegisterBehavior extends BaseTokenBehavior
      * @param string $name name
      * @return \Cake\Validation\Validator
      */
-    public function buildValidator(Event $event, Validator $validator, $name)
+    public function buildValidator(\Cake\Event\EventInterface $event, Validator $validator, $name)
     {
         if ($name === 'default') {
             return $this->_emailValidator($validator, $this->validateEmail);

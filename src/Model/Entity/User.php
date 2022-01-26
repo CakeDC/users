@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace CakeDC\Users\Model\Entity;
 
 use Cake\Core\Configure;
-use Cake\I18n\Time;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\Entity;
 use Cake\Utility\Security;
 
@@ -25,10 +25,10 @@ use Cake\Utility\Security;
  * @property string $role
  * @property string $username
  * @property bool $is_superuser
- * @property \Cake\I18n\Time $token_expires
+ * @property \Cake\I18n\Time|\Cake\I18n\FrozenTime $token_expires
  * @property string $token
  * @property string $api_token
- * @property array $additional_data
+ * @property array|string $additional_data
  * @property \CakeDC\Users\Model\Entity\SocialAccount[] $social_accounts
  */
 class User extends Entity
@@ -81,8 +81,8 @@ class User extends Entity
      */
     protected function _setTos($tos)
     {
-        if ((bool)$tos === true) {
-            $this->set('tos_date', Time::now());
+        if ((bool)$tos) {
+            $this->set('tos_date', FrozenTime::now());
         }
 
         return $tos;
@@ -111,7 +111,7 @@ class User extends Entity
     {
         $passwordHasher = Configure::read('Users.passwordHasher');
         if (!class_exists($passwordHasher)) {
-            $passwordHasher = '\Cake\Auth\DefaultPasswordHasher';
+            $passwordHasher = \Cake\Auth\DefaultPasswordHasher::class;
         }
 
         return new $passwordHasher();
@@ -142,7 +142,7 @@ class User extends Entity
             return true;
         }
 
-        return new Time($this->token_expires) < Time::now();
+        return new FrozenTime($this->token_expires) < FrozenTime::now();
     }
 
     /**
@@ -167,12 +167,15 @@ class User extends Entity
      */
     protected function _getU2fRegistration()
     {
+        if (is_string($this->additional_data)) {
+            $this->additional_data = json_decode($this->additional_data, true);
+        }
         if (!isset($this->additional_data['u2f_registration'])) {
             return null;
         }
         $object = (object)$this->additional_data['u2f_registration'];
 
-        return isset($object->keyHandle) ? $object : null;
+        return $object->keyHandle !== null ? $object : null;
     }
 
     /**
@@ -183,7 +186,7 @@ class User extends Entity
      */
     public function updateToken($tokenExpiration = 0)
     {
-        $expiration = new Time('now');
+        $expiration = new FrozenTime('now');
         $this->token_expires = $expiration->addSeconds($tokenExpiration);
         $this->token = bin2hex(Security::randomBytes(16));
     }

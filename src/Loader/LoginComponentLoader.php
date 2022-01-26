@@ -32,7 +32,7 @@ class LoginComponentLoader
             'messages' => [
                 'FAILURE_INVALID_RECAPTCHA' => __d('cake_d_c/users', 'Invalid reCaptcha'),
             ],
-            'targetAuthenticator' => 'CakeDC\Auth\Authenticator\FormAuthenticator',
+            'targetAuthenticator' => \CakeDC\Auth\Authenticator\FormAuthenticator::class,
         ];
 
         return self::createComponent($controller, 'Auth.FormLoginFailure', $config);
@@ -60,7 +60,7 @@ class LoginComponentLoader
                     'Your social account has not been validated yet. Please check your inbox for instructions'
                 ),
             ],
-            'targetAuthenticator' => 'CakeDC\Users\Authenticator\SocialAuthenticator',
+            'targetAuthenticator' => \CakeDC\Users\Authenticator\SocialAuthenticator::class,
         ];
 
         return self::createComponent($controller, 'Auth.SocialLoginFailure', $config);

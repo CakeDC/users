@@ -321,8 +321,8 @@ class UsersShell extends Shell
         if (!empty($this->params['username'])) {
             $username = $this->params['username'];
         } else {
-            $username = !empty($template['username']) ?
-                $template['username'] : $this->_generateRandomUsername();
+            $username = empty($template['username']) ?
+                $this->_generateRandomUsername() : $template['username'];
         }
 
         $password = (empty($this->params['password']) ?
@@ -387,9 +387,8 @@ class UsersShell extends Shell
         })->each(function ($value, $field) use (&$user) {
             $user->{$field} = $value;
         });
-        $savedUser = $this->Users->save($user);
 
-        return $savedUser;
+        return $this->Users->save($user);
     }
 
     /**

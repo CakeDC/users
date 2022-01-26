@@ -38,11 +38,7 @@ class SocialAccountBehavior extends Behavior
     public function initialize(array $config): void
     {
         parent::initialize($config);
-        $this->_table->belongsTo('Users', [
-            'foreignKey' => 'user_id',
-            'joinType' => 'INNER',
-            'className' => Configure::read('Users.table'),
-        ]);
+        $this->_table->belongsTo('Users')->setForeignKey('user_id')->setJoinType('INNER')->setClassName(Configure::read('Users.table'));
     }
 
     /**
@@ -152,8 +148,7 @@ class SocialAccountBehavior extends Behavior
     protected function _activateAccount($socialAccount)
     {
         $socialAccount->active = true;
-        $result = $this->_table->save($socialAccount);
 
-        return $result;
+        return $this->_table->save($socialAccount);
     }
 }

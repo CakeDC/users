@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace CakeDC\Users\Model\Behavior;
 
 use Cake\Datasource\EntityInterface;
-use Cake\I18n\Time;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\Behavior;
 
 /**
@@ -124,7 +124,7 @@ class LinkSocialBehavior extends Behavior
         $accountData['token_expires'] = null;
         $expires = $data['credentials']['expires'] ?? null;
         if (!empty($expires)) {
-            $expiresTime = new Time();
+            $expiresTime = new FrozenTime();
             $accountData['token_expires'] = $expiresTime->setTimestamp($expires)->format('Y-m-d H:i:s');
         }
 

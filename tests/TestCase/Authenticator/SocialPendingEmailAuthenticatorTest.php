@@ -61,7 +61,8 @@ class SocialPendingEmailAuthenticatorTest extends TestCase
      */
     public function testAuthenticateInvalidUrl()
     {
-        Router::connect('/users/validate-email/*', [
+        $builder = Router::createRouteBuilder('/');
+        $builder->connect('/users/validate-email/*', [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'socialEmail',
@@ -91,7 +92,8 @@ class SocialPendingEmailAuthenticatorTest extends TestCase
      */
     public function testAuthenticateBaseFailed()
     {
-        Router::connect('/users/social-email/*', [
+        $builder = Router::createRouteBuilder('/');
+        $builder->connect('/users/social-email/*', [
              'plugin' => 'CakeDC/Users',
              'controller' => 'Users',
              'action' => 'socialEmail',

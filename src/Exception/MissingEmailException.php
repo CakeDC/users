@@ -13,9 +13,7 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Exception;
 
-use Cake\Core\Exception\Exception;
-
-class MissingEmailException extends Exception
+class MissingEmailException extends \Cake\Core\Exception\CakeException
 {
     /**
      * MissingEmailException constructor.

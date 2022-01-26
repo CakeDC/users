@@ -133,10 +133,10 @@ class OneTimePasswordVerifyTraitTest extends BaseTraitTest
             ->method('is')
             ->with('post')
             ->will($this->returnValue(false));
-        $this->Trait->OneTimePasswordAuthenticator->expects($this->at(0))
+        $this->Trait->OneTimePasswordAuthenticator->expects($this->once())
             ->method('createSecret')
             ->will($this->returnValue('newSecret'));
-        $this->Trait->OneTimePasswordAuthenticator->expects($this->at(1))
+        $this->Trait->OneTimePasswordAuthenticator->expects($this->once())
             ->method('getQRCodeImageAsDataUri')
             ->with('email@example.com', 'newSecret')
             ->will($this->returnValue('newDataUriGenerated'));
@@ -175,11 +175,11 @@ class OneTimePasswordVerifyTraitTest extends BaseTraitTest
             ->will($this->returnValue(false));
 
         $this->Trait->OneTimePasswordAuthenticator
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('createSecret')
             ->will($this->returnValue('newSecret'));
         $this->Trait->OneTimePasswordAuthenticator
-            ->expects($this->at(1))
+            ->expects($this->once())
             ->method('getQRCodeImageAsDataUri')
             ->with('email@example.com', 'newSecret')
             ->will($this->returnValue('newDataUriGenerated'));
@@ -238,7 +238,7 @@ class OneTimePasswordVerifyTraitTest extends BaseTraitTest
             ->expects($this->never())
             ->method('createSecret');
         $this->Trait->OneTimePasswordAuthenticator
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('getQRCodeImageAsDataUri')
             ->with('email@example.com', 'alreadyPresentSecret')
             ->will($this->returnValue('newDataUriGenerated'));

@@ -253,14 +253,15 @@ class SocialAuthMiddlewareTest extends TestCase
      */
     public function testSocialAuthenticationException($previousException, $flash, $location, $keepSocialUser)
     {
-        Router::connect('/login', [
+        $builder = Router::createRouteBuilder('/');
+        $builder->connect('/login', [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'login',
             '_ext' => null,
             'prefix' => null,
         ]);
-        Router::connect('/users/users/social-email', [
+        $builder->connect('/users/users/social-email', [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'socialEmail',

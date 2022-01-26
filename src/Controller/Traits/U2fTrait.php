@@ -55,7 +55,6 @@ trait U2fTrait
                 'action' => 'login',
             ]);
         }
-
         if (!$data['registration']) {
             return $this->redirectWithQuery([
                 'action' => 'u2fRegister',
@@ -85,7 +84,7 @@ trait U2fTrait
         if (!$data['registration']) {
             [$registerRequest, $signs] = $this->createU2fLib()->getRegisterData();
             $this->getRequest()->getSession()->write('U2f.registerRequest', json_encode($registerRequest));
-            $this->set(compact('registerRequest', 'signs'));
+            $this->set(['registerRequest' => $registerRequest, 'signs' => $signs]);
 
             return null;
         }
@@ -146,7 +145,7 @@ trait U2fTrait
         }
         $authenticateRequest = $this->createU2fLib()->getAuthenticateData([$data['registration']]);
         $this->getRequest()->getSession()->write('U2f.authenticateRequest', json_encode($authenticateRequest));
-        $this->set(compact('authenticateRequest'));
+        $this->set(['authenticateRequest' => $authenticateRequest]);
 
         return null;
     }
