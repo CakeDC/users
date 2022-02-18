@@ -72,6 +72,8 @@ class UsersFixture extends TestFixture
                     ],
                 ],
                 'last_login' => '2015-06-24 17:33:54',
+                'phone' => '+13055555551',
+                'phone_verified' => '2015-06-24 17:33:54'
             ],
             [
                 'id' => '00000000-0000-0000-0000-000000000002',
@@ -94,6 +96,8 @@ class UsersFixture extends TestFixture
                 'created' => '2015-06-24 17:33:54',
                 'modified' => '2015-06-24 17:33:54',
                 'last_login' => '2015-06-24 17:33:54',
+                'phone' => '+13055555552',
+                'phone_verified' => null
             ],
             [
                 'id' => '00000000-0000-0000-0000-000000000003',

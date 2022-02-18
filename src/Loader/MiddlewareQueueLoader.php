@@ -98,6 +98,7 @@ class MiddlewareQueueLoader
         if (
             Configure::read('OneTimePasswordAuthenticator.login') !== false
             || Configure::read('U2f.enabled') !== false
+            || Configure::read('Code2f.enabled') !== false
         ) {
             $middlewareQueue->add(TwoFactorMiddleware::class);
         }

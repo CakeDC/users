@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Controller;
 
+use CakeDC\Users\Controller\Traits\Code2fTrait;
 use CakeDC\Users\Controller\Traits\LinkSocialTrait;
 use CakeDC\Users\Controller\Traits\LoginTrait;
 use CakeDC\Users\Controller\Traits\OneTimePasswordVerifyTrait;
@@ -42,6 +43,7 @@ class UsersController extends AppController
     use SocialTrait;
     use U2fTrait;
     use Webauthn2faTrait;
+    use Code2fTrait;
 
     /**
      * Initialize

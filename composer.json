@@ -41,6 +41,7 @@
         "league/oauth2-instagram": "@stable",
         "league/oauth2-google": "@stable",
         "league/oauth2-linkedin": "@stable",
+        "twilio/sdk": "@stable",
         "luchianenco/oauth2-amazon": "^1.1",
         "google/recaptcha": "@stable",
         "robthree/twofactorauth": "^1.6",
@@ -59,7 +60,8 @@
         "league/oauth2-linkedin": "Provides Social Authentication with LinkedIn",
         "google/recaptcha": "Provides reCAPTCHA validation for registration form",
         "robthree/twofactorauth": "Provides Google Authenticator functionality",
-        "cakephp/authorization": "Provide authorization for users"
+        "cakephp/authorization": "Provide authorization for users",
+        "twilio/sdk": "Provide SMS OTP with Twilio"
     },
     "autoload": {
         "psr-4": {
