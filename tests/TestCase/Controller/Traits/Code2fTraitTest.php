@@ -24,7 +24,10 @@ use CakeDC\Auth\Authentication\Code2fAuthenticationCheckerInterface;
 class Code2fTraitTest extends BaseTraitTest
 {
 
-
+    public $fixtures = [
+        'plugin.CakeDC/Users.OtpCodes',
+        'plugin.CakeDC/Users.Users',
+    ];
 
     /**
      * setup
@@ -39,7 +42,6 @@ class Code2fTraitTest extends BaseTraitTest
         parent::setUp();
     }
 
-    /* *
     public function testCode2fWithValidAndRegistration()
     {
         $this->prepareRequest('00000000-0000-0000-0000-000000000001');
@@ -210,29 +212,50 @@ class Code2fTraitTest extends BaseTraitTest
 
         $this->Trait->code2fAuthenticate();
     }
-    /* */
 
-    public function testCode2fAuthenticateWithRegistration()
+    public function testCode2fAuthenticateNoPost()
     {
         $this->prepareRequest('00000000-0000-0000-0000-000000000002');
-        Configure::write('Code2f.enabled', false);
-        Configure::write('Code2f.type', Code2fAuthenticationCheckerInterface::CODE2F_TYPE_PHONE);
+        Configure::write('Code2f.enabled', true);
 
+        $this->Trait->expects($this->once())
+            ->method('viewBuilder')
+            ->will($this->returnValue(new \Cake\View\ViewBuilder()));
+    
+        $this->Trait->code2fAuthenticate();
+    }
+
+    public function testCode2fAuthenticatePostWithoutResend()
+    {
+        $this->prepareRequest('00000000-0000-0000-0000-000000000002');
+        Configure::write('Code2f.enabled', true);
+
+        $this->Trait->getRequest()
+            ->expects($this->any())
+            ->method('is')
+            ->with(['post', 'put'])
+            ->will($this->returnValue(true));
+
+
+        $this->Trait->getRequest()
+            ->expects($this->once())
+            ->method('getQuery')
+            ->with('resend')
+            ->will($this->returnValue(true));
+            
         $this->Trait->expects($this->once())
             ->method('redirectWithQuery')
             ->with($this->equalTo([
-                'action' => 'code2fRegister',
+                'action' => 'code2fAuthenticate',
             ]));
 
         $this->Trait->code2fAuthenticate();
     }
 
-
-
     protected function prepareRequest($user_id = '00000000-0000-0000-0000-000000000001', $session = [])
     {
         $request = $this->getMockBuilder('Cake\Http\ServerRequest')
-            ->setMethods(['is', 'getData', 'allow', 'getSession'])
+            ->onlyMethods(['is', 'getData', 'getQuery','getSession'])
             ->getMock();
         $this->Trait->setRequest($request);
         
