@@ -12,6 +12,8 @@ declare(strict_types=1);
  */
 namespace CakeDC\Users\Mailer\Transport;
 
+use Cake\Core\Configure;
+use Cake\Log\Log;
 use Cake\Mailer\AbstractTransport;
 use Cake\Mailer\Message;
 use Twilio\Rest\Client;
@@ -39,12 +41,18 @@ class TwilioTransport extends AbstractTransport
 
         $responses = [];
         foreach ($recipients as $recipient) {
+            $content = [
+                'from' => $message->getFrom(),
+                'body' => $message->getBodyText()
+            ];
+            if (Configure::read('debug')) {
+                $responses[] = $content;
+                Log::debug(print_r($content, true));
+                continue;
+            }
             $responses[] = $client->messages->create(
                 $recipient,
-                [
-                    'from' => $message->getFrom(),
-                    'body' => $message->getBodyText()
-                ]
+                $content
             );
         };
         return $responses;

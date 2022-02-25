@@ -18,6 +18,7 @@ use Cake\Mailer\Mailer;
 use Cake\Mailer\Message;
 use Cake\Mailer\TransportFactory;
 use CakeDC\Users\Utility\UsersUrl;
+use DebugKit\Mailer\Transport\DebugKitTransport;
 
 /**
  * SMS Mailer
@@ -28,9 +29,13 @@ class SMSMailer extends Mailer
     {
         parent::__construct();
         $smsConfig = Mailer::getConfig(Configure::read('Code2f.config', 'sms'));
-        $phonePattern = TransportFactory::get($smsConfig['transport'])->getConfig('phonePattern');
-        if (!$phonePattern) {
-            throw new \UnexpectedValueException(__d('cake_d_c/users', 'You must define `phonePattern` in your transport ({0}) config.', $config));
+        $transport = TransportFactory::get($smsConfig['transport']);
+        $phonePattern = '/.*$/i';
+        if (!($transport instanceof DebugKitTransport)) {
+            $phonePattern = $transport->getConfig('phonePattern');
+            if (!$phonePattern) {
+                throw new \UnexpectedValueException(__d('cake_d_c/users', 'You must define `phonePattern` in your transport ({0}) config.', $config));
+            }
         }
         $this->setEmailPattern($phonePattern);
         $this->setProfile($config);
