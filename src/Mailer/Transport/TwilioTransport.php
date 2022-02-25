@@ -18,6 +18,10 @@ use Twilio\Rest\Client;
 
 class TwilioTransport extends AbstractTransport
 {
+    protected $_defaultConfig = [
+        'phonePattern' => '/^\+[1-9]\d{1,14}$/i'
+    ];
+
     public function send(Message $message): array
     {
         $sid = $this->getConfig('sid');
@@ -28,13 +32,12 @@ class TwilioTransport extends AbstractTransport
         $recipients = collection($to);
 
         $recipients->each(function ($recipient) {
-            if (!preg_match('/^\+[1-9]\d{1,14}$/i',$recipient)) {
-                throw new \InvalidArgumentException(__d('cake_d_c/users', 'Invalid Recipient {0}: Format must be +1234567890', $recipient));
+            if (!preg_match($this->getConfig('phonePattern'), $recipient)) {
+                throw new \InvalidArgumentException(__d('cake_d_c/users', 'Invalid Recipient {0}: Format must be {1}', $recipient, $this->getConfig('phonePattern')));
             }
         });
 
         $responses = [];
-        return $responses;
         foreach ($recipients as $recipient) {
             $responses[] = $client->messages->create(
                 $recipient,

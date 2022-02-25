@@ -145,7 +145,7 @@ $config = [
         'checker' => \CakeDC\Auth\Authentication\DefaultCode2fAuthenticationChecker::class,
         'type' => \CakeDC\Auth\Authentication\Code2fAuthenticationCheckerInterface::CODE2F_TYPE_EMAIL,
         'config' => 'default',
-        'message' => __d('cake_d_c/users', '{0} is your {1} verification code'),
+        'message' => '{0} is your {1} verification code', //{0} will be replaced by code, {1} by App.name
         'maxSeconds' => 300,
         'maxTries' => 3
     ],

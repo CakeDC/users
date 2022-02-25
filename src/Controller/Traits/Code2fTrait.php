@@ -13,11 +13,15 @@ declare(strict_types=1);
 namespace CakeDC\Users\Controller\Traits;
 
 use Cake\Core\Configure;
+use Cake\Datasource\Exception\RecordNotFoundException;
+use Cake\Mailer\Mailer;
+use Cake\Mailer\TransportFactory;
 use Cake\ORM\TableRegistry;
 use CakeDC\Auth\Authentication\AuthenticationService;
 use CakeDC\Auth\Authentication\Code2fAuthenticationCheckerFactory;
 use CakeDC\Auth\Authentication\Code2fAuthenticationCheckerInterface;
 use CakeDC\Auth\Authenticator\TwoFactorAuthenticator;
+use CakeDC\Users\Exception\TokenExpiredException;
 use CakeDC\Users\Model\Table\OtpCodesTable;
 
 /**
@@ -74,9 +78,21 @@ trait Code2fTrait
         if ($this->getRequest()->is(['post', 'put'])) {
 
             $value = $this->getRequest()->getData($field);
-            if ($data['field'] === Code2fAuthenticationCheckerInterface::CODE2F_TYPE_PHONE && !preg_match('/^\+[1-9]\d{1,14}$/i', $value)) {
-                $this->Flash->error(__d('cake_d_c/users', 'Invalid phone number: Format must be +1234567890'));
-            } else {
+
+            $validated = true;
+            if ($data['field'] === Code2fAuthenticationCheckerInterface::CODE2F_TYPE_PHONE) {
+                $config = Mailer::getConfig(Configure::read('Code2f.config', 'sms'));
+                $phonePattern = TransportFactory::get($config['transport'])->getConfig('phonePattern');
+                if (!$phonePattern) {
+                    throw new \UnexpectedValueException(__d('cake_d_c/users', 'You must define `phonePattern` in your transport ({0}) config.', $config));
+                }
+                if (!preg_match($phonePattern, $value)) {
+                    $this->Flash->error(__d('cake_d_c/users', 'Invalid phone number: Format must be {0}}', $phonePattern));
+                    $validated = false;
+                }
+            }
+
+            if ($validated) {
                 $data['user'][$field] = $value;
                 $user = $this->getUsersTable()->saveOrFail($data['user'], ['checkRules' => false]);
                 $this->getRequest()->getSession()->write(AuthenticationService::CODE2F_SESSION_KEY, $user);
@@ -119,13 +135,13 @@ trait Code2fTrait
                     $this->request->getSession()->delete(AuthenticationService::CODE2F_SESSION_KEY);
                     $this->request->getSession()->write(TwoFactorAuthenticator::USER_SESSION_KEY, $data['user']);
                     return $this->redirectWithQuery(Configure::read('Auth.AuthenticationComponent.loginAction'));
-            } catch (\Exception $e) {
+            } catch (TokenExpiredException | \InvalidArgumentException $e) {
                 $this->Flash->error($e->getMessage());
             }
         } else {
             try {
                 $OtpCodes->sendCode2f($data['user']['id'], $resend);
-            } catch (\Exception $e) {
+            } catch (\UnexpectedValueException | RecordNotFoundException | \OverflowException $e) {
                 $this->Flash->error($e->getMessage());
             }
             if ($resend) {

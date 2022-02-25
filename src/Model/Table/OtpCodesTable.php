@@ -15,6 +15,7 @@ namespace CakeDC\Users\Model\Table;
 use Cake\Core\Configure;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\I18n\FrozenTime;
+use Cake\Log\Log;
 use Cake\Mailer\Mailer;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
@@ -109,12 +110,18 @@ class OtpCodesTable extends Table
     {
         $user = $this->Users->get($userId);
         $new = false;
-        if ($otpCode = $this->_getCurrent($userId)) {
-            if (!$resend) return $otpCode;
-        } else {
-            $new = true;
-            $otpCode = $this->_generateCode($userId);
+        try {
+            if ($otpCode = $this->_getCurrent($userId)) {
+                if (!$resend) return $otpCode;
+            } else {
+                $new = true;
+                $otpCode = $this->_generateCode($userId);
+            }
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            throw new \UnexpectedValueException(__d('cake_d_c/users', 'An error has occurred generating code. Please try again.'));
         }
+
         if (!$otpCode) {
             throw new RecordNotFoundException(__d('cake_d_c/users', 'Verification code could not be generated'));
         }
@@ -122,10 +129,15 @@ class OtpCodesTable extends Table
             throw new \OverflowException(__d('cake_d_c/users', 'You need to wait at least 60 seconds to request a new code'));
         }
         $type = Configure::read('Code2f.type');
-        if ($type === Code2fAuthenticationCheckerInterface::CODE2F_TYPE_PHONE) {
-            (new SMSMailer(Configure::read('Code2f.config', 'sms')))->otp($user, $otpCode->code);
-        } elseif ($type === Code2fAuthenticationCheckerInterface::CODE2F_TYPE_EMAIL) {
-            (new UsersMailer(Configure::read('Code2f.config', 'default')))->otp($user, $otpCode->code);
+        try {
+            if ($type === Code2fAuthenticationCheckerInterface::CODE2F_TYPE_PHONE) {
+                (new SMSMailer(Configure::read('Code2f.config', 'sms')))->otp($user, $otpCode->code);
+            } elseif ($type === Code2fAuthenticationCheckerInterface::CODE2F_TYPE_EMAIL) {
+                (new UsersMailer(Configure::read('Code2f.config', 'default')))->otp($user, $otpCode->code);
+            }
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            throw new \UnexpectedValueException(__d('cake_d_c/users', 'An error has occurred sending code. Please try again.'));
         }
 
         return $otpCode;
