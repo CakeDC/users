@@ -26,6 +26,7 @@ use CakeDC\Users\Exception\TokenExpiredException;
 use CakeDC\Users\Mailer\SMSMailer;
 use CakeDC\Users\Mailer\UsersMailer;
 use CakeDC\Users\Model\Entity\OtpCode;
+use CakeDC\Users\Plugin;
 
 /**
  * OtpCodes Model
@@ -191,9 +192,11 @@ class OtpCodesTable extends Table
             $this->save($otpCode);
             throw new \InvalidArgumentException(__d('cake_d_c/users', 'Verification code is not valid. Please try again or request a new one.'));
         }
-        if (!$user->phone_verified) {
+        if (Configure::read('Code2f.type') === Code2fAuthenticationCheckerInterface::CODE2F_TYPE_PHONE && !$user->phone_verified) {
             $user->phone_verified = new FrozenTime();
-            $this->Users->save($user);
+            if ($this->Users->save($user)) {
+                $this->dispatchEvent(Plugin::EVENT_AFTER_PHONE_VERIFIED, ['user' => $user]);
+            }
         }
 
         $otpCode->validated = new FrozenTime();
