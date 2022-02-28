@@ -12,6 +12,7 @@ use Cake\ORM\Entity;
  * @property string $user_id
  * @property string $code
  * @property int $tries
+ * @property string $fingerprint
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $validated
  */
@@ -31,6 +32,7 @@ class OtpCode extends Entity
         'code' => true,
         'tries' => true,
         'validated' => true,
+        'fingerprint' => true,
         'created' => true,
     ];
 }

@@ -17,12 +17,14 @@ use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Mailer\Mailer;
 use Cake\Mailer\TransportFactory;
 use Cake\ORM\TableRegistry;
+use Cake\Utility\Security;
 use CakeDC\Auth\Authentication\AuthenticationService;
 use CakeDC\Auth\Authentication\Code2fAuthenticationCheckerFactory;
 use CakeDC\Auth\Authentication\Code2fAuthenticationCheckerInterface;
 use CakeDC\Auth\Authenticator\TwoFactorAuthenticator;
 use CakeDC\Users\Exception\TokenExpiredException;
 use CakeDC\Users\Model\Table\OtpCodesTable;
+use CakeDC\Users\Plugin;
 
 /**
  * Class Code2fTrait
@@ -132,15 +134,17 @@ trait Code2fTrait
                 if (!$result) {
                     $this->Flash->error(__d('cake_d_c/users', 'The code entered is not valid, please try again or resend code.'));
                 }
-                    $this->request->getSession()->delete(AuthenticationService::CODE2F_SESSION_KEY);
-                    $this->request->getSession()->write(TwoFactorAuthenticator::USER_SESSION_KEY, $data['user']);
-                    return $this->redirectWithQuery(Configure::read('Auth.AuthenticationComponent.loginAction'));
+                $this->dispatchEvent(Plugin::EVENT_AFTER_PHONE_VERIFIED, ['user' => $data['user']]);
+                $this->request->getSession()->delete(AuthenticationService::CODE2F_SESSION_KEY);
+                $this->request->getSession()->write(TwoFactorAuthenticator::USER_SESSION_KEY, $data['user']);
+                return $this->redirectWithQuery(Configure::read('Auth.AuthenticationComponent.loginAction'));
             } catch (TokenExpiredException | \InvalidArgumentException $e) {
                 $this->Flash->error($e->getMessage());
             }
         } else {
             try {
-                $OtpCodes->sendCode2f($data['user']['id'], $resend);
+                $fingerprint = $this->getRequest()->getSession()->consume('Code2f.fingerprint');
+                $OtpCodes->sendCode2f($data['user']['id'], $fingerprint, $resend);
             } catch (\UnexpectedValueException | RecordNotFoundException | \OverflowException $e) {
                 $this->Flash->error($e->getMessage());
             }

@@ -107,7 +107,7 @@ class OtpCodesTable extends Table
         return $rules;
     }
 
-    public function sendCode2f($userId, $resend = false)
+    public function sendCode2f($userId, $fingerprint = null, $resend = false)
     {
         $user = $this->Users->get($userId);
         $new = false;
@@ -116,7 +116,7 @@ class OtpCodesTable extends Table
                 if (!$resend) return $otpCode;
             } else {
                 $new = true;
-                $otpCode = $this->_generateCode($userId);
+                $otpCode = $this->_generateCode($userId, $fingerprint);
             }
         } catch (\Exception $e) {
             Log::error($e->getMessage());
@@ -149,13 +149,15 @@ class OtpCodesTable extends Table
      * @return OtpCode
      * @throws \Exception
      */
-    public function _generateCode($userId) {
+    protected function _generateCode($userId, $fingerprint = null) {
         $key = random_int(0, 999999);
         $code = str_pad((string)$key, 6, '0', STR_PAD_LEFT);
         $otpCode = $this->newEntity([
             'code' => $code,
+            'fingerprint' => $fingerprint,
             'user_id' => $userId
         ]);
+
         return $this->save($otpCode);
 
     }
@@ -194,9 +196,7 @@ class OtpCodesTable extends Table
         }
         if (Configure::read('Code2f.type') === Code2fAuthenticationCheckerInterface::CODE2F_TYPE_PHONE && !$user->phone_verified) {
             $user->phone_verified = new FrozenTime();
-            if ($this->Users->save($user)) {
-                $this->dispatchEvent(Plugin::EVENT_AFTER_PHONE_VERIFIED, ['user' => $user]);
-            }
+            $this->Users->save($user);
         }
 
         $otpCode->validated = new FrozenTime();
