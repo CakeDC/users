@@ -134,7 +134,7 @@ trait Code2fTrait
                 if (!$result) {
                     $this->Flash->error(__d('cake_d_c/users', 'The code entered is not valid, please try again or resend code.'));
                 }
-                $this->dispatchEvent(Plugin::EVENT_AFTER_PHONE_VERIFIED, ['user' => $data['user']]);
+                $this->dispatchEvent(Plugin::EVENT_AFTER_CODE2F_VERIFIED, ['user' => $data['user']]);
                 $this->request->getSession()->delete(AuthenticationService::CODE2F_SESSION_KEY);
                 $this->request->getSession()->write(TwoFactorAuthenticator::USER_SESSION_KEY, $data['user']);
                 return $this->redirectWithQuery(Configure::read('Auth.AuthenticationComponent.loginAction'));
