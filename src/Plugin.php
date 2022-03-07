@@ -42,6 +42,7 @@ class Plugin extends BasePlugin
     public const EVENT_ON_EXPIRED_TOKEN = 'Users.Global.onExpiredToken';
     public const EVENT_AFTER_RESEND_TOKEN_VALIDATION = 'Users.Global.afterResendTokenValidation';
     public const EVENT_AFTER_EMAIL_TOKEN_VALIDATION = 'Users.Global.afterEmailTokenValidation';
+    public const EVENT_AFTER_CODE2F_VERIFIED = 'Users.Global.afterCode2fVerified';
 
     /**
      * @inheritDoc

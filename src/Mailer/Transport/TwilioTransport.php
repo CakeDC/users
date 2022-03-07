@@ -12,38 +12,60 @@ declare(strict_types=1);
  */
 namespace CakeDC\Users\Mailer\Transport;
 
+use Cake\Core\Configure;
+use Cake\Log\Log;
 use Cake\Mailer\AbstractTransport;
 use Cake\Mailer\Message;
 use Twilio\Rest\Client;
 
 class TwilioTransport extends AbstractTransport
 {
+    protected $_defaultConfig = [
+        'phonePattern' => '/^\+[1-9]\d{1,14}$/i'
+    ];
+
+    /**
+     * @throws \Twilio\Exceptions\ConfigurationException
+     * @throws \Twilio\Exceptions\TwilioException
+     */
     public function send(Message $message): array
     {
-        $sid = $this->getConfig('sid');
-        $token = $this->getConfig('token');
-        $client = new Client($sid, $token);
-
         $to = $message->getTo();
         $recipients = collection($to);
 
         $recipients->each(function ($recipient) {
-            if (!preg_match('/^\+[1-9]\d{1,14}$/i',$recipient)) {
-                throw new \InvalidArgumentException(__d('cake_d_c/users', 'Invalid Recipient {0}: Format must be +1234567890', $recipient));
+            if (!preg_match($this->getConfig('phonePattern'), $recipient)) {
+                throw new \InvalidArgumentException(__d('cake_d_c/users', 'Invalid Recipient {0}: Format must be {1}', $recipient, $this->getConfig('phonePattern')));
             }
         });
 
         $responses = [];
-        return $responses;
+        $client = $this->_getClient();
         foreach ($recipients as $recipient) {
+            $content = [
+                'from' => $message->getFrom(),
+                'body' => $message->getBodyText()
+            ];
+            if (Configure::read('debug')) {
+                $responses[] = $content;
+                Log::debug(print_r($content, true));
+                continue;
+            }
             $responses[] = $client->messages->create(
                 $recipient,
-                [
-                    'from' => $message->getFrom(),
-                    'body' => $message->getBodyText()
-                ]
+                $content
             );
         };
         return $responses;
+    }
+
+    /**
+     * @throws \Twilio\Exceptions\ConfigurationException
+     */
+    protected function _getClient(): Client
+    {
+        $sid = $this->getConfig('sid');
+        $token = $this->getConfig('token');
+        return new Client($sid, $token);
     }
 }

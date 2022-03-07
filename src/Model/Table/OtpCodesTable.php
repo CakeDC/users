@@ -15,6 +15,7 @@ namespace CakeDC\Users\Model\Table;
 use Cake\Core\Configure;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\I18n\FrozenTime;
+use Cake\Log\Log;
 use Cake\Mailer\Mailer;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
@@ -25,6 +26,7 @@ use CakeDC\Users\Exception\TokenExpiredException;
 use CakeDC\Users\Mailer\SMSMailer;
 use CakeDC\Users\Mailer\UsersMailer;
 use CakeDC\Users\Model\Entity\OtpCode;
+use CakeDC\Users\Plugin;
 
 /**
  * OtpCodes Model
@@ -105,16 +107,22 @@ class OtpCodesTable extends Table
         return $rules;
     }
 
-    public function sendCode2f($userId, $resend = false)
+    public function sendCode2f($userId, $fingerprint = null, $resend = false)
     {
         $user = $this->Users->get($userId);
         $new = false;
-        if ($otpCode = $this->_getCurrent($userId)) {
-            if (!$resend) return $otpCode;
-        } else {
-            $new = true;
-            $otpCode = $this->_generateCode($userId);
+        try {
+            if ($otpCode = $this->_getCurrent($userId)) {
+                if (!$resend) return $otpCode;
+            } else {
+                $new = true;
+                $otpCode = $this->_generateCode($userId, $fingerprint);
+            }
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            throw new \UnexpectedValueException(__d('cake_d_c/users', 'An error has occurred generating code. Please try again.'));
         }
+
         if (!$otpCode) {
             throw new RecordNotFoundException(__d('cake_d_c/users', 'Verification code could not be generated'));
         }
@@ -122,10 +130,15 @@ class OtpCodesTable extends Table
             throw new \OverflowException(__d('cake_d_c/users', 'You need to wait at least 60 seconds to request a new code'));
         }
         $type = Configure::read('Code2f.type');
-        if ($type === Code2fAuthenticationCheckerInterface::CODE2F_TYPE_PHONE) {
-            (new SMSMailer(Configure::read('Code2f.config', 'sms')))->otp($user, $otpCode->code);
-        } elseif ($type === Code2fAuthenticationCheckerInterface::CODE2F_TYPE_EMAIL) {
-            (new UsersMailer(Configure::read('Code2f.config', 'default')))->otp($user, $otpCode->code);
+        try {
+            if ($type === Code2fAuthenticationCheckerInterface::CODE2F_TYPE_PHONE) {
+                (new SMSMailer(Configure::read('Code2f.config', 'sms')))->otp($user, $otpCode->code);
+            } elseif ($type === Code2fAuthenticationCheckerInterface::CODE2F_TYPE_EMAIL) {
+                (new UsersMailer(Configure::read('Code2f.config', 'default')))->otp($user, $otpCode->code);
+            }
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            throw new \UnexpectedValueException(__d('cake_d_c/users', 'An error has occurred sending code. Please try again.'));
         }
 
         return $otpCode;
@@ -136,13 +149,15 @@ class OtpCodesTable extends Table
      * @return OtpCode
      * @throws \Exception
      */
-    public function _generateCode($userId) {
+    protected function _generateCode($userId, $fingerprint = null) {
         $key = random_int(0, 999999);
         $code = str_pad((string)$key, 6, '0', STR_PAD_LEFT);
         $otpCode = $this->newEntity([
             'code' => $code,
+            'fingerprint' => $fingerprint,
             'user_id' => $userId
         ]);
+
         return $this->save($otpCode);
 
     }
@@ -179,7 +194,7 @@ class OtpCodesTable extends Table
             $this->save($otpCode);
             throw new \InvalidArgumentException(__d('cake_d_c/users', 'Verification code is not valid. Please try again or request a new one.'));
         }
-        if (!$user->phone_verified) {
+        if (Configure::read('Code2f.type') === Code2fAuthenticationCheckerInterface::CODE2F_TYPE_PHONE && !$user->phone_verified) {
             $user->phone_verified = new FrozenTime();
             $this->Users->save($user);
         }

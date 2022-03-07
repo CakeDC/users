@@ -21,6 +21,7 @@ Documentation
 * [Social Authentication](Documentation/SocialAuthentication.md)
 * [Google Authenticator](Documentation/Two-Factor-Authenticator.md)
 * [Yubico U2F](Documentation/Yubico-U2F.md)
+* [Code 2F (OTP authentication with phone/email)](Documentation/Code2F.md)
 * [UserHelper](Documentation/UserHelper.md)
 * [AuthLinkHelper](Documentation/AuthLinkHelper.md)
 * [Events](Documentation/Events.md)

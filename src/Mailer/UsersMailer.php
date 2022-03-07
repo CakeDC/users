@@ -123,7 +123,8 @@ class UsersMailer extends Mailer
     public function otp(EntityInterface $user, $code)
     {
         $this->setTo($user->email);
-        $this->deliver(__(Configure::read('Code2f.message'), $code, Configure::read('App.name')));
+        $this->setSubject(__d('cake_d_c/users', Configure::read('Code2f.subject'), Configure::read('App.name')));
+        $this->deliver(__d('cake_d_c/users', Configure::read('Code2f.message'), $code, Configure::read('App.name')));
     }
 
 }
