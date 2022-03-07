@@ -24,12 +24,12 @@ class TwilioTransport extends AbstractTransport
         'phonePattern' => '/^\+[1-9]\d{1,14}$/i'
     ];
 
+    /**
+     * @throws \Twilio\Exceptions\ConfigurationException
+     * @throws \Twilio\Exceptions\TwilioException
+     */
     public function send(Message $message): array
     {
-        $sid = $this->getConfig('sid');
-        $token = $this->getConfig('token');
-        $client = new Client($sid, $token);
-
         $to = $message->getTo();
         $recipients = collection($to);
 
@@ -40,6 +40,7 @@ class TwilioTransport extends AbstractTransport
         });
 
         $responses = [];
+        $client = $this->_getClient();
         foreach ($recipients as $recipient) {
             $content = [
                 'from' => $message->getFrom(),
@@ -56,5 +57,15 @@ class TwilioTransport extends AbstractTransport
             );
         };
         return $responses;
+    }
+
+    /**
+     * @throws \Twilio\Exceptions\ConfigurationException
+     */
+    protected function _getClient(): Client
+    {
+        $sid = $this->getConfig('sid');
+        $token = $this->getConfig('token');
+        return new Client($sid, $token);
     }
 }
