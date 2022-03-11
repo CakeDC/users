@@ -74,7 +74,7 @@ trait Webauthn2faTrait
             );
         } catch (\Throwable $e) {
             $user = $this->request->getSession()->read('Webauthn2fa.User');
-            Log::debug(__d('cake_d_c/users','Register error with webauthn for user id: {0}', $user['id'] ?? 'empty'));
+            Log::debug(__d('cake_d_c/users', 'Register error with webauthn for user id: {0}', $user['id'] ?? 'empty'));
             throw $e;
         }
     }
@@ -119,7 +119,7 @@ trait Webauthn2faTrait
             ]));
         } catch (\Throwable $e) {
             $user = $this->request->getSession()->read('Webauthn2fa.User');
-            Log::debug(__d('cake_d_c/users','Register error with webauthn for user id: {0}', $user['id'] ?? 'empty'));
+            Log::debug(__d('cake_d_c/users', 'Register error with webauthn for user id: {0}', $user['id'] ?? 'empty'));
             throw $e;
         }
     }
