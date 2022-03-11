@@ -205,5 +205,5 @@ class AppAuthenticationServiceLoader extends AuthenticationServiceLoader
 - Add this to your config/users.php file to change the authentication service loader:
 
 ```php
-'Auth.Authentication.serviceLoader' => \App\Loader\AuthenticationServiceLoader::class,
+'Auth.Authentication.serviceLoader' => \App\Loader\AppAuthenticationServiceLoader::class,
 ```
