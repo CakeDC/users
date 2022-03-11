@@ -5,7 +5,7 @@
  * @var string $username
  */
 $this->Html->script('CakeDC/Users.webauthn.js', ['block' => true]);
-$this->assign('title', __('Two-factor authentication'));
+$this->assign('title', __d('cake_d_c/users','Two-factor authentication'));
 ?>
 <div class="container">
     <div class="row">
@@ -28,7 +28,7 @@ $this->assign('title', __('Two-factor authentication'));
                         <p><?= __d('cake_d_c/users', 'When the YubiKey starts blinking, press the golden disc to activate it. Depending on the web browser you might need to confirm the use of extended information from the YubiKey.')?></p>
                     </div>
                     <p class="text-center"><?= $this->Html->link(
-                            __('Reload'),
+                            __d('cake_d_c/users','Reload'),
                             ['action' => 'webauthn2fa'],
                             ['class' => 'btn btn-primary']
                         )?></p>
