@@ -106,7 +106,7 @@ class AuthenticationServiceLoader
         $options = $item;
         if (!isset($options['className'])) {
             throw new \InvalidArgumentException(
-                __('Property  {0}.className should be defined', $key)
+                __d('cake_d_c/users','Property  {0}.className should be defined', $key)
             );
         }
         $className = $options['className'];

@@ -21,7 +21,7 @@
                 <fieldset>
                     <h2 class='text-center'><?= __d('cake_d_c/users', 'Verify your registered yubico key')?> </h2>
                     <h3 class='text-center'><?= __d('cake_d_c/users', 'Please insert and tap your yubico key')?></h3>
-                    <p><?__( 'You can now finish the authentication process using the registered device.')?></p>
+                    <p><?__d('cake_d_c/users', 'You can now finish the authentication process using the registered device.')?></p>
                     <p><?= __d('cake_d_c/users', 'When the YubiKey starts blinking, press the golden disc to activate it. Depending on the web browser you might need to confirm the use of extended information from the YubiKey.')?></p>
                     <p class="text-center"><?= $this->Html->link(
                         __d('cake_d_c/users', 'Reload'),
