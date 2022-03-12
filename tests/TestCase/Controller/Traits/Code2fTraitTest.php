@@ -166,6 +166,7 @@ class Code2fTraitTest extends BaseTraitTest
         $phone_code = Code2fAuthenticationCheckerInterface::CODE2F_TYPE_PHONE;
         Configure::write('Code2f.type', $phone_code);
         Configure::write('Code2f.enabled', true);
+        //Configure::write('Code2f.config', 'sms');
         
         $this->Trait->getRequest()
             ->expects($this->once())
