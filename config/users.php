@@ -140,6 +140,17 @@ $config = [
         'enabled' => false,
         'checker' => \CakeDC\Auth\Authentication\DefaultU2fAuthenticationChecker::class,
     ],
+    'Code2f' => [
+        'enabled' => false,
+        'checker' => \CakeDC\Auth\Authentication\DefaultCode2fAuthenticationChecker::class,
+        'type' => \CakeDC\Auth\Authentication\Code2fAuthenticationCheckerInterface::CODE2F_TYPE_EMAIL,
+        'config' => 'default',
+        'subject' => '{0}: Your verification code', //Valid for type EMAIL. {0} will be replaced by App.name
+        'message' => '{0} is your {1} verification code', //{0} will be replaced by code, {1} by App.name
+        'maxSeconds' => 300,
+        'maxTries' => 3,
+        'daysBeforeVerifyAgain' => 15,
+    ],
     'Webauthn2fa' => [
         'enabled' => false,
         'appName' => null,//App must set a valid name here

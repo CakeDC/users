@@ -12,6 +12,7 @@ declare(strict_types=1);
  */
 namespace CakeDC\Users\Mailer;
 
+use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
 use Cake\Mailer\Mailer;
 use Cake\Mailer\Message;
@@ -112,4 +113,19 @@ class UsersMailer extends Mailer
             ->viewBuilder()
             ->setTemplate('CakeDC/Users.socialAccountValidation');
     }
+
+    /**
+     * Send otp code to the user
+     *
+     * @param \Cake\Datasource\EntityInterface $user User entity
+     * @return void
+     */
+    public function otp(EntityInterface $user, $code)
+    {
+        $this->setTo($user->email);
+        $this->setEmailFormat(Message::MESSAGE_BOTH);
+        $this->setSubject(__d('cake_d_c/users', Configure::read('Code2f.subject'), Configure::read('App.name')));
+        $this->deliver(__d('cake_d_c/users', Configure::read('Code2f.message'), $code, $user->email));
+    }
+
 }

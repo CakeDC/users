@@ -12,6 +12,7 @@ The events in this plugin follow these conventions `<Plugin><Category>.<EventNam
 * `Users.Global.afterResetPassword`
 * `Users.Global.onExpiredToken`
 * `Users.Global.afterResendTokenValidation`
+* `Users.Global.afterCode2fVerified`
 
 The events allow you to inject data into the plugin on the before* plugins and use the data for your
 own business.
