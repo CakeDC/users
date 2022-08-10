@@ -30,7 +30,9 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
      * @var string
      */
     protected $name = 'CakeDC/Users';
+    public const EVENT_BEFORE_LOGIN = 'Users.Authentication.beforeLogin';
     public const EVENT_AFTER_LOGIN = 'Users.Authentication.afterLogin';
+    public const EVENT_AFTER_LOGIN_FAILURE = 'Users.Authentication.afterLoginFailure';
     public const EVENT_BEFORE_LOGOUT = 'Users.Authentication.beforeLogout';
     public const EVENT_AFTER_LOGOUT = 'Users.Authentication.afterLogout';
 
