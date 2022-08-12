@@ -310,6 +310,16 @@ $config = [
                     'scope' => 'email openid',
                 ],
             ],
+            'microsoft' => [
+                'service' => 'CakeDC\Auth\Social\Service\OAuth2Service',
+                'className' => 'TheNetworg\OAuth2\Client\Provider\Azure',
+                'mapper' => 'CakeDC\Auth\Social\Mapper\Microsoft',
+                'options' => [
+                    'redirectUri' => Router::fullBaseUrl() . '/auth/microsoft',
+                    'linkSocialUri' => Router::fullBaseUrl() . '/link-social/microsoft',
+                    'callbackLinkSocialUri' => Router::fullBaseUrl() . '/callback-link-social/microsoft',
+                ],
+            ],
         ],
     ],
 ];
