@@ -61,7 +61,7 @@
         "google/recaptcha": "Provides reCAPTCHA validation for registration form",
         "robthree/twofactorauth": "Provides Google Authenticator functionality",
         "cakephp/authorization": "Provide authorization for users",
-        "thenetworg/oauth2-azure": "Provides Social Authentication with Microsoft"
+        "thenetworg/oauth2-azure": "Provides Social Authentication with MS Azure"
     },
     "autoload": {
         "psr-4": {
