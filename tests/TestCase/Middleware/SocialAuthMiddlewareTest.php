@@ -28,7 +28,7 @@ use CakeDC\Users\Middleware\SocialAuthMiddleware;
 use Doctrine\Instantiator\Exception\UnexpectedValueException;
 use League\OAuth2\Client\Provider\FacebookUser;
 use TestApp\Http\TestRequestHandler;
-use Zend\Diactoros\Uri;
+use Laminas\Diactoros\Uri;
 
 class SocialAuthMiddlewareTest extends TestCase
 {

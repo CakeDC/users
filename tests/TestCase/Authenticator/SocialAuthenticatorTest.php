@@ -27,7 +27,7 @@ use CakeDC\Users\Exception\SocialAuthenticationException;
 use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Model\Entity\User;
 use League\OAuth2\Client\Provider\FacebookUser;
-use Zend\Diactoros\Uri;
+use Laminas\Diactoros\Uri;
 
 /**
  * Test Case for SocialAuthenticator class
