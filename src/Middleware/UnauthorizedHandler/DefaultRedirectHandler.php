@@ -78,7 +78,13 @@ class DefaultRedirectHandler extends CakeRedirectHandler
         }
 
         if ($options['queryParam'] !== null) {
-            $url['?'][$options['queryParam']] = (string)$request->getUri();
+            $redirectUri = $request->getUri();
+            $redirect = $redirectUri->getPath();
+            if ($redirectUri->getQuery()) {
+                $redirect .= '?' . $redirectUri->getQuery();
+            }
+            
+            $url['?'][$options['queryParam']] = $redirect;
         }
 
         return Router::url($url);
