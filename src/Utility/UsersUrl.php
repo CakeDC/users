@@ -86,7 +86,7 @@ class UsersUrl
      */
     public static function checkActionOnRequest($action, ServerRequest $request)
     {
-        $route = static::actionParams($action);
+        $route = static::actionUrl($action);
         foreach ($route as $param => $value) {
             if ($request->getParam($param, null) !== $value) {
                 return false;
