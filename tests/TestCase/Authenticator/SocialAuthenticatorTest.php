@@ -26,8 +26,8 @@ use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\SocialAuthenticationException;
 use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Model\Entity\User;
-use League\OAuth2\Client\Provider\FacebookUser;
 use Laminas\Diactoros\Uri;
+use League\OAuth2\Client\Provider\FacebookUser;
 
 /**
  * Test Case for SocialAuthenticator class

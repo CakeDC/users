@@ -26,9 +26,9 @@ use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\SocialAuthenticationException;
 use CakeDC\Users\Middleware\SocialAuthMiddleware;
 use Doctrine\Instantiator\Exception\UnexpectedValueException;
+use Laminas\Diactoros\Uri;
 use League\OAuth2\Client\Provider\FacebookUser;
 use TestApp\Http\TestRequestHandler;
-use Laminas\Diactoros\Uri;
 
 class SocialAuthMiddlewareTest extends TestCase
 {
