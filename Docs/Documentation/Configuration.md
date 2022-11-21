@@ -174,6 +174,7 @@ user identify. Add this to your config/users.php:
 ```php
 'Auth.Identifiers.Password.fields.username' => 'email',
 'Auth.Authenticators.Form.fields.username' => 'email',
+'Auth.Authenticators.Cookie.fields.username' => 'email',
 ```
 
 * Override the login.php template to change the Form->control to "email".
