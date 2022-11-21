@@ -48,7 +48,7 @@
         "php-coveralls/php-coveralls": "^2.1",
         "league/oauth1-client": "^1.7",
         "cakephp/cakephp-codesniffer": "^4.0",
-        "web-auth/webauthn-lib": "v3.3.x-dev",
+        "web-auth/webauthn-lib": "^3.3",
         "thenetworg/oauth2-azure": "^2.1"
     },
     "suggest": {
