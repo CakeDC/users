@@ -48,7 +48,8 @@
         "php-coveralls/php-coveralls": "^2.1",
         "league/oauth1-client": "^1.7",
         "cakephp/cakephp-codesniffer": "^4.0",
-        "web-auth/webauthn-lib": "v3.3.x-dev"
+        "web-auth/webauthn-lib": "^3.3",
+        "thenetworg/oauth2-azure": "^2.1"
     },
     "suggest": {
         "league/oauth1-client": "Provides Social Authentication with Twitter",
@@ -59,7 +60,8 @@
         "league/oauth2-linkedin": "Provides Social Authentication with LinkedIn",
         "google/recaptcha": "Provides reCAPTCHA validation for registration form",
         "robthree/twofactorauth": "Provides Google Authenticator functionality",
-        "cakephp/authorization": "Provide authorization for users"
+        "cakephp/authorization": "Provide authorization for users",
+        "thenetworg/oauth2-azure": "Provides Social Authentication with MS Azure"
     },
     "autoload": {
         "psr-4": {
@@ -94,5 +96,10 @@
         "rector": "rector process src/",
         "rector-setup": "cp composer.json composer.backup && composer require --dev rector/rector:^0.11.2 && mv composer.backup composer.json",
         "coverage-test": "phpunit --stderr --coverage-clover=clover.xml"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": false
+        }
     }
 }

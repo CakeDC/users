@@ -20,8 +20,8 @@ use Cake\Http\ServerRequest;
 use Cake\Http\ServerRequestFactory;
 use Cake\I18n\FrozenTime;
 use Cake\ORM\TableRegistry;
+use Laminas\Diactoros\Uri;
 use League\OAuth2\Client\Provider\FacebookUser;
-use Zend\Diactoros\Uri;
 
 class LinkSocialTraitTest extends BaseTraitTest
 {
