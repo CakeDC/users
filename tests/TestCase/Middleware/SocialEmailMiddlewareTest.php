@@ -22,7 +22,7 @@ use Cake\TestSuite\TestCase;
 use CakeDC\Auth\Social\Mapper\Facebook;
 use CakeDC\Users\Middleware\SocialEmailMiddleware;
 use League\OAuth2\Client\Provider\FacebookUser;
-use Zend\Diactoros\Uri;
+use Laminas\Diactoros\Uri;
 
 class SocialEmailMiddlewareTest extends TestCase
 {
