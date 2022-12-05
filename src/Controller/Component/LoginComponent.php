@@ -66,6 +66,11 @@ class LoginComponent extends Component
         if (!$service) {
             throw new \UnexpectedValueException('Authentication service not found in this request');
         }
+        $eventBefore = $this->getController()->dispatchEvent(Plugin::EVENT_BEFORE_LOGIN, []);
+        if (is_array($eventBefore->getResult())) {
+            return $this->getController()->redirect($eventBefore->getResult());
+        }
+
         $result = $service->getResult();
         if ($result->isValid()) {
             $user = $request->getAttribute('identity')->getOriginalData();
@@ -75,6 +80,7 @@ class LoginComponent extends Component
             return $this->afterIdentifyUser($user);
         }
         if ($request->is('post') || $errorOnlyPost === false) {
+            $this->getController()->dispatchEvent(Plugin::EVENT_AFTER_LOGIN_FAILURE, ['result' => $result]);
             return $this->handleFailure($redirectFailure);
         }
 
