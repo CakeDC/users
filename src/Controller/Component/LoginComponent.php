@@ -81,6 +81,7 @@ class LoginComponent extends Component
         }
         if ($request->is('post') || $errorOnlyPost === false) {
             $this->getController()->dispatchEvent(Plugin::EVENT_AFTER_LOGIN_FAILURE, ['result' => $result]);
+
             return $this->handleFailure($redirectFailure);
         }
 
