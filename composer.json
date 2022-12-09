@@ -77,7 +77,7 @@
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true
         }
-    }
+    },
     "scripts": {
         "analyse": [
             "@stan",
