@@ -73,6 +73,11 @@
             "TestApp\\": "tests/test_app/TestApp/"
         }
     },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    }
     "scripts": {
         "analyse": [
             "@stan",
