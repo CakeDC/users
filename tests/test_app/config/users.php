@@ -2,6 +2,7 @@
 
 return [
     'Users.Social.login' => true,
+    'Users.Superuser.allowedToChangeRoles' => false,
     'Auth.AuthenticationComponent.loginRedirect' => '/pages/home',
     'OAuth.providers.facebook.options.clientId' => '1010101010101010',
     'OAuth.providers.facebook.options.clientSecret' => 'ABABABABABABABABA',

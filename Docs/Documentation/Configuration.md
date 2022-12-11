@@ -120,7 +120,10 @@ NOTE: SOME keys were hidden in this doc page, please refer to `vendor/cakedc/use
             // configure Remember Me component
             'active' => true,
         ],
-        'Superuser' => ['allowedToChangePasswords' => false], // able to reset any users password
+        'Superuser' => [
+            'allowedToChangePasswords' => false,// able to reset any users password
+            'allowedToChangeRoles' => false // able to change user roles
+        ],
     ],
     //Default authentication/authorization setup
     'Auth' => [

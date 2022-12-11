@@ -36,6 +36,7 @@
                 <td class="actions">
                     <?= $this->Html->link(__d('cake_d_c/users', 'View'), ['action' => 'view', $user->id]) ?>
                     <?= $this->Html->link(__d('cake_d_c/users', 'Change password'), ['action' => 'changePassword', $user->id]) ?>
+                    <?= $this->Html->link(__d('cake_d_c/users', 'Change role'), ['action' => 'changeRole', $user->id]) ?>
                     <?= $this->Html->link(__d('cake_d_c/users', 'Edit'), ['action' => 'edit', $user->id]) ?>
                     <?= $this->Form->postLink(__d('cake_d_c/users', 'Delete'), ['action' => 'delete', $user->id], ['confirm' => __d('cake_d_c/users', 'Are you sure you want to delete # {0}?', $user->id)]) ?>
                 </td>

@@ -39,6 +39,7 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
     public const EVENT_BEFORE_REGISTER = 'Users.Global.beforeRegister';
     public const EVENT_AFTER_REGISTER = 'Users.Global.afterRegister';
     public const EVENT_AFTER_CHANGE_PASSWORD = 'Users.Global.afterResetPassword';
+    public const EVENT_AFTER_CHANGE_ROLE = 'Users.Global.afterRoleChanged';
     public const EVENT_BEFORE_SOCIAL_LOGIN_USER_CREATE = 'Users.Global.beforeSocialLoginUserCreate';
     public const EVENT_BEFORE_SOCIAL_LOGIN_REDIRECT = 'Users.Global.beforeSocialLoginRedirect';
     public const EVENT_SOCIAL_LOGIN_EXISTING_ACCOUNT = 'Users.Global.socialLoginExistingAccount';
