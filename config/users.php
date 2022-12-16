@@ -224,7 +224,6 @@ $config = [
         'AuthorizationMiddleware' => [
             'unauthorizedHandler' => [
                 'className' => 'CakeDC/Users.DefaultRedirect',
-                'addUnauthorizedUrlinFlashMessage' => true,
             ],
         ],
         'AuthorizationComponent' => [

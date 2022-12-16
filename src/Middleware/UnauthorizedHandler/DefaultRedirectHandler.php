@@ -111,7 +111,7 @@ class DefaultRedirectHandler extends CakeRedirectHandler
         $message = (array)($options['flash'] ?? []);
 
         $unauthorizedUrl = '';
-        if (Configure::read('Auth.AuthorizationMiddleware.unauthorizedHandler.addUnauthorizedUrlinFlashMessage')){
+        if (Configure::read('debug')) {
             $unauthorizedUrl = __d('cake_d_c/users', 'Location = ') . (string)$options['request']->getUri();
         }
 
