@@ -113,7 +113,7 @@ class DefaultRedirectHandler extends CakeRedirectHandler
         $unauthorizedUrl = '';
         if (Configure::read('debug')) {
             $unauthorizedUrl = __d('cake_d_c/users', 'Location = ') . (string)$options['request']->getUri();
-        }
+        };
 
         return $message + [
             'message' => __d('cake_d_c/users', 'You are not authorized to access that location.') . $unauthorizedUrl,
