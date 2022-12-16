@@ -54,7 +54,7 @@ class LoginTraitIntegrationTest extends TestCase
      */
     public function testRedirectToLogin()
     {
-        Configure::write('debug',false);
+        Configure::write('debug', false);
         $this->enableRetainFlashMessages();
         $this->get('/pages/home');
 
@@ -64,7 +64,7 @@ class LoginTraitIntegrationTest extends TestCase
 
     public function testRedirectToLoginDebug()
     {
-        Configure::write('debug',true);
+        Configure::write('debug', true);
         $this->enableRetainFlashMessages();
         $this->get('/pages/home');
 
