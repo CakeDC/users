@@ -46,7 +46,7 @@ class SetupComponentTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->Controller = new Controller();
+        $this->Controller = new Controller(new \Cake\Http\ServerRequest());
     }
 
     /**

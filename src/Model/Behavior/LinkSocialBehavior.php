@@ -27,7 +27,7 @@ class LinkSocialBehavior extends Behavior
      *
      * @var array
      */
-    protected $_defaultConfig = [];
+    protected array $_defaultConfig = [];
 
     /**
      * Link an user account with a social account (facebook, google)

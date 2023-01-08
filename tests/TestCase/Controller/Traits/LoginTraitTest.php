@@ -102,7 +102,7 @@ class LoginTraitTest extends BaseTraitTest
             ->with($this->successLoginRedirect)
             ->will($this->returnValue(new Response()));
 
-        $registry = new ComponentRegistry();
+        $registry = new ComponentRegistry(new \Cake\Controller\Controller(new \Cake\Http\ServerRequest()));
         $config = [
             'component' => 'CakeDC/Users.Login',
             'defaultMessage' => __d('cake_d_c/users', 'Username or password is incorrect'),
@@ -182,7 +182,7 @@ class LoginTraitTest extends BaseTraitTest
             ->with($this->successLoginRedirect)
             ->will($this->returnValue(new Response()));
 
-        $registry = new ComponentRegistry();
+        $registry = new ComponentRegistry(new \Cake\Controller\Controller(new \Cake\Http\ServerRequest()));
         $config = [
             'component' => 'CakeDC/Users.Login',
             'defaultMessage' => __d('cake_d_c/users', 'Username or password is incorrect'),
@@ -246,7 +246,7 @@ class LoginTraitTest extends BaseTraitTest
 
         $this->_mockAuthentication();
 
-        $registry = new ComponentRegistry();
+        $registry = new ComponentRegistry(new \Cake\Controller\Controller(new \Cake\Http\ServerRequest()));
         $config = [
             'component' => 'CakeDC/Users.Login',
             'defaultMessage' => __d('cake_d_c/users', 'Username or password is incorrect'),
@@ -421,7 +421,7 @@ class LoginTraitTest extends BaseTraitTest
             ->method('error')
             ->with($message);
 
-        $registry = new ComponentRegistry();
+        $registry = new ComponentRegistry(new \Cake\Controller\Controller(new \Cake\Http\ServerRequest()));
         $Login = $this->getMockBuilder(LoginComponent::class)
             ->setMethods(['getController'])
             ->setConstructorArgs([$registry, $failureConfig])
@@ -498,7 +498,7 @@ class LoginTraitTest extends BaseTraitTest
             ->with($this->successLoginRedirect)
             ->will($this->returnValue(new Response()));
 
-        $registry = new ComponentRegistry();
+        $registry = new ComponentRegistry(new \Cake\Controller\Controller(new \Cake\Http\ServerRequest()));
         $config = [
             'component' => 'CakeDC/Users.Login',
             'defaultMessage' => __d('cake_d_c/users', 'Could not proceed with social account. Please try again'),

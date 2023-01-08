@@ -25,7 +25,7 @@ class SocialAccount extends Entity
      *
      * @var array
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         '*' => true,
         'id' => false,
     ];
@@ -35,7 +35,7 @@ class SocialAccount extends Entity
      *
      * @var array
      */
-    protected $_hidden = [
+    protected array $_hidden = [
         'token',
         'token_secret',
         'token_expires',

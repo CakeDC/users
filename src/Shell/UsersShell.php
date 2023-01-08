@@ -32,7 +32,7 @@ class UsersShell extends Shell
      *
      * @var array
      */
-    protected $_usernameSeed = [
+    protected array $_usernameSeed = [
         'aayla', 'admiral', 'anakin', 'chewbacca',
         'darthvader', 'hansolo', 'luke', 'obiwan', 'leia', 'r2d2',
     ];

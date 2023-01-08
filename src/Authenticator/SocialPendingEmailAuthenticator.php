@@ -46,7 +46,7 @@ class SocialPendingEmailAuthenticator extends AbstractAuthenticator
      *
      * @var array
      */
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'loginUrl' => [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',

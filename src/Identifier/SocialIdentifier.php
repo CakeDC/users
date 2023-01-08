@@ -33,7 +33,7 @@ class SocialIdentifier extends AbstractIdentifier
      *
      * @var array
      */
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'authFinder' => 'active',
     ];
 

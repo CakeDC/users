@@ -36,7 +36,7 @@ class LoginComponent extends Component
      *
      * @var array
      */
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'defaultMessage' => null,
         'messages' => [],
         'targetAuthenticator' => null,

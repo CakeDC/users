@@ -57,7 +57,7 @@ class UsersTable extends Table
      * @param \Cake\Database\Schema\TableSchemaInterface $schema The table definition fetched from database.
      * @return \Cake\Database\Schema\TableSchemaInterface the altered schema
      */
-    protected function _initializeSchema(TableSchemaInterface $schema): TableSchemaInterface
+    public function getSchema(): TableSchemaInterface
     {
         $schema->setColumnType('additional_data', 'json');
 
