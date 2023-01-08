@@ -26,9 +26,10 @@ class Plugin extends BasePlugin
     /**
      * Plugin name.
      *
-     * @var string
+     * @var string|null
      */
-    protected $name = 'CakeDC/Users';
+    protected ?string $name = 'CakeDC/Users';
+
     public const EVENT_BEFORE_LOGIN = 'Users.Authentication.beforeLogin';
     public const EVENT_AFTER_LOGIN = 'Users.Authentication.afterLogin';
     public const EVENT_AFTER_LOGIN_FAILURE = 'Users.Authentication.afterLoginFailure';

@@ -32,9 +32,7 @@ class LoginComponent extends Component
     use IsAuthorizedTrait;
 
     /**
-     * Default configuration.
-     *
-     * @var array
+     * @inheritdoc
      */
     protected array $_defaultConfig = [
         'defaultMessage' => null,
@@ -235,7 +233,7 @@ class LoginComponent extends Component
      */
     protected function updateLastLogin($user)
     {
-        $now = \Cake\I18n\FrozenTime::now();
+        $now = \Cake\I18n\DateTime::now();
         $user->set('last_login', $now);
         $this->getController()->getUsersTable()->updateAll(
             ['last_login' => $now],

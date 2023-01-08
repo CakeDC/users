@@ -21,9 +21,7 @@ use Cake\ORM\Entity;
 class SocialAccount extends Entity
 {
     /**
-     * Fields that can be mass assigned using newEntity() or patchEntity().
-     *
-     * @var array
+     * @inheritdoc
      */
     protected array $_accessible = [
         '*' => true,
@@ -31,9 +29,7 @@ class SocialAccount extends Entity
     ];
 
     /**
-     * Fields that are excluded from JSON an array versions of the entity.
-     *
-     * @var array
+     * @inheritdoc
      */
     protected array $_hidden = [
         'token',

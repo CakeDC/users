@@ -66,16 +66,6 @@ parameters:
 			path: src/Controller/UsersController.php
 
 		-
-			message: "#^Parameter \\#1 \\$message of method Cake\\\\Controller\\\\Controller\\:\\:log\\(\\) expects string, Exception given\\.$#"
-			count: 1
-			path: src/Controller/UsersController.php
-
-		-
-			message: "#^Parameter \\#1 \\$object of method Cake\\\\Controller\\\\Controller\\:\\:paginate\\(\\) expects Cake\\\\ORM\\\\Query\\|Cake\\\\ORM\\\\Table\\|string\\|null, Cake\\\\Datasource\\\\RepositoryInterface given\\.$#"
-			count: 1
-			path: src/Controller/UsersController.php
-
-		-
 			message: "#^Parameter \\#2 \\$options of method Cake\\\\Controller\\\\Component\\\\FlashComponent\\:\\:error\\(\\) expects array, string given\\.$#"
 			count: 1
 			path: src/Controller/UsersController.php
@@ -191,27 +181,7 @@ parameters:
 			path: src/Model/Behavior/RegisterBehavior.php
 
 		-
-			message: "#^Cannot call method tokenExpired\\(\\) on array\\|Cake\\\\Datasource\\\\EntityInterface\\.$#"
-			count: 1
-			path: src/Model/Behavior/RegisterBehavior.php
-
-		-
 			message: "#^Access to an undefined property CakeDC\\\\Users\\\\Model\\\\Entity\\\\SocialAccount\\:\\:\\$active\\.$#"
-			count: 1
-			path: src/Model/Behavior/SocialAccountBehavior.php
-
-		-
-			message: "#^Cannot access property \\$active on array\\|Cake\\\\Datasource\\\\EntityInterface\\.$#"
-			count: 2
-			path: src/Model/Behavior/SocialAccountBehavior.php
-
-		-
-			message: "#^Cannot access property \\$token on array\\|Cake\\\\Datasource\\\\EntityInterface\\.$#"
-			count: 1
-			path: src/Model/Behavior/SocialAccountBehavior.php
-
-		-
-			message: "#^Cannot access property \\$user on array\\|Cake\\\\Datasource\\\\EntityInterface\\.$#"
 			count: 1
 			path: src/Model/Behavior/SocialAccountBehavior.php
 
@@ -222,11 +192,6 @@ parameters:
 
 		-
 			message: "#^Method CakeDC\\\\Users\\\\Model\\\\Behavior\\\\SocialAccountBehavior\\:\\:validateAccount\\(\\) should return CakeDC\\\\Users\\\\Model\\\\Entity\\\\User but returns Cake\\\\Datasource\\\\EntityInterface\\.$#"
-			count: 1
-			path: src/Model/Behavior/SocialAccountBehavior.php
-
-		-
-			message: "#^Parameter \\#1 \\$socialAccount of method CakeDC\\\\Users\\\\Model\\\\Behavior\\\\SocialAccountBehavior\\:\\:_activateAccount\\(\\) expects CakeDC\\\\Users\\\\Model\\\\Entity\\\\SocialAccount, array\\|Cake\\\\Datasource\\\\EntityInterface given\\.$#"
 			count: 1
 			path: src/Model/Behavior/SocialAccountBehavior.php
 

@@ -25,7 +25,7 @@ class AuthLinkHelper extends HtmlHelper
 {
     use IsAuthorizedTrait;
 
-    public $helpers = ['Url', 'Form'];
+    protected array $helpers = ['Url', 'Form'];
 
     /**
      * Generate a link if the target url is authorized for the logged in user

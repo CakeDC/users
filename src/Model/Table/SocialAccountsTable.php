@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Model\Table;
 
-use Cake\ORM\Query;
+use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -123,10 +123,10 @@ class SocialAccountsTable extends Table
     /**
      * Finder for active social accounts
      *
-     * @param \Cake\ORM\Query $query query
-     * @return \Cake\ORM\Query
+     * @param \Cake\ORM\Query\SelectQuery $query query
+     * @return \Cake\ORM\Query\SelectQuery
      */
-    public function findActive(Query $query)
+    public function findActive(SelectQuery $query)
     {
         return $query->where([
             $this->aliasField('active') => true,

@@ -28,7 +28,7 @@ use CakeDC\Users\Controller\Traits\Webauthn2faTrait;
  * Users Controller
  *
  * @property \CakeDC\Users\Model\Table\UsersTable $Users
- * @property \Cake\Controller\Component\SecurityComponent $Security
+ * @property \Cake\Controller\Component\FormProtectionComponent|null $FormProtection
  */
 class UsersController extends AppController
 {
@@ -51,8 +51,8 @@ class UsersController extends AppController
     public function initialize(): void
     {
         parent::initialize();
-        if ($this->components()->has('Security')) {
-            $this->Security->setConfig(
+        if ($this->components()->has('FormProtection')) {
+            $this->FormProtection->setConfig(
                 'unlockedActions',
                 [
                     'login',

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace CakeDC\Users\Model\Behavior;
 
 use Cake\ORM\Behavior;
-use Cake\ORM\Query;
+use Cake\ORM\Query\SelectQuery;
 
 /**
  * Implement finders used by Auth
@@ -24,10 +24,10 @@ class AuthFinderBehavior extends Behavior
     /**
      * Custom finder to filter active users
      *
-     * @param \Cake\ORM\Query $query Query object to modify
-     * @return \Cake\ORM\Query
+     * @param \Cake\ORM\Query\SelectQuery $query Query object to modify
+     * @return \Cake\ORM\Query\SelectQuery
      */
-    public function findActive(Query $query)
+    public function findActive(SelectQuery $query)
     {
         $query->where([$this->_table->aliasField('active') => 1]);
 
@@ -37,12 +37,12 @@ class AuthFinderBehavior extends Behavior
     /**
      * Custom finder to log in users
      *
-     * @param \Cake\ORM\Query $query Query object to modify
+     * @param \Cake\ORM\Query\SelectQuery $query Query object to modify
      * @param array $options Query options
-     * @return \Cake\ORM\Query
+     * @return \Cake\ORM\Query\SelectQuery
      * @throws \BadMethodCallException
      */
-    public function findAuth(Query $query, array $options = [])
+    public function findAuth(SelectQuery $query, array $options = [])
     {
         $identifier = $options['username'] ?? null;
         if (empty($identifier)) {

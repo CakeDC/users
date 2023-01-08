@@ -107,7 +107,8 @@ trait PasswordManagementTrait
                     $result = $this->getUsersTable()->changePassword($user);
                     if ($result) {
                         $event = $this->dispatchEvent(Plugin::EVENT_AFTER_CHANGE_PASSWORD, ['user' => $result]);
-                        if (!empty($event) && is_array($event->getResult())) {
+                        $eventResult = $event->getResult();
+                        if (!empty($eventResult) && is_array($eventResult)) {
                             return $this->redirect($event->getResult());
                         }
                         $this->Flash->success(__d('cake_d_c/users', 'Password has been changed successfully'));
@@ -195,8 +196,8 @@ trait PasswordManagementTrait
     {
         if ($this->getRequest()->is('post')) {
             try {
-                $query = $this->getUsersTable()->query();
-                $query->update()
+                $query = $this->getUsersTable()
+                    ->updateQuery()
                     ->set(['secret_verified' => false, 'secret' => null])
                     ->where(['id' => $id]);
                 $query->execute();

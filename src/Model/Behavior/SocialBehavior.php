@@ -159,7 +159,7 @@ class SocialBehavior extends BaseTokenBehavior
      * data to create a new one
      *
      * @param array $data Array social login.
-     * @param \Cake\Datasource\EntityInterface $existingUser user data.
+     * @param \Cake\Datasource\EntityInterface|null $existingUser user data.
      * @param string $useEmail email to use.
      * @param string $validateEmail email to validate.
      * @param string $tokenExpiration token_expires data.
@@ -195,9 +195,9 @@ class SocialBehavior extends BaseTokenBehavior
                     $userData['username'] = Hash::get($email, 0);
                 } else {
                     $firstName = $userData['first_name'] ?? null;
-                    $lastName = $userData['last_name'] ?? null;
+                    $lastName = $userData['last_name'];
                     $userData['username'] = strtolower($firstName . $lastName);
-                    $userData['username'] = preg_replace('/[^A-Za-z0-9]/i', '', $userData['username'] ?? null);
+                    $userData['username'] = preg_replace('/[^A-Za-z0-9]/i', '', $userData['username']);
                 }
             }
 
@@ -260,11 +260,11 @@ class SocialBehavior extends BaseTokenBehavior
     /**
      * Prepare a query to retrieve existing entity for social login
      *
-     * @param \Cake\ORM\Query $query The base query.
+     * @param \Cake\ORM\Query\SelectQuery $query The base query.
      * @param array $options Find options with email key.
-     * @return \Cake\ORM\Query
+     * @return \Cake\ORM\Query\SelectQuery
      */
-    public function findExistingForSocialLogin(\Cake\ORM\Query $query, array $options)
+    public function findExistingForSocialLogin(\Cake\ORM\Query\SelectQuery $query, array $options)
     {
         return $query->where([
             $this->_table->aliasField('email') => $options['email'],
