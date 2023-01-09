@@ -94,6 +94,7 @@ class AuthenticationServiceProviderTest extends TestCase
                 'identify' => true,
                 'identityAttribute' => 'identity',
                 'skipTwoFactorVerify' => true,
+                'impersonateSessionKey' => 'AuthImpersonate',
             ],
             FormAuthenticator::class => [
                 'loginUrl' => '/login',
@@ -135,6 +136,7 @@ class AuthenticationServiceProviderTest extends TestCase
                 'tokenField' => 'api_token',
                 'dataField' => 'token',
                 'resolver' => 'Authentication.Orm',
+                'hashAlgorithm' => null,
             ],
             JwtSubjectIdentifier::class => [
                 'tokenField' => 'id',
@@ -188,6 +190,7 @@ class AuthenticationServiceProviderTest extends TestCase
                 'sessionKey' => 'CustomAuth',
                 'fields' => ['username' => 'email'],
                 'identify' => true,
+                'impersonateSessionKey' => 'AuthImpersonate',
             ],
             'Form' => [
                 'className' => 'CakeDC/Auth.Form',
@@ -227,6 +230,7 @@ class AuthenticationServiceProviderTest extends TestCase
                 'identify' => true,
                 'identityAttribute' => 'identity',
                 'skipTwoFactorVerify' => true,
+                'impersonateSessionKey' => 'AuthImpersonate',
             ],
             FormAuthenticator::class => [
                 'loginUrl' => '/login',
