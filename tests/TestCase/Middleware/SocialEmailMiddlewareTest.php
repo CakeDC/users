@@ -26,7 +26,7 @@ use League\OAuth2\Client\Provider\FacebookUser;
 
 class SocialEmailMiddlewareTest extends TestCase
 {
-    public $fixtures = [
+    protected array $fixtures = [
         'plugin.CakeDC/Users.Users',
         'plugin.CakeDC/Users.SocialAccounts',
     ];

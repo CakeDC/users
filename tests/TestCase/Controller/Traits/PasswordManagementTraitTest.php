@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
-use Cake\Auth\PasswordHasherFactory;
+use Authentication\PasswordHasher\PasswordHasherFactory;
 use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\TestSuite\TestCase;
@@ -72,7 +72,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
             ->method('success')
             ->with('Password has been changed successfully');
         $this->Trait->changePassword();
-        $hasher = PasswordHasherFactory::build('Default');
+        $hasher = PasswordHasherFactory::build('Authentication.Default');
         $this->assertTrue($hasher->check('new', $this->table->get('00000000-0000-0000-0000-000000000001')->password));
     }
 
@@ -130,7 +130,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
             ->method('success')
             ->with('Password has been changed successfully');
         $this->Trait->changePassword();
-        $hasher = PasswordHasherFactory::build('Default');
+        $hasher = PasswordHasherFactory::build('Authentication.Default');
         $this->assertTrue($hasher->check('new', $this->table->get('00000000-0000-0000-0000-000000000001')->password));
     }
 

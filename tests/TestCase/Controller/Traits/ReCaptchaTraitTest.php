@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
 use Cake\Core\Configure;
+use Cake\Http\ServerRequest;
 use Cake\TestSuite\TestCase;
 use ReflectionMethod;
 
@@ -29,6 +30,7 @@ class ReCaptchaTraitTest extends TestCase
         parent::setUp();
         $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\Traits\ReCaptchaTrait')
             ->setMethods(['_getReCaptchaInstance'])
+            ->setConstructorArgs([new ServerRequest()])
             ->getMockForTrait();
     }
 

@@ -28,7 +28,7 @@ class LoginTraitIntegrationTest extends TestCase
      *
      * @var array
      */
-    public $fixtures = [
+    protected array $fixtures = [
         'plugin.CakeDC/Users.Users',
     ];
 
@@ -72,6 +72,7 @@ class LoginTraitIntegrationTest extends TestCase
         });
 
         $this->get('/login');
+        file_put_contents(TMP . 'testLoginGetRequestNoSocialLogin.html', $this->_response->getBody());
         $this->assertResponseOk();
         $this->assertResponseNotContains('Username or password is incorrect');
         $this->assertResponseContains('<form method="post" accept-charset="utf-8" action="/login">');

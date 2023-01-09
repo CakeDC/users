@@ -26,7 +26,7 @@ class ProfileTraitIntegrationTest extends TestCase
      *
      * @var array
      */
-    public $fixtures = [
+    protected array $fixtures = [
         'plugin.CakeDC/Users.Users',
         'plugin.CakeDC/Users.SocialAccounts',
     ];

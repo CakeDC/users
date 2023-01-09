@@ -25,7 +25,7 @@ use CakeDC\Users\Model\Entity\User;
 
 class SocialPendingEmailAuthenticatorTest extends TestCase
 {
-    public $fixtures = [
+    protected array $fixtures = [
         'plugin.CakeDC/Users.Users',
         'plugin.CakeDC/Users.SocialAccounts',
     ];

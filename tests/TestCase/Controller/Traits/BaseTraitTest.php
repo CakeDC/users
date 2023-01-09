@@ -21,7 +21,8 @@ use Authentication\Identity;
 use Cake\Controller\ComponentRegistry;
 use Cake\Controller\Controller;
 use Cake\Event\Event;
-use Cake\Mailer\Email;
+use Cake\Http\ServerRequest;
+use Cake\Mailer\Mailer;
 use Cake\Mailer\TransportFactory;
 use Cake\ORM\Entity;
 use Cake\ORM\TableRegistry;
@@ -42,7 +43,7 @@ abstract class BaseTraitTest extends TestCase
      *
      * @var array
      */
-    public $fixtures = [
+    protected array $fixtures = [
         'plugin.CakeDC/Users.Users',
     ];
 
@@ -85,6 +86,7 @@ abstract class BaseTraitTest extends TestCase
         try {
             $this->Trait = $this->getMockBuilder($this->traitClassName)
                     ->setMethods($traitMockMethods)
+                    ->setConstructorArgs([new ServerRequest()])
                     ->getMock();
             $this->Trait->expects($this->any())
                     ->method('getUsersTable')
@@ -98,9 +100,9 @@ abstract class BaseTraitTest extends TestCase
             TransportFactory::setConfig('test', [
                 'className' => 'Debug',
             ]);
-            $this->configEmail = Email::getConfig('default');
-            Email::drop('default');
-            Email::setConfig('default', [
+            $this->configEmail = Mailer::getConfig('default');
+            Mailer::drop('default');
+            Mailer::setConfig('default', [
                 'transport' => 'test',
                 'from' => 'cakedc@example.com',
             ]);
@@ -116,9 +118,9 @@ abstract class BaseTraitTest extends TestCase
     {
         unset($this->table, $this->Trait);
         if ($this->mockDefaultEmail) {
-            Email::drop('default');
+            Mailer::drop('default');
             TransportFactory::drop('test');
-            //Email::setConfig('default', $this->setConfigEmail);
+            //Mailer::setConfig('default', $this->setConfigEmail);
         }
         parent::tearDown();
     }

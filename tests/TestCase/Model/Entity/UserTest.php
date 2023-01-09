@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Test\TestCase\Model\Entity;
 
-use Cake\Auth\DefaultPasswordHasher;
-use Cake\I18n\FrozenTime;
+use Authentication\PasswordHasher\DefaultPasswordHasher;
+use Cake\I18n\DateTime;
 use Cake\I18n\I18n;
 use Cake\TestSuite\TestCase;
 use CakeDC\Users\Model\Entity\User;
@@ -32,8 +32,8 @@ class UserTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->now = FrozenTime::now();
-        FrozenTime::setTestNow($this->now);
+        $this->now = DateTime::now();
+        DateTime::setTestNow($this->now);
         $this->User = new User();
     }
 
@@ -45,7 +45,7 @@ class UserTest extends TestCase
     public function tearDown(): void
     {
         unset($this->User);
-        FrozenTime::setTestNow();
+        DateTime::setTestNow();
 
         parent::tearDown();
     }

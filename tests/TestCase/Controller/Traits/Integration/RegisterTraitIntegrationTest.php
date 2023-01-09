@@ -26,7 +26,7 @@ class RegisterTraitIntegrationTest extends TestCase
      *
      * @var array
      */
-    public $fixtures = [
+    protected array $fixtures = [
         'plugin.CakeDC/Users.Users',
     ];
 

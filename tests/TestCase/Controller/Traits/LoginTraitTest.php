@@ -17,7 +17,7 @@ use Authentication\Authenticator\Result;
 use Authentication\Authenticator\SessionAuthenticator;
 use Authentication\Identifier\IdentifierCollection;
 use Authentication\Identifier\PasswordIdentifier;
-use Cake\Auth\DefaultPasswordHasher;
+use Authentication\PasswordHasher\DefaultPasswordHasher;
 use Cake\Controller\ComponentRegistry;
 use Cake\Event\Event;
 use Cake\Http\Response;
@@ -134,7 +134,7 @@ class LoginTraitTest extends BaseTraitTest
         $this->assertSame($passwordBefore, $passwordAfter);
         $lastLoginAfter = $userAfter['last_login'];
         $this->assertNotEmpty($lastLoginAfter);
-        $now = \Cake\I18n\FrozenTime::now();
+        $now = \Cake\I18n\DateTime::now();
         $this->assertEqualsWithDelta($lastLoginAfter->timestamp, $now->timestamp, 2);
     }
 

@@ -209,6 +209,6 @@ trait PasswordManagementTrait
             }
         }
 
-        return $this->redirect($this->getRequest()->referer());
+        return $this->redirect($this->getRequest()->referer() ?? '/');
     }
 }

@@ -26,7 +26,7 @@ class SocialAccountsTableTest extends TestCase
      *
      * @var array
      */
-    public $fixtures = [
+    protected array $fixtures = [
         'plugin.CakeDC/Users.SocialAccounts',
         'plugin.CakeDC/Users.Users',
     ];

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Test\TestCase\Model\Table;
 
-use Cake\Mailer\Email;
+use Cake\Mailer\Mailer;
 use Cake\Mailer\TransportFactory;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
@@ -31,7 +31,7 @@ class UsersTableTest extends TestCase
      *
      * @var array
      */
-    public $fixtures = [
+    protected array $fixtures = [
         'plugin.CakeDC/Users.Users',
         'plugin.CakeDC/Users.SocialAccounts',
     ];
@@ -49,7 +49,7 @@ class UsersTableTest extends TestCase
         Router::fullBaseUrl('http://users.test');
         TransportFactory::drop('test');
         TransportFactory::setConfig('test', ['className' => 'Debug']);
-        Email::setConfig('default', [
+        Mailer::setConfig('default', [
             'transport' => 'test',
             'from' => 'cakedc@example.com',
         ]);
@@ -64,7 +64,7 @@ class UsersTableTest extends TestCase
     {
         unset($this->Users);
         Router::fullBaseUrl($this->fullBaseBackup);
-        Email::drop('default');
+        Mailer::drop('default');
 
         parent::tearDown();
     }

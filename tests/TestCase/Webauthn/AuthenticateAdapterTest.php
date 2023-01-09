@@ -14,7 +14,7 @@ use Webauthn\PublicKeyCredentialSource;
 
 class AuthenticateAdapterTest extends TestCase
 {
-    public $fixtures = [
+    protected array $fixtures = [
         'plugin.CakeDC/Users.Users',
         'plugin.CakeDC/Users.SocialAccounts',
     ];

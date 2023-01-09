@@ -41,6 +41,7 @@ class OneTimePasswordVerifyTraitTest extends BaseTraitTest
         $request = new ServerRequest();
         $this->Trait = $this->getMockBuilder($this->traitClassName)
             ->setMethods(['dispatchEvent', 'redirect', 'set', 'getUsersTable'])
+            ->setConstructorArgs([new ServerRequest()])
             ->getMock();
 
         $this->Trait->setRequest($request);

@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace CakeDC\Users\Test\TestCase\Model\Behavior;
 
 use Cake\Core\Configure;
-use Cake\Mailer\Email;
 use Cake\Mailer\Mailer;
 use Cake\Mailer\TransportFactory;
 use Cake\ORM\TableRegistry;
@@ -38,7 +37,7 @@ class PasswordBehaviorTest extends TestCase
      *
      * @var array
      */
-    public $fixtures = [
+    protected array $fixtures = [
         'plugin.CakeDC/Users.Users',
     ];
 
@@ -57,7 +56,7 @@ class PasswordBehaviorTest extends TestCase
                 ->getMock();
         TransportFactory::drop('test');
         TransportFactory::setConfig('test', ['className' => 'Debug']);
-        //$this->configEmail = Email::getConfig('default');
+        //$this->configEmail = Mailer::getConfig('default');
         Mailer::drop('default');
         Mailer::setConfig('default', [
             'transport' => 'test',
@@ -73,7 +72,7 @@ class PasswordBehaviorTest extends TestCase
     public function tearDown(): void
     {
         unset($this->table, $this->Behavior);
-        Email::drop('default');
+        Mailer::drop('default');
         TransportFactory::drop('test');
         parent::tearDown();
     }

@@ -36,7 +36,7 @@ class Webauthn2faTraitTest extends BaseTraitTest
      *
      * @var array
      */
-    public $fixtures = [
+    protected array $fixtures = [
         'plugin.CakeDC/Users.Users',
     ];
 

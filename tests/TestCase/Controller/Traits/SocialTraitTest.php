@@ -41,6 +41,7 @@ class SocialTraitTest extends BaseTraitTest
         $request = new ServerRequest();
         $this->Trait = $this->getMockBuilder($this->traitClassName)
             ->setMethods(['dispatchEvent', 'redirect', 'set', 'loadComponent'])
+            ->setConstructorArgs([new ServerRequest()])
             ->getMock();
 
         $this->Trait->request = $request;
