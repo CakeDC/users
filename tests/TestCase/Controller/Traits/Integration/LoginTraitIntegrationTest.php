@@ -72,13 +72,12 @@ class LoginTraitIntegrationTest extends TestCase
         });
 
         $this->get('/login');
-        file_put_contents(TMP . 'testLoginGetRequestNoSocialLogin.html', $this->_response->getBody());
         $this->assertResponseOk();
         $this->assertResponseNotContains('Username or password is incorrect');
         $this->assertResponseContains('<form method="post" accept-charset="utf-8" action="/login">');
         $this->assertResponseContains('<legend>Please enter your username and password</legend>');
-        $this->assertResponseContains('<input type="text" name="username" required="required" id="username" aria-required="true"/>');
-        $this->assertResponseContains('<input type="password" name="password" required="required" id="password" aria-required="true"/>');
+        $this->assertResponseContains('<input type="text" name="username" required="required" id="username" aria-required="true">');
+        $this->assertResponseContains('<input type="password" name="password" required="required" id="password" aria-required="true">');
         $this->assertResponseContains('<input type="checkbox" name="remember_me" value="1" checked="checked" id="remember-me">');
         $this->assertResponseContains('<button type="submit">Login</button>');
         $this->assertResponseContains('<a href="/register">Register</a>');
@@ -103,8 +102,8 @@ class LoginTraitIntegrationTest extends TestCase
         $this->assertResponseNotContains('Username or password is incorrect');
         $this->assertResponseContains('<form method="post" accept-charset="utf-8" action="/login">');
         $this->assertResponseContains('<legend>Please enter your username and password</legend>');
-        $this->assertResponseContains('<input type="text" name="username" required="required" id="username" aria-required="true"/>');
-        $this->assertResponseContains('<input type="password" name="password" required="required" id="password" aria-required="true"/>');
+        $this->assertResponseContains('<input type="text" name="username" required="required" id="username" aria-required="true">');
+        $this->assertResponseContains('<input type="password" name="password" required="required" id="password" aria-required="true">');
         $this->assertResponseContains('<input type="checkbox" name="remember_me" value="1" checked="checked" id="remember-me">');
         $this->assertResponseContains('<button type="submit">Login</button>');
         $this->assertResponseContains('<a href="/register">Register</a>');
@@ -132,8 +131,8 @@ class LoginTraitIntegrationTest extends TestCase
         $this->assertResponseContains('Username or password is incorrect');
         $this->assertResponseContains('<form method="post" accept-charset="utf-8" action="/login">');
         $this->assertResponseContains('<legend>Please enter your username and password</legend>');
-        $this->assertResponseContains('<input type="text" name="username" required="required" id="username" aria-required="true" value="user-2"/>');
-        $this->assertResponseContains('<input type="password" name="password" required="required" id="password" aria-required="true" value="123456789"/>');
+        $this->assertResponseContains('<input type="text" name="username" required="required" id="username" aria-required="true" value="user-2">');
+        $this->assertResponseContains('<input type="password" name="password" required="required" id="password" aria-required="true" value="123456789">');
         $this->assertResponseContains('<input type="checkbox" name="remember_me" value="1" checked="checked" id="remember-me">');
         $this->assertResponseContains('<button type="submit">Login</button>');
     }

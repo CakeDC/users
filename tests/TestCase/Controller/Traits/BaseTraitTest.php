@@ -29,6 +29,7 @@ use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use CakeDC\Auth\Authentication\AuthenticationService;
 use CakeDC\Users\Model\Entity\User;
+use PHPUnit\Framework\MockObject\RuntimeException;
 use PHPUnit_Framework_MockObject_RuntimeException;
 
 /**
@@ -84,15 +85,16 @@ abstract class BaseTraitTest extends TestCase
         $traitMockMethods = array_unique(array_merge(['getUsersTable'], $this->traitMockMethods));
         $this->table = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
         try {
-            $this->Trait = $this->getMockBuilder($this->traitClassName)
-                    ->setMethods($traitMockMethods)
-                    ->setConstructorArgs([new ServerRequest()])
-                    ->getMock();
+            $buildTrait = $this->getMockBuilder($this->traitClassName)
+                ->setMethods($traitMockMethods);
+            if (class_exists($this->traitClassName)) {
+                $buildTrait = $buildTrait->setConstructorArgs([new ServerRequest()]);
+            }
+            $this->Trait = $buildTrait->getMock();
             $this->Trait->expects($this->any())
                     ->method('getUsersTable')
                     ->will($this->returnValue($this->table));
-        } catch (PHPUnit_Framework_MockObject_RuntimeException $ex) {
-            debug($ex);
+        } catch (RuntimeException $ex) {
             $this->fail('Unit tests extending BaseTraitTest should declare the trait class name in the $traitClassName variable before calling setUp()');
         }
 

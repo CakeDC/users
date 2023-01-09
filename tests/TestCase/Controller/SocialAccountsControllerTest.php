@@ -58,8 +58,9 @@ class SocialAccountsControllerTest extends TestCase
 
         $this->Controller = $this->getMockBuilder('CakeDC\Users\Controller\SocialAccountsController')
                 ->onlyMethods(['redirect', 'render'])
-                ->setConstructorArgs([$request, null, 'SocialAccounts'])
+                ->setConstructorArgs([$request, 'SocialAccounts'])
                 ->getMock();
+
     }
 
     /**

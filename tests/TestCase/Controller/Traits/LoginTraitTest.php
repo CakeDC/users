@@ -43,6 +43,7 @@ class LoginTraitTest extends BaseTraitTest
         $this->Trait->setRequest(new ServerRequest());
         $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\UsersController')
             ->setMethods(['dispatchEvent', 'redirect', 'set', 'loadComponent'])
+            ->setConstructorArgs([new ServerRequest()])
             ->getMock();
 
         $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')

@@ -113,6 +113,8 @@ Cake\Datasource\ConnectionManager::setConfig('test', [
     'timezone' => 'UTC',
 ]);
 
+\Cake\Database\TypeFactory::map('json', 'Cake\Database\Type\JsonType');
+
 class_alias('TestApp\Controller\AppController', 'App\Controller\AppController');
 
 \Cake\Core\Configure::write('App', [

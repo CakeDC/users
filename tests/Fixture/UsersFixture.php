@@ -47,7 +47,7 @@ class UsersFixture extends TestFixture
                 'role' => 'admin',
                 'created' => '2015-06-24 17:33:54',
                 'modified' => '2015-06-24 17:33:54',
-                'additional_data' => [
+                'additional_data' => \json_encode([
                     'u2f_registration' => [
                         'keyHandle' => 'fake key handle',
                         'publicKey' => 'afdoaj0-23u423-ad ujsf-as8-0-afsd',
@@ -71,7 +71,7 @@ class UsersFixture extends TestFixture
                             'otherUI' => null,
                         ],
                     ],
-                ],
+                ]),
                 'last_login' => '2015-06-24 17:33:54',
             ],
             [

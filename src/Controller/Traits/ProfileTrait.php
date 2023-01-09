@@ -53,11 +53,11 @@ trait ProfileTrait
         } catch (RecordNotFoundException $ex) {
             $this->Flash->error(__d('cake_d_c/users', 'User was not found'));
 
-            return $this->redirect($this->getRequest()->referer());
+            return $this->redirect($this->getRequest()->referer() ?? '/');
         } catch (InvalidPrimaryKeyException $ex) {
             $this->Flash->error(__d('cake_d_c/users', 'Not authorized, please login first'));
 
-            return $this->redirect($this->getRequest()->referer());
+            return $this->redirect($this->getRequest()->referer() ?? '/');
         }
         $this->set(['user' => $user, 'isCurrentUser' => $isCurrentUser]);
         $this->set('_serialize', ['user', 'isCurrentUser']);

@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
+/**
+ * @property \CakeDC\Users\Controller\Traits\ProfileTrait&\PHPUnit\Framework\MockObject\MockObject $Trait
+ */
 class ProfileTraitTest extends BaseTraitTest
 {
     /**

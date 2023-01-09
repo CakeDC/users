@@ -30,7 +30,6 @@ class ReCaptchaTraitTest extends TestCase
         parent::setUp();
         $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\Traits\ReCaptchaTrait')
             ->setMethods(['_getReCaptchaInstance'])
-            ->setConstructorArgs([new ServerRequest()])
             ->getMockForTrait();
     }
 

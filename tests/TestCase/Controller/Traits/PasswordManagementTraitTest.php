@@ -456,18 +456,6 @@ class PasswordManagementTraitTest extends BaseTraitTest
     {
         $this->_mockRequestPost();
         $this->_mockFlash();
-
-        $user = $this->table->get($userId);
-
-        $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
-            ->setMethods(['user', 'config'])
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->Trait->Auth->expects($this->any())
-            ->method('user')
-            ->will($this->returnValue($user));
-
         $this->Trait->Flash->expects($this->any())
             ->method($method)
             ->with($msg);

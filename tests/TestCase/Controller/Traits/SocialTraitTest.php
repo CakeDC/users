@@ -28,6 +28,16 @@ use CakeDC\Users\Controller\Component\LoginComponent;
 class SocialTraitTest extends BaseTraitTest
 {
     /**
+     * Fixtures
+     *
+     * @var array
+     */
+    public array $fixtures = [
+        'plugin.CakeDC/Users.SocialAccounts',
+        'plugin.CakeDC/Users.Users',
+    ];
+
+    /**
      * setup
      *
      * @return void
@@ -44,7 +54,7 @@ class SocialTraitTest extends BaseTraitTest
             ->setConstructorArgs([new ServerRequest()])
             ->getMock();
 
-        $this->Trait->request = $request;
+        $this->Trait->setRequest($request);
     }
 
     /**
