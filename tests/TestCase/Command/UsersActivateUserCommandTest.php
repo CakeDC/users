@@ -33,9 +33,6 @@ class UsersActivateUserCommandTest extends TestCase
      */
     public function testExecute(): void
     {
-        $this->exec('cake_d_c/users.users activate_user -h');
-        debug($this->_out->messages());exit;
-
         $UsersTable = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
         $userIdTarget = '00000000-0000-0000-0000-000000000003';
         $this->assertTrue($UsersTable->exists(['id' => $userIdTarget, 'active' => 0]));
