@@ -15,7 +15,7 @@ trait ChangeUserActiveTrait
      * @param \Cake\Console\Arguments $args The command arguments.
      * @param \Cake\Console\ConsoleIo $io The console io
      * @param bool $active active value
-     * @return bool
+     * @return \CakeDC\Users\Model\Entity\User
      */
     protected function _changeUserActive(Arguments $args, ConsoleIo $io, $active)
     {

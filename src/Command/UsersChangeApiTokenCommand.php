@@ -52,9 +52,6 @@ class UsersChangeApiTokenCommand extends Command
             'api_token' => $token,
         ];
         $savedUser = $this->_updateUser($io, $username, $data);
-        if (!$savedUser) {
-            $io->abort(__d('cake_d_c/users', 'User was not saved, check validation errors'));
-        }
         /**
          * @var \CakeDC\Users\Model\Entity\User $savedUser
          */

@@ -15,7 +15,7 @@ trait UpdateUserTrait
      * @param \Cake\Console\ConsoleIo $io The console io
      * @param string $username username
      * @param array $data data
-     * @return \CakeDC\Users\Model\Entity\User|bool
+     * @return \CakeDC\Users\Model\Entity\User
      */
     protected function _updateUser(ConsoleIo $io, $username, $data)
     {
