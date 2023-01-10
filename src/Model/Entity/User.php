@@ -31,6 +31,7 @@ use Cake\Utility\Security;
  * @property string $api_token
  * @property array|string $additional_data
  * @property \CakeDC\Users\Model\Entity\SocialAccount[] $social_accounts
+ * @property string $password
  */
 class User extends Entity
 {

@@ -35,6 +35,7 @@ use Cake\Validation\Validator;
  * @mixin \CakeDC\Users\Model\Behavior\RegisterBehavior
  * @mixin \CakeDC\Users\Model\Behavior\SocialAccountBehavior
  * @mixin \CakeDC\Users\Model\Behavior\SocialBehavior
+ * @property \CakeDC\Users\Model\Table\SocialAccountsTable $SocialAccounts
  */
 class UsersTable extends Table
 {
