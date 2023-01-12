@@ -38,7 +38,7 @@ class SocialBehavior extends BaseTokenBehavior
      *
      * @var string
      */
-    protected $_username = 'username';
+    protected string $_username = 'username';
 
     /**
      * Initialize an action instance
@@ -49,7 +49,7 @@ class SocialBehavior extends BaseTokenBehavior
     public function initialize(array $config): void
     {
         if (isset($config['username'])) {
-            $this->_username = $config['username'];
+            $this->_username = (string)$config['username'];
         }
 
         parent::initialize($config);
@@ -128,7 +128,7 @@ class SocialBehavior extends BaseTokenBehavior
     protected function _createSocialUser($data, $options = [])
     {
         $useEmail = $options['use_email'] ?? null;
-        $validateEmail = $options['validate_email'] ?? null;
+        $validateEmail = (bool)($options['validate_email'] ?? null);
         $tokenExpiration = $options['token_expiration'] ?? null;
         $existingUser = null;
         $email = $data['email'] ?? null;

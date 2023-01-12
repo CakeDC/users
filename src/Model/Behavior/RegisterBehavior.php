@@ -31,11 +31,11 @@ class RegisterBehavior extends BaseTokenBehavior
     /**
      * @var bool
      */
-    protected $validateEmail;
+    protected bool $validateEmail = true;
     /**
      * @var bool
      */
-    protected $useTos;
+    protected bool $useTos = true;
 
     /**
      * Constructor hook method.
@@ -60,7 +60,7 @@ class RegisterBehavior extends BaseTokenBehavior
      */
     public function register($user, $data, $options)
     {
-        $validateEmail = $options['validate_email'] ?? null;
+        $validateEmail = (bool)($options['validate_email'] ?? null);
         $tokenExpiration = $options['token_expiration'] ?? null;
         $validator = $options['validator'] ?? null;
         if (is_string($validator)) {

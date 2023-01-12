@@ -25,7 +25,7 @@ trait CustomUsersTableTrait
     /**
      * @var \Cake\ORM\Table|null
      */
-    protected $_usersTable = null;
+    protected ?Table $_usersTable = null;
 
     /**
      * Gets the users table instance

@@ -50,7 +50,7 @@ class UsersTable extends Table
      *
      * @var bool
      */
-    public $isValidateEmail = false;
+    public bool $isValidateEmail = false;
 
     /**
      * Field additional_data is json
