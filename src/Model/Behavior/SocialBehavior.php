@@ -161,7 +161,7 @@ class SocialBehavior extends BaseTokenBehavior
      * @param array $data Array social login.
      * @param \Cake\Datasource\EntityInterface|null $existingUser user data.
      * @param string $useEmail email to use.
-     * @param string $validateEmail email to validate.
+     * @param bool $validateEmail email to validate.
      * @param string $tokenExpiration token_expires data.
      * @return \Cake\Datasource\EntityInterface
      * @todo refactor
