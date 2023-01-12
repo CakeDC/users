@@ -26,7 +26,7 @@ class UsersAddUserCommand extends Command
     public function execute(Arguments $args, ConsoleIo $io)
     {
         $this->_createUser($args, $io, [
-            'role' => Configure::read('Users.Registration.defaultRole') ?: 'user'
+            'role' => Configure::read('Users.Registration.defaultRole') ?: 'user',
         ]);
     }
 

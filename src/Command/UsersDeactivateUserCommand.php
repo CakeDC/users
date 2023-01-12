@@ -51,5 +51,4 @@ class UsersDeactivateUserCommand extends Command
     {
         return 'users deactivate_user';
     }
-
 }

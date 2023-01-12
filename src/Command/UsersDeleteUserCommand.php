@@ -46,7 +46,6 @@ class UsersDeleteUserCommand extends Command
          */
         $UsersTable = $this->getTableLocator()->get('Users');
         /**
-         *
          * @var \Cake\Datasource\EntityInterface $user
          */
         $user = $UsersTable->find()->where(['username' => $username])->firstOrFail();
@@ -59,7 +58,6 @@ class UsersDeleteUserCommand extends Command
         }
         $io->out(__d('cake_d_c/users', 'The user {0} was deleted successfully', $username));
     }
-
 
     /**
      * @inheritDoc

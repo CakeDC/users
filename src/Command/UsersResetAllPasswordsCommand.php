@@ -38,7 +38,6 @@ class UsersResetAllPasswordsCommand extends Command
      */
     public function execute(Arguments $args, ConsoleIo $io)
     {
-        $io->out("Hello World");
         $password = $args->getArgumentAt(0);
 
         if (empty($password)) {
