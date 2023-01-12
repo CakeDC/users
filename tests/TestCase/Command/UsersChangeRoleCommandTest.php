@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Test\TestCase\Command;
 
-use App\Command\UsersChangeRoleCommand;
 use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
@@ -96,11 +95,11 @@ class UsersChangeRoleCommandTest extends TestCase
         return [
             [
                 'cake_d_c/users.users change_role user-4',
-                'Please enter a role.'
+                'Please enter a role.',
             ],
             [
                 'cake_d_c/users.users change_role',
-                'Please enter a username.'
+                'Please enter a username.',
             ],
         ];
     }

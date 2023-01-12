@@ -60,7 +60,6 @@ class SocialAccountsControllerTest extends TestCase
                 ->onlyMethods(['redirect', 'render'])
                 ->setConstructorArgs([$request, 'SocialAccounts'])
                 ->getMock();
-
     }
 
     /**

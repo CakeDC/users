@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Test\TestCase\Command;
 
-use App\Command\UsersAddUserCommand;
-use Cake\Console\CommandRunner;
 use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
 use Cake\Core\Configure;
 use Cake\Event\EventManager;
@@ -80,7 +78,7 @@ class UsersAddUserCommandTest extends TestCase
      */
     public function testExecuteCustomDefaultRole()
     {
-        EventManager::instance()->on('Console.buildCommands', function() {
+        EventManager::instance()->on('Console.buildCommands', function () {
             Configure::write('Users.Registration.defaultRole', 'emperor');
         });
         $UsersTable = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
@@ -113,7 +111,7 @@ class UsersAddUserCommandTest extends TestCase
      */
     public function testExecuteDefaultRole()
     {
-        EventManager::instance()->on('Console.buildCommands', function() {
+        EventManager::instance()->on('Console.buildCommands', function () {
             Configure::write('Users.Registration.defaultRole', false);
         });
         $UsersTable = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');

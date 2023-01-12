@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Test\TestCase\Command;
 
-use App\Command\UsersDeleteUserCommand;
 use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;

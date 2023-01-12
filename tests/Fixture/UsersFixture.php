@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Test\Fixture;
 
-use Base64Url\Base64Url;
 use Cake\TestSuite\Fixture\TestFixture;
 
 /**

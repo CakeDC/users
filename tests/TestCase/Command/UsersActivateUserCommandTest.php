@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Test\TestCase\Command;
 
-use App\Command\UsersActivateUserCommand;
 use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
@@ -19,7 +18,7 @@ class UsersActivateUserCommandTest extends TestCase
 
     /**
      * @inheritdoc
-    */
+     */
     protected array $fixtures = [
         'plugin.CakeDC/Users.Users',
         'plugin.CakeDC/Users.SocialAccounts',

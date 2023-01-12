@@ -30,7 +30,6 @@ use Cake\TestSuite\TestCase;
 use CakeDC\Auth\Authentication\AuthenticationService;
 use CakeDC\Users\Model\Entity\User;
 use PHPUnit\Framework\MockObject\RuntimeException;
-use PHPUnit_Framework_MockObject_RuntimeException;
 
 /**
  * Class BaseTraitTest

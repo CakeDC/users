@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Test\TestCase\Command;
 
-use App\Command\UsersChangeApiTokenCommand;
 use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
@@ -16,6 +15,7 @@ use Cake\TestSuite\TestCase;
 class UsersChangeApiTokenCommandTest extends TestCase
 {
     use ConsoleIntegrationTestTrait;
+
     /**
      * @inheritdoc
      */
@@ -95,11 +95,11 @@ class UsersChangeApiTokenCommandTest extends TestCase
         return [
             [
                 'cake_d_c/users.users change_api_token user-4',
-                'Please enter a token.'
+                'Please enter a token.',
             ],
             [
                 'cake_d_c/users.users change_api_token',
-                'Please enter a username.'
+                'Please enter a username.',
             ],
         ];
     }
