@@ -87,8 +87,8 @@
             "@test",
             "@analyse"
         ],
-        "cs-check": "phpcs -n -p --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests",
-        "cs-fix": "phpcbf --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests",
+        "cs-check": "phpcs -n -p ./src ./tests",
+        "cs-fix": "phpcbf ./src ./tests",
         "test": "phpunit --stderr",
         "stan": "phpstan analyse src/",
         "psalm": "php vendor/psalm/phar/psalm.phar --show-info=false src/ ",
