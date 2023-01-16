@@ -82,9 +82,13 @@ class AuthenticationServiceLoader
      */
     protected function loadTwoFactorAuthenticator($service)
     {
+        $u2fEnabled = Configure::read('U2f.enabled') !== false;
+        if ($u2fEnabled) {
+            trigger_error('U2F is no longer supported by chrome, use Webauthn instead.', E_USER_DEPRECATED);
+        }
         if (
             Configure::read('OneTimePasswordAuthenticator.login') !== false
-            || Configure::read('U2f.enabled') !== false
+            || $u2fEnabled
         ) {
             $service->loadAuthenticator('CakeDC/Auth.TwoFactor', [
                 'skipTwoFactorVerify' => true,
