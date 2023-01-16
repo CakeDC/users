@@ -1,8 +1,7 @@
 YubicoKey U2F
 =============
 
-The plugin offers an easy way to integrate U2F in the users login flow
-of your application.
+**U2F is no longer supported by chrome, we suggest using Webauthn as a replacement**
 
 Enabling
 --------
