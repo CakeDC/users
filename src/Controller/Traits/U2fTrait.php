@@ -23,6 +23,7 @@ use u2flib_server\U2F;
  *
  * @package App\Controller\Traits
  * @mixin \Cake\Controller\Controller
+ * @deprecated U2F is no longer supported by chrome, use Webauthn instead.
  */
 trait U2fTrait
 {
@@ -49,6 +50,7 @@ trait U2fTrait
      */
     public function u2f()
     {
+        trigger_error('U2F is no longer supported by chrome, use Webauthn instead.', E_USER_DEPRECATED);
         $data = $this->getU2fData();
         if (!$data['valid']) {
             return $this->redirectWithQuery([
@@ -74,6 +76,7 @@ trait U2fTrait
      */
     public function u2fRegister()
     {
+        trigger_error('U2F is no longer supported by chrome, use Webauthn instead.', E_USER_DEPRECATED);
         $data = $this->getU2fData();
         if (!$data['valid']) {
             return $this->redirectWithQuery([
@@ -101,6 +104,7 @@ trait U2fTrait
      */
     public function u2fRegisterFinish()
     {
+        trigger_error('U2F is no longer supported by chrome, use Webauthn instead.', E_USER_DEPRECATED);
         $data = $this->getU2fData();
         $request = json_decode($this->getRequest()->getSession()->read('U2f.registerRequest'));
         $response = json_decode($this->getRequest()->getData('registerResponse'));
@@ -131,6 +135,7 @@ trait U2fTrait
      */
     public function u2fAuthenticate()
     {
+        trigger_error('U2F is no longer supported by chrome, use Webauthn instead.', E_USER_DEPRECATED);
         $data = $this->getU2fData();
         if (!$data['valid']) {
             return $this->redirectWithQuery([
@@ -157,6 +162,7 @@ trait U2fTrait
      */
     public function u2fAuthenticateFinish()
     {
+        trigger_error('U2F is no longer supported by chrome, use Webauthn instead.', E_USER_DEPRECATED);
         $data = $this->getU2fData();
         $request = json_decode($this->getRequest()->getSession()->read('U2f.authenticateRequest'));
         $response = json_decode($this->getRequest()->getData('authenticateResponse'));
