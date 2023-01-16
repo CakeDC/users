@@ -23,6 +23,7 @@ use Cake\Http\MiddlewareQueue;
 use CakeDC\Auth\Middleware\TwoFactorMiddleware;
 use CakeDC\Users\Middleware\SocialAuthMiddleware;
 use CakeDC\Users\Middleware\SocialEmailMiddleware;
+use CakeDC\Users\Plugin;
 
 /**
  * Class MiddlewareQueueLoader
@@ -97,7 +98,7 @@ class MiddlewareQueueLoader
     {
         $u2fEnabled = Configure::read('U2f.enabled') !== false;
         if ($u2fEnabled) {
-            trigger_error('U2F is no longer supported by chrome, use Webauthn instead.', E_USER_DEPRECATED);
+            trigger_error(Plugin::DEPRECATED_MESSAGE_U2F, E_USER_DEPRECATED);
         }
 
         if (
