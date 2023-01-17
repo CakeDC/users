@@ -30,6 +30,10 @@ class BaseAdapter
      * @var \Cake\Datasource\EntityInterface|\CakeDC\Users\Model\Entity\User
      */
     private $user;
+    /**
+     * @var \Webauthn\PublicKeyCredentialRpEntity
+     */
+    protected PublicKeyCredentialRpEntity $rpEntity;
 
     /**
      * @param \Cake\Http\ServerRequest $request The request.
@@ -38,7 +42,7 @@ class BaseAdapter
     public function __construct(ServerRequest $request, ?UsersTable $usersTable = null)
     {
         $this->request = $request;
-        $rpEntity = new PublicKeyCredentialRpEntity(
+        $this->rpEntity = new PublicKeyCredentialRpEntity(
             Configure::read('Webauthn2fa.appName'), // The application name
             Configure::read('Webauthn2fa.id')
         );
@@ -52,11 +56,6 @@ class BaseAdapter
         $this->repository = new UserCredentialSourceRepository(
             $this->user,
             $usersTable
-        );
-
-        $this->server = new Server(
-            $rpEntity,
-            $this->repository
         );
     }
 
