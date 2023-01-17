@@ -13,7 +13,12 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Webauthn;
 
+use Cose\Algorithms;
+use Webauthn\AuthenticationExtensions\AuthenticationExtensionsClientInputs;
+use Webauthn\AuthenticatorSelectionCriteria;
 use Webauthn\PublicKeyCredentialCreationOptions;
+use Webauthn\PublicKeyCredentialDescriptor;
+use Webauthn\PublicKeyCredentialParameters;
 
 class RegisterAdapter extends BaseAdapter
 {
@@ -23,11 +28,19 @@ class RegisterAdapter extends BaseAdapter
     public function getOptions(): PublicKeyCredentialCreationOptions
     {
         $userEntity = $this->getUserEntity();
-        $options = $this->server->generatePublicKeyCredentialCreationOptions(
+        $challenge = random_bytes(16);
+
+        $options = PublicKeyCredentialCreationOptions::create(
+            $this->rpEntity,
             $userEntity,
-            PublicKeyCredentialCreationOptions::ATTESTATION_CONVEYANCE_PREFERENCE_NONE,
-            []
+            $challenge,
+            $this->getPubKeyCredParams(),
         );
+        $options = $options
+            ->setAuthenticatorSelection(new AuthenticatorSelectionCriteria())
+            ->setAttestation(PublicKeyCredentialCreationOptions::ATTESTATION_CONVEYANCE_PREFERENCE_NONE)
+            ->setExtensions(new AuthenticationExtensionsClientInputs());
+
         $this->request->getSession()->write('Webauthn2fa.registerOptions', $options);
         $this->request->getSession()->write('Webauthn2fa.userEntity', $userEntity);
 
@@ -61,5 +74,33 @@ class RegisterAdapter extends BaseAdapter
         );
 
         return $credential;
+    }
+
+    /**
+     * @return array|\Webauthn\PublicKeyCredentialParameters[]
+     */
+    protected function getPubKeyCredParams(): array
+    {
+        $algos = [
+            Algorithms::COSE_ALGORITHM_ES256,
+            Algorithms::COSE_ALGORITHM_ES256K,
+            Algorithms::COSE_ALGORITHM_ES384,
+            Algorithms::COSE_ALGORITHM_ES512,
+            Algorithms::COSE_ALGORITHM_RS256,
+            Algorithms::COSE_ALGORITHM_RS384,
+            Algorithms::COSE_ALGORITHM_RS512,
+            Algorithms::COSE_ALGORITHM_PS256,
+            Algorithms::COSE_ALGORITHM_PS384,
+            Algorithms::COSE_ALGORITHM_PS512,
+            Algorithms::COSE_ALGORITHM_ED256,
+            Algorithms::COSE_ALGORITHM_ED512,
+        ];
+
+        return array_map(function ($algo) {
+            return PublicKeyCredentialParameters::create(
+                PublicKeyCredentialDescriptor::CREDENTIAL_TYPE_PUBLIC_KEY,
+                $algo,
+            );
+        }, $algos);
     }
 }
