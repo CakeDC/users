@@ -45,6 +45,8 @@ class Plugin extends BasePlugin
     public const EVENT_AFTER_RESEND_TOKEN_VALIDATION = 'Users.Global.afterResendTokenValidation';
     public const EVENT_AFTER_EMAIL_TOKEN_VALIDATION = 'Users.Global.afterEmailTokenValidation';
 
+    public const DEPRECATED_MESSAGE_U2F = 'U2F is no longer supported by chrome, we suggest using Webauthn as a replacement';
+
     /**
      * @inheritDoc
      */
