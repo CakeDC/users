@@ -13,12 +13,22 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Webauthn;
 
+use Cake\Http\Exception\BadRequestException;
+use Cake\Log\Log;
 use Cose\Algorithms;
+use Webauthn\AttestationStatement\AttestationObjectLoader;
+use Webauthn\AttestationStatement\AttestationStatementSupportManager;
+use Webauthn\AttestationStatement\NoneAttestationStatementSupport;
 use Webauthn\AuthenticationExtensions\AuthenticationExtensionsClientInputs;
+use Webauthn\AuthenticationExtensions\ExtensionOutputCheckerHandler;
+use Webauthn\AuthenticatorAttestationResponse;
+use Webauthn\AuthenticatorAttestationResponseValidator;
 use Webauthn\AuthenticatorSelectionCriteria;
 use Webauthn\PublicKeyCredentialCreationOptions;
 use Webauthn\PublicKeyCredentialDescriptor;
+use Webauthn\PublicKeyCredentialLoader;
 use Webauthn\PublicKeyCredentialParameters;
+use Webauthn\TokenBinding\IgnoreTokenBindingHandler;
 
 class RegisterAdapter extends BaseAdapter
 {
@@ -55,10 +65,38 @@ class RegisterAdapter extends BaseAdapter
     public function verifyResponse(): \Webauthn\PublicKeyCredentialSource
     {
         $options = $this->request->getSession()->read('Webauthn2fa.registerOptions');
-        $credential = $this->loadAndCheckAttestationResponse($options);
-        $this->repository->saveCredentialSource($credential);
+        $attestationStatementSupportManager = new AttestationStatementSupportManager;
+        $attestationStatementSupportManager
+            ->add(new NoneAttestationStatementSupport());
+        $attestationObjectLoader = new AttestationObjectLoader(
+            $attestationStatementSupportManager
+        );
+        $publicKeyCredentialLoader = new PublicKeyCredentialLoader(
+            $attestationObjectLoader
+        );
 
-        return $credential;
+        $publicKeyCredential = $publicKeyCredentialLoader->loadArray((array)$this->request->getData());
+
+        $authenticatorAttestationResponse = $publicKeyCredential->getResponse();
+        if ($authenticatorAttestationResponse instanceof AuthenticatorAttestationResponse) {
+            $tokenBindingHandler = new IgnoreTokenBindingHandler();
+            $extensionOutputCheckerHandler = new ExtensionOutputCheckerHandler();
+            $authenticatorAttestationResponseValidator = new AuthenticatorAttestationResponseValidator(
+                $attestationStatementSupportManager,
+                $this->repository,
+                $tokenBindingHandler,
+                $extensionOutputCheckerHandler
+            );
+            $credential = $authenticatorAttestationResponseValidator->check(
+                $authenticatorAttestationResponse,
+                $options,
+                $this->request
+            );
+
+            $this->repository->saveCredentialSource($credential);
+
+            return $credential;
+        }
     }
 
     /**
