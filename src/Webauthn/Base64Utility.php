@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /**
  * Copyright 2010 - 2023, Cake Development Corporation (https://www.cakedc.com)
@@ -29,27 +30,24 @@ class Base64Utility
     /**
      * @param string $data The data to encode
      * @param bool   $usePadding If true, the "=" padding at end of the encoded value are kept, else it is removed
-     *
      * @return string The data encoded
      */
     public static function basicEncode(string $data, bool $usePadding = false): string
     {
         $encoded = strtr(base64_encode($data), '+/', '-_');
 
-        return true === $usePadding ? $encoded : rtrim($encoded, '=');
+        return $usePadding === true ? $encoded : rtrim($encoded, '=');
     }
 
     /**
      * @param string $data The data to decode
-     *
-     * @throws InvalidArgumentException
-     *
+     * @throws \InvalidArgumentException
      * @return string The data decoded
      */
     public static function basicDecode(string $data): string
     {
         $decoded = base64_decode(strtr($data, '-_', '+/'), true);
-        if (false === $decoded) {
+        if ($decoded === false) {
             throw new InvalidArgumentException('Invalid data provided');
         }
 
