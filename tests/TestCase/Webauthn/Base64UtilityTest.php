@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /**
  * Copyright 2010 - 2023, Cake Development Corporation (https://www.cakedc.com)
@@ -41,7 +42,7 @@ class Base64UtilityTest extends TestCase
         return [
             ['00000000-0000-0000-0000-000000000002'],
             ['$2y$10$Nvu7ipP.z8tiIl75OdUvt.86vuG6iKMoHIOc7O7mboFI85hSyTEde'],
-            ['First Name']
+            ['First Name'],
         ];
     }
 
