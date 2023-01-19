@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace CakeDC\Users\Test\Fixture;
 
 use Cake\TestSuite\Fixture\TestFixture;
+use CakeDC\Users\Webauthn\Base64Utility;
 
 /**
  * UsersFixture
@@ -46,7 +47,7 @@ class UsersFixture extends TestFixture
                 'role' => 'admin',
                 'created' => '2015-06-24 17:33:54',
                 'modified' => '2015-06-24 17:33:54',
-                'additional_data' => \json_encode([
+                'additional_data' => [
                     'u2f_registration' => [
                         'keyHandle' => 'fake key handle',
                         'publicKey' => 'afdoaj0-23u423-ad ujsf-as8-0-afsd',
@@ -64,13 +65,13 @@ class UsersFixture extends TestFixture
                             ],
                             'aaguid' => '00000000-0000-0000-0000-000000000000',
                             //add this when migrated webauthn
-//                            'credentialPublicKey' => Base64Url::encode('000000000000000000000000000000000000-9999999999999999999999999999999999999999-XXXXXXXXXXXXX-ZZZZZZZZZZZ'),
-//                            'userHandle' => Base64Url::encode('00000000-0000-0000-0000-000000000001'),
+                            'credentialPublicKey' => Base64Utility::basicEncode('000000000000000000000000000000000000-9999999999999999999999999999999999999999-XXXXXXXXXXXXX-ZZZZZZZZZZZ'),
+                            'userHandle' => Base64Utility::basicEncode('00000000-0000-0000-0000-000000000001'),
                             'counter' => 190,
                             'otherUI' => null,
                         ],
                     ],
-                ]),
+                ],
                 'last_login' => '2015-06-24 17:33:54',
             ],
             [

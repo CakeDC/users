@@ -6,6 +6,7 @@ namespace CakeDC\Users\Webauthn\Repository;
 use Base64Url\Base64Url;
 use Cake\Datasource\EntityInterface;
 use CakeDC\Users\Model\Table\UsersTable;
+use CakeDC\Users\Webauthn\Base64Utility;
 use Webauthn\PublicKeyCredentialSource;
 use Webauthn\PublicKeyCredentialSourceRepository;
 use Webauthn\PublicKeyCredentialUserEntity;
@@ -37,7 +38,7 @@ class UserCredentialSourceRepository implements PublicKeyCredentialSourceReposit
      */
     public function findOneByCredentialId(string $publicKeyCredentialId): ?PublicKeyCredentialSource
     {
-        $encodedId = Base64Url::encode($publicKeyCredentialId);
+        $encodedId = Base64Utility::basicEncode($publicKeyCredentialId);
         $credential = $this->user['additional_data']['webauthn_credentials'][$encodedId] ?? null;
 
         return $credential
@@ -68,7 +69,7 @@ class UserCredentialSourceRepository implements PublicKeyCredentialSourceReposit
     public function saveCredentialSource(PublicKeyCredentialSource $publicKeyCredentialSource): void
     {
         $credentials = $this->user['additional_data']['webauthn_credentials'] ?? [];
-        $id = Base64Url::encode($publicKeyCredentialSource->getPublicKeyCredentialId());
+        $id = Base64Utility::basicEncode($publicKeyCredentialSource->getPublicKeyCredentialId());
         $credentials[$id] = json_decode(json_encode($publicKeyCredentialSource), true);
         $this->user['additional_data'] = $this->user['additional_data'] ?? [];
         $this->user['additional_data']['webauthn_credentials'] = $credentials;
