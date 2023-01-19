@@ -26,7 +26,6 @@ use Webauthn\AuthenticatorAttestationResponseValidator;
 use Webauthn\AuthenticatorSelectionCriteria;
 use Webauthn\PublicKeyCredentialCreationOptions;
 use Webauthn\PublicKeyCredentialDescriptor;
-use Webauthn\PublicKeyCredentialLoader;
 use Webauthn\PublicKeyCredentialParameters;
 use Webauthn\TokenBinding\IgnoreTokenBindingHandler;
 
@@ -98,21 +97,6 @@ class RegisterAdapter extends BaseAdapter
             return $credential;
         }
         throw new BadRequestException(__('Could not credential response for registration'));
-    }
-
-    /**
-     * @param \Webauthn\PublicKeyCredentialCreationOptions $options creation options
-     * @return \Webauthn\PublicKeyCredentialSource
-     */
-    protected function loadAndCheckAttestationResponse($options): \Webauthn\PublicKeyCredentialSource
-    {
-        $credential = $this->server->loadAndCheckAttestationResponse(
-            json_encode($this->request->getData()),
-            $options,
-            $this->request
-        );
-
-        return $credential;
     }
 
     /**
