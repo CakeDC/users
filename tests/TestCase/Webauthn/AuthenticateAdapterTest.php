@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Test\TestCase\Webauthn;
 
-use Base64Url\Base64Url;
 use Cake\Core\Configure;
 use Cake\Http\ServerRequestFactory;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use CakeDC\Users\Webauthn\AuthenticateAdapter;
+use CakeDC\Users\Webauthn\Base64Utility;
 use Webauthn\PublicKeyCredentialRequestOptions;
 use Webauthn\PublicKeyCredentialSource;
 
@@ -37,6 +37,15 @@ class AuthenticateAdapterTest extends TestCase
         $options = $adapter->getOptions();
         $this->assertInstanceOf(PublicKeyCredentialRequestOptions::class, $options);
         $this->assertSame($options, $request->getSession()->read('Webauthn2fa.authenticateOptions'));
+    }
+
+    /**
+     * Test verifyResponse method
+     *
+     * @return void
+     */
+    public function testVerifyResponse()
+    {
         $data = json_decode('{"id":"LFdoCFJTyB82ZzSJUHc-c72yraRc_1mPvGX8ToE8su39xX26Jcqd31LUkKOS36FIAWgWl6itMKqmDvruha6ywA","rawId":"LFdoCFJTyB82ZzSJUHc-c72yraRc_1mPvGX8ToE8su39xX26Jcqd31LUkKOS36FIAWgWl6itMKqmDvruha6ywA","response":{"authenticatorData":"SZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2MBAAAAAA","signature":"MEYCIQCv7EqsBRtf2E4o_BjzZfBwNpP8fLjd5y6TUOLWt5l9DQIhANiYig9newAJZYTzG1i5lwP-YQk9uXFnnDaHnr2yCKXL","userHandle":"","clientDataJSON":"eyJjaGFsbGVuZ2UiOiJ4ZGowQ0JmWDY5MnFzQVRweTBrTmM4NTMzSmR2ZExVcHFZUDh3RFRYX1pFIiwiY2xpZW50RXh0ZW5zaW9ucyI6e30sImhhc2hBbGdvcml0aG0iOiJTSEEtMjU2Iiwib3JpZ2luIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwIiwidHlwZSI6IndlYmF1dGhuLmdldCJ9"},"type":"public-key"}', true);
         $request = $request->withParsedBody($data);
 
@@ -55,8 +64,8 @@ class AuthenticateAdapterTest extends TestCase
                 'type' => 'Webauthn\TrustPath\EmptyTrustPath',
             ],
             'aaguid' => '00000000-0000-0000-0000-000000000000',
-            'credentialPublicKey' => Base64Url::encode('000000000000000000000000000000000000-9999999999999999999999999999999999999999-XXXXXXXXXXXXX-YYYYYYYYYYY'),
-            'userHandle' => Base64Url::encode($userId),
+            'credentialPublicKey' => Base64Utility::basicEncode('000000000000000000000000000000000000-9999999999999999999999999999999999999999-XXXXXXXXXXXXX-YYYYYYYYYYY'),
+            'userHandle' => Base64Utility::basicEncode($userId),
             'counter' => 191,
             'otherUI' => null,
         ];
