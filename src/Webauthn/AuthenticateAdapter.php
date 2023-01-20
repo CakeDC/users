@@ -13,7 +13,10 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Webauthn;
 
+use Cake\Http\Exception\BadRequestException;
 use Webauthn\AuthenticationExtensions\AuthenticationExtensionsClientInputs;
+use Webauthn\AuthenticatorAssertionResponse;
+use Webauthn\AuthenticatorAssertionResponseValidator;
 use Webauthn\PublicKeyCredentialRequestOptions;
 use Webauthn\PublicKeyCredentialSource;
 
@@ -47,12 +50,34 @@ class AuthenticateAdapter extends BaseAdapter
      * Verify the registration response
      *
      * @return \Webauthn\PublicKeyCredentialSource
+     * @throws \Throwable
      */
     public function verifyResponse(): \Webauthn\PublicKeyCredentialSource
     {
         $options = $this->request->getSession()->read('Webauthn2fa.authenticateOptions');
 
-        return $this->loadAndCheckAssertionResponse($options);
+        $publicKeyCredentialLoader = $this->createPublicKeyCredentialLoader();
+
+        $publicKeyCredential = $publicKeyCredentialLoader->loadArray($this->request->getData());
+        $authenticatorAssertionResponse = $publicKeyCredential->getResponse();
+        if ($authenticatorAssertionResponse instanceof AuthenticatorAssertionResponse) {
+            $authenticatorAssertionResponseValidator = new AuthenticatorAssertionResponseValidator(
+                $this->repository,
+                null,
+                $this->createExtensionOutputCheckerHandler(),
+                $this->getAlgorithmManager()
+            );
+
+            return $authenticatorAssertionResponseValidator->check(
+                $publicKeyCredential->getRawId(),
+                $authenticatorAssertionResponse,
+                $options,
+                $this->request,
+                null
+            );
+        }
+
+        throw new BadRequestException(__('Could not validate credential response for authentication'));
     }
 
     /**

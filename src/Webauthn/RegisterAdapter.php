@@ -64,26 +64,18 @@ class RegisterAdapter extends BaseAdapter
     public function verifyResponse(): \Webauthn\PublicKeyCredentialSource
     {
         $options = $this->request->getSession()->read('Webauthn2fa.registerOptions');
-        $attestationStatementSupportManager = new AttestationStatementSupportManager;
-        $attestationStatementSupportManager
-            ->add(new NoneAttestationStatementSupport());
-        $attestationObjectLoader = new AttestationObjectLoader(
-            $attestationStatementSupportManager
-        );
-        $publicKeyCredentialLoader = new PublicKeyCredentialLoader(
-            $attestationObjectLoader
-        );
+        $attestationStatementSupportManager = $this->getAttestationStatementSupportManager();
+        $publicKeyCredentialLoader = $this->createPublicKeyCredentialLoader();
 
         $publicKeyCredential = $publicKeyCredentialLoader->loadArray((array)$this->request->getData());
 
         $authenticatorAttestationResponse = $publicKeyCredential->getResponse();
         if ($authenticatorAttestationResponse instanceof AuthenticatorAttestationResponse) {
-            $tokenBindingHandler = new IgnoreTokenBindingHandler();
-            $extensionOutputCheckerHandler = new ExtensionOutputCheckerHandler();
+            $extensionOutputCheckerHandler = $this->createExtensionOutputCheckerHandler();
             $authenticatorAttestationResponseValidator = new AuthenticatorAttestationResponseValidator(
                 $attestationStatementSupportManager,
                 $this->repository,
-                $tokenBindingHandler,
+                null,//Token binding is deprecated
                 $extensionOutputCheckerHandler
             );
             $credential = $authenticatorAttestationResponseValidator->check(
