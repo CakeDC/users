@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Webauthn;
 
+use Webauthn\AuthenticationExtensions\AuthenticationExtensionsClientInputs;
 use Webauthn\PublicKeyCredentialRequestOptions;
 use Webauthn\PublicKeyCredentialSource;
 
@@ -24,14 +25,16 @@ class AuthenticateAdapter extends BaseAdapter
     public function getOptions(): PublicKeyCredentialRequestOptions
     {
         $userEntity = $this->getUserEntity();
-        $allowed = array_map(function (PublicKeyCredentialSource $credential) {
+        $allowedCredentials = array_map(function (PublicKeyCredentialSource $credential) {
             return $credential->getPublicKeyCredentialDescriptor();
         }, $this->repository->findAllForUserEntity($userEntity));
 
-        $options = $this->server->generatePublicKeyCredentialRequestOptions(
-            PublicKeyCredentialRequestOptions::USER_VERIFICATION_REQUIREMENT_PREFERRED, // Default value
-            $allowed
-        );
+        $options = (new PublicKeyCredentialRequestOptions(random_bytes(32)))
+            ->setRpId($this->rpEntity->getId())
+            ->setUserVerification(PublicKeyCredentialRequestOptions::USER_VERIFICATION_REQUIREMENT_PREFERRED)
+            ->allowCredentials(...$allowedCredentials)
+            ->setExtensions(new AuthenticationExtensionsClientInputs());
+
         $this->request->getSession()->write(
             'Webauthn2fa.authenticateOptions',
             $options
