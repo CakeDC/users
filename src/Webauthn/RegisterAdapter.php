@@ -92,30 +92,18 @@ class RegisterAdapter extends BaseAdapter
     }
 
     /**
-     * @return array|\Webauthn\PublicKeyCredentialParameters[]
+     * @return \Webauthn\PublicKeyCredentialParameters[]
      */
     protected function getPubKeyCredParams(): array
     {
-        $algos = [
-            Algorithms::COSE_ALGORITHM_ES256,
-            Algorithms::COSE_ALGORITHM_ES256K,
-            Algorithms::COSE_ALGORITHM_ES384,
-            Algorithms::COSE_ALGORITHM_ES512,
-            Algorithms::COSE_ALGORITHM_RS256,
-            Algorithms::COSE_ALGORITHM_RS384,
-            Algorithms::COSE_ALGORITHM_RS512,
-            Algorithms::COSE_ALGORITHM_PS256,
-            Algorithms::COSE_ALGORITHM_PS384,
-            Algorithms::COSE_ALGORITHM_PS512,
-            Algorithms::COSE_ALGORITHM_ED256,
-            Algorithms::COSE_ALGORITHM_ED512,
-        ];
-
-        return array_map(function ($algo) {
-            return PublicKeyCredentialParameters::create(
+        $list = [];
+        foreach ($this->getAlgorithmManager()->all() as $algorithm) {
+            $list[] = PublicKeyCredentialParameters::create(
                 PublicKeyCredentialDescriptor::CREDENTIAL_TYPE_PUBLIC_KEY,
-                $algo,
+                $algorithm::identifier()
             );
-        }, $algos);
+        }
+
+        return $list;
     }
 }

@@ -61,19 +61,14 @@ class AuthenticateAdapter extends BaseAdapter
         $publicKeyCredential = $publicKeyCredentialLoader->loadArray($this->request->getData());
         $authenticatorAssertionResponse = $publicKeyCredential->getResponse();
         if ($authenticatorAssertionResponse instanceof AuthenticatorAssertionResponse) {
-            $authenticatorAssertionResponseValidator = new AuthenticatorAssertionResponseValidator(
-                $this->repository,
-                null,
-                $this->createExtensionOutputCheckerHandler(),
-                $this->getAlgorithmManager()
-            );
+            $authenticatorAssertionResponseValidator = $this->createAssertionResponseValidator();
 
             return $authenticatorAssertionResponseValidator->check(
                 $publicKeyCredential->getRawId(),
                 $authenticatorAssertionResponse,
                 $options,
                 $this->request,
-                null
+                $this->getUserEntity()->getId(),
             );
         }
 
@@ -91,6 +86,19 @@ class AuthenticateAdapter extends BaseAdapter
             $options,
             $this->getUserEntity(),
             $this->request
+        );
+    }
+
+    /**
+     * @return \Webauthn\AuthenticatorAssertionResponseValidator
+     */
+    protected function createAssertionResponseValidator(): AuthenticatorAssertionResponseValidator
+    {
+        return new AuthenticatorAssertionResponseValidator(
+            $this->repository,
+            null,
+            $this->createExtensionOutputCheckerHandler(),
+            $this->getAlgorithmManager()
         );
     }
 }
