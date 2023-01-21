@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
-use Base64Url\Base64Url;
 use Cake\Core\Configure;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\ServerRequest;

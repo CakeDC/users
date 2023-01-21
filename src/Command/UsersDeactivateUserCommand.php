@@ -36,7 +36,7 @@ class UsersDeactivateUserCommand extends Command
      *
      * @param \Cake\Console\Arguments $args The command arguments.
      * @param \Cake\Console\ConsoleIo $io The console io
-     * @return null|void|int The exit code or null for success
+     * @return int|null|void The exit code or null for success
      */
     public function execute(Arguments $args, ConsoleIo $io)
     {

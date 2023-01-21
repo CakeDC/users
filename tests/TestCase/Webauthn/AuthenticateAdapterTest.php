@@ -27,7 +27,6 @@ class AuthenticateAdapterTest extends TestCase
         Configure::write('Webauthn2fa.id', 'localhost');
     }
 
-
     /**
      * Test getRegisterOptions method
      *

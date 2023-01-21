@@ -27,7 +27,7 @@ class AuthenticationServiceProvider implements AuthenticationServiceProviderInte
     use ServiceProviderLoaderTrait;
 
     /**
-     * @param  \Psr\Http\Message\ServerRequestInterface  $request Http server request
+     * @param \Psr\Http\Message\ServerRequestInterface  $request Http server request
      * @return \Authentication\AuthenticationServiceInterface
      */
     public function getAuthenticationService(ServerRequestInterface $request): AuthenticationServiceInterface

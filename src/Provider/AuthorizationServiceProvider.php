@@ -27,7 +27,7 @@ class AuthorizationServiceProvider implements AuthorizationServiceProviderInterf
     use ServiceProviderLoaderTrait;
 
     /**
-     * @param  \Psr\Http\Message\ServerRequestInterface $request Http server request
+     * @param \Psr\Http\Message\ServerRequestInterface $request Http server request
      * @return \Authorization\AuthorizationService
      */
     public function getAuthorizationService(ServerRequestInterface $request): AuthorizationServiceInterface

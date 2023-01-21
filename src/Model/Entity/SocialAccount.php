@@ -21,7 +21,7 @@ use Cake\ORM\Entity;
 class SocialAccount extends Entity
 {
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     protected array $_accessible = [
         '*' => true,
@@ -29,7 +29,7 @@ class SocialAccount extends Entity
     ];
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     protected array $_hidden = [
         'token',

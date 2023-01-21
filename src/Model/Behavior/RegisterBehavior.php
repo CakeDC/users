@@ -56,7 +56,7 @@ class RegisterBehavior extends BaseTokenBehavior
      * @param \Cake\Datasource\EntityInterface $user User information
      * @param array $data User information
      * @param array $options ['tokenExpiration]
-     * @return bool|\Cake\Datasource\EntityInterface
+     * @return \Cake\Datasource\EntityInterface|bool
      */
     public function register($user, $data, $options)
     {

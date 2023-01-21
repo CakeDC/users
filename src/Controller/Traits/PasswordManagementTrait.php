@@ -35,7 +35,7 @@ trait PasswordManagementTrait
      * Can be used while logged in for own password, as a superuser on any user, or while not logged in for reset
      * reset password with session key (email token has already been validated)
      *
-     * @param int|string|null $id user_id, null for logged in user id
+     * @param string|int|null $id user_id, null for logged in user id
      * @return mixed
      */
     public function changePassword($id = null)
@@ -145,7 +145,7 @@ trait PasswordManagementTrait
     /**
      * Reset password
      *
-     * @return void|\Cake\Http\Response
+     * @return \Cake\Http\Response|void
      */
     public function requestResetPassword()
     {

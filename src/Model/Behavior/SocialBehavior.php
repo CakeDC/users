@@ -63,7 +63,7 @@ class SocialBehavior extends BaseTokenBehavior
      * @throws \InvalidArgumentException
      * @throws \CakeDC\Users\Exception\UserNotActiveException
      * @throws \CakeDC\Users\Exception\AccountNotActiveException
-     * @return bool|\Cake\Datasource\EntityInterface|mixed
+     * @return \Cake\Datasource\EntityInterface|mixed|bool
      */
     public function socialLogin(array $data, array $options)
     {
@@ -123,7 +123,7 @@ class SocialBehavior extends BaseTokenBehavior
      * @param array $data Array social user.
      * @param array $options Array option data.
      * @throws \CakeDC\Users\Exception\MissingEmailException
-     * @return bool|\Cake\Datasource\EntityInterface|mixed result of the save operation
+     * @return \Cake\Datasource\EntityInterface|mixed|bool result of the save operation
      */
     protected function _createSocialUser($data, $options = [])
     {

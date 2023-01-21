@@ -23,7 +23,7 @@ use Cake\ORM\Behavior;
 class LinkSocialBehavior extends Behavior
 {
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     protected array $_defaultConfig = [];
 

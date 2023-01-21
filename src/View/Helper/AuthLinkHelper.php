@@ -31,7 +31,7 @@ class AuthLinkHelper extends HtmlHelper
      * Generate a link if the target url is authorized for the logged in user
      *
      * @param string $title link's title.
-     * @param string|array|null $url url that the user is making request.
+     * @param array|string|null $url url that the user is making request.
      * @param array $options Array with option data. Extra options include
      * 'before' and 'after' to quickly inject some html code in the link, like icons etc
      * 'allowed' to manage if the link should be displayed, default is null to check isAuthorized
@@ -60,7 +60,7 @@ class AuthLinkHelper extends HtmlHelper
      * Write the link only if user is authorized.
      *
      * @param string $title Link's title
-     * @param string|array $url Link's url
+     * @param array|string $url Link's url
      * @param array $options Link's options
      * @return string Link as a string.
      */

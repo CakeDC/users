@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Webauthn\Repository;
 
-use Base64Url\Base64Url;
 use Cake\Datasource\EntityInterface;
 use CakeDC\Users\Model\Table\UsersTable;
 use CakeDC\Users\Webauthn\Base64Utility;

@@ -68,7 +68,7 @@ class RegisterAdapter extends BaseAdapter
             $authenticatorAttestationResponseValidator = new AuthenticatorAttestationResponseValidator(
                 $attestationStatementSupportManager,
                 $this->repository,
-                null,//Token binding is deprecated
+                null, //Token binding is deprecated
                 $extensionOutputCheckerHandler
             );
             $credential = $authenticatorAttestationResponseValidator->check(
@@ -85,7 +85,7 @@ class RegisterAdapter extends BaseAdapter
     }
 
     /**
-     * @return \Webauthn\PublicKeyCredentialParameters[]
+     * @return array<\Webauthn\PublicKeyCredentialParameters>
      */
     protected function getPubKeyCredParams(): array
     {

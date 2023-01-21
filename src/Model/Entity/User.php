@@ -36,7 +36,7 @@ use Cake\Utility\Security;
 class User extends Entity
 {
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     protected array $_accessible = [
         '*' => true,
@@ -46,7 +46,7 @@ class User extends Entity
     ];
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     protected array $_hidden = [
         'password',
@@ -57,7 +57,7 @@ class User extends Entity
 
     /**
      * @param string $password password that will be set.
-     * @return bool|string
+     * @return string|bool
      */
     protected function _setPassword($password)
     {
@@ -66,7 +66,7 @@ class User extends Entity
 
     /**
      * @param string $password password that will be confirm.
-     * @return bool|string
+     * @return string|bool
      */
     protected function _setConfirmPassword($password)
     {

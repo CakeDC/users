@@ -31,7 +31,7 @@ class UserHelper extends Helper
     protected array $helpers = ['Html', 'Form', 'CakeDC/Users.AuthLink'];
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     protected array $_defaultConfig = [];
 
@@ -186,7 +186,7 @@ class UserHelper extends Helper
      *
      * @deprecated Since 3.2.1. Use AuthLinkHelper::link() instead
      * @param string $title link's title.
-     * @param string|array|null $url url that the user is making request.
+     * @param array|string|null $url url that the user is making request.
      * @param array $options Array with option data.
      * @return string
      */

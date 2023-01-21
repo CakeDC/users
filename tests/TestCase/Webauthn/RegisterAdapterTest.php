@@ -43,7 +43,6 @@ class RegisterAdapterTest extends TestCase
         Configure::write('Webauthn2fa.id', 'localhost');
     }
 
-
     /**
      * Test getRegisterOptions method
      *

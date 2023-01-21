@@ -17,7 +17,7 @@ class UsersDeactivateUserCommandTest extends TestCase
     use ConsoleIntegrationTestTrait;
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     protected array $fixtures = [
         'plugin.CakeDC/Users.Users',

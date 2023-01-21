@@ -27,7 +27,6 @@ use Webauthn\AttestationStatement\NoneAttestationStatementSupport;
 use Webauthn\AuthenticationExtensions\ExtensionOutputCheckerHandler;
 use Webauthn\PublicKeyCredentialRpEntity;
 use Webauthn\PublicKeyCredentialUserEntity;
-use Webauthn\Server;
 
 class BaseAdapter
 {
@@ -99,7 +98,7 @@ class BaseAdapter
     }
 
     /**
-     * @return array|mixed|null
+     * @return mixed|array|null
      */
     public function getUser()
     {
@@ -130,7 +129,7 @@ class BaseAdapter
     protected function getAttestationStatementSupportManager(): AttestationStatementSupportManager
     {
         if ($this->attestationStatementSupportManager === null) {
-            $this->attestationStatementSupportManager = new AttestationStatementSupportManager;
+            $this->attestationStatementSupportManager = new AttestationStatementSupportManager();
             $this->attestationStatementSupportManager
                 ->add(new NoneAttestationStatementSupport());
         }

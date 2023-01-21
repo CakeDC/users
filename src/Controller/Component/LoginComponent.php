@@ -32,7 +32,7 @@ class LoginComponent extends Component
     use IsAuthorizedTrait;
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     protected array $_defaultConfig = [
         'defaultMessage' => null,

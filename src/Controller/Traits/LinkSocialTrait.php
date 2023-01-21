@@ -27,7 +27,7 @@ trait LinkSocialTrait
      *
      * @param string $alias of the provider.
      * @throws \Cake\Http\Exception\NotFoundException Quando o provider informado não existe
-     * @return  \Cake\Http\Response Redirects on successful
+     * @return \Cake\Http\Response Redirects on successful
      */
     public function linkSocial($alias = null)
     {
@@ -49,7 +49,7 @@ trait LinkSocialTrait
      *
      * @param string $alias of the provider.
      * @throws \Cake\Http\Exception\NotFoundException Quando o provider informado não existe
-     * @return  \Cake\Http\Response Redirects to profile if okay or error
+     * @return \Cake\Http\Response Redirects to profile if okay or error
      */
     public function callbackLinkSocial($alias = null)
     {
