@@ -8,9 +8,9 @@ use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Command\UsersAddSuperuserCommand Test Case
+ * CakeDC\Users\Command\UsersAddSuperuserCommand Test Case
  *
- * @uses \App\Command\UsersAddSuperuserCommand
+ * @uses \CakeDC\Users\Command\UsersAddSuperuserCommand
  */
 class UsersAddSuperuserCommandTest extends TestCase
 {
@@ -28,7 +28,7 @@ class UsersAddSuperuserCommandTest extends TestCase
      * Test execute method
      *
      * @return void
-     * @uses \App\Command\UsersAddUserCommand::execute()
+     * @uses \CakeDC\Users\Command\UsersAddUserCommand::execute()
      */
     public function testExecuteWithArgs(): void
     {
@@ -57,7 +57,7 @@ class UsersAddSuperuserCommandTest extends TestCase
      * Test execute method
      *
      * @return void
-     * @uses \App\Command\UsersAddUserCommand::execute()
+     * @uses \CakeDC\Users\Command\UsersAddUserCommand::execute()
      */
     public function testExecuteWithNoParams(): void
     {

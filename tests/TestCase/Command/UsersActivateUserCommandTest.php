@@ -8,9 +8,9 @@ use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Command\UsersActivateUserCommand Test Case
+ * CakeDC\Users\Command\UsersActivateUserCommand Test Case
  *
- * @uses \App\Command\UsersActivateUserCommand
+ * @uses \CakeDC\Users\Command\UsersActivateUserCommand
  */
 class UsersActivateUserCommandTest extends TestCase
 {
@@ -28,7 +28,7 @@ class UsersActivateUserCommandTest extends TestCase
      * Test execute method
      *
      * @return void
-     * @uses \App\Command\UsersChangeRoleCommand::execute()
+     * @uses \CakeDC\Users\Command\UsersChangeRoleCommand::execute()
      */
     public function testExecute(): void
     {
@@ -46,7 +46,7 @@ class UsersActivateUserCommandTest extends TestCase
      * Test execute method
      *
      * @return void
-     * @uses \App\Command\UsersChangeRoleCommand::execute()
+     * @uses \CakeDC\Users\Command\UsersChangeRoleCommand::execute()
      */
     public function testExecuteNoUsername(): void
     {

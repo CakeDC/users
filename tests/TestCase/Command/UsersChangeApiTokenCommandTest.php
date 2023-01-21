@@ -8,9 +8,9 @@ use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Command\UsersChangeApiTokenCommand Test Case
+ * CakeDC\Users\Command\UsersChangeApiTokenCommand Test Case
  *
- * @uses \App\Command\UsersChangeApiTokenCommand
+ * @uses \CakeDC\Users\Command\UsersChangeApiTokenCommand
  */
 class UsersChangeApiTokenCommandTest extends TestCase
 {
@@ -28,7 +28,7 @@ class UsersChangeApiTokenCommandTest extends TestCase
      * Test execute method
      *
      * @return void
-     * @uses \App\Command\UsersChangeRoleCommand::execute()
+     * @uses \CakeDC\Users\Command\UsersChangeRoleCommand::execute()
      */
     public function testExecute(): void
     {
@@ -62,7 +62,7 @@ class UsersChangeApiTokenCommandTest extends TestCase
      * @param string $expectedMessage
      * @return void
      * @dataProvider dataProviderExecuteMissingInfo
-     * @uses \App\Command\UsersChangeRoleCommand::execute()
+     * @uses \CakeDC\Users\Command\UsersChangeRoleCommand::execute()
      */
     public function testExecuteMissingInfo(string $command, $expectedMessage): void
     {

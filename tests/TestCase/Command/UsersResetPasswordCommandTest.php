@@ -8,9 +8,9 @@ use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Command\UsersResetPasswordCommand Test Case
+ * CakeDC\Users\Command\UsersResetPasswordCommand Test Case
  *
- * @uses \App\Command\UsersResetPasswordCommand
+ * @uses \CakeDC\Users\Command\UsersResetPasswordCommand
  */
 class UsersResetPasswordCommandTest extends TestCase
 {
@@ -28,7 +28,7 @@ class UsersResetPasswordCommandTest extends TestCase
      * Test execute method
      *
      * @return void
-     * @uses \App\Command\UsersResetPasswordCommand::execute()
+     * @uses \CakeDC\Users\Command\UsersResetPasswordCommand::execute()
      */
     public function testExecute(): void
     {
@@ -65,7 +65,7 @@ class UsersResetPasswordCommandTest extends TestCase
      * Test execute method
      *
      * @return void
-     * @uses \App\Command\UsersResetPasswordCommand::execute()
+     * @uses \CakeDC\Users\Command\UsersResetPasswordCommand::execute()
      */
     public function testExecuteNotPassword(): void
     {
@@ -86,7 +86,7 @@ class UsersResetPasswordCommandTest extends TestCase
      * Test execute method
      *
      * @return void
-     * @uses \App\Command\UsersResetPasswordCommand::execute()
+     * @uses \CakeDC\Users\Command\UsersResetPasswordCommand::execute()
      */
     public function testExecuteNotUserName(): void
     {

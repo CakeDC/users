@@ -8,9 +8,9 @@ use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Command\UsersChangeRoleCommand Test Case
+ * CakeDC\Users\Command\UsersChangeRoleCommand Test Case
  *
- * @uses \App\Command\UsersChangeRoleCommand
+ * @uses \CakeDC\Users\Command\UsersChangeRoleCommand
  */
 class UsersChangeRoleCommandTest extends TestCase
 {
@@ -28,7 +28,7 @@ class UsersChangeRoleCommandTest extends TestCase
      * Test execute method
      *
      * @return void
-     * @uses \App\Command\UsersChangeRoleCommand::execute()
+     * @uses \CakeDC\Users\Command\UsersChangeRoleCommand::execute()
      */
     public function testExecute(): void
     {
@@ -62,7 +62,7 @@ class UsersChangeRoleCommandTest extends TestCase
      * @param string $expectedMessage
      * @return void
      * @dataProvider dataProviderExecuteMissingInfo
-     * @uses \App\Command\UsersChangeRoleCommand::execute()
+     * @uses \CakeDC\Users\Command\UsersChangeRoleCommand::execute()
      */
     public function testExecuteMissingInfo(string $command, $expectedMessage): void
     {

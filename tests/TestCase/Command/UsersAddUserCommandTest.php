@@ -10,9 +10,9 @@ use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Command\UsersAddUserCommand Test Case
+ * CakeDC\Users\Command\UsersAddUserCommand Test Case
  *
- * @uses \App\Command\UsersAddUserCommand
+ * @uses \CakeDC\Users\Command\UsersAddUserCommand
  */
 class UsersAddUserCommandTest extends TestCase
 {
@@ -30,7 +30,7 @@ class UsersAddUserCommandTest extends TestCase
      * Test execute method
      *
      * @return void
-     * @uses \App\Command\UsersAddUserCommand::execute()
+     * @uses \CakeDC\Users\Command\UsersAddUserCommand::execute()
      */
     public function testExecuteWithArgs(): void
     {
@@ -58,7 +58,7 @@ class UsersAddUserCommandTest extends TestCase
      * Test execute method
      *
      * @return void
-     * @uses \App\Command\UsersAddUserCommand::execute()
+     * @uses \CakeDC\Users\Command\UsersAddUserCommand::execute()
      */
     public function testExecuteWithNoParams(): void
     {
