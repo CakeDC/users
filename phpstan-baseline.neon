@@ -216,16 +216,6 @@ parameters:
 			path: src/Model/Entity/User.php
 
 		-
-			message: "#^Cannot access property \\$username on bool\\.$#"
-			count: 2
-			path: src/Shell/UsersShell.php
-
-		-
-			message: "#^Property CakeDC\\\\Users\\\\Shell\\\\UsersShell\\:\\:\\$Users \\(CakeDC\\\\Users\\\\Model\\\\Table\\\\UsersTable\\) does not accept Cake\\\\Datasource\\\\RepositoryInterface\\.$#"
-			count: 1
-			path: src/Shell/UsersShell.php
-
-		-
 			message: "#^Parameter \\#2 \\$usersTable of class CakeDC\\\\Users\\\\Webauthn\\\\Repository\\\\UserCredentialSourceRepository constructor expects CakeDC\\\\Users\\\\Model\\\\Table\\\\UsersTable\\|null, Cake\\\\ORM\\\\Table given\\.$#"
 			count: 1
 			path: src/Webauthn/BaseAdapter.php

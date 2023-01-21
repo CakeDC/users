@@ -38,10 +38,7 @@ class BaseAdapter
      * @var \CakeDC\Users\Webauthn\Repository\UserCredentialSourceRepository
      */
     protected $repository;
-    /**
-     * @var \Webauthn\Server
-     */
-    protected $server;
+
     /**
      * @var \Cake\Datasource\EntityInterface|\CakeDC\Users\Model\Entity\User
      */

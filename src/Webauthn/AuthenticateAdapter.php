@@ -76,20 +76,6 @@ class AuthenticateAdapter extends BaseAdapter
     }
 
     /**
-     * @param \Webauthn\PublicKeyCredentialRequestOptions $options request options
-     * @return \Webauthn\PublicKeyCredentialSource
-     */
-    protected function loadAndCheckAssertionResponse($options): PublicKeyCredentialSource
-    {
-        return $this->server->loadAndCheckAssertionResponse(
-            json_encode($this->request->getData()),
-            $options,
-            $this->getUserEntity(),
-            $this->request
-        );
-    }
-
-    /**
      * @return \Webauthn\AuthenticatorAssertionResponseValidator
      */
     protected function createAssertionResponseValidator(): AuthenticatorAssertionResponseValidator
