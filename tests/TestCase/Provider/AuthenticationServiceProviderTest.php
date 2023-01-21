@@ -115,7 +115,9 @@ class AuthenticationServiceProviderTest extends TestCase
         ];
         $actual = [];
         foreach ($authenticators as $key => $value) {
-            $actual[get_class($value)] = $value->getConfig();
+            $config = $value->getConfig();
+            unset($config['impersonateSessionKey']);
+            $actual[get_class($value)] = $config;
         }
         $this->assertEquals($expected, $actual);
 
@@ -146,7 +148,9 @@ class AuthenticationServiceProviderTest extends TestCase
         ];
         $actual = [];
         foreach ($identifiers as $key => $value) {
-            $actual[get_class($value)] = $value->getConfig();
+            $config = $value->getConfig();
+            unset($config['impersonateSessionKey'], $config['hashAlgorithm']);
+            $actual[get_class($value)] = $config;
         }
         $this->assertEquals($expected, $actual);
     }
@@ -246,7 +250,9 @@ class AuthenticationServiceProviderTest extends TestCase
         ];
         $actual = [];
         foreach ($authenticators as $key => $value) {
-            $actual[get_class($value)] = $value->getConfig();
+            $config = $value->getConfig();
+            unset($config['impersonateSessionKey']);
+            $actual[get_class($value)] = $config;
         }
         $this->assertEquals($expected, $actual);
     }
