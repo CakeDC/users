@@ -50,9 +50,6 @@
         "web-auth/webauthn-lib": "^4.4",
         "thenetworg/oauth2-azure": "^2.1"
     },
-    "pending-upgrade": {
-        "php-coveralls/php-coveralls": "^2.1"
-    },
     "suggest": {
         "league/oauth1-client": "Provides Social Authentication with Twitter",
         "league/oauth2-facebook": "Provides Social Authentication with Facebook",
