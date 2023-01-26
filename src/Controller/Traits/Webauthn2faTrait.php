@@ -26,11 +26,12 @@ trait Webauthn2faTrait
     /**
      * Main page tof webauthn 2fa
      *
+     * @param \CakeDC\Users\Webauthn\RegisterAdapter|null $adapter
      * @return void
      */
-    public function webauthn2fa()
+    public function webauthn2fa(?RegisterAdapter $adapter = null)
     {
-        $adapter = $this->getWebauthn2faRegisterAdapter();
+        $adapter = $adapter ?? $this->getWebauthn2faRegisterAdapter();
         $user = $adapter->getUser();
         $this->set('isRegister', !$adapter->hasCredential());
         $this->set('username', $user->webauthn_username ?? $user->username);
@@ -39,11 +40,12 @@ trait Webauthn2faTrait
     /**
      * Action to provide register options to frontend (from js requests)
      *
+     * @param \CakeDC\Users\Webauthn\RegisterAdapter|null $adapter
      * @return \Cake\Http\Response
      */
-    public function webauthn2faRegisterOptions()
+    public function webauthn2faRegisterOptions(?RegisterAdapter $adapter = null)
     {
-        $adapter = $this->getWebauthn2faRegisterAdapter();
+        $adapter = $adapter ?? $this->getWebauthn2faRegisterAdapter();
         if (!$adapter->hasCredential()) {
             return $this->getResponse()
                 ->withStringBody(json_encode($adapter->getOptions()));
@@ -57,13 +59,14 @@ trait Webauthn2faTrait
     /**
      * Action to verify and save the new credential based on the webauthn register response.
      *
+     * @param \CakeDC\Users\Webauthn\RegisterAdapter|null $adapter
      * @return \Cake\Http\Response
      * @throws \Throwable
      */
-    public function webauthn2faRegister(): \Cake\Http\Response
+    public function webauthn2faRegister(?RegisterAdapter $adapter = null): \Cake\Http\Response
     {
         try {
-            $adapter = $this->getWebauthn2faRegisterAdapter();
+            $adapter = $adapter ?? $this->getWebauthn2faRegisterAdapter();
             if (!$adapter->hasCredential()) {
                 $adapter->verifyResponse();
 
@@ -82,11 +85,12 @@ trait Webauthn2faTrait
     /**
      * Action to provide authenticate options to frontend (from js requests)
      *
+     * @param \CakeDC\Users\Webauthn\AuthenticateAdapter|null $adapter
      * @return \Cake\Http\Response
      */
-    public function webauthn2faAuthenticateOptions(): \Cake\Http\Response
+    public function webauthn2faAuthenticateOptions(?AuthenticateAdapter $adapter = null): \Cake\Http\Response
     {
-        $adapter = $this->getWebauthn2faAuthenticateAdapter();
+        $adapter = $adapter ?? $this->getWebauthn2faAuthenticateAdapter();
 
         return $this->getResponse()->withStringBody(
             json_encode($adapter->getOptions())
@@ -96,13 +100,14 @@ trait Webauthn2faTrait
     /**
      * Action to authenticate user based on the webauthn authenticate response.
      *
+     * @param \CakeDC\Users\Webauthn\AuthenticateAdapter|null $adapter
      * @return \Cake\Http\Response
      * @throws \Throwable
      */
-    public function webauthn2faAuthenticate(): \Cake\Http\Response
+    public function webauthn2faAuthenticate(?AuthenticateAdapter $adapter = null): \Cake\Http\Response
     {
         try {
-            $adapter = $this->getWebauthn2faAuthenticateAdapter();
+            $adapter = $adapter ?? $this->getWebauthn2faAuthenticateAdapter();
             $adapter->verifyResponse();
             $redirectUrl = Configure::read('Auth.AuthenticationComponent.loginAction') + [
                 '?' => $this->getRequest()->getQueryParams(),
