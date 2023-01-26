@@ -134,6 +134,8 @@ trait Webauthn2faTrait
      */
     protected function getWebauthn2faRegisterAdapter(): RegisterAdapter
     {
+        trigger_error('Use application container instead of using ' . __METHOD__, E_USER_DEPRECATED);
+
         return new RegisterAdapter($this->getRequest(), $this->getUsersTable());
     }
 
@@ -142,6 +144,8 @@ trait Webauthn2faTrait
      */
     protected function getWebauthn2faAuthenticateAdapter(): AuthenticateAdapter
     {
+        trigger_error('Use application container instead of using ' . __METHOD__, E_USER_DEPRECATED);
+
         return new AuthenticateAdapter($this->getRequest());
     }
 }
