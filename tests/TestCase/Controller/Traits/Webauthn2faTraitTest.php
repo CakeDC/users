@@ -279,14 +279,11 @@ class Webauthn2faTraitTest extends BaseTraitTest
             ->method('verifyResponse')
             ->willReturn($credential);
 
-        $traitMockMethods = array_unique(array_merge(['getUsersTable', 'getWebauthn2faRegisterAdapter'], $this->traitMockMethods));
+        $traitMockMethods = array_unique(array_merge(['getUsersTable'], $this->traitMockMethods));
         $this->Trait = $this->getMockBuilder($this->traitClassName)
             ->setMethods($traitMockMethods)
             ->setConstructorArgs([$request])
             ->getMock();
-        $this->Trait->expects($this->once())
-            ->method('getWebauthn2faRegisterAdapter')
-            ->willReturn($adapter);
         $this->Trait->expects($this->any())
             ->method('getUsersTable')
             ->will($this->returnValue($this->table));
@@ -295,7 +292,7 @@ class Webauthn2faTraitTest extends BaseTraitTest
             json_decode($data, true)
         );
         $this->Trait->setRequest($request);
-        $response = $this->Trait->webauthn2faRegister();
+        $response = $this->Trait->webauthn2faRegister($adapter);
         $this->assertEquals('{"success":true}', (string)$response->getBody());
     }
 
@@ -322,14 +319,11 @@ class Webauthn2faTraitTest extends BaseTraitTest
             ->method('verifyResponse')
             ->willThrowException(new \Exception('Testing error exception for webauthn2faRegister'));
 
-        $traitMockMethods = array_unique(array_merge(['getUsersTable', 'getWebauthn2faRegisterAdapter'], $this->traitMockMethods));
+        $traitMockMethods = array_unique(array_merge(['getUsersTable'], $this->traitMockMethods));
         $this->Trait = $this->getMockBuilder($this->traitClassName)
             ->setMethods($traitMockMethods)
             ->setConstructorArgs([$request])
             ->getMock();
-        $this->Trait->expects($this->once())
-            ->method('getWebauthn2faRegisterAdapter')
-            ->willReturn($adapter);
         $this->Trait->expects($this->any())
             ->method('getUsersTable')
             ->will($this->returnValue($this->table));
@@ -340,7 +334,7 @@ class Webauthn2faTraitTest extends BaseTraitTest
         $this->Trait->setRequest($request);
         $this->expectException(\Exception::class);
         $this->expectErrorMessage('Testing error exception for webauthn2faRegister');
-        $this->Trait->webauthn2faRegister();
+        $this->Trait->webauthn2faRegister($adapter);
     }
 
     /**
