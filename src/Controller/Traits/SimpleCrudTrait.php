@@ -29,7 +29,7 @@ trait SimpleCrudTrait
      */
     public function index()
     {
-        $table = $this->loadModel();
+        $table = $this->fetchTable();
         $tableAlias = $table->getAlias();
         $this->set($tableAlias, $this->paginate($table));
         $this->set('tableAlias', $tableAlias);
@@ -45,7 +45,7 @@ trait SimpleCrudTrait
      */
     public function view($id = null)
     {
-        $table = $this->loadModel();
+        $table = $this->fetchTable();
         $tableAlias = $table->getAlias();
         $entity = $table->get($id, [
             'contain' => [],
@@ -62,7 +62,7 @@ trait SimpleCrudTrait
      */
     public function add()
     {
-        $table = $this->loadModel();
+        $table = $this->fetchTable();
         $tableAlias = $table->getAlias();
         $entity = $table->newEmptyEntity();
         $this->set($tableAlias, $entity);
@@ -90,7 +90,7 @@ trait SimpleCrudTrait
      */
     public function edit($id = null)
     {
-        $table = $this->loadModel();
+        $table = $this->fetchTable();
         $tableAlias = $table->getAlias();
         $entity = $table->get($id, [
             'contain' => [],
@@ -121,7 +121,7 @@ trait SimpleCrudTrait
     public function delete($id = null)
     {
         $this->getRequest()->allowMethod(['post', 'delete']);
-        $table = $this->loadModel();
+        $table = $this->fetchTable();
         $tableAlias = $table->getAlias();
         $entity = $table->get($id, [
             'contain' => [],

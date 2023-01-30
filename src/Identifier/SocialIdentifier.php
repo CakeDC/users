@@ -33,7 +33,7 @@ class SocialIdentifier extends AbstractIdentifier
      *
      * @var array
      */
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'authFinder' => 'active',
     ];
 
@@ -43,7 +43,7 @@ class SocialIdentifier extends AbstractIdentifier
      * @param array $credentials Authentication credentials
      * @return \ArrayAccess|array|null
      */
-    public function identify(array $credentials)
+    public function identify(array $credentials): \ArrayAccess|array|null
     {
         if (!isset($credentials[self::CREDENTIAL_KEY])) {
             return null;
@@ -66,7 +66,7 @@ class SocialIdentifier extends AbstractIdentifier
      * Get query object for fetching user from database.
      *
      * @param \Cake\Datasource\EntityInterface $user The user.
-     * @return \Cake\ORM\Query
+     * @return \Cake\ORM\Query\SelectQuery
      */
     protected function findUser($user)
     {

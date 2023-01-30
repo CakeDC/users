@@ -43,8 +43,9 @@ trait UserValidationTrait
                         $result = $this->getUsersTable()->validate($token, 'activateUser');
                         if ($result) {
                             $event = $this->dispatchEvent(Plugin::EVENT_AFTER_EMAIL_TOKEN_VALIDATION, ['user' => $result]);
-                            if (!empty($event) && is_array($event->getResult())) {
-                                return $this->redirect($event->getResult());
+                            $eventResult = $event->getResult();
+                            if (!empty($eventResult) && is_array($eventResult)) {
+                                return $this->redirect($eventResult);
                             }
                             $this->Flash->success(__d('cake_d_c/users', 'User account validated successfully'));
                         } else {
@@ -75,8 +76,9 @@ trait UserValidationTrait
             $this->Flash->error(__d('cake_d_c/users', 'Invalid token or user account already validated'));
         } catch (TokenExpiredException $ex) {
             $event = $this->dispatchEvent(Plugin::EVENT_ON_EXPIRED_TOKEN, ['type' => $type]);
-            if (!empty($event) && is_array($event->getResult())) {
-                return $this->redirect($event->getResult());
+            $eventResult = $event->getResult();
+            if (!empty($eventResult) && is_array($eventResult)) {
+                return $this->redirect($eventResult);
             }
             $this->Flash->error(__d('cake_d_c/users', 'Token already expired'));
         }
@@ -108,7 +110,7 @@ trait UserValidationTrait
             ) {
                 $event = $this->dispatchEvent(Plugin::EVENT_AFTER_RESEND_TOKEN_VALIDATION);
                 $result = $event->getResult();
-                if (!empty($event) && is_array($result)) {
+                if (!empty($result) && is_array($result)) {
                     return $this->redirect($result);
                 }
                 $this->Flash->success(__d(

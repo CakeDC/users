@@ -38,7 +38,7 @@ class SocialBehavior extends BaseTokenBehavior
      *
      * @var string
      */
-    protected $_username = 'username';
+    protected string $_username = 'username';
 
     /**
      * Initialize an action instance
@@ -49,7 +49,7 @@ class SocialBehavior extends BaseTokenBehavior
     public function initialize(array $config): void
     {
         if (isset($config['username'])) {
-            $this->_username = $config['username'];
+            $this->_username = (string)$config['username'];
         }
 
         parent::initialize($config);
@@ -63,7 +63,7 @@ class SocialBehavior extends BaseTokenBehavior
      * @throws \InvalidArgumentException
      * @throws \CakeDC\Users\Exception\UserNotActiveException
      * @throws \CakeDC\Users\Exception\AccountNotActiveException
-     * @return bool|\Cake\Datasource\EntityInterface|mixed
+     * @return \Cake\Datasource\EntityInterface|mixed|bool
      */
     public function socialLogin(array $data, array $options)
     {
@@ -123,12 +123,12 @@ class SocialBehavior extends BaseTokenBehavior
      * @param array $data Array social user.
      * @param array $options Array option data.
      * @throws \CakeDC\Users\Exception\MissingEmailException
-     * @return bool|\Cake\Datasource\EntityInterface|mixed result of the save operation
+     * @return \Cake\Datasource\EntityInterface|mixed|bool result of the save operation
      */
     protected function _createSocialUser($data, $options = [])
     {
         $useEmail = $options['use_email'] ?? null;
-        $validateEmail = $options['validate_email'] ?? null;
+        $validateEmail = (bool)($options['validate_email'] ?? null);
         $tokenExpiration = $options['token_expiration'] ?? null;
         $existingUser = null;
         $email = $data['email'] ?? null;
@@ -159,9 +159,9 @@ class SocialBehavior extends BaseTokenBehavior
      * data to create a new one
      *
      * @param array $data Array social login.
-     * @param \Cake\Datasource\EntityInterface $existingUser user data.
+     * @param \Cake\Datasource\EntityInterface|null $existingUser user data.
      * @param string $useEmail email to use.
-     * @param string $validateEmail email to validate.
+     * @param bool $validateEmail email to validate.
      * @param string $tokenExpiration token_expires data.
      * @return \Cake\Datasource\EntityInterface
      * @todo refactor
@@ -195,9 +195,9 @@ class SocialBehavior extends BaseTokenBehavior
                     $userData['username'] = Hash::get($email, 0);
                 } else {
                     $firstName = $userData['first_name'] ?? null;
-                    $lastName = $userData['last_name'] ?? null;
+                    $lastName = $userData['last_name'];
                     $userData['username'] = strtolower($firstName . $lastName);
-                    $userData['username'] = preg_replace('/[^A-Za-z0-9]/i', '', $userData['username'] ?? null);
+                    $userData['username'] = preg_replace('/[^A-Za-z0-9]/i', '', $userData['username']);
                 }
             }
 
@@ -260,11 +260,11 @@ class SocialBehavior extends BaseTokenBehavior
     /**
      * Prepare a query to retrieve existing entity for social login
      *
-     * @param \Cake\ORM\Query $query The base query.
+     * @param \Cake\ORM\Query\SelectQuery $query The base query.
      * @param array $options Find options with email key.
-     * @return \Cake\ORM\Query
+     * @return \Cake\ORM\Query\SelectQuery
      */
-    public function findExistingForSocialLogin(\Cake\ORM\Query $query, array $options)
+    public function findExistingForSocialLogin(\Cake\ORM\Query\SelectQuery $query, array $options)
     {
         return $query->where([
             $this->_table->aliasField('email') => $options['email'],

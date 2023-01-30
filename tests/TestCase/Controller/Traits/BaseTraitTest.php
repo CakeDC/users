@@ -21,14 +21,15 @@ use Authentication\Identity;
 use Cake\Controller\ComponentRegistry;
 use Cake\Controller\Controller;
 use Cake\Event\Event;
-use Cake\Mailer\Email;
+use Cake\Http\ServerRequest;
+use Cake\Mailer\Mailer;
 use Cake\Mailer\TransportFactory;
 use Cake\ORM\Entity;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use CakeDC\Auth\Authentication\AuthenticationService;
 use CakeDC\Users\Model\Entity\User;
-use PHPUnit_Framework_MockObject_RuntimeException;
+use PHPUnit\Framework\MockObject\RuntimeException;
 
 /**
  * Class BaseTraitTest
@@ -42,7 +43,7 @@ abstract class BaseTraitTest extends TestCase
      *
      * @var array
      */
-    public $fixtures = [
+    protected array $fixtures = [
         'plugin.CakeDC/Users.Users',
     ];
 
@@ -83,14 +84,16 @@ abstract class BaseTraitTest extends TestCase
         $traitMockMethods = array_unique(array_merge(['getUsersTable'], $this->traitMockMethods));
         $this->table = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
         try {
-            $this->Trait = $this->getMockBuilder($this->traitClassName)
-                    ->setMethods($traitMockMethods)
-                    ->getMock();
+            $buildTrait = $this->getMockBuilder($this->traitClassName)
+                ->setMethods($traitMockMethods);
+            if (class_exists($this->traitClassName)) {
+                $buildTrait = $buildTrait->setConstructorArgs([new ServerRequest()]);
+            }
+            $this->Trait = $buildTrait->getMock();
             $this->Trait->expects($this->any())
                     ->method('getUsersTable')
                     ->will($this->returnValue($this->table));
-        } catch (PHPUnit_Framework_MockObject_RuntimeException $ex) {
-            debug($ex);
+        } catch (RuntimeException $ex) {
             $this->fail('Unit tests extending BaseTraitTest should declare the trait class name in the $traitClassName variable before calling setUp()');
         }
 
@@ -98,9 +101,9 @@ abstract class BaseTraitTest extends TestCase
             TransportFactory::setConfig('test', [
                 'className' => 'Debug',
             ]);
-            $this->configEmail = Email::getConfig('default');
-            Email::drop('default');
-            Email::setConfig('default', [
+            $this->configEmail = Mailer::getConfig('default');
+            Mailer::drop('default');
+            Mailer::setConfig('default', [
                 'transport' => 'test',
                 'from' => 'cakedc@example.com',
             ]);
@@ -116,9 +119,8 @@ abstract class BaseTraitTest extends TestCase
     {
         unset($this->table, $this->Trait);
         if ($this->mockDefaultEmail) {
-            Email::drop('default');
+            Mailer::drop('default');
             TransportFactory::drop('test');
-            //Email::setConfig('default', $this->setConfigEmail);
         }
         parent::tearDown();
     }

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
+use Cake\Http\ServerRequest;
 use Cake\ORM\Table;
 use Cake\TestSuite\TestCase;
 
@@ -23,6 +24,7 @@ class CustomUsersTableTraitTest extends TestCase
         parent::setUp();
         $this->controller = $this->getMockBuilder('Cake\Controller\Controller')
                 ->setMethods(['header', 'redirect', 'render', '_stop'])
+                ->setConstructorArgs([new ServerRequest()])
                 ->getMock();
         $this->controller->Trait = $this->getMockForTrait('CakeDC\Users\Controller\Traits\CustomUsersTableTrait');
     }

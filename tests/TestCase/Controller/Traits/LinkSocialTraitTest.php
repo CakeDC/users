@@ -18,7 +18,7 @@ use Cake\Event\Event;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 use Cake\Http\ServerRequestFactory;
-use Cake\I18n\FrozenTime;
+use Cake\I18n\DateTime;
 use Cake\ORM\TableRegistry;
 use Laminas\Diactoros\Uri;
 use League\OAuth2\Client\Provider\FacebookUser;
@@ -30,7 +30,7 @@ class LinkSocialTraitTest extends BaseTraitTest
      *
      * @var array
      */
-    public $fixtures = [
+    protected array $fixtures = [
         'plugin.CakeDC/Users.SocialAccounts',
         'plugin.CakeDC/Users.Users',
     ];
@@ -58,11 +58,7 @@ class LinkSocialTraitTest extends BaseTraitTest
         $request = new ServerRequest();
         $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\UsersController')
             ->setMethods(['dispatchEvent', 'redirect', 'set'])
-            ->getMock();
-
-        $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
-            ->setMethods(['setConfig'])
-            ->disableOriginalConstructor()
+            ->setConstructorArgs([new ServerRequest()])
             ->getMock();
 
         $this->Trait->setRequest($request);
@@ -119,6 +115,7 @@ class LinkSocialTraitTest extends BaseTraitTest
 
         $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\UsersController')
             ->setMethods(['dispatchEvent', 'redirect', 'set', '_createSocialProvider', 'getUsersTable', 'log'])
+            ->setConstructorArgs([new ServerRequest()])
             ->getMock();
 
         $this->Trait->setRequest(ServerRequestFactory::fromGlobals());
@@ -238,6 +235,7 @@ class LinkSocialTraitTest extends BaseTraitTest
 
         $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\UsersController')
             ->setMethods(['dispatchEvent', 'redirect', 'set', 'getUsersTable', 'log'])
+            ->setConstructorArgs([new ServerRequest()])
             ->getMock();
 
         $this->Trait->setRequest(ServerRequestFactory::fromGlobals());
@@ -274,7 +272,7 @@ class LinkSocialTraitTest extends BaseTraitTest
 
         $actual = $Table->SocialAccounts->find('all')->where(['reference' => '9999911112255'])->firstOrFail();
 
-        $expiresTime = new FrozenTime();
+        $expiresTime = new DateTime();
         $tokenExpires = $expiresTime->setTimestamp($Token->getExpires())->format('Y-m-d H:i:s');
 
         $expected = [
@@ -383,6 +381,7 @@ class LinkSocialTraitTest extends BaseTraitTest
 
         $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\UsersController')
             ->setMethods(['dispatchEvent', 'redirect', 'set', 'getUsersTable', 'log'])
+            ->setConstructorArgs([new ServerRequest()])
             ->getMock();
 
         $this->Trait->expects($this->any())
@@ -446,6 +445,7 @@ class LinkSocialTraitTest extends BaseTraitTest
 
         $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\UsersController')
             ->setMethods(['dispatchEvent', 'redirect', 'set', 'getUsersTable', 'log'])
+            ->setConstructorArgs([new ServerRequest()])
             ->getMock();
 
         $this->Trait->setRequest(ServerRequestFactory::fromGlobals());
@@ -507,6 +507,7 @@ class LinkSocialTraitTest extends BaseTraitTest
 
         $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\UsersController')
             ->setMethods(['dispatchEvent', 'redirect', 'set', 'getUsersTable', 'log'])
+            ->setConstructorArgs([new ServerRequest()])
             ->getMock();
 
         $this->Trait->setRequest(ServerRequestFactory::fromGlobals());

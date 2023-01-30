@@ -15,7 +15,7 @@ namespace CakeDC\Users\Test\TestCase\Controller;
 
 use Cake\Core\Configure;
 use Cake\Http\ServerRequest;
-use Cake\Mailer\Email;
+use Cake\Mailer\Mailer;
 use Cake\Mailer\TransportFactory;
 use Cake\TestSuite\TestCase;
 
@@ -26,7 +26,7 @@ class SocialAccountsControllerTest extends TestCase
      *
      * @var array
      */
-    public $fixtures = [
+    protected array $fixtures = [
         'plugin.CakeDC/Users.SocialAccounts',
         'plugin.CakeDC/Users.Users',
     ];
@@ -46,9 +46,9 @@ class SocialAccountsControllerTest extends TestCase
         Configure::write('Users.RememberMe.active', false);
 
         TransportFactory::setConfig('test', ['className' => 'Debug']);
-        $this->configEmail = Email::getConfig('default');
-        Email::drop('default');
-        Email::setConfig('default', [
+        $this->configEmail = Mailer::getConfig('default');
+        Mailer::drop('default');
+        Mailer::setConfig('default', [
             'transport' => 'test',
             'from' => 'cakedc@example.com',
         ]);
@@ -58,7 +58,7 @@ class SocialAccountsControllerTest extends TestCase
 
         $this->Controller = $this->getMockBuilder('CakeDC\Users\Controller\SocialAccountsController')
                 ->onlyMethods(['redirect', 'render'])
-                ->setConstructorArgs([$request, null, 'SocialAccounts'])
+                ->setConstructorArgs([$request, 'SocialAccounts'])
                 ->getMock();
     }
 
@@ -69,9 +69,8 @@ class SocialAccountsControllerTest extends TestCase
      */
     public function tearDown(): void
     {
-        Email::drop('default');
+        Mailer::drop('default');
         TransportFactory::drop('test');
-        //Email::setConfig('default', $this->configEmail);
 
         Configure::write('Opauth', $this->configOpauth);
         Configure::write('Users.RememberMe.active', $this->configRememberMe);

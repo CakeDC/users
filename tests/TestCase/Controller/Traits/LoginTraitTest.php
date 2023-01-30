@@ -17,7 +17,7 @@ use Authentication\Authenticator\Result;
 use Authentication\Authenticator\SessionAuthenticator;
 use Authentication\Identifier\IdentifierCollection;
 use Authentication\Identifier\PasswordIdentifier;
-use Cake\Auth\DefaultPasswordHasher;
+use Authentication\PasswordHasher\DefaultPasswordHasher;
 use Cake\Controller\ComponentRegistry;
 use Cake\Event\Event;
 use Cake\Http\Response;
@@ -43,6 +43,7 @@ class LoginTraitTest extends BaseTraitTest
         $this->Trait->setRequest(new ServerRequest());
         $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\UsersController')
             ->setMethods(['dispatchEvent', 'redirect', 'set', 'loadComponent'])
+            ->setConstructorArgs([new ServerRequest()])
             ->getMock();
 
         $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
@@ -102,7 +103,7 @@ class LoginTraitTest extends BaseTraitTest
             ->with($this->successLoginRedirect)
             ->will($this->returnValue(new Response()));
 
-        $registry = new ComponentRegistry();
+        $registry = new ComponentRegistry(new \Cake\Controller\Controller(new \Cake\Http\ServerRequest()));
         $config = [
             'component' => 'CakeDC/Users.Login',
             'defaultMessage' => __d('cake_d_c/users', 'Username or password is incorrect'),
@@ -134,7 +135,7 @@ class LoginTraitTest extends BaseTraitTest
         $this->assertSame($passwordBefore, $passwordAfter);
         $lastLoginAfter = $userAfter['last_login'];
         $this->assertNotEmpty($lastLoginAfter);
-        $now = \Cake\I18n\FrozenTime::now();
+        $now = \Cake\I18n\DateTime::now();
         $this->assertEqualsWithDelta($lastLoginAfter->timestamp, $now->timestamp, 2);
     }
 
@@ -182,7 +183,7 @@ class LoginTraitTest extends BaseTraitTest
             ->with($this->successLoginRedirect)
             ->will($this->returnValue(new Response()));
 
-        $registry = new ComponentRegistry();
+        $registry = new ComponentRegistry(new \Cake\Controller\Controller(new \Cake\Http\ServerRequest()));
         $config = [
             'component' => 'CakeDC/Users.Login',
             'defaultMessage' => __d('cake_d_c/users', 'Username or password is incorrect'),
@@ -246,7 +247,7 @@ class LoginTraitTest extends BaseTraitTest
 
         $this->_mockAuthentication();
 
-        $registry = new ComponentRegistry();
+        $registry = new ComponentRegistry(new \Cake\Controller\Controller(new \Cake\Http\ServerRequest()));
         $config = [
             'component' => 'CakeDC/Users.Login',
             'defaultMessage' => __d('cake_d_c/users', 'Username or password is incorrect'),
@@ -421,7 +422,7 @@ class LoginTraitTest extends BaseTraitTest
             ->method('error')
             ->with($message);
 
-        $registry = new ComponentRegistry();
+        $registry = new ComponentRegistry(new \Cake\Controller\Controller(new \Cake\Http\ServerRequest()));
         $Login = $this->getMockBuilder(LoginComponent::class)
             ->setMethods(['getController'])
             ->setConstructorArgs([$registry, $failureConfig])
@@ -498,7 +499,7 @@ class LoginTraitTest extends BaseTraitTest
             ->with($this->successLoginRedirect)
             ->will($this->returnValue(new Response()));
 
-        $registry = new ComponentRegistry();
+        $registry = new ComponentRegistry(new \Cake\Controller\Controller(new \Cake\Http\ServerRequest()));
         $config = [
             'component' => 'CakeDC/Users.Login',
             'defaultMessage' => __d('cake_d_c/users', 'Could not proceed with social account. Please try again'),

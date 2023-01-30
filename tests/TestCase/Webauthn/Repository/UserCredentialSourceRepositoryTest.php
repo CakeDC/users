@@ -3,16 +3,16 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Test\TestCase\Webauthn\Repository;
 
-use Base64Url\Base64Url;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use CakeDC\Users\Webauthn\Base64Utility;
 use CakeDC\Users\Webauthn\Repository\UserCredentialSourceRepository;
 use Webauthn\PublicKeyCredentialSource;
 use Webauthn\PublicKeyCredentialUserEntity;
 
 class UserCredentialSourceRepositoryTest extends TestCase
 {
-    public $fixtures = [
+    protected array $fixtures = [
         'plugin.CakeDC/Users.Users',
         'plugin.CakeDC/Users.SocialAccounts',
     ];
@@ -87,8 +87,8 @@ class UserCredentialSourceRepositoryTest extends TestCase
                 'type' => 'Webauthn\TrustPath\EmptyTrustPath',
             ],
             'aaguid' => '00000000-0000-0000-0000-000000000000',
-            'credentialPublicKey' => Base64Url::encode('000000000000000000000000000000000000-9999999999999999999999999999999999999999-XXXXXXXXXXXXX-YYYYYYYYYYY'),
-            'userHandle' => Base64Url::encode($userId),
+            'credentialPublicKey' => Base64Utility::basicEncode('000000000000000000000000000000000000-9999999999999999999999999999999999999999-XXXXXXXXXXXXX-YYYYYYYYYYY'),
+            'userHandle' => Base64Utility::basicEncode($userId),
             'counter' => 191,
             'otherUI' => null,
         ];

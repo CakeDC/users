@@ -60,11 +60,16 @@ require ROOT . '/vendor/autoload.php';
 Cake\Core\Configure::write('debug', true);
 
 ini_set('intl.default_locale', 'en_US');
-
-$TMP = new \Cake\Filesystem\Folder(TMP);
-$TMP->create(TMP . 'cache/models', 0777);
-$TMP->create(TMP . 'cache/persistent', 0777);
-$TMP->create(TMP . 'cache/views', 0777);
+$pathsCache = [
+    TMP . 'cache/models',
+    TMP . 'cache/persistent',
+    TMP . 'cache/views',
+];
+foreach ($pathsCache as $path) {
+    if (!file_exists($path)) {
+        mkdir($path, 0777, true);
+    }
+}
 
 $cache = [
     'default' => [
@@ -107,6 +112,8 @@ Cake\Datasource\ConnectionManager::setConfig('test', [
     'url' => getenv('db_dsn'),
     'timezone' => 'UTC',
 ]);
+
+\Cake\Database\TypeFactory::map('json', 'Cake\Database\Type\JsonType');
 
 class_alias('TestApp\Controller\AppController', 'App\Controller\AppController');
 

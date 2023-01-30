@@ -28,14 +28,12 @@ use CakeDC\Users\Utility\UsersUrl;
  */
 class UserHelper extends Helper
 {
-    public $helpers = ['Html', 'Form', 'CakeDC/Users.AuthLink'];
+    protected array $helpers = ['Html', 'Form', 'CakeDC/Users.AuthLink'];
 
     /**
-     * Default configuration.
-     *
-     * @var array
+     * @inheritDoc
      */
-    protected $_defaultConfig = [];
+    protected array $_defaultConfig = [];
 
     /**
      * Social login link
@@ -56,7 +54,7 @@ class UserHelper extends Helper
         if (isset($options['title'])) {
             $providerTitle = $options['title'];
         } else {
-            $providerTitle = ($options['label'] ?? '') . ' ' . Inflector::camelize($name);
+            $providerTitle = $options['label'] . ' ' . Inflector::camelize($name);
         }
 
         $providerClass = 'btn btn-social btn-' . strtolower($name);
@@ -103,7 +101,7 @@ class UserHelper extends Helper
     /**
      * Logout link
      *
-     * @param null $message logout message info.
+     * @param string|null $message logout message info.
      * @param array $options Array with option data.
      * @return string
      */
@@ -188,7 +186,7 @@ class UserHelper extends Helper
      *
      * @deprecated Since 3.2.1. Use AuthLinkHelper::link() instead
      * @param string $title link's title.
-     * @param string|array|null $url url that the user is making request.
+     * @param array|string|null $url url that the user is making request.
      * @param array $options Array with option data.
      * @return string
      */

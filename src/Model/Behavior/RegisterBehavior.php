@@ -31,11 +31,11 @@ class RegisterBehavior extends BaseTokenBehavior
     /**
      * @var bool
      */
-    protected $validateEmail;
+    protected bool $validateEmail = true;
     /**
      * @var bool
      */
-    protected $useTos;
+    protected bool $useTos = true;
 
     /**
      * Constructor hook method.
@@ -56,11 +56,11 @@ class RegisterBehavior extends BaseTokenBehavior
      * @param \Cake\Datasource\EntityInterface $user User information
      * @param array $data User information
      * @param array $options ['tokenExpiration]
-     * @return bool|\Cake\Datasource\EntityInterface
+     * @return \Cake\Datasource\EntityInterface|bool
      */
     public function register($user, $data, $options)
     {
-        $validateEmail = $options['validate_email'] ?? null;
+        $validateEmail = (bool)($options['validate_email'] ?? null);
         $tokenExpiration = $options['token_expiration'] ?? null;
         $validator = $options['validator'] ?? null;
         if (is_string($validator)) {
@@ -161,7 +161,7 @@ class RegisterBehavior extends BaseTokenBehavior
      */
     protected function _emailValidator(Validator $validator, $validateEmail)
     {
-        $this->validateEmail = $validateEmail;
+        $this->validateEmail = (bool)$validateEmail;
         $validator
             ->add('email', 'valid', ['rule' => 'email'])
             ->notBlank('email', __d('cake_d_c/users', 'This field is required'), function ($context) {

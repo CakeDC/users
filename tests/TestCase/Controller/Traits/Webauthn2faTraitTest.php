@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
-use Base64Url\Base64Url;
 use Cake\Core\Configure;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\ServerRequest;
@@ -21,6 +20,7 @@ use Cake\Http\ServerRequestFactory;
 use Cake\ORM\TableRegistry;
 use CakeDC\Users\Model\Entity\User;
 use CakeDC\Users\Webauthn\AuthenticateAdapter;
+use CakeDC\Users\Webauthn\Base64Utility;
 use CakeDC\Users\Webauthn\RegisterAdapter;
 use Webauthn\PublicKeyCredentialSource;
 
@@ -36,7 +36,7 @@ class Webauthn2faTraitTest extends BaseTraitTest
      *
      * @var array
      */
-    public $fixtures = [
+    protected array $fixtures = [
         'plugin.CakeDC/Users.Users',
     ];
 
@@ -269,8 +269,8 @@ class Webauthn2faTraitTest extends BaseTraitTest
                 'type' => 'Webauthn\TrustPath\EmptyTrustPath',
             ],
             'aaguid' => '00000000-0000-0000-0000-000000000000',
-            'credentialPublicKey' => Base64Url::encode('000000000000000000000000000000000000-9999999999999999999999999999999999999999-XXXXXXXXXXXXX-YYYYYYYYYYY'),
-            'userHandle' => Base64Url::encode($userId),
+            'credentialPublicKey' => Base64Utility::basicEncode('000000000000000000000000000000000000-9999999999999999999999999999999999999999-XXXXXXXXXXXXX-YYYYYYYYYYY'),
+            'userHandle' => Base64Utility::basicEncode($userId),
             'counter' => 191,
             'otherUI' => null,
         ];
@@ -282,6 +282,7 @@ class Webauthn2faTraitTest extends BaseTraitTest
         $traitMockMethods = array_unique(array_merge(['getUsersTable', 'getWebauthn2faRegisterAdapter'], $this->traitMockMethods));
         $this->Trait = $this->getMockBuilder($this->traitClassName)
             ->setMethods($traitMockMethods)
+            ->setConstructorArgs([$request])
             ->getMock();
         $this->Trait->expects($this->once())
             ->method('getWebauthn2faRegisterAdapter')
@@ -324,6 +325,7 @@ class Webauthn2faTraitTest extends BaseTraitTest
         $traitMockMethods = array_unique(array_merge(['getUsersTable', 'getWebauthn2faRegisterAdapter'], $this->traitMockMethods));
         $this->Trait = $this->getMockBuilder($this->traitClassName)
             ->setMethods($traitMockMethods)
+            ->setConstructorArgs([$request])
             ->getMock();
         $this->Trait->expects($this->once())
             ->method('getWebauthn2faRegisterAdapter')
@@ -412,8 +414,8 @@ class Webauthn2faTraitTest extends BaseTraitTest
                 'type' => 'Webauthn\TrustPath\EmptyTrustPath',
             ],
             'aaguid' => '00000000-0000-0000-0000-000000000000',
-            'credentialPublicKey' => Base64Url::encode('000000000000000000000000000000000000-9999999999999999999999999999999999999999-XXXXXXXXXXXXX-YYYYYYYYYYY'),
-            'userHandle' => Base64Url::encode($userId),
+            'credentialPublicKey' => Base64Utility::basicEncode('000000000000000000000000000000000000-9999999999999999999999999999999999999999-XXXXXXXXXXXXX-YYYYYYYYYYY'),
+            'userHandle' => Base64Utility::basicEncode($userId),
             'counter' => 191,
             'otherUI' => null,
         ];
@@ -425,6 +427,7 @@ class Webauthn2faTraitTest extends BaseTraitTest
         $traitMockMethods = array_unique(array_merge(['getUsersTable', 'getWebauthn2faAuthenticateAdapter'], $this->traitMockMethods));
         $this->Trait = $this->getMockBuilder($this->traitClassName)
             ->setMethods($traitMockMethods)
+            ->setConstructorArgs([$request])
             ->getMock();
         $this->Trait->expects($this->once())
             ->method('getWebauthn2faAuthenticateAdapter')
@@ -478,6 +481,7 @@ class Webauthn2faTraitTest extends BaseTraitTest
         $traitMockMethods = array_unique(array_merge(['getUsersTable', 'getWebauthn2faAuthenticateAdapter'], $this->traitMockMethods));
         $this->Trait = $this->getMockBuilder($this->traitClassName)
             ->setMethods($traitMockMethods)
+            ->setConstructorArgs([$request])
             ->getMock();
         $this->Trait->expects($this->once())
             ->method('getWebauthn2faAuthenticateAdapter')

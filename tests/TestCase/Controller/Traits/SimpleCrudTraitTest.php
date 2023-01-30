@@ -15,11 +15,14 @@ namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
 use Cake\Datasource\Exception\InvalidPrimaryKeyException;
 use Cake\Datasource\Exception\RecordNotFoundException;
+use Cake\Datasource\Paging\PaginatedResultSet;
+use Cake\Datasource\ResultSetDecorator;
 
 /**
  * Class SimpleCrudTraitTest
  *
  * @package CakeDC\Users\Test\TestCase\Controller\Traits
+ * @property \CakeDC\Users\Controller\Traits\SimpleCrudTrait&\PHPUnit\Framework\MockObject\MockObject $Trait
  */
 class SimpleCrudTraitTest extends BaseTraitTest
 {
@@ -33,7 +36,7 @@ class SimpleCrudTraitTest extends BaseTraitTest
     public function setUp(): void
     {
         $this->traitClassName = 'CakeDC\Users\Controller\UsersController';
-        $this->traitMockMethods = ['dispatchEvent', 'isStopped', 'redirect', 'getUsersTable', 'set', 'loadModel', 'paginate'];
+        $this->traitMockMethods = ['dispatchEvent', 'isStopped', 'redirect', 'getUsersTable', 'set', 'fetchTable', 'paginate'];
         parent::setUp();
         $viewVarsContainer = $this;
         $this->Trait->expects($this->any())
@@ -42,7 +45,7 @@ class SimpleCrudTraitTest extends BaseTraitTest
                 $viewVarsContainer->viewVars[$param1] = $param2;
             }));
         $this->Trait->expects($this->once())
-            ->method('loadModel')
+            ->method('fetchTable')
             ->will($this->returnValue($this->table));
     }
 
@@ -64,20 +67,22 @@ class SimpleCrudTraitTest extends BaseTraitTest
      */
     public function testIndex()
     {
+        $results = new ResultSetDecorator([]);
+        $paginated = new PaginatedResultSet($results, []);
         $this->Trait->expects($this->once())
             ->method('paginate')
             ->with($this->table)
-            ->will($this->returnValue([]));
+            ->will($this->returnValue($paginated));
         $this->Trait->index();
         $expected = [
-            'Users' => [],
+            'Users' => $paginated,
             'tableAlias' => 'Users',
             '_serialize' => [
                 'Users',
                 'tableAlias',
             ],
         ];
-        $this->assertSame($expected, $this->viewVars);
+        $this->assertEquals($expected, $this->viewVars);
     }
 
     /**

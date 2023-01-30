@@ -15,7 +15,7 @@ namespace CakeDC\Users\Exception;
 
 class AccountNotActiveException extends \Cake\Core\Exception\CakeException
 {
-    protected $_messageTemplate = '/a/validate/%s/%s';
+    protected string $_messageTemplate = '/a/validate/%s/%s';
 
     /**
      * AccountNotActiveException constructor.

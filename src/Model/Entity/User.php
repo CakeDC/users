@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Model\Entity;
 
+use Authentication\PasswordHasher\DefaultPasswordHasher;
 use Cake\Core\Configure;
-use Cake\I18n\FrozenTime;
+use Cake\I18n\DateTime;
 use Cake\ORM\Entity;
 use Cake\Utility\Security;
 
@@ -25,20 +26,19 @@ use Cake\Utility\Security;
  * @property string $role
  * @property string $username
  * @property bool $is_superuser
- * @property \Cake\I18n\Time|\Cake\I18n\FrozenTime $token_expires
+ * @property \Cake\I18n\Time|\Cake\I18n\DateTime $token_expires
  * @property string $token
  * @property string $api_token
  * @property array|string $additional_data
  * @property \CakeDC\Users\Model\Entity\SocialAccount[] $social_accounts
+ * @property string $password
  */
 class User extends Entity
 {
     /**
-     * Fields that can be mass assigned using newEntity() or patchEntity().
-     *
-     * @var array
+     * @inheritDoc
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         '*' => true,
         'id' => false,
         'is_superuser' => false,
@@ -46,11 +46,9 @@ class User extends Entity
     ];
 
     /**
-     * Fields that are excluded from JSON an array versions of the entity.
-     *
-     * @var array
+     * @inheritDoc
      */
-    protected $_hidden = [
+    protected array $_hidden = [
         'password',
         'token',
         'token_expires',
@@ -59,7 +57,7 @@ class User extends Entity
 
     /**
      * @param string $password password that will be set.
-     * @return bool|string
+     * @return string|bool
      */
     protected function _setPassword($password)
     {
@@ -68,7 +66,7 @@ class User extends Entity
 
     /**
      * @param string $password password that will be confirm.
-     * @return bool|string
+     * @return string|bool
      */
     protected function _setConfirmPassword($password)
     {
@@ -82,7 +80,7 @@ class User extends Entity
     protected function _setTos($tos)
     {
         if ((bool)$tos) {
-            $this->set('tos_date', FrozenTime::now());
+            $this->set('tos_date', DateTime::now());
         }
 
         return $tos;
@@ -111,7 +109,7 @@ class User extends Entity
     {
         $passwordHasher = Configure::read('Users.passwordHasher');
         if (!class_exists($passwordHasher)) {
-            $passwordHasher = \Cake\Auth\DefaultPasswordHasher::class;
+            $passwordHasher = DefaultPasswordHasher::class;
         }
 
         return new $passwordHasher();
@@ -142,7 +140,7 @@ class User extends Entity
             return true;
         }
 
-        return new FrozenTime($this->token_expires) < FrozenTime::now();
+        return new DateTime($this->token_expires) < DateTime::now();
     }
 
     /**
@@ -186,7 +184,7 @@ class User extends Entity
      */
     public function updateToken($tokenExpiration = 0)
     {
-        $expiration = new FrozenTime('now');
+        $expiration = new DateTime('now');
         $this->token_expires = $expiration->addSeconds($tokenExpiration);
         $this->token = bin2hex(Security::randomBytes(16));
     }

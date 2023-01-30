@@ -28,7 +28,7 @@ class AppController extends BaseController
     public function initialize(): void
     {
         parent::initialize();
-        $this->loadComponent('Security');
+        $this->loadComponent('FormProtection');
         if ($this->request->getParam('_csrfToken') === false) {
             $this->loadComponent('Csrf');
         }

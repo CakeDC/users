@@ -35,6 +35,7 @@ use Cake\Validation\Validator;
  * @mixin \CakeDC\Users\Model\Behavior\RegisterBehavior
  * @mixin \CakeDC\Users\Model\Behavior\SocialAccountBehavior
  * @mixin \CakeDC\Users\Model\Behavior\SocialBehavior
+ * @property \CakeDC\Users\Model\Table\SocialAccountsTable $SocialAccounts
  */
 class UsersTable extends Table
 {
@@ -49,19 +50,19 @@ class UsersTable extends Table
      *
      * @var bool
      */
-    public $isValidateEmail = false;
+    public bool $isValidateEmail = false;
 
     /**
      * Field additional_data is json
      *
-     * @param \Cake\Database\Schema\TableSchemaInterface $schema The table definition fetched from database.
      * @return \Cake\Database\Schema\TableSchemaInterface the altered schema
      */
-    protected function _initializeSchema(TableSchemaInterface $schema): TableSchemaInterface
+    public function getSchema(): TableSchemaInterface
     {
+        $schema = parent::getSchema();
         $schema->setColumnType('additional_data', 'json');
 
-        return parent::_initializeSchema($schema);
+        return $schema;
     }
 
     /**

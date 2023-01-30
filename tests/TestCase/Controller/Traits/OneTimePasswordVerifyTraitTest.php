@@ -20,7 +20,7 @@ use CakeDC\Auth\Controller\Component\OneTimePasswordAuthenticatorComponent;
 
 class OneTimePasswordVerifyTraitTest extends BaseTraitTest
 {
-    protected $loginPage = [
+    protected array $loginPage = [
         'plugin' => 'CakeDC/Users',
         'prefix' => false,
         'controller' => 'users',
@@ -41,6 +41,7 @@ class OneTimePasswordVerifyTraitTest extends BaseTraitTest
         $request = new ServerRequest();
         $this->Trait = $this->getMockBuilder($this->traitClassName)
             ->setMethods(['dispatchEvent', 'redirect', 'set', 'getUsersTable'])
+            ->setConstructorArgs([new ServerRequest()])
             ->getMock();
 
         $this->Trait->setRequest($request);

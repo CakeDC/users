@@ -37,8 +37,8 @@ class Application extends BaseApplication
                 ],
             ]);
         }
-        if (!\Cake\Mailer\Email::getConfig('default')) {
-            \Cake\Mailer\Email::setConfig([
+        if (!\Cake\Mailer\Mailer::getConfig('default')) {
+            \Cake\Mailer\Mailer::setConfig([
                 'default' => [
                     'transport' => 'default',
                     'from' => 'you@localhost',

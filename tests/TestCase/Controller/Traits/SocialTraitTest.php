@@ -28,6 +28,16 @@ use CakeDC\Users\Controller\Component\LoginComponent;
 class SocialTraitTest extends BaseTraitTest
 {
     /**
+     * Fixtures
+     *
+     * @var array
+     */
+    public array $fixtures = [
+        'plugin.CakeDC/Users.SocialAccounts',
+        'plugin.CakeDC/Users.Users',
+    ];
+
+    /**
      * setup
      *
      * @return void
@@ -41,9 +51,10 @@ class SocialTraitTest extends BaseTraitTest
         $request = new ServerRequest();
         $this->Trait = $this->getMockBuilder($this->traitClassName)
             ->setMethods(['dispatchEvent', 'redirect', 'set', 'loadComponent'])
+            ->setConstructorArgs([new ServerRequest()])
             ->getMock();
 
-        $this->Trait->request = $request;
+        $this->Trait->setRequest($request);
     }
 
     /**
@@ -99,7 +110,7 @@ class SocialTraitTest extends BaseTraitTest
             ->with($this->successLoginRedirect)
             ->will($this->returnValue(new Response()));
 
-        $registry = new ComponentRegistry();
+        $registry = new ComponentRegistry(new \Cake\Controller\Controller(new \Cake\Http\ServerRequest()));
         $config = [
             'component' => 'CakeDC/Users.Login',
             'defaultMessage' => __d('cake_d_c/users', 'Could not proceed with social account. Please try again'),

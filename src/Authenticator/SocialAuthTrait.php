@@ -26,7 +26,7 @@ trait SocialAuthTrait
      * @param array $rawData social user raw data
      * @return \Authentication\Authenticator\Result
      */
-    protected function identify($rawData)
+    protected function identify($rawData): Result
     {
         try {
             $user = $this->getIdentifier()->identify([SocialIdentifier::CREDENTIAL_KEY => $rawData]);

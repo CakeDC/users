@@ -42,7 +42,7 @@ class MiddlewareQueueLoader
      * For 'Auth.Authorization.loadRbacMiddleware' load RbacMiddleware
      *
      * @param \Cake\Http\MiddlewareQueue $middlewareQueue The middleware queue to update.
-     * @param  \Authentication\AuthenticationServiceProviderInterface $authenticationServiceProvider Loads the auth service
+     * @param \Authentication\AuthenticationServiceProviderInterface $authenticationServiceProvider Loads the auth service
      * @param \Authorization\AuthorizationServiceProviderInterface $authorizationServiceProvider Loads the authorization service
      * @return \Cake\Http\MiddlewareQueue
      */

@@ -13,7 +13,14 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Webauthn;
 
+use Cake\Http\Exception\BadRequestException;
+use Webauthn\AuthenticationExtensions\AuthenticationExtensionsClientInputs;
+use Webauthn\AuthenticatorAttestationResponse;
+use Webauthn\AuthenticatorAttestationResponseValidator;
+use Webauthn\AuthenticatorSelectionCriteria;
 use Webauthn\PublicKeyCredentialCreationOptions;
+use Webauthn\PublicKeyCredentialDescriptor;
+use Webauthn\PublicKeyCredentialParameters;
 
 class RegisterAdapter extends BaseAdapter
 {
@@ -23,11 +30,19 @@ class RegisterAdapter extends BaseAdapter
     public function getOptions(): PublicKeyCredentialCreationOptions
     {
         $userEntity = $this->getUserEntity();
-        $options = $this->server->generatePublicKeyCredentialCreationOptions(
+        $challenge = random_bytes(16);
+
+        $options = PublicKeyCredentialCreationOptions::create(
+            $this->rpEntity,
             $userEntity,
-            PublicKeyCredentialCreationOptions::ATTESTATION_CONVEYANCE_PREFERENCE_NONE,
-            []
+            $challenge,
+            $this->getPubKeyCredParams(),
         );
+        $options = $options
+            ->setAuthenticatorSelection(new AuthenticatorSelectionCriteria())
+            ->setAttestation(PublicKeyCredentialCreationOptions::ATTESTATION_CONVEYANCE_PREFERENCE_NONE)
+            ->setExtensions(new AuthenticationExtensionsClientInputs());
+
         $this->request->getSession()->write('Webauthn2fa.registerOptions', $options);
         $this->request->getSession()->write('Webauthn2fa.userEntity', $userEntity);
 
@@ -42,24 +57,46 @@ class RegisterAdapter extends BaseAdapter
     public function verifyResponse(): \Webauthn\PublicKeyCredentialSource
     {
         $options = $this->request->getSession()->read('Webauthn2fa.registerOptions');
-        $credential = $this->loadAndCheckAttestationResponse($options);
-        $this->repository->saveCredentialSource($credential);
+        $attestationStatementSupportManager = $this->getAttestationStatementSupportManager();
+        $publicKeyCredentialLoader = $this->createPublicKeyCredentialLoader();
 
-        return $credential;
+        $publicKeyCredential = $publicKeyCredentialLoader->loadArray((array)$this->request->getData());
+
+        $authenticatorAttestationResponse = $publicKeyCredential->getResponse();
+        if ($authenticatorAttestationResponse instanceof AuthenticatorAttestationResponse) {
+            $extensionOutputCheckerHandler = $this->createExtensionOutputCheckerHandler();
+            $authenticatorAttestationResponseValidator = new AuthenticatorAttestationResponseValidator(
+                $attestationStatementSupportManager,
+                $this->repository,
+                null, //Token binding is deprecated
+                $extensionOutputCheckerHandler
+            );
+            $credential = $authenticatorAttestationResponseValidator->check(
+                $authenticatorAttestationResponse,
+                $options,
+                $this->request
+            );
+
+            $this->repository->saveCredentialSource($credential);
+
+            return $credential;
+        }
+        throw new BadRequestException(__('Could not credential response for registration'));
     }
 
     /**
-     * @param \Webauthn\PublicKeyCredentialCreationOptions $options creation options
-     * @return \Webauthn\PublicKeyCredentialSource
+     * @return array<\Webauthn\PublicKeyCredentialParameters>
      */
-    protected function loadAndCheckAttestationResponse($options): \Webauthn\PublicKeyCredentialSource
+    protected function getPubKeyCredParams(): array
     {
-        $credential = $this->server->loadAndCheckAttestationResponse(
-            json_encode($this->request->getData()),
-            $options,
-            $this->request
-        );
+        $list = [];
+        foreach ($this->getAlgorithmManager()->all() as $algorithm) {
+            $list[] = PublicKeyCredentialParameters::create(
+                PublicKeyCredentialDescriptor::CREDENTIAL_TYPE_PUBLIC_KEY,
+                $algorithm::identifier()
+            );
+        }
 
-        return $credential;
+        return $list;
     }
 }
