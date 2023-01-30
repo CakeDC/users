@@ -56,7 +56,6 @@ class PasswordBehaviorTest extends TestCase
                 ->getMock();
         TransportFactory::drop('test');
         TransportFactory::setConfig('test', ['className' => 'Debug']);
-        //$this->configEmail = Mailer::getConfig('default');
         Mailer::drop('default');
         Mailer::setConfig('default', [
             'transport' => 'test',
