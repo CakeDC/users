@@ -121,7 +121,6 @@ abstract class BaseTraitTest extends TestCase
         if ($this->mockDefaultEmail) {
             Mailer::drop('default');
             TransportFactory::drop('test');
-            //Mailer::setConfig('default', $this->setConfigEmail);
         }
         parent::tearDown();
     }
