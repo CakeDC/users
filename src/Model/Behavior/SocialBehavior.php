@@ -33,6 +33,11 @@ class SocialBehavior extends BaseTokenBehavior
     use EventDispatcherTrait;
     use RandomStringTrait;
 
+    /**
+     * Enables social account validation
+     *
+     * @var bool
+     */
     protected $validateSocialAccount = true;
 
     /**
