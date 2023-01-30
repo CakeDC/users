@@ -71,7 +71,6 @@ class SocialAccountsControllerTest extends TestCase
     {
         Mailer::drop('default');
         TransportFactory::drop('test');
-        //Mailer::setConfig('default', $this->configEmail);
 
         Configure::write('Opauth', $this->configOpauth);
         Configure::write('Users.RememberMe.active', $this->configRememberMe);
