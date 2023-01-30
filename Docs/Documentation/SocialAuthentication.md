@@ -23,11 +23,21 @@ Facebook/Twitter applications you want to use and update your file config/users.
 //This enable social login (authentication)
 'Users.Social.login' => true,
 //This is the required config to setup facebook.
-'OAuth.providers.facebook.options.clientId', 'YOUR APP ID';
-'OAuth.providers.facebook.options.clientSecret', 'YOUR APP SECRET';
+'OAuth.providers.facebook.options.clientId' => 'YOUR APP ID',
+'OAuth.providers.facebook.options.clientSecret' => 'YOUR APP SECRET',
 //This is the required config to setup twitter
-'OAuth.providers.twitter.options.clientId', 'YOUR APP ID';
-'OAuth.providers.twitter.options.clientSecret', 'YOUR APP SECRET';
+'OAuth.providers.twitter.options.clientId' => 'YOUR APP ID',
+'OAuth.providers.twitter.options.clientSecret' => 'YOUR APP SECRET',
+```
+
+By default the social login validation is enabled for existing accounts. First social login attempt to an existing account will require additional email validation before it can be used. If you trust the providers you are using you can disable this feature globally in your config/users.php file:
+```php
+'Users.Social.validateSocialAccount' => false,
+
+```
+Alternatively you can also skip this validation for some providers that you trust in your config/users.php file:
+```php
+'OAuth.providers.facebook.skipSocialAccountValidation' => true,
 ```
 Check optional configs at [config/users.php](./../../config/users.php) inside 'OAuth' key
 

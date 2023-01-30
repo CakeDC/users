@@ -33,6 +33,8 @@ class SocialBehavior extends BaseTokenBehavior
     use EventDispatcherTrait;
     use RandomStringTrait;
 
+    protected $validateSocialAccount = true;
+
     /**
      * Username field it can be modified via config
      *
@@ -48,6 +50,7 @@ class SocialBehavior extends BaseTokenBehavior
      */
     public function initialize(array $config): void
     {
+        $this->validateSocialAccount = (bool)Configure::read('Users.Social.validateSocialAccount');
         if (isset($config['username'])) {
             $this->_username = $config['username'];
         }
@@ -219,8 +222,12 @@ class SocialBehavior extends BaseTokenBehavior
             $user = $this->_table->newEntity($userData);
             $user = $this->_updateActive($user, false, $tokenExpiration);
         } else {
-            if ($useEmail && empty($dataValidated)) {
-                $accountData['active'] = false;
+            if (
+                $useEmail &&
+                empty($dataValidated) ||
+                ($this->validateSocialAccount && !Configure::read('OAuth.providers.' . $data['provider'] . '.skipSocialAccountValidation'))
+            ) {
+                $accountData['active'] = 0;
             }
             $user = $existingUser;
         }
