@@ -78,5 +78,4 @@ class Plugin extends BasePlugin
                 ->addArgument(ServerRequest::class);
         }
     }
-
 }
