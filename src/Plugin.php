@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace CakeDC\Users;
 
 use Cake\Core\BasePlugin;
+use Cake\Core\ContainerInterface;
 use Cake\Http\MiddlewareQueue;
+use Cake\Http\ServerRequest;
 use CakeDC\Users\Provider\AuthenticationServiceProvider;
 use CakeDC\Users\Provider\AuthorizationServiceProvider;
 use CakeDC\Users\Provider\ServiceProviderLoaderTrait;
@@ -60,5 +62,20 @@ class Plugin extends BasePlugin
             new AuthenticationServiceProvider(),
             new AuthorizationServiceProvider()
         );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function services(ContainerInterface $container): void
+    {
+        if (!$container->has('CakeDC\Users\Webauthn\AuthenticateAdapter')) {
+            $container->add('CakeDC\Users\Webauthn\AuthenticateAdapter')
+                ->addArgument(ServerRequest::class);
+        }
+        if (!$container->has('CakeDC\Users\Webauthn\RegisterAdapter')) {
+            $container->add('CakeDC\Users\Webauthn\RegisterAdapter')
+                ->addArgument(ServerRequest::class);
+        }
     }
 }
