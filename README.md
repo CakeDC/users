@@ -34,6 +34,7 @@ The  **Users** plugin covers the following features:
 * Admin management
 * Yubico U2F for Two-Factor Authentication
 * One-Time Password for Two-Factor Authentication
+* Webauthn for Two-Factor Authentication
 
 The plugin is here to provide users related features following 2 approaches:
 
