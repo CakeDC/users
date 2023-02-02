@@ -50,12 +50,12 @@ You can disable it by adding this in your config/users.php file:
 
 How does it work
 ----------------
-When the user log-in, he is requested to use a secure device compatible with
-web authentication API, one of them is a yubico key; on the first
-time the user need to register the device to use.
+When the user logs in, he is required to use a secure device that
+is compatible with web authentication API, one of them is a yubico key.
+When logging in for the first time, the user will need to register the
+device being used.
 
 Links
 -----
 - PHP Library: https://webauthn-doc.spomky-labs.com/
 - Webauthn specification: https://w3c.github.io/webauthn/
-
