@@ -1,5 +1,5 @@
-WebauthnTwoFactorAuthenticator
-==============================
+Webauthn Two-Factor Authenticator
+=================================
 
 Enabled
 -------
