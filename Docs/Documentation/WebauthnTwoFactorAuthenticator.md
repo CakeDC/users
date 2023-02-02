@@ -1,8 +1,8 @@
 Webauthn Two-Factor Authenticator
 =================================
 
-Enabled
--------
+Enable
+------
 **This feature requires the use of SSL**
 
 First install the library web-auth/webauthn-lib using composer:
