@@ -20,6 +20,7 @@ Documentation
 * [Intercept Login Action](Documentation/InterceptLoginAction.md)
 * [Social Authentication](Documentation/SocialAuthentication.md)
 * [Google Authenticator](Documentation/Two-Factor-Authenticator.md)
+* [Webauthn Two-Factor Authentication](Documentation/WebauthnTwoFactorAuthenticator.md)
 * [Yubico U2F](Documentation/Yubico-U2F.md)
 * [UserHelper](Documentation/UserHelper.md)
 * [AuthLinkHelper](Documentation/AuthLinkHelper.md)
