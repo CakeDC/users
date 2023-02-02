@@ -100,6 +100,7 @@ I want to
       </details>
   * [social login](./Documentation/SocialAuthentication.md#setup)
   * [OTP Two-factor authenticator](./Documentation/Two-Factor-Authenticator.md)
+  * [Webauthn Two-Factor Authentication](Documentation/WebauthnTwoFactorAuthenticator.md)
   * [Yubico Key U2F Two-factor authenticator](./Documentation/Yubico-U2F.md)
   * <details>
       <summary>Authentication component</summary>
