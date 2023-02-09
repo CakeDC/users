@@ -53,8 +53,8 @@ Another decision made was limiting the plugin dependencies on other packages as 
 Requirements
 ------------
 
-* CakePHP 4.0+
-* PHP 7.2+
+* CakePHP 5.0+
+* PHP 8.1+
 
 Documentation
 -------------
