@@ -33,7 +33,7 @@ page for more details.
 If you want to use Google Authenticator features...
 
 ```
-composer require robthree/twofactorauth:"^1.5.2"
+composer require robthree/twofactorauth:"^1.6"
 ```
 
 NOTE: you'll need to enable `OneTimePasswordAuthenticator.login` in your config/users.php file:
@@ -51,7 +51,7 @@ Ensure the Users Plugin is loaded in your src/Application.php file
     /**
      * {@inheritdoc}
      */
-    public function bootstrap()
+    public function bootstrap(): void
     {
         parent::bootstrap();
 
