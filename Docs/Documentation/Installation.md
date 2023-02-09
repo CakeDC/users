@@ -103,10 +103,10 @@ Note you don't need to use the provided tables, you could customize the table na
 application and then use the plugin configuration to use your own tables instead. Please refer to the [Extending the Plugin](Extending-the-Plugin.md)
 section to check all the customization options
 
-You can create the first user, the super user by issuing the following command
+You can create the first user, the superuser by issuing the following command
 
 ```
-bin/cake users addSuperuser
+bin/cake users add_superuser
 ```
 
 Customization
