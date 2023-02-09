@@ -23,7 +23,7 @@ class AppView extends View
 Link
 -----------------
 
-You can use this helper like the initial [CakePhp HtmlHelper link method](https://book.cakephp.org/5/en/views/helpers/html.html#creating-links) :
+You can use this helper like the initial [CakePHP HtmlHelper link method](https://book.cakephp.org/5/en/views/helpers/html.html#creating-links) :
 
 In templates
 ```diff
