@@ -207,13 +207,13 @@ Plugin Templates
 Similar to Email Templates customization, follow the CakePHP conventions to put your new templates under
 templates/plugin/CakeDC/Users/[Controller]/[view].php
 
-Check https://book.cakephp.org/4/en/plugins.html#overriding-plugin-templates-from-inside-your-application
+Check https://book.cakephp.org/5/en/plugins.html#overriding-plugin-templates-from-inside-your-application
 
 Flash Messages
 ---------------
 
 To modify the flash messages, use the standard PO file provided by the plugin and customize the messages
-Check https://book.cakephp.org/4/en/core-libraries/internationalization-and-localization.html#setting-up-translations
+Check https://book.cakephp.org/5/en/core-libraries/internationalization-and-localization.html#setting-up-translations
 for more details about how the PO files should be managed in your application.
 
 We've included an updated POT file with all the `Users` domain keys for your customization.
