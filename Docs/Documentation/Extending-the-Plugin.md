@@ -129,7 +129,7 @@ class MyUsersController extends AppController
      *
      * @return void
      */
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
         $this->loadComponent('CakeDC/Users.Setup');
@@ -169,7 +169,7 @@ You may also need to load some helpers in your AppView:
      *
      * @return void
      */
-    public function initialize()
+    public function initialize(): void
     {
         $this->loadHelper('CakeDC/Users.AuthLink');
         $this->loadHelper('CakeDC/Users.User');

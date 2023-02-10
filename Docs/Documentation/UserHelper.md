@@ -10,7 +10,7 @@ Enable the Helper in `src/view/AppView.php`:
 ```php
 class AppView extends View
 {
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
         $this->loadHelper('CakeDC/Users.User');
@@ -37,7 +37,7 @@ You can use the helper included with the plugin to create some 'Connect with Fac
 
 In templates, call socialConnectLinkList method to get links for all social providers enabled
 ```php
-echo $this->User->socialConnectLinkList($user->social_accounts); 
+echo $this->User->socialConnectLinkList($user->social_accounts);
 ```
 
 We recommend the use of [Bootstrap Social](http://lipis.github.io/bootstrap-social/) in order to automatically apply styles to buttons. Anyway you can always add your own style to the buttons.

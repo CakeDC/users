@@ -10,37 +10,37 @@ example shows how to set user data and redirect to anothe url.
 <?php
 namespace App\Middleware;
 
+use Cake\Http\Response;
 use CakeDC\Users\Utility\UsersUrl;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class BeforeLoginMiddleware
+class BeforeLoginMiddleware implements MiddlewareInterface
 {
     /**
      * My custom middleware
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request The request.
-     * @param \Psr\Http\Message\ResponseInterface $response The response.
-     * @param callable $next Callback to invoke the next middleware.
-     * @return \Psr\Http\Message\ResponseInterface A response
+     * @param \Psr\Http\Server\RequestHandlerInterface $handler The request handler.
+     * @return \Psr\Http\Message\ResponseInterface A response.
      */
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $next)
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         if (!(new UsersUrl())->checkActionOnRequest('login', $request)) {
-            return $next($request, $response);
+            return $handler->handle($request);
         }
 
         if (!$request->getAttribute('session')->read('Auth')) {
             //do some logic
-            //do more logic
             $request->getAttribute('session')->write('Auth', $userIdentity);
 
             $response = $response->withHeader('Location', '/pages/33');
-
-            return $response;
+            return (new Response())->withHeader('Location', '/pages/33');
         }
 
-        return $next($request, $response);
+        return $handler->handle($request);
     }
 
 }
