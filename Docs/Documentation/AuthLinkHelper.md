@@ -12,7 +12,7 @@ Enable the Helper in `src/view/AppView.php`:
 ```php
 class AppView extends View
 {
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
         $this->loadHelper('CakeDC/Users.AuthLink');
