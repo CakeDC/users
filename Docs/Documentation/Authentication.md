@@ -175,7 +175,7 @@ defined at the ``Auth`` configuration key.
 If the default configuration is not enough for your project's needs you may create a custom loader extending the
 default loader provided.
 
-Fore xample, create a file ``src/Loader/AppAuthenticationServiceLoader.php``:
+For example, create a file ``src/Loader/AppAuthenticationServiceLoader.php``:
 
 ```php
 <?php
