@@ -49,10 +49,12 @@ class User extends Entity
      * @inheritDoc
      */
     protected array $_hidden = [
+        'additional_data',
+        'api_token',
         'password',
+        'secret',
         'token',
         'token_expires',
-        'api_token',
     ];
 
     /**
