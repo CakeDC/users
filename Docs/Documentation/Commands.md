@@ -92,5 +92,25 @@ bin/cake users password_email the.target.username
 
 A link to reset the password is sent to the user.
 
-- bin/cake users reset_all_passwords
-- bin/cake users reset_password
+reset_all_passwords
+-------------------
+Reset the password for all users:
+
+***Warning: This command is normally useful on development environment,
+you probably WON'T use it on production.***
+
+```
+bin/cake users reset_all_passwords a-new-safe-password
+```
+
+reset_password
+--------------
+Reset the password for a specific user:
+
+***Warning: This command is normally useful on development environment,
+you probably WON'T use it on production.***
+
+```
+bin/cake users reset_password  the.target.username a-new-safe-password
+```
+

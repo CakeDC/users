@@ -28,7 +28,7 @@ class UsersActivateUserCommand extends Command
         $parser = parent::buildOptionParser($parser);
 
         return $parser
-            ->setDescription(__d('cake_d_c/users', 'Activate an specific user'));
+            ->setDescription(__d('cake_d_c/users', 'Activate a specific user'));
     }
 
     /**

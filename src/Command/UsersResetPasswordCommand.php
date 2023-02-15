@@ -28,7 +28,7 @@ class UsersResetPasswordCommand extends Command
         $parser = parent::buildOptionParser($parser);
 
         return $parser
-            ->setDescription(__d('cake_d_c/users', 'Reset the password for an specific user'));
+            ->setDescription(__d('cake_d_c/users', 'Reset the password for a specific user'));
     }
 
     /**
