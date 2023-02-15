@@ -28,7 +28,7 @@ class UsersChangeApiTokenCommand extends Command
         $parser = parent::buildOptionParser($parser);
 
         return $parser
-            ->setDescription(__d('cake_d_c/users', 'Change the api token for an specific user'));
+            ->setDescription(__d('cake_d_c/users', 'Change the api token for a specific user'));
     }
 
     /**
