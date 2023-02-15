@@ -49,13 +49,20 @@ bin/cake users add_user --username=my.new.user --email=some.email.user@example.c
 **Please use a strong password.**
 
 change_api_token
--------------
+----------------
 Change the api token for a specific user:
 
 ```
 bin/cake users change_api_token the.tagert.user.name the-new-hash-token
 ```
 
+change_role
+----------------
+Change the role for a specific user:
+
+```
+bin/cake users change_api_token the.tagert.user.name my-custom-role
+```
 
 - bin/cake users change_role
 - bin/cake users deactivate_user

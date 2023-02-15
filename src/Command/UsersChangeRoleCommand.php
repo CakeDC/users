@@ -28,7 +28,7 @@ class UsersChangeRoleCommand extends Command
         $parser = parent::buildOptionParser($parser);
 
         return $parser
-            ->setDescription(__d('cake_d_c/users', 'Change the role for an specific user'));
+            ->setDescription(__d('cake_d_c/users', 'Change the role for a specific user'));
     }
 
     /**
