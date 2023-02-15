@@ -28,7 +28,7 @@ class UsersDeactivateUserCommand extends Command
         $parser = parent::buildOptionParser($parser);
 
         return $parser
-            ->setDescription(__d('cake_d_c/users', 'Deactivate an specific user'));
+            ->setDescription(__d('cake_d_c/users', 'Deactivate a specific user'));
     }
 
     /**

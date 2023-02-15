@@ -9,7 +9,7 @@ activate_user
 Activate a specific user:
 
 ```
-bin/cake users activate_user the.user.name.to.activate
+bin/cake users activate_user the.target.username
 ```
 
 add_superuser
@@ -53,20 +53,35 @@ change_api_token
 Change the api token for a specific user:
 
 ```
-bin/cake users change_api_token the.tagert.user.name the-new-hash-token
+bin/cake users change_api_token the.target.username the-new-hash-token
 ```
 
 change_role
-----------------
+-----------
 Change the role for a specific user:
 
 ```
 bin/cake users change_api_token the.tagert.user.name my-custom-role
 ```
 
-- bin/cake users change_role
-- bin/cake users deactivate_user
-- bin/cake users delete_user
+deactivate_user
+---------------
+Deactivate a specific user:
+
+```
+bin/cake users deactivate_user the.target.username
+```
+
+delete_user
+-----------
+Delete a specific user:
+
+***Warning: You can't undo this action.***
+
+```
+bin/cake users delete_user the.target.username
+```
+
 - bin/cake users password_email
 - bin/cake users reset_all_passwords
 - bin/cake users reset_password
