@@ -82,6 +82,15 @@ Delete a specific user:
 bin/cake users delete_user the.target.username
 ```
 
-- bin/cake users password_email
+password_email
+--------------
+Request password reset via e-mail:
+
+```
+bin/cake users password_email the.target.username
+```
+
+A link to reset the password is sent to the user.
+
 - bin/cake users reset_all_passwords
 - bin/cake users reset_password
