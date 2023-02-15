@@ -25,6 +25,7 @@ Documentation
 * [AuthLinkHelper](Documentation/AuthLinkHelper.md)
 * [Events](Documentation/Events.md)
 * [Extending the Plugin](Documentation/Extending-the-Plugin.md)
+* [Commands](Documentation/Commands.md)
 * [Translations](Documentation/Translations.md)
 
 I want to

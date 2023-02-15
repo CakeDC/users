@@ -25,7 +25,7 @@ class UsersDeleteUserCommand extends Command
         $parser = parent::buildOptionParser($parser);
 
         return $parser
-            ->setDescription(__d('cake_d_c/users', 'Delete an specific user'));
+            ->setDescription(__d('cake_d_c/users', 'Delete a specific user'));
     }
 
     /**
