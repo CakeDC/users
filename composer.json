@@ -43,7 +43,7 @@
         "league/oauth2-linkedin": "@stable",
         "luchianenco/oauth2-amazon": "^1.1",
         "google/recaptcha": "@stable",
-        "robthree/twofactorauth": "^1.6",
+        "robthree/twofactorauth": "^2.0",
         "yubico/u2flib-server": "^1.0",
         "league/oauth1-client": "^1.7",
         "cakephp/cakephp-codesniffer": "^5.0",

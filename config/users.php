@@ -130,7 +130,7 @@ $config = [
         // The number of seconds a code will be valid
         'period' => 30,
         // The algorithm used
-        'algorithm' => 'sha1',
+        'algorithm' => \RobThree\Auth\Algorithm::Sha1,
         // QR-code provider (more on this later)
         'qrcodeprovider' => null,
         // Random Number Generator provider (more on this later)
