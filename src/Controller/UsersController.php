@@ -54,10 +54,6 @@ class UsersController extends AppController
                 'unlockedActions',
                 [
                     'login',
-                    'u2fRegister',
-                    'u2fRegisterFinish',
-                    'u2fAuthenticate',
-                    'u2fAuthenticateFinish',
                     'webauthn2faRegister',
                     'webauthn2faRegisterOptions',
                     'webauthn2faAuthenticate',

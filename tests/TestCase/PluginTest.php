@@ -231,12 +231,6 @@ class PluginTest extends TestCase
             'controller' => 'Users',
             'action' => 'profile',
         ];
-        $defaultU2fStartAction = [
-            'prefix' => false,
-            'plugin' => 'CakeDC/Users',
-            'controller' => 'Users',
-            'action' => 'u2f',
-        ];
         $defaultLoginAction = [
             'prefix' => false,
             'plugin' => 'CakeDC/Users',
