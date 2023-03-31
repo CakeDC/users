@@ -146,7 +146,7 @@ class AuthenticationServiceProviderTest extends TestCase
             ],
         ];
         $actual = [];
-        foreach ($identifiers as $key => $value) {
+        foreach ($identifiers as $value) {
             $config = $value->getConfig();
             $actual[get_class($value)] = $config;
         }
@@ -247,7 +247,7 @@ class AuthenticationServiceProviderTest extends TestCase
             ],
         ];
         $actual = [];
-        foreach ($authenticators as $key => $value) {
+        foreach ($authenticators as $value) {
             $config = $value->getConfig();
             $actual[get_class($value)] = $config;
         }
