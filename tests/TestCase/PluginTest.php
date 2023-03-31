@@ -231,12 +231,6 @@ class PluginTest extends TestCase
             'controller' => 'Users',
             'action' => 'profile',
         ];
-        $defaultU2fStartAction = [
-            'prefix' => false,
-            'plugin' => 'CakeDC/Users',
-            'controller' => 'Users',
-            'action' => 'u2f',
-        ];
         $defaultLoginAction = [
             'prefix' => false,
             'plugin' => 'CakeDC/Users',
@@ -253,7 +247,6 @@ class PluginTest extends TestCase
         return [
             ['Users.Profile.route', $defaultProfileAction],
             ['OneTimePasswordAuthenticator.verifyAction', $defaultVerifyAction],
-            ['U2f.startAction', $defaultU2fStartAction],
             ['Auth.AuthenticationComponent.loginAction', $defaultLoginAction],
             ['Auth.AuthenticationComponent.logoutRedirect', $defaultLoginAction],
             ['Auth.AuthenticationComponent.loginRedirect', '/'],

@@ -333,7 +333,7 @@ class Webauthn2faTraitTest extends BaseTraitTest
         );
         $this->Trait->setRequest($request);
         $this->expectException(\Exception::class);
-        $this->expectErrorMessage('Testing error exception for webauthn2faRegister');
+        $this->expectExceptionMessage('Testing error exception for webauthn2faRegister');
         $this->Trait->webauthn2faRegister($adapter);
     }
 

@@ -73,12 +73,7 @@ return [
                 // UserValidationTrait used in PasswordManagementTrait
                 'resendTokenValidation',
                 'linkSocial',
-                //U2F actions
-                'u2f',
-                'u2fRegister',
-                'u2fRegisterFinish',
-                'u2fAuthenticate',
-                'u2fAuthenticateFinish',
+                //Webauthn2fa actions
                 'webauthn2fa',
                 'webauthn2faRegister',
                 'webauthn2faRegisterOptions',

@@ -161,24 +161,6 @@ class User extends Entity
     }
 
     /**
-     * Return the u2f_registration inside additional_data
-     *
-     * @return object|null
-     */
-    protected function _getU2fRegistration()
-    {
-        if (is_string($this->additional_data)) {
-            $this->additional_data = json_decode($this->additional_data, true);
-        }
-        if (!isset($this->additional_data['u2f_registration'])) {
-            return null;
-        }
-        $object = (object)$this->additional_data['u2f_registration'];
-
-        return $object->keyHandle !== null ? $object : null;
-    }
-
-    /**
      * Generate token_expires and token in a user
      *
      * @param int $tokenExpiration seconds to expire the token from Now

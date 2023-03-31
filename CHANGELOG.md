@@ -1,5 +1,14 @@
 Changelog
 =========
+Releases for CakePHP 5
+-------------
+* 12.0
+    * Migrated to web-auth/webauthn-lib:^4.4
+    * Migrated to robthree/twofactorauth:^2.0
+    * Removed deprecated U2F
+    * Migrated old UserShell into command classes
+    * Added documentation about commands
+
 Releases for CakePHP 4.3
 -------------
 
@@ -35,7 +44,7 @@ Releases for CakePHP 4
   * Ukrainian (uk) by @yarkm13
   * Docs improvements
   * Fix DebugKit permissions issues
-  
+
 * 9.0.2
   * Added a custom Unauthorized Handler
     * If logged user access unauthorized url he is redirected to referer url or '/' if no referer url
