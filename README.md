@@ -32,9 +32,8 @@ The  **Users** plugin covers the following features:
 * Remember me (Cookie) via https://github.com/CakeDC/auth
 * Manage user's profile
 * Admin management
-* Yubico U2F for Two-Factor Authentication
 * One-Time Password for Two-Factor Authentication
-* Webauthn for Two-Factor Authentication
+* Webauthn for Two-Factor Authentication (Yubico Key compatible)
 
 The plugin is here to provide users related features following 2 approaches:
 

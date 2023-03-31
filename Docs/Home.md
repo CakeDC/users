@@ -19,8 +19,7 @@ Documentation
 * [Intercept Login Action](Documentation/InterceptLoginAction.md)
 * [Social Authentication](Documentation/SocialAuthentication.md)
 * [Google Authenticator](Documentation/Two-Factor-Authenticator.md)
-* [Webauthn Two-Factor Authentication](Documentation/WebauthnTwoFactorAuthenticator.md)
-* [Yubico U2F](Documentation/Yubico-U2F.md)
+* [Webauthn Two-Factor Authentication (Yubico Key compatible)](Documentation/WebauthnTwoFactorAuthenticator.md)
 * [UserHelper](Documentation/UserHelper.md)
 * [AuthLinkHelper](Documentation/AuthLinkHelper.md)
 * [Events](Documentation/Events.md)
@@ -101,7 +100,6 @@ I want to
   * [social login](./Documentation/SocialAuthentication.md#setup)
   * [OTP Two-factor authenticator](./Documentation/Two-Factor-Authenticator.md)
   * [Webauthn Two-Factor Authentication](Documentation/WebauthnTwoFactorAuthenticator.md)
-  * [Yubico Key U2F Two-factor authenticator](./Documentation/Yubico-U2F.md)
   * <details>
       <summary>Authentication component</summary>
 
