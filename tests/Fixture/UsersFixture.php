@@ -48,12 +48,6 @@ class UsersFixture extends TestFixture
                 'created' => '2015-06-24 17:33:54',
                 'modified' => '2015-06-24 17:33:54',
                 'additional_data' => [
-                    'u2f_registration' => [
-                        'keyHandle' => 'fake key handle',
-                        'publicKey' => 'afdoaj0-23u423-ad ujsf-as8-0-afsd',
-                        'certificate' => '23jdsfoasdj0f9sa082304823423',
-                        'counter' => 1,
-                    ],
                     'webauthn_credentials' => [
                         'MTJiMzc0ODYtOTI5OS00MzMxLWFjMzMtODViMmQ5ODViNmZl' => [
                             'publicKeyCredentialId' => '12b37486-9299-4331-ac33-85b2d985b6fe',
