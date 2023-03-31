@@ -130,7 +130,7 @@ $config = [
         // The number of seconds a code will be valid
         'period' => 30,
         // The algorithm used
-        'algorithm' => \RobThree\Auth\Algorithm::Sha1,
+        'algorithm' => enum_exists(\RobThree\Auth\Algorithm::class) ? \RobThree\Auth\Algorithm::Sha1 : null,
         // QR-code provider (more on this later)
         'qrcodeprovider' => null,
         // Random Number Generator provider (more on this later)
