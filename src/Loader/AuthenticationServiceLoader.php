@@ -15,7 +15,6 @@ namespace CakeDC\Users\Loader;
 
 use Cake\Core\Configure;
 use CakeDC\Auth\Authentication\AuthenticationService;
-use CakeDC\Users\Plugin;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**

@@ -21,11 +21,6 @@ parameters:
 			path: src/Controller/UsersController.php
 
 		-
-			message: "#^Access to an undefined property Cake\\\\Datasource\\\\EntityInterface\\:\\:\\$u2f_registration\\.$#"
-			count: 1
-			path: src/Controller/UsersController.php
-
-		-
 			message: "#^Call to an undefined method Cake\\\\Controller\\\\Component\\:\\:handleLogin\\(\\)\\.$#"
 			count: 3
 			path: src/Controller/UsersController.php
