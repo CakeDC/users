@@ -123,7 +123,6 @@ class UsersUrl
         return [
             'Users.Profile.route' => static::actionUrl('profile'),
             'OneTimePasswordAuthenticator.verifyAction' => static::actionUrl('verify'),
-            'U2f.startAction' => static::actionUrl('u2f'),
             'Webauthn2fa.startAction' => static::actionUrl('webauthn2fa'),
             'Auth.AuthenticationComponent.loginAction' => $loginAction,
             'Auth.AuthenticationComponent.logoutRedirect' => $loginAction,

@@ -205,17 +205,17 @@ class LoginTraitIntegrationTest extends TestCase
      *
      * @return void
      */
-    public function testLoginPostRequestRightPasswordIsEnabledU2f()
+    public function testLoginPostRequestRightPasswordIsEnabledWebauthn2fa()
     {
         EventManager::instance()->on('TestApp.afterPluginBootstrap', function () {
-            Configure::write(['U2f.enabled' => true]);
+            Configure::write(['Webauthn2fa.enabled' => true, 'Webauthn2fa.appName' => 'TestUsers']);
         });
         $this->enableRetainFlashMessages();
         $this->post('/login', [
             'username' => 'user-2',
             'password' => '12345',
         ]);
-        $this->assertRedirectContains('/users/u2f');
+        $this->assertRedirectContains('/users/webauthn2fa');
     }
 
     /**

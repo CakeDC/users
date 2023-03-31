@@ -253,7 +253,6 @@ class PluginTest extends TestCase
         return [
             ['Users.Profile.route', $defaultProfileAction],
             ['OneTimePasswordAuthenticator.verifyAction', $defaultVerifyAction],
-            ['U2f.startAction', $defaultU2fStartAction],
             ['Auth.AuthenticationComponent.loginAction', $defaultLoginAction],
             ['Auth.AuthenticationComponent.logoutRedirect', $defaultLoginAction],
             ['Auth.AuthenticationComponent.loginRedirect', '/'],
