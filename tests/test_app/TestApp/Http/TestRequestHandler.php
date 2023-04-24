@@ -6,7 +6,7 @@ namespace TestApp\Http;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Zend\Diactoros\Response;
+use Laminas\Diactoros\Response;
 
 class TestRequestHandler implements RequestHandlerInterface
 {

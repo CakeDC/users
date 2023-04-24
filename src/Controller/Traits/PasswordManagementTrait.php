@@ -195,8 +195,8 @@ trait PasswordManagementTrait
     {
         if ($this->getRequest()->is('post')) {
             try {
-                $query = $this->getUsersTable()->query();
-                $query->update()
+                $query = $this->getUsersTable()->updateQuery();
+                $query
                     ->set(['secret_verified' => false, 'secret' => null])
                     ->where(['id' => $id]);
                 $query->execute();
