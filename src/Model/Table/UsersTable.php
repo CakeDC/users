@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Model\Table;
 
-use Cake\Database\Schema\TableSchemaInterface;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
