@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Model\Table;
 
+use Cake\Database\Schema\TableSchemaInterface;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -70,7 +71,19 @@ class UsersTable extends Table
         $this->addBehavior('CakeDC/Users.LinkSocial');
         $this->addBehavior('CakeDC/Users.AuthFinder');
         $this->hasMany('SocialAccounts')->setForeignKey('user_id')->setClassName('CakeDC/Users.SocialAccounts');
-        $this->getSchema()->setColumnType('additional_data', 'json');
+    }
+
+    /**
+     * Returns the schema table object describing this table's properties.
+     *
+     * @return \Cake\Database\Schema\TableSchemaInterface
+     */
+    public function getSchema(): TableSchemaInterface
+    {
+        $schema = parent::getSchema();
+        $schema->setColumnType('additional_data', 'json');
+
+        return $schema;
     }
 
     /**
