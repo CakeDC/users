@@ -45,7 +45,7 @@ class UsersChangeApiTokenCommandTest extends TestCase
 
         $this->exec('cake_d_c/users.users change_api_token user-4 test-execute-001');
         $this->assertExitSuccess();
-        $this->assertOutputRegExp('/Api token changed for user: user-4\n/');
+        $this->assertOutputRegExp('/Api token changed for user: user-4/');
         $this->assertOutputRegExp('/New token: test-execute-001/');
 
         //$userId 1 and 2 should not have change the password

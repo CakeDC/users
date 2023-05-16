@@ -75,9 +75,7 @@ class LinkSocialBehaviorTest extends TestCase
      */
     public function testlinkSocialAccountFacebookProvider($data, $userId, $result)
     {
-        $user = $this->Table->get($userId, [
-            'contain' => 'SocialAccounts',
-        ]);
+        $user = $this->Table->get($userId, contain: ['SocialAccounts']);
         $resultUser = $this->Behavior->linkSocialAccount($user, $data);
         $this->assertInstanceOf('\CakeDC\Users\Model\Entity\User', $resultUser);
         $actual = $resultUser->social_accounts[2];
@@ -278,9 +276,7 @@ class LinkSocialBehaviorTest extends TestCase
             'provider' => $data['provider'],
         ])->firstOrFail();
 
-        $userBase = $this->Table->get('00000000-0000-0000-0000-000000000002', [
-            'contain' => ['SocialAccounts'],
-        ]);
+        $userBase = $this->Table->get('00000000-0000-0000-0000-000000000002', contain: ['SocialAccounts']);
         $resultUser = $this->Behavior->linkSocialAccount($userBase, $data);
         $this->assertInstanceOf('\CakeDC\Users\Model\Entity\User', $resultUser);
         $this->assertEquals([], $userBase->getErrors());

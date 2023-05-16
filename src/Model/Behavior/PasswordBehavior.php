@@ -129,9 +129,7 @@ class PasswordBehavior extends BaseTokenBehavior
     public function changePassword(EntityInterface $user)
     {
         try {
-            $currentUser = $this->_table->get($user->id, [
-                'contain' => [],
-            ]);
+            $currentUser = $this->_table->get($user->id, contain: []);
         } catch (RecordNotFoundException $e) {
             throw new UserNotFoundException(__d('cake_d_c/users', 'User not found'));
         }

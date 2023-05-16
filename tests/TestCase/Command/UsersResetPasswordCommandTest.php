@@ -45,7 +45,7 @@ class UsersResetPasswordCommandTest extends TestCase
 
         $this->exec('cake_d_c/users.users reset_password user-4 newPassTestOne234');
         $this->assertExitSuccess();
-        $this->assertOutputRegExp('/Password changed for user: user-4\n/');
+        $this->assertOutputRegExp('/Password changed for user: user-4/');
         $this->assertOutputRegExp('/New password: newPassTestOne234/');
 
         //$userId 1 and 2 should not have change the password

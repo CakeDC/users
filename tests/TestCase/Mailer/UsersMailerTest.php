@@ -104,7 +104,7 @@ class UsersMailerTest extends TestCase
     public function testSocialAccountValidation()
     {
         $social = TableRegistry::getTableLocator()->get('CakeDC/Users.SocialAccounts')
-            ->get('00000000-0000-0000-0000-000000000001', ['contain' => 'Users']);
+            ->get('00000000-0000-0000-0000-000000000001', contain: ['Users']);
         $this->assertInstanceOf(User::class, $social->user);
         $expectedViewVars = [
             'user' => $social->user,

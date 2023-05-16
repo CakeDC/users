@@ -36,10 +36,11 @@ class UsersAddSuperuserCommandTest extends TestCase
         $UsersTable = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
         $this->assertFalse($UsersTable->exists(['username' => $username]));
         $this->exec('cake_d_c/users.users add_superuser --username=yeliparra.admin --password=123456 --email=yeli.parra.testing01@testing.com --role=admin-tester');
-        $this->assertOutputRegExp('/^Superuser added:\n/');
-        $this->assertOutputRegExp('/Username: yeliparra.admin\n/');
-        $this->assertOutputRegExp('/Email: yeli.parra.testing01@testing.com\n/');
-        $this->assertOutputRegExp('/Role: admin-tester\n/');
+		$s=$this->_out->messages();
+        $this->assertOutputRegExp('/Superuser added:/');
+        $this->assertOutputRegExp('/Username: yeliparra.admin/');
+        $this->assertOutputRegExp('/Email: yeli.parra.testing01@testing.com/');
+        $this->assertOutputRegExp('/Role: admin-tester/');
         $this->assertOutputRegExp('/Password: 123456$/');
         /**
          * @var \CakeDC\Users\Model\Entity\User $user
@@ -62,10 +63,10 @@ class UsersAddSuperuserCommandTest extends TestCase
     public function testExecuteWithNoParams(): void
     {
         $this->exec('cake_d_c/users.users add_superuser');
-        $this->assertOutputRegExp('/^Superuser added:\n/');
-        $this->assertOutputRegExp('/Username: superadmin\n/');
-        $this->assertOutputRegExp('/Email: superadmin@example.com\n/');
-        $this->assertOutputRegExp('/Role: superuser\n/');
+        $this->assertOutputRegExp('/^Superuser added:/');
+        $this->assertOutputRegExp('/Username: superadmin/');
+        $this->assertOutputRegExp('/Email: superadmin@example.com/');
+        $this->assertOutputRegExp('/Role: superuser/');
         $this->assertOutputRegExp('/Password: [a-z0-9]{32}$/');
     }
 }

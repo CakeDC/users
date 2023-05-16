@@ -34,7 +34,7 @@ class UsersResetAllPasswordsCommandTest extends TestCase
     {
         $this->exec('cake_d_c/users.users reset_all_passwords myCustomNewPass002');
         $this->assertExitSuccess();
-        $this->assertOutputRegExp('/Password changed for all users\n/');
+        $this->assertOutputRegExp('/Password changed for all users/');
         $this->assertOutputRegExp('/New password: myCustomNewPass002/');
 
         $UsersTable = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');

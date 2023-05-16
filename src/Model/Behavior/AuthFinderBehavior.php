@@ -38,12 +38,13 @@ class AuthFinderBehavior extends Behavior
      * Custom finder to log in users
      *
      * @param \Cake\ORM\Query\SelectQuery $query Query object to modify
-     * @param array $options Query options
+     * @param mixed ...$args Arguments that match up to finder-specific parameters
      * @return \Cake\ORM\Query\SelectQuery
      * @throws \BadMethodCallException
      */
-    public function findAuth(SelectQuery $query, array $options = [])
-    {
+    public function findAuth(SelectQuery $query, mixed ...$args)
+    {			
+		$options = $query->getOptions();
         $identifier = $options['username'] ?? null;
         if (empty($identifier)) {
             throw new \BadMethodCallException(__d('cake_d_c/users', 'Missing \'username\' in options data'));
@@ -55,7 +56,7 @@ class AuthFinderBehavior extends Behavior
 
                 return $or->add($where);
             }, [], true)
-            ->find('active', $options);
+            ->find('active', ...$options);
 
         return $query;
     }

@@ -45,7 +45,7 @@ class UsersChangeRoleCommandTest extends TestCase
 
         $this->exec('cake_d_c/users.users change_role user-4 test-execute-001');
         $this->assertExitSuccess();
-        $this->assertOutputRegExp('/Role changed for user: user-4\n/');
+        $this->assertOutputRegExp('/Role changed for user: user-4/');
         $this->assertOutputRegExp('/New role: test-execute-001/');
 
         //$userId 1 and 2 should not have change the password

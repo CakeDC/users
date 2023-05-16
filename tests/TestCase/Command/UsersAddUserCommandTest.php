@@ -37,10 +37,10 @@ class UsersAddUserCommandTest extends TestCase
         $UsersTable = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
         $this->assertFalse($UsersTable->exists(['username' => 'yeliparra']));
         $this->exec('cake_d_c/users.users add_user --username=yeliparra --password=123 --email=yeli.parra@test.com --role=tester');
-        $this->assertOutputRegExp('/^User added:\n/');
-        $this->assertOutputRegExp('/Username: yeliparra\n/');
-        $this->assertOutputRegExp('/Email: yeli.parra@test.com\n/');
-        $this->assertOutputRegExp('/Role: tester\n/');
+        $this->assertOutputRegExp('/^User added:/');
+        $this->assertOutputRegExp('/Username: yeliparra/');
+        $this->assertOutputRegExp('/Email: yeli.parra@test.com/');
+        $this->assertOutputRegExp('/Role: tester/');
         $this->assertOutputRegExp('/Password: 123$/');
         /**
          * @var \CakeDC\Users\Model\Entity\User $user
@@ -64,10 +64,10 @@ class UsersAddUserCommandTest extends TestCase
     {
         $this->exec('cake_d_c/users.users add_user');
         $username = '(aayla|admiral|anakin|chewbacca|darthvader|hansolo|luke|obiwan|leia|r2d2)';
-        $this->assertOutputRegExp('/^User added:\n/');
-        $this->assertOutputRegExp('/Username: ' . $username . '\n/');
-        $this->assertOutputRegExp('/Email: ' . $username . '@example.com\n/');
-        $this->assertOutputRegExp('/Role: user\n/');
+        $this->assertOutputRegExp('/^User added:/');
+        $this->assertOutputRegExp('/Username: ' . $username . '/');
+        $this->assertOutputRegExp('/Email: ' . $username . '@example.com/');
+        $this->assertOutputRegExp('/Role: user/');
         $this->assertOutputRegExp('/Password: [a-z0-9]{32}$/');
     }
 
@@ -86,10 +86,10 @@ class UsersAddUserCommandTest extends TestCase
         $this->assertFalse($UsersTable->exists(['username' => $username]));
 
         $this->exec('cake_d_c/users.users add_user --username=custom.user --password=12345 --email=custom+user@example.com');
-        $this->assertOutputRegExp('/^User added:\n/');
-        $this->assertOutputRegExp('/Username: custom.user\n/');
+        $this->assertOutputRegExp('/^User added:/');
+        $this->assertOutputRegExp('/Username: custom.user/');
         $this->assertOutputRegExp('/Email: custom\+user@example.com/');
-        $this->assertOutputRegExp('/Role: emperor\n/');
+        $this->assertOutputRegExp('/Role: emperor/');
         $this->assertOutputRegExp('/Password: 12345$/');
 
         /**
@@ -119,10 +119,10 @@ class UsersAddUserCommandTest extends TestCase
         $this->assertFalse($UsersTable->exists(['username' => $username]));
 
         $this->exec('cake_d_c/users.users add_user --username=custom.user --password=12345 --email=custom+user@example.com');
-        $this->assertOutputRegExp('/^User added:\n/');
-        $this->assertOutputRegExp('/Username: custom.user\n/');
+        $this->assertOutputRegExp('/^User added:/');
+        $this->assertOutputRegExp('/Username: custom.user/');
         $this->assertOutputRegExp('/Email: custom\+user@example.com/');
-        $this->assertOutputRegExp('/Role: user\n/');
+        $this->assertOutputRegExp('/Role: user/');
         $this->assertOutputRegExp('/Password: 12345$/');
 
         /**

@@ -84,12 +84,12 @@ class AuthFinderBehaviorTest extends TestCase
     public function testFindAuth()
     {
         $user = $this->table
-            ->find('auth', ['username' => 'not-exist@email.com'])
+            ->find('auth', username: 'not-exist@email.com')
             ->toArray();
         $this->assertEmpty($user);
 
         $user = $this->table
-            ->find('auth', ['username' => 'user-2@test.com'])
+            ->find('auth', username: 'user-2@test.com')
             ->first()
             ->toArray();
 

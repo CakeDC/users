@@ -54,7 +54,7 @@ define('CAKE_CORE_INCLUDE_PATH', ROOT . '/vendor/cakephp/cakephp');
 define('CORE_PATH', CAKE_CORE_INCLUDE_PATH . DS);
 define('CAKE', CORE_PATH . 'src' . DS);
 
-require ROOT . '/vendor/cakephp/cakephp/src/basics.php';
+require ROOT . '/vendor/cakephp/cakephp/src/functions.php';
 require ROOT . '/vendor/autoload.php';
 
 Cake\Core\Configure::write('debug', true);

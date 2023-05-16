@@ -47,9 +47,7 @@ trait SimpleCrudTrait
     {
         $table = $this->fetchTable();
         $tableAlias = $table->getAlias();
-        $entity = $table->get($id, [
-            'contain' => [],
-        ]);
+        $entity = $table->get($id, contain: []);
         $this->set($tableAlias, $entity);
         $this->set('tableAlias', $tableAlias);
         $this->set('_serialize', [$tableAlias, 'tableAlias']);
@@ -92,7 +90,7 @@ trait SimpleCrudTrait
     {
         $table = $this->fetchTable();
         $tableAlias = $table->getAlias();
-        $entity = $table->get($id, [
+        $entity = $table->get($id, args: [
             'contain' => [],
         ]);
         $this->set($tableAlias, $entity);
@@ -123,7 +121,7 @@ trait SimpleCrudTrait
         $this->getRequest()->allowMethod(['post', 'delete']);
         $table = $this->fetchTable();
         $tableAlias = $table->getAlias();
-        $entity = $table->get($id, [
+        $entity = $table->get($id, args: [
             'contain' => [],
         ]);
         $singular = Inflector::singularize(Inflector::humanize($tableAlias));
