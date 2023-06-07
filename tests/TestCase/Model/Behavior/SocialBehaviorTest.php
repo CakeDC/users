@@ -43,7 +43,7 @@ class SocialBehaviorTest extends TestCase
         parent::setUp();
         $this->Table = $this->getMockForModel('CakeDC/Users.Users', ['save']);
         $this->Behavior = $this->getMockBuilder('CakeDC\Users\Model\Behavior\SocialBehavior')
-            ->setMethods(['randomString', '_updateActive', 'generateUniqueUsername'])
+            ->onlyMethods(['randomString', '_updateActive', 'generateUniqueUsername'])
             ->setConstructorArgs([$this->Table])
             ->getMock();
     }
@@ -127,7 +127,7 @@ class SocialBehaviorTest extends TestCase
     /**
      * Provider for socialLogin with facebook and not existing user
      */
-    public function providerFacebookSocialLogin()
+    public static function providerFacebookSocialLogin()
     {
         return [
                 'provider' => [
@@ -255,7 +255,7 @@ class SocialBehaviorTest extends TestCase
     /**
      * Provider for socialLogin with facebook with existing and active user
      */
-    public function providerFacebookSocialLoginExistingReference()
+    public static function providerFacebookSocialLoginExistingReference()
     {
         return [
             'provider' => [
@@ -295,7 +295,7 @@ class SocialBehaviorTest extends TestCase
     /**
      * Provider for socialLogin with existing and active user and not active social account
      */
-    public function providerSocialLoginExistingAndNotActiveAccount()
+    public static function providerSocialLoginExistingAndNotActiveAccount()
     {
         return [
             'provider' => [
@@ -335,7 +335,7 @@ class SocialBehaviorTest extends TestCase
     /**
      * Provider for socialLogin with existing and active account but not active user
      */
-    public function providerSocialLoginExistingAccountNotActiveUser()
+    public static function providerSocialLoginExistingAccountNotActiveUser()
     {
         return [
             'provider' => [
@@ -367,7 +367,7 @@ class SocialBehaviorTest extends TestCase
     /**
      * Provider for socialLogin with facebook and not existing user
      */
-    public function providerFacebookSocialLoginNoEmail()
+    public static function providerFacebookSocialLoginNoEmail()
     {
         return [
             'provider' => [
@@ -399,7 +399,7 @@ class SocialBehaviorTest extends TestCase
     public function testGenerateUniqueUsername($param, $expected)
     {
         $this->Behavior = $this->getMockBuilder('CakeDC\Users\Model\Behavior\SocialBehavior')
-            ->setMethods(['randomString', '_updateActive'])
+            ->onlyMethods(['randomString', '_updateActive'])
             ->setConstructorArgs([$this->Table])
             ->getMock();
 
@@ -410,7 +410,7 @@ class SocialBehaviorTest extends TestCase
     /**
      * Provider for socialLogin with facebook and not existing user
      */
-    public function providerGenerateUsername()
+    public static function providerGenerateUsername()
     {
         return [
             ['username', 'username'],

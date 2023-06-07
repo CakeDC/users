@@ -30,7 +30,8 @@ class UserValidationTraitTest extends BaseTraitTest
     public function setUp(): void
     {
         $this->traitClassName = 'CakeDC\Users\Controller\UsersController';
-        $this->traitMockMethods = ['dispatchEvent', 'isStopped', 'redirect', 'getUsersTable', 'set'];
+        $this->traitMockMethods = ['dispatchEvent', 'redirect', 'getUsersTable', 'set'];
+        $this->traitMockAddMethods = ['isStopped'];
         $this->mockDefaultEmail = true;
         parent::setUp();
     }

@@ -51,7 +51,7 @@ class PasswordBehaviorTest extends TestCase
         parent::setUp();
         $this->table = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
         $this->Behavior = $this->getMockBuilder('CakeDC\Users\Model\Behavior\PasswordBehavior')
-                ->setMethods(['_sendResetPasswordEmail'])
+                ->onlyMethods(['_sendResetPasswordEmail'])
                 ->setConstructorArgs([$this->table])
                 ->getMock();
         TransportFactory::drop('test');
@@ -213,12 +213,12 @@ class PasswordBehaviorTest extends TestCase
     public function testEmailOverride()
     {
         $overrideMailer = $this->getMockBuilder(OverrideMailer::class)
-            ->setMethods(['send'])
+            ->onlyMethods(['send'])
             ->getMock();
         Configure::write('Users.Email.mailerClass', OverrideMailer::class);
         $this->Behavior = $this->getMockBuilder(PasswordBehavior::class)
             ->setConstructorArgs([$this->table])
-            ->setMethods(['getMailer'])
+            ->onlyMethods(['getMailer'])
             ->getMock();
         $responseEmail = ['headers' => ['A' => 111, 'B' => 33], 'message' => 'My message' . time()];
         $overrideMailer->expects($this->once())

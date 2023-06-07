@@ -36,8 +36,9 @@ class SimpleCrudTraitTest extends BaseTraitTest
     public function setUp(): void
     {
         $this->traitClassName = 'CakeDC\Users\Controller\UsersController';
-        $this->traitMockMethods = ['dispatchEvent', 'isStopped', 'redirect', 'getUsersTable', 'set', 'fetchTable', 'paginate'];
-        parent::setUp();
+        $this->traitMockMethods = ['dispatchEvent', 'redirect', 'getUsersTable', 'set', 'fetchTable', 'paginate'];
+        $this->traitMockAddMethods = ['isStopped'];
+       parent::setUp();
         $viewVarsContainer = $this;
         $this->Trait->expects($this->any())
             ->method('set')
@@ -284,7 +285,7 @@ class SimpleCrudTraitTest extends BaseTraitTest
         $this->assertNotEmpty($this->table->get('00000000-0000-0000-0000-000000000001'));
         $this->_mockRequestPost();
         $request = $this->getMockBuilder('Cake\Http\ServerRequest')
-            ->setMethods(['is', 'allowMethod'])
+            ->onlyMethods(['is', 'allowMethod'])
             ->getMock();
         $request->expects($this->any())
             ->method('allowMethod')
@@ -314,7 +315,7 @@ class SimpleCrudTraitTest extends BaseTraitTest
         $this->_mockRequestPost();
 
         $request = $this->getMockBuilder('Cake\Http\ServerRequest')
-            ->setMethods(['is', 'allowMethod'])
+            ->onlyMethods(['is', 'allowMethod'])
             ->getMock();
         $request->expects($this->any())
             ->method('allowMethod')

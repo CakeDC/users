@@ -52,12 +52,13 @@ class LinkSocialTraitTest extends BaseTraitTest
     public function setUp(): void
     {
         $this->traitClassName = 'CakeDC\Users\Controller\UsersController';
-        $this->traitMockMethods = ['dispatchEvent', 'isStopped', 'redirect', 'getUsersTable', 'set'];
+        $this->traitMockMethods = ['dispatchEvent', 'redirect', 'getUsersTable', 'set'];
+        $this->traitMockAddMethods = ['isStopped'];
 
         parent::setUp();
         $request = new ServerRequest();
         $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\UsersController')
-            ->setMethods(['dispatchEvent', 'redirect', 'set'])
+            ->onlyMethods(['dispatchEvent', 'redirect', 'set'])
             ->setConstructorArgs([new ServerRequest()])
             ->getMock();
 
@@ -73,7 +74,7 @@ class LinkSocialTraitTest extends BaseTraitTest
                 'clientSecret' => 'secretpassword',
             ],
             [],
-        ])->setMethods([
+        ])->onlyMethods([
             'getAccessToken', 'getState', 'getAuthorizationUrl', 'getResourceOwner',
         ])->getMock();
 
@@ -114,7 +115,8 @@ class LinkSocialTraitTest extends BaseTraitTest
         Configure::write('OAuth.providers.facebook.options.clientSecret', 'testclientsecrettestclientsecret');
 
         $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\UsersController')
-            ->setMethods(['dispatchEvent', 'redirect', 'set', '_createSocialProvider', 'getUsersTable', 'log'])
+            ->onlyMethods(['dispatchEvent', 'redirect', 'set', 'getUsersTable', 'log'])
+            ->addMethods(['_createSocialProvider'])
             ->setConstructorArgs([new ServerRequest()])
             ->getMock();
 
@@ -234,7 +236,7 @@ class LinkSocialTraitTest extends BaseTraitTest
             ->will($this->returnValue($user));
 
         $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\UsersController')
-            ->setMethods(['dispatchEvent', 'redirect', 'set', 'getUsersTable', 'log'])
+            ->onlyMethods(['dispatchEvent', 'redirect', 'set', 'getUsersTable', 'log'])
             ->setConstructorArgs([new ServerRequest()])
             ->getMock();
 
@@ -380,7 +382,7 @@ class LinkSocialTraitTest extends BaseTraitTest
             ->will($this->returnValue($user));
 
         $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\UsersController')
-            ->setMethods(['dispatchEvent', 'redirect', 'set', 'getUsersTable', 'log'])
+            ->onlyMethods(['dispatchEvent', 'redirect', 'set', 'getUsersTable', 'log'])
             ->setConstructorArgs([new ServerRequest()])
             ->getMock();
 
@@ -444,7 +446,7 @@ class LinkSocialTraitTest extends BaseTraitTest
             ->method('getResourceOwner');
 
         $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\UsersController')
-            ->setMethods(['dispatchEvent', 'redirect', 'set', 'getUsersTable', 'log'])
+            ->onlyMethods(['dispatchEvent', 'redirect', 'set', 'getUsersTable', 'log'])
             ->setConstructorArgs([new ServerRequest()])
             ->getMock();
 
@@ -506,7 +508,7 @@ class LinkSocialTraitTest extends BaseTraitTest
             ->method('getResourceOwner');
 
         $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\UsersController')
-            ->setMethods(['dispatchEvent', 'redirect', 'set', 'getUsersTable', 'log'])
+            ->onlyMethods(['dispatchEvent', 'redirect', 'set', 'getUsersTable', 'log'])
             ->setConstructorArgs([new ServerRequest()])
             ->getMock();
 

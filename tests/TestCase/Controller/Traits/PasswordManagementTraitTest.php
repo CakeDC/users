@@ -34,6 +34,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
     {
         $this->traitClassName = 'CakeDC\Users\Controller\UsersController';
         $this->traitMockMethods = ['set', 'redirect', 'validate', 'log', 'dispatchEvent'];
+        $this->traitMockAddMethods = [];
         $this->mockDefaultEmail = true;
         parent::setUp();
     }
@@ -241,7 +242,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
     public function testChangePasswordGetLoggedIn()
     {
         $request = $this->getMockBuilder('Cake\Http\ServerRequest')
-            ->setMethods(['is', 'referer', 'getData'])
+            ->onlyMethods(['is', 'referer', 'getData'])
             ->getMock();
         $this->Trait->setRequest($request);
         $this->Trait->getRequest()->expects($this->any())
@@ -268,7 +269,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
     {
         $methods = ['is', 'referer', 'getData', 'getSession'];
         $request = $this->getMockBuilder('Cake\Http\ServerRequest')
-            ->setMethods($methods)
+            ->onlyMethods($methods)
             ->getMock();
         $this->Trait->setRequest($request);
         $this->Trait->getRequest()->expects($this->any())
@@ -437,7 +438,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
         $this->assertNotEquals('xxx', $this->table->get('00000000-0000-0000-0000-000000000001')->token);
     }
 
-    public function ensureUserActiveForResetPasswordFeature()
+    public static function ensureUserActiveForResetPasswordFeature()
     {
         $ensureActive = true;
         $defaultBehavior = false;
@@ -469,7 +470,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
         $this->assertSame($response, $actual);
     }
 
-    public function ensureOneTimePasswordAuthenticatorResets()
+    public static function ensureOneTimePasswordAuthenticatorResets()
     {
         $error = 'error';
         $success = 'success';

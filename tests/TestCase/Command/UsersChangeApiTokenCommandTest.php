@@ -90,7 +90,7 @@ class UsersChangeApiTokenCommandTest extends TestCase
     /**
      * @return array
      */
-    public function dataProviderExecuteMissingInfo(): array
+    public static function dataProviderExecuteMissingInfo(): array
     {
         return [
             [

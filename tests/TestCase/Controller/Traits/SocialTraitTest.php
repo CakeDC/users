@@ -45,12 +45,13 @@ class SocialTraitTest extends BaseTraitTest
     public function setUp(): void
     {
         $this->traitClassName = 'CakeDC\Users\Controller\UsersController';
-        $this->traitMockMethods = ['dispatchEvent', 'isStopped', 'redirect', 'getUsersTable', 'set'];
+        $this->traitMockMethods = ['dispatchEvent', 'redirect', 'getUsersTable', 'set'];
+        $this->traitMockAddMethods = ['isStopped'];
 
         parent::setUp();
         $request = new ServerRequest();
         $this->Trait = $this->getMockBuilder($this->traitClassName)
-            ->setMethods(['dispatchEvent', 'redirect', 'set', 'loadComponent'])
+            ->onlyMethods(['dispatchEvent', 'redirect', 'set', 'loadComponent'])
             ->setConstructorArgs([new ServerRequest()])
             ->getMock();
 
@@ -94,7 +95,7 @@ class SocialTraitTest extends BaseTraitTest
 
         $this->_mockDispatchEvent(new Event('event'));
         $this->Trait->setRequest($this->getMockBuilder('Cake\Http\ServerRequest')
-            ->setMethods(['is'])
+            ->onlyMethods(['is'])
             ->getMock());
         $this->Trait->getRequest()->expects($this->any())
             ->method('is')
@@ -127,7 +128,7 @@ class SocialTraitTest extends BaseTraitTest
             'targetAuthenticator' => SocialAuthenticator::class,
         ];
         $Login = $this->getMockBuilder(LoginComponent::class)
-            ->setMethods(['getController'])
+            ->onlyMethods(['getController'])
             ->setConstructorArgs([$registry, $config])
             ->getMock();
 

@@ -54,6 +54,7 @@ abstract class BaseTraitTest extends TestCase
      */
     public $traitClassName = '';
     public $traitMockMethods = [];
+    public $traitMockAddMethods = [];
     public $mockDefaultEmail = false;
 
     public $successLoginRedirect = '/home';
@@ -81,11 +82,14 @@ abstract class BaseTraitTest extends TestCase
     {
         parent::setUp();
         $this->loadPlugins(['CakeDC/Users' => ['routes' => true]]);
+        $traitMockMethods = $this->traitMockMethods;
         $traitMockMethods = array_unique(array_merge(['getUsersTable'], $this->traitMockMethods));
         $this->table = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
         try {
             $buildTrait = $this->getMockBuilder($this->traitClassName)
-                ->setMethods($traitMockMethods);
+                ->onlyMethods($traitMockMethods)
+                // ->addMethods(['getUsersTable'])
+                ->addMethods($this->traitMockAddMethods);
             if (class_exists($this->traitClassName)) {
                 $buildTrait = $buildTrait->setConstructorArgs([new ServerRequest()]);
             }
@@ -161,7 +165,7 @@ abstract class BaseTraitTest extends TestCase
         }
 
         $request = $this->getMockBuilder('Cake\Http\ServerRequest')
-                ->setMethods($methods)
+                ->onlyMethods($methods)
                 ->getMock();
         $request->expects($this->any())
                 ->method('is')
@@ -178,7 +182,7 @@ abstract class BaseTraitTest extends TestCase
     protected function _mockFlash()
     {
         $this->Trait->Flash = $this->getMockBuilder('Cake\Controller\Component\FlashComponent')
-                ->setMethods(['error', 'success'])
+                ->addMethods(['error', 'success'])
                 ->disableOriginalConstructor()
                 ->getMock();
     }
@@ -192,7 +196,8 @@ abstract class BaseTraitTest extends TestCase
     protected function _mockRequestPost($with = 'post')
     {
         $request = $this->getMockBuilder('Cake\Http\ServerRequest')
-                ->setMethods(['is', 'getData', 'allow'])
+                ->onlyMethods(['is', 'getData'])
+                ->addMethods(['allow'])
                 ->getMock();
         $request->expects($this->any())
                 ->method('is')
@@ -228,7 +233,7 @@ abstract class BaseTraitTest extends TestCase
     {
         if ($identifiers === null) {
             $passwordIdentifier = $this->getMockBuilder(PasswordIdentifier::class)
-                ->setMethods(['needsPasswordRehash'])
+                ->onlyMethods(['needsPasswordRehash'])
                 ->getMock();
             $passwordIdentifier->expects($this->any())
                 ->method('needsPasswordRehash')
@@ -246,7 +251,7 @@ abstract class BaseTraitTest extends TestCase
                 'Authentication.Form',
             ],
         ];
-        $authentication = $this->getMockBuilder(AuthenticationService::class)->setConstructorArgs([$config])->setMethods([
+        $authentication = $this->getMockBuilder(AuthenticationService::class)->setConstructorArgs([$config])->onlyMethods([
             'getResult',
             'getFailures',
             'identifiers',
@@ -302,7 +307,7 @@ abstract class BaseTraitTest extends TestCase
                 'Authentication.Form',
             ],
         ];
-        $authentication = $this->getMockBuilder(AuthenticationService::class)->setConstructorArgs([$config])->setMethods([
+        $authentication = $this->getMockBuilder(AuthenticationService::class)->setConstructorArgs([$config])->onlyMethods([
             'getResult',
             'getFailures',
             'identifiers',

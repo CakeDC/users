@@ -48,7 +48,8 @@ class Webauthn2faTraitTest extends BaseTraitTest
     public function setUp(): void
     {
         $this->traitClassName = 'CakeDC\Users\Controller\UsersController';
-        $this->traitMockMethods = ['dispatchEvent', 'isStopped', 'redirect', 'getUsersTable', 'set', 'createU2fLib', 'getData'];
+        $this->traitMockMethods = ['dispatchEvent', 'redirect', 'getUsersTable', 'set'];
+        $this->traitMockAddMethods = ['createU2fLib', 'getData', 'isStopped'];
 
         parent::setUp();
 
@@ -89,7 +90,7 @@ class Webauthn2faTraitTest extends BaseTraitTest
     public function testWebauthn2faIsRegister()
     {
         $request = $this->getMockBuilder('Cake\Http\ServerRequest')
-            ->setMethods(['getSession', 'is'])
+            ->onlyMethods(['getSession', 'is'])
             ->getMock();
         $this->Trait->setRequest($request);
         $request->expects($this->any())
@@ -107,7 +108,12 @@ class Webauthn2faTraitTest extends BaseTraitTest
         $this->Trait
             ->expects($this->exactly(2))
             ->method('set')
-            ->withConsecutive(['isRegister', true], ['username', 'user-2']);
+			->willReturnCallback(fn($name, $value) =>
+				match([$name, $value]) {
+					['isRegister', true] => null,
+					['username', 'user-2'] => null
+				}
+			);
         $this->Trait->webauthn2fa();
         $this->assertSame(
             $user,
@@ -123,7 +129,7 @@ class Webauthn2faTraitTest extends BaseTraitTest
     public function testWebauthn2faDontRequireRegister()
     {
         $request = $this->getMockBuilder('Cake\Http\ServerRequest')
-            ->setMethods(['getSession', 'is'])
+            ->onlyMethods(['getSession', 'is'])
             ->getMock();
         $this->Trait->setRequest($request);
         $request->expects($this->any())
@@ -157,7 +163,7 @@ class Webauthn2faTraitTest extends BaseTraitTest
     public function testWebauthn2faRegisterOptionsDontRequireRegister()
     {
         $request = $this->getMockBuilder('Cake\Http\ServerRequest')
-            ->setMethods(['getSession', 'is'])
+            ->onlyMethods(['getSession', 'is'])
             ->getMock();
         $this->Trait->setRequest($request);
         $request->expects($this->any())
@@ -185,7 +191,7 @@ class Webauthn2faTraitTest extends BaseTraitTest
     public function testWebauthn2faRegisterOptions()
     {
         $request = $this->getMockBuilder('Cake\Http\ServerRequest')
-            ->setMethods(['getSession', 'is'])
+            ->onlyMethods(['getSession', 'is'])
             ->getMock();
         $this->Trait->setRequest($request);
         $request->expects($this->any())
@@ -220,7 +226,7 @@ class Webauthn2faTraitTest extends BaseTraitTest
     public function testWebauthn2faRegisterDontRequireRegister()
     {
         $request = $this->getMockBuilder('Cake\Http\ServerRequest')
-            ->setMethods(['getSession', 'is'])
+            ->onlyMethods(['getSession', 'is'])
             ->getMock();
         $this->Trait->setRequest($request);
         $request->expects($this->any())
@@ -281,7 +287,7 @@ class Webauthn2faTraitTest extends BaseTraitTest
 
         $traitMockMethods = array_unique(array_merge(['getUsersTable'], $this->traitMockMethods));
         $this->Trait = $this->getMockBuilder($this->traitClassName)
-            ->setMethods($traitMockMethods)
+            ->onlyMethods($traitMockMethods)
             ->setConstructorArgs([$request])
             ->getMock();
         $this->Trait->expects($this->any())
@@ -321,7 +327,7 @@ class Webauthn2faTraitTest extends BaseTraitTest
 
         $traitMockMethods = array_unique(array_merge(['getUsersTable'], $this->traitMockMethods));
         $this->Trait = $this->getMockBuilder($this->traitClassName)
-            ->setMethods($traitMockMethods)
+            ->onlyMethods($traitMockMethods)
             ->setConstructorArgs([$request])
             ->getMock();
         $this->Trait->expects($this->any())
@@ -345,7 +351,7 @@ class Webauthn2faTraitTest extends BaseTraitTest
     public function testWebauthn2faAuthenticateOptions()
     {
         $request = $this->getMockBuilder('Cake\Http\ServerRequest')
-            ->setMethods(['getSession', 'is'])
+            ->onlyMethods(['getSession', 'is'])
             ->getMock();
         $this->Trait->setRequest($request);
         $request->expects($this->any())
@@ -420,7 +426,7 @@ class Webauthn2faTraitTest extends BaseTraitTest
 
         $traitMockMethods = array_unique(array_merge(['getUsersTable', 'getWebauthn2faAuthenticateAdapter'], $this->traitMockMethods));
         $this->Trait = $this->getMockBuilder($this->traitClassName)
-            ->setMethods($traitMockMethods)
+            ->onlyMethods($traitMockMethods)
             ->setConstructorArgs([$request])
             ->getMock();
         $this->Trait->expects($this->once())
@@ -474,7 +480,7 @@ class Webauthn2faTraitTest extends BaseTraitTest
 
         $traitMockMethods = array_unique(array_merge(['getUsersTable', 'getWebauthn2faAuthenticateAdapter'], $this->traitMockMethods));
         $this->Trait = $this->getMockBuilder($this->traitClassName)
-            ->setMethods($traitMockMethods)
+            ->onlyMethods($traitMockMethods)
             ->setConstructorArgs([$request])
             ->getMock();
         $this->Trait->expects($this->once())

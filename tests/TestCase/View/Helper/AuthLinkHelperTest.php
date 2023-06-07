@@ -41,7 +41,7 @@ class AuthLinkHelperTest extends TestCase
         parent::setUp();
         $view = new View(new ServerRequest());
         $this->AuthLink = $this->getMockBuilder(AuthLinkHelper::class)
-            ->setMethods(['isAuthorized'])
+            ->onlyMethods(['isAuthorized'])
             ->setConstructorArgs([$view])
             ->getMock();
     }

@@ -115,7 +115,7 @@ class SocialIdentifierTest extends TestCase
             'expires' => 1490988496,
         ]);
 
-        $identifier = $this->getMockBuilder(SocialIdentifier::class)->setMethods([
+        $identifier = $this->getMockBuilder(SocialIdentifier::class)->onlyMethods([
             'createOrGetUser',
         ])->getMock();
         $identifier->expects($this->once())

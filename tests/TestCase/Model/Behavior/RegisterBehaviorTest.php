@@ -154,7 +154,8 @@ class RegisterBehaviorTest extends TestCase
         $this->Table = $this->getMockForModel('CakeDC/Users.Users', ['validationCustom', 'patchEntity', 'errors', 'save']);
 
         $this->Behavior = $this->getMockBuilder('CakeDC\Users\Model\Behavior\RegisterBehavior')
-                ->setMethods(['getValidators', '_updateActive'])
+                ->onlyMethods(['_updateActive'])
+                ->addMethods(['getValidators'])
                 ->setConstructorArgs([$this->Table])
                 ->getMock();
 

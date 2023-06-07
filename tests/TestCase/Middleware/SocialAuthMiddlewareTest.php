@@ -25,7 +25,7 @@ use CakeDC\Auth\Social\Service\ServiceFactory;
 use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\SocialAuthenticationException;
 use CakeDC\Users\Middleware\SocialAuthMiddleware;
-use Doctrine\Instantiator\Exception\UnexpectedValueException;
+use UnexpectedValueException;
 use Laminas\Diactoros\Uri;
 use League\OAuth2\Client\Provider\FacebookUser;
 use TestApp\Http\TestRequestHandler;
@@ -68,7 +68,7 @@ class SocialAuthMiddlewareTest extends TestCase
                 'clientSecret' => 'secretpassword',
             ],
             [],
-        ])->setMethods([
+        ])->onlyMethods([
             'getAccessToken', 'getState', 'getAuthorizationUrl', 'getResourceOwner',
         ])->getMock();
 
@@ -210,7 +210,7 @@ class SocialAuthMiddlewareTest extends TestCase
      *
      * @return array
      */
-    public function dataProviderSocialAuthenticationException()
+    public static function dataProviderSocialAuthenticationException()
     {
         $missingEmail = [
             new MissingEmailException('Missing email'),

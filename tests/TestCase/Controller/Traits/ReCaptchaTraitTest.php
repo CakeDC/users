@@ -28,7 +28,7 @@ class ReCaptchaTraitTest extends TestCase
     {
         parent::setUp();
         $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\Traits\ReCaptchaTrait')
-            ->setMethods(['_getReCaptchaInstance'])
+            ->onlyMethods(['_getReCaptchaInstance'])
             ->getMockForTrait();
     }
 
@@ -50,11 +50,11 @@ class ReCaptchaTraitTest extends TestCase
     public function testValidateValidReCaptcha()
     {
         $ReCaptcha = $this->getMockBuilder('ReCaptcha\ReCaptcha')
-                ->setMethods(['verify'])
+                ->onlyMethods(['verify'])
                 ->disableOriginalConstructor()
                 ->getMock();
         $Response = $this->getMockBuilder('ReCaptcha\Response')
-                ->setMethods(['isSuccess'])
+                ->onlyMethods(['isSuccess'])
                 ->disableOriginalConstructor()
                 ->getMock();
         $Response->expects($this->once())
@@ -79,11 +79,11 @@ class ReCaptchaTraitTest extends TestCase
     public function testValidateInvalidReCaptcha()
     {
         $ReCaptcha = $this->getMockBuilder('ReCaptcha\ReCaptcha')
-                ->setMethods(['verify'])
+                ->onlyMethods(['verify'])
                 ->disableOriginalConstructor()
                 ->getMock();
         $Response = $this->getMockBuilder('ReCaptcha\Response')
-                ->setMethods(['isSuccess'])
+                ->onlyMethods(['isSuccess'])
                 ->disableOriginalConstructor()
                 ->getMock();
         $Response->expects($this->once())
@@ -122,11 +122,11 @@ class ReCaptchaTraitTest extends TestCase
     public function testValidateReCaptchaFalse()
     {
         $ReCaptcha = $this->getMockBuilder('ReCaptcha\ReCaptcha')
-            ->setMethods(['verify'])
+            ->onlyMethods(['verify'])
             ->disableOriginalConstructor()
             ->getMock();
         $Response = $this->getMockBuilder('ReCaptcha\Response')
-            ->setMethods(['isSuccess'])
+            ->onlyMethods(['isSuccess'])
             ->disableOriginalConstructor()
             ->getMock();
         $Response->expects($this->once())

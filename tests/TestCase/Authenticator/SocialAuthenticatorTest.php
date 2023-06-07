@@ -72,7 +72,7 @@ class SocialAuthenticatorTest extends TestCase
                 'clientSecret' => 'secretpassword',
             ],
             [],
-        ])->setMethods([
+        ])->onlyMethods([
             'getAccessToken', 'getState', 'getAuthorizationUrl', 'getResourceOwner',
         ])->getMock();
 
@@ -495,7 +495,7 @@ class SocialAuthenticatorTest extends TestCase
      *
      * @return array
      */
-    public function dataProviderAuthenticateErrorException()
+    public static function dataProviderAuthenticateErrorException()
     {
         return [
             [

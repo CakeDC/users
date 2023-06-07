@@ -35,12 +35,13 @@ class OneTimePasswordVerifyTraitTest extends BaseTraitTest
     public function setUp(): void
     {
         $this->traitClassName = 'CakeDC\Users\Controller\UsersController';
-        $this->traitMockMethods = ['dispatchEvent', 'isStopped', 'redirect', 'getUsersTable', 'set'];
+        $this->traitMockMethods = ['dispatchEvent', 'redirect', 'getUsersTable', 'set'];
+        $this->traitMockAddMethods = ['isStopped'];
 
         parent::setUp();
         $request = new ServerRequest();
         $this->Trait = $this->getMockBuilder($this->traitClassName)
-            ->setMethods(['dispatchEvent', 'redirect', 'set', 'getUsersTable'])
+            ->onlyMethods(['dispatchEvent', 'redirect', 'set', 'getUsersTable'])
             ->setConstructorArgs([new ServerRequest()])
             ->getMock();
 
@@ -65,7 +66,8 @@ class OneTimePasswordVerifyTraitTest extends BaseTraitTest
     {
         Configure::write('OneTimePasswordAuthenticator.login', true);
         $request = $this->getMockBuilder('Cake\Http\ServerRequest')
-            ->setMethods(['is', 'getData', 'allow', 'getSession'])
+            ->onlyMethods(['is', 'getData', 'getSession'])
+            ->addMethods(['allow'])
             ->getMock();
         $this->Trait->setRequest($request);
         $this->Trait->getRequest()->expects($this->once())
@@ -111,11 +113,12 @@ class OneTimePasswordVerifyTraitTest extends BaseTraitTest
         Configure::write('OneTimePasswordAuthenticator.login', true);
         $this->Trait->OneTimePasswordAuthenticator = $this->getMockBuilder(OneTimePasswordAuthenticatorComponent::class)
             ->disableOriginalConstructor()
-            ->setMethods(['createSecret', 'getQRCodeImageAsDataUri'])
+            ->onlyMethods(['createSecret', 'getQRCodeImageAsDataUri'])
             ->getMock();
 
         $request = $this->getMockBuilder(ServerRequest::class)
-            ->setMethods(['is', 'getData', 'allow', 'getSession'])
+            ->onlyMethods(['is', 'getData', 'getSession'])
+            ->addMethods(['allow'])
             ->getMock();
         $this->Trait->setRequest($request);
 
@@ -161,11 +164,12 @@ class OneTimePasswordVerifyTraitTest extends BaseTraitTest
         $this->Trait->OneTimePasswordAuthenticator = $this
             ->getMockBuilder(OneTimePasswordAuthenticatorComponent::class)
             ->disableOriginalConstructor()
-            ->setMethods(['createSecret', 'getQRCodeImageAsDataUri'])
+            ->onlyMethods(['createSecret', 'getQRCodeImageAsDataUri'])
             ->getMock();
 
         $request = $this->getMockBuilder(ServerRequest::class)
-            ->setMethods(['is', 'getData', 'allow', 'getSession'])
+            ->onlyMethods(['is', 'getData', 'getSession'])
+            ->addMethods(['allow'])
             ->getMock();
         $this->Trait->setRequest($request);
         $this->Trait
@@ -221,11 +225,12 @@ class OneTimePasswordVerifyTraitTest extends BaseTraitTest
         $this->Trait->OneTimePasswordAuthenticator = $this
             ->getMockBuilder(OneTimePasswordAuthenticatorComponent::class)
             ->disableOriginalConstructor()
-            ->setMethods(['createSecret', 'getQRCodeImageAsDataUri'])
+            ->onlyMethods(['createSecret', 'getQRCodeImageAsDataUri'])
             ->getMock();
 
         $request = $this->getMockBuilder(ServerRequest::class)
-            ->setMethods(['is', 'getData', 'allow', 'getSession'])
+            ->onlyMethods(['is', 'getData', 'getSession'])
+            ->addMethods(['allow'])
             ->getMock();
         $this->Trait->setRequest($request);
         $this->Trait

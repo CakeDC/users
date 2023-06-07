@@ -65,11 +65,11 @@ class UserHelperTest extends TestCase
 
         parent::setUp();
         $this->View = $this->getMockBuilder('Cake\View\View')
-                ->setMethods(['append'])
+                ->onlyMethods(['append'])
                 ->getMock();
         //Assuming all these url's are authorized
         $this->AuthLink = $this->getMockBuilder('CakeDC\Users\View\Helper\AuthLinkHelper')
-                ->setMethods(['isAuthorized'])
+                ->onlyMethods(['isAuthorized'])
                 ->setConstructorArgs([$this->View])
                 ->getMock();
         $this->AuthLink->expects($this->any())

@@ -217,7 +217,7 @@ class PluginTest extends TestCase
      *
      * @return array
      */
-    public function dataProviderConfigUsersUrls()
+    public static function dataProviderConfigUsersUrls()
     {
         $defaultVerifyAction = [
             'prefix' => false,

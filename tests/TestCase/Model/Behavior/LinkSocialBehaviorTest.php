@@ -97,7 +97,7 @@ class LinkSocialBehaviorTest extends TestCase
      * @author Marcelo Rocha <marcelo@promosapiens.com.br>
      * @return array
      */
-    public function providerFacebookLinkSocialAccount()
+    public static function providerFacebookLinkSocialAccount()
     {
         $expiresTime = new DateTime();
         $tokenExpires = $expiresTime->setTimestamp(1458423682)->format('Y-m-d H:i:s');
@@ -191,7 +191,7 @@ class LinkSocialBehaviorTest extends TestCase
      * @author Marcelo Rocha <marcelo@promosapiens.com.br>
      * @return array
      */
-    public function providerFacebookLinkSocialAccountErrorSaving()
+    public static function providerFacebookLinkSocialAccountErrorSaving()
     {
         $expiresTime = new DateTime();
         $tokenExpires = $expiresTime->setTimestamp(1458423682)->format('Y-m-d H:i:s');
@@ -297,7 +297,7 @@ class LinkSocialBehaviorTest extends TestCase
      * @author Marcelo Rocha <marcelo@promosapiens.com.br>
      * @return array
      */
-    public function providerFacebookLinkSocialAccountAccountExists()
+    public static function providerFacebookLinkSocialAccountAccountExists()
     {
         $expiresTime = new DateTime();
         $tokenExpires = $expiresTime->setTimestamp(1458423682)->format('Y-m-d H:i:s');

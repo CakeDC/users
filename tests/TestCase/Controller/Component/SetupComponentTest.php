@@ -66,7 +66,7 @@ class SetupComponentTest extends TestCase
      *
      * @return array
      */
-    public function dataProviderInitialization()
+    public static function dataProviderInitialization()
     {
         return [
             [true, true, true],

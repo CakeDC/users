@@ -37,7 +37,7 @@ class Base64UtilityTest extends TestCase
     /**
      * @return \string[][]
      */
-    public function dataProviderBasicEncodeDecodeText(): array
+    public static function dataProviderBasicEncodeDecodeText(): array
     {
         return [
             ['00000000-0000-0000-0000-000000000002'],
@@ -66,7 +66,7 @@ class Base64UtilityTest extends TestCase
     /**
      * @return \string[][]
      */
-    public function dataProviderComplyEncodedNoPadding(): array
+    public static function dataProviderComplyEncodedNoPadding(): array
     {
         return [
             ['JDJ5JDEwJE52dTdpcFAuejh0aUlsNzVPZFV2dC44NnZ1RzZpS01vSElPYzdPN21ib0ZJODU=', '$2y$10$Nvu7ipP.z8tiIl75OdUvt.86vuG6iKMoHIOc7O7mboFI85'],

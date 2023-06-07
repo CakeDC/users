@@ -26,7 +26,7 @@ class UsersUrlTest extends TestCase
      *
      * @return array
      */
-    public function dataProviderActionRouteParams()
+    public static function dataProviderActionRouteParams()
     {
         return [
             ['verify', ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'verify'], null],
@@ -127,7 +127,7 @@ class UsersUrlTest extends TestCase
      *
      * @return array
      */
-    public function dataProviderActionParams()
+    public static function dataProviderActionParams()
     {
         return [
             ['verify', ['prefix' => null, 'plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'verify'], null],
@@ -228,7 +228,7 @@ class UsersUrlTest extends TestCase
      *
      * @return array
      */
-    public function dataProviderActionUrl()
+    public static function dataProviderActionUrl()
     {
         return [
             ['verify', ['prefix' => false, 'plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'verify'], null],
@@ -329,7 +329,7 @@ class UsersUrlTest extends TestCase
      *
      * @return array
      */
-    public function dataProviderCheckActionOnRequest()
+    public static function dataProviderCheckActionOnRequest()
     {
         return [
             [
