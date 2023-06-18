@@ -56,6 +56,7 @@ abstract class BaseTraitTest extends TestCase
     public $traitMockMethods = [];
     public $traitMockAddMethods = [];
     public $mockDefaultEmail = false;
+    public $skipUsersMock = false;
 
     public $successLoginRedirect = '/home';
 
@@ -82,21 +83,23 @@ abstract class BaseTraitTest extends TestCase
     {
         parent::setUp();
         $this->loadPlugins(['CakeDC/Users' => ['routes' => true]]);
-        $traitMockMethods = $this->traitMockMethods;
-        $traitMockMethods = array_unique(array_merge(['getUsersTable'], $this->traitMockMethods));
+        $traitMockMethods = array_unique(array_merge($this->traitMockMethods, ['getUsersTable']));
         $this->table = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
         try {
             $buildTrait = $this->getMockBuilder($this->traitClassName)
                 ->onlyMethods($traitMockMethods)
-                // ->addMethods(['getUsersTable'])
                 ->addMethods($this->traitMockAddMethods);
             if (class_exists($this->traitClassName)) {
-                $buildTrait = $buildTrait->setConstructorArgs([new ServerRequest()]);
+                $buildTrait->setConstructorArgs([new ServerRequest()]);
             }
             $this->Trait = $buildTrait->getMock();
-            $this->Trait->expects($this->any())
-                    ->method('getUsersTable')
-                    ->will($this->returnValue($this->table));
+
+			if (!$this->skipUsersMock) {
+				$this->Trait->expects($this->any())
+					->method('getUsersTable')
+					->will($this->returnValue($this->table));
+			}
+					
         } catch (RuntimeException $ex) {
             $this->fail('Unit tests extending BaseTraitTest should declare the trait class name in the $traitClassName variable before calling setUp()');
         }
@@ -359,6 +362,7 @@ abstract class BaseTraitTest extends TestCase
         if (!empty($result)) {
             $event->setResult(new Entity($result));
         }
+
         $this->Trait->expects($this->any())
                 ->method('dispatchEvent')
                 ->will($this->returnValue($event));

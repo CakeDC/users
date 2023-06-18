@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
+use Cake\Http\ServerRequest;
+
 /**
  * @property \CakeDC\Users\Controller\Traits\ProfileTrait&\PHPUnit\Framework\MockObject\MockObject $Trait
  */
@@ -37,7 +39,18 @@ class ProfileTraitTest extends BaseTraitTest
     {
         $this->traitClassName = 'CakeDC\Users\Controller\UsersController';
         $this->traitMockMethods = ['set', 'getUsersTable', 'redirect', 'validate'];
+        $this->skipUsersMock = true;
         parent::setUp();
+
+        $this->Trait->setRequest(new ServerRequest());
+        $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\UsersController')
+            ->onlyMethods($this->traitMockMethods)
+            ->setConstructorArgs([new ServerRequest()])
+            ->getMock();
+			
+		$this->Trait->expects($this->any())
+			->method('getUsersTable')
+			->will($this->returnValue($this->table));	
     }
 
     /**

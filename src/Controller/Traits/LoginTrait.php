@@ -25,7 +25,7 @@ use CakeDC\Users\Plugin;
  */
 trait LoginTrait
 {
-    use CustomUsersTableTrait;
+//    use CustomUsersTableTrait;
 
     /**
      * Social login

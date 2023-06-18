@@ -16,6 +16,7 @@ namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 use Authentication\PasswordHasher\PasswordHasherFactory;
 use Cake\Core\Configure;
 use Cake\Event\Event;
+use Cake\Http\ServerRequest;
 use Cake\TestSuite\TestCase;
 
 class PasswordManagementTraitTest extends BaseTraitTest
@@ -33,10 +34,21 @@ class PasswordManagementTraitTest extends BaseTraitTest
     public function setUp(): void
     {
         $this->traitClassName = 'CakeDC\Users\Controller\UsersController';
-        $this->traitMockMethods = ['set', 'redirect', 'validate', 'log', 'dispatchEvent'];
+        $this->traitMockMethods = ['set', 'redirect', 'validate', 'log', 'dispatchEvent', 'getUsersTable'];
         $this->traitMockAddMethods = [];
         $this->mockDefaultEmail = true;
+        $this->skipUsersMock = true;
         parent::setUp();
+
+        $this->Trait->setRequest(new ServerRequest());
+        $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\UsersController')
+            ->onlyMethods($this->traitMockMethods)
+            ->setConstructorArgs([new ServerRequest()])
+            ->getMock();
+			
+		$this->Trait->expects($this->any())
+			->method('getUsersTable')
+			->will($this->returnValue($this->table));			
     }
 
     /**

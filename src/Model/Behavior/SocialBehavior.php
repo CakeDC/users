@@ -135,7 +135,7 @@ class SocialBehavior extends BaseTokenBehavior
         if ($useEmail && empty($email)) {
             throw new MissingEmailException(__d('cake_d_c/users', 'Email not present'));
         } else {
-            $existingUser = $this->_table->find('existingForSocialLogin', ['email' => $email])->first();
+            $existingUser = $this->_table->find('existingForSocialLogin', options: ['email' => $email])->first();
         }
 
         $user = $this->_populateUser($data, $existingUser, $useEmail, $validateEmail, $tokenExpiration);

@@ -147,7 +147,12 @@ class Webauthn2faTraitTest extends BaseTraitTest
         $this->Trait
             ->expects($this->exactly(2))
             ->method('set')
-            ->withConsecutive(['isRegister', false], ['username', 'user-1']);
+			->willReturnCallback(fn($name, $value) =>
+				match([$name, $value]) {
+					['isRegister', false] => null,
+					['username', 'user-1'] => null
+				}
+			);
         $this->Trait->webauthn2fa();
         $this->assertSame(
             $user,
