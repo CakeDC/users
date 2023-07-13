@@ -17,7 +17,7 @@ use Cake\Core\Configure;
 use Cake\Http\ServerRequestFactory;
 use Cake\TestSuite\TestCase;
 use CakeDC\Users\Utility\UsersUrl;
-use Zend\Diactoros\Uri;
+use Laminas\Diactoros\Uri;
 
 class UsersUrlTest extends TestCase
 {

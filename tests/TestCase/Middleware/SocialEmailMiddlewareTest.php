@@ -21,8 +21,8 @@ use Cake\Http\ServerRequestFactory;
 use Cake\TestSuite\TestCase;
 use CakeDC\Auth\Social\Mapper\Facebook;
 use CakeDC\Users\Middleware\SocialEmailMiddleware;
+use Laminas\Diactoros\Uri;
 use League\OAuth2\Client\Provider\FacebookUser;
-use Zend\Diactoros\Uri;
 
 class SocialEmailMiddlewareTest extends TestCase
 {
