@@ -265,19 +265,19 @@ class UserValidationTraitTest extends BaseTraitTest
                 ->with($this->loginUrl());
         $this->Trait->resendTokenValidation();
     }
-	
+
     /**
      * Login redirect url.
      *
      * @return array
      */
-	protected function loginUrl(): array
-	{
-		return [
-			'action' => 'login',
-			'prefix' => false,
-			'plugin' => 'CakeDC/Users',
-			'controller' => 'Users',
-		];
-	}
+    protected function loginUrl(): array
+    {
+        return [
+            'action' => 'login',
+            'prefix' => false,
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+        ];
+    }
 }
