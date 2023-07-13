@@ -18,6 +18,7 @@ use CakeDC\Users\Exception\TokenExpiredException;
 use CakeDC\Users\Exception\UserAlreadyActiveException;
 use CakeDC\Users\Exception\UserNotFoundException;
 use CakeDC\Users\Plugin;
+use CakeDC\Users\Utility\UsersUrl;
 use Exception;
 
 /**
@@ -81,7 +82,7 @@ trait UserValidationTrait
             $this->Flash->error(__d('cake_d_c/users', 'Token already expired'));
         }
 
-        return $this->redirect(['action' => 'login']);
+        return $this->redirect(UsersUrl::actionUrl('login'));
     }
 
     /**
@@ -119,7 +120,7 @@ trait UserValidationTrait
                 $this->Flash->error(__d('cake_d_c/users', 'Token could not be reset'));
             }
 
-            return $this->redirect(['action' => 'login']);
+            return $this->redirect(UsersUrl::actionUrl('login'));
         } catch (UserNotFoundException $ex) {
             $this->Flash->error(__d('cake_d_c/users', 'User {0} was not found', $reference));
         } catch (UserAlreadyActiveException $ex) {
