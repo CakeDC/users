@@ -27,7 +27,7 @@
         "source": "https://github.com/CakeDC/users"
     },
     "minimum-stability": "dev",
-	"prefer-stable": true,
+	  "prefer-stable": true,
     "require": {
         "php": ">=8.1",
         "cakephp/cakephp": "5.x-dev",
