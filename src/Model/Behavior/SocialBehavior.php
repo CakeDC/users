@@ -16,6 +16,7 @@ namespace CakeDC\Users\Model\Behavior;
 use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\EventDispatcherTrait;
+use Cake\Log\Log;
 use Cake\Utility\Hash;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
