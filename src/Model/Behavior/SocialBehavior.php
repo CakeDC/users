@@ -68,13 +68,17 @@ class SocialBehavior extends BaseTokenBehavior
     public function socialLogin(array $data, array $options)
     {
         $reference = $data['id'] ?? null;
-        $existingAccount = $this->_table->SocialAccounts->find()
+        $existingAccount = null;
+
+        if ($reference) {
+            $existingAccount = $this->_table->SocialAccounts->find()
                 ->where([
                     'SocialAccounts.reference' => $reference,
                     'SocialAccounts.provider' => $data['provider'] ?? null,
                 ])
                 ->contain(['Users'])
                 ->first();
+        }
         if (empty($existingAccount->user)) {
             $user = $this->_createSocialUser($data, $options);
             if (!empty($user->social_accounts[0])) {
@@ -151,7 +155,12 @@ class SocialBehavior extends BaseTokenBehavior
 
         $this->_table->isValidateEmail = $validateEmail;
 
-        return $this->_table->save($user);
+        $savedUser = $this->_table->save($user);
+        if (!$savedUser) {
+            Log::debug('Unable save user. Errors: ' . json_encode($user->getErrors()));
+        }
+
+        return $savedUser;
     }
 
     /**
