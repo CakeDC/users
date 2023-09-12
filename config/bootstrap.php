@@ -11,6 +11,7 @@
 
 use CakeDC\Users\Utility\UsersUrl;
 use Cake\Core\Configure;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 
@@ -39,3 +40,5 @@ foreach ($oldConfigs as $configKey) {
         trigger_error(__("Users plugin configuration key \"{0}\" was removed, please check migration guide https://github.com/CakeDC/users/blob/master/Docs/Documentation/Migration/8.x-9.0.md", $configKey));
     }
 }
+
+FrozenTime::setToStringFormat('yyyy-MM-dd HH:mm:ss');
