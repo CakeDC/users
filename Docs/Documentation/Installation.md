@@ -14,7 +14,6 @@ If you want to use social login features...
 composer require league/oauth2-facebook:@stable
 composer require league/oauth2-instagram:@stable
 composer require league/oauth2-google:@stable
-composer require league/oauth2-linkedin:@stable
 composer require league/oauth1-client:@stable
 ```
 
