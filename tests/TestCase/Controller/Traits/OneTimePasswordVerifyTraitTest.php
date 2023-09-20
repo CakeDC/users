@@ -18,7 +18,7 @@ use Cake\Http\ServerRequest;
 use Cake\ORM\TableRegistry;
 use CakeDC\Auth\Controller\Component\OneTimePasswordAuthenticatorComponent;
 
-class OneTimePasswordVerifyTrait extends BaseTrait
+class OneTimePasswordVerifyTraitTest extends BaseTrait
 {
     protected array $loginPage = [
         'plugin' => 'CakeDC/Users',

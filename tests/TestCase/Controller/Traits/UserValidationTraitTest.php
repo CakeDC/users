@@ -15,7 +15,7 @@ namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
 use Cake\Event\Event;
 
-class UserValidationTrait extends BaseTrait
+class UserValidationTraitTest extends BaseTrait
 {
     /**
      * @var \CakeDC\Users\Controller\UsersController

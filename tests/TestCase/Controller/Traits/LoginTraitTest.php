@@ -27,7 +27,7 @@ use CakeDC\Auth\Authenticator\FormAuthenticator;
 use CakeDC\Users\Authenticator\SocialAuthenticator;
 use CakeDC\Users\Controller\Component\LoginComponent;
 
-class LoginTrait extends BaseTrait
+class LoginTraitTest extends BaseTrait
 {
     /**
      * setup
