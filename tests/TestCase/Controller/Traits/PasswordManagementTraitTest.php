@@ -19,7 +19,7 @@ use Cake\Event\Event;
 use Cake\Http\ServerRequest;
 use Cake\TestSuite\TestCase;
 
-class PasswordManagementTrait extends BaseTrait
+class PasswordManagementTraitTest extends BaseTrait
 {
     /**
      * @var \CakeDC\Users\Controller\UsersController

@@ -18,7 +18,7 @@ use Cake\Http\ServerRequest;
 /**
  * @property \CakeDC\Users\Controller\Traits\ProfileTrait&\PHPUnit\Framework\MockObject\MockObject $Trait
  */
-class ProfileTrait extends BaseTrait
+class ProfileTraitTest extends BaseTrait
 {
     /**
      * Fixtures
