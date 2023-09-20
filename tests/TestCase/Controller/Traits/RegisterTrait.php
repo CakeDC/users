@@ -39,11 +39,11 @@ class RegisterTrait extends BaseTrait
             ->onlyMethods($this->traitMockMethods)
             ->setConstructorArgs([new ServerRequest()])
             ->getMock();
-			
-		$this->Trait->expects($this->any())
-			->method('getUsersTable')
-			->will($this->returnValue($this->table));	
-	}
+
+        $this->Trait->expects($this->any())
+            ->method('getUsersTable')
+            ->will($this->returnValue($this->table));
+    }
 
     /**
      * tearDown

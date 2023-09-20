@@ -38,7 +38,7 @@ class SimpleCrudTrait extends BaseTrait
         $this->traitClassName = 'CakeDC\Users\Controller\UsersController';
         $this->traitMockMethods = ['dispatchEvent', 'redirect', 'getUsersTable', 'set', 'fetchTable', 'paginate'];
         $this->traitMockAddMethods = ['isStopped'];
-       parent::setUp();
+        parent::setUp();
         $viewVarsContainer = $this;
         $this->Trait->expects($this->any())
             ->method('set')

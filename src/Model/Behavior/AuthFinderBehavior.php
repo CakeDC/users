@@ -43,8 +43,8 @@ class AuthFinderBehavior extends Behavior
      * @throws \BadMethodCallException
      */
     public function findAuth(SelectQuery $query, mixed ...$args)
-    {			
-		$options = $query->getOptions();
+    {
+        $options = $query->getOptions();
         $identifier = $options['username'] ?? null;
         if (empty($identifier)) {
             throw new \BadMethodCallException(__d('cake_d_c/users', 'Missing \'username\' in options data'));

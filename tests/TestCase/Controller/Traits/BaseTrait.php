@@ -94,12 +94,11 @@ class BaseTrait extends TestCase
             }
             $this->Trait = $buildTrait->getMock();
 
-			if (!$this->skipUsersMock) {
-				$this->Trait->expects($this->any())
-					->method('getUsersTable')
-					->will($this->returnValue($this->table));
-			}
-					
+            if (!$this->skipUsersMock) {
+                $this->Trait->expects($this->any())
+                    ->method('getUsersTable')
+                    ->will($this->returnValue($this->table));
+            }
         } catch (RuntimeException $ex) {
             $this->fail('Unit tests extending BaseTraitTest should declare the trait class name in the $traitClassName variable before calling setUp()');
         }
