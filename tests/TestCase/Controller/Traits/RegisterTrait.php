@@ -19,7 +19,7 @@ use Cake\Http\Exception\NotFoundException;
 use Cake\Http\ServerRequest;
 use Cake\Routing\Router;
 
-class RegisterTraitTest extends BaseTraitTest
+class RegisterTrait extends BaseTrait
 {
     /**
      * setUp

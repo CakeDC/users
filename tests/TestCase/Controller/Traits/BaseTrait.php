@@ -36,7 +36,7 @@ use PHPUnit\Framework\MockObject\RuntimeException;
  *
  * @package CakeDC\Users\Test\TestCase\Controller\Traits
  */
-abstract class BaseTraitTest extends TestCase
+class BaseTrait extends TestCase
 {
     /**
      * Fixtures

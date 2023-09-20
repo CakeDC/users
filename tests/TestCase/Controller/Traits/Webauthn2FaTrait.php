@@ -29,7 +29,7 @@ use Webauthn\PublicKeyCredentialSource;
  *
  * @package App\Test\TestCase\Controller\Traits
  */
-class Webauthn2faTraitTest extends BaseTraitTest
+class Webauthn2FaTrait extends BaseTrait
 {
     /**
      * Fixtures

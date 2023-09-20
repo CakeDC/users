@@ -24,7 +24,7 @@ use Cake\Datasource\ResultSetDecorator;
  * @package CakeDC\Users\Test\TestCase\Controller\Traits
  * @property \CakeDC\Users\Controller\Traits\SimpleCrudTrait&\PHPUnit\Framework\MockObject\MockObject $Trait
  */
-class SimpleCrudTraitTest extends BaseTraitTest
+class SimpleCrudTrait extends BaseTrait
 {
     public $viewVars;
 
