@@ -18,7 +18,7 @@ use Cake\Http\ServerRequest;
 /**
  * @property \CakeDC\Users\Controller\Traits\ProfileTrait&\PHPUnit\Framework\MockObject\MockObject $Trait
  */
-class ProfileTraitTest extends BaseTraitTest
+class ProfileTrait extends BaseTrait
 {
     /**
      * Fixtures
@@ -47,10 +47,10 @@ class ProfileTraitTest extends BaseTraitTest
             ->onlyMethods($this->traitMockMethods)
             ->setConstructorArgs([new ServerRequest()])
             ->getMock();
-			
-		$this->Trait->expects($this->any())
-			->method('getUsersTable')
-			->will($this->returnValue($this->table));	
+
+        $this->Trait->expects($this->any())
+            ->method('getUsersTable')
+            ->will($this->returnValue($this->table));
     }
 
     /**
@@ -117,9 +117,9 @@ class ProfileTraitTest extends BaseTraitTest
             ->method('set')
             ->will($this->returnCallback(function ($param1, $param2 = null) {
                 if ($param1 === 'avatarPlaceholder') {
-                    BaseTraitTest::assertEquals('CakeDC/Users.avatar_placeholder.png', $param2);
+                    BaseTrait::assertEquals('CakeDC/Users.avatar_placeholder.png', $param2);
                 } elseif (is_array($param1)) {
-                    BaseTraitTest::assertEquals('user-1', $param1['user']->username);
+                    BaseTrait::assertEquals('user-1', $param1['user']->username);
                 }
             }));
         $this->Trait->profile();

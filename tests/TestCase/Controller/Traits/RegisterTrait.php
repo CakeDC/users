@@ -19,7 +19,7 @@ use Cake\Http\Exception\NotFoundException;
 use Cake\Http\ServerRequest;
 use Cake\Routing\Router;
 
-class RegisterTraitTest extends BaseTraitTest
+class RegisterTrait extends BaseTrait
 {
     /**
      * setUp
@@ -39,11 +39,11 @@ class RegisterTraitTest extends BaseTraitTest
             ->onlyMethods($this->traitMockMethods)
             ->setConstructorArgs([new ServerRequest()])
             ->getMock();
-			
-		$this->Trait->expects($this->any())
-			->method('getUsersTable')
-			->will($this->returnValue($this->table));	
-	}
+
+        $this->Trait->expects($this->any())
+            ->method('getUsersTable')
+            ->will($this->returnValue($this->table));
+    }
 
     /**
      * tearDown

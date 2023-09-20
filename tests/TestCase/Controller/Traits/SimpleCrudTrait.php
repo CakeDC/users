@@ -24,7 +24,7 @@ use Cake\Datasource\ResultSetDecorator;
  * @package CakeDC\Users\Test\TestCase\Controller\Traits
  * @property \CakeDC\Users\Controller\Traits\SimpleCrudTrait&\PHPUnit\Framework\MockObject\MockObject $Trait
  */
-class SimpleCrudTraitTest extends BaseTraitTest
+class SimpleCrudTrait extends BaseTrait
 {
     public $viewVars;
 
@@ -38,7 +38,7 @@ class SimpleCrudTraitTest extends BaseTraitTest
         $this->traitClassName = 'CakeDC\Users\Controller\UsersController';
         $this->traitMockMethods = ['dispatchEvent', 'redirect', 'getUsersTable', 'set', 'fetchTable', 'paginate'];
         $this->traitMockAddMethods = ['isStopped'];
-       parent::setUp();
+        parent::setUp();
         $viewVarsContainer = $this;
         $this->Trait->expects($this->any())
             ->method('set')
