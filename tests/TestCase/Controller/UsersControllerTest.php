@@ -67,7 +67,7 @@ class UsersControllerTest extends TestCase
             ],
         ]);
         $this->get('/users/index');
-        $this->assertRedirectContains('/login?redirect=http%3A%2F%2Flocalhost%2Fusers%2Findex');
+        $this->assertRedirectContains('/login?redirect=%2Fusers%2Findex');
     }
 
     /**

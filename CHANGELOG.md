@@ -1,8 +1,11 @@
 Changelog
 =========
-
-Releases for CakePHP 4
+Releases for CakePHP 4.3
 -------------
+
+* 11.2.0
+  * Feature/microsoft login by @arodu in #1000
+  * add more events into login component (before login, after login failure) by @rochamarcelo in #1007
 
 * 11.1.0
   * German (de) by @LordSimal
@@ -12,6 +15,8 @@ Releases for CakePHP 4
   * Switched tests to new cakephp schema
   * Update to PHPUnit 9.5
 
+Releases for CakePHP 4
+-------------
 * 9.2.0
   * Switch to github actions
   * New event AfterEmailTokenValidation

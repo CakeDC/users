@@ -116,8 +116,8 @@ trait OneTimePasswordVerifyTrait
 
         // catching sql exception in case of any sql inconsistencies
         try {
-            $query = $this->getUsersTable()->query();
-            $query->update()
+            $query = $this->getUsersTable()->updateQuery();
+            $query
                 ->set(['secret' => $secret])
                 ->where(['id' => $user['id']]);
             $query->execute();
@@ -183,7 +183,7 @@ trait OneTimePasswordVerifyTrait
         unset($user['secret']);
 
         if (!$user['secret_verified']) {
-            $this->getUsersTable()->query()->update()
+            $this->getUsersTable()->updateQuery()
                 ->set(['secret_verified' => true])
                 ->where(['id' => $user['id']])
                 ->execute();
