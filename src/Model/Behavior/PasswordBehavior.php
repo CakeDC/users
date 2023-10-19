@@ -68,10 +68,10 @@ class PasswordBehavior extends BaseTokenBehavior
         $user->updateToken($expiration);
         $saveResult = $this->_table->save($user);
         if ($options['sendEmail'] ?? false) {
-			$emailOptions = [];
-			if (isset($options['linkGenerator']) && is_callable($options['linkGenerator'])) {
-				$emailOptions['linkGenerator'] = $options['linkGenerator'];
-			}
+            $emailOptions = [];
+            if (isset($options['linkGenerator']) && is_callable($options['linkGenerator'])) {
+                $emailOptions['linkGenerator'] = $options['linkGenerator'];
+            }
             switch ($options['type'] ?? null) {
                 case 'email':
                     $this->_sendValidationEmail($user, $emailOptions);

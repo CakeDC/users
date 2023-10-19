@@ -178,10 +178,7 @@ trait OneTimePasswordVerifyTrait
         unset($user['secret']);
 
         if (!$user['secret_verified']) {
-            $this->getUsersTable()->updateQuery()
-                ->set(['secret_verified' => true])
-                ->where(['id' => $user['id']])
-                ->execute();
+            $this->getUsersTable()->updateAll(['secret_verified' => true], ['id' => $user['id']]);
         }
 
         $this->getRequest()->getSession()->delete(AuthenticationService::TWO_FACTOR_VERIFY_SESSION_KEY);

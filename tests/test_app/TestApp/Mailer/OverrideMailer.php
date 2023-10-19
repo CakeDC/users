@@ -27,7 +27,7 @@ class OverrideMailer extends UsersMailer
      * @param EntityInterface $user
      * @return array|void
      */
-    public function resetPassword(EntityInterface $user, $options = [])
+    public function resetPassword(EntityInterface $user, array $options = [])
     {
         parent::resetPassword($user);
         $this->setSubject('This is the new subject');
