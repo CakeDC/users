@@ -30,7 +30,7 @@
 	  "prefer-stable": true,
     "require": {
         "php": ">=7.4.0",
-        "cakephp/cakephp": "dev-4.next as 4.5.0",
+        "cakephp/cakephp": "4.4.*",
         "cakedc/auth": "^7.0",
         "cakephp/authorization": "^2.0.0",
         "cakephp/authentication": "^2.0.0"
