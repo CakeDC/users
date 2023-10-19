@@ -116,16 +116,11 @@ trait OneTimePasswordVerifyTrait
 
         // catching sql exception in case of any sql inconsistencies
         try {
-            $query = $this->getUsersTable()->updateQuery();
-            $query
-                ->set(['secret' => $secret])
-                ->where(['id' => $user['id']]);
-            $query->execute();
+            $query = $this->getUsersTable()->updateAll(['secret' => $secret], ['id' => $user['id']]);
             $user['secret'] = $secret;
             $this->getRequest()->getSession()->write(AuthenticationService::TWO_FACTOR_VERIFY_SESSION_KEY, $user);
         } catch (\Exception $e) {
             $this->getRequest()->getSession()->destroy();
-            $this->log($e);
             $message = __d('cake_d_c/users', 'Could not verify, please try again');
             $this->Flash->error($message, [
                 'key' => 'auth',

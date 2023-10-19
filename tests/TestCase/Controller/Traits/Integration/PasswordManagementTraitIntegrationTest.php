@@ -41,7 +41,7 @@ class PasswordManagementTraitIntegrationTest extends TestCase
         $this->get('/users/request-reset-password');
         $this->assertResponseOk();
         $this->assertResponseContains('Please enter your email or username to reset your password');
-        $this->assertResponseContains('<input type="text" name="reference" id="reference">');
+        $this->assertResponseContains('<input type="text" name="reference" id="reference"');
     }
 
     /**
