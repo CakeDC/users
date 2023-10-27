@@ -26,12 +26,11 @@
         "issues": "https://github.com/CakeDC/users/issues",
         "source": "https://github.com/CakeDC/users"
     },
-    "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
         "php": ">=8.1",
         "cakephp/cakephp": "^5.0.0",
-        "cakedc/auth": "8.next-cake5-dev",
+        "cakedc/auth": "^8.0.0",
         "cakephp/authorization": "^3.0.0",
         "cakephp/authentication": "^3.0.0"
     },
