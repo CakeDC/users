@@ -195,11 +195,7 @@ trait PasswordManagementTrait
     {
         if ($this->getRequest()->is('post')) {
             try {
-                $query = $this->getUsersTable()->updateQuery();
-                $query
-                    ->set(['secret_verified' => false, 'secret' => null])
-                    ->where(['id' => $id]);
-                $query->execute();
+                $query = $this->getUsersTable()->updateAll(['secret_verified' => false, 'secret' => null], ['id' => $id]);
 
                 $message = __d('cake_d_c/users', 'Google Authenticator token was successfully reset');
                 $this->Flash->success($message, 'default');
