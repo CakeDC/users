@@ -50,7 +50,7 @@ class UserValidationTraitTest extends BaseTraitTest
                 ->with('User account validated successfully');
         $this->Trait->expects($this->once())
                 ->method('redirect')
-                ->with(['action' => 'login']);
+                ->with($this->loginUrl());
         $this->Trait->validate('email', 'token-3');
         $user = $this->table->findById($user->id)->first();
         $this->assertTrue($user->active);
@@ -89,7 +89,7 @@ class UserValidationTraitTest extends BaseTraitTest
                 ->with('Invalid token or user account already validated');
         $this->Trait->expects($this->once())
                 ->method('redirect')
-                ->with(['action' => 'login']);
+                ->with($this->loginUrl());
         $this->Trait->validate('email', 'not-found');
     }
 
@@ -106,7 +106,7 @@ class UserValidationTraitTest extends BaseTraitTest
                 ->with('Token already expired');
         $this->Trait->expects($this->once())
                 ->method('redirect')
-                ->with(['action' => 'login']);
+                ->with($this->loginUrl());
         $this->Trait->validate('email', '6614f65816754310a5f0553436dd89e9');
     }
 
@@ -143,7 +143,7 @@ class UserValidationTraitTest extends BaseTraitTest
                 ->with('Invalid validation type');
         $this->Trait->expects($this->once())
                 ->method('redirect')
-                ->with(['action' => 'login']);
+                ->with($this->loginUrl());
         $this->Trait->validate('invalid-op', '6614f65816754310a5f0553436dd89e9');
     }
 
@@ -188,7 +188,7 @@ class UserValidationTraitTest extends BaseTraitTest
                 ->with('Token has been reset successfully. Please check your email.');
         $this->Trait->expects($this->once())
                 ->method('redirect')
-                ->with(['action' => 'login']);
+                ->with($this->loginUrl());
         $this->Trait->resendTokenValidation();
     }
 
@@ -239,7 +239,7 @@ class UserValidationTraitTest extends BaseTraitTest
                 ->with('User user-4 is already active');
         $this->Trait->expects($this->never())
                 ->method('redirect')
-                ->with(['action' => 'login']);
+                ->with($this->loginUrl());
         $this->Trait->resendTokenValidation();
     }
 
@@ -262,7 +262,22 @@ class UserValidationTraitTest extends BaseTraitTest
                 ->with('User not-found was not found');
         $this->Trait->expects($this->never())
                 ->method('redirect')
-                ->with(['action' => 'login']);
+                ->with($this->loginUrl());
         $this->Trait->resendTokenValidation();
+    }
+
+    /**
+     * Login redirect url.
+     *
+     * @return array
+     */
+    protected function loginUrl(): array
+    {
+        return [
+            'action' => 'login',
+            'prefix' => false,
+            'plugin' => 'CakeDC/Users',
+            'controller' => 'Users',
+        ];
     }
 }

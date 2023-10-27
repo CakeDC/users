@@ -27,10 +27,10 @@
         "source": "https://github.com/CakeDC/users"
     },
     "minimum-stability": "dev",
-	"prefer-stable": true,
+	  "prefer-stable": true,
     "require": {
-        "php": ">=7.2.0",
-        "cakephp/cakephp": "^4.0",
+        "php": ">=7.4.0",
+        "cakephp/cakephp": "^4.5",
         "cakedc/auth": "^7.0",
         "cakephp/authorization": "^2.0.0",
         "cakephp/authentication": "^2.0.0"

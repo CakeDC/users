@@ -10,7 +10,7 @@ If you don't want the plugin to autoload setup authorization, you can disable
 in your config/users.php with:
 
 ```php
-'Auth.Authorization.enabled' => false,
+'Auth.Authorization.enable' => false,
 ```
 
 Authorization Middleware

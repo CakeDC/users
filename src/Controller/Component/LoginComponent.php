@@ -198,8 +198,9 @@ class LoginComponent extends Component
             if (!$checker || method_exists($checker, 'needsPasswordRehash') && !$checker->needsPasswordRehash()) {
                 continue;
             }
-            $password = $request->getData('password');
-            $user->set('password', $password);
+            $passwordField = $checker->getConfig('fields.password', 'password');
+            $password = $request->getData($passwordField);
+            $user->set($passwordField, $password);
             $user->setDirty('modified');
             $this->getController()->getUsersTable()->save($user);
             break;

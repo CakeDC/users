@@ -14,7 +14,6 @@ If you want to use social login features...
 composer require league/oauth2-facebook:@stable
 composer require league/oauth2-instagram:@stable
 composer require league/oauth2-google:@stable
-composer require league/oauth2-linkedin:@stable
 composer require league/oauth1-client:@stable
 ```
 
@@ -106,7 +105,7 @@ section to check all the customization options
 You can create the first user, the super user by issuing the following command
 
 ```
-bin/cake users addSuperuser
+bin/cake users add_superuser
 ```
 
 Customization

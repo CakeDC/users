@@ -22,6 +22,13 @@ use CakeDC\Users\Model\Table\UsersTable;
  */
 class MyUsersTable extends UsersTable
 {
+    // important, you'll need to override the alias if you extend from an existing table
+    public function initialize(array $config): void
+    {
+        parent::initialize($config);
+
+        $this->setAlias('MyUsers');
+    }
 }
 ```
 

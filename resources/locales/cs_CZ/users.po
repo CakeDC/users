@@ -1,0 +1,913 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: CakeDC Users\n"
+"POT-Creation-Date: 2022-03-11 13:46+0100\n"
+"PO-Revision-Date: 2023-01-23 11:02+0100\n"
+"Last-Translator: Martin Patočka <mapik@mapik.net>\n"
+"Language-Team: CakeDC <contact@cakedc.com>\n"
+"Language: cs_CZ\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
+"X-Generator: Poedit 3.2.2\n"
+
+#: src/Controller/SocialAccountsController.php:50
+msgid "Account validated successfully"
+msgstr "Účet byl úspěšně ověřen"
+
+#: src/Controller/SocialAccountsController.php:52
+msgid "Account could not be validated"
+msgstr "Účet nebylo možné ověřit"
+
+#: src/Controller/SocialAccountsController.php:55
+msgid "Invalid token and/or social account"
+msgstr "Neplatný token a/nebo sociální účet"
+
+#: src/Controller/SocialAccountsController.php:57
+#: src/Controller/SocialAccountsController.php:85
+msgid "Social Account already active"
+msgstr "Sociální účet je již aktivní"
+
+#: src/Controller/SocialAccountsController.php:59
+msgid "Social Account could not be validated"
+msgstr "Sociální účet nelze ověřit"
+
+#: src/Controller/SocialAccountsController.php:78
+msgid "Email sent successfully"
+msgstr "Email úspěšně odeslán"
+
+#: src/Controller/SocialAccountsController.php:80
+msgid "Email could not be sent"
+msgstr "E-mail nemohl být odeslán"
+
+#: src/Controller/SocialAccountsController.php:83
+msgid "Invalid account"
+msgstr "Neplatný účet"
+
+#: src/Controller/SocialAccountsController.php:87
+msgid "Email could not be resent"
+msgstr "E-mail nebylo možné znovu odeslat"
+
+#: src/Controller/Traits/LinkSocialTrait.php:56
+msgid "Could not associate account, please try again."
+msgstr "Účet se nepodařilo přidružit, zkuste to prosím znovu."
+
+#: src/Controller/Traits/LinkSocialTrait.php:80
+msgid "Social account was associated."
+msgstr "Sociální účet byl přidružen."
+
+#: src/Controller/Traits/LoginTrait.php:73
+msgid "You've successfully logged out"
+msgstr "Úspěšně jste se odhlásili"
+
+#: src/Controller/Traits/OneTimePasswordVerifyTrait.php:75
+msgid "Please enable Google Authenticator first."
+msgstr "Nejprve povolte službu Google Authenticator."
+
+#: src/Controller/Traits/OneTimePasswordVerifyTrait.php:90
+msgid "Could not find user data"
+msgstr "Nepodařilo se najít uživatelská data"
+
+#: src/Controller/Traits/OneTimePasswordVerifyTrait.php:129
+msgid "Could not verify, please try again"
+msgstr "Nelze ověřit, zkuste to prosím znovu"
+
+#: src/Controller/Traits/OneTimePasswordVerifyTrait.php:161
+msgid "Verification code is invalid. Try again"
+msgstr "Ověřovací kód je neplatný. Zkuste to znovu"
+
+#: src/Controller/Traits/PasswordManagementTrait.php:63
+msgid "Changing another user's password is not allowed"
+msgstr "Změna hesla jiného uživatele není povolena"
+
+#: src/Controller/Traits/PasswordManagementTrait.php:77
+#: src/Controller/Traits/PasswordManagementTrait.php:121
+#: src/Controller/Traits/ProfileTrait.php:54
+msgid "User was not found"
+msgstr "Uživatel nebyl nalezen"
+
+#: src/Controller/Traits/PasswordManagementTrait.php:105
+#: src/Controller/Traits/PasswordManagementTrait.php:117
+#: src/Controller/Traits/PasswordManagementTrait.php:125
+msgid "Password could not be changed"
+msgstr "Heslo nebylo možné změnit"
+
+#: src/Controller/Traits/PasswordManagementTrait.php:113
+msgid "Password has been changed successfully"
+msgstr "Heslo bylo úspěšně změněno"
+
+#: src/Controller/Traits/PasswordManagementTrait.php:167
+msgid "Please check your email to continue with password reset process"
+msgstr "Zkontrolujte prosím svůj e-mail a pokračujte v procesu obnovy hesla"
+
+#: src/Controller/Traits/PasswordManagementTrait.php:170
+#: src/Shell/UsersShell.php:286
+msgid "The password token could not be generated. Please try again"
+msgstr "Token hesla se nepodařilo vygenerovat. Zkuste to prosím znovu"
+
+#: src/Controller/Traits/PasswordManagementTrait.php:176
+#: src/Controller/Traits/UserValidationTrait.php:124
+msgid "User {0} was not found"
+msgstr "Uživatel {0} nebyl nalezen"
+
+#: src/Controller/Traits/PasswordManagementTrait.php:178
+msgid "The user is not active"
+msgstr "Uživatel není aktivní"
+
+#: src/Controller/Traits/PasswordManagementTrait.php:180
+#: src/Controller/Traits/UserValidationTrait.php:119
+#: src/Controller/Traits/UserValidationTrait.php:128
+msgid "Token could not be reset"
+msgstr "Token se nepodařilo obnovit"
+
+#: src/Controller/Traits/PasswordManagementTrait.php:204
+msgid "Google Authenticator token was successfully reset"
+msgstr "Token Google Authenticator byl úspěšně obnoven"
+
+#: src/Controller/Traits/PasswordManagementTrait.php:207
+msgid "Could not reset Google Authenticator"
+msgstr "Nepodařilo se obnovit Google Authenticator"
+
+#: src/Controller/Traits/ProfileTrait.php:58
+msgid "Not authorized, please login first"
+msgstr "Nejste oprávněni, nejprve se přihlaste"
+
+#: src/Controller/Traits/RegisterTrait.php:47
+msgid "You must log out to register a new user account"
+msgstr "Chcete-li zaregistrovat nový uživatelský účet, musíte se odhlásit"
+
+#: src/Controller/Traits/RegisterTrait.php:86
+#: src/Controller/Traits/RegisterTrait.php:117
+msgid "The user could not be saved"
+msgstr "Uživatele se nepodařilo uložit"
+
+#: src/Controller/Traits/RegisterTrait.php:103
+#: src/Loader/LoginComponentLoader.php:33
+msgid "Invalid reCaptcha"
+msgstr "Neplatná reCaptcha"
+
+#: src/Controller/Traits/RegisterTrait.php:151
+msgid "You have registered successfully, please log in"
+msgstr "Úspěšně jste se zaregistrovali, přihlaste se prosím"
+
+#: src/Controller/Traits/RegisterTrait.php:153
+msgid "Please validate your account before log in"
+msgstr "Před přihlášením prosím ověřte svůj účet"
+
+#: src/Controller/Traits/SimpleCrudTrait.php:77
+#: src/Controller/Traits/SimpleCrudTrait.php:107
+msgid "The {0} has been saved"
+msgstr "{0} byl uložen"
+
+#: src/Controller/Traits/SimpleCrudTrait.php:81
+#: src/Controller/Traits/SimpleCrudTrait.php:111
+msgid "The {0} could not be saved"
+msgstr "{0} se nepodařilo uložit"
+
+#: src/Controller/Traits/SimpleCrudTrait.php:131
+msgid "The {0} has been deleted"
+msgstr "{0} byl smazán"
+
+#: src/Controller/Traits/SimpleCrudTrait.php:133
+msgid "The {0} could not be deleted"
+msgstr "{0} nelze smazat"
+
+#: src/Controller/Traits/U2fTrait.php:216
+msgid "U2F requires SSL."
+msgstr "U2F vyžaduje SSL."
+
+#: src/Controller/Traits/UserValidationTrait.php:49
+msgid "User account validated successfully"
+msgstr "Uživatelský účet byl úspěšně ověřen"
+
+#: src/Controller/Traits/UserValidationTrait.php:51
+msgid "User account could not be validated"
+msgstr "Uživatelský účet se nepodařilo ověřit"
+
+#: src/Controller/Traits/UserValidationTrait.php:54
+msgid "User already active"
+msgstr "Uživatel je již aktivní"
+
+#: src/Controller/Traits/UserValidationTrait.php:60
+msgid "Reset password token was validated successfully"
+msgstr "Token pro obnovení hesla byl úspěšně ověřen"
+
+#: src/Controller/Traits/UserValidationTrait.php:68
+msgid "Reset password token could not be validated"
+msgstr "Token pro obnovení hesla se nepodařilo ověřit"
+
+#: src/Controller/Traits/UserValidationTrait.php:72
+msgid "Invalid validation type"
+msgstr "Neplatný typ ověření"
+
+#: src/Controller/Traits/UserValidationTrait.php:75
+msgid "Invalid token or user account already validated"
+msgstr "Neplatný token nebo již ověřený uživatelský účet"
+
+#: src/Controller/Traits/UserValidationTrait.php:81
+msgid "Token already expired"
+msgstr "Platnost tokenu již vypršela"
+
+#: src/Controller/Traits/UserValidationTrait.php:114
+msgid "Token has been reset successfully. Please check your email."
+msgstr "Token byl úspěšně obnoven. Zkontrolujte prosím svůj e-mail."
+
+#: src/Controller/Traits/UserValidationTrait.php:126
+msgid "User {0} is already active"
+msgstr "Uživatel {0} je již aktivní"
+
+#: src/Controller/Traits/Webauthn2faTrait.php:53
+#: src/Controller/Traits/Webauthn2faTrait.php:73
+msgid "User already has configured webauthn2fa"
+msgstr "Uživatel již nakonfiguroval webauthn2fa"
+
+#: src/Controller/Traits/Webauthn2faTrait.php:77
+#: src/Controller/Traits/Webauthn2faTrait.php:122
+msgid "Register error with webauthn for user id: {0}"
+msgstr "Chyba registrace u webauthn pro ID uživatele: {0}"
+
+#: src/Loader/AuthenticationServiceLoader.php:109
+msgid "Property  {0}.className should be defined"
+msgstr "Měla by být definována vlastnost {0}.className"
+
+#: src/Loader/LoginComponentLoader.php:31
+msgid "Username or password is incorrect"
+msgstr "Uživatelské jméno nebo heslo je nesprávné"
+
+#: src/Loader/LoginComponentLoader.php:52
+msgid "Could not proceed with social account. Please try again"
+msgstr "Nelze pokračovat se sociálním účtem. Zkuste to prosím znovu"
+
+#: src/Loader/LoginComponentLoader.php:54
+msgid ""
+"Your user has not been validated yet. Please check your inbox for "
+"instructions"
+msgstr ""
+"Váš uživatel ještě nebyl ověřen. Zkontrolujte si, prosím, doručenou poštu "
+"pro pokyny"
+
+#: src/Loader/LoginComponentLoader.php:58
+msgid ""
+"Your social account has not been validated yet. Please check your inbox for "
+"instructions"
+msgstr ""
+"Váš účet na sociální síti zatím nebyl ověřen. Zkontrolujte si, prosím, "
+"doručenou poštu pro pokyny"
+
+#: src/Mailer/UsersMailer.php:36
+msgid "Your account validation link"
+msgstr "Odkaz pro ověření vašeho účtu"
+
+#: src/Mailer/UsersMailer.php:63
+msgid "{0}Your reset password link"
+msgstr "{0}Váš odkaz pro obnovení hesla"
+
+#: src/Mailer/UsersMailer.php:95
+msgid "{0}Your social account validation link"
+msgstr "{0}Odkaz na ověření vašeho účtu na sociální síti"
+
+#: src/Middleware/SocialAuthMiddleware.php:47
+#: templates/Users/social_email.php:16
+msgid "Please enter your email"
+msgstr "Zadejte prosím svůj e-mail"
+
+#: src/Middleware/SocialAuthMiddleware.php:57
+msgid "Could not identify your account, please try again"
+msgstr "Váš účet se nepodařilo identifikovat, zkuste to prosím znovu"
+
+#: src/Middleware/UnauthorizedHandler/DefaultRedirectHandler.php:112
+msgid "You are not authorized to access that location."
+msgstr "Nemáte oprávnění pro přístup k této sekci."
+
+#: src/Model/Behavior/AuthFinderBehavior.php:49
+msgid "Missing 'username' in options data"
+msgstr "Chybějící 'username' v datech možností"
+
+#: src/Model/Behavior/LinkSocialBehavior.php:52
+msgid "Social account already associated to another user"
+msgstr "Sociální účet již přiřazený k jinému uživateli"
+
+#: src/Model/Behavior/PasswordBehavior.php:45
+msgid "Reference cannot be null"
+msgstr "Odkaz nemůže být nulový"
+
+#: src/Model/Behavior/PasswordBehavior.php:50
+msgid "Token expiration cannot be empty"
+msgstr "Platnost tokenu nemůže být prázdná"
+
+#: src/Model/Behavior/PasswordBehavior.php:56
+#: src/Model/Behavior/PasswordBehavior.php:136
+msgid "User not found"
+msgstr "Uživatel nebyl nalezen"
+
+#: src/Model/Behavior/PasswordBehavior.php:60
+#: src/Model/Behavior/RegisterBehavior.php:129
+msgid "User account already validated"
+msgstr "Uživatelský účet již byl ověřen"
+
+#: src/Model/Behavior/PasswordBehavior.php:66
+msgid "User not active"
+msgstr "Uživatel není aktivní"
+
+#: src/Model/Behavior/PasswordBehavior.php:141
+msgid "The current password does not match"
+msgstr "Aktuální heslo neodpovídá"
+
+#: src/Model/Behavior/PasswordBehavior.php:144
+msgid "You cannot use the current password as the new one"
+msgstr "Stávající heslo nelze použít jako nové"
+
+#: src/Model/Behavior/RegisterBehavior.php:107
+msgid "User not found for the given token and email."
+msgstr "Uživatel nebyl nalezen pro daný token a e-mail."
+
+#: src/Model/Behavior/RegisterBehavior.php:110
+msgid "Token has already expired user with no token"
+msgstr "Platnost tokenu již vypršela uživatel bez tokenu"
+
+#: src/Model/Behavior/RegisterBehavior.php:167
+msgid "This field is required"
+msgstr "Toto pole je povinné"
+
+#: src/Model/Behavior/SocialAccountBehavior.php:100
+#: src/Model/Behavior/SocialAccountBehavior.php:130
+msgid "Account already validated"
+msgstr "Účet již byl ověřen"
+
+#: src/Model/Behavior/SocialAccountBehavior.php:104
+#: src/Model/Behavior/SocialAccountBehavior.php:135
+msgid "Account not found for the given token and email."
+msgstr "Účet nebyl nalezen pro zadaný token a e-mail."
+
+#: src/Model/Behavior/SocialBehavior.php:85
+msgid "Unable to login user with reference {0}"
+msgstr "Nelze přihlásit uživatele s odkazem {0}"
+
+#: src/Model/Behavior/SocialBehavior.php:136
+msgid "Email not present"
+msgstr "E-mail není přítomen"
+
+#: src/Model/Table/UsersTable.php:107
+msgid "Your password does not match your confirm password. Please try again"
+msgstr "Vaše heslo se neshoduje s potvrzovacím heslem. Zkuste to prosím znovu"
+
+#: src/Model/Table/UsersTable.php:201
+msgid "Username already exists"
+msgstr "Uživatelské jméno již existuje"
+
+#: src/Model/Table/UsersTable.php:207
+msgid "Email already exists"
+msgstr "E-mail již existuje"
+
+#: src/Shell/UsersShell.php:46
+msgid "Utilities for CakeDC Users Plugin"
+msgstr "Nástroje pro plugin CakeDC Users"
+
+#: src/Shell/UsersShell.php:48
+msgid "Activate an specific user"
+msgstr "Aktivace konkrétního uživatele"
+
+#: src/Shell/UsersShell.php:51
+msgid "Add a new superadmin user for testing purposes"
+msgstr "Přidání nového uživatele superadmina pro účely testování"
+
+#: src/Shell/UsersShell.php:54
+msgid "Add a new user"
+msgstr "Přidání nového uživatele"
+
+#: src/Shell/UsersShell.php:57
+msgid "Change the role for an specific user"
+msgstr "Změna role konkrétního uživatele"
+
+#: src/Shell/UsersShell.php:60
+msgid "Change the api token for an specific user"
+msgstr "Změna tokenu api pro konkrétního uživatele"
+
+#: src/Shell/UsersShell.php:63
+msgid "Deactivate an specific user"
+msgstr "Deaktivace konkrétního uživatele"
+
+#: src/Shell/UsersShell.php:66
+msgid "Delete an specific user"
+msgstr "Odstranění konkrétního uživatele"
+
+#: src/Shell/UsersShell.php:69
+msgid "Reset the password via email"
+msgstr "Obnovení hesla prostřednictvím e-mailu"
+
+#: src/Shell/UsersShell.php:72
+msgid "Reset the password for all users"
+msgstr "Obnovení hesla pro všechny uživatele"
+
+#: src/Shell/UsersShell.php:75
+msgid "Reset the password for an specific user"
+msgstr "Obnovení hesla pro konkrétního uživatele"
+
+#: src/Shell/UsersShell.php:135 src/Shell/UsersShell.php:161
+msgid "Please enter a password."
+msgstr "Zadejte prosím heslo."
+
+#: src/Shell/UsersShell.php:139
+msgid "Password changed for all users"
+msgstr "Heslo změněno pro všechny uživatele"
+
+#: src/Shell/UsersShell.php:140 src/Shell/UsersShell.php:168
+msgid "New password: {0}"
+msgstr "Nové heslo: {0}"
+
+#: src/Shell/UsersShell.php:158 src/Shell/UsersShell.php:186
+#: src/Shell/UsersShell.php:214 src/Shell/UsersShell.php:304
+#: src/Shell/UsersShell.php:403
+msgid "Please enter a username."
+msgstr "Zadejte prosím uživatelské jméno."
+
+#: src/Shell/UsersShell.php:167
+msgid "Password changed for user: {0}"
+msgstr "Heslo bylo změněno pro uživatele: {0}"
+
+#: src/Shell/UsersShell.php:189
+msgid "Please enter a role."
+msgstr "Zadejte prosím roli."
+
+#: src/Shell/UsersShell.php:195
+msgid "Role changed for user: {0}"
+msgstr "Role změněna pro uživatele: {0}"
+
+#: src/Shell/UsersShell.php:196
+msgid "New role: {0}"
+msgstr "Nová role: {0}"
+
+#: src/Shell/UsersShell.php:217
+msgid "Please enter a token."
+msgstr "Zadejte prosím token."
+
+#: src/Shell/UsersShell.php:224
+msgid "User was not saved, check validation errors"
+msgstr "Uživatel nebyl uložen, zkontrolujte chyby ověření"
+
+#: src/Shell/UsersShell.php:229
+msgid "Api token changed for user: {0}"
+msgstr "Token API byl změněn pro uživatele: {0}"
+
+#: src/Shell/UsersShell.php:230
+msgid "New token: {0}"
+msgstr "Nový token: {0}"
+
+#: src/Shell/UsersShell.php:245
+msgid "User was activated: {0}"
+msgstr "Uživatel byl aktivován: {0}"
+
+#: src/Shell/UsersShell.php:260
+msgid "User was de-activated: {0}"
+msgstr "Uživatel byl deaktivován: {0}"
+
+#: src/Shell/UsersShell.php:272
+msgid "Please enter a username or email."
+msgstr "Zadejte prosím uživatelské jméno nebo e-mail."
+
+#: src/Shell/UsersShell.php:280
+msgid ""
+"Please ask the user to check the email to continue with password reset "
+"process"
+msgstr ""
+"Požádejte uživatele, aby zkontroloval e-mail a pokračoval v procesu obnovy "
+"hesla"
+
+#: src/Shell/UsersShell.php:350
+msgid "Superuser added:"
+msgstr "Přidán superuživatel:"
+
+#: src/Shell/UsersShell.php:352
+msgid "User added:"
+msgstr "Přidán uživatel:"
+
+#: src/Shell/UsersShell.php:354
+msgid "Id: {0}"
+msgstr "ID: {0}"
+
+#: src/Shell/UsersShell.php:355
+msgid "Username: {0}"
+msgstr "Uživatelské jméno: {0}"
+
+#: src/Shell/UsersShell.php:356
+msgid "Email: {0}"
+msgstr "E-mail: {0}"
+
+#: src/Shell/UsersShell.php:357
+msgid "Role: {0}"
+msgstr "Role: {0}"
+
+#: src/Shell/UsersShell.php:358
+msgid "Password: {0}"
+msgstr "Heslo: {0}"
+
+#: src/Shell/UsersShell.php:360
+msgid "User could not be added:"
+msgstr "Uživatele se nepodařilo přidat:"
+
+#: src/Shell/UsersShell.php:363
+msgid "Field: {0} Error: {1}"
+msgstr "Pole: {0} Chyba: {1}"
+
+#: src/Shell/UsersShell.php:379
+msgid "The user was not found."
+msgstr "Uživatel nebyl nalezen."
+
+#: src/Shell/UsersShell.php:414
+msgid "The user {0} was not deleted. Please try again"
+msgstr "Uživatel {0} nebyl odstraněn. Zkuste to prosím znovu"
+
+#: src/Shell/UsersShell.php:416
+msgid "The user {0} was deleted successfully"
+msgstr "Uživatel {0} byl úspěšně odstraněn"
+
+#: src/View/Helper/UserHelper.php:50
+msgid "Sign in with"
+msgstr "Přihlásit pomocí"
+
+#: src/View/Helper/UserHelper.php:113
+msgid "Logout"
+msgstr "Odhlášení"
+
+#: src/View/Helper/UserHelper.php:134
+msgid "Welcome, {0}"
+msgstr "Vítejte, {0}"
+
+#: src/View/Helper/UserHelper.php:165
+msgid "reCaptcha is not configured! Please configure Users.reCaptcha.key"
+msgstr ""
+"reCaptcha není nakonfigurována! Nakonfigurujte prosím Users.reCaptcha.key"
+
+#: src/View/Helper/UserHelper.php:218
+msgid "Connected with {0}"
+msgstr "Spojeno s {0}"
+
+#: src/View/Helper/UserHelper.php:223
+msgid "Connect with {0}"
+msgstr "Spojit se s {0}"
+
+#: templates/Users/add.php:13 templates/Users/edit.php:17
+#: templates/Users/index.php:13 templates/Users/index.php:26
+#: templates/Users/view.php:15
+msgid "Actions"
+msgstr "Akce"
+
+#: templates/Users/add.php:15 templates/Users/edit.php:28
+#: templates/Users/view.php:23
+msgid "List Users"
+msgstr "Seznam uživatelů"
+
+#: templates/Users/add.php:21 templates/Users/register.php:18
+msgid "Add User"
+msgstr "Přidat uživatele"
+
+#: templates/Users/add.php:23 templates/Users/edit.php:36
+#: templates/Users/index.php:22 templates/Users/login.php:20
+#: templates/Users/profile.php:30 templates/Users/register.php:20
+#: templates/Users/view.php:33
+msgid "Username"
+msgstr "Uživatelské jméno"
+
+#: templates/Users/add.php:24 templates/Users/edit.php:37
+#: templates/Users/index.php:23 templates/Users/profile.php:32
+#: templates/Users/register.php:21 templates/Users/view.php:35
+msgid "Email"
+msgstr "E-mail"
+
+#: templates/Users/add.php:25 templates/Users/login.php:21
+#: templates/Users/register.php:22
+msgid "Password"
+msgstr "Heslo"
+
+#: templates/Users/add.php:26 templates/Users/edit.php:38
+#: templates/Users/index.php:24 templates/Users/register.php:28
+msgid "First name"
+msgstr "Jméno"
+
+#: templates/Users/add.php:27 templates/Users/edit.php:39
+#: templates/Users/index.php:25 templates/Users/register.php:29
+msgid "Last name"
+msgstr "Příjmení"
+
+#: templates/Users/add.php:30 templates/Users/edit.php:54
+#: templates/Users/view.php:49 templates/Users/view.php:74
+msgid "Active"
+msgstr "Aktivní"
+
+#: templates/Users/add.php:34 templates/Users/change_password.php:25
+#: templates/Users/edit.php:58 templates/Users/register.php:38
+#: templates/Users/request_reset_password.php:23
+#: templates/Users/resend_token_validation.php:20
+#: templates/Users/social_email.php:19
+msgid "Submit"
+msgstr "Odeslat"
+
+#: templates/Users/change_password.php:5
+msgid "Please enter the new password"
+msgstr "Zadejte prosím nové heslo"
+
+#: templates/Users/change_password.php:10
+msgid "Current password"
+msgstr "Současné heslo"
+
+#: templates/Users/change_password.php:16
+msgid "New password"
+msgstr "Nové heslo"
+
+#: templates/Users/change_password.php:21 templates/Users/register.php:26
+msgid "Confirm password"
+msgstr "Potvrďte heslo"
+
+#: templates/Users/edit.php:22 templates/Users/index.php:40
+msgid "Delete"
+msgstr "Odstranit"
+
+#: templates/Users/edit.php:24 templates/Users/index.php:40
+#: templates/Users/view.php:21
+msgid "Are you sure you want to delete # {0}?"
+msgstr "Opravdu chcete odstranit # {0}?"
+
+#: templates/Users/edit.php:34 templates/Users/view.php:17
+msgid "Edit User"
+msgstr "Upravit uživatele"
+
+#: templates/Users/edit.php:40 templates/Users/view.php:43
+msgid "Token"
+msgstr "Token"
+
+#: templates/Users/edit.php:42
+msgid "Token expires"
+msgstr "Platnost tokenu vyprší"
+
+#: templates/Users/edit.php:45
+msgid "API token"
+msgstr "Token rozhraní API"
+
+#: templates/Users/edit.php:48
+msgid "Activation date"
+msgstr "Datum aktivace"
+
+#: templates/Users/edit.php:51
+msgid "TOS date"
+msgstr "Datum TOS"
+
+#: templates/Users/edit.php:64
+msgid "Reset Google Authenticator Token"
+msgstr "Obnovení tokenu Google Authenticator"
+
+#: templates/Users/edit.php:70
+msgid "Are you sure you want to reset token for user \"{0}\"?"
+msgstr "Opravdu chcete obnovit token pro uživatele \"{0}\"?"
+
+#: templates/Users/index.php:15
+msgid "New {0}"
+msgstr "Nový {0}"
+
+#: templates/Users/index.php:37
+msgid "View"
+msgstr "Zobrazit"
+
+#: templates/Users/index.php:38
+msgid "Change password"
+msgstr "Změnit heslo"
+
+#: templates/Users/index.php:39
+msgid "Edit"
+msgstr "Upravit"
+
+#: templates/Users/index.php:49
+msgid "previous"
+msgstr "předchozí"
+
+#: templates/Users/index.php:51
+msgid "next"
+msgstr "další"
+
+#: templates/Users/login.php:19
+msgid "Please enter your username and password"
+msgstr "Zadejte prosím své uživatelské jméno a heslo"
+
+#: templates/Users/login.php:29
+msgid "Remember me"
+msgstr "Pamatuj si mě"
+
+#: templates/Users/login.php:37
+msgid "Register"
+msgstr "Registrovat"
+
+#: templates/Users/login.php:43
+msgid "Reset Password"
+msgstr "Obnovit heslo"
+
+#: templates/Users/login.php:48
+msgid "Login"
+msgstr "Přihlášení"
+
+#: templates/Users/profile.php:21
+msgid "{0} {1}"
+msgstr "{0} {1}"
+
+#: templates/Users/profile.php:27
+msgid "Change Password"
+msgstr "Změnit heslo"
+
+#: templates/Users/profile.php:38 templates/Users/view.php:68
+msgid "Social Accounts"
+msgstr "Sociální účty"
+
+#: templates/Users/profile.php:42 templates/Users/view.php:73
+msgid "Avatar"
+msgstr "Profilový obrázek"
+
+#: templates/Users/profile.php:43 templates/Users/view.php:72
+msgid "Provider"
+msgstr "Poskytovatel"
+
+#: templates/Users/profile.php:44
+msgid "Link"
+msgstr "Odkaz"
+
+#: templates/Users/profile.php:51
+msgid "Link to {0}"
+msgstr "Odkaz na {0}"
+
+#: templates/Users/register.php:31
+msgid "Accept TOS conditions?"
+msgstr "Přijmout podmínky TOS?"
+
+#: templates/Users/request_reset_password.php:20
+msgid "Please enter your email or username to reset your password"
+msgstr "Pro obnovení hesla zadejte svůj e-mail nebo uživatelské jméno"
+
+#: templates/Users/resend_token_validation.php:15
+msgid "Resend Validation email"
+msgstr "Znovu odeslat ověřovací e-mail"
+
+#: templates/Users/resend_token_validation.php:17
+msgid "Email or username"
+msgstr "E-mail nebo uživatelské jméno"
+
+#: templates/Users/u2f_authenticate.php:22 templates/Users/webauthn2fa.php:25
+msgid "Verify your registered yubico key"
+msgstr "Ověření vašeho registrovaného klíče yubico"
+
+#: templates/Users/u2f_authenticate.php:23 templates/Users/u2f_register.php:23
+#: templates/Users/webauthn2fa.php:20 templates/Users/webauthn2fa.php:26
+msgid "Please insert and tap your yubico key"
+msgstr "Vložte prosím klíč yubico a klepněte na něj"
+
+#: templates/Users/u2f_authenticate.php:24 templates/Users/webauthn2fa.php:27
+msgid ""
+"You can now finish the authentication process using the registered device."
+msgstr "Nyní můžete dokončit proces ověření pomocí registrovaného zařízení."
+
+#: templates/Users/u2f_authenticate.php:25 templates/Users/webauthn2fa.php:22
+#: templates/Users/webauthn2fa.php:28
+msgid ""
+"When the YubiKey starts blinking, press the golden disc to activate it. "
+"Depending on the web browser you might need to confirm the use of extended "
+"information from the YubiKey."
+msgstr ""
+"Jakmile začne klíč YubiKey blikat, aktivujte jej stisknutím zlatého disku. V "
+"závislosti na webovém prohlížeči může být nutné potvrdit použití rozšířených "
+"informací z klíče YubiKey."
+
+#: templates/Users/u2f_authenticate.php:27 templates/Users/u2f_register.php:27
+#: templates/Users/webauthn2fa.php:31
+msgid "Reload"
+msgstr "Znovu načíst"
+
+#: templates/Users/u2f_authenticate.php:51 templates/Users/u2f_register.php:56
+msgid "Yubico key check has failed, please try again"
+msgstr "Kontrola klíče Yubico selhala, zkuste to prosím znovu"
+
+#: templates/Users/u2f_register.php:22 templates/Users/webauthn2fa.php:19
+msgid "Registering your yubico key"
+msgstr "Registrace klíče Yubico"
+
+#: templates/Users/verify.php:13
+msgid "Verification Code"
+msgstr "Ověřovací kód"
+
+#: templates/Users/verify.php:15
+msgid ""
+"<span class=\"glyphicon glyphicon-log-in\" aria-hidden=\"true\"></span> "
+"Verify"
+msgstr ""
+"<span class=\"glyphicon glyphicon-log-in\" aria-hidden=\"true\"></span> "
+"Ověřit"
+
+#: templates/Users/view.php:19
+msgid "Delete User"
+msgstr "Odstranit uživatele"
+
+#: templates/Users/view.php:24
+msgid "New User"
+msgstr "Nový uživatel"
+
+#: templates/Users/view.php:31
+msgid "Id"
+msgstr "ID"
+
+#: templates/Users/view.php:37
+msgid "First Name"
+msgstr "Jméno"
+
+#: templates/Users/view.php:39
+msgid "Last Name"
+msgstr "Příjmení"
+
+#: templates/Users/view.php:41
+msgid "Role"
+msgstr "Role"
+
+#: templates/Users/view.php:45
+msgid "Api Token"
+msgstr "Token rozhraní API"
+
+#: templates/Users/view.php:53
+msgid "Token Expires"
+msgstr "Platnost tokenu vyprší"
+
+#: templates/Users/view.php:55
+msgid "Activation Date"
+msgstr "Datum aktivace"
+
+#: templates/Users/view.php:57
+msgid "Tos Date"
+msgstr "Datum TOS"
+
+#: templates/Users/view.php:59 templates/Users/view.php:75
+msgid "Created"
+msgstr "Vytvořeno"
+
+#: templates/Users/view.php:61 templates/Users/view.php:76
+msgid "Modified"
+msgstr "Upraveno"
+
+#: templates/Users/webauthn2fa.php:8
+msgid "Two-factor authentication"
+msgstr "Dvoufaktorové ověření"
+
+#: templates/Users/webauthn2fa.php:21
+msgid ""
+"In order to enable your YubiKey the first step is to perform a registration."
+msgstr ""
+"Chcete-li aktivovat svůj YubiKey, prvním krokem je provedení registrace."
+
+#: templates/email/html/reset_password.php:14
+#: templates/email/html/social_account_validation.php:14
+#: templates/email/html/validation.php:13
+#: templates/email/text/reset_password.php:12
+#: templates/email/text/social_account_validation.php:12
+#: templates/email/text/validation.php:12
+msgid "Hi {0}"
+msgstr "Ahoj {0}"
+
+#: templates/email/html/reset_password.php:17
+msgid "Reset your password here"
+msgstr "Obnovte své heslo zde"
+
+#: templates/email/html/reset_password.php:20
+#: templates/email/html/social_account_validation.php:23
+#: templates/email/html/validation.php:19
+msgid ""
+"If the link is not correctly displayed, please copy the following address in "
+"your web browser {0}"
+msgstr ""
+"Pokud se odkaz nezobrazuje správně, zkopírujte prosím do svého webového "
+"prohlížeče následující adresu {0}"
+
+#: templates/email/html/reset_password.php:27
+#: templates/email/html/social_account_validation.php:30
+#: templates/email/html/validation.php:26
+#: templates/email/text/reset_password.php:20
+#: templates/email/text/social_account_validation.php:20
+#: templates/email/text/validation.php:20
+msgid "Thank you"
+msgstr "Děkuji"
+
+#: templates/email/html/social_account_validation.php:18
+msgid "Activate your social login here"
+msgstr "Aktivujte si přihlášení k sociální síti zde"
+
+#: templates/email/html/validation.php:16
+msgid "Activate your account here"
+msgstr "Aktivujte si účet zde"
+
+#: templates/email/text/reset_password.php:14
+#: templates/email/text/validation.php:14
+msgid "Please copy the following address in your web browser {0}"
+msgstr "Zkopírujte prosím do svého webového prohlížeče následující adresu {0}"
+
+#: templates/email/text/social_account_validation.php:14
+msgid ""
+"Please copy the following address in your web browser to activate your "
+"social login {0}"
+msgstr ""
+"Zkopírujte prosím následující adresu do svého webového prohlížeče, abyste "
+"aktivovali své přihlášení k sociální síti {0}"

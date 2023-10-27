@@ -52,8 +52,11 @@ class DefaultRedirectHandler extends CakeRedirectHandler
     /**
      * @inheritDoc
      */
-    public function handle(Exception $exception, ServerRequestInterface $request, array $options = []): ResponseInterface
-    {
+    public function handle(
+        Exception $exception,
+        ServerRequestInterface $request,
+        array $options = []
+    ): ResponseInterface {
         $options += $this->defaultOptions;
         $response = parent::handle($exception, $request, $options);
         $session = $request->getAttribute('session');
@@ -80,7 +83,13 @@ class DefaultRedirectHandler extends CakeRedirectHandler
         }
 
         if ($options['queryParam'] !== null) {
-            $url['?'][$options['queryParam']] = (string)$request->getUri();
+            $redirectUri = $request->getUri();
+            $redirect = $redirectUri->getPath();
+            if ($redirectUri->getQuery()) {
+                $redirect .= '?' . $redirectUri->getQuery();
+            }
+
+            $url['?'][$options['queryParam']] = $redirect;
         }
 
         return Router::url($url);
