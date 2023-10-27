@@ -6,9 +6,9 @@ We currently support the following providers to perform login as well as to link
 * Facebook
 * Twitter
 * Google
-* LinkedIn
 * Instagram
 * Amazon
+* LinkedIn (deprecated, it's not working with the OAuth 2.0 provider. They switched to OpenID-Connect.)
 
 Please [contact us](https://cakedc.com/contact) if you need to support another provider.
 
