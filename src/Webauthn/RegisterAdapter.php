@@ -41,6 +41,7 @@ class RegisterAdapter extends BaseAdapter
      */
     public function verifyResponse(): \Webauthn\PublicKeyCredentialSource
     {
+        /** @var \Webauthn\PublicKeyCredentialCreationOptions $options */
         $options = PublicKeyCredentialCreationOptions::createFromString(
             (string)$this->request->getSession()->read('Webauthn2fa.registerOptions')
         );
