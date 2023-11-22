@@ -34,7 +34,7 @@ class AuthenticateAdapter extends BaseAdapter
         );
         $this->request->getSession()->write(
             'Webauthn2fa.authenticateOptions',
-            $options
+            json_encode($options)
         );
 
         return $options;
@@ -47,7 +47,9 @@ class AuthenticateAdapter extends BaseAdapter
      */
     public function verifyResponse(): \Webauthn\PublicKeyCredentialSource
     {
-        $options = $this->request->getSession()->read('Webauthn2fa.authenticateOptions');
+        $options = PublicKeyCredentialRequestOptions::createFromString(
+            (string)$this->request->getSession()->read('Webauthn2fa.authenticateOptions')
+        );
 
         return $this->loadAndCheckAssertionResponse($options);
     }
