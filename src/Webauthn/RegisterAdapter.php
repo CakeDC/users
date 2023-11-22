@@ -28,7 +28,7 @@ class RegisterAdapter extends BaseAdapter
             PublicKeyCredentialCreationOptions::ATTESTATION_CONVEYANCE_PREFERENCE_NONE,
             []
         );
-        $this->request->getSession()->write('Webauthn2fa.registerOptions', $options);
+        $this->request->getSession()->write('Webauthn2fa.registerOptions', json_encode($options));
         $this->request->getSession()->write('Webauthn2fa.userEntity', $userEntity);
 
         return $options;
@@ -41,7 +41,9 @@ class RegisterAdapter extends BaseAdapter
      */
     public function verifyResponse(): \Webauthn\PublicKeyCredentialSource
     {
-        $options = $this->request->getSession()->read('Webauthn2fa.registerOptions');
+        $options = PublicKeyCredentialCreationOptions::createFromString(
+            (string)$this->request->getSession()->read('Webauthn2fa.registerOptions')
+        );
         $credential = $this->loadAndCheckAttestationResponse($options);
         $this->repository->saveCredentialSource($credential);
 

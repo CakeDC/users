@@ -2,6 +2,9 @@ Changelog
 =========
 Releases for CakePHP 4.5
 ------------------------
+* 11.3.4
+  * Fix `Detected invalid UTF-8 for field...` issue when storing session data from `Webauthn` in a mongo database.
+
 * 11.3.3
   * Add display of unauthorized url in flash message when debug is true
 
