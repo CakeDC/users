@@ -36,7 +36,7 @@ class AuthenticateAdapterTest extends TestCase
         $adapter = new AuthenticateAdapter($request);
         $options = $adapter->getOptions();
         $this->assertInstanceOf(PublicKeyCredentialRequestOptions::class, $options);
-        $this->assertSame($options, $request->getSession()->read('Webauthn2fa.authenticateOptions'));
+        $this->assertSame(json_encode($options), $request->getSession()->read('Webauthn2fa.authenticateOptions'));
         $data = json_decode('{"id":"LFdoCFJTyB82ZzSJUHc-c72yraRc_1mPvGX8ToE8su39xX26Jcqd31LUkKOS36FIAWgWl6itMKqmDvruha6ywA","rawId":"LFdoCFJTyB82ZzSJUHc-c72yraRc_1mPvGX8ToE8su39xX26Jcqd31LUkKOS36FIAWgWl6itMKqmDvruha6ywA","response":{"authenticatorData":"SZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2MBAAAAAA","signature":"MEYCIQCv7EqsBRtf2E4o_BjzZfBwNpP8fLjd5y6TUOLWt5l9DQIhANiYig9newAJZYTzG1i5lwP-YQk9uXFnnDaHnr2yCKXL","userHandle":"","clientDataJSON":"eyJjaGFsbGVuZ2UiOiJ4ZGowQ0JmWDY5MnFzQVRweTBrTmM4NTMzSmR2ZExVcHFZUDh3RFRYX1pFIiwiY2xpZW50RXh0ZW5zaW9ucyI6e30sImhhc2hBbGdvcml0aG0iOiJTSEEtMjU2Iiwib3JpZ2luIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwIiwidHlwZSI6IndlYmF1dGhuLmdldCJ9"},"type":"public-key"}', true);
         $request = $request->withParsedBody($data);
 
