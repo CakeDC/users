@@ -1,7 +1,31 @@
 Changelog
 =========
-Releases for CakePHP 4.3
--------------
+
+Releases for CakePHP 4.4
+------------------------
+
+* 11.2.6
+  * Backport fix for `Detected invalid UTF-8 for field...` issue when storing session data from `Webauthn` in a mongo database.
+
+* 11.2.5
+  * Fix failed tests and code standards
+
+* 11.2.4
+  * Fix dependencies, require CakePHP 4.4.*
+
+* 11.2.3
+  * Improved documentation
+  * Deprecate (broken) compatibility with Linkedin Oauth based connector, they only provide compatibility with OpenID Connect now
+  * Add Dutch translation by Stefan
+  * Add `linkGenerator` for emails, useful for API driven apps
+  * Fix CakePHP 4.5 deprecations
+  * Fix webauthn loading issues
+
+* 11.2.2
+  * Fix issue with password rehash with a custom password field
+
+* 11.2.1
+  * Use UsersUrl and unify url building for login action
 
 * 11.2.0
   * Feature/microsoft login by @arodu in #1000
