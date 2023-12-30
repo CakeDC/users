@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace CakeDC\Users\Controller\Traits;
 
 use Cake\Core\Configure;
+use Cake\Http\Response;
 use Cake\Validation\Validator;
 use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Exception\UserNotFoundException;
@@ -190,9 +191,9 @@ trait PasswordManagementTrait
      * to false.
      *
      * @param mixed $id of the user record.
-     * @return mixed.
+     * @return \Cake\Http\Response|null.
      */
-    public function resetOneTimePasswordAuthenticator($id = null)
+    public function resetOneTimePasswordAuthenticator($id = null): ?Response
     {
         if ($this->getRequest()->is('post')) {
             try {

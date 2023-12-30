@@ -149,7 +149,6 @@ if (env('FIXTURE_SCHEMA_METADATA')) {
     $loader->loadInternalFile(env('FIXTURE_SCHEMA_METADATA'));
 }
 
-
 $error = [
     'errorLevel' => E_ALL,
     'skipLog' => [],

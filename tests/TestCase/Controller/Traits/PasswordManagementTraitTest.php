@@ -19,7 +19,7 @@ use Cake\Event\Event;
 use Cake\Http\ServerRequest;
 use Cake\TestSuite\TestCase;
 
-class PasswordManagementTraitTest extends BaseTraitTest
+class PasswordManagementTraitTest extends BaseTrait
 {
     /**
      * @var \CakeDC\Users\Controller\UsersController
@@ -45,10 +45,10 @@ class PasswordManagementTraitTest extends BaseTraitTest
             ->onlyMethods($this->traitMockMethods)
             ->setConstructorArgs([new ServerRequest()])
             ->getMock();
-			
-		$this->Trait->expects($this->any())
-			->method('getUsersTable')
-			->will($this->returnValue($this->table));			
+
+        $this->Trait->expects($this->any())
+            ->method('getUsersTable')
+            ->will($this->returnValue($this->table));
     }
 
     /**

@@ -25,7 +25,7 @@ use CakeDC\Auth\Authenticator\FormAuthenticator;
 use CakeDC\Users\Authenticator\SocialAuthenticator;
 use CakeDC\Users\Controller\Component\LoginComponent;
 
-class SocialTraitTest extends BaseTraitTest
+class SocialTraitTest extends BaseTrait
 {
     /**
      * Fixtures

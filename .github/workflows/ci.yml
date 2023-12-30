@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: ['8.1', '8.2']
+        php-version: ['8.1', '8.2', '8.3']
         db-type: [sqlite, mysql, pgsql]
         prefer-lowest: ['']
 
@@ -68,7 +68,7 @@ jobs:
         if [[ ${{ matrix.db-type }} == 'mysql' ]]; then export DB_URL='mysql://root:root@127.0.0.1/cakephp?encoding=utf8'; fi
         if [[ ${{ matrix.db-type }} == 'pgsql' ]]; then export DB_URL='postgres://postgres:postgres@127.0.0.1/postgres'; fi
         if [[ ${{ matrix.php-version }} == '8.1' ]]; then
-          export CODECOVERAGE=1 && vendor/bin/phpunit --verbose --coverage-clover=coverage.xml
+          export CODECOVERAGE=1 && vendor/bin/phpunit --display-deprecations --display-incomplete --display-skipped --coverage-clover=coverage.xml
         else
           vendor/bin/phpunit
         fi

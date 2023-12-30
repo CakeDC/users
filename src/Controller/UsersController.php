@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Controller;
 
+use Cake\Core\Configure;
+use Cake\ORM\Table;
+use Cake\ORM\TableRegistry;
 // use CakeDC\Users\Controller\Traits\CustomUsersTableTrait;
 use CakeDC\Users\Controller\Traits\LinkSocialTrait;
 use CakeDC\Users\Controller\Traits\LoginTrait;
@@ -23,11 +26,6 @@ use CakeDC\Users\Controller\Traits\RegisterTrait;
 use CakeDC\Users\Controller\Traits\SimpleCrudTrait;
 use CakeDC\Users\Controller\Traits\SocialTrait;
 use CakeDC\Users\Controller\Traits\Webauthn2faTrait;
-
-
-use Cake\Core\Configure;
-use Cake\ORM\Table;
-use Cake\ORM\TableRegistry;
 
 /**
  * Users Controller
@@ -46,6 +44,7 @@ class UsersController extends AppController
     use SimpleCrudTrait;
     use SocialTrait;
     use Webauthn2faTrait;
+
     // use CustomUsersTableTrait;
 
     /**
@@ -69,8 +68,7 @@ class UsersController extends AppController
             );
         }
     }
-	
-	
+
     protected ?Table $_usersTable = null;
 
     /**
@@ -97,5 +95,5 @@ class UsersController extends AppController
     public function setUsersTable(Table $table)
     {
         $this->_usersTable = $table;
-    }	
+    }
 }

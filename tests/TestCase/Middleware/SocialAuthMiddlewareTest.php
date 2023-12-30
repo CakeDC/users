@@ -25,10 +25,10 @@ use CakeDC\Auth\Social\Service\ServiceFactory;
 use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\SocialAuthenticationException;
 use CakeDC\Users\Middleware\SocialAuthMiddleware;
-use UnexpectedValueException;
 use Laminas\Diactoros\Uri;
 use League\OAuth2\Client\Provider\FacebookUser;
 use TestApp\Http\TestRequestHandler;
+use UnexpectedValueException;
 
 class SocialAuthMiddlewareTest extends TestCase
 {

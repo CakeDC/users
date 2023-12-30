@@ -17,6 +17,7 @@ use Authorization\Exception\Exception;
 use Authorization\Exception\ForbiddenException;
 use Authorization\Exception\MissingIdentityException;
 use Authorization\Middleware\UnauthorizedHandler\CakeRedirectHandler;
+use Cake\Core\Configure;
 use Cake\Http\ServerRequest;
 use Cake\Http\Session;
 use Cake\Routing\Router;
@@ -60,6 +61,7 @@ class DefaultRedirectHandler extends CakeRedirectHandler
         $response = parent::handle($exception, $request, $options);
         $session = $request->getAttribute('session');
         if ($session instanceof Session) {
+            $options['request'] = $request;
             $this->addFlashMessage($session, $options);
         }
 
@@ -116,12 +118,18 @@ class DefaultRedirectHandler extends CakeRedirectHandler
     protected function createFlashMessage($options): array
     {
         $message = (array)($options['flash'] ?? []);
+        $unauthorizedUrl = '';
+        if (Configure::read('debug')) {
+            $request = $options['request'] ?? null;
+            $uri = $request?->getUri();
+            $unauthorizedUrl = __d('cake_d_c/users', 'Location = {0}', $uri);
+        }
 
         return $message + [
-                'message' => __d('cake_d_c/users', 'You are not authorized to access that location.'),
-                'key' => 'flash',
-                'element' => 'flash/error',
-                'params' => [],
-            ];
+            'message' => __d('cake_d_c/users', 'You are not authorized to access that location.') . $unauthorizedUrl,
+            'key' => 'flash',
+            'element' => 'flash/error',
+            'params' => [],
+        ];
     }
 }

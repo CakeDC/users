@@ -36,7 +36,7 @@ use PHPUnit\Framework\MockObject\RuntimeException;
  *
  * @package CakeDC\Users\Test\TestCase\Controller\Traits
  */
-abstract class BaseTraitTest extends TestCase
+class BaseTrait extends TestCase
 {
     /**
      * Fixtures
@@ -94,12 +94,11 @@ abstract class BaseTraitTest extends TestCase
             }
             $this->Trait = $buildTrait->getMock();
 
-			if (!$this->skipUsersMock) {
-				$this->Trait->expects($this->any())
-					->method('getUsersTable')
-					->will($this->returnValue($this->table));
-			}
-					
+            if (!$this->skipUsersMock) {
+                $this->Trait->expects($this->any())
+                    ->method('getUsersTable')
+                    ->will($this->returnValue($this->table));
+            }
         } catch (RuntimeException $ex) {
             $this->fail('Unit tests extending BaseTraitTest should declare the trait class name in the $traitClassName variable before calling setUp()');
         }

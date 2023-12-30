@@ -36,7 +36,7 @@ class UsersAddSuperuserCommandTest extends TestCase
         $UsersTable = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
         $this->assertFalse($UsersTable->exists(['username' => $username]));
         $this->exec('cake_d_c/users.users add_superuser --username=yeliparra.admin --password=123456 --email=yeli.parra.testing01@testing.com --role=admin-tester');
-		$s=$this->_out->messages();
+        $this->_out->messages();
         $this->assertOutputRegExp('/Superuser added:/');
         $this->assertOutputRegExp('/Username: yeliparra.admin/');
         $this->assertOutputRegExp('/Email: yeli.parra.testing01@testing.com/');

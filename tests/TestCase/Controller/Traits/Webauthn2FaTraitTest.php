@@ -29,7 +29,7 @@ use Webauthn\PublicKeyCredentialSource;
  *
  * @package App\Test\TestCase\Controller\Traits
  */
-class Webauthn2faTraitTest extends BaseTraitTest
+class Webauthn2FaTraitTest extends BaseTrait
 {
     /**
      * Fixtures
@@ -108,12 +108,11 @@ class Webauthn2faTraitTest extends BaseTraitTest
         $this->Trait
             ->expects($this->exactly(2))
             ->method('set')
-			->willReturnCallback(fn($name, $value) =>
-				match([$name, $value]) {
-					['isRegister', true] => null,
-					['username', 'user-2'] => null
-				}
-			);
+            ->willReturnCallback(fn ($name, $value) =>
+                match ([$name, $value]) {
+                    ['isRegister', true] => null,
+                    ['username', 'user-2'] => null
+                });
         $this->Trait->webauthn2fa();
         $this->assertSame(
             $user,
@@ -147,12 +146,11 @@ class Webauthn2faTraitTest extends BaseTraitTest
         $this->Trait
             ->expects($this->exactly(2))
             ->method('set')
-			->willReturnCallback(fn($name, $value) =>
-				match([$name, $value]) {
-					['isRegister', false] => null,
-					['username', 'user-1'] => null
-				}
-			);
+            ->willReturnCallback(fn ($name, $value) =>
+                match ([$name, $value]) {
+                    ['isRegister', false] => null,
+                    ['username', 'user-1'] => null
+                });
         $this->Trait->webauthn2fa();
         $this->assertSame(
             $user,

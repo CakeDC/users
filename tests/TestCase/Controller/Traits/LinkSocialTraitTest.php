@@ -23,7 +23,7 @@ use Cake\ORM\TableRegistry;
 use Laminas\Diactoros\Uri;
 use League\OAuth2\Client\Provider\FacebookUser;
 
-class LinkSocialTraitTest extends BaseTraitTest
+class LinkSocialTraitTest extends BaseTrait
 {
     /**
      * Fixtures
