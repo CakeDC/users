@@ -58,6 +58,11 @@ and add this to your config/users.php file:
 'Users.reCaptcha.login' => true, //enable on login
 ```
 
+Note you'll need to add google/recaptcha to your composer.json file.
+
+```
+$ composer require google/recaptcha:@stable
+```
 
 Configuration options
 ---------------------
