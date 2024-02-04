@@ -93,7 +93,7 @@ trait RegisterTrait
         }
 
         $this->set(['user' => $user]);
-        $this->set('_serialize', ['user']);
+        $this->viewBuilder()->setOption('serialize', ['user']);
 
         if (!$this->getRequest()->is('post')) {
             return;

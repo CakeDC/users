@@ -33,7 +33,7 @@ trait SimpleCrudTrait
         $tableAlias = $table->getAlias();
         $this->set($tableAlias, $this->paginate($table));
         $this->set('tableAlias', $tableAlias);
-        $this->set('_serialize', [$tableAlias, 'tableAlias']);
+        $this->viewBuilder()->setOption('serialize', [$tableAlias, 'tableAlias']);
     }
 
     /**
@@ -50,7 +50,7 @@ trait SimpleCrudTrait
         $entity = $table->get($id, contain: []);
         $this->set($tableAlias, $entity);
         $this->set('tableAlias', $tableAlias);
-        $this->set('_serialize', [$tableAlias, 'tableAlias']);
+        $this->viewBuilder()->setOption('serialize', [$tableAlias, 'tableAlias']);
     }
 
     /**
@@ -65,7 +65,7 @@ trait SimpleCrudTrait
         $entity = $table->newEmptyEntity();
         $this->set($tableAlias, $entity);
         $this->set('tableAlias', $tableAlias);
-        $this->set('_serialize', [$tableAlias, 'tableAlias']);
+        $this->viewBuilder()->setOption('serialize', [$tableAlias, 'tableAlias']);
         if (!$this->getRequest()->is('post')) {
             return;
         }
@@ -95,7 +95,7 @@ trait SimpleCrudTrait
         ]);
         $this->set($tableAlias, $entity);
         $this->set('tableAlias', $tableAlias);
-        $this->set('_serialize', [$tableAlias, 'tableAlias']);
+        $this->viewBuilder()->setOption('serialize', [$tableAlias, 'tableAlias']);
         if (!$this->getRequest()->is(['patch', 'post', 'put'])) {
             return;
         }
