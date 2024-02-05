@@ -78,10 +78,6 @@ class SimpleCrudTraitTest extends BaseTrait
         $expected = [
             'Users' => $paginated,
             'tableAlias' => 'Users',
-            '_serialize' => [
-                'Users',
-                'tableAlias',
-            ],
         ];
         $this->assertEquals($expected, $this->viewVars);
     }
@@ -98,10 +94,6 @@ class SimpleCrudTraitTest extends BaseTrait
         $expected = [
             'Users' => $this->table->get($id),
             'tableAlias' => 'Users',
-            '_serialize' => [
-                'Users',
-                'tableAlias',
-            ],
         ];
         $this->assertEquals($expected, $this->viewVars);
     }
@@ -140,10 +132,6 @@ class SimpleCrudTraitTest extends BaseTrait
         $expected = [
             'Users' => $this->table->newEmptyEntity(),
             'tableAlias' => 'Users',
-            '_serialize' => [
-                'Users',
-                'tableAlias',
-            ],
         ];
         $this->assertEquals($expected, $this->viewVars);
     }

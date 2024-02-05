@@ -95,7 +95,7 @@ trait UserValidationTrait
     public function resendTokenValidation()
     {
         $this->set('user', $this->getUsersTable()->newEntity([], ['validate' => false]));
-        $this->set('_serialize', ['user']);
+        $this->viewBuilder()->setOption('serialize', ['user']);
         if (!$this->getRequest()->is('post')) {
             return;
         }
