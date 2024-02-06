@@ -47,6 +47,9 @@ $config = [
             // determines if registration workflow includes email validation
             'validate' => true,
         ],
+        'Login' => [
+            'flashMessage' => false, // bool
+        ],
         'Registration' => [
             // determines if the register is enabled
             'active' => true,
