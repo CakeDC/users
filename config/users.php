@@ -49,6 +49,7 @@ $config = [
         ],
         'Login' => [
             'updateLastLogin' => true,
+            'lastLoginField' => 'last_login',
         ],
         'Registration' => [
             // determines if the register is enabled
