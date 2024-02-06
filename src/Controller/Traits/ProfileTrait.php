@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Controller\Traits;
 
-use Cake\Controller\Component\AuthComponent;
 use Cake\Core\Configure;
 use Cake\Datasource\Exception\InvalidPrimaryKeyException;
 use Cake\Datasource\Exception\RecordNotFoundException;
