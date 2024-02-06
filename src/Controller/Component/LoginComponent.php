@@ -256,6 +256,6 @@ class LoginComponent extends Component
             return;
         }
 
-        $this->getController()->Flash->success(__d('cake_d_c/users', 'Welcome, {0}', $user->username));
+        $this->getController()->Flash->success(__d('cake_d_c/users', 'Welcome, {0}', $user['username']));
     }
 }
