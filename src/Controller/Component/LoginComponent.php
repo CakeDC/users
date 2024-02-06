@@ -238,7 +238,7 @@ class LoginComponent extends Component
             return;
         }
         $field = Configure::read('Users.Login.lastLoginField', 'last_login');
-        $now = \Cake\I18n\FrozenTime::now();
+        $now = \Cake\I18n\DateTime::now();
         $user->set($field, $now);
         $this->getController()->getUsersTable()->updateAll(
             [$field => $now->format('Y-m-d H:i:s')],
