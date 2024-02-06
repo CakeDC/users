@@ -236,6 +236,10 @@ class LoginComponent extends Component
      */
     protected function updateLastLogin($user)
     {
+        if (!Configure::read('Users.Login.updateLastLogin', true)) {
+            return;
+        }
+
         $now = \Cake\I18n\FrozenTime::now();
         $user->set('last_login', $now);
         $this->getController()->getUsersTable()->updateAll(
