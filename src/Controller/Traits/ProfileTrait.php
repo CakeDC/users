@@ -41,10 +41,11 @@ trait ProfileTrait
             $id = $loggedUserId;
         }
         try {
-            $appContain = (array)Configure::read('Auth.authenticate.' . AuthComponent::ALL . '.contain');
-            $socialContain = Configure::read('Users.Social.login') ? ['SocialAccounts'] : [];
+            $appContain = (array)Configure::read('Users.Profile.contain', []);
             $user = $this->getUsersTable()->get($id, [
-                    'contain' => array_merge((array)$appContain, (array)$socialContain),
+                    'contain' => array_merge($appContain, [
+                        'SocialAccounts',
+                    ]),
                 ]);
             $this->set('avatarPlaceholder', Configure::read('Users.Avatar.placeholder'));
             if ($user->id === $loggedUserId) {
