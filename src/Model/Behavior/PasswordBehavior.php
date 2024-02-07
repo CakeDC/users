@@ -68,12 +68,16 @@ class PasswordBehavior extends BaseTokenBehavior
         $user->updateToken($expiration);
         $saveResult = $this->_table->save($user);
         if ($options['sendEmail'] ?? false) {
+            $emailOptions = [];
+            if (isset($options['linkGenerator']) && is_callable($options['linkGenerator'])) {
+                $emailOptions['linkGenerator'] = $options['linkGenerator'];
+            }
             switch ($options['type'] ?? null) {
                 case 'email':
-                    $this->_sendValidationEmail($user);
+                    $this->_sendValidationEmail($user, $emailOptions);
                     break;
                 case 'password':
-                    $this->_sendResetPasswordEmail($user);
+                    $this->_sendResetPasswordEmail($user, $emailOptions);
                     break;
             }
         }
@@ -85,27 +89,29 @@ class PasswordBehavior extends BaseTokenBehavior
      * Send the reset password related email link
      *
      * @param \Cake\Datasource\EntityInterface $user user
+     * @param array $options Options.
      * @return void
      */
-    protected function _sendResetPasswordEmail($user)
+    protected function _sendResetPasswordEmail($user, $options = [])
     {
         $this
             ->getMailer(Configure::read('Users.Email.mailerClass') ?: 'CakeDC/Users.Users')
-            ->send('resetPassword', [$user]);
+            ->send('resetPassword', [$user, $options]);
     }
 
     /**
      * Wrapper for mailer
      *
      * @param \Cake\Datasource\EntityInterface $user user
+     * @param array $options Options.
      * @return void
      */
-    protected function _sendValidationEmail($user)
+    protected function _sendValidationEmail($user, $options = [])
     {
         $mailer = Configure::read('Users.Email.mailerClass') ?: 'CakeDC/Users.Users';
         $this
             ->getMailer($mailer)
-            ->send('validation', [$user]);
+            ->send('validation', [$user, $options]);
     }
 
     /**

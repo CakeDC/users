@@ -199,8 +199,9 @@ class LoginComponent extends Component
             if (!$checker || method_exists($checker, 'needsPasswordRehash') && !$checker->needsPasswordRehash()) {
                 continue;
             }
-            $password = $request->getData('password');
-            $user->set('password', $password);
+            $passwordField = $checker->getConfig('fields.password', 'password');
+            $password = $request->getData($passwordField);
+            $user->set($passwordField, $password);
             $user->setDirty('modified');
             $this->getController()->getUsersTable()->save($user);
             break;
@@ -236,10 +237,14 @@ class LoginComponent extends Component
      */
     protected function updateLastLogin($user)
     {
+        if (!Configure::read('Users.Login.updateLastLogin', true)) {
+            return;
+        }
+        $field = Configure::read('Users.Login.lastLoginField', 'last_login');
         $now = \Cake\I18n\FrozenTime::now();
-        $user->set('last_login', $now);
+        $user->set($field, $now);
         $this->getController()->getUsersTable()->updateAll(
-            ['last_login' => $now],
+            [$field => $now->format('Y-m-d H:i:s')],
             ['id' => $user->id]
         );
     }

@@ -105,7 +105,7 @@ section to check all the customization options
 You can create the first user, the super user by issuing the following command
 
 ```
-bin/cake users addSuperuser
+bin/cake users add_superuser
 ```
 
 Customization
