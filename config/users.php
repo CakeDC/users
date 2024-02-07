@@ -47,6 +47,10 @@ $config = [
             // determines if registration workflow includes email validation
             'validate' => true,
         ],
+        'Login' => [
+            'updateLastLogin' => true,
+            'lastLoginField' => 'last_login',
+        ],
         'Registration' => [
             // determines if the register is enabled
             'active' => true,
