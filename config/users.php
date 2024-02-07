@@ -88,6 +88,7 @@ $config = [
         'Profile' => [
             // Allow view other users profiles
             'viewOthers' => true,
+            'contain' => [],
         ],
         'Key' => [
             'Session' => [
