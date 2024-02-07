@@ -76,6 +76,7 @@ class LoginComponent extends Component
             $user = $request->getAttribute('identity')->getOriginalData();
             $this->handlePasswordRehash($service, $user, $request);
             $this->updateLastLogin($user);
+            $this->addFlashMessage($user);
 
             return $this->afterIdentifyUser($user);
         }
@@ -246,5 +247,20 @@ class LoginComponent extends Component
             [$field => $now->format('Y-m-d H:i:s')],
             ['id' => $user->id]
         );
+    }
+
+    /**
+     * Add a flash message informing user is logged in
+     *
+     * @param array $user user data
+     * @return void
+     */
+    protected function addFlashMessage($user)
+    {
+        if (!Configure::read('Users.Login.flashMessage')) {
+            return;
+        }
+
+        $this->getController()->Flash->success(__d('cake_d_c/users', 'Welcome, {0}', $user['username']));
     }
 }

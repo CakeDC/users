@@ -48,6 +48,7 @@ $config = [
             'validate' => true,
         ],
         'Login' => [
+            'flashMessage' => false, // bool
             'updateLastLogin' => true,
             'lastLoginField' => 'last_login',
         ],
