@@ -49,6 +49,8 @@ $config = [
         ],
         'Login' => [
             'flashMessage' => false, // bool
+            'updateLastLogin' => true,
+            'lastLoginField' => 'last_login',
         ],
         'Registration' => [
             // determines if the register is enabled
