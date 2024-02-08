@@ -221,6 +221,11 @@ class LoginTraitIntegrationTest extends TestCase
     {
         EventManager::instance()->on('TestApp.afterPluginBootstrap', function () {
             Configure::write(['U2f.enabled' => true]);
+            Configure::write([
+                'TwoFactorProcessors' => [
+                    \CakeDC\Auth\Authentication\TwoFactorProcessor\U2FProcessor::class,
+                ],
+            ]);
         });
         $this->enableRetainFlashMessages();
         $this->post('/login', [
