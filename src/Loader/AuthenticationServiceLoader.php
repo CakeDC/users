@@ -16,6 +16,7 @@ namespace CakeDC\Users\Loader;
 use Cake\Core\Configure;
 use CakeDC\Auth\Authentication\AuthenticationService;
 use CakeDC\Auth\Authentication\TwoFactorProcessorLoader;
+use CakeDC\Auth\Authentication\TwoFactorProcessorCollection;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
@@ -80,6 +81,7 @@ class AuthenticationServiceLoader
      * Load the CakeDC/Auth.TwoFactor based on config OneTimePasswordAuthenticator.login
      *
      * @param \CakeDC\Auth\Authentication\AuthenticationService $service Authentication service to load identifiers
+     * @param \CakeDC\Auth\Authentication\TwoFactorProcessorCollection $processors TwoFactorProcessors collection
      * @return void
      */
     protected function loadTwoFactorAuthenticator($service, $processors)
