@@ -15,7 +15,6 @@ namespace CakeDC\Users\Loader;
 
 use Cake\Core\Configure;
 use CakeDC\Auth\Authentication\AuthenticationService;
-use CakeDC\Auth\Authentication\TwoFactorProcessorCollection;
 use CakeDC\Auth\Authentication\TwoFactorProcessorLoader;
 use Psr\Http\Message\ServerRequestInterface;
 
