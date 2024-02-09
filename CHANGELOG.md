@@ -2,6 +2,9 @@ Changelog
 =========
 Releases for CakePHP 5
 -------------
+* 14.0
+  * Set dependecy for CakeDC/Auth to 10.0. Perform 2FA refactoring,
+
 * 12.0
     * Migrated to web-auth/webauthn-lib:^4.4
     * Migrated to robthree/twofactorauth:^2.0
