@@ -57,6 +57,6 @@ trait ProfileTrait
             return $this->redirect($this->getRequest()->referer() ?? '/');
         }
         $this->set(['user' => $user, 'isCurrentUser' => $isCurrentUser]);
-        $this->set('_serialize', ['user', 'isCurrentUser']);
+        $this->viewBuilder()->setOption('serialize', ['user', 'isCurrentUser']);
     }
 }

@@ -129,7 +129,7 @@ trait PasswordManagementTrait
             }
         }
         $this->set(['user' => $user]);
-        $this->set('_serialize', ['user']);
+        $this->viewBuilder()->setOption('serialize', ['user']);
     }
 
     /**
@@ -151,7 +151,7 @@ trait PasswordManagementTrait
     public function requestResetPassword()
     {
         $this->set('user', $this->getUsersTable()->newEntity([], ['validate' => false]));
-        $this->set('_serialize', ['user']);
+        $this->viewBuilder()->setOption('serialize', ['user']);
         if (!$this->getRequest()->is('post')) {
             return;
         }

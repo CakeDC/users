@@ -74,6 +74,7 @@ class LoginComponent extends Component
             $user = $request->getAttribute('identity')->getOriginalData();
             $this->handlePasswordRehash($service, $user, $request);
             $this->updateLastLogin($user);
+            $this->addFlashMessage($user);
 
             return $this->afterIdentifyUser($user);
         }
@@ -234,11 +235,30 @@ class LoginComponent extends Component
      */
     protected function updateLastLogin($user)
     {
+        if (!Configure::read('Users.Login.updateLastLogin', true)) {
+            return;
+        }
+        $field = Configure::read('Users.Login.lastLoginField', 'last_login');
         $now = \Cake\I18n\DateTime::now();
-        $user->set('last_login', $now);
+        $user->set($field, $now);
         $this->getController()->getUsersTable()->updateAll(
-            ['last_login' => $now],
+            [$field => $now->format('Y-m-d H:i:s')],
             ['id' => $user->id]
         );
+    }
+
+    /**
+     * Add a flash message informing user is logged in
+     *
+     * @param array $user user data
+     * @return void
+     */
+    protected function addFlashMessage($user)
+    {
+        if (!Configure::read('Users.Login.flashMessage')) {
+            return;
+        }
+
+        $this->getController()->Flash->success(__d('cake_d_c/users', 'Welcome, {0}', $user['username']));
     }
 }
