@@ -11,6 +11,12 @@ Releases for CakePHP 5
 
 Releases for CakePHP 4.5
 ------------------------
+* 13.0.0
+  * Set dependecy for CakeDC/Auth to 9.0. Perform 2FA refactoring,
+
+* 11.3.4
+  * Fix `Detected invalid UTF-8 for field...` issue when storing session data from `Webauthn` in a mongo database.
+
 * 11.3.3
   * Add display of unauthorized url in flash message when debug is true
 
