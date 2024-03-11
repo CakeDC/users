@@ -150,6 +150,10 @@ $config = [
         'id' => null,//default value is the current domain
         'checker' => \CakeDC\Auth\Authentication\DefaultWebauthn2FAuthenticationChecker::class,
     ],
+    'TwoFactorProcessors' => [
+        \CakeDC\Auth\Authentication\TwoFactorProcessor\Webauthn2faProcessor::class,
+        \CakeDC\Auth\Authentication\TwoFactorProcessor\OneTimePasswordProcessor::class,
+    ],
     // default configuration used to auto-load the Auth Component, override to change the way Auth works
     'Auth' => [
         'Authentication' => [
