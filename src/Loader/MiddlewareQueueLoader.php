@@ -20,10 +20,10 @@ use Authorization\Middleware\AuthorizationMiddleware;
 use Authorization\Middleware\RequestAuthorizationMiddleware;
 use Cake\Core\Configure;
 use Cake\Http\MiddlewareQueue;
+use CakeDC\Auth\Authentication\TwoFactorProcessorLoader;
 use CakeDC\Auth\Middleware\TwoFactorMiddleware;
 use CakeDC\Users\Middleware\SocialAuthMiddleware;
 use CakeDC\Users\Middleware\SocialEmailMiddleware;
-use CakeDC\Users\Plugin;
 
 /**
  * Class MiddlewareQueueLoader
@@ -96,16 +96,8 @@ class MiddlewareQueueLoader
      */
     protected function load2faMiddleware(MiddlewareQueue $middlewareQueue)
     {
-        $u2fEnabled = Configure::read('U2f.enabled') !== false;
-        if ($u2fEnabled) {
-            trigger_error(Plugin::DEPRECATED_MESSAGE_U2F, E_USER_DEPRECATED);
-        }
-
-        if (
-            Configure::read('OneTimePasswordAuthenticator.login') !== false
-            || Configure::read('Webauthn2fa.enabled') !== false
-            || $u2fEnabled
-        ) {
+        $processors = TwoFactorProcessorLoader::processors();
+        if (collection($processors)->some(fn ($processor) => $processor->enabled())) {
             $middlewareQueue->add(TwoFactorMiddleware::class);
         }
     }

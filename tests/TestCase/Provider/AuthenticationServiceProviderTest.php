@@ -78,6 +78,9 @@ class AuthenticationServiceProviderTest extends TestCase
             'Authentication.JwtSubject',
         ]);
         Configure::write('OneTimePasswordAuthenticator.login', true);
+        Configure::write('TwoFactorProcessors', [
+            \CakeDC\Auth\Authentication\TwoFactorProcessor\OneTimePasswordProcessor::class,
+        ]);
 
         $authenticationServiceProvider = new AuthenticationServiceProvider();
         $service = $authenticationServiceProvider->getAuthenticationService(new ServerRequest(), new Response());
@@ -215,6 +218,7 @@ class AuthenticationServiceProviderTest extends TestCase
             'Authentication.JwtSubject',
         ]);
         Configure::write('OneTimePasswordAuthenticator.login', false);
+        Configure::write('TwoFactorProcessors', []);
 
         $authenticationServiceProvider = new AuthenticationServiceProvider();
         $service = $authenticationServiceProvider->getAuthenticationService(new ServerRequest(), new Response());
