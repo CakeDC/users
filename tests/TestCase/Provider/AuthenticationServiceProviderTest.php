@@ -247,7 +247,7 @@ class AuthenticationServiceProviderTest extends TestCase
                 'identityAttribute' => 'identity',
                 'skipTwoFactorVerify' => true,
                 'impersonateSessionKey' => 'AuthImpersonate',
-                'className' => 'Authentication.Session'
+                'className' => 'Authentication.Session',
             ],
             FormAuthenticator::class => [
                 'loginUrl' => '/login',
