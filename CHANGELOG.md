@@ -2,6 +2,14 @@ Changelog
 =========
 Releases for CakePHP 4.5
 ------------------------
+* 11.3.5
+  * Update ci.yml with php8.2 and php8.3
+  * fix: minor fix on last_login datetime format
+  * Update Permissions.md
+  * fix: config for updateLastLogin
+  * fix: remove deprecated code on profile logic
+  * feat:flash message on login, on cake4 
+
 * 11.3.4
   * Fix `Detected invalid UTF-8 for field...` issue when storing session data from `Webauthn` in a mongo database.
 
