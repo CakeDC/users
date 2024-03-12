@@ -4,6 +4,9 @@ Changelog
 Releases for CakePHP 4.4
 ------------------------
 
+* 11.2.7
+  * last login format to save, for cake4.4
+
 * 11.2.6
   * Backport fix for `Detected invalid UTF-8 for field...` issue when storing session data from `Webauthn` in a mongo database.
 
