@@ -96,12 +96,11 @@ class AuthenticationServiceProviderTest extends TestCase
                 'skipTwoFactorVerify' => true,
                 'impersonateSessionKey' => 'AuthImpersonate',
             ],
-            FormAuthenticator::class =>
-                [
-                    'loginUrl' => '/login',
-                    'keyCheckEnabledRecaptcha' => 'Users.reCaptcha.login',
-                    'fields' => ['username' => 'email', 'password' => 'alt_password'],
-                ],
+            FormAuthenticator::class => [
+                'loginUrl' => '/login',
+                'keyCheckEnabledRecaptcha' => 'Users.reCaptcha.login',
+                'fields' => ['username' => 'email', 'password' => 'alt_password'],
+            ],
             TokenAuthenticator::class => [
                 'header' => null,
                 'queryParam' => 'api_key',
@@ -119,6 +118,8 @@ class AuthenticationServiceProviderTest extends TestCase
             $config = $value->getConfig();
             $actual[get_class($value)] = $config;
         }
+        var_dump($actual);
+        var_dump($expected);
         $this->assertEquals($expected, $actual);
 
         /**
