@@ -414,7 +414,7 @@ class PasswordManagementTraitTest extends BaseTrait
                 ->will($this->returnValue($reference));
         $this->Trait->Flash->expects($this->any())
             ->method('error')
-            ->with('Token could not be reset');
+            ->with('There was an error please contact Administrator');
 
         $this->Trait->expects($this->never())
             ->method('redirect');
@@ -445,7 +445,7 @@ class PasswordManagementTraitTest extends BaseTrait
                 ->will($this->returnValue($reference));
         $this->Trait->Flash->expects($expectError)
             ->method('error')
-            ->with('The user is not active');
+            ->with('There was an error please contact Administrator');
         $this->Trait->requestResetPassword();
         $this->assertNotEquals('xxx', $this->table->get('00000000-0000-0000-0000-000000000001')->token);
     }
