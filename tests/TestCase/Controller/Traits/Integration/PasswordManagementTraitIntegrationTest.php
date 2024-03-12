@@ -107,6 +107,6 @@ class PasswordManagementTraitIntegrationTest extends TestCase
         ];
         $this->post('/users/request-reset-password', $data);
         $this->assertResponseOk();
-        $this->assertFlashMessage('User someother.un@example.com was not found');
+        $this->assertFlashMessage('If the account is valid, the system will send an instructional email to the address on record.');
     }
 }
