@@ -95,22 +95,26 @@ class AuthenticationServiceProviderTest extends TestCase
                 'identityAttribute' => 'identity',
                 'skipTwoFactorVerify' => true,
                 'impersonateSessionKey' => 'AuthImpersonate',
+                'className' => 'Authentication.Session',
             ],
             FormAuthenticator::class => [
                 'loginUrl' => '/login',
                 'keyCheckEnabledRecaptcha' => 'Users.reCaptcha.login',
                 'fields' => ['username' => 'email', 'password' => 'alt_password'],
+                'className' => 'CakeDC/Auth.Form',
             ],
             TokenAuthenticator::class => [
                 'header' => null,
                 'queryParam' => 'api_key',
                 'tokenPrefix' => null,
                 'skipTwoFactorVerify' => true,
+                'className' => 'Authentication.Token',
             ],
             TwoFactorAuthenticator::class => [
                 'loginUrl' => null,
                 'urlChecker' => 'Authentication.Default',
                 'skipTwoFactorVerify' => true,
+                'className' => 'CakeDC/Auth.TwoFactor'
             ],
         ];
         $actual = [];
@@ -118,8 +122,6 @@ class AuthenticationServiceProviderTest extends TestCase
             $config = $value->getConfig();
             $actual[get_class($value)] = $config;
         }
-        var_dump($actual);
-        var_dump($expected);
         $this->assertEquals($expected, $actual);
 
         /**
