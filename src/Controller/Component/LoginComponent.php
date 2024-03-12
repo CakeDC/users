@@ -239,7 +239,7 @@ class LoginComponent extends Component
         $now = \Cake\I18n\FrozenTime::now();
         $user->set('last_login', $now);
         $this->getController()->getUsersTable()->updateAll(
-            ['last_login' => $now],
+            ['last_login' => $now->format('Y-m-d H:i:s')],
             ['id' => $user->id]
         );
     }
