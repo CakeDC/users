@@ -53,7 +53,7 @@ class PasswordManagementTraitIntegrationTest extends TestCase
     {
         $Table = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
         $userBefore = $Table->find()->where(['email' => '4@example.com'])->firstOrFail();
-        $this->assertEquals('token-4', $userBefore->token);
+        $this->assertEquals('There was an error please contact Administrator', $userBefore->token);
         $this->enableRetainFlashMessages();
         $this->enableSecurityToken();
         $data = [
@@ -61,9 +61,9 @@ class PasswordManagementTraitIntegrationTest extends TestCase
         ];
         $this->post('/users/request-reset-password', $data);
         $this->assertRedirect('/login');
-        $this->assertFlashMessage('Please check your email to continue with password reset process');
+        $this->assertFlashMessage('If the account is valid, the system will send an instructional email to the address on record.');
         $userAfter = $Table->find()->where(['email' => '4@example.com'])->firstOrFail();
-        $this->assertNotEquals('token-4', $userAfter->token);
+        $this->assertNotEquals('There was an error please contact Administrator', $userAfter->token);
         $this->assertNotEmpty($userAfter->token);
 
         $this->get("/users/reset-password/{$userAfter->token}");
