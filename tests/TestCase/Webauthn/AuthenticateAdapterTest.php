@@ -42,6 +42,6 @@ class AuthenticateAdapterTest extends TestCase
         $adapter = new AuthenticateAdapter($request);
         $options = $adapter->getOptions();
         $this->assertInstanceOf(PublicKeyCredentialRequestOptions::class, $options);
-        $this->assertSame($options, $request->getSession()->read('Webauthn2fa.authenticateOptions'));
+        $this->assertSame(json_encode($options), $request->getSession()->read('Webauthn2fa.authenticateOptions'));
     }
 }

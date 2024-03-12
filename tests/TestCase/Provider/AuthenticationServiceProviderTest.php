@@ -78,6 +78,9 @@ class AuthenticationServiceProviderTest extends TestCase
             'Authentication.JwtSubject',
         ]);
         Configure::write('OneTimePasswordAuthenticator.login', true);
+        Configure::write('TwoFactorProcessors', [
+            \CakeDC\Auth\Authentication\TwoFactorProcessor\OneTimePasswordProcessor::class,
+        ]);
 
         $authenticationServiceProvider = new AuthenticationServiceProvider();
         $service = $authenticationServiceProvider->getAuthenticationService(new ServerRequest(), new Response());
@@ -114,7 +117,7 @@ class AuthenticationServiceProviderTest extends TestCase
                 'loginUrl' => null,
                 'urlChecker' => 'Authentication.Default',
                 'skipTwoFactorVerify' => true,
-                'className' => 'CakeDC/Auth.TwoFactor'
+                'className' => 'CakeDC/Auth.TwoFactor',
             ],
         ];
         $actual = [];
@@ -136,17 +139,20 @@ class AuthenticationServiceProviderTest extends TestCase
                 ],
                 'resolver' => 'Authentication.Orm',
                 'passwordHasher' => null,
+                'className' => 'Authentication.Password',
             ],
             TokenIdentifier::class => [
                 'tokenField' => 'api_token',
                 'dataField' => 'token',
                 'resolver' => 'Authentication.Orm',
                 'hashAlgorithm' => null,
+                'className' => 'Authentication.Token',
             ],
             JwtSubjectIdentifier::class => [
                 'tokenField' => 'id',
                 'dataField' => 'sub',
                 'resolver' => 'Authentication.Orm',
+                'className' => 'Authentication.JwtSubject',
             ],
         ];
         $actual = [];
@@ -197,11 +203,13 @@ class AuthenticationServiceProviderTest extends TestCase
                 'fields' => ['username' => 'email'],
                 'identify' => true,
                 'impersonateSessionKey' => 'AuthImpersonate',
+                'className' => 'Authentication.Session',
             ],
             'Form' => [
                 'className' => 'CakeDC/Auth.Form',
                 'loginUrl' => '/login',
                 'fields' => ['username' => 'email', 'password' => 'alt_password'],
+                'className' => 'CakeDC/Auth.Form',
             ],
             'Token' => [
                 'className' => 'Authentication.Token',
@@ -209,6 +217,7 @@ class AuthenticationServiceProviderTest extends TestCase
                 'header' => null,
                 'queryParam' => 'api_key',
                 'tokenPrefix' => null,
+                'className' => 'Authentication.Token',
             ],
         ]);
         Configure::write('Auth.Identifiers', [
@@ -220,6 +229,7 @@ class AuthenticationServiceProviderTest extends TestCase
             'Authentication.JwtSubject',
         ]);
         Configure::write('OneTimePasswordAuthenticator.login', false);
+        Configure::write('TwoFactorProcessors', []);
 
         $authenticationServiceProvider = new AuthenticationServiceProvider();
         $service = $authenticationServiceProvider->getAuthenticationService(new ServerRequest(), new Response());
@@ -237,17 +247,20 @@ class AuthenticationServiceProviderTest extends TestCase
                 'identityAttribute' => 'identity',
                 'skipTwoFactorVerify' => true,
                 'impersonateSessionKey' => 'AuthImpersonate',
+                'className' => 'Authentication.Session',
             ],
             FormAuthenticator::class => [
                 'loginUrl' => '/login',
                 'fields' => ['username' => 'email', 'password' => 'alt_password'],
                 'keyCheckEnabledRecaptcha' => 'Users.reCaptcha.login',
+                'className' => 'CakeDC/Auth.Form',
             ],
             TokenAuthenticator::class => [
                 'header' => null,
                 'queryParam' => 'api_key',
                 'tokenPrefix' => null,
                 'skipTwoFactorVerify' => true,
+                'className' => 'Authentication.Token',
             ],
         ];
         $actual = [];

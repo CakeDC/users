@@ -53,7 +53,6 @@ class RegisterBehaviorTest extends TestCase
     {
         parent::setUp();
         $table = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
-        $table->addBehavior('CakeDC/Users/Register.Register');
         $this->Table = $table;
         $this->Behavior = $table->behaviors()->Register;
         TransportFactory::setConfig('test', ['className' => 'Debug']);

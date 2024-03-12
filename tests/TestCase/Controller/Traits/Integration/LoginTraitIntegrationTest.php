@@ -221,6 +221,11 @@ class LoginTraitIntegrationTest extends TestCase
     {
         EventManager::instance()->on('TestApp.afterPluginBootstrap', function () {
             Configure::write(['Webauthn2fa.enabled' => true, 'Webauthn2fa.appName' => 'TestUsers']);
+            Configure::write([
+                'TwoFactorProcessors' => [
+                    \CakeDC\Auth\Authentication\TwoFactorProcessor\Webauthn2faProcessor::class,
+                ],
+            ]);
         });
         $this->enableRetainFlashMessages();
         $this->post('/login', [

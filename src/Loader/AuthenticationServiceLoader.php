@@ -15,6 +15,7 @@ namespace CakeDC\Users\Loader;
 
 use Cake\Core\Configure;
 use CakeDC\Auth\Authentication\AuthenticationService;
+use CakeDC\Auth\Authentication\TwoFactorProcessorLoader;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
@@ -33,10 +34,11 @@ class AuthenticationServiceLoader
      */
     public function __invoke(ServerRequestInterface $request)
     {
-        $service = new AuthenticationService();
+        $processors = TwoFactorProcessorLoader::processors();
+        $service = new AuthenticationService(['processors' => $processors]);
         $this->loadIdentifiers($service);
         $this->loadAuthenticators($service);
-        $this->loadTwoFactorAuthenticator($service);
+        $this->loadTwoFactorAuthenticator($service, $processors);
 
         return $service;
     }
@@ -78,14 +80,12 @@ class AuthenticationServiceLoader
      * Load the CakeDC/Auth.TwoFactor based on config OneTimePasswordAuthenticator.login
      *
      * @param \CakeDC\Auth\Authentication\AuthenticationService $service Authentication service to load identifiers
+     * @param \CakeDC\Auth\Authentication\TwoFactorProcessorCollection $processors TwoFactorProcessors collection
      * @return void
      */
-    protected function loadTwoFactorAuthenticator($service)
+    protected function loadTwoFactorAuthenticator($service, $processors)
     {
-        if (
-            Configure::read('OneTimePasswordAuthenticator.login') !== false
-            || Configure::read('Webauthn2fa.enabled') !== false
-        ) {
+        if (collection($processors)->some(fn ($processor) => $processor->enabled())) {
             $service->loadAuthenticator('CakeDC/Auth.TwoFactor', [
                 'skipTwoFactorVerify' => true,
             ]);

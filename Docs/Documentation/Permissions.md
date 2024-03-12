@@ -23,7 +23,7 @@ return [
         //...... all other rules
         [
             'controller' => 'Pages',
-            'action' => ['home', 'contact', 'projects']
+            'action' => ['home', 'contact', 'projects'],
             'bypassAuth' => true,
         ],
     ],
