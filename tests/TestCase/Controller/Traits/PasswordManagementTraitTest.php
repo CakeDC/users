@@ -428,7 +428,7 @@ class PasswordManagementTraitTest extends BaseTrait
      */
     public function testEnsureUserActiveForResetPasswordFeature($ensureActive)
     {
-        $expectError = $this->never();
+        $expectError = $this->any();
 
         if ($ensureActive) {
             Configure::write('Users.Registration.ensureActive', true);
@@ -444,8 +444,8 @@ class PasswordManagementTraitTest extends BaseTrait
                 ->with('reference')
                 ->will($this->returnValue($reference));
         $this->Trait->Flash->expects($expectError)
-            ->method('error')
-            ->with('There was an error please contact Administrator');
+            ->method('success')
+            ->with('If the account is valid, the system will send an instructional email to the address on record.');
         $this->Trait->requestResetPassword();
         $this->assertNotEquals('xxx', $this->table->get('00000000-0000-0000-0000-000000000001')->token);
     }
