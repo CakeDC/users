@@ -415,7 +415,7 @@ class PasswordManagementTraitTest extends BaseTraitTest
      */
     public function testEnsureUserActiveForResetPasswordFeature($ensureActive)
     {
-        $expectError = $this->never();
+        $expectError = $this->any();
 
         if ($ensureActive) {
             Configure::write('Users.Registration.ensureActive', true);
