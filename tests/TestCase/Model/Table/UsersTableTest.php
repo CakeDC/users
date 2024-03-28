@@ -20,6 +20,7 @@ use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Model\Table\SocialAccountsTable;
+use CakeDC\Users\Model\Table\UsersTable;
 
 /**
  * Users\Model\Table\UsersTable Test Case
@@ -35,6 +36,9 @@ class UsersTableTest extends TestCase
         'plugin.CakeDC/Users.Users',
         'plugin.CakeDC/Users.SocialAccounts',
     ];
+
+    protected UsersTable $Users;
+    protected string $fullBaseBackup;
 
     /**
      * setUp method
