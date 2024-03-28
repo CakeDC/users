@@ -30,6 +30,13 @@ class PasswordLockoutIdentifier extends PasswordIdentifier
         $timeWindow = $this->getConfig('timeWindowInSeconds', 5 * 60);
         $lockTime = $this->getConfig('lockTimeInSeconds', 5 * 60);
         $lockTime = (new DateTime())->subSeconds($lockTime);
+
+        $check = parent::_checkPassword($identity, $password);
+        if (!$check) {
+            $entity = $Table->newEntity(['user_id' => $identity['id']]);
+            $Table->saveOrFail($entity);
+            $Table->deleteAll($Table->query()->newExpr()->lt('created', $lockTime));
+        }
         $query = $Table->find();
         $attempts = $query
             ->where([
@@ -39,7 +46,6 @@ class PasswordLockoutIdentifier extends PasswordIdentifier
             ->orderByDesc('created')
             ->all();
         $attemptsCount = $attempts->count();
-        $check = parent::_checkPassword($identity, $password);
         if ($numberOfAttemptsFail <= $attemptsCount) {
             return false;
         }
