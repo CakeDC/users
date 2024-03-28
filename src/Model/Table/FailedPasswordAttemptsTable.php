@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Model\Table;
 
-use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -12,7 +11,6 @@ use Cake\Validation\Validator;
  * FailedPasswordAttempts Model
  *
  * @property \CakeDC\Users\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Users
- *
  * @method \CakeDC\Users\Model\Entity\FailedPasswordAttempt newEmptyEntity()
  * @method \CakeDC\Users\Model\Entity\FailedPasswordAttempt newEntity(array $data, array $options = [])
  * @method array<\CakeDC\Users\Model\Entity\FailedPasswordAttempt> newEntities(array $data, array $options = [])
@@ -26,7 +24,6 @@ use Cake\Validation\Validator;
  * @method iterable<\CakeDC\Users\Model\Entity\FailedPasswordAttempt>|\Cake\Datasource\ResultSetInterface<\CakeDC\Users\Model\Entity\FailedPasswordAttempt> saveManyOrFail(iterable $entities, array $options = [])
  * @method iterable<\CakeDC\Users\Model\Entity\FailedPasswordAttempt>|\Cake\Datasource\ResultSetInterface<\CakeDC\Users\Model\Entity\FailedPasswordAttempt>|false deleteMany(iterable $entities, array $options = [])
  * @method iterable<\CakeDC\Users\Model\Entity\FailedPasswordAttempt>|\Cake\Datasource\ResultSetInterface<\CakeDC\Users\Model\Entity\FailedPasswordAttempt> deleteManyOrFail(iterable $entities, array $options = [])
- *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class FailedPasswordAttemptsTable extends Table

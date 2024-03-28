@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Test\TestCase\Identifier;
 
-
 use Authentication\Identifier\PasswordIdentifier;
 use Cake\Datasource\EntityInterface;
 use Cake\ORM\TableRegistry;

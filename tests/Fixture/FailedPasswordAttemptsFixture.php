@@ -17,7 +17,6 @@ class FailedPasswordAttemptsFixture extends TestFixture
      */
     public function init(): void
     {
-
         $this->records = [
             [
                 'id' => '79cdd7a7-0f34-49dd-a691-21444f94c701',

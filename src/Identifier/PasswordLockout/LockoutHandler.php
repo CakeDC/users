@@ -28,10 +28,10 @@ class LockoutHandler implements LockoutHandlerInterface
      * @var array{timeWindowInSeconds: int, lockTimeInSeconds: int, numberOfAttemptsFail:int}
      */
     protected array $_defaultConfig = [
-        'timeWindowInSeconds' =>  5 * 60,
+        'timeWindowInSeconds' => 5 * 60,
         'lockTimeInSeconds' => 5 * 60,
         'numberOfAttemptsFail' => 6,
-        'failedPasswordAttemptsModel' => 'CakeDC/Users.FailedPasswordAttempts'
+        'failedPasswordAttemptsModel' => 'CakeDC/Users.FailedPasswordAttempts',
     ];
 
     /**
@@ -71,7 +71,6 @@ class LockoutHandler implements LockoutHandlerInterface
 
     /**
      * @param string|int $id User's id
-     *
      * @return void
      */
     public function newFail(string|int $id): void
@@ -103,7 +102,7 @@ class LockoutHandler implements LockoutHandlerInterface
         return $query
             ->where([
                 'user_id' => $id,
-                $query->newExpr()->gte('created', $timeWindow)
+                $query->newExpr()->gte('created', $timeWindow),
             ])
             ->orderByDesc('created')
             ->all();

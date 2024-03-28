@@ -25,6 +25,9 @@ class PasswordLockoutIdentifier extends PasswordIdentifier
      */
     protected ?LockoutHandlerInterface $lockoutHandler = null;
 
+    /**
+     * @inheritDoc
+     */
     public function __construct(array $config = [])
     {
         $this->_defaultConfig['lockoutHandler'] = [
@@ -33,7 +36,6 @@ class PasswordLockoutIdentifier extends PasswordIdentifier
 
         parent::__construct($config);
     }
-
 
     /**
      * @inheritDoc
