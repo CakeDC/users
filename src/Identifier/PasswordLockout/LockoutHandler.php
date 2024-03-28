@@ -16,6 +16,8 @@ namespace CakeDC\Users\Identifier\PasswordLockout;
 use Cake\Core\InstanceConfigTrait;
 use Cake\I18n\DateTime;
 use Cake\ORM\Locator\LocatorAwareTrait;
+use Cake\ORM\Query\SelectQuery;
+use CakeDC\Users\Model\Entity\FailedPasswordAttempt;
 
 class LockoutHandler implements LockoutHandlerInterface
 {
@@ -51,19 +53,14 @@ class LockoutHandler implements LockoutHandlerInterface
     public function isUnlocked(string|int $id): bool
     {
         $timeWindow = $this->getTimeWindow();
-        $attempts = $this->getAttempts($id, $timeWindow);
-        $attemptsCount = $attempts->count();
+        $attemptsCount = $this->getAttemptsCount($id, $timeWindow);
         $numberOfAttemptsFail = $this->getNumberOfAttemptsFail();
-
         if ($numberOfAttemptsFail > $attemptsCount) {
             return true;
         }
 
         $lockTime = $this->getLockoutTime();
-        /**
-         * @var \CakeDC\Users\Model\Entity\FailedPasswordAttempt $attempt
-         */
-        $attempt = $attempts->first();
+        $attempt = $this->getLastAttempt($id, $timeWindow);
         $lockTime = $attempt->created->addSeconds($lockTime);
 
         return $lockTime->isPast();
@@ -93,9 +90,34 @@ class LockoutHandler implements LockoutHandlerInterface
     /**
      * @param string|int $id
      * @param \Cake\I18n\DateTime $timeWindow
-     * @return \Cake\Datasource\ResultSetInterface
+     * @return int
      */
-    protected function getAttempts(string|int $id, DateTime $timeWindow): \Cake\Datasource\ResultSetInterface
+    protected function getAttemptsCount(string|int $id, DateTime $timeWindow): int
+    {
+        return $this->getAttemptsQuery($id, $timeWindow)->count();
+    }
+
+
+    /**
+     * @param int|string $id
+     * @param \Cake\I18n\DateTime $timeWindow
+     * @return \CakeDC\Users\Model\Entity\FailedPasswordAttempt
+     */
+    protected function getLastAttempt(int|string $id, DateTime $timeWindow): FailedPasswordAttempt
+    {
+        /**
+         * @var \CakeDC\Users\Model\Entity\FailedPasswordAttempt $attempt
+         */
+        $attempt = $this->getAttemptsQuery($id, $timeWindow)->first();
+        return $attempt;
+    }
+
+    /**
+     * @param int|string $id
+     * @param \Cake\I18n\DateTime $timeWindow
+     * @return \Cake\ORM\Query\SelectQuery
+     */
+    protected function getAttemptsQuery(int|string $id, DateTime $timeWindow): SelectQuery
     {
         $query = $this->getTable()->find();
 
@@ -104,8 +126,7 @@ class LockoutHandler implements LockoutHandlerInterface
                 'user_id' => $id,
                 $query->newExpr()->gte('created', $timeWindow),
             ])
-            ->orderByDesc('created')
-            ->all();
+            ->orderByDesc('created');
     }
 
     /**
