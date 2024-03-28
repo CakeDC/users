@@ -15,51 +15,75 @@ namespace CakeDC\Users\Identifier;
 
 use ArrayAccess;
 use Authentication\Identifier\PasswordIdentifier;
-use Cake\I18n\DateTime;
-use Cake\ORM\TableRegistry;
+use CakeDC\Users\Identifier\PasswordLockout\LockoutHandler;
+use CakeDC\Users\Identifier\PasswordLockout\LockoutHandlerInterface;
 
 class PasswordLockoutIdentifier extends PasswordIdentifier
 {
+    /**
+     * @var \CakeDC\Users\Identifier\PasswordLockout\LockoutHandlerInterface|null
+     */
+    protected ?LockoutHandlerInterface $lockoutHandler = null;
+
+    public function __construct(array $config = [])
+    {
+        $this->_defaultConfig['lockoutHandler'] = [
+            'className' => LockoutHandler::class,
+        ];
+
+        parent::__construct($config);
+    }
+
+
     /**
      * @inheritDoc
      */
     protected function _checkPassword(ArrayAccess|array|null $identity, ?string $password): bool
     {
-        $Table = TableRegistry::getTableLocator()->get('CakeDC/Users.FailedPasswordAttempts');
-        $numberOfAttemptsFail = $this->getConfig('numberOfAttemptsFail', 6);
-        $timeWindow = $this->getConfig('timeWindowInSeconds', 5 * 60);
-        $lockTime = $this->getConfig('lockTimeInSeconds', 5 * 60);
-        $timeWindow = (new DateTime())->subSeconds($timeWindow);
-
         $check = parent::_checkPassword($identity, $password);
+        $handler = $this->getLockoutHandler();
         if (!$check) {
-            $entity = $Table->newEntity(['user_id' => $identity['id']]);
-            $Table->saveOrFail($entity);
-            $Table->deleteAll($Table->query()->newExpr()->lt('created', $timeWindow));
-        }
-        $query = $Table->find();
-        $attempts = $query
-            ->where([
-                'user_id' => $identity['id'],
-                $query->newExpr()->gte('created', $timeWindow)
-            ])
-            ->orderByDesc('created')
-            ->all();
-        $attemptsCount = $attempts->count();
-        if (!$check) {
+            $handler->newFail($identity['id']);
+
             return false;
         }
 
-        if ($numberOfAttemptsFail > $attemptsCount) {
-            return true;
+        return $handler->isUnlocked($identity['id']);
+    }
+
+    /**
+     * @return \CakeDC\Users\Identifier\PasswordLockout\LockoutHandler
+     */
+    protected function getLockoutHandler(): LockoutHandler
+    {
+        if ($this->lockoutHandler !== null) {
+            return $this->lockoutHandler;
         }
+        $config = $this->getConfig('lockoutHandler');
+        if ($config !== null) {
+            $this->lockoutHandler = $this->buildLockoutHandler($config);
 
-        /**
-         * @var \CakeDC\Users\Model\Entity\FailedPasswordAttempt $attempt
-         */
-        $attempt = $attempts->first();
-        $lockTime = $attempt->created->addSeconds($lockTime);
+            return $this->lockoutHandler;
+        }
+        throw new \RuntimeException(__d('cake_d_c/users', 'Lockout handler has not been set.'));
+    }
 
-        return $lockTime->isPast();
+    /**
+     * @param array|string $config
+     * @return \CakeDC\Users\Identifier\PasswordLockout\LockoutHandlerInterface
+     */
+    protected function buildLockoutHandler(array|string $config): LockoutHandlerInterface
+    {
+        if (is_string($config)) {
+            $config = [
+                'className' => $config,
+            ];
+        }
+        if (!isset($config['className'])) {
+            throw new \InvalidArgumentException(__d('cake_d_c/users', 'Option `className` for lockout handler is not present.'));
+        }
+        $className = $config['className'];
+
+        return new $className($config);
     }
 }

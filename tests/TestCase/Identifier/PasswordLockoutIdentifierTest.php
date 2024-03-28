@@ -95,7 +95,9 @@ class PasswordLockoutIdentifierTest extends TestCase
         $user->password = $password;
         $Table->saveOrFail($user);
         $identifier = new PasswordLockoutIdentifier([
-            'lockTimeInSeconds' => 60,
+            'lockoutHandler' => [
+                'lockTimeInSeconds' => 60,
+            ],
         ]);
         $identity = $identifier->identify([
             PasswordIdentifier::CREDENTIAL_USERNAME => $user->username,
@@ -110,7 +112,7 @@ class PasswordLockoutIdentifierTest extends TestCase
      *
      * @return void
      */
-    public function testIdentifyInValidPasswordNotLockedBefore()
+    public function testIdentifyInValidPasswordClearOldFailures()
     {
         $password = Security::randomString();
         $AttemptsTable = TableRegistry::getTableLocator()->get('CakeDC/Users.FailedPasswordAttempts');
