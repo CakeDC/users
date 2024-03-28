@@ -1,0 +1,49 @@
+<?php
+declare(strict_types=1);
+
+/**
+ * Copyright 2010 - 2024, Cake Development Corporation (https://www.cakedc.com)
+ *
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright Copyright 2010 - 2024, Cake Development Corporation (https://www.cakedc.com)
+ * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
+ */
+
+namespace CakeDC\Users\Identifier;
+
+use ArrayAccess;
+use Authentication\Identifier\PasswordIdentifier;
+use Cake\I18n\DateTime;
+use Cake\ORM\TableRegistry;
+
+class PasswordLockoutIdentifier extends PasswordIdentifier
+{
+    /**
+     * @inheritDoc
+     */
+    protected function _checkPassword(ArrayAccess|array|null $identity, ?string $password): bool
+    {
+        $Table = TableRegistry::getTableLocator()->get('CakeDC/Users.FailedPasswordAttempts');
+        $numberOfAttemptsFail = $this->getConfig('numberOfAttemptsFail', 6);
+        $timeWindow = $this->getConfig('timeWindowInSeconds', 5 * 60);
+        $lockTime = $this->getConfig('lockTimeInSeconds', 5 * 60);
+        $lockTime = (new DateTime())->subSeconds($lockTime);
+        $query = $Table->find();
+        $attempts = $query
+            ->where([
+                'user_id' => $identity['id'],
+                $query->newExpr()->gte('created', $lockTime)
+            ])
+            ->orderByDesc('created')
+            ->all();
+        $attemptsCount = $attempts->count();
+        $check = parent::_checkPassword($identity, $password);
+        if ($numberOfAttemptsFail <= $attemptsCount) {
+            return false;
+        }
+
+        return $check;
+    }
+}
