@@ -45,6 +45,11 @@ class FailedPasswordAttemptsFixture extends TestFixture
                 'created' => date('Y-m-d H:i:s', strtotime('-2 minutes')),
             ],
             [
+                'id' => '79cdd7a7-0f34-49dd-a691-21444f94c800',
+                'user_id' => '00000000-0000-0000-0000-000000000004',
+                'created' => date('Y-m-d H:i:s', strtotime('-4 minutes')),
+            ],
+            [
                 'id' => '79cdd7a7-0f34-49dd-a691-21444f94c801',
                 'user_id' => '00000000-0000-0000-0000-000000000004',
                 'created' => date('Y-m-d H:i:s', strtotime('-4 minutes')),

@@ -29,27 +29,37 @@ class PasswordLockoutIdentifier extends PasswordIdentifier
         $numberOfAttemptsFail = $this->getConfig('numberOfAttemptsFail', 6);
         $timeWindow = $this->getConfig('timeWindowInSeconds', 5 * 60);
         $lockTime = $this->getConfig('lockTimeInSeconds', 5 * 60);
-        $lockTime = (new DateTime())->subSeconds($lockTime);
+        $timeWindow = (new DateTime())->subSeconds($timeWindow);
 
         $check = parent::_checkPassword($identity, $password);
         if (!$check) {
             $entity = $Table->newEntity(['user_id' => $identity['id']]);
             $Table->saveOrFail($entity);
-            $Table->deleteAll($Table->query()->newExpr()->lt('created', $lockTime));
+            $Table->deleteAll($Table->query()->newExpr()->lt('created', $timeWindow));
         }
         $query = $Table->find();
         $attempts = $query
             ->where([
                 'user_id' => $identity['id'],
-                $query->newExpr()->gte('created', $lockTime)
+                $query->newExpr()->gte('created', $timeWindow)
             ])
             ->orderByDesc('created')
             ->all();
         $attemptsCount = $attempts->count();
-        if ($numberOfAttemptsFail <= $attemptsCount) {
+        if (!$check) {
             return false;
         }
 
-        return $check;
+        if ($numberOfAttemptsFail > $attemptsCount) {
+            return true;
+        }
+
+        /**
+         * @var \CakeDC\Users\Model\Entity\FailedPasswordAttempt $attempt
+         */
+        $attempt = $attempts->first();
+        $lockTime = $attempt->created->addSeconds($lockTime);
+
+        return $lockTime->isPast();
     }
 }

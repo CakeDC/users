@@ -36,7 +36,7 @@ class PasswordLockoutIdentifierTest extends TestCase
      *
      * @return void
      */
-    public function testIdentifyValidPasswordNotLocked()
+    public function testIdentifyOk()
     {
         $password = Security::randomString();
         $AttemptsTable = TableRegistry::getTableLocator()->get('CakeDC/Users.FailedPasswordAttempts');
@@ -60,24 +60,48 @@ class PasswordLockoutIdentifierTest extends TestCase
      *
      * @return void
      */
-    public function testIdentifyValidPasswordButLocked()
+    public function testIdentifyValidPasswordButReachedMaxAttemptsAndLockTimeNotCompleted()
     {
         $password = Security::randomString();
         $AttemptsTable = TableRegistry::getTableLocator()->get('CakeDC/Users.FailedPasswordAttempts');
         $Table = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
         $user = $Table->get('00000000-0000-0000-0000-000000000004');
-        $currentCount = 5;
+        $currentCount = 6;
         $this->assertSame($currentCount, $AttemptsTable->find()->where(['user_id' => $user->id])->count());
         $user->password = $password;
         $Table->saveOrFail($user);
-        $identifier = new PasswordLockoutIdentifier([
-            'numberOfAttemptsFail' => 5,
-        ]);
+        $identifier = new PasswordLockoutIdentifier();
         $identity = $identifier->identify([
             PasswordIdentifier::CREDENTIAL_USERNAME => $user->username,
             PasswordIdentifier::CREDENTIAL_PASSWORD => $password,
         ]);
         $this->assertNull($identity);
+        $this->assertSame($currentCount, $AttemptsTable->find()->where(['user_id' => $user->id])->count());
+    }
+
+    /**
+     * Test identify method with password and not locked
+     *
+     * @return void
+     */
+    public function testIdentifyValidPasswordButReachedMaxAttemptsAndLockTimeAlreadyCompleted()
+    {
+        $password = Security::randomString();
+        $AttemptsTable = TableRegistry::getTableLocator()->get('CakeDC/Users.FailedPasswordAttempts');
+        $Table = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
+        $user = $Table->get('00000000-0000-0000-0000-000000000004');
+        $currentCount = 6;
+        $this->assertSame($currentCount, $AttemptsTable->find()->where(['user_id' => $user->id])->count());
+        $user->password = $password;
+        $Table->saveOrFail($user);
+        $identifier = new PasswordLockoutIdentifier([
+            'lockTimeInSeconds' => 60,
+        ]);
+        $identity = $identifier->identify([
+            PasswordIdentifier::CREDENTIAL_USERNAME => $user->username,
+            PasswordIdentifier::CREDENTIAL_PASSWORD => $password,
+        ]);
+        $this->assertInstanceOf(EntityInterface::class, $identity);
         $this->assertSame($currentCount, $AttemptsTable->find()->where(['user_id' => $user->id])->count());
     }
 
