@@ -25,11 +25,11 @@ class LockoutHandler implements LockoutHandlerInterface
     /**
      * Default configuration.
      *
-     * @var array{timeWindowInSeconds: int, lockTimeInSeconds: int, numberOfAttemptsFail:int}
+     * @var array{timeWindowInSeconds: int, lockoutTimeInSeconds: int, numberOfAttemptsFail:int}
      */
     protected array $_defaultConfig = [
         'timeWindowInSeconds' => 5 * 60,
-        'lockTimeInSeconds' => 5 * 60,
+        'lockoutTimeInSeconds' => 5 * 60,
         'numberOfAttemptsFail' => 6,
         'failedPasswordAttemptsModel' => 'CakeDC/Users.FailedPasswordAttempts',
     ];
@@ -59,7 +59,7 @@ class LockoutHandler implements LockoutHandlerInterface
             return true;
         }
 
-        $lockTime = $this->getLockTime();
+        $lockTime = $this->getLockoutTime();
         /**
          * @var \CakeDC\Users\Model\Entity\FailedPasswordAttempt $attempt
          */
@@ -136,13 +136,13 @@ class LockoutHandler implements LockoutHandlerInterface
     /**
      * @return int
      */
-    protected function getLockTime(): int
+    protected function getLockoutTime(): int
     {
-        $lockTime = $this->getConfig('lockTimeInSeconds');
+        $lockTime = $this->getConfig('lockoutTimeInSeconds');
         if (is_int($lockTime) && $lockTime >= 60) {
             return $lockTime;
         }
 
-        throw new \UnexpectedValueException(__d('cake_d_c/users', 'Config "lockTimeInSeconds" must be integer greater than 60'));
+        throw new \UnexpectedValueException(__d('cake_d_c/users', 'Config "lockoutTimeInSeconds" must be integer greater than 60'));
     }
 }

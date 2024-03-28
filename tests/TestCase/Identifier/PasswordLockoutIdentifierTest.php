@@ -95,7 +95,7 @@ class PasswordLockoutIdentifierTest extends TestCase
         $Table->saveOrFail($user);
         $identifier = new PasswordLockoutIdentifier([
             'lockoutHandler' => [
-                'lockTimeInSeconds' => 60,
+                'lockoutTimeInSeconds' => 60,
             ],
         ]);
         $identity = $identifier->identify([
