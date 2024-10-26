@@ -62,7 +62,7 @@ and add this to your config/users.php file:
 Configuration options
 ---------------------
 
-The plugin is configured via the Configure class. Check the `vendor/cakedc/users/config/users.php`
+The plugin is configured via the Configure class. Check [`vendor/cakedc/users/config/users.php`](https://github.com/CakeDC/users/blob/master/config/users.php)
 for a complete list of all the configuration keys.
 
 Loading the plugin and using the right configuration values will setup the Users plugin,
@@ -82,7 +82,7 @@ to your config/users.php file:
 
 Interesting Users options and defaults
 
-NOTE: SOME keys were hidden in this doc page, please refer to `vendor/cakedc/users/config/users.php` for the complete list
+NOTE: SOME keys were hidden in this doc page, please refer to [`vendor/cakedc/users/config/users.php`](https://github.com/CakeDC/users/blob/master/config/users.php) for the complete list
 
 ```
     'Users' => [
