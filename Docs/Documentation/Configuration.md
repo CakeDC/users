@@ -49,7 +49,7 @@ Those keys are needed to link an existing user account to a third-party account.
 Configuration for reCaptcha
 ---------------------
 To enable reCaptcha you need to register your site at google reCaptcha console
-and add this to your config/users.php file:
+and add this to your .php file:
 
 ```php
 'Users.reCaptcha.key' => 'YOUR RECAPTCHA KEY',
@@ -67,7 +67,7 @@ $ composer require google/recaptcha:@stable
 
 Configuration for Password Meter
 ---------------------
-Password meter is enabled by default but you can disable it or change config options adding this to your config/users.php file:
+Password meter is enabled by default but you can disable it or change config options adding this to your .php file:
 
 ```php
 'Users.passwordMeter.enabled' => true, //enable or disable password meter. Defaults to true
@@ -87,7 +87,7 @@ Note the score is calculated based on the following rules:
 Configuration options
 ---------------------
 
-The plugin is configured via the Configure class. Check the `vendor/cakedc/users/config/users.php`
+The plugin is configured via the Configure class. Check [`vendor/cakedc/users/.php`](https://github.com/CakeDC/users/blob/master/.php)
 for a complete list of all the configuration keys.
 
 Loading the plugin and using the right configuration values will setup the Users plugin,
@@ -99,7 +99,7 @@ into their documentation for more information.
 
 Most authentication/authorization configuration is defined at 'Auth' key, for example
 if you don't want the plugin to autoload the authorization service, you could add this
-to your config/users.php file:
+to your .php file:
 
 ```
 'Auth.Authorization.enable' => false,
@@ -107,7 +107,7 @@ to your config/users.php file:
 
 Interesting Users options and defaults
 
-NOTE: SOME keys were hidden in this doc page, please refer to `vendor/cakedc/users/config/users.php` for the complete list
+NOTE: SOME keys were hidden in this doc page, please refer to [`vendor/cakedc/users/config/users.php`](https://github.com/CakeDC/users/blob/master/config/users.php) for the complete list
 
 ```
     'Users' => [
