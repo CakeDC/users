@@ -6,6 +6,7 @@ namespace CakeDC\Users\Test\TestCase\Command;
 use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use CakeDC\Users\Model\Table\UsersTable;
 
 /**
  * CakeDC\Users\Command\UsersAddSuperuserCommand Test Case
@@ -66,7 +67,7 @@ class UsersAddSuperuserCommandTest extends TestCase
         $this->assertOutputRegExp('/^Superuser added:/');
         $this->assertOutputRegExp('/Username: superadmin/');
         $this->assertOutputRegExp('/Email: superadmin@example.com/');
-        $this->assertOutputRegExp('/Role: superuser/');
+        $this->assertOutputRegExp('/Role: ' . UsersTable::ROLE_ADMIN . '/');
         $this->assertOutputRegExp('/Password: [a-z0-9]{32}$/');
     }
 }

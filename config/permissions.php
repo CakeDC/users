@@ -94,7 +94,7 @@ return [
         ],
         //admin role allowed to all the things
         [
-            'role' => 'admin',
+            'role' => \CakeDC\Users\Model\Table\UsersTable::ROLE_ADMIN,
             'prefix' => '*',
             'extension' => '*',
             'plugin' => '*',

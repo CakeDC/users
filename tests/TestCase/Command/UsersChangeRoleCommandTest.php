@@ -6,6 +6,7 @@ namespace CakeDC\Users\Test\TestCase\Command;
 use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use CakeDC\Users\Model\Table\UsersTable;
 
 /**
  * CakeDC\Users\Command\UsersChangeRoleCommand Test Case
@@ -37,8 +38,8 @@ class UsersChangeRoleCommandTest extends TestCase
         $userId006 = '00000000-0000-0000-0000-000000000006';
         $roleBefore = 'Lorem ipsum dolor sit amet';
         $userId001 = '00000000-0000-0000-0000-000000000001';
-        $role001 = 'admin';
-        $role006 = 'user';
+        $role001 = UsersTable::ROLE_ADMIN;
+        $role006 = UsersTable::ROLE_USER;
         $this->assertTrue($UsersTable->exists(['id' => $userIdTarget, 'role' => $roleBefore]));
         $this->assertTrue($UsersTable->exists(['id' => $userId001, 'role' => $role001]));
         $this->assertTrue($UsersTable->exists(['id' => $userId006, 'role' => $role006]));
@@ -71,8 +72,8 @@ class UsersChangeRoleCommandTest extends TestCase
         $userId006 = '00000000-0000-0000-0000-000000000006';
         $roleBefore = 'Lorem ipsum dolor sit amet';
         $userId001 = '00000000-0000-0000-0000-000000000001';
-        $role001 = 'admin';
-        $role006 = 'user';
+        $role001 = UsersTable::ROLE_ADMIN;
+        $role006 = UsersTable::ROLE_USER;
         $this->assertTrue($UsersTable->exists(['id' => $userIdTarget, 'role' => $roleBefore]));
         $this->assertTrue($UsersTable->exists(['id' => $userId001, 'role' => $role001]));
         $this->assertTrue($UsersTable->exists(['id' => $userId006, 'role' => $role006]));

@@ -2,6 +2,9 @@ Changelog
 =========
 Releases for CakePHP 5
 -------------
+* 14.3.4
+  * Replace usage of 'admin' by UsersTable::ROLE_ADMIN constant across the plugin.
+  * Fix role in UsersAddSuperuserCommand to be 'admin' instead of 'superadmin'.
 * 14.3.3
   * Add compatibility with CakePHP 5.1
 * 14.3.2
