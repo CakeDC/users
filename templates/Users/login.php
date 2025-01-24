@@ -41,6 +41,10 @@ use Cake\Core\Configure;
                 echo ' | ';
             }
             echo $this->Html->link(__d('cake_d_c/users', 'Reset Password'), ['action' => 'requestResetPassword']);
+            if (Configure::read('OneTimeLogin.enabled')) {
+                echo ' | ';
+                echo $this->Html->link(__d('cake_d_c/users', 'Send me a login link'), ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'requestLoginLink'], ['allowed' => true, 'escape' => false]);
+            }
         }
         ?>
     </fieldset>

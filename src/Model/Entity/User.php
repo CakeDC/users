@@ -25,6 +25,8 @@ use Cake\Utility\Security;
  * @property string $email
  * @property string $role
  * @property string $username
+ * @property string $first_name
+ * @property string $last_name
  * @property bool $is_superuser
  * @property \Cake\I18n\Time|\Cake\I18n\DateTime $token_expires
  * @property string $token
@@ -32,6 +34,9 @@ use Cake\Utility\Security;
  * @property array|string $additional_data
  * @property \CakeDC\Users\Model\Entity\SocialAccount[] $social_accounts
  * @property string $password
+ * @property string $password_confirm
+ * @property string $login_token
+ * @property \CakeDC\Users\Model\Entity\FrozenDate $login_token_date
  * @property \Cake\I18n\DateTime $lockout_time
  */
 class User extends Entity

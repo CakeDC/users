@@ -35,6 +35,7 @@ use Cake\Validation\Validator;
  * @mixin \CakeDC\Users\Model\Behavior\RegisterBehavior
  * @mixin \CakeDC\Users\Model\Behavior\SocialAccountBehavior
  * @mixin \CakeDC\Users\Model\Behavior\SocialBehavior
+ * @mixin \CakeDC\Users\Model\Behavior\OneTimeLoginLinkBehavior
  * @property \CakeDC\Users\Model\Table\SocialAccountsTable $SocialAccounts
  */
 class UsersTable extends Table
@@ -71,6 +72,7 @@ class UsersTable extends Table
         $this->addBehavior('CakeDC/Users.Social');
         $this->addBehavior('CakeDC/Users.LinkSocial');
         $this->addBehavior('CakeDC/Users.AuthFinder');
+        $this->addBehavior('CakeDC/Users.OneTimeLoginLink');
         $this->hasMany('SocialAccounts')->setForeignKey('user_id')->setClassName('CakeDC/Users.SocialAccounts');
     }
 

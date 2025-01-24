@@ -22,6 +22,7 @@ Documentation
 * [Social Authentication](Documentation/SocialAuthentication.md)
 * [Two Factor Authenticator](Documentation/Two-Factor-Authenticator.md)
 * [Webauthn Two-Factor Authentication (Yubico Key compatible)](Documentation/WebauthnTwoFactorAuthenticator.md)
+* [Magic Link](Documentation/MagicLink.md)
 * [UserHelper](Documentation/UserHelper.md)
 * [AuthLinkHelper](Documentation/AuthLinkHelper.md)
 * [Events](Documentation/Events.md)

@@ -44,7 +44,7 @@ trait ProfileTrait
             $socialContain = Configure::read('Users.Social.login') ? ['SocialAccounts'] : [];
             $user = $this->getUsersTable()->get($id, contain: array_merge($appContain, $socialContain));
             $this->set('avatarPlaceholder', Configure::read('Users.Avatar.placeholder'));
-            if ($user->id === $loggedUserId) {
+            if ($user->get('id') === $loggedUserId) {
                 $isCurrentUser = true;
             }
         } catch (RecordNotFoundException $ex) {

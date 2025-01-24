@@ -160,7 +160,7 @@ $config = [
         // The algorithm used
         'algorithm' => enum_exists(\RobThree\Auth\Algorithm::class) ? \RobThree\Auth\Algorithm::Sha1 : null,
         // QR-code provider (more on this later)
-        'qrcodeprovider' => null,
+        'qrcodeprovider' => class_exists('\RobThree\Auth\Providers\Qr\EndroidQrCodeProvider') ? (new \RobThree\Auth\Providers\Qr\EndroidQrCodeProvider()) : null,
         // Random Number Generator provider (more on this later)
         'rngprovider' => null,
     ],
@@ -173,6 +173,19 @@ $config = [
     'TwoFactorProcessors' => [
         \CakeDC\Auth\Authentication\TwoFactorProcessor\Webauthn2faProcessor::class,
         \CakeDC\Auth\Authentication\TwoFactorProcessor\OneTimePasswordProcessor::class,
+    ],
+    /**
+     * @see  https://github.com/CakeDC/users/blob/14.next-cake5/Docs/Documentation/MagicLink.md
+     */
+    'OneTimeLogin' => [
+        'enabled' => true,
+        'thresholdTimeout' => 60,
+        'tokenLifeTime' => 600,
+        'DeliveryHandlers' => [
+            'Email' => [
+                'className' => \CakeDC\Users\Model\Behavior\OneTimeDelivery\EmailDelivery::class
+            ]
+        ]
     ],
     // default configuration used to auto-load the Auth Component, override to change the way Auth works
     'Auth' => [
@@ -219,6 +232,13 @@ $config = [
                 'className' => 'CakeDC/Users.SocialPendingEmail',
                 'skipTwoFactorVerify' => true,
             ],
+            'OneTimeToken' => [
+                'className' => 'CakeDC/Auth.OneTimeToken',
+                'skipTwoFactorVerify' => true,
+                'loginUrl' => [
+                    '/login',
+                ],
+            ]
         ],
         'Identifiers' => [
             'Password' => [
