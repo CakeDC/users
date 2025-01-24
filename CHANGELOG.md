@@ -2,6 +2,28 @@ Changelog
 =========
 Releases for CakePHP 5
 -------------
+* 14.3.4
+  * Replace usage of 'admin' by UsersTable::ROLE_ADMIN constant across the plugin.
+  * Fix role in UsersAddSuperuserCommand to be 'admin' instead of 'superadmin'.
+* 14.3.3
+  * Add compatibility with CakePHP 5.1
+* 14.3.2
+  * Fix missing spanish translations
+* 14.3.1
+  * Fix duplicated rule name in rules checker
+* 14.3.0
+  * Update Translations.md by @MarwanSalim in #1089
+  * Fix named parameter issue in _createSocialUser method for findExistingForSocialLogin #1091 by @robitmoh in #1092
+  * Bug #1084 Fix issue with avatar images long URL by @flohdez in #1094
+  * #1096: fixed findExistingForSocialLogin finder by @arusinowski in #1097
+* 14.2.1
+  * Improve documentation about password meter.
+  * Fix minor bugs
+* 14.2.0
+  * Add password meter to display password quality
+  * Add integration with google reCaptcha v3, keep default using v2
+* 14.1.1
+  * Add config option to customize the user foreign key field in LockoutHandler
 * 14.1
   * New feature "Account lockout policy"
 * 14.0

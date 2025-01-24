@@ -81,7 +81,7 @@ class RegisterAdapter extends BaseAdapter
 
             return $credential;
         }
-        throw new BadRequestException(__('Could not credential response for registration'));
+        throw new BadRequestException(__d('cake_d_c/users', 'Could not credential response for registration'));
     }
 
     /**

@@ -43,13 +43,13 @@ class RegisterTraitIntegrationTest extends TestCase
         $this->assertResponseContains('<legend>Add User</legend>');
         $this->assertResponseContains('<input type="text" name="username" required="required"');
         $this->assertResponseContains('<input type="email" name="email" required="required"');
-        $this->assertResponseContains('<input type="password" name="password" required="required"');
+        $this->assertResponseContains('<input type="password" name="password" id="new-password" required="required"');
         $this->assertResponseContains('<input type="password" name="password_confirm" required="required"');
         $this->assertResponseContains('<input type="text" name="first_name" id="first-name" maxlength="50"');
         $this->assertResponseContains('<input type="text" name="last_name" id="last-name" maxlength="50"');
         $this->assertResponseContains('<input type="hidden" name="tos" value="0"');
-        $this->assertResponseContains('<label for="tos"><input type="checkbox" name="tos" value="1" required="required" id="tos" aria-required="true">Accept TOS conditions?</label>');
-        $this->assertResponseContains('<button type="submit">Submit</button>');
+        $this->assertResponseContains('<label for="tos"><input type="checkbox" name="tos" value="1" required="required" id="tos">Accept TOS conditions?</label>');
+        $this->assertResponseContains('<button id="btn-submit" type="submit">Submit</button>');
     }
 
     /**
@@ -78,13 +78,13 @@ class RegisterTraitIntegrationTest extends TestCase
         $this->assertResponseContains('<legend>Add User</legend>');
         $this->assertResponseContains('<input type="text" name="username" required="required"');
         $this->assertResponseContains('<input type="email" name="email" required="required"');
-        $this->assertResponseContains('<input type="password" name="password" required="required"');
+        $this->assertResponseContains('<input type="password" name="password" id="new-password" required="required"');
         $this->assertResponseContains('<input type="password" name="password_confirm" required="required"');
         $this->assertResponseContains('<input type="text" name="first_name" id="first-name" value="" maxlength="50"');
         $this->assertResponseContains('<input type="text" name="last_name" id="last-name" value="" maxlength="50"');
         $this->assertResponseContains('<input type="hidden" name="tos" value="0"');
-        $this->assertResponseContains('<label for="tos"><input type="checkbox" name="tos" value="1" required="required" id="tos" aria-required="true">Accept TOS conditions?</label>');
-        $this->assertResponseContains('<button type="submit">Submit</button>');
+        $this->assertResponseContains('<label for="tos"><input type="checkbox" name="tos" value="1" required="required" id="tos">Accept TOS conditions?</label>');
+        $this->assertResponseContains('<button id="btn-submit" type="submit">Submit</button>');
     }
 
     /**

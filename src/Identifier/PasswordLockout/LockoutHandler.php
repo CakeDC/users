@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace CakeDC\Users\Identifier\PasswordLockout;
 
 use Cake\Core\InstanceConfigTrait;
+use Cake\Datasource\EntityInterface;
 use Cake\I18n\DateTime;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\ORM\Query\SelectQuery;
-use CakeDC\Users\Model\Entity\FailedPasswordAttempt;
 
 class LockoutHandler implements LockoutHandlerInterface
 {
@@ -36,6 +36,7 @@ class LockoutHandler implements LockoutHandlerInterface
         'failedPasswordAttemptsModel' => 'CakeDC/Users.FailedPasswordAttempts',
         'userLockoutField' => 'lockout_time',
         'usersModel' => 'Users',
+        'userForeignKeyField' => 'user_id',
     ];
 
     /**
@@ -73,9 +74,9 @@ class LockoutHandler implements LockoutHandlerInterface
         $lastAttempt = $this->getLastAttempt($identity['id'], $timeWindow);
         $this->getTableLocator()
             ->get($this->getConfig('usersModel'))
-            ->updateAll([$lockoutField => $lastAttempt->created], ['id' => $identity['id']]);
+            ->updateAll([$lockoutField => $lastAttempt->get('created')], ['id' => $identity['id']]);
 
-        return $this->checkLockoutTime($lastAttempt->created);
+        return $this->checkLockoutTime($lastAttempt->get('created'));
     }
 
     /**
@@ -86,7 +87,7 @@ class LockoutHandler implements LockoutHandlerInterface
     {
         $timeWindow = $this->getTimeWindow();
         $Table = $this->getTable();
-        $entity = $Table->newEntity(['user_id' => $id]);
+        $entity = $Table->newEntity([$this->getConfig('userForeignKeyField') => $id]);
         $Table->saveOrFail($entity);
         $Table->deleteAll($Table->query()->newExpr()->lt('created', $timeWindow));
     }
@@ -96,7 +97,7 @@ class LockoutHandler implements LockoutHandlerInterface
      */
     protected function getTable(): \Cake\ORM\Table
     {
-        return $this->getTableLocator()->get('CakeDC/Users.FailedPasswordAttempts');
+        return $this->getTableLocator()->get($this->getConfig('failedPasswordAttemptsModel'));
     }
 
     /**
@@ -112,9 +113,9 @@ class LockoutHandler implements LockoutHandlerInterface
     /**
      * @param string|int $id
      * @param \Cake\I18n\DateTime $timeWindow
-     * @return \CakeDC\Users\Model\Entity\FailedPasswordAttempt
+     * @return \Cake\Datasource\EntityInterface
      */
-    protected function getLastAttempt(int|string $id, DateTime $timeWindow): FailedPasswordAttempt
+    protected function getLastAttempt(int|string $id, DateTime $timeWindow): EntityInterface
     {
         /**
          * @var \CakeDC\Users\Model\Entity\FailedPasswordAttempt $attempt
@@ -135,7 +136,7 @@ class LockoutHandler implements LockoutHandlerInterface
 
         return $query
             ->where([
-                'user_id' => $id,
+                $this->getConfig('userForeignKeyField') => $id,
                 $query->newExpr()->gte('created', $timeWindow),
             ])
             ->orderByDesc('created');
@@ -151,7 +152,12 @@ class LockoutHandler implements LockoutHandlerInterface
             return (new DateTime())->subSeconds($timeWindow);
         }
 
-        throw new \UnexpectedValueException(__d('cake_d_c/users', 'Config "timeWindowInSeconds" must be integer greater than 60'));
+        throw new \UnexpectedValueException(
+            __d(
+                'cake_d_c/users',
+                'Config "timeWindowInSeconds" must be integer greater than 60'
+            )
+        );
     }
 
     /**
@@ -163,7 +169,12 @@ class LockoutHandler implements LockoutHandlerInterface
         if (is_int($number) && $number >= 1) {
             return $number;
         }
-        throw new \UnexpectedValueException(__d('cake_d_c/users', 'Config "numberOfAttemptsFail" must be integer greater or equal 0'));
+        throw new \UnexpectedValueException(
+            __d(
+                'cake_d_c/users',
+                'Config "numberOfAttemptsFail" must be integer greater or equal 0'
+            )
+        );
     }
 
     /**
@@ -176,7 +187,12 @@ class LockoutHandler implements LockoutHandlerInterface
             return $lockTime;
         }
 
-        throw new \UnexpectedValueException(__d('cake_d_c/users', 'Config "lockoutTimeInSeconds" must be integer greater than 60'));
+        throw new \UnexpectedValueException(
+            __d(
+                'cake_d_c/users',
+                'Config "lockoutTimeInSeconds" must be integer greater than 60'
+            )
+        );
     }
 
     /**

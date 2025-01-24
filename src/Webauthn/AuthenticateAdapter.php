@@ -75,7 +75,12 @@ class AuthenticateAdapter extends BaseAdapter
             );
         }
 
-        throw new BadRequestException(__('Could not validate credential response for authentication'));
+        throw new BadRequestException(
+            __d(
+                'cake_d_c/users',
+                'Could not validate credential response for authentication'
+            )
+        );
     }
 
     /**

@@ -36,6 +36,6 @@ $oldConfigs = [
 ];
 foreach ($oldConfigs as $configKey) {
     if (Configure::check($configKey)) {
-        trigger_error(__("Users plugin configuration key \"{0}\" was removed, please check migration guide https://github.com/CakeDC/users/blob/master/Docs/Documentation/Migration/8.x-9.0.md", $configKey));
+        trigger_error(__d('cake_d_c/users', "Users plugin configuration key \"{0}\" was removed, please check migration guide https://github.com/CakeDC/users/blob/master/Docs/Documentation/Migration/8.x-9.0.md", $configKey));
     }
 }

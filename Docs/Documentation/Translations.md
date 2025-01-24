@@ -16,6 +16,6 @@ The Plugin is translated into several languages:
 * Czech (cs_CZ) by @Mapiiik
 * Dutch (nl_NL) by @StefanvanR
 
-**Note:** To overwrite the plugin translations, create a file inside your project 'resources/locales//{$lang}/' folder, with the name 'Users.po' and add the strings with the new translations.
+**Note:** To overwrite the plugin translations, create a file inside your project 'resources/locales//{$lang}/' folder, with the name 'cake_d_c_users.po' and add the strings with the new translations.
 
 Remember to clean the translations cache!

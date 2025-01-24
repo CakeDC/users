@@ -52,6 +52,16 @@ class UserHelperTest extends TestCase
     private $AuthLink;
 
     /**
+     * @var (\Cake\View\View&\PHPUnit\Framework\MockObject\MockObject)|\PHPUnit\Framework\MockObject\MockObject
+     */
+    private $View;
+
+    /**
+     * @var ServerRequest
+     */
+    private $request;
+
+    /**
      * setUp method
      *
      * @return void
@@ -235,6 +245,50 @@ class UserHelperTest extends TestCase
         $this->User->Form->create();
         $result = $this->User->addReCaptcha();
         $this->assertEquals('<div class="g-recaptcha" data-sitekey="testKey" data-theme="light" data-size="normal" data-tabindex="3"></div>', $result);
+    }
+
+    /**
+     * Test add ReCaptcha V3
+     *
+     * @return void
+     */
+    public function testAddReCaptchaV3()
+    {
+        $this->View->expects($this->exactly(2))
+            ->method('append')
+            ->willReturnMap([
+                    ['https://www.google.com/recaptcha/api.js', null],
+                    ['CakeDC/Users.reCaptchaV3', null],
+                ]);
+        Configure::write('Users.reCaptcha.key', 'testKey');
+        Configure::write('Users.reCaptcha.version', 3);
+        Configure::write('Users.reCaptcha.theme', 'light');
+        Configure::write('Users.reCaptcha.size', 'normal');
+        Configure::write('Users.reCaptcha.tabindex', '3');
+        $this->User->Form->create();
+        $this->User->addReCaptcha();
+    }
+
+    public function testButton()
+    {
+        $title = 'test';
+        $options = ['test' => 'test'];
+        $this->assertEquals($this->User->Form->button($title, $options), $this->User->button($title, $options));
+    }
+
+    public function testButtonReCaptchaV3()
+    {
+        Configure::write('Users.reCaptcha.key', 'testKey');
+        Configure::write('Users.reCaptcha.version', 3);
+        $title = 'test';
+        $options = ['test' => 'test'];
+        $reCaptchaOptions = [
+            'class' => 'g-recaptcha',
+            'data-sitekey' => 'testKey',
+            'data-callback' => 'onSubmit',
+            'data-action' => 'submit',
+        ];
+        $this->assertEquals($this->User->Form->button($title, array_merge($options, $reCaptchaOptions)), $this->User->button($title, $options));
     }
 
     /**

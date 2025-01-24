@@ -115,8 +115,9 @@ class BaseAdapter
     /**
      * @param \Webauthn\AttestationStatement\AttestationStatementSupportManager $attestationStatementSupportManager
      */
-    public function setAttestationStatementSupportManager(AttestationStatementSupportManager $attestationStatementSupportManager): void
-    {
+    public function setAttestationStatementSupportManager(
+        AttestationStatementSupportManager $attestationStatementSupportManager
+    ): void {
         $this->attestationStatementSupportManager = $attestationStatementSupportManager;
     }
 

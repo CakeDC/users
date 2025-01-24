@@ -80,7 +80,7 @@ class PasswordManagementTraitIntegrationTest extends TestCase
         $this->assertResponseContains('Please enter the new password');
         $this->assertResponseContains('<input type="password" name="password" required="required"');
         $this->assertResponseContains('<input type="password" name="password_confirm" required="required"');
-        $this->assertResponseContains('<button type="submit">Submit</button>');
+        $this->assertResponseContains('<button id="btn-submit" type="submit">Submit</button>');
 
         $this->post('/users/change-password', [
             'password' => '9080706050',

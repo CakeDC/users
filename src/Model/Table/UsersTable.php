@@ -197,13 +197,13 @@ class UsersTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->isUnique(['username']), '_isUnique', [
+        $rules->add($rules->isUnique(['username']), '_isUniqueUsername', [
             'errorField' => 'username',
             'message' => __d('cake_d_c/users', 'Username already exists'),
         ]);
 
         if ($this->isValidateEmail) {
-            $rules->add($rules->isUnique(['email']), '_isUnique', [
+            $rules->add($rules->isUnique(['email']), '_isUniqueEmail', [
                 'errorField' => 'email',
                 'message' => __d('cake_d_c/users', 'Email already exists'),
             ]);

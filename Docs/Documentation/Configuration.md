@@ -54,6 +54,7 @@ and add this to your config/users.php file:
 ```php
 'Users.reCaptcha.key' => 'YOUR RECAPTCHA KEY',
 'Users.reCaptcha.secret' => 'YOUR RECAPTCHA SECRET',
+'Users.reCaptcha.version' => '2', //defaults to version 2 (backward compatibility) but you can use version 3 which is recommended
 'Users.reCaptcha.registration' => true, //enable on registration
 'Users.reCaptcha.login' => true, //enable on login
 ```
@@ -63,6 +64,25 @@ Note you'll need to add google/recaptcha to your composer.json file.
 ```
 $ composer require google/recaptcha:@stable
 ```
+
+Configuration for Password Meter
+---------------------
+Password meter is enabled by default but you can disable it or change config options adding this to your config/users.php file:
+
+```php
+'Users.passwordMeter.enabled' => true, //enable or disable password meter. Defaults to true
+'Users.passwordMeter.requiredScore' => 1, //int value from 1 to 4 (25%,50%,75%,100%). Defaults to 1
+'Users.passwordMeter.messagesList' => ['Empty password', 'Too simple', 'Simple', 'That\'s OK', 'Great password!'], //Messages for each password level (0%,25%,50%,75%,100%)
+'Users.passwordMeter.pswMinLength' => 8, //Password min length, defaults to 8. It won't affect users validation in backend
+'Users.passwordMeter.showMessage' => true, //shows password message
+```
+
+Note the score is calculated based on the following rules:
+
+* If you include a lower single character and an upper one ([a-zA-Z]) it increases the score by 1
+* If you include an special single character it increases the score by 1
+* If you include a digit it increases the score by 1
+* If you reaches the `pswMinLength` it increases the score by 1
 
 Configuration options
 ---------------------

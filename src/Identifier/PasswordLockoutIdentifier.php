@@ -85,7 +85,12 @@ class PasswordLockoutIdentifier extends PasswordIdentifier
             ];
         }
         if (!isset($config['className'])) {
-            throw new \InvalidArgumentException(__d('cake_d_c/users', 'Option `className` for lockout handler is not present.'));
+            throw new \InvalidArgumentException(
+                __d(
+                    'cake_d_c/users',
+                    'Option `className` for lockout handler is not present.'
+                )
+            );
         }
         $className = $config['className'];
 

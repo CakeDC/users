@@ -43,7 +43,10 @@ trait UserValidationTrait
                     try {
                         $result = $this->getUsersTable()->validate($token, 'activateUser');
                         if ($result) {
-                            $event = $this->dispatchEvent(Plugin::EVENT_AFTER_EMAIL_TOKEN_VALIDATION, ['user' => $result]);
+                            $event = $this->dispatchEvent(
+                                Plugin::EVENT_AFTER_EMAIL_TOKEN_VALIDATION,
+                                ['user' => $result]
+                            );
                             $eventResult = $event->getResult();
                             if (!empty($eventResult) && is_array($eventResult)) {
                                 return $this->redirect($eventResult);

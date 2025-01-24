@@ -26,14 +26,16 @@ class PublicKeyCredentialLoader extends \Webauthn\PublicKeyCredentialLoader
             isset($json['response']['clientDataJSON'])
             && is_string($json['response']['clientDataJSON'])
         ) {
-            $json['response']['clientDataJSON'] = Base64Utility::complyEncodedNoPadding($json['response']['clientDataJSON']);
+            $json['response']['clientDataJSON'] =
+                Base64Utility::complyEncodedNoPadding($json['response']['clientDataJSON']);
         }
 
         if (
             isset($json['response']['authenticatorData'])
             && is_string($json['response']['authenticatorData'])
         ) {
-            $json['response']['authenticatorData'] = Base64Utility::complyEncodedNoPadding($json['response']['authenticatorData']);
+            $json['response']['authenticatorData'] =
+                Base64Utility::complyEncodedNoPadding($json['response']['authenticatorData']);
         }
 
         return parent::loadArray($json);

@@ -166,7 +166,10 @@ trait PasswordManagementTrait
                 'type' => 'password',
             ]);
             if ($resetUser) {
-                $msg = __d('cake_d_c/users', 'If the account is valid, the system will send an instructional email to the address on record.');
+                $msg = __d(
+                    'cake_d_c/users',
+                    'If the account is valid, the system will send an instructional email to the address on record.'
+                );
                 $this->Flash->success($msg);
             } else {
                 $msg = __d('cake_d_c/users', 'There was an error please contact Administrator');
@@ -175,7 +178,10 @@ trait PasswordManagementTrait
 
             return $this->redirect(['action' => 'login']);
         } catch (UserNotFoundException | UserNotActiveException $exception) {
-            $msg = __d('cake_d_c/users', 'If the account is valid, the system will send an instructional email to the address on record.');
+            $msg = __d(
+                'cake_d_c/users',
+                'If the account is valid, the system will send an instructional email to the address on record.'
+            );
             $this->Flash->success($msg);
         } catch (Exception $exception) {
             $msg = __d('cake_d_c/users', 'There was an error please contact Administrator');

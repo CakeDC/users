@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace CakeDC\Users\Test\Fixture;
 
 use Cake\TestSuite\Fixture\TestFixture;
+use CakeDC\Users\Model\Table\UsersTable;
 use CakeDC\Users\Webauthn\Base64Utility;
 
 /**
@@ -44,7 +45,7 @@ class UsersFixture extends TestFixture
                 'tos_date' => '2015-06-24 17:33:54',
                 'active' => false,
                 'is_superuser' => true,
-                'role' => 'admin',
+                'role' => UsersTable::ROLE_ADMIN,
                 'created' => '2015-06-24 17:33:54',
                 'modified' => '2015-06-24 17:33:54',
                 'additional_data' => [
@@ -85,7 +86,7 @@ class UsersFixture extends TestFixture
                 'tos_date' => '2015-06-24 17:33:54',
                 'active' => true,
                 'is_superuser' => true,
-                'role' => 'admin',
+                'role' => UsersTable::ROLE_ADMIN,
                 'created' => '2015-06-24 17:33:54',
                 'modified' => '2015-06-24 17:33:54',
                 'last_login' => '2015-06-24 17:33:54',
@@ -106,7 +107,7 @@ class UsersFixture extends TestFixture
                 'is_superuser' => true,
                 'tos_date' => '2015-06-24 17:33:54',
                 'active' => false,
-                'role' => 'admin',
+                'role' => UsersTable::ROLE_ADMIN,
                 'created' => '2015-06-24 17:33:54',
                 'modified' => '2015-06-24 17:33:54',
             ],
@@ -146,7 +147,7 @@ class UsersFixture extends TestFixture
                 'tos_date' => '2015-06-24 17:33:54',
                 'active' => true,
                 'is_superuser' => false,
-                'role' => 'user',
+                'role' => UsersTable::ROLE_USER,
                 'created' => '2015-06-24 17:33:54',
                 'modified' => '2015-06-24 17:33:54',
             ],
@@ -166,7 +167,7 @@ class UsersFixture extends TestFixture
                 'tos_date' => '2015-06-24 17:33:54',
                 'active' => true,
                 'is_superuser' => false,
-                'role' => 'user',
+                'role' => UsersTable::ROLE_USER,
                 'created' => '2015-06-24 17:33:54',
                 'modified' => '2015-06-24 17:33:54',
             ],

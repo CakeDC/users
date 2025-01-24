@@ -71,10 +71,30 @@ $config = [
             'key' => null,
             // reCaptcha secret
             'secret' => null,
+            // reCaptcha version. keep 2 for backward compatibility
+            'version' => 2,
             // use reCaptcha in registration
             'registration' => false,
             // use reCaptcha in login, valid values are false, true
             'login' => false,
+        ],
+        'passwordMeter' => [
+            //enable or disable password meter
+            'enabled' => true,
+            //int value from 1 to 4 (25%,50%,75%,100%). Defaults to 3
+            'requiredScore' => 1,
+            //Messages for each password level (0%,25%,50%,75%,100%)
+            'messagesList' => [
+                __d('cake_d_c/users', 'Empty password'),
+                __d('cake_d_c/users', 'Too simple'),
+                __d('cake_d_c/users','Simple'),
+                __d('cake_d_c/users', 'That\'s OK'),
+                __d('cake_d_c/users', 'Great password!')
+            ],
+            //Password min length
+            'pswMinLength' => 8,
+            //shows message for password score
+            'showMessage' => true,
         ],
         'Tos' => [
             // determines if the user should include tos accepted

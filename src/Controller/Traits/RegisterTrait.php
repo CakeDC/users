@@ -77,7 +77,7 @@ trait RegisterTrait
             } elseif (Configure::read('Users.Registration.showVerboseError') && count($errors) > 0) {
                 $this->set(compact('user'));
                 foreach ($errors as $error) {
-                    $this->Flash->error(__($error));
+                    $this->Flash->error($error);
                 }
 
                 return;
@@ -109,7 +109,7 @@ trait RegisterTrait
         $errors = \collection($user->getErrors())->unfold()->toArray();
         if (!$userSaved && Configure::read('Users.Registration.showVerboseError') && count($errors) > 0) {
             foreach ($errors as $error) {
-                $this->Flash->error(__($error));
+                $this->Flash->error($error);
             }
 
             return;

@@ -141,6 +141,7 @@ Additionally, you can set number of attempts until lock, lockout time, time wind
         'failedPasswordAttemptsModel' => 'CakeDC/Users.FailedPasswordAttempts',
         'userLockoutField' => 'lockout_time',//Field in user entity used to lock the user.
         'usersModel' => 'Users',
+        'userForeignKeyField' => 'user_id', //Field defined in the 'failed_password_attempts' table as foreignKey of the model Users.
     ],
 ```
 

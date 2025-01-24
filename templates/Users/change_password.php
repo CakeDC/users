@@ -13,8 +13,12 @@
         <?= $this->Form->control('password', [
             'type' => 'password',
             'required' => true,
+            'id' => 'new-password',
             'label' => __d('cake_d_c/users', 'New password')]);
         ?>
+        <?php if (\Cake\Core\Configure::read('Users.passwordMeter.enabled')) : ?>
+            <?= $this->User->addPasswordMeter() ?>
+        <?php endif; ?>
         <?= $this->Form->control('password_confirm', [
             'type' => 'password',
             'required' => true,
@@ -22,6 +26,6 @@
         ?>
 
     </fieldset>
-    <?= $this->Form->button(__d('cake_d_c/users', 'Submit')); ?>
+    <?= $this->Form->button(__d('cake_d_c/users', 'Submit'), ['id' => 'btn-submit']); ?>
     <?= $this->Form->end() ?>
 </div>

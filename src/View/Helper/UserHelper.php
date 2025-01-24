@@ -18,6 +18,7 @@ use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
 use Cake\View\Helper;
 use CakeDC\Users\Utility\UsersUrl;
+use InvalidArgumentException;
 
 /**
  * User helper
@@ -42,7 +43,7 @@ class UserHelper extends Helper
      * @param array $options options
      * @return string
      */
-    public function socialLogin($name, $options = [])
+    public function socialLogin(string $name, array $options = []): string
     {
         if (empty($options['label'])) {
             $options['label'] = __d('cake_d_c/users', 'Sign in with');
@@ -74,7 +75,7 @@ class UserHelper extends Helper
      * @param array $providerOptions Provider link options.
      * @return array Links to Social Login Urls
      */
-    public function socialLoginList(array $providerOptions = [])
+    public function socialLoginList(array $providerOptions = []): array
     {
         if (!Configure::read('Users.Social.login')) {
             return [];
@@ -105,7 +106,7 @@ class UserHelper extends Helper
      * @param array $options Array with option data.
      * @return string
      */
-    public function logout($message = null, $options = [])
+    public function logout(?string $message = null, array $options = []): string
     {
         $url = UsersUrl::actionUrl('logout');
         $title = empty($message) ? __d('cake_d_c/users', 'Logout') : $message;
@@ -118,7 +119,7 @@ class UserHelper extends Helper
      *
      * @return string|null
      */
-    public function welcome()
+    public function welcome(): ?string
     {
         $identity = $this->getView()->getRequest()->getAttribute('identity');
         if (!$identity) {
@@ -143,7 +144,7 @@ class UserHelper extends Helper
      *
      * @return void
      */
-    public function addReCaptchaScript()
+    public function addReCaptchaScript(): void
     {
         $this->Html->script('https://www.google.com/recaptcha/api.js', [
             'block' => 'script',
@@ -151,11 +152,47 @@ class UserHelper extends Helper
     }
 
     /**
+     * @return void
+     */
+    public function addPasswordMeterScript(): void
+    {
+        $this->Html->script('CakeDC/Users.pswmeter', [
+            'block' => 'script',
+        ]);
+    }
+
+    /**
+     * @return string
+     */
+    public function addPasswordMeter(): string
+    {
+        $this->addPasswordMeterScript();
+        $requiredScore = Configure::read('Users.passwordMeter.requiredScore', 3);
+        $messagesList = json_encode(
+            Configure::read(
+                'Users.passwordMeter.messagesList',
+                ['Empty password', 'Too simple', 'Simple', 'That\'s OK', 'Great password!']
+            )
+        );
+        $pswMinLength = Configure::read('Users.passwordMinLength', 8);
+        $showMessage = Configure::read('Users.passwordMeter.showMessage', true) ? 'true' : 'false';
+        $script = $this->Html->scriptBlock("
+            const requiredScore = $requiredScore;
+            const messagesList = $messagesList;
+            const pswMinLength = $pswMinLength;
+            const showMessage = $showMessage;
+        ", ['defer' => true]);
+
+        return $this->Html->tag('div', '', ['id' => 'pswmeter']) .
+            $this->Html->tag('div', '', ['id' => 'pswmeter-message']) . $script;
+    }
+
+    /**
      * Add reCaptcha to the form
      *
      * @return mixed
      */
-    public function addReCaptcha()
+    public function addReCaptcha(): mixed
     {
         if (!Configure::read('Users.reCaptcha.key')) {
             return $this->Html->tag(
@@ -167,10 +204,29 @@ class UserHelper extends Helper
             );
         }
         $this->addReCaptchaScript();
-        try {
-            $this->Form->unlockField('g-recaptcha-response');
-        } catch (\Exception $e) {
+        $version = Configure::read('Users.reCaptcha.version', 2);
+        $method = "addReCaptchaV$version";
+        if (method_exists($this, $method)) {
+            try {
+                $this->Form->unlockField('g-recaptcha-response');
+            } catch (\Exception $e) {
+            }
+
+            return $this->{$method}();
         }
+        throw new InvalidArgumentException(
+            __d('cake_d_c/users', 'reCaptcha version is wrong. Please configure Users.reCaptcha.version as 2 or 3')
+        );
+    }
+
+    /**
+     * Add required element for reCaptcha v2
+     *
+     * @return string
+     */
+    private function addReCaptchaV2(): string
+    {
+        deprecationWarning('14.2.0', 'reCaptcha version 3 will be used as default in version 15.0.0');
 
         return $this->Html->tag('div', '', [
             'class' => 'g-recaptcha',
@@ -182,6 +238,38 @@ class UserHelper extends Helper
     }
 
     /**
+     * Add required script for reCaptcha v3
+     */
+    private function addReCaptchaV3(): void
+    {
+        $this->Html->script('CakeDC/Users.reCaptchaV3', [
+            'block' => 'script',
+        ]);
+    }
+
+    /**
+     * Add required options for reCaptcha v3
+     *
+     * @param string $title
+     * @param array  $options
+     * @return string
+     */
+    public function button(string $title, array $options = []): string
+    {
+        $key = Configure::read('Users.reCaptcha.key');
+        if ($key && Configure::read('Users.reCaptcha.version', 2) === 3) {
+            $options = array_merge($options, [
+                'class' => 'g-recaptcha',
+                'data-sitekey' => $key,
+                'data-callback' => 'onSubmit',
+                'data-action' => 'submit',
+            ]);
+        }
+
+        return $this->Form->button($title, $options);
+    }
+
+    /**
      * Generate a link if the target url is authorized for the logged in user
      *
      * @deprecated Since 3.2.1. Use AuthLinkHelper::link() instead
@@ -190,7 +278,7 @@ class UserHelper extends Helper
      * @param array $options Array with option data.
      * @return string
      */
-    public function link($title, $url = null, array $options = [])
+    public function link(string $title, array|string|null $url = null, array $options = []): string
     {
         trigger_error(
             'UserHelper::link() deprecated since 3.2.1. Use AuthLinkHelper::link() instead',
@@ -208,7 +296,7 @@ class UserHelper extends Helper
      * @param bool   $isConnected User is connected with this provider
      * @return string
      */
-    public function socialConnectLink($name, $provider, $isConnected = false)
+    public function socialConnectLink(string $name, array $provider, bool $isConnected = false): string
     {
         $optionClass = $provider['options']['class'] ?? null;
         $linkClass = 'btn btn-social btn-' . strtolower($name) . ($optionClass ? ' ' . $optionClass : '');
@@ -236,7 +324,7 @@ class UserHelper extends Helper
      * @param array $socialAccounts All social accounts connected by a user.
      * @return string
      */
-    public function socialConnectLinkList($socialAccounts = [])
+    public function socialConnectLinkList(array $socialAccounts = []): string
     {
         if (!Configure::read('Users.Social.login')) {
             return '';
