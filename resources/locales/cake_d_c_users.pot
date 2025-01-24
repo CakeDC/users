@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2025-01-09 06:42-0600\n"
+"POT-Creation-Date: 2025-01-24 08:05+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -494,13 +494,13 @@ msgstr ""
 msgid "This field is required"
 msgstr ""
 
-#: ./vendor/cakedc/users/src/Model/Behavior/SocialAccountBehavior.php:104
-#: ./vendor/cakedc/users/src/Model/Behavior/SocialAccountBehavior.php:134
+#: ./vendor/cakedc/users/src/Model/Behavior/SocialAccountBehavior.php:106
+#: ./vendor/cakedc/users/src/Model/Behavior/SocialAccountBehavior.php:136
 msgid "Account already validated"
 msgstr ""
 
-#: ./vendor/cakedc/users/src/Model/Behavior/SocialAccountBehavior.php:108
-#: ./vendor/cakedc/users/src/Model/Behavior/SocialAccountBehavior.php:139
+#: ./vendor/cakedc/users/src/Model/Behavior/SocialAccountBehavior.php:110
+#: ./vendor/cakedc/users/src/Model/Behavior/SocialAccountBehavior.php:141
 msgid "Account not found for the given token and email."
 msgstr ""
 
