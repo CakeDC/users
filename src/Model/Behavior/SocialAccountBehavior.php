@@ -38,11 +38,13 @@ class SocialAccountBehavior extends Behavior
     public function initialize(array $config): void
     {
         parent::initialize($config);
-        $this->_table
-            ->belongsTo('Users')
-            ->setForeignKey('user_id')
-            ->setJoinType('INNER')
-            ->setClassName(Configure::read('Users.table'));
+        if (!$this->_table->hasAssociation('Users')) {
+            $this->_table
+                ->belongsTo('Users')
+                ->setForeignKey('user_id')
+                ->setJoinType('INNER')
+                ->setClassName(Configure::read('Users.table'));
+        }
     }
 
     /**
