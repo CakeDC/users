@@ -1,8 +1,61 @@
 Changelog
 =========
+Releases for CakePHP 4.5
+------------------------
+* 13.0.0
+  * Set dependecy for CakeDC/Auth to 9.0. Perform 2FA refactoring,
 
-Releases for CakePHP 4
--------------
+* 11.3.5
+  * Update ci.yml with php8.2 and php8.3
+  * fix: minor fix on last_login datetime format
+  * Update Permissions.md
+  * fix: config for updateLastLogin
+  * fix: remove deprecated code on profile logic
+  * feat:flash message on login, on cake4 
+
+* 11.3.4
+  * Fix `Detected invalid UTF-8 for field...` issue when storing session data from `Webauthn` in a mongo database.
+
+* 11.3.3
+  * Add display of unauthorized url in flash message when debug is true
+
+* 11.3.2
+  * Improve documentation, coding standards
+
+* 11.3.1
+  * Merge changes from diverged branches, including link generator and keep CakePHP 4.5 compatibility
+
+* 11.3.0
+  * Require CakePHP ^4.5
+
+Releases for CakePHP 4.4
+------------------------
+* 11.2.5
+  * Fix failed tests and code standards
+
+* 11.2.4
+  * Fix dependencies, require CakePHP 4.4.*
+
+* 11.2.3
+  * Improved documentation
+  * Deprecate (broken) compatibility with Linkedin Oauth based connector, they only provide compatibility with OpenID Connect now
+  * Add Dutch translation by Stefan
+  * Add `linkGenerator` for emails, useful for API driven apps
+  * Fix CakePHP 4.5 deprecations
+  * Fix webauthn loading issues
+
+* 11.2.2
+  * Fix issue with password rehash with a custom password field
+
+* 11.2.1
+  * Use UsersUrl and unify url building for login action
+
+* 11.2.0
+  * Feature/microsoft login by @arodu in #1000
+  * Add more events into login component (before login, after login failure) by @rochamarcelo in #1007
+
+* 11.1.1
+  * Use url builder for login redirect
 
 * 11.1.0
   * German (de) by @LordSimal
@@ -11,6 +64,22 @@ Releases for CakePHP 4
 * 11.0.0
   * Switched tests to new cakephp schema
   * Update to PHPUnit 9.5
+
+* There are NO tags for 10.x we jumped from 9.x to 11.x
+
+Releases for CakePHP 4
+----------------------
+* 9.3.1
+  * Add CI tests for PHP 8.1
+  * Add events `EVENT_BEFORE_LOGIN`, `EVENT_AFTER_LOGIN_FAILURE`
+
+* 9.3.0
+  * Improve documentation
+  * Add webauthn as two factor authentication
+
+* 9.2.1
+  * Improve documentation
+  * Fix change password issue
 
 * 9.2.0
   * Switch to github actions
@@ -30,7 +99,7 @@ Releases for CakePHP 4
   * Ukrainian (uk) by @yarkm13
   * Docs improvements
   * Fix DebugKit permissions issues
-  
+
 * 9.0.2
   * Added a custom Unauthorized Handler
     * If logged user access unauthorized url he is redirected to referer url or '/' if no referer url
@@ -54,9 +123,13 @@ Releases for CakePHP 4
    * Migrated usage of AuthComponent to Authorization/Authentication plugins.
 
 Releases for CakePHP 3
--------------
+----------------------
+* 8.5.2
+  * Add optional merge configuration option
+
 * 8.5.1
   * Added new `UsersAuthComponent::EVENT_SOCIAL_LOGIN_EXISTING_ACCOUNT`
+
 * 8.5.0
   * Added new `UsersAuthComponent::EVENT_BEFORE_SOCIAL_LOGIN_REDIRECT`
   * Added finder to get existing social account
@@ -72,10 +145,10 @@ Releases for CakePHP 3
 * 8.2.1
   * Fix scope in facebook social login
 
-* 8.2
+* 8.2.0
   * Removed deprecations for CakePHP 3.7
 
-* 8.1
+* 8.1.0
   * Added Yubico U2F Authentication
 
 * 8.0.3
@@ -222,7 +295,7 @@ Releases for CakePHP 3
   * Link social accounts in profile
 
 Releases for CakePHP 2
--------------
+----------------------
 
 * 2.1.3
   * Fixed unit tests for compatibility with CakePHP 2.7

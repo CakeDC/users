@@ -78,6 +78,9 @@ class AuthenticationServiceProviderTest extends TestCase
             'Authentication.JwtSubject',
         ]);
         Configure::write('OneTimePasswordAuthenticator.login', true);
+        Configure::write('TwoFactorProcessors', [
+            \CakeDC\Auth\Authentication\TwoFactorProcessor\OneTimePasswordProcessor::class,
+        ]);
 
         $authenticationServiceProvider = new AuthenticationServiceProvider();
         $service = $authenticationServiceProvider->getAuthenticationService(new ServerRequest(), new Response());
@@ -114,7 +117,9 @@ class AuthenticationServiceProviderTest extends TestCase
         ];
         $actual = [];
         foreach ($authenticators as $key => $value) {
-            $actual[get_class($value)] = $value->getConfig();
+            $config = $value->getConfig();
+            unset($config['impersonateSessionKey']);
+            $actual[get_class($value)] = $config;
         }
         $this->assertEquals($expected, $actual);
 
@@ -144,7 +149,9 @@ class AuthenticationServiceProviderTest extends TestCase
         ];
         $actual = [];
         foreach ($identifiers as $key => $value) {
-            $actual[get_class($value)] = $value->getConfig();
+            $config = $value->getConfig();
+            unset($config['impersonateSessionKey'], $config['hashAlgorithm']);
+            $actual[get_class($value)] = $config;
         }
         $this->assertEquals($expected, $actual);
     }
@@ -211,6 +218,7 @@ class AuthenticationServiceProviderTest extends TestCase
             'Authentication.JwtSubject',
         ]);
         Configure::write('OneTimePasswordAuthenticator.login', false);
+        Configure::write('TwoFactorProcessors', []);
 
         $authenticationServiceProvider = new AuthenticationServiceProvider();
         $service = $authenticationServiceProvider->getAuthenticationService(new ServerRequest(), new Response());
@@ -242,7 +250,9 @@ class AuthenticationServiceProviderTest extends TestCase
         ];
         $actual = [];
         foreach ($authenticators as $key => $value) {
-            $actual[get_class($value)] = $value->getConfig();
+            $config = $value->getConfig();
+            unset($config['impersonateSessionKey']);
+            $actual[get_class($value)] = $config;
         }
         $this->assertEquals($expected, $actual);
     }

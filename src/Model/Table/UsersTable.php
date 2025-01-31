@@ -52,19 +52,6 @@ class UsersTable extends Table
     public $isValidateEmail = false;
 
     /**
-     * Field additional_data is json
-     *
-     * @param \Cake\Database\Schema\TableSchemaInterface $schema The table definition fetched from database.
-     * @return \Cake\Database\Schema\TableSchemaInterface the altered schema
-     */
-    protected function _initializeSchema(TableSchemaInterface $schema): TableSchemaInterface
-    {
-        $schema->setColumnType('additional_data', 'json');
-
-        return parent::_initializeSchema($schema);
-    }
-
-    /**
      * Initialize method
      *
      * @param array $config The configuration for the Table.
@@ -84,6 +71,19 @@ class UsersTable extends Table
         $this->addBehavior('CakeDC/Users.LinkSocial');
         $this->addBehavior('CakeDC/Users.AuthFinder');
         $this->hasMany('SocialAccounts')->setForeignKey('user_id')->setClassName('CakeDC/Users.SocialAccounts');
+    }
+
+    /**
+     * Returns the schema table object describing this table's properties.
+     *
+     * @return \Cake\Database\Schema\TableSchemaInterface
+     */
+    public function getSchema(): TableSchemaInterface
+    {
+        $schema = parent::getSchema();
+        $schema->setColumnType('additional_data', 'json');
+
+        return $schema;
     }
 
     /**

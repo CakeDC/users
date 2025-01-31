@@ -41,6 +41,9 @@ class PluginTest extends TestCase
     {
         Configure::write('Users.Social.login', true);
         Configure::write('OneTimePasswordAuthenticator.login', true);
+        Configure::write('TwoFactorProcessors', [
+            \CakeDC\Auth\Authentication\TwoFactorProcessor\OneTimePasswordProcessor::class,
+        ]);
         Configure::write('Auth.Authorization.enable', true);
 
         $plugin = new Plugin();
@@ -75,6 +78,9 @@ class PluginTest extends TestCase
         Configure::write('Users.Social.login', true);
         Configure::write('OneTimePasswordAuthenticator.login', true);
         Configure::write('Auth.Authorization.enable', true);
+        Configure::write('TwoFactorProcessors', [
+            \CakeDC\Auth\Authentication\TwoFactorProcessor\OneTimePasswordProcessor::class,
+        ]);
 
         $plugin = new Plugin();
 
@@ -106,6 +112,9 @@ class PluginTest extends TestCase
         Configure::write('Users.Social.login', true);
         Configure::write('OneTimePasswordAuthenticator.login', true);
         Configure::write('Auth.Authorization.enable', false);
+        Configure::write('TwoFactorProcessors', [
+            \CakeDC\Auth\Authentication\TwoFactorProcessor\OneTimePasswordProcessor::class,
+        ]);
 
         $plugin = new Plugin();
 
@@ -133,6 +142,10 @@ class PluginTest extends TestCase
         Configure::write('Users.Social.login', false);
         Configure::write('OneTimePasswordAuthenticator.login', true);
         Configure::write('Auth.Authorization.enable', true);
+        Configure::write('TwoFactorProcessors', [
+            \CakeDC\Auth\Authentication\TwoFactorProcessor\OneTimePasswordProcessor::class,
+        ]);
+
         $plugin = new Plugin();
 
         $middleware = new MiddlewareQueue();
@@ -158,6 +171,9 @@ class PluginTest extends TestCase
         Configure::write('Users.Social.login', true);
         Configure::write('OneTimePasswordAuthenticator.login', false);
         Configure::write('Auth.Authorization.enable', true);
+        Configure::write('TwoFactorProcessors', [
+            \CakeDC\Auth\Authentication\TwoFactorProcessor\OneTimePasswordProcessor::class,
+        ]);
         $plugin = new Plugin();
 
         $middleware = new MiddlewareQueue();
@@ -185,6 +201,9 @@ class PluginTest extends TestCase
         Configure::write('Users.Social.login', false);
         Configure::write('OneTimePasswordAuthenticator.login', false);
         Configure::write('Auth.Authorization.enable', true);
+        Configure::write('TwoFactorProcessors', [
+            \CakeDC\Auth\Authentication\TwoFactorProcessor\OneTimePasswordProcessor::class,
+        ]);
         $plugin = new Plugin();
 
         $middleware = new MiddlewareQueue();

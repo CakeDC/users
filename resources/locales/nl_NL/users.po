@@ -1,0 +1,926 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2022-03-11 13:46+0100\n"
+"PO-Revision-Date: 2023-09-25 12:37+0200\n"
+"Last-Translator: \n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"Language: nl_NL\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.3.2\n"
+
+#: src/Controller/SocialAccountsController.php:50
+msgid "Account validated successfully"
+msgstr "De account is succesvol gevalideerd"
+
+#: src/Controller/SocialAccountsController.php:52
+msgid "Account could not be validated"
+msgstr "De account kon niet worden gevalideerd"
+
+#: src/Controller/SocialAccountsController.php:55
+msgid "Invalid token and/or social account"
+msgstr "Ongeldige token of sociale media account"
+
+#: src/Controller/SocialAccountsController.php:57
+#: src/Controller/SocialAccountsController.php:85
+msgid "Social Account already active"
+msgstr "Sociale media account al geactiveerd"
+
+#: src/Controller/SocialAccountsController.php:59
+msgid "Social Account could not be validated"
+msgstr "Sociale media account kon niet worden gevalideerd"
+
+#: src/Controller/SocialAccountsController.php:78
+msgid "Email sent successfully"
+msgstr "E-mail succesvol verzonden"
+
+#: src/Controller/SocialAccountsController.php:80
+msgid "Email could not be sent"
+msgstr "E-mail kon niet worden verzonden"
+
+#: src/Controller/SocialAccountsController.php:83
+msgid "Invalid account"
+msgstr "De account is niet geldig"
+
+#: src/Controller/SocialAccountsController.php:87
+msgid "Email could not be resent"
+msgstr "E-mail kon niet worden verzonden"
+
+#: src/Controller/Traits/LinkSocialTrait.php:56
+msgid "Could not associate account, please try again."
+msgstr "De account kon niet worden gekoppeld, probeer het alstublieft opnieuw."
+
+#: src/Controller/Traits/LinkSocialTrait.php:80
+msgid "Social account was associated."
+msgstr "Sociale media account is gekoppeld."
+
+#: src/Controller/Traits/LoginTrait.php:73
+msgid "You've successfully logged out"
+msgstr "U bent uitgelogd"
+
+#: src/Controller/Traits/OneTimePasswordVerifyTrait.php:75
+msgid "Please enable Google Authenticator first."
+msgstr "Activeer alstublieft eerst de Google Authenticator."
+
+#: src/Controller/Traits/OneTimePasswordVerifyTrait.php:90
+msgid "Could not find user data"
+msgstr "Gebruikersdata niet gevonden"
+
+#: src/Controller/Traits/OneTimePasswordVerifyTrait.php:129
+msgid "Could not verify, please try again"
+msgstr "Verificatie mislukt, probeer het alstublieft opnieuw"
+
+#: src/Controller/Traits/OneTimePasswordVerifyTrait.php:161
+msgid "Verification code is invalid. Try again"
+msgstr "De verificatiecode is ongeldig. Probeer het alstublieft opnieuw"
+
+#: src/Controller/Traits/PasswordManagementTrait.php:63
+msgid "Changing another user's password is not allowed"
+msgstr "Het wachtwoord van een andere gebruiker veranderen is niet toegestaan"
+
+#: src/Controller/Traits/PasswordManagementTrait.php:77
+#: src/Controller/Traits/PasswordManagementTrait.php:121
+#: src/Controller/Traits/ProfileTrait.php:54
+msgid "User was not found"
+msgstr "Kon de gebruiker niet vinden"
+
+#: src/Controller/Traits/PasswordManagementTrait.php:105
+#: src/Controller/Traits/PasswordManagementTrait.php:117
+#: src/Controller/Traits/PasswordManagementTrait.php:125
+msgid "Password could not be changed"
+msgstr "Het wachtwoord kon niet worden gewijzigd"
+
+#: src/Controller/Traits/PasswordManagementTrait.php:113
+msgid "Password has been changed successfully"
+msgstr "Het wachtwoord is gewijzigd"
+
+#: src/Controller/Traits/PasswordManagementTrait.php:167
+msgid "Please check your email to continue with password reset process"
+msgstr ""
+"Er is een e-mail naar u verzonden, met instructies voor het opnieuw "
+"instellen van uw wachtwoord"
+
+#: src/Controller/Traits/PasswordManagementTrait.php:170
+#: src/Shell/UsersShell.php:286
+msgid "The password token could not be generated. Please try again"
+msgstr ""
+"De token om uw wachtwoord opnieuw in te stellen, kon niet worden "
+"gegenereerd. Probeer het alstublieft opnieuw"
+
+#: src/Controller/Traits/PasswordManagementTrait.php:176
+#: src/Controller/Traits/UserValidationTrait.php:124
+msgid "User {0} was not found"
+msgstr "Gebruiker {0} niet gevonden"
+
+#: src/Controller/Traits/PasswordManagementTrait.php:178
+msgid "The user is not active"
+msgstr "Deze gebruiker is niet actief"
+
+#: src/Controller/Traits/PasswordManagementTrait.php:180
+#: src/Controller/Traits/UserValidationTrait.php:119
+#: src/Controller/Traits/UserValidationTrait.php:128
+msgid "Token could not be reset"
+msgstr "Kon de token niet opnieuw instellen"
+
+#: src/Controller/Traits/PasswordManagementTrait.php:204
+msgid "Google Authenticator token was successfully reset"
+msgstr "De Google Authenticator token is opnieuw ingesteld"
+
+#: src/Controller/Traits/PasswordManagementTrait.php:207
+msgid "Could not reset Google Authenticator"
+msgstr "Kon de Google Authenticator niet opnieuw instellen"
+
+#: src/Controller/Traits/ProfileTrait.php:58
+msgid "Not authorized, please login first"
+msgstr "Niet toegestaan, log alstublieft eerst in"
+
+#: src/Controller/Traits/RegisterTrait.php:47
+msgid "You must log out to register a new user account"
+msgstr "U moet uitloggen, voordat u een nieuwe gebruiker kunt registreren"
+
+#: src/Controller/Traits/RegisterTrait.php:86
+#: src/Controller/Traits/RegisterTrait.php:117
+msgid "The user could not be saved"
+msgstr "De gebruiker kon niet worden opgeslagen"
+
+#: src/Controller/Traits/RegisterTrait.php:103
+#: src/Loader/LoginComponentLoader.php:33
+msgid "Invalid reCaptcha"
+msgstr "Ongeldige reCaptcha"
+
+#: src/Controller/Traits/RegisterTrait.php:151
+msgid "You have registered successfully, please log in"
+msgstr "U bent succesvol geregistreerd, log alstublieft in"
+
+#: src/Controller/Traits/RegisterTrait.php:153
+msgid "Please validate your account before log in"
+msgstr "Valideer alstublieft eerst uw account voordat u inlogt"
+
+#: src/Controller/Traits/SimpleCrudTrait.php:77
+#: src/Controller/Traits/SimpleCrudTrait.php:107
+msgid "The {0} has been saved"
+msgstr "De {0} is opgeslagen"
+
+#: src/Controller/Traits/SimpleCrudTrait.php:81
+#: src/Controller/Traits/SimpleCrudTrait.php:111
+msgid "The {0} could not be saved"
+msgstr "De {0} kon niet worden opgeslagen"
+
+#: src/Controller/Traits/SimpleCrudTrait.php:131
+msgid "The {0} has been deleted"
+msgstr "De {0} is verwijderd"
+
+#: src/Controller/Traits/SimpleCrudTrait.php:133
+msgid "The {0} could not be deleted"
+msgstr "De {0} kon niet worden verwijderd"
+
+#: src/Controller/Traits/U2fTrait.php:216
+msgid "U2F requires SSL."
+msgstr "Voor U2F is SSL nodig."
+
+#: src/Controller/Traits/UserValidationTrait.php:49
+msgid "User account validated successfully"
+msgstr "De account is succesvol gevalideerd"
+
+#: src/Controller/Traits/UserValidationTrait.php:51
+msgid "User account could not be validated"
+msgstr "De account kon niet worden gevalideerd"
+
+#: src/Controller/Traits/UserValidationTrait.php:54
+msgid "User already active"
+msgstr "Deze gebruiker is al actief"
+
+#: src/Controller/Traits/UserValidationTrait.php:60
+msgid "Reset password token was validated successfully"
+msgstr "De token om uw wachtwoord opnieuw in te stellen is gevalideerd"
+
+#: src/Controller/Traits/UserValidationTrait.php:68
+msgid "Reset password token could not be validated"
+msgstr ""
+"De token om uw wachtwoord opnieuw in te stellen kon niet worden gevalideerd"
+
+#: src/Controller/Traits/UserValidationTrait.php:72
+msgid "Invalid validation type"
+msgstr "Ongeldig validatietype"
+
+#: src/Controller/Traits/UserValidationTrait.php:75
+msgid "Invalid token or user account already validated"
+msgstr "De token is ongeldig of de account is a gevalideerd"
+
+#: src/Controller/Traits/UserValidationTrait.php:81
+msgid "Token already expired"
+msgstr "De token is al verlopen"
+
+#: src/Controller/Traits/UserValidationTrait.php:114
+msgid "Token has been reset successfully. Please check your email."
+msgstr "De token is opnieuw ingesteld. U ontvangt hierover een e-mail."
+
+#: src/Controller/Traits/UserValidationTrait.php:126
+msgid "User {0} is already active"
+msgstr "Gebruiker {0} is al actief"
+
+#: src/Controller/Traits/Webauthn2faTrait.php:53
+#: src/Controller/Traits/Webauthn2faTrait.php:73
+msgid "User already has configured webauthn2fa"
+msgstr "De gebruiker heeft webauthn2fa al geconfigureerd"
+
+#: src/Controller/Traits/Webauthn2faTrait.php:77
+#: src/Controller/Traits/Webauthn2faTrait.php:122
+msgid "Register error with webauthn for user id: {0}"
+msgstr ""
+"Er ging iets fout bij het registreren van webauthn voor gebruiker id: {0}"
+
+#: src/Loader/AuthenticationServiceLoader.php:109
+msgid "Property  {0}.className should be defined"
+msgstr "De property {0}.className moet worden gedefinieerd"
+
+#: src/Loader/LoginComponentLoader.php:31
+msgid "Username or password is incorrect"
+msgstr "De gebruikersnaam of het wachtwoord is incorrect"
+
+#: src/Loader/LoginComponentLoader.php:52
+msgid "Could not proceed with social account. Please try again"
+msgstr ""
+"Kon geen verbinding maken met de sociale media account. Probeer het "
+"alstublieft opnieuw"
+
+#: src/Loader/LoginComponentLoader.php:54
+msgid ""
+"Your user has not been validated yet. Please check your inbox for "
+"instructions"
+msgstr ""
+"Uw account is nog niet gevalideerd. Zie voor instructies alstublieft uw "
+"mailbox"
+
+#: src/Loader/LoginComponentLoader.php:58
+msgid ""
+"Your social account has not been validated yet. Please check your inbox for "
+"instructions"
+msgstr ""
+"Uw sociale media account is nog niet gevalideerd. Zie voor instructies "
+"alstublieft uw mailbox"
+
+#: src/Mailer/UsersMailer.php:36
+msgid "Your account validation link"
+msgstr "De link voor het valideren van uw account"
+
+#: src/Mailer/UsersMailer.php:63
+msgid "{0}Your reset password link"
+msgstr "{0} De link om uw wachtwoord opnieuw in te stellen"
+
+#: src/Mailer/UsersMailer.php:95
+msgid "{0}Your social account validation link"
+msgstr "{0} De link om uw sociale media account te valideren"
+
+#: src/Middleware/SocialAuthMiddleware.php:47
+#: templates/Users/social_email.php:16
+msgid "Please enter your email"
+msgstr "Vul alstublieft uw e-mailadres in"
+
+#: src/Middleware/SocialAuthMiddleware.php:57
+msgid "Could not identify your account, please try again"
+msgstr "Kon uw account niet identificeren, probeer het alstublieft opnieuw"
+
+#: src/Middleware/UnauthorizedHandler/DefaultRedirectHandler.php:112
+msgid "You are not authorized to access that location."
+msgstr "U heeft onvoldoende rechten om die pagina te bekijken."
+
+#: src/Model/Behavior/AuthFinderBehavior.php:49
+msgid "Missing 'username' in options data"
+msgstr "Het veld 'username' ontbreekt bij de opties"
+
+#: src/Model/Behavior/LinkSocialBehavior.php:52
+msgid "Social account already associated to another user"
+msgstr "Deze sociale media account is al gekoppeld aan een andere gebruiker"
+
+#: src/Model/Behavior/PasswordBehavior.php:45
+msgid "Reference cannot be null"
+msgstr "Referentie mag niet leeg zijn"
+
+#: src/Model/Behavior/PasswordBehavior.php:50
+msgid "Token expiration cannot be empty"
+msgstr "Vervaldatum van de token mag niet leeg zijn"
+
+#: src/Model/Behavior/PasswordBehavior.php:56
+#: src/Model/Behavior/PasswordBehavior.php:136
+msgid "User not found"
+msgstr "De gebruiker kon niet worden gevonden"
+
+#: src/Model/Behavior/PasswordBehavior.php:60
+#: src/Model/Behavior/RegisterBehavior.php:129
+msgid "User account already validated"
+msgstr "De gebruikersaccount is al gevalideerd"
+
+#: src/Model/Behavior/PasswordBehavior.php:66
+msgid "User not active"
+msgstr "De gebruiker is niet actief"
+
+#: src/Model/Behavior/PasswordBehavior.php:141
+msgid "The current password does not match"
+msgstr "Het huidige wachtwoord is niet correct"
+
+#: src/Model/Behavior/PasswordBehavior.php:144
+msgid "You cannot use the current password as the new one"
+msgstr "Uw nieuwe wachtwoord mag niet hetzelfde zijn als uw oude wachtwoord"
+
+#: src/Model/Behavior/RegisterBehavior.php:107
+msgid "User not found for the given token and email."
+msgstr "Kon geen gebruiker vinden met de opgegeven token of e-mailadres."
+
+#: src/Model/Behavior/RegisterBehavior.php:110
+msgid "Token has already expired user with no token"
+msgstr "De token is al verlopen of de gebruiker heeft geen token"
+
+#: src/Model/Behavior/RegisterBehavior.php:167
+msgid "This field is required"
+msgstr "Dit veld moet worden ingevuld"
+
+#: src/Model/Behavior/SocialAccountBehavior.php:100
+#: src/Model/Behavior/SocialAccountBehavior.php:130
+msgid "Account already validated"
+msgstr "De account is al gevalideerd"
+
+#: src/Model/Behavior/SocialAccountBehavior.php:104
+#: src/Model/Behavior/SocialAccountBehavior.php:135
+msgid "Account not found for the given token and email."
+msgstr "Kon geen account vinden met de opgegeven token of e-mailadres."
+
+#: src/Model/Behavior/SocialBehavior.php:85
+msgid "Unable to login user with reference {0}"
+msgstr "Inloggen van de gebruiker met referentie {0} is niet gelukt"
+
+#: src/Model/Behavior/SocialBehavior.php:136
+msgid "Email not present"
+msgstr "E-mail is niet ingegeven"
+
+#: src/Model/Table/UsersTable.php:107
+msgid "Your password does not match your confirm password. Please try again"
+msgstr "De twee ingegeven wachtwoorden komen niet overeen"
+
+#: src/Model/Table/UsersTable.php:201
+msgid "Username already exists"
+msgstr "Deze gebruikernaam is al gebruikt"
+
+#: src/Model/Table/UsersTable.php:207
+msgid "Email already exists"
+msgstr "Dit e-mailadres is al gebruikt"
+
+#: src/Shell/UsersShell.php:46
+msgid "Utilities for CakeDC Users Plugin"
+msgstr "Hulpprogramma's voor de CakeDC Users Plugin"
+
+#: src/Shell/UsersShell.php:48
+msgid "Activate an specific user"
+msgstr "Activeer een specifieke gebruiker"
+
+#: src/Shell/UsersShell.php:51
+msgid "Add a new superadmin user for testing purposes"
+msgstr "Voeg een superbeheerder toe, voor testdoeleinden"
+
+#: src/Shell/UsersShell.php:54
+msgid "Add a new user"
+msgstr "Voeg een nieuwe gebruiker toe"
+
+#: src/Shell/UsersShell.php:57
+msgid "Change the role for an specific user"
+msgstr "Verander de rol van een specifieke gebruiker"
+
+#: src/Shell/UsersShell.php:60
+msgid "Change the api token for an specific user"
+msgstr "Wijzig de api token voor een specifieke gebruiker"
+
+#: src/Shell/UsersShell.php:63
+msgid "Deactivate an specific user"
+msgstr "Deactiveer een specifieke gebruiker"
+
+#: src/Shell/UsersShell.php:66
+msgid "Delete an specific user"
+msgstr "Verwijder een specifieke gebruiker"
+
+#: src/Shell/UsersShell.php:69
+msgid "Reset the password via email"
+msgstr "Reset het wachtwoord via e-mail"
+
+#: src/Shell/UsersShell.php:72
+msgid "Reset the password for all users"
+msgstr "Reset het wachtwoord van alle gebruikers"
+
+#: src/Shell/UsersShell.php:75
+msgid "Reset the password for an specific user"
+msgstr "Reset het wachtwoord van een specifieke gebruiker"
+
+#: src/Shell/UsersShell.php:135 src/Shell/UsersShell.php:161
+msgid "Please enter a password."
+msgstr "Vul alstublieft een wachtwoord in."
+
+#: src/Shell/UsersShell.php:139
+msgid "Password changed for all users"
+msgstr "Het wachtwoord van alle gebruikers is gewijzigd"
+
+#: src/Shell/UsersShell.php:140 src/Shell/UsersShell.php:168
+msgid "New password: {0}"
+msgstr "Nieuwe wachtwoord: {0}"
+
+#: src/Shell/UsersShell.php:158 src/Shell/UsersShell.php:186
+#: src/Shell/UsersShell.php:214 src/Shell/UsersShell.php:304
+#: src/Shell/UsersShell.php:403
+msgid "Please enter a username."
+msgstr "Vul alstublieft een gebruikersnaam in."
+
+#: src/Shell/UsersShell.php:167
+msgid "Password changed for user: {0}"
+msgstr "Het wachtwoord van de gebruiker {0} is gewijzigd"
+
+#: src/Shell/UsersShell.php:189
+msgid "Please enter a role."
+msgstr "Vul alstublieft een rol in."
+
+#: src/Shell/UsersShell.php:195
+msgid "Role changed for user: {0}"
+msgstr "De rol van de gebruiker {0} is gewijzigd"
+
+#: src/Shell/UsersShell.php:196
+msgid "New role: {0}"
+msgstr "Nieuwe rol: {0}"
+
+#: src/Shell/UsersShell.php:217
+msgid "Please enter a token."
+msgstr "Vul alstublieft een token in."
+
+#: src/Shell/UsersShell.php:224
+msgid "User was not saved, check validation errors"
+msgstr "De gebruiker is niet opgeslagen, controleer de data-validatie-fouten"
+
+#: src/Shell/UsersShell.php:229
+msgid "Api token changed for user: {0}"
+msgstr "De api token van de gebruiker {0} is gewijzigd"
+
+#: src/Shell/UsersShell.php:230
+msgid "New token: {0}"
+msgstr "Nieuwe token: {0}"
+
+#: src/Shell/UsersShell.php:245
+msgid "User was activated: {0}"
+msgstr "De gebruiker is geactiveerd: {0}"
+
+#: src/Shell/UsersShell.php:260
+msgid "User was de-activated: {0}"
+msgstr "De gebruiker is gedeactiveerd: {0}"
+
+#: src/Shell/UsersShell.php:272
+msgid "Please enter a username or email."
+msgstr "Vul alstublieft een nieuwe gebruikersnaam of e-mailadres in."
+
+#: src/Shell/UsersShell.php:280
+msgid ""
+"Please ask the user to check the email to continue with password reset "
+"process"
+msgstr ""
+"Vraag alstublieft de gebruiker om de e-mail te bekijken, om verder te gaan "
+"met het opnieuw instellen van het wachtwoord"
+
+#: src/Shell/UsersShell.php:350
+msgid "Superuser added:"
+msgstr "Supergebruiker toegevoegd:"
+
+#: src/Shell/UsersShell.php:352
+msgid "User added:"
+msgstr "Gebruiker toegevoegd:"
+
+#: src/Shell/UsersShell.php:354
+msgid "Id: {0}"
+msgstr "Id: {0}"
+
+#: src/Shell/UsersShell.php:355
+msgid "Username: {0}"
+msgstr "Gebruikersnaam: {0}"
+
+#: src/Shell/UsersShell.php:356
+msgid "Email: {0}"
+msgstr "E-mailadres: {0}"
+
+#: src/Shell/UsersShell.php:357
+msgid "Role: {0}"
+msgstr "Rol: {0}"
+
+#: src/Shell/UsersShell.php:358
+msgid "Password: {0}"
+msgstr "Wachtwoord: {0}"
+
+#: src/Shell/UsersShell.php:360
+msgid "User could not be added:"
+msgstr "De gebruiker kon niet worden toegevoegd:"
+
+#: src/Shell/UsersShell.php:363
+msgid "Field: {0} Error: {1}"
+msgstr "Veld: {0} Foutmelding: {1}"
+
+#: src/Shell/UsersShell.php:379
+msgid "The user was not found."
+msgstr "De gebruiker kon niet worden gevonden."
+
+#: src/Shell/UsersShell.php:414
+msgid "The user {0} was not deleted. Please try again"
+msgstr ""
+"De gebruiker {0} kon niet worden verwijderd. Probeer het alstublieft opnieuw"
+
+#: src/Shell/UsersShell.php:416
+msgid "The user {0} was deleted successfully"
+msgstr "De gebruiker {0} is succesvol verwijderd"
+
+#: src/View/Helper/UserHelper.php:50
+msgid "Sign in with"
+msgstr "Log in met"
+
+#: src/View/Helper/UserHelper.php:113
+msgid "Logout"
+msgstr "Uitloggen"
+
+#: src/View/Helper/UserHelper.php:134
+msgid "Welcome, {0}"
+msgstr "Welkom, {0}"
+
+#: src/View/Helper/UserHelper.php:165
+msgid "reCaptcha is not configured! Please configure Users.reCaptcha.key"
+msgstr ""
+"reCaptcha is niet geconfigureerd! Configureer alstublieft Users.reCaptcha.key"
+
+#: src/View/Helper/UserHelper.php:218
+msgid "Connected with {0}"
+msgstr "Verbonden met {0}"
+
+#: src/View/Helper/UserHelper.php:223
+msgid "Connect with {0}"
+msgstr "Verbindt met {0}"
+
+#: templates/Users/add.php:13 templates/Users/edit.php:17
+#: templates/Users/index.php:13 templates/Users/index.php:26
+#: templates/Users/view.php:15
+msgid "Actions"
+msgstr "Acties"
+
+#: templates/Users/add.php:15 templates/Users/edit.php:28
+#: templates/Users/view.php:23
+msgid "List Users"
+msgstr "Gebruikersoverzicht"
+
+#: templates/Users/add.php:21 templates/Users/register.php:18
+msgid "Add User"
+msgstr "Voeg gebruiker toe"
+
+#: templates/Users/add.php:23 templates/Users/edit.php:36
+#: templates/Users/index.php:22 templates/Users/login.php:20
+#: templates/Users/profile.php:30 templates/Users/register.php:20
+#: templates/Users/view.php:33
+msgid "Username"
+msgstr "Gebruikersnaam"
+
+#: templates/Users/add.php:24 templates/Users/edit.php:37
+#: templates/Users/index.php:23 templates/Users/profile.php:32
+#: templates/Users/register.php:21 templates/Users/view.php:35
+msgid "Email"
+msgstr "E-mailadres"
+
+#: templates/Users/add.php:25 templates/Users/login.php:21
+#: templates/Users/register.php:22
+msgid "Password"
+msgstr "Wachtwoord"
+
+#: templates/Users/add.php:26 templates/Users/edit.php:38
+#: templates/Users/index.php:24 templates/Users/register.php:28
+msgid "First name"
+msgstr "Voornaam"
+
+#: templates/Users/add.php:27 templates/Users/edit.php:39
+#: templates/Users/index.php:25 templates/Users/register.php:29
+msgid "Last name"
+msgstr "Achternaam"
+
+#: templates/Users/add.php:30 templates/Users/edit.php:54
+#: templates/Users/view.php:49 templates/Users/view.php:74
+msgid "Active"
+msgstr "Actief"
+
+#: templates/Users/add.php:34 templates/Users/change_password.php:25
+#: templates/Users/edit.php:58 templates/Users/register.php:38
+#: templates/Users/request_reset_password.php:23
+#: templates/Users/resend_token_validation.php:20
+#: templates/Users/social_email.php:19
+msgid "Submit"
+msgstr "Verzenden"
+
+#: templates/Users/change_password.php:5
+msgid "Please enter the new password"
+msgstr "Kies alstublieft een nieuwe wachtwoord"
+
+#: templates/Users/change_password.php:10
+msgid "Current password"
+msgstr "Huidige wachtwoord"
+
+#: templates/Users/change_password.php:16
+msgid "New password"
+msgstr "Nieuwe wachtwoord"
+
+#: templates/Users/change_password.php:21 templates/Users/register.php:26
+msgid "Confirm password"
+msgstr "Bevestig wachtwoord"
+
+#: templates/Users/edit.php:22 templates/Users/index.php:40
+msgid "Delete"
+msgstr "Verwijder"
+
+#: templates/Users/edit.php:24 templates/Users/index.php:40
+#: templates/Users/view.php:21
+msgid "Are you sure you want to delete # {0}?"
+msgstr "Weet u zeker dat u # {0} wilt verwijderen?"
+
+#: templates/Users/edit.php:34 templates/Users/view.php:17
+msgid "Edit User"
+msgstr "Bewerk gebruiker"
+
+#: templates/Users/edit.php:40 templates/Users/view.php:43
+msgid "Token"
+msgstr "Token"
+
+#: templates/Users/edit.php:42
+msgid "Token expires"
+msgstr "Token vervalt op"
+
+#: templates/Users/edit.php:45
+msgid "API token"
+msgstr "API token"
+
+#: templates/Users/edit.php:48
+msgid "Activation date"
+msgstr "Activatiedatum"
+
+#: templates/Users/edit.php:51
+msgid "TOS date"
+msgstr "Alg. Voorw. datum"
+
+#: templates/Users/edit.php:64
+msgid "Reset Google Authenticator Token"
+msgstr "Reset Google Authenticator Token"
+
+#: templates/Users/edit.php:70
+msgid "Are you sure you want to reset token for user \"{0}\"?"
+msgstr ""
+"Weet u zeker dat u de token van de gebruiker \"{0}\" opnieuw in wilt stellen?"
+
+#: templates/Users/index.php:15
+msgid "New {0}"
+msgstr "Nieuwe {0}"
+
+#: templates/Users/index.php:37
+msgid "View"
+msgstr "Bekijk"
+
+#: templates/Users/index.php:38
+msgid "Change password"
+msgstr "Wijzig wachtwoord"
+
+#: templates/Users/index.php:39
+msgid "Edit"
+msgstr "Bewerk"
+
+#: templates/Users/index.php:49
+msgid "previous"
+msgstr "vorige"
+
+#: templates/Users/index.php:51
+msgid "next"
+msgstr "volgende"
+
+#: templates/Users/login.php:19
+msgid "Please enter your username and password"
+msgstr "Vul alstublieft uw gebruikersnaam en wachtwoord in"
+
+#: templates/Users/login.php:29
+msgid "Remember me"
+msgstr "Onthoud mij"
+
+#: templates/Users/login.php:37
+msgid "Register"
+msgstr "Registreer"
+
+#: templates/Users/login.php:43
+msgid "Reset Password"
+msgstr "Wachtwoord opnieuw instellen"
+
+#: templates/Users/login.php:48
+msgid "Login"
+msgstr "Inloggen"
+
+#: templates/Users/profile.php:21
+msgid "{0} {1}"
+msgstr "{0} {1}"
+
+#: templates/Users/profile.php:27
+msgid "Change Password"
+msgstr "Wachtwoord wijzigen"
+
+#: templates/Users/profile.php:38 templates/Users/view.php:68
+msgid "Social Accounts"
+msgstr "Sociale media accounts"
+
+#: templates/Users/profile.php:42 templates/Users/view.php:73
+msgid "Avatar"
+msgstr "Profielfoto"
+
+#: templates/Users/profile.php:43 templates/Users/view.php:72
+msgid "Provider"
+msgstr "Provider"
+
+#: templates/Users/profile.php:44
+msgid "Link"
+msgstr "Link"
+
+#: templates/Users/profile.php:51
+msgid "Link to {0}"
+msgstr "Link naar {0}"
+
+#: templates/Users/register.php:31
+msgid "Accept TOS conditions?"
+msgstr "Accepteer de algemene voorwaarden?"
+
+#: templates/Users/request_reset_password.php:20
+msgid "Please enter your email or username to reset your password"
+msgstr ""
+"Vul alstublieft uw e-mailadres of gebruikersnaam in om uw wachtwoord opnieuw "
+"in te stellen"
+
+#: templates/Users/resend_token_validation.php:15
+msgid "Resend Validation email"
+msgstr "Verstuur validatie e-mail opnieuw"
+
+#: templates/Users/resend_token_validation.php:17
+msgid "Email or username"
+msgstr "E-mailadres of gebruikersnaam"
+
+#: templates/Users/u2f_authenticate.php:22 templates/Users/webauthn2fa.php:25
+msgid "Verify your registered yubico key"
+msgstr "Verifieer uw geregistreerde Yubico Key"
+
+#: templates/Users/u2f_authenticate.php:23 templates/Users/u2f_register.php:23
+#: templates/Users/webauthn2fa.php:20 templates/Users/webauthn2fa.php:26
+msgid "Please insert and tap your yubico key"
+msgstr "Plaats en druk op uw Yubico Key"
+
+#: templates/Users/u2f_authenticate.php:24 templates/Users/webauthn2fa.php:27
+msgid ""
+"You can now finish the authentication process using the registered device."
+msgstr ""
+"U kunt nu het authenticatieproces afronden, met het geregistreerde apparaat."
+
+#: templates/Users/u2f_authenticate.php:25 templates/Users/webauthn2fa.php:22
+#: templates/Users/webauthn2fa.php:28
+msgid ""
+"When the YubiKey starts blinking, press the golden disc to activate it. "
+"Depending on the web browser you might need to confirm the use of extended "
+"information from the YubiKey."
+msgstr ""
+"Zodra de YubiKey start te knipperen, druk dan op de gouden cirkel om hem te "
+"activeren. Afhankelijk van uw webbrowser moet u misschien toestemming geven "
+"om de YubiKey te kunnen gebruiken."
+
+#: templates/Users/u2f_authenticate.php:27 templates/Users/u2f_register.php:27
+#: templates/Users/webauthn2fa.php:31
+msgid "Reload"
+msgstr "Opnieuw laden"
+
+#: templates/Users/u2f_authenticate.php:51 templates/Users/u2f_register.php:56
+msgid "Yubico key check has failed, please try again"
+msgstr "De Yubico Key check is mislukt, probeer het alstublieft opnieuw"
+
+#: templates/Users/u2f_register.php:22 templates/Users/webauthn2fa.php:19
+msgid "Registering your yubico key"
+msgstr "Registreer uw Yubico Key"
+
+#: templates/Users/verify.php:13
+msgid "Verification Code"
+msgstr "Verificatiecode"
+
+#: templates/Users/verify.php:15
+msgid ""
+"<span class=\"glyphicon glyphicon-log-in\" aria-hidden=\"true\"></span> "
+"Verify"
+msgstr ""
+"<span class=\"glyphicon glyphicon-log-in\" aria-hidden=\"true\"></span> "
+"Verifieer"
+
+#: templates/Users/view.php:19
+msgid "Delete User"
+msgstr "Verwijder Gebruiker"
+
+#: templates/Users/view.php:24
+msgid "New User"
+msgstr "Nieuwe Gebruiker"
+
+#: templates/Users/view.php:31
+msgid "Id"
+msgstr "Id"
+
+#: templates/Users/view.php:37
+msgid "First Name"
+msgstr "Voornaam"
+
+#: templates/Users/view.php:39
+msgid "Last Name"
+msgstr "Achternaam"
+
+#: templates/Users/view.php:41
+msgid "Role"
+msgstr "Rol"
+
+#: templates/Users/view.php:45
+msgid "Api Token"
+msgstr "API Token"
+
+#: templates/Users/view.php:53
+msgid "Token Expires"
+msgstr "Token vervaltt op"
+
+#: templates/Users/view.php:55
+msgid "Activation Date"
+msgstr "Activatiedatum"
+
+#: templates/Users/view.php:57
+msgid "Tos Date"
+msgstr "Alg. Voorw. Datum"
+
+#: templates/Users/view.php:59 templates/Users/view.php:75
+msgid "Created"
+msgstr "Gemaakt op"
+
+#: templates/Users/view.php:61 templates/Users/view.php:76
+msgid "Modified"
+msgstr "Bewerkt op"
+
+#: templates/Users/webauthn2fa.php:8
+msgid "Two-factor authentication"
+msgstr "Tweefactor-authenticatie"
+
+#: templates/Users/webauthn2fa.php:21
+msgid ""
+"In order to enable your YubiKey the first step is to perform a registration."
+msgstr ""
+"Voordat uw Yubikey ingeschakeld kan worden, moet die eerst worden "
+"geregistreerd."
+
+#: templates/email/html/reset_password.php:14
+#: templates/email/html/social_account_validation.php:14
+#: templates/email/html/validation.php:13
+#: templates/email/text/reset_password.php:12
+#: templates/email/text/social_account_validation.php:12
+#: templates/email/text/validation.php:12
+msgid "Hi {0}"
+msgstr "Beste {0}"
+
+#: templates/email/html/reset_password.php:17
+msgid "Reset your password here"
+msgstr "Uw wachtwoord opnieuw instellen kan hier"
+
+#: templates/email/html/reset_password.php:20
+#: templates/email/html/social_account_validation.php:23
+#: templates/email/html/validation.php:19
+msgid ""
+"If the link is not correctly displayed, please copy the following address in "
+"your web browser {0}"
+msgstr ""
+"Als de link niet correct wordt weergegeven, kopieer en plak dan de volgende "
+"link in uw webbrowser {0}"
+
+#: templates/email/html/reset_password.php:27
+#: templates/email/html/social_account_validation.php:30
+#: templates/email/html/validation.php:26
+#: templates/email/text/reset_password.php:20
+#: templates/email/text/social_account_validation.php:20
+#: templates/email/text/validation.php:20
+msgid "Thank you"
+msgstr "Bedankt"
+
+#: templates/email/html/social_account_validation.php:18
+msgid "Activate your social login here"
+msgstr "Activeer uw sociale media login hier"
+
+#: templates/email/html/validation.php:16
+msgid "Activate your account here"
+msgstr "Activeer uw account hier"
+
+#: templates/email/text/reset_password.php:14
+#: templates/email/text/validation.php:14
+msgid "Please copy the following address in your web browser {0}"
+msgstr "Kopieer en plak alstublieft de volgende link in uw webbrowser {0}"
+
+#: templates/email/text/social_account_validation.php:14
+msgid ""
+"Please copy the following address in your web browser to activate your "
+"social login {0}"
+msgstr ""
+"Kopieer en plak alstublieft de volgende link in uw webbrowser, om uw sociale "
+"media login te activeren {0}"

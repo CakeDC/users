@@ -28,17 +28,25 @@ class UsersMailer extends Mailer
      * @param \Cake\Datasource\EntityInterface $user User entity
      * @return void
      */
-    protected function validation(EntityInterface $user)
+    protected function validation(EntityInterface $user, array $options = [])
     {
         $firstName = isset($user['first_name']) ? $user['first_name'] . ', ' : '';
         // un-hide the token to be able to send it in the email content
         $user->setHidden(['password', 'token_expires', 'api_token']);
         $subject = __d('cake_d_c/users', 'Your account validation link');
-        $viewVars = [
-            'activationUrl' => UsersUrl::actionUrl('validateEmail', [
+
+        if (isset($options['linkGenerator']) && is_callable($options['linkGenerator'])) {
+            $generator = $options['linkGenerator'];
+            $link = $generator($user['token']);
+        } else {
+            $link = UsersUrl::actionUrl('validateEmail', [
                 '_full' => true,
                 $user['token'],
-            ]),
+            ]);
+        }
+
+        $viewVars = [
+            'activationUrl' => $link,
         ] + $user->toArray();
 
         $this
@@ -57,18 +65,25 @@ class UsersMailer extends Mailer
      * @param \Cake\Datasource\EntityInterface $user User entity
      * @return void
      */
-    protected function resetPassword(EntityInterface $user)
+    protected function resetPassword(EntityInterface $user, array $options = [])
     {
         $firstName = isset($user['first_name']) ? $user['first_name'] . ', ' : '';
         $subject = __d('cake_d_c/users', '{0}Your reset password link', $firstName);
         // un-hide the token to be able to send it in the email content
         $user->setHidden(['password', 'token_expires', 'api_token']);
 
-        $viewVars = [
-            'activationUrl' => UsersUrl::actionUrl('resetPassword', [
+        if (isset($options['linkGenerator']) && is_callable($options['linkGenerator'])) {
+            $generator = $options['linkGenerator'];
+            $link = $generator($user['token']);
+        } else {
+            $link = UsersUrl::actionUrl('resetPassword', [
                 '_full' => true,
                 $user['token'],
-            ]),
+            ]);
+        }
+
+        $viewVars = [
+            'activationUrl' => $link,
         ] + $user->toArray();
 
         $this

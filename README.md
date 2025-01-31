@@ -53,7 +53,7 @@ Requirements
 ------------
 
 * CakePHP 4.0+
-* PHP 7.2+
+* PHP 7.3+
 
 Documentation
 -------------

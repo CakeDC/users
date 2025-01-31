@@ -17,6 +17,7 @@ use Authorization\Exception\Exception;
 use Authorization\Exception\ForbiddenException;
 use Authorization\Exception\MissingIdentityException;
 use Authorization\Middleware\UnauthorizedHandler\CakeRedirectHandler;
+use Cake\Core\Configure;
 use Cake\Http\ServerRequest;
 use Cake\Http\Session;
 use Cake\Routing\Router;
@@ -51,12 +52,16 @@ class DefaultRedirectHandler extends CakeRedirectHandler
     /**
      * @inheritDoc
      */
-    public function handle(Exception $exception, ServerRequestInterface $request, array $options = []): ResponseInterface
-    {
+    public function handle(
+        Exception $exception,
+        ServerRequestInterface $request,
+        array $options = []
+    ): ResponseInterface {
         $options += $this->defaultOptions;
         $response = parent::handle($exception, $request, $options);
         $session = $request->getAttribute('session');
         if ($session instanceof Session) {
+            $options['request'] = $request;
             $this->addFlashMessage($session, $options);
         }
 
@@ -78,7 +83,13 @@ class DefaultRedirectHandler extends CakeRedirectHandler
         }
 
         if ($options['queryParam'] !== null) {
-            $url['?'][$options['queryParam']] = (string)$request->getUri();
+            $redirectUri = $request->getUri();
+            $redirect = $redirectUri->getPath();
+            if ($redirectUri->getQuery()) {
+                $redirect .= '?' . $redirectUri->getQuery();
+            }
+
+            $url['?'][$options['queryParam']] = $redirect;
         }
 
         return Router::url($url);
@@ -108,8 +119,13 @@ class DefaultRedirectHandler extends CakeRedirectHandler
     {
         $message = (array)($options['flash'] ?? []);
 
+        $unauthorizedUrl = '';
+        if (Configure::read('debug')) {
+            $unauthorizedUrl = __d('cake_d_c/users', 'Location = ') . (string)$options['request']->getUri();
+        }
+
         return $message + [
-            'message' => __d('cake_d_c/users', 'You are not authorized to access that location.'),
+            'message' => __d('cake_d_c/users', 'You are not authorized to access that location.') . $unauthorizedUrl,
             'key' => 'flash',
             'element' => 'flash/error',
             'params' => [],

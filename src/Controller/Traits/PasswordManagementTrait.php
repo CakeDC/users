@@ -164,20 +164,20 @@ trait PasswordManagementTrait
                 'type' => 'password',
             ]);
             if ($resetUser) {
-                $msg = __d('cake_d_c/users', 'Please check your email to continue with password reset process');
+                $msg = __d('cake_d_c/users', 'If the account is valid, the system will send an instructional email to the address on record.');
                 $this->Flash->success($msg);
             } else {
-                $msg = __d('cake_d_c/users', 'The password token could not be generated. Please try again');
+                $msg = __d('cake_d_c/users', 'There was an error please contact Administrator');
                 $this->Flash->error($msg);
             }
 
             return $this->redirect(['action' => 'login']);
-        } catch (UserNotFoundException $exception) {
-            $this->Flash->error(__d('cake_d_c/users', 'User {0} was not found', $reference));
-        } catch (UserNotActiveException $exception) {
-            $this->Flash->error(__d('cake_d_c/users', 'The user is not active'));
+        } catch (UserNotFoundException | UserNotActiveException $exception) {
+            $msg = __d('cake_d_c/users', 'If the account is valid, the system will send an instructional email to the address on record.');
+            $this->Flash->success($msg);
         } catch (Exception $exception) {
-            $this->Flash->error(__d('cake_d_c/users', 'Token could not be reset'));
+            $msg = __d('cake_d_c/users', 'There was an error please contact Administrator');
+            $this->Flash->error($msg);
             $this->log($exception->getMessage());
         }
     }
@@ -195,11 +195,7 @@ trait PasswordManagementTrait
     {
         if ($this->getRequest()->is('post')) {
             try {
-                $query = $this->getUsersTable()->query();
-                $query->update()
-                    ->set(['secret_verified' => false, 'secret' => null])
-                    ->where(['id' => $id]);
-                $query->execute();
+                $query = $this->getUsersTable()->updateAll(['secret_verified' => false, 'secret' => null], ['id' => $id]);
 
                 $message = __d('cake_d_c/users', 'Google Authenticator token was successfully reset');
                 $this->Flash->success($message, 'default');

@@ -17,6 +17,7 @@ use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\EventDispatcherTrait;
 use Cake\Log\Log;
+use Cake\ORM\Query;
 use Cake\Utility\Hash;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
@@ -35,6 +36,13 @@ class SocialBehavior extends BaseTokenBehavior
     use RandomStringTrait;
 
     /**
+     * Enables social account validation
+     *
+     * @var bool
+     */
+    protected $validateSocialAccount = true;
+
+    /**
      * Username field it can be modified via config
      *
      * @var string
@@ -49,6 +57,7 @@ class SocialBehavior extends BaseTokenBehavior
      */
     public function initialize(array $config): void
     {
+        $this->validateSocialAccount = (bool)Configure::read('Users.Social.validateSocialAccount');
         if (isset($config['username'])) {
             $this->_username = $config['username'];
         }
@@ -135,7 +144,6 @@ class SocialBehavior extends BaseTokenBehavior
         $useEmail = $options['use_email'] ?? null;
         $validateEmail = $options['validate_email'] ?? null;
         $tokenExpiration = $options['token_expiration'] ?? null;
-        $existingUser = null;
         $email = $data['email'] ?? null;
         if ($useEmail && empty($email)) {
             throw new MissingEmailException(__d('cake_d_c/users', 'Email not present'));
@@ -229,8 +237,12 @@ class SocialBehavior extends BaseTokenBehavior
             $user = $this->_table->newEntity($userData);
             $user = $this->_updateActive($user, false, $tokenExpiration);
         } else {
-            if ($useEmail && empty($dataValidated)) {
-                $accountData['active'] = false;
+            if (
+                $useEmail &&
+                empty($dataValidated) ||
+                ($this->validateSocialAccount && !Configure::read('OAuth.providers.' . $data['provider'] . '.skipSocialAccountValidation'))
+            ) {
+                $accountData['active'] = 0;
             }
             $user = $existingUser;
         }
@@ -274,8 +286,15 @@ class SocialBehavior extends BaseTokenBehavior
      * @param array $options Find options with email key.
      * @return \Cake\ORM\Query
      */
-    public function findExistingForSocialLogin(\Cake\ORM\Query $query, array $options)
+    public function findExistingForSocialLogin(Query $query, array $options)
     {
+        if (!array_key_exists('email', $options)) {
+            throw new MissingEmailException(__d('cake_d_c/users', 'Missing `email` option in options array'));
+        }
+        if (!$options['email']) {
+            return $query->where('1 != 1');
+        }
+
         return $query->where([
             $this->_table->aliasField('email') => $options['email'],
         ]);

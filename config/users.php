@@ -47,6 +47,11 @@ $config = [
             // determines if registration workflow includes email validation
             'validate' => true,
         ],
+        'Login' => [
+            'flashMessage' => false, // bool
+            'updateLastLogin' => true,
+            'lastLoginField' => 'last_login',
+        ],
         'Registration' => [
             // determines if the register is enabled
             'active' => true,
@@ -78,10 +83,13 @@ $config = [
         'Social' => [
             // enable social login
             'login' => false,
+            // enable social account validation for first social logins into existing accounts
+            'validateSocialAccount' => true,
         ],
         'Profile' => [
             // Allow view other users profiles
             'viewOthers' => true,
+            'contain' => [],
         ],
         'Key' => [
             'Session' => [
@@ -145,6 +153,10 @@ $config = [
         'appName' => null,//App must set a valid name here
         'id' => null,//default value is the current domain
         'checker' => \CakeDC\Auth\Authentication\DefaultWebauthn2fAuthenticationChecker::class,
+    ],
+    'TwoFactorProcessors' => [
+        \CakeDC\Auth\Authentication\TwoFactorProcessor\Webauthn2faProcessor::class,
+        \CakeDC\Auth\Authentication\TwoFactorProcessor\OneTimePasswordProcessor::class,
     ],
     // default configuration used to auto-load the Auth Component, override to change the way Auth works
     'Auth' => [
@@ -240,6 +252,7 @@ $config = [
                 'service' => 'CakeDC\Auth\Social\Service\OAuth2Service',
                 'className' => 'League\OAuth2\Client\Provider\Facebook',
                 'mapper' => 'CakeDC\Auth\Social\Mapper\Facebook',
+                'skipSocialAccountValidation' => false,
                 'authParams' => ['scope' => ['public_profile', 'email', 'user_birthday', 'user_gender', 'user_link']],
                 'options' => [
                     'graphApiVersion' => 'v2.8', //bio field was deprecated on >= v2.8
@@ -252,6 +265,7 @@ $config = [
                 'service' => 'CakeDC\Auth\Social\Service\OAuth1Service',
                 'className' => 'League\OAuth1\Client\Server\Twitter',
                 'mapper' => 'CakeDC\Auth\Social\Mapper\Twitter',
+                'skipSocialAccountValidation' => false,
                 'options' => [
                     'redirectUri' => Router::fullBaseUrl() . '/auth/twitter',
                     'linkSocialUri' => Router::fullBaseUrl() . '/link-social/twitter',
@@ -262,6 +276,7 @@ $config = [
                 'service' => 'CakeDC\Auth\Social\Service\OAuth2Service',
                 'className' => 'League\OAuth2\Client\Provider\LinkedIn',
                 'mapper' => 'CakeDC\Auth\Social\Mapper\LinkedIn',
+                'skipSocialAccountValidation' => false,
                 'options' => [
                     'redirectUri' => Router::fullBaseUrl() . '/auth/linkedIn',
                     'linkSocialUri' => Router::fullBaseUrl() . '/link-social/linkedIn',
@@ -272,6 +287,7 @@ $config = [
                 'service' => 'CakeDC\Auth\Social\Service\OAuth2Service',
                 'className' => 'League\OAuth2\Client\Provider\Instagram',
                 'mapper' => 'CakeDC\Auth\Social\Mapper\Instagram',
+                'skipSocialAccountValidation' => false,
                 'options' => [
                     'redirectUri' => Router::fullBaseUrl() . '/auth/instagram',
                     'linkSocialUri' => Router::fullBaseUrl() . '/link-social/instagram',
@@ -282,6 +298,7 @@ $config = [
                 'service' => 'CakeDC\Auth\Social\Service\OAuth2Service',
                 'className' => 'League\OAuth2\Client\Provider\Google',
                 'mapper' => 'CakeDC\Auth\Social\Mapper\Google',
+                'skipSocialAccountValidation' => false,
                 'options' => [
                     'userFields' => ['url', 'aboutMe'],
                     'redirectUri' => Router::fullBaseUrl() . '/auth/google',
@@ -293,7 +310,8 @@ $config = [
                 'service' => 'CakeDC\Auth\Social\Service\OAuth2Service',
                 'className' => 'Luchianenco\OAuth2\Client\Provider\Amazon',
                 'mapper' => 'CakeDC\Auth\Social\Mapper\Amazon',
-                 'options' => [
+                'skipSocialAccountValidation' => false,
+                'options' => [
                     'redirectUri' => Router::fullBaseUrl() . '/auth/amazon',
                     'linkSocialUri' => Router::fullBaseUrl() . '/link-social/amazon',
                     'callbackLinkSocialUri' => Router::fullBaseUrl() . '/callback-link-social/amazon',
@@ -303,6 +321,7 @@ $config = [
                 'service' => 'CakeDC\Auth\Social\Service\OAuth2Service',
                 'className' => 'CakeDC\OAuth2\Client\Provider\Cognito',
                 'mapper' => 'CakeDC\Auth\Social\Mapper\Cognito',
+                'skipSocialAccountValidation' => false,
                 'options' => [
                     'redirectUri' => Router::fullBaseUrl() . '/auth/cognito',
                     'linkSocialUri' => Router::fullBaseUrl() . '/link-social/cognito',
@@ -314,6 +333,7 @@ $config = [
                 'service' => 'CakeDC\Auth\Social\Service\OAuth2Service',
                 'className' => 'TheNetworg\OAuth2\Client\Provider\Azure',
                 'mapper' => 'CakeDC\Auth\Social\Mapper\Azure',
+                'skipSocialAccountValidation' => false,
                 'options' => [
                     'redirectUri' => Router::fullBaseUrl() . '/auth/azure',
                     'linkSocialUri' => Router::fullBaseUrl() . '/link-social/azure',

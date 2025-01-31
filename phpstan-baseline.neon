@@ -66,11 +66,6 @@ parameters:
 			path: src/Controller/UsersController.php
 
 		-
-			message: "#^Parameter \\#1 \\$message of method Cake\\\\Controller\\\\Controller\\:\\:log\\(\\) expects string, Exception given\\.$#"
-			count: 1
-			path: src/Controller/UsersController.php
-
-		-
 			message: "#^Parameter \\#1 \\$object of method Cake\\\\Controller\\\\Controller\\:\\:paginate\\(\\) expects Cake\\\\ORM\\\\Query\\|Cake\\\\ORM\\\\Table\\|string\\|null, Cake\\\\Datasource\\\\RepositoryInterface given\\.$#"
 			count: 1
 			path: src/Controller/UsersController.php
