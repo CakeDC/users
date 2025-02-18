@@ -207,7 +207,7 @@ and ensure it has the following content
 
 ```php
         // ... inside the Form
-        <?= $this->Form->control('email', ['required' => true]) ?>
+        <?= $this->Form->control('email', ['required' => true, 'autofocus' => 'autofocus']) ?>
         <?= $this->Form->control('password', ['required' => true]) ?>
         // ... rest of your login.php code
 ```
