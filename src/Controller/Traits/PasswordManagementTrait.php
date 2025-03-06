@@ -51,12 +51,12 @@ trait PasswordManagementTrait
         if ($userId) {
             if ($id && $identity['is_superuser'] && Configure::read('Users.Superuser.allowedToChangePasswords')) {
                 // superuser editing any account's password
-                $user->id = $id;
+                $user->set('id', $id);
                 $validatePassword = false;
                 $redirect = ['action' => 'index'];
             } elseif (!$id || $id === $userId) {
                 // normal user editing own password
-                $user->id = $userId;
+                $user->set('id', $userId);
                 $validatePassword = true;
                 $redirect = Configure::read('Users.Profile.route');
             } else {
@@ -69,12 +69,15 @@ trait PasswordManagementTrait
             }
         } else {
             // password reset
-            $user->id = $this->getRequest()->getSession()->read(
-                Configure::read('Users.Key.Session.resetPasswordUserId')
+            $user->set(
+                'id',
+                $this->getRequest()->getSession()->read(
+                    Configure::read('Users.Key.Session.resetPasswordUserId')
+                )
             );
             $validatePassword = false;
             $redirect = $this->Authentication->getConfig('loginAction');
-            if (!$user->id) {
+            if (!$user->get('id')) {
                 $this->Flash->error(__d('cake_d_c/users', 'User was not found'));
                 $this->redirect($redirect);
 

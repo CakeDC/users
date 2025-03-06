@@ -11,11 +11,6 @@ parameters:
 			path: src/Controller/Component/LoginComponent.php
 
 		-
-			message: "#^Access to an undefined property CakeDC\\\\Users\\\\Controller\\\\UsersController\\:\\:\\$Authentication\\.$#"
-			count: 2
-			path: src/Controller/UsersController.php
-
-		-
 			message: "#^Access to an undefined property CakeDC\\\\Users\\\\Controller\\\\UsersController\\:\\:\\$OneTimePasswordAuthenticator\\.$#"
 			count: 3
 			path: src/Controller/UsersController.php
@@ -106,11 +101,6 @@ parameters:
 			path: src/Model/Behavior/BaseTokenBehavior.php
 
 		-
-			message: "#^Access to an undefined property Cake\\\\Datasource\\\\EntityInterface\\:\\:\\$social_accounts\\.$#"
-			count: 2
-			path: src/Model/Behavior/LinkSocialBehavior.php
-
-		-
 			message: "#^Access to an undefined property Cake\\\\ORM\\\\Table\\:\\:\\$SocialAccounts\\.$#"
 			count: 5
 			path: src/Model/Behavior/LinkSocialBehavior.php
@@ -119,21 +109,6 @@ parameters:
 			message: "#^Negated boolean expression is always false\\.$#"
 			count: 1
 			path: src/Model/Behavior/LinkSocialBehavior.php
-
-		-
-			message: "#^Access to an undefined property Cake\\\\Datasource\\\\EntityInterface\\:\\:\\$password\\.$#"
-			count: 1
-			path: src/Model/Behavior/PasswordBehavior.php
-
-		-
-			message: "#^Access to an undefined property Cake\\\\Datasource\\\\EntityInterface\\:\\:\\$password_confirm\\.$#"
-			count: 1
-			path: src/Model/Behavior/PasswordBehavior.php
-
-		-
-			message: "#^Call to an undefined method Cake\\\\Datasource\\\\EntityInterface\\:\\:checkPassword\\(\\)\\.$#"
-			count: 1
-			path: src/Model/Behavior/PasswordBehavior.php
 
 		-
 			message: "#^Call to an undefined method Cake\\\\ORM\\\\Table\\:\\:findByUsernameOrEmail\\(\\)\\.$#"
@@ -209,9 +184,3 @@ parameters:
 			message: "#^Method CakeDC\\\\Users\\\\Model\\\\Entity\\\\User\\:\\:_setTos\\(\\) should return bool but returns string\\.$#"
 			count: 1
 			path: src/Model/Entity/User.php
-
-		-
-			message: "#^Parameter \\#2 \\$usersTable of class CakeDC\\\\Users\\\\Webauthn\\\\Repository\\\\UserCredentialSourceRepository constructor expects CakeDC\\\\Users\\\\Model\\\\Table\\\\UsersTable\\|null, Cake\\\\ORM\\\\Table given\\.$#"
-			count: 1
-			path: src/Webauthn/BaseAdapter.php
-

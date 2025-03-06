@@ -40,7 +40,7 @@ class BaseAdapter
     protected $repository;
 
     /**
-     * @var \Cake\Datasource\EntityInterface|\CakeDC\Users\Model\Entity\User
+     * @var \Cake\Datasource\EntityInterface
      */
     private $user;
     /**
@@ -71,6 +71,9 @@ class BaseAdapter
          * @var \Cake\ORM\Entity $userSession
          */
         $userSession = $request->getSession()->read('Webauthn2fa.User');
+        if (empty($userSession->id)) {
+            throw new \OutOfBoundsException(__d('cake_d_c/users', "The user id was not found into session key 'Webauthn2fa.User'"));
+        }
         $usersTable = $usersTable ?? TableRegistry::getTableLocator()
             ->get($userSession->getSource());
         $this->user = $usersTable->get($userSession->id);
@@ -88,7 +91,7 @@ class BaseAdapter
         $user = $this->getUser();
 
         return new PublicKeyCredentialUserEntity(
-            $user->webauthn_username ?? $user->username,
+            $user->webauthn_username ?? $user->get('username'),
             (string)$user->id,
             (string)$user->first_name
         );

@@ -81,8 +81,8 @@ class SetupComponentTest extends TestCase
      * Test initial setup
      *
      * @param bool $authentication Should use authentication component
-     * @param booll $authorization Should use authorization component
-     * @param booll $oneTimePass Should use OneTimePassword component
+     * @param bool $authorization Should use authorization component
+     * @param bool $oneTimePass Should use OneTimePassword component
      * @throws \Exception
      * @dataProvider dataProviderInitialization
      * @return void

@@ -46,7 +46,7 @@ class UsersDeleteUserCommand extends Command
          */
         $UsersTable = $this->getTableLocator()->get('Users');
         /**
-         * @var \Cake\Datasource\EntityInterface $user
+         * @var \CakeDC\Users\Model\Entity\User $user
          */
         $user = $UsersTable->find()->where(['username' => $username])->firstOrFail();
         if (isset($UsersTable->SocialAccounts)) {

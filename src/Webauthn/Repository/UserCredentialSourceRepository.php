@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace CakeDC\Users\Webauthn\Repository;
 
 use Cake\Datasource\EntityInterface;
-use CakeDC\Users\Model\Table\UsersTable;
+use Cake\ORM\Table;
 use CakeDC\Users\Webauthn\Base64Utility;
 use Webauthn\PublicKeyCredentialSource;
 use Webauthn\PublicKeyCredentialSourceRepository;
@@ -13,19 +13,19 @@ use Webauthn\PublicKeyCredentialUserEntity;
 class UserCredentialSourceRepository implements PublicKeyCredentialSourceRepository
 {
     /**
-     * @var \Cake\Datasource\EntityInterface
+     * @var \Cake\Datasource\EntityInterface $user
      */
     private $user;
     /**
-     * @var \CakeDC\Users\Model\Table\UsersTable|null
+     * @var \Cake\ORM\Table|null
      */
     private $usersTable;
 
     /**
      * @param \Cake\Datasource\EntityInterface $user The user.
-     * @param \CakeDC\Users\Model\Table\UsersTable|null $usersTable The table.
+     * @param \Cake\ORM\Table|null $usersTable The table.
      */
-    public function __construct(EntityInterface $user, ?UsersTable $usersTable = null)
+    public function __construct(EntityInterface $user, ?Table $usersTable = null)
     {
         $this->user = $user;
         $this->usersTable = $usersTable;
@@ -50,7 +50,7 @@ class UserCredentialSourceRepository implements PublicKeyCredentialSourceReposit
      */
     public function findAllForUserEntity(PublicKeyCredentialUserEntity $publicKeyCredentialUserEntity): array
     {
-        if ($publicKeyCredentialUserEntity->getId() != $this->user->id) {
+        if ($publicKeyCredentialUserEntity->getId() != $this->user->get('id')) {
             return [];
         }
         $credentials = $this->user['additional_data']['webauthn_credentials'] ?? [];

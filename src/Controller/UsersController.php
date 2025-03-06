@@ -20,6 +20,7 @@ use Cake\ORM\TableRegistry;
 use CakeDC\Users\Controller\Traits\LinkSocialTrait;
 use CakeDC\Users\Controller\Traits\LoginTrait;
 use CakeDC\Users\Controller\Traits\OneTimePasswordVerifyTrait;
+use CakeDC\Users\Controller\Traits\OneTimeTokenTrait;
 use CakeDC\Users\Controller\Traits\ProfileTrait;
 use CakeDC\Users\Controller\Traits\ReCaptchaTrait;
 use CakeDC\Users\Controller\Traits\RegisterTrait;
@@ -32,6 +33,7 @@ use CakeDC\Users\Controller\Traits\Webauthn2faTrait;
  *
  * @property \CakeDC\Users\Model\Table\UsersTable $Users
  * @property \Cake\Controller\Component\FormProtectionComponent|null $FormProtection
+ * @property \Authentication\Controller\Component\AuthenticationComponent|null $Authentication
  */
 class UsersController extends AppController
 {
@@ -44,8 +46,7 @@ class UsersController extends AppController
     use SimpleCrudTrait;
     use SocialTrait;
     use Webauthn2faTrait;
-
-    // use CustomUsersTableTrait;
+    use OneTimeTokenTrait;
 
     /**
      * Initialize

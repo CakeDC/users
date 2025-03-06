@@ -32,10 +32,16 @@ page for more details.
 If you want to use Google Authenticator features...
 
 ```
-composer require robthree/twofactorauth:"^1.6"
+composer require robthree/twofactorauth:@stable
+composer require endroid/qr-code:@stable
+```
+NOTE: The plugin uses `endroid/qr-code` as the QR code provider by default. You can use any other changing the configuration key:
+
+```php
+'OneTimePasswordAuthenticator.qrcodeprovider' => YOUR_PROVIDER,
 ```
 
-NOTE: you'll need to enable `OneTimePasswordAuthenticator.login` in your config/users.php file:
+To finish configuration, you'll need to enable `OneTimePasswordAuthenticator.login` in your config/users.php file:
 
 ```php
 'OneTimePasswordAuthenticator.login' => true,

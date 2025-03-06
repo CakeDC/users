@@ -30,7 +30,7 @@ class LinkSocialBehavior extends Behavior
     /**
      * Link an user account with a social account (facebook, google)
      *
-     * @param \Cake\Datasource\EntityInterface $user User to link.
+     * @param \CakeDC\Users\Model\Entity\User $user User to link.
      * @param array $data Social account information.
      * @return \Cake\Datasource\EntityInterface
      */
@@ -60,22 +60,25 @@ class LinkSocialBehavior extends Behavior
     /**
      * Create or update a new social account linking to the user.
      *
-     * @param \Cake\Datasource\EntityInterface $user User to link.
+     * @param \CakeDC\Users\Model\Entity\User $user User to link.
      * @param array $data Social account information.
-     * @param \Cake\Datasource\EntityInterface $socialAccount to update or create.
+     * @param \CakeDC\Users\Model\Entity\SocialAccount $socialAccount to update or create.
      * @return \Cake\Datasource\EntityInterface
      */
     protected function createOrUpdateSocialAccount(EntityInterface $user, $data, $socialAccount)
     {
         if (!$socialAccount) {
+            /** @var \CakeDC\Users\Model\Entity\SocialAccount $socialAccount */
             $socialAccount = $this->_table->SocialAccounts->newEntity([]);
         }
 
         $data['user_id'] = $user->id;
+        /** @var \CakeDC\Users\Model\Entity\SocialAccount $socialAccount */
         $socialAccount = $this->populateSocialAccount($socialAccount, $data);
 
         $result = $this->_table->SocialAccounts->save($socialAccount);
 
+        /** @var array<\CakeDC\Users\Model\Entity\SocialAccount> $accounts */
         $accounts = (array)$user->social_accounts;
         $found = false;
         foreach ($accounts as $key => $account) {

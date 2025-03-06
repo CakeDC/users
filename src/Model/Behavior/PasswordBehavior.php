@@ -128,7 +128,7 @@ class PasswordBehavior extends BaseTokenBehavior
     /**
      * Change password method
      *
-     * @param \Cake\Datasource\EntityInterface $user user data.
+     * @param \CakeDC\Users\Model\Entity\User $user user data.
      * @throws \CakeDC\Users\Exception\WrongPasswordException
      * @return mixed
      */
@@ -141,7 +141,7 @@ class PasswordBehavior extends BaseTokenBehavior
         }
 
         if (!empty($user->current_password)) {
-            if (!$user->checkPassword($user->current_password, $currentUser->password)) {
+            if (!$user->checkPassword($user->current_password, $currentUser->get('password'))) {
                 throw new WrongPasswordException(__d('cake_d_c/users', 'The current password does not match'));
             }
             if ($user->current_password === $user->password_confirm) {

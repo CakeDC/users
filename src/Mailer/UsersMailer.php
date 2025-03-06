@@ -15,6 +15,7 @@ namespace CakeDC\Users\Mailer;
 use Cake\Datasource\EntityInterface;
 use Cake\Mailer\Mailer;
 use Cake\Mailer\Message;
+use Cake\Routing\Router;
 use CakeDC\Users\Utility\UsersUrl;
 
 /**
@@ -126,5 +127,32 @@ class UsersMailer extends Mailer
         $this
             ->viewBuilder()
             ->setTemplate('CakeDC/Users.socialAccountValidation');
+    }
+
+    /**
+     * Send a one-time login token.
+     *
+     * @param \CakeDC\Users\Model\Entity\User $user User.
+     * @param string $token Token.
+     * @return void
+     */
+    public function sendToken(EntityInterface $user, string $token): void
+    {
+        $this->viewBuilder()->setTemplate('CakeDC/Users.onetimeToken');
+        $loginLink = Router::url([
+            'controller' => 'Users',
+            'action' => 'singleTokenLogin',
+            '?' => [
+                'token' => $token,
+            ],
+        ], true);
+        $this->setTo($user->email);
+        $this->setSubject(__d('cake_d_c/users', 'Your One-Time Login Token'));
+        $this->setEmailFormat('html');
+        $this->setViewVars([
+            'user' => $user,
+            'loginLink' => $loginLink,
+            'token' => $token,
+        ]);
     }
 }
