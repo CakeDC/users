@@ -83,7 +83,7 @@ trait LinkSocialTrait
             $log = sprintf(
                 'Error linking social account: %s %s',
                 $e->getMessage(),
-                $e
+                $e,
             );
             $this->log($log);
 

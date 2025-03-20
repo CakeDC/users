@@ -83,13 +83,13 @@ class SocialTraitTest extends BaseTrait
 
         $sessionFailure = new Failure(
             $SessionAuth,
-            new Result(null, Result::FAILURE_IDENTITY_NOT_FOUND)
+            new Result(null, Result::FAILURE_IDENTITY_NOT_FOUND),
         );
         $formFailure = new Failure(
             $FormAuth,
             new Result(null, Result::FAILURE_CREDENTIALS_MISSING, [
                 'Password' => [],
-            ])
+            ]),
         );
         $failures = [$sessionFailure, $formFailure];
 
@@ -118,11 +118,11 @@ class SocialTraitTest extends BaseTrait
             'messages' => [
                 SocialAuthenticator::FAILURE_USER_NOT_ACTIVE => __d(
                     'cake_d_c/users',
-                    'Your user has not been validated yet. Please check your inbox for instructions'
+                    'Your user has not been validated yet. Please check your inbox for instructions',
                 ),
                 SocialAuthenticator::FAILURE_ACCOUNT_NOT_ACTIVE => __d(
                     'cake_d_c/users',
-                    'Your social account has not been validated yet. Please check your inbox for instructions'
+                    'Your social account has not been validated yet. Please check your inbox for instructions',
                 ),
             ],
             'targetAuthenticator' => SocialAuthenticator::class,
@@ -139,7 +139,7 @@ class SocialTraitTest extends BaseTrait
             ->method('loadComponent')
             ->with(
                 $this->equalTo('CakeDC/Users.Login'),
-                $this->equalTo($config)
+                $this->equalTo($config),
             )
             ->will($this->returnValue($Login));
 

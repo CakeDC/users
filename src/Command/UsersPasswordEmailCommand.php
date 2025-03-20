@@ -54,13 +54,13 @@ class UsersPasswordEmailCommand extends Command
         if ($resetUser) {
             $msg = __d(
                 'cake_d_c/users',
-                'Please ask the user to check the email to continue with password reset process'
+                'Please ask the user to check the email to continue with password reset process',
             );
             $io->out($msg);
         } else {
             $msg = __d(
                 'cake_d_c/users',
-                'The password token could not be generated. Please try again'
+                'The password token could not be generated. Please try again',
             );
             $io->abort($msg);
         }

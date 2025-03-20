@@ -49,7 +49,7 @@ class UserCredentialSourceRepositoryTest extends TestCase
         $userEntity = new PublicKeyCredentialUserEntity(
             'john.doe',
             $userId,
-            'John Doe'
+            'John Doe',
         );
         $repository = new UserCredentialSourceRepository($user, $UsersTable);
         $credentials = $repository->findAllForUserEntity($userEntity);
@@ -60,7 +60,7 @@ class UserCredentialSourceRepositoryTest extends TestCase
         $userEntityInvalid = new PublicKeyCredentialUserEntity(
             'john.doe',
             '00000000-0000-0000-0000-000000000004',
-            'John Doe'
+            'John Doe',
         );
         $repository = new UserCredentialSourceRepository($user, $UsersTable);
         $credentials = $repository->findAllForUserEntity($userEntityInvalid);
@@ -98,7 +98,7 @@ class UserCredentialSourceRepositoryTest extends TestCase
         $userEntity = new PublicKeyCredentialUserEntity(
             'john.doe',
             $userId,
-            'John Doe'
+            'John Doe',
         );
         $publicKey = PublicKeyCredentialSource::createFromArray($credentialData);
         $repository = new UserCredentialSourceRepository($user, $UsersTable);
@@ -108,15 +108,15 @@ class UserCredentialSourceRepositoryTest extends TestCase
         $userAfter = $UsersTable->get($user->id);
         $this->assertArrayHasKey(
             '12b37486-9299-4331-ac33-85b2d985b6fe',
-            $userAfter->additional_data['webauthn_credentials']
+            $userAfter->additional_data['webauthn_credentials'],
         );
         $this->assertArrayHasKey(
             $firstKey,
-            $userAfter->additional_data['webauthn_credentials']
+            $userAfter->additional_data['webauthn_credentials'],
         );
         $this->assertCount(
             2,
-            $userAfter->additional_data['webauthn_credentials']
+            $userAfter->additional_data['webauthn_credentials'],
         );
     }
 }

@@ -53,11 +53,11 @@ class LoginComponentLoader
             'messages' => [
                 'FAILURE_USER_NOT_ACTIVE' => __d(
                     'cake_d_c/users',
-                    'Your user has not been validated yet. Please check your inbox for instructions'
+                    'Your user has not been validated yet. Please check your inbox for instructions',
                 ),
                 'FAILURE_ACCOUNT_NOT_ACTIVE' => __d(
                     'cake_d_c/users',
-                    'Your social account has not been validated yet. Please check your inbox for instructions'
+                    'Your social account has not been validated yet. Please check your inbox for instructions',
                 ),
             ],
             'targetAuthenticator' => \CakeDC\Users\Authenticator\SocialAuthenticator::class,

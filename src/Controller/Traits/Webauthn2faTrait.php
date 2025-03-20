@@ -52,7 +52,7 @@ trait Webauthn2faTrait
         }
 
         throw new BadRequestException(
-            __d('cake_d_c/users', 'User already has configured webauthn2fa')
+            __d('cake_d_c/users', 'User already has configured webauthn2fa'),
         );
     }
 
@@ -73,7 +73,7 @@ trait Webauthn2faTrait
                 return $this->getResponse()->withStringBody(json_encode(['success' => true]));
             }
             throw new BadRequestException(
-                __d('cake_d_c/users', 'User already has configured webauthn2fa')
+                __d('cake_d_c/users', 'User already has configured webauthn2fa'),
             );
         } catch (\Throwable $e) {
             $user = $this->request->getSession()->read('Webauthn2fa.User');
@@ -93,7 +93,7 @@ trait Webauthn2faTrait
         $adapter = $adapter ?? $this->getWebauthn2faAuthenticateAdapter();
 
         return $this->getResponse()->withStringBody(
-            json_encode($adapter->getOptions())
+            json_encode($adapter->getOptions()),
         );
     }
 
@@ -115,7 +115,7 @@ trait Webauthn2faTrait
             $this->getRequest()->getSession()->delete('Webauthn2fa');
             $this->getRequest()->getSession()->write(
                 TwoFactorAuthenticator::USER_SESSION_KEY,
-                $adapter->getUser()
+                $adapter->getUser(),
             );
 
             return $this->getResponse()->withStringBody(json_encode([

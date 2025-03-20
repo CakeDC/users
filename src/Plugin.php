@@ -61,7 +61,7 @@ class Plugin extends BasePlugin
         return $loader(
             $middlewareQueue,
             new AuthenticationServiceProvider(),
-            new AuthorizationServiceProvider()
+            new AuthorizationServiceProvider(),
         );
     }
 

@@ -107,7 +107,7 @@ class UsersTable extends Table
                     'rule' => ['compareWith', 'password_confirm'],
                     'message' => __d(
                         'cake_d_c/users',
-                        'Your password does not match your confirm password. Please try again'
+                        'Your password does not match your confirm password. Please try again',
                     ),
                     'allowEmpty' => false,
                 ]]);
