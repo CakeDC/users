@@ -76,7 +76,7 @@ function passwordStrengthMeter(opts) {
         let regexLower = new RegExp('(?=.*[a-z])')
         let regexUpper = new RegExp('(?=.*[A-Z])')
         let regexDigits = new RegExp('(?=.*[0-9])')
-        let regexSymbols = new RegExp('(?=.*[^a-zA-Z\d\s])')
+        let regexSymbols = new RegExp('(?=.*[^a-zA-Z\\d\\s])')
         // For length score print user selection or default value
         let regexLength = new RegExp('(?=.{' + pswMinLength + ',})')
 
