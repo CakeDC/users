@@ -2,8 +2,11 @@ Changelog
 =========
 Releases for CakePHP 5
 -------------
+* 15.0.1
+  * Fix bug with password meter configuration and symbols score management
+  * Fix code sniffer violations after changes in CakePHP rule set
 * 15.0.0
-  * ...
+  * Add magic link to login users
 * 14.3.4
   * Replace usage of 'admin' by UsersTable::ROLE_ADMIN constant across the plugin.
   * Fix role in UsersAddSuperuserCommand to be 'admin' instead of 'superadmin'.

@@ -12,7 +12,7 @@ Versions and branches
 
 |    CakePHP     |                    CakeDC Users Plugin                     |  Tag   | Notes    |
 |:--------------:|:----------------------------------------------------------:|:------:|:---------|
-|      ^5.0      | [15.0](https://github.com/cakedc/users/tree/15.next-cake5) | 15.0.0 | unstable |
+|      ^5.0      | [15.0](https://github.com/cakedc/users/tree/15.next-cake5) | 15.0.1 | stable   |
 |      ^5.0      | [14.4](https://github.com/cakedc/users/tree/14.next-cake5) | 14.3.4 | stable   |
 |      ^4.5      | [13.0](https://github.com/cakedc/users/tree/13.next-cake4) | 13.0.1 | stable   |
 |      ^5.0      | [12.0](https://github.com/cakedc/users/tree/12.next-cake5) |  12.0  | beta     |
