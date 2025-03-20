@@ -174,7 +174,7 @@ class UserHelper extends Helper
                 ['Empty password', 'Too simple', 'Simple', 'That\'s OK', 'Great password!'],
             ),
         );
-        $pswMinLength = Configure::read('Users.passwordMinLength', 8);
+        $pswMinLength = Configure::read('Users.passwordMeter.pswMinLength', 8);
         $showMessage = Configure::read('Users.passwordMeter.showMessage', true) ? 'true' : 'false';
         $script = $this->Html->scriptBlock("
             const requiredScore = $requiredScore;
