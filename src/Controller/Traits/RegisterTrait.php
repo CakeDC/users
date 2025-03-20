@@ -135,7 +135,7 @@ trait RegisterTrait
 
         return $this->validateReCaptcha(
             $this->getRequest()->getData('g-recaptcha-response'),
-            $this->getRequest()->clientIp()
+            $this->getRequest()->clientIp(),
         );
     }
 

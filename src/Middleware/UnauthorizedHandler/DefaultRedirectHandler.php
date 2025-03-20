@@ -55,7 +55,7 @@ class DefaultRedirectHandler extends CakeRedirectHandler
     public function handle(
         Exception $exception,
         ServerRequestInterface $request,
-        array $options = []
+        array $options = [],
     ): ResponseInterface {
         $options += $this->defaultOptions;
         $response = parent::handle($exception, $request, $options);

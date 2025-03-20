@@ -73,7 +73,7 @@ class RegisterBehavior extends BaseTokenBehavior
         $user = $this->_table->patchEntity(
             $user,
             $data,
-            ['validate' => $validate]
+            ['validate' => $validate],
         );
         $user['role'] = Configure::read('Users.Registration.defaultRole') ?: 'user';
         $user->validated = false;

@@ -91,7 +91,7 @@ class SocialBehavior extends BaseTokenBehavior
             } else {
                 //@todo: what if we don't have a social account after createSocialUser?
                 throw new InvalidArgumentException(
-                    __d('cake_d_c/users', 'Unable to login user with reference {0}', $reference)
+                    __d('cake_d_c/users', 'Unable to login user with reference {0}', $reference),
                 );
             }
         } else {

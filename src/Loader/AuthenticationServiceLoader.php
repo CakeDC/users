@@ -85,7 +85,7 @@ class AuthenticationServiceLoader
      */
     protected function loadTwoFactorAuthenticator($service, $processors)
     {
-        if (collection($processors)->some(fn ($processor) => $processor->enabled())) {
+        if (collection($processors)->some(fn($processor) => $processor->enabled())) {
             $service->loadAuthenticator('CakeDC/Auth.TwoFactor', [
                 'skipTwoFactorVerify' => true,
             ]);
@@ -106,7 +106,7 @@ class AuthenticationServiceLoader
         $options = $item;
         if (!isset($options['className'])) {
             throw new \InvalidArgumentException(
-                __d('cake_d_c/users', 'Property  {0}.className should be defined', $key)
+                __d('cake_d_c/users', 'Property  {0}.className should be defined', $key),
             );
         }
         $className = $options['className'];

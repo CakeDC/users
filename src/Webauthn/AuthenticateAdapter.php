@@ -40,7 +40,7 @@ class AuthenticateAdapter extends BaseAdapter
 
         $this->request->getSession()->write(
             'Webauthn2fa.authenticateOptions',
-            json_encode($options)
+            json_encode($options),
         );
 
         return $options;
@@ -56,7 +56,7 @@ class AuthenticateAdapter extends BaseAdapter
     {
         /** @var \Webauthn\PublicKeyCredentialRequestOptions $options */
         $options = PublicKeyCredentialRequestOptions::createFromString(
-            (string)$this->request->getSession()->read('Webauthn2fa.authenticateOptions')
+            (string)$this->request->getSession()->read('Webauthn2fa.authenticateOptions'),
         );
 
         $publicKeyCredentialLoader = $this->createPublicKeyCredentialLoader();
@@ -78,8 +78,8 @@ class AuthenticateAdapter extends BaseAdapter
         throw new BadRequestException(
             __d(
                 'cake_d_c/users',
-                'Could not validate credential response for authentication'
-            )
+                'Could not validate credential response for authentication',
+            ),
         );
     }
 
@@ -92,7 +92,7 @@ class AuthenticateAdapter extends BaseAdapter
             $this->repository,
             null,
             $this->createExtensionOutputCheckerHandler(),
-            $this->getAlgorithmManager()
+            $this->getAlgorithmManager(),
         );
     }
 }

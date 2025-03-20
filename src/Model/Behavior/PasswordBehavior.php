@@ -147,7 +147,7 @@ class PasswordBehavior extends BaseTokenBehavior
             if ($user->current_password === $user->password_confirm) {
                 throw new WrongPasswordException(__d(
                     'cake_d_c/users',
-                    'You cannot use the current password as the new one'
+                    'You cannot use the current password as the new one',
                 ));
             }
         }

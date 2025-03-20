@@ -210,7 +210,7 @@ class OneTimePasswordVerifyTraitTest extends BaseTrait
                     'secret' => 'newSecret',
                 ],
             ],
-            $session->read()
+            $session->read(),
         );
     }
 
@@ -271,7 +271,7 @@ class OneTimePasswordVerifyTraitTest extends BaseTrait
                     'secret' => 'alreadyPresentSecret',
                 ],
             ],
-            $session->read()
+            $session->read(),
         );
     }
 }

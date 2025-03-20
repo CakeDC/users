@@ -342,7 +342,7 @@ class SocialAuthMiddlewareTest extends TestCase
                     'rawData' => $rawData,
                 ],
                 null,
-                $previousException
+                $previousException,
             );
         };
         $handler = new TestRequestHandler($handlerCb);
