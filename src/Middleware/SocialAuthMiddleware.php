@@ -48,7 +48,7 @@ class SocialAuthMiddleware implements MiddlewareInterface
 
             $request->getSession()->write(
                 Configure::read('Users.Key.Session.social'),
-                $exception->getAttributes()['rawData']
+                $exception->getAttributes()['rawData'],
             );
 
             return $this->responseWithActionLocation($response, 'socialEmail');

@@ -49,7 +49,7 @@ class MiddlewareQueueLoader
     public function __invoke(
         MiddlewareQueue $middlewareQueue,
         AuthenticationServiceProviderInterface $authenticationServiceProvider,
-        AuthorizationServiceProviderInterface $authorizationServiceProvider
+        AuthorizationServiceProviderInterface $authorizationServiceProvider,
     ) {
         $this->loadSocialMiddleware($middlewareQueue);
         $this->loadAuthenticationMiddleware($middlewareQueue, $authenticationServiceProvider);
@@ -82,7 +82,7 @@ class MiddlewareQueueLoader
      */
     protected function loadAuthenticationMiddleware(
         MiddlewareQueue $middlewareQueue,
-        AuthenticationServiceProviderInterface $authenticationServiceProvider
+        AuthenticationServiceProviderInterface $authenticationServiceProvider,
     ) {
         $authentication = new AuthenticationMiddleware($authenticationServiceProvider);
         $middlewareQueue->add($authentication);
@@ -97,7 +97,7 @@ class MiddlewareQueueLoader
     protected function load2faMiddleware(MiddlewareQueue $middlewareQueue)
     {
         $processors = TwoFactorProcessorLoader::processors();
-        if (collection($processors)->some(fn ($processor) => $processor->enabled())) {
+        if (collection($processors)->some(fn($processor) => $processor->enabled())) {
             $middlewareQueue->add(TwoFactorMiddleware::class);
         }
     }
@@ -111,7 +111,7 @@ class MiddlewareQueueLoader
      */
     protected function loadAuthorizationMiddleware(
         MiddlewareQueue $middlewareQueue,
-        AuthorizationServiceProviderInterface $authorizationServiceProvider
+        AuthorizationServiceProviderInterface $authorizationServiceProvider,
     ) {
         if (Configure::read('Auth.Authorization.enable') === false) {
             return $middlewareQueue;
@@ -119,8 +119,8 @@ class MiddlewareQueueLoader
         $middlewareQueue->add(
             new AuthorizationMiddleware(
                 $authorizationServiceProvider,
-                Configure::read('Auth.AuthorizationMiddleware')
-            )
+                Configure::read('Auth.AuthorizationMiddleware'),
+            ),
         );
         if (Configure::read('Auth.AuthorizationMiddleware.requireAuthorizationCheck') !== false) {
             $middlewareQueue->add(new RequestAuthorizationMiddleware());

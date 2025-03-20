@@ -39,13 +39,13 @@ trait OneTimeTokenTrait
                 $Users->sendLoginLink($email);
             } catch (RecordNotFoundException $e) {
                 $this->log(
-                    sprintf('A user is trying to get a login link for the email %s but it does not exist.', $email)
+                    sprintf('A user is trying to get a login link for the email %s but it does not exist.', $email),
                 );
             }
             $msg = __d(
                 'cake_d_c/users',
                 'If your user is registered in the system you will receive an email ' .
-                'with a link so you can access your user area.'
+                'with a link so you can access your user area.',
             );
             $this->Flash->success($msg);
             $this->setRequest($this->getRequest()->withoutData('email'));

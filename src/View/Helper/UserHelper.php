@@ -133,7 +133,7 @@ class UserHelper extends Helper
         $label = __d(
             'cake_d_c/users',
             'Welcome, {0}',
-            $this->AuthLink->link($title, $profileUrl)
+            $this->AuthLink->link($title, $profileUrl),
         );
 
         return $this->Html->tag('span', $label, ['class' => 'welcome']);
@@ -171,8 +171,8 @@ class UserHelper extends Helper
         $messagesList = json_encode(
             Configure::read(
                 'Users.passwordMeter.messagesList',
-                ['Empty password', 'Too simple', 'Simple', 'That\'s OK', 'Great password!']
-            )
+                ['Empty password', 'Too simple', 'Simple', 'That\'s OK', 'Great password!'],
+            ),
         );
         $pswMinLength = Configure::read('Users.passwordMinLength', 8);
         $showMessage = Configure::read('Users.passwordMeter.showMessage', true) ? 'true' : 'false';
@@ -199,8 +199,8 @@ class UserHelper extends Helper
                 'p',
                 __d(
                     'cake_d_c/users',
-                    'reCaptcha is not configured! Please configure Users.reCaptcha.key'
-                )
+                    'reCaptcha is not configured! Please configure Users.reCaptcha.key',
+                ),
             );
         }
         $this->addReCaptchaScript();
@@ -215,7 +215,7 @@ class UserHelper extends Helper
             return $this->{$method}();
         }
         throw new InvalidArgumentException(
-            __d('cake_d_c/users', 'reCaptcha version is wrong. Please configure Users.reCaptcha.version as 2 or 3')
+            __d('cake_d_c/users', 'reCaptcha version is wrong. Please configure Users.reCaptcha.version as 2 or 3'),
         );
     }
 
@@ -282,7 +282,7 @@ class UserHelper extends Helper
     {
         trigger_error(
             'UserHelper::link() deprecated since 3.2.1. Use AuthLinkHelper::link() instead',
-            E_USER_DEPRECATED
+            E_USER_DEPRECATED,
         );
 
         return $this->AuthLink->link($title, $url, $options);
@@ -314,7 +314,7 @@ class UserHelper extends Helper
             [
                 'escape' => false,
                 'class' => $linkClass,
-            ]
+            ],
         );
     }
 
@@ -334,7 +334,7 @@ class UserHelper extends Helper
             function ($item) {
                 return strtolower($item->provider);
             },
-            (array)$socialAccounts
+            (array)$socialAccounts,
         );
 
         $providers = Configure::read('OAuth.providers');

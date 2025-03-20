@@ -40,7 +40,7 @@ class AuthorizationServiceLoader
             new CollectionPolicy([
                 SuperuserPolicy::class,
                 new RbacPolicy(Configure::read('Auth.RbacPolicy')),
-            ])
+            ]),
         );
 
         $orm = new OrmResolver();
