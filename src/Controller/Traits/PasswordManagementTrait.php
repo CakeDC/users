@@ -61,7 +61,7 @@ trait PasswordManagementTrait
                 $redirect = Configure::read('Users.Profile.route');
             } else {
                 $this->Flash->error(
-                    __d('cake_d_c/users', 'Changing another user\'s password is not allowed')
+                    __d('cake_d_c/users', 'Changing another user\'s password is not allowed'),
                 );
                 $this->redirect(Configure::read('Users.Profile.route'));
 
@@ -72,8 +72,8 @@ trait PasswordManagementTrait
             $user->set(
                 'id',
                 $this->getRequest()->getSession()->read(
-                    Configure::read('Users.Key.Session.resetPasswordUserId')
-                )
+                    Configure::read('Users.Key.Session.resetPasswordUserId'),
+                ),
             );
             $validatePassword = false;
             $redirect = $this->Authentication->getConfig('loginAction');
@@ -102,7 +102,7 @@ trait PasswordManagementTrait
                             'password' => true,
                             'password_confirm' => true,
                         ],
-                    ]
+                    ],
                 );
 
                 if ($user->getErrors()) {
@@ -171,7 +171,7 @@ trait PasswordManagementTrait
             if ($resetUser) {
                 $msg = __d(
                     'cake_d_c/users',
-                    'If the account is valid, the system will send an instructional email to the address on record.'
+                    'If the account is valid, the system will send an instructional email to the address on record.',
                 );
                 $this->Flash->success($msg);
             } else {
@@ -183,7 +183,7 @@ trait PasswordManagementTrait
         } catch (UserNotFoundException | UserNotActiveException $exception) {
             $msg = __d(
                 'cake_d_c/users',
-                'If the account is valid, the system will send an instructional email to the address on record.'
+                'If the account is valid, the system will send an instructional email to the address on record.',
             );
             $this->Flash->success($msg);
         } catch (Exception $exception) {

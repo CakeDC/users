@@ -155,8 +155,8 @@ class LockoutHandler implements LockoutHandlerInterface
         throw new \UnexpectedValueException(
             __d(
                 'cake_d_c/users',
-                'Config "timeWindowInSeconds" must be integer greater than 60'
-            )
+                'Config "timeWindowInSeconds" must be integer greater than 60',
+            ),
         );
     }
 
@@ -172,8 +172,8 @@ class LockoutHandler implements LockoutHandlerInterface
         throw new \UnexpectedValueException(
             __d(
                 'cake_d_c/users',
-                'Config "numberOfAttemptsFail" must be integer greater or equal 0'
-            )
+                'Config "numberOfAttemptsFail" must be integer greater or equal 0',
+            ),
         );
     }
 
@@ -190,8 +190,8 @@ class LockoutHandler implements LockoutHandlerInterface
         throw new \UnexpectedValueException(
             __d(
                 'cake_d_c/users',
-                'Config "lockoutTimeInSeconds" must be integer greater than 60'
-            )
+                'Config "lockoutTimeInSeconds" must be integer greater than 60',
+            ),
         );
     }
 

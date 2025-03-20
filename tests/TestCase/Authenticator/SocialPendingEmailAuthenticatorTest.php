@@ -72,7 +72,7 @@ class SocialPendingEmailAuthenticatorTest extends TestCase
         $requestNoEmail = ServerRequestFactory::fromGlobals(
             ['REQUEST_URI' => '/users/users/social-email-invalid'],
             [],
-            []
+            [],
         );
         $requestNoEmail->getSession()->write(Configure::read('Users.Key.Session.social'), $user);
         $Response = new Response();
@@ -103,12 +103,12 @@ class SocialPendingEmailAuthenticatorTest extends TestCase
         $requestNoEmail = ServerRequestFactory::fromGlobals(
             ['REQUEST_URI' => '/users/social-email', 'PHP_SELF' => ''],
             [],
-            []
+            [],
         );
         $request = ServerRequestFactory::fromGlobals(
             ['REQUEST_URI' => '/users/social-email', 'PHP_SELF' => ''],
             [],
-            ['email' => 'testAuthenticateBaseFailed@example.com']
+            ['email' => 'testAuthenticateBaseFailed@example.com'],
         );
         Configure::write('Users.Email.validate', false);
         $request->getSession()->write(Configure::read('Users.Key.Session.social'), $user);

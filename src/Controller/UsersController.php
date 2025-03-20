@@ -65,7 +65,7 @@ class UsersController extends AppController
                     'webauthn2faRegisterOptions',
                     'webauthn2faAuthenticate',
                     'webauthn2faAuthenticateOptions',
-                ]
+                ],
             );
         }
     }

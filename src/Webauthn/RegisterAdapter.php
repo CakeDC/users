@@ -69,12 +69,12 @@ class RegisterAdapter extends BaseAdapter
                 $attestationStatementSupportManager,
                 $this->repository,
                 null, //Token binding is deprecated
-                $extensionOutputCheckerHandler
+                $extensionOutputCheckerHandler,
             );
             $credential = $authenticatorAttestationResponseValidator->check(
                 $authenticatorAttestationResponse,
                 $options,
-                $this->request
+                $this->request,
             );
 
             $this->repository->saveCredentialSource($credential);
@@ -93,7 +93,7 @@ class RegisterAdapter extends BaseAdapter
         foreach ($this->getAlgorithmManager()->all() as $algorithm) {
             $list[] = PublicKeyCredentialParameters::create(
                 PublicKeyCredentialDescriptor::CREDENTIAL_TYPE_PUBLIC_KEY,
-                $algorithm::identifier()
+                $algorithm::identifier(),
             );
         }
 
