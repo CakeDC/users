@@ -139,13 +139,12 @@ class UsersMailer extends Mailer
     public function sendToken(EntityInterface $user, string $token): void
     {
         $this->viewBuilder()->setTemplate('CakeDC/Users.onetimeToken');
-        $loginLink = Router::url([
-            'controller' => 'Users',
-            'action' => 'singleTokenLogin',
+        $loginLink = UsersUrl::actionUrl('singleTokenLogin', [
             '?' => [
                 'token' => $token,
             ],
-        ], true);
+            '_full' => true,
+        ]);
         $this->setTo($user->email);
         $this->setSubject(__d('cake_d_c/users', 'Your One-Time Login Token'));
         $this->setEmailFormat('html');
