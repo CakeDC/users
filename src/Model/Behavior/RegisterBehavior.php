@@ -163,7 +163,7 @@ class RegisterBehavior extends BaseTokenBehavior
     {
         $this->validateEmail = (bool)$validateEmail;
         $validator
-            ->add('email', 'valid', ['rule' => 'email'])
+            ->add('email', 'valid_email', ['rule' => 'email'])
             ->notBlank('email', __d('cake_d_c/users', 'This field is required'), function ($context) {
                 return $this->validateEmail;
             });
@@ -197,8 +197,7 @@ class RegisterBehavior extends BaseTokenBehavior
         $validateEmail = $options['validate_email'] ?? null;
         $useTos = $options['use_tos'] ?? null;
 
-        $validator = $this->_table->validationDefault(new Validator());
-        $validator = $this->_table->validationRegister($validator);
+        $validator = $this->_table->validationRegister(new Validator());
         if ($useTos) {
             $validator = $this->_tosValidator($validator);
         }
