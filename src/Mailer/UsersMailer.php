@@ -15,7 +15,6 @@ namespace CakeDC\Users\Mailer;
 use Cake\Datasource\EntityInterface;
 use Cake\Mailer\Mailer;
 use Cake\Mailer\Message;
-use Cake\Routing\Router;
 use CakeDC\Users\Utility\UsersUrl;
 
 /**
