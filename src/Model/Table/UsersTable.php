@@ -160,18 +160,18 @@ class UsersTable extends Table
             ->allowEmptyString('token');
 
         $validator
-            ->add('token_expires', 'valid', ['rule' => 'datetime'])
+            ->add('token_expires', 'valid_user_token_expires', ['rule' => 'datetime'])
             ->allowEmptyDateTime('token_expires');
 
         $validator
             ->allowEmptyString('api_token');
 
         $validator
-            ->add('activation_date', 'valid', ['rule' => 'datetime'])
+            ->add('activation_date', 'valid_activation_date', ['rule' => 'datetime'])
             ->allowEmptyDateTime('activation_date');
 
         $validator
-            ->add('tos_date', 'valid', ['rule' => 'datetime'])
+            ->add('tos_date', 'valid_tos_date', ['rule' => 'datetime'])
             ->allowEmptyDateTime('tos_date');
 
         return $validator;
