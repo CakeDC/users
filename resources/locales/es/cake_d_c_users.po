@@ -266,7 +266,7 @@ msgid ""
 "If the account is valid, the system will send an instructional email to the "
 "address on record."
 msgstr ""
-"Si la cuenta no es válida, el sistema enviará un email instructivo a la "
+"Si la cuenta es válida, el sistema enviará un email instructivo a la "
 "dirección del registro."
 
 #: vendor/cakedc/users/src/Controller/Traits/PasswordManagementTrait.php:175
