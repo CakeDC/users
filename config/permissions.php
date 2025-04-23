@@ -12,7 +12,7 @@
 /*
  * IMPORTANT:
  * This is an example configuration file. Copy this file into your config directory and edit to
- * setup your app permissions.
+ * set up your app permissions.
  *
  * This is a quick roles-permissions implementation
  * Rules are evaluated top-down, first matching rule will apply
