@@ -2,6 +2,9 @@ Changelog
 =========
 Releases for CakePHP 5
 -------------
+* 15.0.2
+  * Use UsersUrl to get params for generating Url inside UsersMailer::sendToken
+  * Documentation improvements 
 * 15.0.1
   * Fix bug with password meter configuration and symbols score management
   * Fix code sniffer violations after changes in CakePHP rule set
