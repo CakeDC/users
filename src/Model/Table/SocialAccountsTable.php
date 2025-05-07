@@ -59,7 +59,7 @@ class SocialAccountsTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->add('id', 'valid', ['rule' => 'uuid'])
+            ->add('id', 'valid_id', ['rule' => 'uuid'])
             ->allowEmptyString('id', null, 'create');
 
         $validator
@@ -91,11 +91,11 @@ class SocialAccountsTable extends Table
             ->allowEmptyString('token_secret');
 
         $validator
-            ->add('token_expires', 'valid', ['rule' => 'datetime'])
+            ->add('token_expires', 'valid_social_token_expires', ['rule' => 'datetime'])
             ->allowEmptyString('token_expires');
 
         $validator
-            ->add('active', 'valid', ['rule' => 'boolean'])
+            ->add('active', 'valid_active', ['rule' => 'boolean'])
             ->requirePresence('active', 'create')
             ->notBlank('active');
 
