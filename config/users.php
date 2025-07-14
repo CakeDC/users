@@ -52,6 +52,10 @@ $config = [
             'updateLastLogin' => true,
             'lastLoginField' => 'last_login',
         ],
+        'PasswordReset' => [
+            // A list of fields to use when looking up a user for password reset.
+            'findWith' => ['username', 'email'],
+        ],
         'Registration' => [
             // determines if the register is enabled
             'active' => true,
