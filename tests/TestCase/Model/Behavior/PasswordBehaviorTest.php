@@ -43,6 +43,16 @@ class PasswordBehaviorTest extends TestCase
     ];
 
     /**
+     * Table
+	 */
+    protected $table;
+
+    /**
+     * Behavior
+	 */
+    protected $Behavior;
+
+    /**
      * setup
      *
      * @return void
@@ -238,5 +248,52 @@ class PasswordBehaviorTest extends TestCase
             'type' => 'password',
         ]);
         $this->assertInstanceOf(User::class, $result);
+    }
+
+    /**
+     * Test getUser finds by email when configured
+     */
+    public function testGetUserFindsByEmailWhenConfigured()
+    {
+        Configure::write('Users.PasswordReset.findWith', ['email']);
+        $user = $this->_executeGetUser('user-1@test.com');
+        $this->assertNotNull($user);
+
+        $user = $this->_executeGetUser('user-1');
+        $this->assertNull($user);
+    }
+
+    /**
+     * Test getUser finds by username and email by default
+     */
+    public function testGetUserFindsByUsernameAndEmailByDefault()
+    {
+        $userByEmail = $this->_executeGetUser('user-1@test.com');
+        $this->assertNotNull($userByEmail);
+
+        $userByUsername = $this->_executeGetUser('user-1');
+        $this->assertNotNull($userByUsername);
+
+        $this->assertEquals($userByEmail->id, $userByUsername->id);
+    }
+
+    /**
+     * Execute getUser method
+     *
+     * @param string $reference Reference to get user by
+     * @return \CakeDC\Users\Model\Entity\User|null
+     */
+    protected function _executeGetUser($reference)
+    {
+        if ($this->table->hasBehavior('Password')) {
+            $this->table->removeBehavior('Password');
+        }
+        $this->table->addBehavior('CakeDC/Users.Password');
+        $realBehavior = $this->table->getBehavior('Password');
+
+        $method = new \ReflectionMethod(get_class($realBehavior), '_getUser');
+        $method->setAccessible(true);
+
+        return $method->invoke($realBehavior, $reference);
     }
 }
