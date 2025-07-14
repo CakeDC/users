@@ -44,12 +44,12 @@ class PasswordBehaviorTest extends TestCase
 
     /**
      * Table
-	 */
+     */
     protected $table;
 
     /**
      * Behavior
-	 */
+     */
     protected $Behavior;
 
     /**
