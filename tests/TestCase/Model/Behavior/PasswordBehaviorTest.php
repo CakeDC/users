@@ -23,6 +23,8 @@ use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Exception\UserNotFoundException;
 use CakeDC\Users\Model\Behavior\PasswordBehavior;
 use CakeDC\Users\Model\Entity\User;
+use InvalidArgumentException;
+use ReflectionMethod;
 use TestApp\Mailer\OverrideMailer;
 
 /**
@@ -43,12 +45,12 @@ class PasswordBehaviorTest extends TestCase
 
     /**
      * Table
-	 */
+     */
     protected $table;
 
     /**
      * Behavior
-	 */
+     */
     protected $Behavior;
 
     /**
@@ -132,7 +134,7 @@ class PasswordBehaviorTest extends TestCase
      */
     public function testResetTokenWithNullParams()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->Behavior->resetToken(null);
     }
 
@@ -141,7 +143,7 @@ class PasswordBehaviorTest extends TestCase
      */
     public function testResetTokenNoExpiration()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Token expiration cannot be empty');
         $this->Behavior->resetToken('ref');
     }
@@ -289,7 +291,7 @@ class PasswordBehaviorTest extends TestCase
         $this->table->addBehavior('CakeDC/Users.Password');
         $realBehavior = $this->table->getBehavior('Password');
 
-        $method = new \ReflectionMethod(get_class($realBehavior), '_getUser');
+        $method = new ReflectionMethod(get_class($realBehavior), '_getUser');
         $method->setAccessible(true);
 
         return $method->invoke($realBehavior, $reference);
