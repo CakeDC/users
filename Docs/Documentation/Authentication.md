@@ -208,3 +208,34 @@ Add the following to your ``config/users.php`` configuration to change the authe
 ```php
 'Auth.Authentication.serviceLoader' => \App\Loader\AppAuthenticationServiceLoader::class,
 ```
+
+
+Password Reset
+--------------
+
+When a user requests to reset their password, the plugin needs to find their account. By default, it searches using both the `username` and `email` fields.
+You can customize which fields are used for this lookup by configuring the `Users.PasswordReset.findWith` setting in your `config/users.php` file.
+
+The value should be an array of column names that exist in your `users` table. The system will dynamically build a query to search using these fields.
+
+For example, if your application only uses email for identification, you can restrict the search to just the `email` column to avoid errors and improve performance:
+
+```php
+// in config/users.php
+'Users' => [
+    'PasswordReset' => [
+        'findWith' => ['email']
+    ],
+]
+```
+
+If you need to search by `username` and another custom field, you could configure it like this:
+
+```php
+// in config/users.php
+'Users' => [
+    'PasswordReset' => [
+        'findWith' => ['username', 'legacy_user_id']
+    ],
+]
+```

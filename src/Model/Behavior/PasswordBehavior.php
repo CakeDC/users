@@ -122,7 +122,23 @@ class PasswordBehavior extends BaseTokenBehavior
      */
     protected function _getUser($reference)
     {
-        return $this->_table->findByUsernameOrEmail($reference, $reference)->first();
+        $findWith = (array)Configure::read('Users.PasswordReset.findWith', ['username', 'email']);
+        $schema = $this->_table->getSchema();
+        $orConditions = [];
+
+        foreach ($findWith as $field) {
+            if ($schema->hasColumn($field)) {
+                $orConditions[$field] = $reference;
+            }
+        }
+
+        if (empty($orConditions)) {
+            return null;
+        }
+
+        return $this->_table->find()
+            ->where(['OR' => $orConditions])
+            ->first();
     }
 
     /**
