@@ -2,6 +2,8 @@ Changelog
 =========
 Releases for CakePHP 5
 -------------
+* 15.1.0
+  * Add finder to pull user correctly on reset password
 * 15.0.2
   * Use UsersUrl to get params for generating Url inside UsersMailer::sendToken
   * Documentation improvements 
