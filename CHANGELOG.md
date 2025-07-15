@@ -2,6 +2,8 @@ Changelog
 =========
 Releases for CakePHP 4.5
 ------------------------
+* 13.1.0
+  * Backport: add finder to pull user correctly on reset password
 * 13.0.0
   * Set dependecy for CakeDC/Auth to 9.0. Perform 2FA refactoring,
 
