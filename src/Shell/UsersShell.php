@@ -275,6 +275,7 @@ class UsersShell extends Shell
             'expiration' => Configure::read('Users.Token.expiration'),
             'checkActive' => false,
             'sendEmail' => true,
+            'type' => 'password',
         ]);
         if ($resetUser) {
             $msg = __d(
