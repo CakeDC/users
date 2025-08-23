@@ -17,6 +17,7 @@ use Cake\Core\Configure;
 use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
 use Cake\View\Helper;
+use Cake\View\StringTemplateTrait;
 use CakeDC\Users\Utility\UsersUrl;
 use InvalidArgumentException;
 
@@ -29,12 +30,19 @@ use InvalidArgumentException;
  */
 class UserHelper extends Helper
 {
+    use StringTemplateTrait;
+
     protected array $helpers = ['Html', 'Form', 'CakeDC/Users.AuthLink'];
 
     /**
      * @inheritDoc
      */
-    protected array $_defaultConfig = [];
+    protected array $_defaultConfig = [
+        'templates' => [
+            'socialButton' => '<a href="/auth/{{name}}" class="btn btn-social btn-{{name}}">{{icon}}{{title}}</a>',
+            'icon' => '<i class="fa fa-{{name}}"></i>'
+        ]
+    ];
 
     /**
      * Social login link
@@ -48,9 +56,6 @@ class UserHelper extends Helper
         if (empty($options['label'])) {
             $options['label'] = __d('cake_d_c/users', 'Sign in with');
         }
-        $icon = $this->Html->tag('i', '', [
-            'class' => 'fa fa-' . strtolower($name),
-        ]);
 
         if (isset($options['title'])) {
             $providerTitle = $options['title'];
@@ -58,14 +63,20 @@ class UserHelper extends Helper
             $providerTitle = $options['label'] . ' ' . Inflector::camelize($name);
         }
 
-        $providerClass = 'btn btn-social btn-' . strtolower($name);
-        $optionClass = $options['class'] ?? null;
-        if ($optionClass) {
-            $providerClass .= " $optionClass";
+        $icon = $this->templater()->format('icon', [
+            'name' => strtolower($name)
+        ]);
+
+        $className = '';
+        if (isset($options['class'])) {
+            $className = " {$options['class']}";
         }
 
-        return $this->Html->link($icon . $providerTitle, "/auth/$name", [
-            'escape' => false, 'class' => $providerClass,
+        return $this->templater()->format('socialButton', [
+            'name' => strtolower($name),
+            'icon' => $icon,
+            'title' => $providerTitle,
+            'class' => $className
         ]);
     }
 
