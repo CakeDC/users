@@ -40,8 +40,8 @@ class UserHelper extends Helper
     protected array $_defaultConfig = [
         'templates' => [
             'socialButton' => '<a href="/auth/{{name}}" class="btn btn-social btn-{{name}}">{{icon}}{{title}}</a>',
-            'icon' => '<i class="fa fa-{{name}}"></i>'
-        ]
+            'icon' => '<i class="fa fa-{{name}}"></i>',
+        ],
     ];
 
     /**
@@ -64,7 +64,7 @@ class UserHelper extends Helper
         }
 
         $icon = $this->templater()->format('icon', [
-            'name' => strtolower($name)
+            'name' => strtolower($name),
         ]);
 
         $className = '';
@@ -76,7 +76,7 @@ class UserHelper extends Helper
             'name' => strtolower($name),
             'icon' => $icon,
             'title' => $providerTitle,
-            'class' => $className
+            'class' => $className,
         ]);
     }
 
