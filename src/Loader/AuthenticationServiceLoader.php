@@ -55,7 +55,7 @@ class AuthenticationServiceLoader
         foreach ($identifiers as $key => $item) {
             [$identifier, $options] = $this->_getItemLoadData($item, $key);
 
-            $service->loadIdentifier($identifier, $options);
+            $service->identifiers()->load($identifier, $options);
         }
     }
 
