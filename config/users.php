@@ -91,7 +91,7 @@ $config = [
             'messagesList' => [
                 __d('cake_d_c/users', 'Empty password'),
                 __d('cake_d_c/users', 'Too simple'),
-                __d('cake_d_c/users','Simple'),
+                __d('cake_d_c/users', 'Simple'),
                 __d('cake_d_c/users', 'That\'s OK'),
                 __d('cake_d_c/users', 'Great password!')
             ],
@@ -170,8 +170,8 @@ $config = [
     ],
     'Webauthn2fa' => [
         'enabled' => false,
-        'appName' => null,//App must set a valid name here
-        'id' => null,//default value is the current domain
+        'appName' => null, //App must set a valid name here
+        'id' => null, //default value is the current domain
         'checker' => \CakeDC\Auth\Authentication\DefaultWebauthn2FAuthenticationChecker::class,
     ],
     'TwoFactorProcessors' => [
@@ -378,6 +378,17 @@ $config = [
                     'redirectUri' => Router::fullBaseUrl() . '/auth/azure',
                     'linkSocialUri' => Router::fullBaseUrl() . '/link-social/azure',
                     'callbackLinkSocialUri' => Router::fullBaseUrl() . '/callback-link-social/azure',
+                ],
+            ],
+            'github' => [
+                'service' => 'CakeDC\Auth\Social\Service\OAuth2Service',
+                'className' => 'League\OAuth2\Client\Provider\Github',
+                'mapper' => 'CakeDC\Auth\Social\Mapper\Github',
+                'skipSocialAccountValidation' => false,
+                'options' => [
+                    'redirectUri' => Router::fullBaseUrl() . '/auth/github',
+                    'linkSocialUri' => Router::fullBaseUrl() . '/link-social/github',
+                    'callbackLinkSocialUri' => Router::fullBaseUrl() . '/callback-link-social/github',
                 ],
             ],
         ],
