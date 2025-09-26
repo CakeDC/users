@@ -2,6 +2,9 @@ Changelog
 =========
 Releases for CakePHP 5
 -------------
+* 15.1.1
+  * Update EmailDelivery
+  * Github social login
 * 15.1.0
   * Add finder to pull user correctly on reset password
 * 15.0.2
