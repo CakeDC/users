@@ -84,9 +84,19 @@ class UserHelperTest extends TestCase
                 ->getMock();
         $this->AuthLink->expects($this->any())
             ->method('isAuthorized')
-            ->will($this->returnValue(true));
-        $this->User = new UserHelper($this->View);
-        $this->User->AuthLink = $this->AuthLink;
+            ->willReturn(true);
+        $this->User = $this->getMockBuilder('CakeDC\Users\View\Helper\UserHelper')
+            ->onlyMethods(['__get'])
+            ->setConstructorArgs([$this->View])
+            ->getMock();
+        $this->User->method('__get')
+            ->willReturnCallback(function ($name) {
+                if ($name === 'AuthLink') {
+                    return $this->AuthLink;
+                }
+                // For other properties, call the parent __get
+                return $this->User->getView()->helpers()->load($name);
+            });
         $this->request = new ServerRequest();
     }
 
