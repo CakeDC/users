@@ -58,16 +58,20 @@ class SocialAccountBehavior extends Behavior
     public function afterSave(EventInterface $event, EntityInterface $entity, ArrayObject $options)
     {
         if ($entity->get('active')) {
-            return true;
+            $event->setResult(true);
+
+            return;
         }
         $user = $this->_table->getAssociation('Users')->find()
             ->where(['Users.id' => $entity->get('user_id'), 'Users.active' => true])
             ->first();
         if (empty($user)) {
-            return true;
+            $event->setResult(true);
+
+            return;
         }
 
-        return $this->sendSocialValidationEmail($entity, $user);
+        $event->setResult($this->sendSocialValidationEmail($entity, $user));
     }
 
     /**

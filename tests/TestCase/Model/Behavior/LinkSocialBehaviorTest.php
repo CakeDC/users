@@ -107,9 +107,9 @@ class LinkSocialBehaviorTest extends TestCase
         $tokenExpires = $expiresTime->setTimestamp(1458423682)->format('Y-m-d H:i:s');
 
         return [
-                'provider' => [
-                'data' => [
-                    'id' => '9999911112255', //Reference existe mas provider google
+            [
+                [
+                    'id' => '9999911112255',
                     'username' => null,
                     'full_name' => 'Full name',
                     'first_name' => 'First name',
@@ -136,8 +136,8 @@ class LinkSocialBehaviorTest extends TestCase
                     'link' => 'facebook-link-15579',
                     'provider' => 'Facebook',
                 ],
-                'user' => '00000000-0000-0000-0000-000000000001',
-                'result' => [
+                '00000000-0000-0000-0000-000000000001',
+                [
                     'provider' => 'Facebook',
                     'username' => null,
                     'reference' => '9999911112255',
@@ -149,10 +149,8 @@ class LinkSocialBehaviorTest extends TestCase
                     'token_expires' => $tokenExpires,
                     'user_id' => '00000000-0000-0000-0000-000000000001',
                     'active' => true,
-
                 ],
-                ],
-
+            ],
         ];
     }
 
@@ -201,9 +199,9 @@ class LinkSocialBehaviorTest extends TestCase
         $tokenExpires = $expiresTime->setTimestamp(1458423682)->format('Y-m-d H:i:s');
 
         return [
-                'provider' => [
-                'data' => [
-                    'id' => '9999911112255', //Reference existe mas provider google
+            [
+                [
+                    'id' => '9999911112255',
                     'username' => null,
                     'full_name' => 'Full name',
                     'first_name' => 'First name',
@@ -230,8 +228,8 @@ class LinkSocialBehaviorTest extends TestCase
                     'link' => 'facebook-link-15579',
                     'provider' => 'Facebook',
                 ],
-                'user' => '00000000-0000-0000-0000-000000000001',
-                'result' => [
+                '00000000-0000-0000-0000-000000000001',
+                [
                     'provider' => 'Facebook',
                     'username' => null,
                     'reference' => '9999911112255',
@@ -243,10 +241,8 @@ class LinkSocialBehaviorTest extends TestCase
                     'token_expires' => $tokenExpires,
                     'user_id' => '00000000-0000-0000-0000-000000000001',
                     'active' => true,
-
                 ],
-                ],
-
+            ],
         ];
     }
 

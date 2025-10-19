@@ -117,7 +117,8 @@ class SocialAccountBehaviorTest extends TestCase
     {
         $event = new Event('eventName');
         $entity = $this->Table->find()->first();
-        $this->assertTrue($this->Behavior->afterSave($event, $entity, new \ArrayObject([])));
+        $this->Behavior->afterSave($event, $entity, new \ArrayObject([]));
+        $this->assertTrue($event->getResult());
     }
 
     /**
@@ -130,7 +131,8 @@ class SocialAccountBehaviorTest extends TestCase
     {
         $event = new Event('eventName');
         $entity = $this->Table->findById('00000000-0000-0000-0000-000000000003')->first();
-        $this->assertTrue($this->Behavior->afterSave($event, $entity, new \ArrayObject([])));
+        $this->Behavior->afterSave($event, $entity, new \ArrayObject([]));
+        $this->assertTrue($event->getResult());
     }
 
     /**
@@ -143,6 +145,7 @@ class SocialAccountBehaviorTest extends TestCase
     {
         $event = new Event('eventName');
         $entity = $this->Table->findById('00000000-0000-0000-0000-000000000002')->first();
-        $this->assertTrue($this->Behavior->afterSave($event, $entity, new \ArrayObject([])));
+        $this->Behavior->afterSave($event, $entity, new \ArrayObject([]));
+        $this->assertTrue($event->getResult());
     }
 }
