@@ -32,6 +32,26 @@ class SocialAccountsControllerTest extends TestCase
     ];
 
     /**
+     * Backup for Opauth configuration
+     */
+    protected ?array $configOpauth = null;
+
+    /**
+     * Backup for RememberMe.active configuration
+     */
+    protected ?bool $configRememberMe = null;
+
+    /**
+     * Backup for Mailer default configuration
+     */
+    protected ?array $configEmail = null;
+
+    /**
+     * Mocked controller instance
+     */
+    protected \PHPUnit\Framework\MockObject\MockObject $Controller;
+
+    /**
      * setUp
      *
      * @return void
