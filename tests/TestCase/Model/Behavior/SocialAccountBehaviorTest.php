@@ -36,6 +36,15 @@ class SocialAccountBehaviorTest extends TestCase
     ];
 
     /**
+     * @var \Cake\ORM\Table
+     */
+    public $Table;
+    /**
+     * @var \Cake\ORM\Behavior|mixed|object|null
+     */
+    public $Behavior;
+
+    /**
      * setup
      *
      * @return void

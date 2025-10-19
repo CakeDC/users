@@ -24,13 +24,6 @@ use DateTime;
 class LinkSocialBehaviorTest extends TestCase
 {
     /**
-     * Test subject
-     *
-     * @var \App\Model\Behavior\LinkSocialBehavior
-     */
-    public $Behavior;
-
-    /**
      * Fixtures
      *
      * @var array
@@ -39,6 +32,17 @@ class LinkSocialBehaviorTest extends TestCase
         'plugin.CakeDC/Users.SocialAccounts',
         'plugin.CakeDC/Users.Users',
     ];
+
+    /**
+     * Test subject
+     *
+     * @var \App\Model\Behavior\LinkSocialBehavior
+     */
+    public $Behavior;
+    /**
+     * @var \Cake\ORM\Table
+     */
+    public $Table;
 
     /**
      * setup

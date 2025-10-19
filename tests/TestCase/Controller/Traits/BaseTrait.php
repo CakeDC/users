@@ -73,6 +73,10 @@ class BaseTrait extends TestCase
      * @var Table
      */
     public $table;
+    /**
+     * @var array|null
+     */
+    public ?array $configEmail;
 
     /**
      * SetUp and create Trait

@@ -22,6 +22,11 @@ use Cake\TestSuite\TestCase;
 class SocialAccountsTableTest extends TestCase
 {
     /**
+     * @var \Cake\ORM\Table
+     */
+    public $SocialAccounts;
+
+    /**
      * Fixtures
      *
      * @var array
