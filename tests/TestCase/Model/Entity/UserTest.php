@@ -28,10 +28,12 @@ class UserTest extends TestCase
      * @var User $User
      */
     public $User;
+
     /**
      * @var DateTime $now
      */
     public $now;
+
     /**
      * setUp method
      *

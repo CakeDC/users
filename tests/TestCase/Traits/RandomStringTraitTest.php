@@ -21,6 +21,7 @@ class RandomStringTraitTest extends TestCase
      * @var \CakeDC\Users\Traits\RandomStringTrait|\PHPUnit\Framework\MockObject\MockObject
      */
     public $Trait;
+
     public function setUp(): void
     {
         parent::setUp();

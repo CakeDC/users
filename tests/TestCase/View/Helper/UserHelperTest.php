@@ -20,7 +20,6 @@ use Cake\I18n\I18n;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use CakeDC\Users\Model\Entity\SocialAccount;
-use CakeDC\Users\View\Helper\UserHelper;
 
 /**
  * Users\View\Helper\UserHelper Test Case
