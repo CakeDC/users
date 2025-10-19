@@ -34,6 +34,15 @@ class SocialBehaviorTest extends TestCase
     ];
 
     /**
+     * @var \Cake\ORM\Table|\PHPUnit\Framework\MockObject\MockObject
+     */
+    public $Table;
+    /**
+     * @var (\CakeDC\Users\Model\Behavior\SocialBehavior&\PHPUnit\Framework\MockObject\MockObject)|\PHPUnit\Framework\MockObject\MockObject
+     */
+    public $Behavior;
+
+    /**
      * setup
      *
      * @return void

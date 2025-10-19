@@ -25,6 +25,16 @@ use CakeDC\Users\Model\Entity\User;
 class UserTest extends TestCase
 {
     /**
+     * @var User $User
+     */
+    public $User;
+
+    /**
+     * @var DateTime $now
+     */
+    public $now;
+
+    /**
      * setUp method
      *
      * @return void

@@ -33,6 +33,16 @@ class AuthFinderBehaviorTest extends TestCase
     ];
 
     /**
+     * @var \Cake\ORM\Table
+     */
+    protected \Cake\ORM\Table $table;
+
+    /**
+     * @var AuthFinderBehavior
+     */
+    protected AuthFinderBehavior $Behavior;
+
+    /**
      * setup
      *
      * @return void

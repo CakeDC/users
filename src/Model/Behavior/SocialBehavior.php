@@ -118,7 +118,7 @@ class SocialBehavior extends BaseTokenBehavior
             if (!$user->active) {
                 throw new UserNotActiveException([
                     $existingAccount->provider,
-                    $existingAccount->$user,
+                    $existingAccount->user,
                 ]);
             }
         }

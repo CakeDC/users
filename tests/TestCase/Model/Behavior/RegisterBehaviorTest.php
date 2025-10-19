@@ -43,6 +43,10 @@ class RegisterBehaviorTest extends TestCase
      * @var \CakeDC\Users\Model\Behavior\RegisterBehavior
      */
     public $Behavior;
+    /**
+     * @var \Cake\ORM\Table
+     */
+    public $Table;
 
     /**
      * setup
@@ -150,7 +154,7 @@ class RegisterBehaviorTest extends TestCase
             'action' => 'validateEmail',
         ]);
 
-        $this->Table = $this->getMockForModel('CakeDC/Users.Users', ['validationCustom', 'patchEntity', 'errors', 'save']);
+        $this->Table = $this->getMockForModel('CakeDC/Users.Users', ['patchEntity', 'save']);
 
         $this->Behavior = $this->getMockBuilder('CakeDC\Users\Model\Behavior\RegisterBehavior')
                 ->onlyMethods(['_updateActive'])

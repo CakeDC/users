@@ -20,6 +20,11 @@ use ReflectionMethod;
 class ReCaptchaTraitTest extends TestCase
 {
     /**
+     * @var \CakeDC\Users\Controller\Traits\ReCaptchaTrait
+     */
+    public $Trait;
+
+    /**
      * setUp callback
      *
      * @return void
