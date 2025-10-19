@@ -27,6 +27,7 @@ class CustomUsersTableTraitTest extends TestCase
      * Instance of the trait under test (avoid dynamic properties on mocks)
      */
     protected $Trait;
+
     public function setUp(): void
     {
         parent::setUp();

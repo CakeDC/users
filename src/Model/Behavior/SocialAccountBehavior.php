@@ -59,6 +59,7 @@ class SocialAccountBehavior extends Behavior
     {
         if ($entity->get('active')) {
             $event->setResult(true);
+
             return;
         }
         $user = $this->_table->getAssociation('Users')->find()
@@ -66,6 +67,7 @@ class SocialAccountBehavior extends Behavior
             ->first();
         if (empty($user)) {
             $event->setResult(true);
+
             return;
         }
 
