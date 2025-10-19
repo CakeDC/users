@@ -237,7 +237,7 @@ class UserHelper extends Helper
      */
     private function addReCaptchaV2(): string
     {
-        deprecationWarning('14.2.0', 'reCaptcha version 3 will be used as default in version 15.0.0');
+        deprecationWarning('14.2.0', 'reCaptcha v2 is deprecated and will be removed in 15.0.0. reCaptcha v3 will be the default.');
 
         return $this->Html->tag('div', '', [
             'class' => 'g-recaptcha',

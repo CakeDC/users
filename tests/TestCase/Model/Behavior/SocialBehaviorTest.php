@@ -139,8 +139,8 @@ class SocialBehaviorTest extends TestCase
     public static function providerFacebookSocialLogin()
     {
         return [
-                'provider' => [
-                'data' => [
+            [
+                [
                     'id' => 'facebook-id',
                     'username' => null,
                     'full_name' => 'Full name',
@@ -168,12 +168,12 @@ class SocialBehaviorTest extends TestCase
                     'link' => 'facebook-link',
                     'provider' => 'Facebook',
                 ],
-                'options' => [
+                [
                     'use_email' => true,
                     'validate_email' => true,
                     'token_expiration' => 3600,
                 ],
-                'result' => [
+                [
                     'first_name' => 'First name',
                     'last_name' => 'Last name',
                     'username' => 'username',
@@ -200,8 +200,7 @@ class SocialBehaviorTest extends TestCase
                     'activation_date' => '2016-01-20 15:45:09',
                     'active' => true,
                 ],
-                ],
-
+            ],
         ];
     }
 
@@ -267,18 +266,17 @@ class SocialBehaviorTest extends TestCase
     public static function providerFacebookSocialLoginExistingReference()
     {
         return [
-            'provider' => [
-                'data' => [
+            [
+                [
                     'id' => 'reference-2-1',
                     'provider' => 'Facebook',
                 ],
-                'options' => [
+                [
                     'use_email' => true,
                     'validate_email' => true,
                     'token_expiration' => 3600,
                 ],
             ],
-
         ];
     }
 

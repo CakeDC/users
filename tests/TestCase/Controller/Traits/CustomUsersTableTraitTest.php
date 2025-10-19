@@ -19,6 +19,14 @@ use Cake\TestSuite\TestCase;
 
 class CustomUsersTableTraitTest extends TestCase
 {
+    /**
+     * Mocked controller instance for tests (avoid dynamic property deprecation)
+     */
+    protected $controller;
+    /**
+     * Instance of the trait under test (avoid dynamic properties on mocks)
+     */
+    protected $Trait;
     public function setUp(): void
     {
         parent::setUp();
@@ -27,7 +35,7 @@ class CustomUsersTableTraitTest extends TestCase
                 ->addMethods(['header', '_stop'])
                 ->setConstructorArgs([new ServerRequest()])
                 ->getMock();
-        $this->controller->Trait = $this->getMockForTrait('CakeDC\Users\Controller\Traits\CustomUsersTableTrait');
+        $this->Trait = $this->getMockForTrait('CakeDC\Users\Controller\Traits\CustomUsersTableTrait');
     }
 
     public function tearDown(): void
@@ -37,10 +45,10 @@ class CustomUsersTableTraitTest extends TestCase
 
     public function testGetUsersTable()
     {
-        $table = $this->controller->Trait->getUsersTable();
+        $table = $this->Trait->getUsersTable();
         $this->assertEquals('CakeDC/Users.Users', $table->getRegistryAlias());
         $newTable = new Table();
-        $this->controller->Trait->setUsersTable($newTable);
-        $this->assertSame($newTable, $this->controller->Trait->getUsersTable());
+        $this->Trait->setUsersTable($newTable);
+        $this->assertSame($newTable, $this->Trait->getUsersTable());
     }
 }
