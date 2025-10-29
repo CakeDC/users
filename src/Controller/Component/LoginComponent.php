@@ -165,7 +165,7 @@ class LoginComponent extends Component
             $userId = $user['id'] ?? null;
             Log::info(
                 "Unsafe redirect `$queryRedirect` ignored, user id `{$userId}` " .
-                "redirected to `$redirectUrl` after successful login",
+                    "redirected to `$redirectUrl` after successful login",
             );
             $queryRedirect = $redirectUrl;
         }
@@ -188,22 +188,20 @@ class LoginComponent extends Component
      */
     protected function handlePasswordRehash($service, $user, \Cake\Http\ServerRequest $request)
     {
-        $indentifiersNames = (array)Configure::read('Auth.PasswordRehash.identifiers');
-        foreach ($indentifiersNames as $indentifierName) {
-            /**
-             * @var \Authentication\Identifier\AbstractIdentifier|null $checker
-             */
-            $checker = $service->identifiers()->get($indentifierName);
-            if (!$checker || method_exists($checker, 'needsPasswordRehash') && !$checker->needsPasswordRehash()) {
-                continue;
-            }
-            $passwordField = $checker->getConfig('fields.password', 'password');
-            $password = $request->getData($passwordField);
-            $user->set($passwordField, $password);
-            $user->setDirty('modified');
-            $this->getController()->getUsersTable()->save($user);
-            break;
+        /**
+         * @var \Authentication\Identifier\AbstractIdentifier|null $checker
+         */
+        $checker = $service->getIdentificationProvider();
+
+        if (!$checker || method_exists($checker, 'needsPasswordRehash') && !$checker->needsPasswordRehash()) {
+            return;
         }
+
+        $passwordField = $checker->getConfig('fields.password', 'password');
+        $password = $request->getData($passwordField);
+        $user->set($passwordField, $password);
+        $user->setDirty('modified');
+        $this->getController()->getUsersTable()->save($user);
     }
 
     /**
