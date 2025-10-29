@@ -304,6 +304,7 @@ class SocialBehavior extends BaseTokenBehavior
         $accountData['reference'] = $data['id'] ?? null;
         $accountData['avatar'] = $data['avatar'] ?? null;
         $accountData['link'] = $data['link'] ?? null;
+        $accountData['provider'] = $data['provider'] ?? null;
 
         if ($accountData['avatar'] ?? null) {
             $accountData['avatar'] = str_replace('normal', 'square', $accountData['avatar']);
