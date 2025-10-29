@@ -65,7 +65,7 @@ class BaseAdapter
         $this->request = $request;
         $this->rpEntity = new PublicKeyCredentialRpEntity(
             Configure::read('Webauthn2fa.appName'), // The application name
-            Configure::read('Webauthn2fa.id')
+            Configure::read('Webauthn2fa.id'),
         );
         /**
          * @var \Cake\ORM\Entity $userSession
@@ -76,7 +76,7 @@ class BaseAdapter
         $this->user = $usersTable->get($userSession->id);
         $this->repository = new UserCredentialSourceRepository(
             $this->user,
-            $usersTable
+            $usersTable,
         );
     }
 
@@ -90,7 +90,7 @@ class BaseAdapter
         return new PublicKeyCredentialUserEntity(
             $user->webauthn_username ?? $user->username,
             (string)$user->id,
-            (string)$user->first_name
+            (string)$user->first_name,
         );
     }
 
@@ -108,7 +108,7 @@ class BaseAdapter
     public function hasCredential(): bool
     {
         return (bool)$this->repository->findAllForUserEntity(
-            $this->getUserEntity()
+            $this->getUserEntity(),
         );
     }
 
@@ -116,7 +116,7 @@ class BaseAdapter
      * @param \Webauthn\AttestationStatement\AttestationStatementSupportManager $attestationStatementSupportManager
      */
     public function setAttestationStatementSupportManager(
-        AttestationStatementSupportManager $attestationStatementSupportManager
+        AttestationStatementSupportManager $attestationStatementSupportManager,
     ): void {
         $this->attestationStatementSupportManager = $attestationStatementSupportManager;
     }
@@ -141,11 +141,11 @@ class BaseAdapter
     protected function createPublicKeyCredentialLoader(): PublicKeyCredentialLoader
     {
         $attestationObjectLoader = new AttestationObjectLoader(
-            $this->getAttestationStatementSupportManager()
+            $this->getAttestationStatementSupportManager(),
         );
 
         return new PublicKeyCredentialLoader(
-            $attestationObjectLoader
+            $attestationObjectLoader,
         );
     }
 

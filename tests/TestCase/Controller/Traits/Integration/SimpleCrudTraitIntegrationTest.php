@@ -59,7 +59,7 @@ class SimpleCrudTraitIntegrationTest extends TestCase
         $this->assertResponseContains('<a href="/users/view/00000000-0000-0000-0000-000000000001">View</a>');
         $this->assertResponseContains('<a href="/users/change-password/00000000-0000-0000-0000-000000000001">Change password</a>');
         $this->assertResponseContains('<a href="/users/edit/00000000-0000-0000-0000-000000000001">Edit</a>');
-        $this->assertResponseContains('style="display:none;" method="post" action="/users/delete/00000000-0000-0000-0000-000000000001"');
+        $this->assertResponseContains('method="post" style="display:none;" action="/users/delete/00000000-0000-0000-0000-000000000001"');
         $this->assertResponseContains('>Delete<');
 
         $this->assertResponseContains('<td>user-6</td>');
@@ -69,7 +69,7 @@ class SimpleCrudTraitIntegrationTest extends TestCase
         $this->assertResponseContains('<a href="/users/view/00000000-0000-0000-0000-000000000006">View</a>');
         $this->assertResponseContains('<a href="/users/change-password/00000000-0000-0000-0000-000000000006">Change password</a>');
         $this->assertResponseContains('<a href="/users/edit/00000000-0000-0000-0000-000000000006">Edit</a>');
-        $this->assertResponseContains('style="display:none;" method="post" action="/users/delete/00000000-0000-0000-0000-000000000006"');
+        $this->assertResponseContains('method="post" style="display:none;" action="/users/delete/00000000-0000-0000-0000-000000000006"');
 
         $this->get('/users/change-password/00000000-0000-0000-0000-000000000006');
         $this->assertFlashMessage('Changing another user\'s password is not allowed');
@@ -95,13 +95,13 @@ class SimpleCrudTraitIntegrationTest extends TestCase
 
         $this->get('/users/edit/00000000-0000-0000-0000-000000000006');
         $this->assertResponseContains('<input type="text" name="username" required="required');
-        $this->assertResponseContains('id="username" aria-required="true" value="user-6"');
+        $this->assertResponseContains('id="username" value="user-6"');
         $this->assertResponseContains('<input type="email" name="email" required="required');
-        $this->assertResponseContains('id="email" aria-required="true" value="6@example.com"');
+        $this->assertResponseContains('id="email" value="6@example.com"');
         $this->assertResponseContains('<input type="text" name="first_name" id="first-name" value="first-user-6');
         $this->assertResponseContains('<input type="text" name="last_name" id="last-name" value="firts name 6');
         $this->assertResponseContains('<label for="active"><input type="checkbox" name="active" value="1" id="active" checked="checked">Active</label>');
-        $this->assertResponseContains('style="display:none;" method="post" action="/users/delete/00000000-0000-0000-0000-000000000006"');
+        $this->assertResponseContains('method="post" style="display:none;" action="/users/delete/00000000-0000-0000-0000-000000000006"');
         $this->assertResponseContains('<a href="/users/index">List Users</a>');
 
         $this->enableSecurityToken();
@@ -124,7 +124,7 @@ class SimpleCrudTraitIntegrationTest extends TestCase
         $this->assertResponseContains('<a href="/users/edit/00000000-0000-0000-0000-000000000006">Edit User</a>');
         $this->assertResponseContains('<a href="/users/add">New User</a>');
         $this->assertResponseContains('<a href="/users/index">List Users</a>');
-        $this->assertResponseContains('style="display:none;" method="post" action="/users/delete/00000000-0000-0000-0000-000000000006"');
+        $this->assertResponseContains('method="post" style="display:none;" action="/users/delete/00000000-0000-0000-0000-000000000006"');
 
         $this->post('/users/delete/00000000-0000-0000-0000-000000000006');
         $this->assertRedirect('/users/index');

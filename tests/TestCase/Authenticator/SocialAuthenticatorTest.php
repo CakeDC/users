@@ -206,14 +206,14 @@ class SocialAuthenticatorTest extends TestCase
             ->method('getAccessToken')
             ->with(
                 $this->equalTo('authorization_code'),
-                $this->equalTo(['code' => 'ZPO9972j3092304230'])
+                $this->equalTo(['code' => 'ZPO9972j3092304230']),
             )
             ->will($this->returnValue($Token));
 
         $this->Provider->expects($this->any())
             ->method('getResourceOwner')
             ->with(
-                $this->equalTo($Token)
+                $this->equalTo($Token),
             )
             ->will($this->returnValue($user));
 
@@ -268,14 +268,14 @@ class SocialAuthenticatorTest extends TestCase
             ->method('getAccessToken')
             ->with(
                 $this->equalTo('authorization_code'),
-                $this->equalTo(['code' => 'ZPO9972j3092304230'])
+                $this->equalTo(['code' => 'ZPO9972j3092304230']),
             )
             ->will($this->returnValue($Token));
 
         $this->Provider->expects($this->any())
             ->method('getResourceOwner')
             ->with(
-                $this->equalTo($Token)
+                $this->equalTo($Token),
             )
             ->will($this->throwException(new \UnexpectedValueException('User not found')));
 
@@ -361,14 +361,14 @@ class SocialAuthenticatorTest extends TestCase
             ->method('getAccessToken')
             ->with(
                 $this->equalTo('authorization_code'),
-                $this->equalTo(['code' => 'ZPO9972j3092304230'])
+                $this->equalTo(['code' => 'ZPO9972j3092304230']),
             )
             ->will($this->returnValue($Token));
 
         $this->Provider->expects($this->any())
             ->method('getResourceOwner')
             ->with(
-                $this->equalTo($Token)
+                $this->equalTo($Token),
             )
             ->will($this->returnValue($user));
 
@@ -466,14 +466,14 @@ class SocialAuthenticatorTest extends TestCase
             ->method('getAccessToken')
             ->with(
                 $this->equalTo('authorization_code'),
-                $this->equalTo(['code' => 'ZPO9972j3092304230'])
+                $this->equalTo(['code' => 'ZPO9972j3092304230']),
             )
             ->will($this->returnValue($Token));
 
         $this->Provider->expects($this->any())
             ->method('getResourceOwner')
             ->with(
-                $this->equalTo($Token)
+                $this->equalTo($Token),
             )
             ->will($this->returnValue($user));
 
@@ -581,14 +581,14 @@ class SocialAuthenticatorTest extends TestCase
             ->method('getAccessToken')
             ->with(
                 $this->equalTo('authorization_code'),
-                $this->equalTo(['code' => 'ZPO9972j3092304230'])
+                $this->equalTo(['code' => 'ZPO9972j3092304230']),
             )
             ->will($this->returnValue($Token));
 
         $this->Provider->expects($this->any())
             ->method('getResourceOwner')
             ->with(
-                $this->equalTo($Token)
+                $this->equalTo($Token),
             )
             ->will($this->returnValue($user));
 

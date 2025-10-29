@@ -7,6 +7,7 @@ use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
 use CakeDC\Users\Command\Logic\CreateUserTrait;
+use CakeDC\Users\Model\Table\UsersTable;
 
 /**
  * UsersAddSuperuser command.
@@ -26,7 +27,7 @@ class UsersAddSuperuserCommand extends Command
     {
         $this->_createUser($args, $io, [
             'username' => 'superadmin',
-            'role' => 'superuser',
+            'role' => UsersTable::ROLE_ADMIN,
             'is_superuser' => true,
         ]);
     }

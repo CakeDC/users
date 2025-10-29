@@ -68,13 +68,13 @@ class AuthLinkHelperTest extends TestCase
         $this->AuthLink->expects($this->once())
             ->method('isAuthorized')
             ->with(
-                $this->equalTo(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile'])
+                $this->equalTo(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile']),
             )
             ->will($this->returnValue(false));
         $result = $this->AuthLink->link(
             'title',
             ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile'],
-            ['before' => 'before_', 'after' => '_after', 'class' => 'link-class']
+            ['before' => 'before_', 'after' => '_after', 'class' => 'link-class'],
         );
         $this->assertEmpty($result);
     }
@@ -95,13 +95,13 @@ class AuthLinkHelperTest extends TestCase
         $this->AuthLink->expects($this->once())
             ->method('isAuthorized')
             ->with(
-                $this->equalTo(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile'])
+                $this->equalTo(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile']),
             )
             ->will($this->returnValue(true));
         $link = $this->AuthLink->link(
             'title',
             ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile'],
-            ['before' => 'before_', 'after' => '_after', 'class' => 'link-class']
+            ['before' => 'before_', 'after' => '_after', 'class' => 'link-class'],
         );
         $this->assertSame('before_<a href="/profile" class="link-class">title</a>_after', $link);
     }
@@ -158,7 +158,7 @@ class AuthLinkHelperTest extends TestCase
         $this->AuthLink->expects($this->once())
             ->method('isAuthorized')
             ->with(
-                $this->equalTo($url)
+                $this->equalTo($url),
             )
             ->will($this->returnValue(true));
         $link = $this->AuthLink->postLink('Post Link Title', $url, [
@@ -189,7 +189,7 @@ class AuthLinkHelperTest extends TestCase
         $this->AuthLink->expects($this->once())
             ->method('isAuthorized')
             ->with(
-                $this->equalTo($url)
+                $this->equalTo($url),
             )
             ->will($this->returnValue(false));
 
@@ -220,7 +220,7 @@ class AuthLinkHelperTest extends TestCase
         $this->AuthLink->expects($this->once())
             ->method('isAuthorized')
             ->with(
-                $this->equalTo($url)
+                $this->equalTo($url),
             )
             ->will($this->returnValue(false));
 

@@ -95,11 +95,13 @@ Cake\Cache\Cache::setConfig($cache);
 Cake\Core\Configure::write('Session', [
     'defaults' => 'php',
 ]);
+session_id('cli');
 
 Plugin::getCollection()->add(new \CakeDC\Users\Plugin([
     'path' => dirname(dirname(__FILE__)) . DS,
     'routes' => true,
 ]));
+
 if (file_exists($root . '/config/bootstrap.php')) {
     require $root . '/config/bootstrap.php';
 }
@@ -135,9 +137,6 @@ class_alias('TestApp\Controller\AppController', 'App\Controller\AppController');
     ],
 ]);
 \Cake\Utility\Security::setSalt('yoyz186elmi66ab9pz4imbb3tgy9vnsgsfgwe2r8tyxbbfdygu9e09tlxyg8p7dq');
-
-Plugin::getCollection()->add(new \CakeDC\Users\Plugin());
-session_id('cli');
 
 \Cake\Core\Configure::write('Users.AllowedRedirectHosts', [
     'localhost',

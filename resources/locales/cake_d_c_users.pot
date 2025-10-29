@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2024-05-10 08:44+0000\n"
+"POT-Creation-Date: 2025-01-09 06:42-0600\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -255,20 +255,20 @@ msgid "Password has been changed successfully"
 msgstr ""
 
 #: ./vendor/cakedc/users/src/Controller/Traits/PasswordManagementTrait.php:169
-#: ./vendor/cakedc/users/src/Controller/Traits/PasswordManagementTrait.php:178
+#: ./vendor/cakedc/users/src/Controller/Traits/PasswordManagementTrait.php:181
 msgid "If the account is valid, the system will send an instructional email to the address on record."
 msgstr ""
 
-#: ./vendor/cakedc/users/src/Controller/Traits/PasswordManagementTrait.php:172
-#: ./vendor/cakedc/users/src/Controller/Traits/PasswordManagementTrait.php:181
+#: ./vendor/cakedc/users/src/Controller/Traits/PasswordManagementTrait.php:175
+#: ./vendor/cakedc/users/src/Controller/Traits/PasswordManagementTrait.php:187
 msgid "There was an error please contact Administrator"
 msgstr ""
 
-#: ./vendor/cakedc/users/src/Controller/Traits/PasswordManagementTrait.php:206
+#: ./vendor/cakedc/users/src/Controller/Traits/PasswordManagementTrait.php:212
 msgid "Google Authenticator token was successfully reset"
 msgstr ""
 
-#: ./vendor/cakedc/users/src/Controller/Traits/PasswordManagementTrait.php:209
+#: ./vendor/cakedc/users/src/Controller/Traits/PasswordManagementTrait.php:215
 msgid "Could not reset Google Authenticator"
 msgstr ""
 
@@ -316,52 +316,52 @@ msgstr ""
 msgid "The {0} could not be deleted"
 msgstr ""
 
-#: ./vendor/cakedc/users/src/Controller/Traits/UserValidationTrait.php:51
+#: ./vendor/cakedc/users/src/Controller/Traits/UserValidationTrait.php:54
 msgid "User account validated successfully"
 msgstr ""
 
-#: ./vendor/cakedc/users/src/Controller/Traits/UserValidationTrait.php:53
+#: ./vendor/cakedc/users/src/Controller/Traits/UserValidationTrait.php:56
 msgid "User account could not be validated"
 msgstr ""
 
-#: ./vendor/cakedc/users/src/Controller/Traits/UserValidationTrait.php:56
+#: ./vendor/cakedc/users/src/Controller/Traits/UserValidationTrait.php:59
 msgid "User already active"
 msgstr ""
 
-#: ./vendor/cakedc/users/src/Controller/Traits/UserValidationTrait.php:62
+#: ./vendor/cakedc/users/src/Controller/Traits/UserValidationTrait.php:65
 msgid "Reset password token was validated successfully"
 msgstr ""
 
-#: ./vendor/cakedc/users/src/Controller/Traits/UserValidationTrait.php:70
+#: ./vendor/cakedc/users/src/Controller/Traits/UserValidationTrait.php:73
 msgid "Reset password token could not be validated"
 msgstr ""
 
-#: ./vendor/cakedc/users/src/Controller/Traits/UserValidationTrait.php:74
+#: ./vendor/cakedc/users/src/Controller/Traits/UserValidationTrait.php:77
 msgid "Invalid validation type"
 msgstr ""
 
-#: ./vendor/cakedc/users/src/Controller/Traits/UserValidationTrait.php:77
+#: ./vendor/cakedc/users/src/Controller/Traits/UserValidationTrait.php:80
 msgid "Invalid token or user account already validated"
 msgstr ""
 
-#: ./vendor/cakedc/users/src/Controller/Traits/UserValidationTrait.php:84
+#: ./vendor/cakedc/users/src/Controller/Traits/UserValidationTrait.php:87
 msgid "Token already expired"
 msgstr ""
 
-#: ./vendor/cakedc/users/src/Controller/Traits/UserValidationTrait.php:117
+#: ./vendor/cakedc/users/src/Controller/Traits/UserValidationTrait.php:120
 msgid "Token has been reset successfully. Please check your email."
 msgstr ""
 
-#: ./vendor/cakedc/users/src/Controller/Traits/UserValidationTrait.php:122
-#: ./vendor/cakedc/users/src/Controller/Traits/UserValidationTrait.php:131
+#: ./vendor/cakedc/users/src/Controller/Traits/UserValidationTrait.php:125
+#: ./vendor/cakedc/users/src/Controller/Traits/UserValidationTrait.php:134
 msgid "Token could not be reset"
 msgstr ""
 
-#: ./vendor/cakedc/users/src/Controller/Traits/UserValidationTrait.php:127
+#: ./vendor/cakedc/users/src/Controller/Traits/UserValidationTrait.php:130
 msgid "User {0} was not found"
 msgstr ""
 
-#: ./vendor/cakedc/users/src/Controller/Traits/UserValidationTrait.php:129
+#: ./vendor/cakedc/users/src/Controller/Traits/UserValidationTrait.php:132
 msgid "User {0} is already active"
 msgstr ""
 
@@ -375,15 +375,15 @@ msgstr ""
 msgid "Register error with webauthn for user id: {0}"
 msgstr ""
 
-#: ./vendor/cakedc/users/src/Identifier/PasswordLockout/LockoutHandler.php:155
+#: ./vendor/cakedc/users/src/Identifier/PasswordLockout/LockoutHandler.php:156
 msgid "Config \"timeWindowInSeconds\" must be integer greater than 60"
 msgstr ""
 
-#: ./vendor/cakedc/users/src/Identifier/PasswordLockout/LockoutHandler.php:167
+#: ./vendor/cakedc/users/src/Identifier/PasswordLockout/LockoutHandler.php:173
 msgid "Config \"numberOfAttemptsFail\" must be integer greater or equal 0"
 msgstr ""
 
-#: ./vendor/cakedc/users/src/Identifier/PasswordLockout/LockoutHandler.php:180
+#: ./vendor/cakedc/users/src/Identifier/PasswordLockout/LockoutHandler.php:191
 msgid "Config \"lockoutTimeInSeconds\" must be integer greater than 60"
 msgstr ""
 
@@ -391,7 +391,7 @@ msgstr ""
 msgid "Lockout handler has not been set."
 msgstr ""
 
-#: ./vendor/cakedc/users/src/Identifier/PasswordLockoutIdentifier.php:88
+#: ./vendor/cakedc/users/src/Identifier/PasswordLockoutIdentifier.php:89
 msgid "Option `className` for lockout handler is not present."
 msgstr ""
 
@@ -494,17 +494,17 @@ msgstr ""
 msgid "This field is required"
 msgstr ""
 
-#: ./vendor/cakedc/users/src/Model/Behavior/SocialAccountBehavior.php:100
-#: ./vendor/cakedc/users/src/Model/Behavior/SocialAccountBehavior.php:130
+#: ./vendor/cakedc/users/src/Model/Behavior/SocialAccountBehavior.php:104
+#: ./vendor/cakedc/users/src/Model/Behavior/SocialAccountBehavior.php:134
 msgid "Account already validated"
 msgstr ""
 
-#: ./vendor/cakedc/users/src/Model/Behavior/SocialAccountBehavior.php:104
-#: ./vendor/cakedc/users/src/Model/Behavior/SocialAccountBehavior.php:135
+#: ./vendor/cakedc/users/src/Model/Behavior/SocialAccountBehavior.php:108
+#: ./vendor/cakedc/users/src/Model/Behavior/SocialAccountBehavior.php:139
 msgid "Account not found for the given token and email."
 msgstr ""
 
-#: ./vendor/cakedc/users/src/Model/Behavior/SocialBehavior.php:93
+#: ./vendor/cakedc/users/src/Model/Behavior/SocialBehavior.php:94
 msgid "Unable to login user with reference {0}"
 msgstr ""
 
@@ -532,52 +532,28 @@ msgstr ""
 msgid "Logout"
 msgstr ""
 
-#: ./vendor/cakedc/users/src/View/Helper/UserHelper.php:195
+#: ./vendor/cakedc/users/src/View/Helper/UserHelper.php:200
 msgid "reCaptcha is not configured! Please configure Users.reCaptcha.key"
 msgstr ""
 
-#: ./vendor/cakedc/users/src/View/Helper/UserHelper.php:213
+#: ./vendor/cakedc/users/src/View/Helper/UserHelper.php:218
 msgid "reCaptcha version is wrong. Please configure Users.reCaptcha.version as 2 or 3"
 msgstr ""
 
-#: ./vendor/cakedc/users/src/View/Helper/UserHelper.php:299
+#: ./vendor/cakedc/users/src/View/Helper/UserHelper.php:304
 msgid "Connected with {0}"
 msgstr ""
 
-#: ./vendor/cakedc/users/src/View/Helper/UserHelper.php:304
+#: ./vendor/cakedc/users/src/View/Helper/UserHelper.php:309
 msgid "Connect with {0}"
 msgstr ""
 
-#: ./vendor/cakedc/users/src/Webauthn/AuthenticateAdapter.php:78
+#: ./vendor/cakedc/users/src/Webauthn/AuthenticateAdapter.php:79
 msgid "Could not validate credential response for authentication"
 msgstr ""
 
 #: ./vendor/cakedc/users/src/Webauthn/RegisterAdapter.php:84
 msgid "Could not credential response for registration"
-msgstr ""
-
-#: ./vendor/cakedc/users/config/bootstrap.php:39
-msgid "Users plugin configuration key \"{0}\" was removed, please check migration guide https://github.com/CakeDC/users/blob/master/Docs/Documentation/Migration/8.x-9.0.md"
-msgstr ""
-
-#: ./vendor/cakedc/users/config/users.php:88
-msgid "Empty password"
-msgstr ""
-
-#: ./vendor/cakedc/users/config/users.php:89
-msgid "Too simple"
-msgstr ""
-
-#: ./vendor/cakedc/users/config/users.php:90
-msgid "Simple"
-msgstr ""
-
-#: ./vendor/cakedc/users/config/users.php:91
-msgid "That's OK"
-msgstr ""
-
-#: ./vendor/cakedc/users/config/users.php:92
-msgid "Great password!"
 msgstr ""
 
 #: ./vendor/cakedc/users/templates/Users/add.php:13

@@ -34,14 +34,14 @@ trait OneTimePasswordVerifyTrait
             Configure::read('Auth.AuthenticationComponent.loginAction'),
             [
                 '?' => $this->getRequest()->getQueryParams(),
-            ]
+            ],
         );
         if (!$this->isVerifyAllowed()) {
             return $this->redirect($loginAction);
         }
 
         $temporarySession = $this->getRequest()->getSession()->read(
-            AuthenticationService::TWO_FACTOR_VERIFY_SESSION_KEY
+            AuthenticationService::TWO_FACTOR_VERIFY_SESSION_KEY,
         );
         $secretVerified = $temporarySession['secret_verified'] ?? null;
         // showing QR-code until shared secret is verified
@@ -53,7 +53,7 @@ trait OneTimePasswordVerifyTrait
 
             $secretDataUri = $this->OneTimePasswordAuthenticator->getQRCodeImageAsDataUri(
                 $temporarySession['email'],
-                $secret
+                $secret,
             );
             $this->set(['secretDataUri' => $secretDataUri]);
         }
@@ -83,7 +83,7 @@ trait OneTimePasswordVerifyTrait
         }
 
         $temporarySession = $this->getRequest()->getSession()->read(
-            AuthenticationService::TWO_FACTOR_VERIFY_SESSION_KEY
+            AuthenticationService::TWO_FACTOR_VERIFY_SESSION_KEY,
         );
 
         if (empty($temporarySession) || !isset($temporarySession['id'])) {

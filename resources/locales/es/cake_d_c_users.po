@@ -4,427 +4,134 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: CakeDC Users\n"
-"POT-Creation-Date: 2017-10-14 23:45+0000\n"
-"PO-Revision-Date: 2019-01-10 13:01-0200\n"
+"POT-Creation-Date: 2025-01-09 06:42-0600\n"
+"PO-Revision-Date: 2025-01-09 13:13+0000\n"
+"Last-Translator: Marcelo Rocha <contato@omarcelo.com.br>\n"
 "Language-Team: CakeDC <contact@cakedc.com>\n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.2\n"
-"Last-Translator: Marcelo Rocha <contato@omarcelo.com.br>\n"
-"Language: es\n"
-
-#: Auth/SocialAuthenticate.php:456
-msgid "Provider cannot be empty"
-msgstr "El proveedor no puede ser vacío"
-
-#: Controller/SocialAccountsController.php:52
-msgid "Account validated successfully"
-msgstr "Cuenta validada correctamente"
-
-#: Controller/SocialAccountsController.php:54
-msgid "Account could not be validated"
-msgstr "No se pudo validar la cuenta"
-
-#: Controller/SocialAccountsController.php:57
-msgid "Invalid token and/or social account"
-msgstr "Token o cuenta social incorrecta"
-
-#: Controller/SocialAccountsController.php:59;87
-msgid "Social Account already active"
-msgstr "Cuenta social ya activa"
-
-#: Controller/SocialAccountsController.php:61
-msgid "Social Account could not be validated"
-msgstr "No se pudo validar la cuenta social "
-
-#: Controller/SocialAccountsController.php:80
-msgid "Email sent successfully"
-msgstr "Email enviado correctamente"
-
-#: Controller/SocialAccountsController.php:82
-msgid "Email could not be sent"
-msgstr "No se puede enviar el email"
-
-#: Controller/SocialAccountsController.php:85
-msgid "Invalid account"
-msgstr "Cuenta inválida"
-
-#: Controller/SocialAccountsController.php:89
-msgid "Email could not be resent"
-msgstr "No se puede reenviar el Email"
-
-#: Controller/Component/RememberMeComponent.php:68
-msgid "Invalid app salt, app salt must be at least 256 bits (32 bytes) long"
-msgstr "App salt inválido, debe contener al menos 256 bits (32 bytes)"
-
-#: Controller/Component/UsersAuthComponent.php:204
-msgid "You can't enable email validation workflow if use_email is false"
-msgstr ""
-"No es posible activar el flujo de trabajo para la validación de email si "
-"use_mail es falso"
-
-#: Controller/Traits/LinkSocialTrait.php:54
-#, fuzzy
-msgid "Could not associate account, please try again."
-msgstr ""
-"No se pudo generar el token de contraseña. Por favor, inténtalo de nuevo"
-
-#: Controller/Traits/LinkSocialTrait.php:77
-#, fuzzy
-msgid "Social account was associated."
-msgstr "Cuenta social ya activa"
-
-#: Controller/Traits/LoginTrait.php:104
-msgid "Issues trying to log in with your social account"
-msgstr "Hubo un problema al iniciar sesión con tu cuenta social"
-
-#: Controller/Traits/LoginTrait.php:109 Template/Users/social_email.ctp:16
-msgid "Please enter your email"
-msgstr "Por favor, introduce tu email"
-
-#: Controller/Traits/LoginTrait.php:120
-msgid ""
-"Your user has not been validated yet. Please check your inbox for "
-"instructions"
-msgstr ""
-"El usuario no se ha validado todavía. Instrucciones enviadas a tu bandeja de "
-"entrada"
-
-#: Controller/Traits/LoginTrait.php:125
-msgid ""
-"Your social account has not been validated yet. Please check your inbox for "
-"instructions"
-msgstr ""
-"La cuenta social no se ha validado todavía. Instrucciones enviadas a tu "
-"bandeja de entrada"
-
-#: Controller/Traits/LoginTrait.php:180 Controller/Traits/RegisterTrait.php:82
-msgid "Invalid reCaptcha"
-msgstr "El código reCaptcha no es válido"
-
-#: Controller/Traits/LoginTrait.php:191
-msgid "You are already logged in"
-msgstr "Ya has iniciado sesión"
-
-#: Controller/Traits/LoginTrait.php:212
-msgid "Please enable Google Authenticator first."
-msgstr ""
-
-#: Controller/Traits/LoginTrait.php:287
-msgid "Verification code is invalid. Try again"
-msgstr ""
-
-#: Controller/Traits/LoginTrait.php:340
-msgid "Username or password is incorrect"
-msgstr "Usuario o contraseña incorrecta"
-
-#: Controller/Traits/LoginTrait.php:363
-msgid "You've successfully logged out"
-msgstr "Sesión finalizada correctamente"
-
-#: Controller/Traits/PasswordManagementTrait.php:49;82
-#: Controller/Traits/ProfileTrait.php:50
-msgid "User was not found"
-msgstr "Usuario no encontrado"
-
-#: Controller/Traits/PasswordManagementTrait.php:70;78;86
-msgid "Password could not be changed"
-msgstr "No es posible cambiar la contraseña"
-
-#: Controller/Traits/PasswordManagementTrait.php:74
-msgid "Password has been changed successfully"
-msgstr "Contraseña cambiada correctamente"
-
-#: Controller/Traits/PasswordManagementTrait.php:84
-msgid "{0}"
-msgstr "{0}"
-
-#: Controller/Traits/PasswordManagementTrait.php:127
-msgid "Please check your email to continue with password reset process"
-msgstr ""
-"Por favor, comprueba tu correo para continuar con el proceso de "
-"restablecimiento de contraseña"
-
-#: Controller/Traits/PasswordManagementTrait.php:130 Shell/UsersShell.php:247
-msgid "The password token could not be generated. Please try again"
-msgstr ""
-"No se pudo generar el token de contraseña. Por favor, inténtalo de nuevo"
-
-#: Controller/Traits/PasswordManagementTrait.php:136
-#: Controller/Traits/UserValidationTrait.php:107
-msgid "User {0} was not found"
-msgstr "Usuario {0} no encontrado"
-
-#: Controller/Traits/PasswordManagementTrait.php:138
-msgid "The user is not active"
-msgstr "El usuario no está activo"
-
-#: Controller/Traits/PasswordManagementTrait.php:140
-#: Controller/Traits/UserValidationTrait.php:102;111
-msgid "Token could not be reset"
-msgstr "No se puede restablecer el token"
-
-#: Controller/Traits/PasswordManagementTrait.php:164
-#, fuzzy
-msgid "Google Authenticator token was successfully reset"
-msgstr "Restablecimiento del token de contraseña validado correctamente"
-
-#: Controller/Traits/ProfileTrait.php:54
-msgid "Not authorized, please login first"
-msgstr ""
-"No estás autorizado para realizar esta acción, por favor inicia sesión "
-"primero"
-
-#: Controller/Traits/RegisterTrait.php:43
-msgid "You must log out to register a new user account"
-msgstr "Debes finalizar la sesión para registrar una nueva cuenta de usuario"
-
-#: Controller/Traits/RegisterTrait.php:89
-msgid "The user could not be saved"
-msgstr "No se ha podido guardar el usuario"
-
-#: Controller/Traits/RegisterTrait.php:123
-msgid "You have registered successfully, please log in"
-msgstr "Registrado correctamente, por favor inicia sesión"
-
-#: Controller/Traits/RegisterTrait.php:125
-msgid "Please validate your account before log in"
-msgstr "Por favor, valida tu cuenta antes de iniciar sesión"
-
-#: Controller/Traits/SimpleCrudTrait.php:77;107
-msgid "The {0} has been saved"
-msgstr "El {0} ha sido guardado"
-
-#: Controller/Traits/SimpleCrudTrait.php:81;111
-msgid "The {0} could not be saved"
-msgstr "El {0} no ha podido guardarse"
-
-#: Controller/Traits/SimpleCrudTrait.php:131
-msgid "The {0} has been deleted"
-msgstr "El {0} ha sido eliminado"
-
-#: Controller/Traits/SimpleCrudTrait.php:133
-msgid "The {0} could not be deleted"
-msgstr "El {0} no ha podido eliminarse"
-
-#: Controller/Traits/SocialTrait.php:40
-msgid "The reCaptcha could not be validated"
-msgstr "El código reCaptcha no se pudo validar"
-
-#: Controller/Traits/UserValidationTrait.php:43
-msgid "User account validated successfully"
-msgstr "Cuenta de usuario validada correctamente"
-
-#: Controller/Traits/UserValidationTrait.php:45
-msgid "User account could not be validated"
-msgstr "No se pudo validar la cuenta de usuario"
-
-#: Controller/Traits/UserValidationTrait.php:48
-msgid "User already active"
-msgstr "Usuario ya activo"
-
-#: Controller/Traits/UserValidationTrait.php:54
-msgid "Reset password token was validated successfully"
-msgstr "Restablecimiento del token de contraseña validado correctamente"
-
-#: Controller/Traits/UserValidationTrait.php:62
-msgid "Reset password token could not be validated"
-msgstr "Restablecimiento del token de contraseña no pudo validarse"
-
-#: Controller/Traits/UserValidationTrait.php:66
-msgid "Invalid validation type"
-msgstr "Tipo de validación inválido"
-
-#: Controller/Traits/UserValidationTrait.php:69
-msgid "Invalid token or user account already validated"
-msgstr "Token inválido, o tu cuenta ya había sido validada anteriormente"
-
-#: Controller/Traits/UserValidationTrait.php:71
-msgid "Token already expired"
-msgstr "Token ya expirado"
-
-#: Controller/Traits/UserValidationTrait.php:97
-msgid "Token has been reset successfully. Please check your email."
-msgstr ""
-"Se ha restablecido el token correctamente. Por favor comprueba tu email."
-
-#: Controller/Traits/UserValidationTrait.php:109
-msgid "User {0} is already active"
-msgstr "El usuario {0} ya está activo"
-
-#: Mailer/UsersMailer.php:34
-msgid "Your account validation link"
-msgstr "Enlace para validar tu cuenta"
-
-#: Mailer/UsersMailer.php:52
-msgid "{0}Your reset password link"
-msgstr "{0} Enlace para restablecer tu contraseña"
-
-#: Mailer/UsersMailer.php:75
-msgid "{0}Your social account validation link"
-msgstr "{0} Enlace de validación de tu cuenta social"
-
-#: Model/Behavior/AuthFinderBehavior.php:49
-msgid "Missing 'username' in options data"
-msgstr "Falta 'username' en las opciones"
-
-#: Model/Behavior/LinkSocialBehavior.php:53
-msgid "Social account already associated to another user"
-msgstr ""
-
-#: Model/Behavior/PasswordBehavior.php:45
-msgid "Reference cannot be null"
-msgstr "La referencia no puede estar vacía"
-
-#: Model/Behavior/PasswordBehavior.php:50
-msgid "Token expiration cannot be empty"
-msgstr "La fecha de expiración del Token no puede estar vacía"
-
-#: Model/Behavior/PasswordBehavior.php:56;117
-msgid "User not found"
-msgstr "Usuario no encontrado"
-
-#: Model/Behavior/PasswordBehavior.php:60
-#: Model/Behavior/RegisterBehavior.php:112;205
-msgid "User account already validated"
-msgstr "Tu usuario ya se había validado antes"
-
-#: Model/Behavior/PasswordBehavior.php:67
-msgid "User not active"
-msgstr "El usuario no está activo"
-
-#: Model/Behavior/PasswordBehavior.php:122
-msgid "The current password does not match"
-msgstr "La contraseña actual no coincide"
-
-#: Model/Behavior/PasswordBehavior.php:125
-msgid "You cannot use the current password as the new one"
-msgstr "No puedes usar tu contraseña actual como nueva contraseña"
-
-#: Model/Behavior/RegisterBehavior.php:90
-msgid "User not found for the given token and email."
-msgstr "Usuario no encontrado para el token y email proporcionado"
-
-#: Model/Behavior/RegisterBehavior.php:93
-msgid "Token has already expired user with no token"
-msgstr "El token ha expirado usuario sin token"
-
-#: Model/Behavior/SocialAccountBehavior.php:103;130
-msgid "Account already validated"
-msgstr "Cuenta ya activada"
-
-#: Model/Behavior/SocialAccountBehavior.php:106;133
-msgid "Account not found for the given token and email."
-msgstr "Cuenta no encontrada para el token y email proporcionado"
-
-#: Model/Behavior/SocialBehavior.php:82
-msgid "Unable to login user with reference {0}"
-msgstr "No se puede iniciar sesión con el usuario con referencia {0}"
-
-#: Model/Behavior/SocialBehavior.php:121
-msgid "Email not present"
-msgstr "No se encuentra el email"
-
-#: Model/Table/UsersTable.php:81
-msgid "Your password does not match your confirm password. Please try again"
-msgstr ""
-"La contraseña y la comprobación no concuerdan. Por favor inténtalo de nuevo"
-
-#: Model/Table/UsersTable.php:173
-msgid "Username already exists"
-msgstr "Nombre de usuario ya existente"
-
-#: Model/Table/UsersTable.php:179
-msgid "Email already exists"
-msgstr "Email ya existente"
-
-#: Shell/UsersShell.php:58
-msgid "Utilities for CakeDC Users Plugin"
-msgstr "Utilidades para CakeDC Users Plugin"
-
-#: Shell/UsersShell.php:60
-msgid "Activate an specific user"
-msgstr "Activar un usuario específico"
-
-#: Shell/UsersShell.php:63
-msgid "Add a new superadmin user for testing purposes"
-msgstr "Añadir un nuevo superadmin"
-
-#: Shell/UsersShell.php:66
-msgid "Add a new user"
-msgstr "Añadir un nuevo usuario"
-
-#: Shell/UsersShell.php:69
-msgid "Change the role for an specific user"
-msgstr "Cambiar el rol de un usuario específico"
-
-#: Shell/UsersShell.php:72
-msgid "Deactivate an specific user"
-msgstr "Desactivar un usuario"
-
-#: Shell/UsersShell.php:75
-msgid "Delete an specific user"
-msgstr "Borrar un usuario"
-
-#: Shell/UsersShell.php:78
-msgid "Reset the password via email"
-msgstr "Restablecer la contraseña vía email"
-
-#: Shell/UsersShell.php:81
-msgid "Reset the password for all users"
-msgstr "Restablecer la contraseña de todos los usuarios"
-
-#: Shell/UsersShell.php:84
-msgid "Reset the password for an specific user"
-msgstr "Restablecer la contraseña de un usuario concreto"
-
-#: Shell/UsersShell.php:133;159
-msgid "Please enter a password."
-msgstr "Por favor, introduce una contraseña."
-
-#: Shell/UsersShell.php:137
-msgid "Password changed for all users"
-msgstr "Contraseña cambiada para todos los usuarios"
-
-#: Shell/UsersShell.php:138;166
-msgid "New password: {0}"
-msgstr "Nueva contraseña: {0}"
-
-#: Shell/UsersShell.php:156;184;262;359
+"X-Generator: Poedit 3.5\n"
+
+#: vendor/cakedc/users/src/Command/Logic/ChangeUserActiveTrait.php:25
+#: vendor/cakedc/users/src/Command/UsersChangeApiTokenCommand.php:46
+#: vendor/cakedc/users/src/Command/UsersChangeRoleCommand.php:46
+#: vendor/cakedc/users/src/Command/UsersDeleteUserCommand.php:42
+#: vendor/cakedc/users/src/Command/UsersResetPasswordCommand.php:46
 msgid "Please enter a username."
 msgstr "Por favor introduce el nombre de usuario."
 
-#: Shell/UsersShell.php:165
-msgid "Password changed for user: {0}"
-msgstr "Contraseña cambiada para el usuario: {0}"
+#: vendor/cakedc/users/src/Command/Logic/CreateUserTrait.php:89
+msgid "Superuser added:"
+msgstr "Superusuario añadido:"
 
-#: Shell/UsersShell.php:187
-msgid "Please enter a role."
-msgstr "Por favor introduce el rol."
+#: vendor/cakedc/users/src/Command/Logic/CreateUserTrait.php:91
+msgid "User added:"
+msgstr "Usuario añadido:"
 
-#: Shell/UsersShell.php:193
-msgid "Role changed for user: {0}"
-msgstr "Rol cambiado para el usuario: {0}"
+#: vendor/cakedc/users/src/Command/Logic/CreateUserTrait.php:93
+msgid "Id: {0}"
+msgstr "Id: {0}"
 
-#: Shell/UsersShell.php:194
-msgid "New role: {0}"
-msgstr "Nuevo rol: {0}"
+#: vendor/cakedc/users/src/Command/Logic/CreateUserTrait.php:94
+msgid "Username: {0}"
+msgstr "Nombre de usuario: {0}"
 
-#: Shell/UsersShell.php:209
+#: vendor/cakedc/users/src/Command/Logic/CreateUserTrait.php:95
+msgid "Email: {0}"
+msgstr "Email: {0}"
+
+#: vendor/cakedc/users/src/Command/Logic/CreateUserTrait.php:96
+msgid "Role: {0}"
+msgstr "Rol: {0}"
+
+#: vendor/cakedc/users/src/Command/Logic/CreateUserTrait.php:97
+msgid "Password: {0}"
+msgstr "Contraseña: {0}"
+
+#: vendor/cakedc/users/src/Command/Logic/CreateUserTrait.php:99
+msgid "User could not be added:"
+msgstr "No se pudo añadir el usuario:"
+
+#: vendor/cakedc/users/src/Command/Logic/CreateUserTrait.php:102
+msgid "Field: {0} Error: {1}"
+msgstr "Campo: {0} Error: {1}"
+
+#: vendor/cakedc/users/src/Command/Logic/UpdateUserTrait.php:29
+msgid "The user was not found."
+msgstr "Usuario no encontrado."
+
+#: vendor/cakedc/users/src/Command/UsersActivateUserCommand.php:31
+msgid "Activate a specific user"
+msgstr "Activar un usuario específico"
+
+#: vendor/cakedc/users/src/Command/UsersActivateUserCommand.php:44
 msgid "User was activated: {0}"
 msgstr "Usuario activado: {0}"
 
-#: Shell/UsersShell.php:224
+#: vendor/cakedc/users/src/Command/UsersChangeApiTokenCommand.php:31
+msgid "Change the api token for a specific user"
+msgstr "Cambiar el token de API para un usuario concreto"
+
+#: vendor/cakedc/users/src/Command/UsersChangeApiTokenCommand.php:49
+msgid "Please enter a token."
+msgstr "Por favor introduce un token"
+
+#: vendor/cakedc/users/src/Command/UsersChangeApiTokenCommand.php:58
+msgid "Api token changed for user: {0}"
+msgstr "API token cambiado para el usuario: {0}"
+
+#: vendor/cakedc/users/src/Command/UsersChangeApiTokenCommand.php:59
+msgid "New token: {0}"
+msgstr "Nuevo token: {0}"
+
+#: vendor/cakedc/users/src/Command/UsersChangeRoleCommand.php:31
+msgid "Change the role for a specific user"
+msgstr "Cambiar el rol para un usuario concreto"
+
+#: vendor/cakedc/users/src/Command/UsersChangeRoleCommand.php:49
+msgid "Please enter a role."
+msgstr "Por favor introduce el rol."
+
+#: vendor/cakedc/users/src/Command/UsersChangeRoleCommand.php:55
+msgid "Role changed for user: {0}"
+msgstr "Rol cambiado para el usuario: {0}"
+
+#: vendor/cakedc/users/src/Command/UsersChangeRoleCommand.php:56
+msgid "New role: {0}"
+msgstr "Nuevo rol: {0}"
+
+#: vendor/cakedc/users/src/Command/UsersDeactivateUserCommand.php:31
+msgid "Deactivate a specific user"
+msgstr "Desactivar un usuario concreto"
+
+#: vendor/cakedc/users/src/Command/UsersDeactivateUserCommand.php:44
 msgid "User was de-activated: {0}"
 msgstr "Usuario desactivado: {0}"
 
-#: Shell/UsersShell.php:236
+#: vendor/cakedc/users/src/Command/UsersDeleteUserCommand.php:28
+msgid "Delete a specific user"
+msgstr "Borrar un usuario concreto"
+
+#: vendor/cakedc/users/src/Command/UsersDeleteUserCommand.php:57
+msgid "The user {0} was not deleted. Please try again"
+msgstr "El usuario {0} no ha sido borrado. Inténtalo de nuevo por favor"
+
+#: vendor/cakedc/users/src/Command/UsersDeleteUserCommand.php:59
+msgid "The user {0} was deleted successfully"
+msgstr "El usuario {0} se borró correctamente"
+
+#: vendor/cakedc/users/src/Command/UsersPasswordEmailCommand.php:29
+msgid "Reset the password via email"
+msgstr "Restablecer la contraseña vía email"
+
+#: vendor/cakedc/users/src/Command/UsersPasswordEmailCommand.php:43
 msgid "Please enter a username or email."
 msgstr "Por favor introduce el nombre de usuario o email."
 
-#: Shell/UsersShell.php:244
+#: vendor/cakedc/users/src/Command/UsersPasswordEmailCommand.php:55
 msgid ""
 "Please ask the user to check the email to continue with password reset "
 "process"
@@ -432,103 +139,836 @@ msgstr ""
 "Por favor, pide al usuario que mire su buzón de correo para continuar con el "
 "proceso de restablecimiento de su contraseña"
 
-#: Shell/UsersShell.php:308
-msgid "Superuser added:"
-msgstr "Superusuario añadido:"
+#: vendor/cakedc/users/src/Command/UsersPasswordEmailCommand.php:61
+msgid "The password token could not be generated. Please try again"
+msgstr ""
+"No se pudo generar el token de contraseña. Por favor, inténtalo de nuevo"
 
-#: Shell/UsersShell.php:310
-msgid "User added:"
-msgstr "Usuario añadido:"
+#: vendor/cakedc/users/src/Command/UsersResetAllPasswordsCommand.php:29
+msgid "Reset the password for all users"
+msgstr "Restablecer la contraseña de todos los usuarios"
 
-#: Shell/UsersShell.php:312
-msgid "Id: {0}"
-msgstr "Id: {0}"
+#: vendor/cakedc/users/src/Command/UsersResetAllPasswordsCommand.php:44
+#: vendor/cakedc/users/src/Command/UsersResetPasswordCommand.php:49
+msgid "Please enter a password."
+msgstr "Por favor, introduce una contraseña."
 
-#: Shell/UsersShell.php:313
-msgid "Username: {0}"
-msgstr "Nombre de usuario: {0}"
+#: vendor/cakedc/users/src/Command/UsersResetAllPasswordsCommand.php:48
+msgid "Password changed for all users"
+msgstr "Contraseña cambiada para todos los usuarios"
 
-#: Shell/UsersShell.php:314
-msgid "Email: {0}"
-msgstr "Email: {0}"
+#: vendor/cakedc/users/src/Command/UsersResetAllPasswordsCommand.php:49
+#: vendor/cakedc/users/src/Command/UsersResetPasswordCommand.php:56
+msgid "New password: {0}"
+msgstr "Nueva contraseña: {0}"
 
-#: Shell/UsersShell.php:315
-#, fuzzy
-msgid "Role: {0}"
-msgstr "Nuevo rol: {0}"
+#: vendor/cakedc/users/src/Command/UsersResetPasswordCommand.php:31
+msgid "Reset the password for a specific user"
+msgstr "Restablecer la contraseña de un usuario concreto"
 
-#: Shell/UsersShell.php:316
-msgid "Password: {0}"
-msgstr "Contraseña: {0}"
+#: vendor/cakedc/users/src/Command/UsersResetPasswordCommand.php:55
+msgid "Password changed for user: {0}"
+msgstr "Contraseña cambiada para el usuario: {0}"
 
-#: Shell/UsersShell.php:318
-#, fuzzy
-msgid "User could not be added:"
-msgstr "No se pudo añadir un superusuario:"
+#: vendor/cakedc/users/src/Controller/Component/LoginComponent.php:262
+#: vendor/cakedc/users/src/View/Helper/UserHelper.php:133
+msgid "Welcome, {0}"
+msgstr "Bienvenido/a, {0}"
 
-#: Shell/UsersShell.php:321
-msgid "Field: {0} Error: {1}"
-msgstr "Campo: {0} Error: {1}"
+#: vendor/cakedc/users/src/Controller/SocialAccountsController.php:50
+msgid "Account validated successfully"
+msgstr "Cuenta validada correctamente"
 
-#: Shell/UsersShell.php:337
-msgid "The user was not found."
-msgstr "Usuario no encontrado."
+#: vendor/cakedc/users/src/Controller/SocialAccountsController.php:52
+msgid "Account could not be validated"
+msgstr "No se pudo validar la cuenta"
 
-#: Shell/UsersShell.php:367
-msgid "The user {0} was not deleted. Please try again"
-msgstr "El usuario {0} no ha sido borrado. Inténtalo de nuevo por favor"
+#: vendor/cakedc/users/src/Controller/SocialAccountsController.php:55
+msgid "Invalid token and/or social account"
+msgstr "Token o cuenta social incorrecta"
 
-#: Shell/UsersShell.php:369
-msgid "The user {0} was deleted successfully"
-msgstr "El usuario {0} se borró correctamente"
+#: vendor/cakedc/users/src/Controller/SocialAccountsController.php:57
+#: vendor/cakedc/users/src/Controller/SocialAccountsController.php:85
+msgid "Social Account already active"
+msgstr "Cuenta social ya activa"
 
-#: Template/Email/html/reset_password.ctp:21
-#: Template/Email/html/social_account_validation.ctp:14
-#: Template/Email/html/validation.ctp:21
-#: Template/Email/text/reset_password.ctp:20
-#: Template/Email/text/social_account_validation.ctp:22
-#: Template/Email/text/validation.ctp:20
+#: vendor/cakedc/users/src/Controller/SocialAccountsController.php:59
+msgid "Social Account could not be validated"
+msgstr "No se pudo validar la cuenta social "
+
+#: vendor/cakedc/users/src/Controller/SocialAccountsController.php:78
+msgid "Email sent successfully"
+msgstr "Email enviado correctamente"
+
+#: vendor/cakedc/users/src/Controller/SocialAccountsController.php:80
+msgid "Email could not be sent"
+msgstr "No se puede enviar el email"
+
+#: vendor/cakedc/users/src/Controller/SocialAccountsController.php:83
+msgid "Invalid account"
+msgstr "Cuenta inválida"
+
+#: vendor/cakedc/users/src/Controller/SocialAccountsController.php:87
+msgid "Email could not be resent"
+msgstr "No se puede reenviar el Email"
+
+#: vendor/cakedc/users/src/Controller/Traits/LinkSocialTrait.php:56
+msgid "Could not associate account, please try again."
+msgstr "No se pudo asociar la cuenta, por favor, inténtalo de nuevo."
+
+#: vendor/cakedc/users/src/Controller/Traits/LinkSocialTrait.php:80
+msgid "Social account was associated."
+msgstr "La cuenta social ha sido activada."
+
+#: vendor/cakedc/users/src/Controller/Traits/LoginTrait.php:73
+msgid "You've successfully logged out"
+msgstr "Sesión finalizada correctamente"
+
+#: vendor/cakedc/users/src/Controller/Traits/OneTimePasswordVerifyTrait.php:75
+msgid "Please enable Google Authenticator first."
+msgstr "Por favor, habilita el autenticador de Google primero."
+
+#: vendor/cakedc/users/src/Controller/Traits/OneTimePasswordVerifyTrait.php:90
+msgid "Could not find user data"
+msgstr "No se ha encontrado datos de usuario"
+
+#: vendor/cakedc/users/src/Controller/Traits/OneTimePasswordVerifyTrait.php:129
+msgid "Could not verify, please try again"
+msgstr "No se ha podido verificar, por favor, inténtelo de nuevo"
+
+#: vendor/cakedc/users/src/Controller/Traits/OneTimePasswordVerifyTrait.php:161
+msgid "Verification code is invalid. Try again"
+msgstr "La verificación del código no es válida, inténtalo de nuevo"
+
+#: vendor/cakedc/users/src/Controller/Traits/PasswordManagementTrait.php:64
+msgid "Changing another user's password is not allowed"
+msgstr "Cambiar la contraseña de otro usuario no está permitido"
+
+#: vendor/cakedc/users/src/Controller/Traits/PasswordManagementTrait.php:78
+#: vendor/cakedc/users/src/Controller/Traits/PasswordManagementTrait.php:123
+#: vendor/cakedc/users/src/Controller/Traits/ProfileTrait.php:51
+msgid "User was not found"
+msgstr "Usuario no encontrado"
+
+#: vendor/cakedc/users/src/Controller/Traits/PasswordManagementTrait.php:106
+#: vendor/cakedc/users/src/Controller/Traits/PasswordManagementTrait.php:119
+#: vendor/cakedc/users/src/Controller/Traits/PasswordManagementTrait.php:127
+msgid "Password could not be changed"
+msgstr "No es posible cambiar la contraseña"
+
+#: vendor/cakedc/users/src/Controller/Traits/PasswordManagementTrait.php:115
+msgid "Password has been changed successfully"
+msgstr "Contraseña cambiada correctamente"
+
+#: vendor/cakedc/users/src/Controller/Traits/PasswordManagementTrait.php:169
+#: vendor/cakedc/users/src/Controller/Traits/PasswordManagementTrait.php:181
+msgid ""
+"If the account is valid, the system will send an instructional email to the "
+"address on record."
+msgstr ""
+"Si la cuenta no es válida, el sistema enviará un email instructivo a la "
+"dirección del registro."
+
+#: vendor/cakedc/users/src/Controller/Traits/PasswordManagementTrait.php:175
+#: vendor/cakedc/users/src/Controller/Traits/PasswordManagementTrait.php:187
+msgid "There was an error please contact Administrator"
+msgstr "Se ha producido un error, por favor, contacto con un administrador."
+
+#: vendor/cakedc/users/src/Controller/Traits/PasswordManagementTrait.php:212
+msgid "Google Authenticator token was successfully reset"
+msgstr "El token del autenticador de Google ha sido reiniciado correctamente"
+
+#: vendor/cakedc/users/src/Controller/Traits/PasswordManagementTrait.php:215
+msgid "Could not reset Google Authenticator"
+msgstr "No se ha podido reiniciar el token de autenticación de Google"
+
+#: vendor/cakedc/users/src/Controller/Traits/ProfileTrait.php:55
+msgid "Not authorized, please login first"
+msgstr ""
+"No estás autorizado para realizar esta acción, por favor inicia sesión "
+"primero"
+
+#: vendor/cakedc/users/src/Controller/Traits/RegisterTrait.php:47
+msgid "You must log out to register a new user account"
+msgstr "Debes finalizar la sesión para registrar una nueva cuenta de usuario"
+
+#: vendor/cakedc/users/src/Controller/Traits/RegisterTrait.php:86
+#: vendor/cakedc/users/src/Controller/Traits/RegisterTrait.php:117
+msgid "The user could not be saved"
+msgstr "No se ha podido guardar el usuario"
+
+#: vendor/cakedc/users/src/Controller/Traits/RegisterTrait.php:103
+#: vendor/cakedc/users/src/Loader/LoginComponentLoader.php:33
+msgid "Invalid reCaptcha"
+msgstr "El código reCaptcha no es válido"
+
+#: vendor/cakedc/users/src/Controller/Traits/RegisterTrait.php:151
+msgid "You have registered successfully, please log in"
+msgstr "Registrado correctamente, por favor inicia sesión"
+
+#: vendor/cakedc/users/src/Controller/Traits/RegisterTrait.php:153
+msgid "Please validate your account before log in"
+msgstr "Por favor, valida tu cuenta antes de iniciar sesión"
+
+#: vendor/cakedc/users/src/Controller/Traits/SimpleCrudTrait.php:75
+#: vendor/cakedc/users/src/Controller/Traits/SimpleCrudTrait.php:105
+msgid "The {0} has been saved"
+msgstr "El {0} ha sido guardado"
+
+#: vendor/cakedc/users/src/Controller/Traits/SimpleCrudTrait.php:79
+#: vendor/cakedc/users/src/Controller/Traits/SimpleCrudTrait.php:109
+msgid "The {0} could not be saved"
+msgstr "El {0} no ha podido guardarse"
+
+#: vendor/cakedc/users/src/Controller/Traits/SimpleCrudTrait.php:129
+msgid "The {0} has been deleted"
+msgstr "El {0} ha sido eliminado"
+
+#: vendor/cakedc/users/src/Controller/Traits/SimpleCrudTrait.php:131
+msgid "The {0} could not be deleted"
+msgstr "El {0} no ha podido eliminarse"
+
+#: vendor/cakedc/users/src/Controller/Traits/UserValidationTrait.php:54
+msgid "User account validated successfully"
+msgstr "Cuenta de usuario validada correctamente"
+
+#: vendor/cakedc/users/src/Controller/Traits/UserValidationTrait.php:56
+msgid "User account could not be validated"
+msgstr "No se pudo validar la cuenta de usuario"
+
+#: vendor/cakedc/users/src/Controller/Traits/UserValidationTrait.php:59
+msgid "User already active"
+msgstr "Usuario ya activo"
+
+#: vendor/cakedc/users/src/Controller/Traits/UserValidationTrait.php:65
+msgid "Reset password token was validated successfully"
+msgstr "Restablecimiento del token de contraseña validado correctamente"
+
+#: vendor/cakedc/users/src/Controller/Traits/UserValidationTrait.php:73
+msgid "Reset password token could not be validated"
+msgstr "Restablecimiento del token de contraseña no pudo validarse"
+
+#: vendor/cakedc/users/src/Controller/Traits/UserValidationTrait.php:77
+msgid "Invalid validation type"
+msgstr "Tipo de validación inválido"
+
+#: vendor/cakedc/users/src/Controller/Traits/UserValidationTrait.php:80
+msgid "Invalid token or user account already validated"
+msgstr "Token inválido, o tu cuenta ya había sido validada anteriormente"
+
+#: vendor/cakedc/users/src/Controller/Traits/UserValidationTrait.php:87
+msgid "Token already expired"
+msgstr "Token ya expirado"
+
+#: vendor/cakedc/users/src/Controller/Traits/UserValidationTrait.php:120
+msgid "Token has been reset successfully. Please check your email."
+msgstr ""
+"Se ha restablecido el token correctamente. Por favor comprueba tu email."
+
+#: vendor/cakedc/users/src/Controller/Traits/UserValidationTrait.php:125
+#: vendor/cakedc/users/src/Controller/Traits/UserValidationTrait.php:134
+msgid "Token could not be reset"
+msgstr "No se puede restablecer el token"
+
+#: vendor/cakedc/users/src/Controller/Traits/UserValidationTrait.php:130
+msgid "User {0} was not found"
+msgstr "Usuario {0} no encontrado"
+
+#: vendor/cakedc/users/src/Controller/Traits/UserValidationTrait.php:132
+msgid "User {0} is already active"
+msgstr "El usuario {0} ya está activo"
+
+#: vendor/cakedc/users/src/Controller/Traits/Webauthn2faTrait.php:55
+#: vendor/cakedc/users/src/Controller/Traits/Webauthn2faTrait.php:76
+msgid "User already has configured webauthn2fa"
+msgstr "El usuario ya ha configurado WebAuthn2fa"
+
+#: vendor/cakedc/users/src/Controller/Traits/Webauthn2faTrait.php:80
+#: vendor/cakedc/users/src/Controller/Traits/Webauthn2faTrait.php:127
+msgid "Register error with webauthn for user id: {0}"
+msgstr "Error en el registro con WebAuthn2fa para el usuario con id: {0}"
+
+#: vendor/cakedc/users/src/Identifier/PasswordLockout/LockoutHandler.php:156
+msgid "Config \"timeWindowInSeconds\" must be integer greater than 60"
+msgstr "La configuración \"timeWindowInSeconds\" debe ser un entero mayor a 60"
+
+#: vendor/cakedc/users/src/Identifier/PasswordLockout/LockoutHandler.php:173
+msgid "Config \"numberOfAttemptsFail\" must be integer greater or equal 0"
+msgstr ""
+"La configuración \"numberOfAttemptsFail\" debe ser un entero mayor o igual a "
+"60"
+
+#: vendor/cakedc/users/src/Identifier/PasswordLockout/LockoutHandler.php:191
+msgid "Config \"lockoutTimeInSeconds\" must be integer greater than 60"
+msgstr ""
+"La configuración \"lockoutTimeInSeconds\" debe ser un entero mayor a 60"
+
+#: vendor/cakedc/users/src/Identifier/PasswordLockoutIdentifier.php:73
+msgid "Lockout handler has not been set."
+msgstr "El controlador de bloqueo no ha sido definido"
+
+#: vendor/cakedc/users/src/Identifier/PasswordLockoutIdentifier.php:89
+msgid "Option `className` for lockout handler is not present."
+msgstr "La opción `className` para el controlador de bloqueo no existe"
+
+#: vendor/cakedc/users/src/Loader/AuthenticationServiceLoader.php:109
+msgid "Property  {0}.className should be defined"
+msgstr "La propiedad  {0}.className debe estar definida"
+
+#: vendor/cakedc/users/src/Loader/LoginComponentLoader.php:31
+msgid "Username or password is incorrect"
+msgstr "Usuario o contraseña incorrecta"
+
+#: vendor/cakedc/users/src/Loader/LoginComponentLoader.php:52
+msgid "Could not proceed with social account. Please try again"
+msgstr ""
+"No se ha podido proceder con la cuenta social. Por favor, inténtelo de nuevo"
+
+#: vendor/cakedc/users/src/Loader/LoginComponentLoader.php:54
+msgid ""
+"Your user has not been validated yet. Please check your inbox for "
+"instructions"
+msgstr ""
+"El usuario no se ha validado todavía. Instrucciones enviadas a tu bandeja de "
+"entrada"
+
+#: vendor/cakedc/users/src/Loader/LoginComponentLoader.php:58
+msgid ""
+"Your social account has not been validated yet. Please check your inbox for "
+"instructions"
+msgstr ""
+"La cuenta social no se ha validado todavía. Instrucciones enviadas a tu "
+"bandeja de entrada"
+
+#: vendor/cakedc/users/src/Mailer/UsersMailer.php:36
+msgid "Your account validation link"
+msgstr "Enlace para validar tu cuenta"
+
+#: vendor/cakedc/users/src/Mailer/UsersMailer.php:71
+msgid "{0}Your reset password link"
+msgstr "{0} Enlace para restablecer tu contraseña"
+
+#: vendor/cakedc/users/src/Mailer/UsersMailer.php:110
+msgid "{0}Your social account validation link"
+msgstr "{0} Enlace de validación de tu cuenta social"
+
+#: vendor/cakedc/users/src/Middleware/SocialAuthMiddleware.php:47
+#: vendor/cakedc/users/templates/Users/social_email.php:16
+msgid "Please enter your email"
+msgstr "Por favor, introduce tu email"
+
+#: vendor/cakedc/users/src/Middleware/SocialAuthMiddleware.php:57
+msgid "Could not identify your account, please try again"
+msgstr "No se pudo identificar su cuenta. Por favor, inténtalo de nuevo"
+
+#: vendor/cakedc/users/src/Middleware/UnauthorizedHandler/DefaultRedirectHandler.php:125
+msgid "Location = {0}"
+msgstr "Ubicación =  {0}"
+
+#: vendor/cakedc/users/src/Middleware/UnauthorizedHandler/DefaultRedirectHandler.php:129
+msgid "You are not authorized to access that location."
+msgstr "No está autorizado a acceder a ese sitio."
+
+#: vendor/cakedc/users/src/Model/Behavior/AuthFinderBehavior.php:50
+msgid "Missing 'username' in options data"
+msgstr "Falta 'username' en las opciones"
+
+#: vendor/cakedc/users/src/Model/Behavior/LinkSocialBehavior.php:50
+msgid "Social account already associated to another user"
+msgstr "La cuenta social ya esta asociada a otro usuario"
+
+#: vendor/cakedc/users/src/Model/Behavior/PasswordBehavior.php:45
+msgid "Reference cannot be null"
+msgstr "La referencia no puede estar vacía"
+
+#: vendor/cakedc/users/src/Model/Behavior/PasswordBehavior.php:50
+msgid "Token expiration cannot be empty"
+msgstr "La fecha de expiración del Token no puede estar vacía"
+
+#: vendor/cakedc/users/src/Model/Behavior/PasswordBehavior.php:56
+#: vendor/cakedc/users/src/Model/Behavior/PasswordBehavior.php:140
+msgid "User not found"
+msgstr "Usuario no encontrado"
+
+#: vendor/cakedc/users/src/Model/Behavior/PasswordBehavior.php:60
+#: vendor/cakedc/users/src/Model/Behavior/RegisterBehavior.php:129
+msgid "User account already validated"
+msgstr "Tu usuario ya se había validado antes"
+
+#: vendor/cakedc/users/src/Model/Behavior/PasswordBehavior.php:66
+msgid "User not active"
+msgstr "El usuario no está activo"
+
+#: vendor/cakedc/users/src/Model/Behavior/PasswordBehavior.php:145
+msgid "The current password does not match"
+msgstr "La contraseña actual no coincide"
+
+#: vendor/cakedc/users/src/Model/Behavior/PasswordBehavior.php:148
+msgid "You cannot use the current password as the new one"
+msgstr "No puedes usar tu contraseña actual como nueva contraseña"
+
+#: vendor/cakedc/users/src/Model/Behavior/RegisterBehavior.php:107
+msgid "User not found for the given token and email."
+msgstr "Usuario no encontrado para el token y email proporcionado"
+
+#: vendor/cakedc/users/src/Model/Behavior/RegisterBehavior.php:110
+msgid "Token has already expired user with no token"
+msgstr "El token ha expirado usuario sin token"
+
+#: vendor/cakedc/users/src/Model/Behavior/RegisterBehavior.php:167
+msgid "This field is required"
+msgstr "Éste campo es requerido"
+
+#: vendor/cakedc/users/src/Model/Behavior/SocialAccountBehavior.php:104
+#: vendor/cakedc/users/src/Model/Behavior/SocialAccountBehavior.php:134
+msgid "Account already validated"
+msgstr "Cuenta ya activada"
+
+#: vendor/cakedc/users/src/Model/Behavior/SocialAccountBehavior.php:108
+#: vendor/cakedc/users/src/Model/Behavior/SocialAccountBehavior.php:139
+msgid "Account not found for the given token and email."
+msgstr "Cuenta no encontrada para el token y email proporcionado"
+
+#: vendor/cakedc/users/src/Model/Behavior/SocialBehavior.php:94
+msgid "Unable to login user with reference {0}"
+msgstr "No se puede iniciar sesión con el usuario con referencia {0}"
+
+#: vendor/cakedc/users/src/Model/Behavior/SocialBehavior.php:144
+msgid "Email not present"
+msgstr "No se encuentra el email"
+
+#: vendor/cakedc/users/src/Model/Table/UsersTable.php:108
+msgid "Your password does not match your confirm password. Please try again"
+msgstr ""
+"La contraseña y la comprobación no concuerdan. Por favor inténtalo de nuevo"
+
+#: vendor/cakedc/users/src/Model/Table/UsersTable.php:202
+msgid "Username already exists"
+msgstr "Nombre de usuario ya existente"
+
+#: vendor/cakedc/users/src/Model/Table/UsersTable.php:208
+msgid "Email already exists"
+msgstr "Email ya existente"
+
+#: vendor/cakedc/users/src/View/Helper/UserHelper.php:49
+msgid "Sign in with"
+msgstr "Iniciar sesión con"
+
+#: vendor/cakedc/users/src/View/Helper/UserHelper.php:112
+msgid "Logout"
+msgstr "Salir"
+
+#: vendor/cakedc/users/src/View/Helper/UserHelper.php:200
+msgid "reCaptcha is not configured! Please configure Users.reCaptcha.key"
+msgstr ""
+"reCaptcha no se ha configurado, por favor configura Users.reCaptcha.key"
+
+#: vendor/cakedc/users/src/View/Helper/UserHelper.php:218
+msgid ""
+"reCaptcha version is wrong. Please configure Users.reCaptcha.version as 2 or "
+"3"
+msgstr ""
+"La versión de reCaptcha es incorrecta, por favor configura Users.reCaptcha."
+"version como 2 o 3"
+
+#: vendor/cakedc/users/src/View/Helper/UserHelper.php:304
+msgid "Connected with {0}"
+msgstr "Conectado con {0}"
+
+#: vendor/cakedc/users/src/View/Helper/UserHelper.php:309
+msgid "Connect with {0}"
+msgstr "Conectar con {0}"
+
+#: vendor/cakedc/users/src/Webauthn/AuthenticateAdapter.php:79
+msgid "Could not validate credential response for authentication"
+msgstr ""
+"No se ha podido validar la respuesta de credenciales para la autenticación"
+
+#: vendor/cakedc/users/src/Webauthn/RegisterAdapter.php:84
+msgid "Could not credential response for registration"
+msgstr "No se ha podido validar la respuesta de credenciales para el registro"
+
+#: vendor/cakedc/users/templates/Users/add.php:13
+#: vendor/cakedc/users/templates/Users/edit.php:17
+#: vendor/cakedc/users/templates/Users/index.php:13
+#: vendor/cakedc/users/templates/Users/index.php:26
+#: vendor/cakedc/users/templates/Users/view.php:15
+msgid "Actions"
+msgstr "Acciones"
+
+#: vendor/cakedc/users/templates/Users/add.php:15
+#: vendor/cakedc/users/templates/Users/edit.php:28
+#: vendor/cakedc/users/templates/Users/view.php:23
+msgid "List Users"
+msgstr "Listar Usuarios"
+
+#: vendor/cakedc/users/templates/Users/add.php:21
+#: vendor/cakedc/users/templates/Users/register.php:18
+msgid "Add User"
+msgstr "Añadir Usuario"
+
+#: vendor/cakedc/users/templates/Users/add.php:23
+#: vendor/cakedc/users/templates/Users/edit.php:36
+#: vendor/cakedc/users/templates/Users/index.php:22
+#: vendor/cakedc/users/templates/Users/login.php:20
+#: vendor/cakedc/users/templates/Users/profile.php:31
+#: vendor/cakedc/users/templates/Users/register.php:20
+#: vendor/cakedc/users/templates/Users/view.php:33
+msgid "Username"
+msgstr "Usuario"
+
+#: vendor/cakedc/users/templates/Users/add.php:24
+#: vendor/cakedc/users/templates/Users/edit.php:37
+#: vendor/cakedc/users/templates/Users/index.php:23
+#: vendor/cakedc/users/templates/Users/profile.php:33
+#: vendor/cakedc/users/templates/Users/register.php:21
+#: vendor/cakedc/users/templates/Users/view.php:35
+msgid "Email"
+msgstr "Email"
+
+#: vendor/cakedc/users/templates/Users/add.php:25
+#: vendor/cakedc/users/templates/Users/login.php:21
+#: vendor/cakedc/users/templates/Users/register.php:22
+msgid "Password"
+msgstr "Contraseña"
+
+#: vendor/cakedc/users/templates/Users/add.php:26
+#: vendor/cakedc/users/templates/Users/edit.php:38
+#: vendor/cakedc/users/templates/Users/index.php:24
+#: vendor/cakedc/users/templates/Users/register.php:31
+msgid "First name"
+msgstr "Nombre"
+
+#: vendor/cakedc/users/templates/Users/add.php:27
+#: vendor/cakedc/users/templates/Users/edit.php:39
+#: vendor/cakedc/users/templates/Users/index.php:25
+#: vendor/cakedc/users/templates/Users/register.php:32
+msgid "Last name"
+msgstr "Apellidos"
+
+#: vendor/cakedc/users/templates/Users/add.php:30
+#: vendor/cakedc/users/templates/Users/edit.php:54
+#: vendor/cakedc/users/templates/Users/view.php:49
+#: vendor/cakedc/users/templates/Users/view.php:74
+msgid "Active"
+msgstr "Activo"
+
+#: vendor/cakedc/users/templates/Users/add.php:34
+#: vendor/cakedc/users/templates/Users/change_password.php:29
+#: vendor/cakedc/users/templates/Users/edit.php:58
+#: vendor/cakedc/users/templates/Users/register.php:41
+#: vendor/cakedc/users/templates/Users/request_reset_password.php:23
+#: vendor/cakedc/users/templates/Users/resend_token_validation.php:20
+#: vendor/cakedc/users/templates/Users/social_email.php:19
+msgid "Submit"
+msgstr "Enviar"
+
+#: vendor/cakedc/users/templates/Users/change_password.php:5
+msgid "Please enter the new password"
+msgstr "Por favor introduce la nueva contraseña"
+
+#: vendor/cakedc/users/templates/Users/change_password.php:10
+msgid "Current password"
+msgstr "Contraseña actual"
+
+#: vendor/cakedc/users/templates/Users/change_password.php:17
+msgid "New password"
+msgstr "Nueva contraseña"
+
+#: vendor/cakedc/users/templates/Users/change_password.php:25
+#: vendor/cakedc/users/templates/Users/register.php:29
+msgid "Confirm password"
+msgstr "Confirmar contraseña"
+
+#: vendor/cakedc/users/templates/Users/edit.php:22
+#: vendor/cakedc/users/templates/Users/index.php:40
+msgid "Delete"
+msgstr "Eliminar"
+
+#: vendor/cakedc/users/templates/Users/edit.php:24
+#: vendor/cakedc/users/templates/Users/index.php:40
+#: vendor/cakedc/users/templates/Users/view.php:21
+msgid "Are you sure you want to delete # {0}?"
+msgstr "¿Está seguro de que quieres eliminar # {0}?"
+
+#: vendor/cakedc/users/templates/Users/edit.php:34
+#: vendor/cakedc/users/templates/Users/view.php:17
+msgid "Edit User"
+msgstr "Editar Usuario"
+
+#: vendor/cakedc/users/templates/Users/edit.php:40
+#: vendor/cakedc/users/templates/Users/view.php:43
+msgid "Token"
+msgstr "Token"
+
+#: vendor/cakedc/users/templates/Users/edit.php:42
+msgid "Token expires"
+msgstr "Token caduca"
+
+#: vendor/cakedc/users/templates/Users/edit.php:45
+msgid "API token"
+msgstr "Api Token"
+
+#: vendor/cakedc/users/templates/Users/edit.php:48
+msgid "Activation date"
+msgstr "Fecha de activación"
+
+#: vendor/cakedc/users/templates/Users/edit.php:51
+msgid "TOS date"
+msgstr "Fecha TOS"
+
+#: vendor/cakedc/users/templates/Users/edit.php:64
+msgid "Reset Google Authenticator Token"
+msgstr "Reiniciar el token del autenticador de Google"
+
+#: vendor/cakedc/users/templates/Users/edit.php:70
+msgid "Are you sure you want to reset token for user \"{0}\"?"
+msgstr "¿Estás seguro de querer reiniciar el token para el usuario \"{0}\"?"
+
+#: vendor/cakedc/users/templates/Users/index.php:15
+msgid "New {0}"
+msgstr "Nuevo {0}"
+
+#: vendor/cakedc/users/templates/Users/index.php:37
+msgid "View"
+msgstr "Ver"
+
+#: vendor/cakedc/users/templates/Users/index.php:38
+msgid "Change password"
+msgstr "Cambiar contraseña"
+
+#: vendor/cakedc/users/templates/Users/index.php:39
+msgid "Edit"
+msgstr "Editar"
+
+#: vendor/cakedc/users/templates/Users/index.php:49
+msgid "previous"
+msgstr "anterior"
+
+#: vendor/cakedc/users/templates/Users/index.php:51
+msgid "next"
+msgstr "siguiente"
+
+#: vendor/cakedc/users/templates/Users/login.php:19
+msgid "Please enter your username and password"
+msgstr "Por favor introduce tu usuario y contraseña"
+
+#: vendor/cakedc/users/templates/Users/login.php:29
+msgid "Remember me"
+msgstr "Recuérdame"
+
+#: vendor/cakedc/users/templates/Users/login.php:37
+msgid "Register"
+msgstr "Registrarse"
+
+#: vendor/cakedc/users/templates/Users/login.php:43
+msgid "Reset Password"
+msgstr "Cambiar contraseña"
+
+#: vendor/cakedc/users/templates/Users/login.php:48
+msgid "Login"
+msgstr "Iniciar sesión"
+
+#: vendor/cakedc/users/templates/Users/profile.php:21
+msgid "{0} {1}"
+msgstr "{0} {1}"
+
+#: vendor/cakedc/users/templates/Users/profile.php:27
+msgid "Change Password"
+msgstr "Cambiar contraseña"
+
+#: vendor/cakedc/users/templates/Users/profile.php:39
+#: vendor/cakedc/users/templates/Users/view.php:68
+msgid "Social Accounts"
+msgstr "Cuentas sociales"
+
+#: vendor/cakedc/users/templates/Users/profile.php:43
+#: vendor/cakedc/users/templates/Users/view.php:73
+msgid "Avatar"
+msgstr "Avatar"
+
+#: vendor/cakedc/users/templates/Users/profile.php:44
+#: vendor/cakedc/users/templates/Users/view.php:72
+msgid "Provider"
+msgstr "Proveedor"
+
+#: vendor/cakedc/users/templates/Users/profile.php:45
+msgid "Link"
+msgstr "Enlace"
+
+#: vendor/cakedc/users/templates/Users/profile.php:52
+msgid "Link to {0}"
+msgstr "Enlace a {0}"
+
+#: vendor/cakedc/users/templates/Users/register.php:34
+msgid "Accept TOS conditions?"
+msgstr "¿Aceptas las condiciones del servicios?"
+
+#: vendor/cakedc/users/templates/Users/request_reset_password.php:20
+msgid "Please enter your email or username to reset your password"
+msgstr ""
+"Por favor introduce tu email o nombre de usuario para reiniciar tu contraseña"
+
+#: vendor/cakedc/users/templates/Users/resend_token_validation.php:15
+msgid "Resend Validation email"
+msgstr "Reenviar email de validación"
+
+#: vendor/cakedc/users/templates/Users/resend_token_validation.php:17
+msgid "Email or username"
+msgstr "Email o usuario"
+
+#: vendor/cakedc/users/templates/Users/verify.php:13
+msgid "Verification Code"
+msgstr "Código de verificacion"
+
+#: vendor/cakedc/users/templates/Users/verify.php:15
+msgid ""
+"<span class=\"glyphicon glyphicon-log-in\" aria-hidden=\"true\"></span> "
+"Verify"
+msgstr ""
+"<span class=\"glyphicon glyphicon-log-in\" aria-hidden=\"true\"></span> "
+"Verificar"
+
+#: vendor/cakedc/users/templates/Users/view.php:19
+msgid "Delete User"
+msgstr "Eliminar Usuario"
+
+#: vendor/cakedc/users/templates/Users/view.php:24
+msgid "New User"
+msgstr "Nuevo Usuario"
+
+#: vendor/cakedc/users/templates/Users/view.php:31
+msgid "Id"
+msgstr "Id"
+
+#: vendor/cakedc/users/templates/Users/view.php:37
+msgid "First Name"
+msgstr "Nombre"
+
+#: vendor/cakedc/users/templates/Users/view.php:39
+msgid "Last Name"
+msgstr "Apellidos"
+
+#: vendor/cakedc/users/templates/Users/view.php:41
+msgid "Role"
+msgstr "Rol"
+
+#: vendor/cakedc/users/templates/Users/view.php:45
+msgid "Api Token"
+msgstr "Api Token"
+
+#: vendor/cakedc/users/templates/Users/view.php:53
+msgid "Token Expires"
+msgstr "Expiración de token"
+
+#: vendor/cakedc/users/templates/Users/view.php:55
+msgid "Activation Date"
+msgstr "Fecha de activación"
+
+#: vendor/cakedc/users/templates/Users/view.php:57
+msgid "Tos Date"
+msgstr "Fecha Tos"
+
+#: vendor/cakedc/users/templates/Users/view.php:59
+#: vendor/cakedc/users/templates/Users/view.php:75
+msgid "Created"
+msgstr "Creado"
+
+#: vendor/cakedc/users/templates/Users/view.php:61
+#: vendor/cakedc/users/templates/Users/view.php:76
+msgid "Modified"
+msgstr "Modificado"
+
+#: vendor/cakedc/users/templates/Users/webauthn2fa.php:8
+msgid "Two-factor authentication"
+msgstr "Autenticador en dos pasos"
+
+#: vendor/cakedc/users/templates/Users/webauthn2fa.php:19
+msgid "Registering your yubico key"
+msgstr "Registrando so llave Yubico"
+
+#: vendor/cakedc/users/templates/Users/webauthn2fa.php:20
+#: vendor/cakedc/users/templates/Users/webauthn2fa.php:26
+msgid "Please insert and tap your yubico key"
+msgstr "Por favor, inserte y toque su llave Yubico"
+
+#: vendor/cakedc/users/templates/Users/webauthn2fa.php:21
+msgid ""
+"In order to enable your YubiKey the first step is to perform a registration."
+msgstr "Para habilitar su YubiKey, el primer paso es realizar el registro."
+
+#: vendor/cakedc/users/templates/Users/webauthn2fa.php:22
+#: vendor/cakedc/users/templates/Users/webauthn2fa.php:28
+msgid ""
+"When the YubiKey starts blinking, press the golden disc to activate it. "
+"Depending on the web browser you might need to confirm the use of extended "
+"information from the YubiKey."
+msgstr ""
+"Cuando el YubiKey empiece a parpadear, presione el disco dorado para "
+"activarlo. Dependiendo del navegador, podría necesitar confirmar el uso de "
+"información adicional de YubiKey."
+
+#: vendor/cakedc/users/templates/Users/webauthn2fa.php:25
+msgid "Verify your registered yubico key"
+msgstr "Verifique su llave Yubico registrada"
+
+#: vendor/cakedc/users/templates/Users/webauthn2fa.php:27
+msgid ""
+"You can now finish the authentication process using the registered device."
+msgstr ""
+"Ahora puede terminar el proceso de autenticación usando el dispositivo "
+"registrado."
+
+#: vendor/cakedc/users/templates/Users/webauthn2fa.php:31
+msgid "Reload"
+msgstr "Recargando"
+
+#: vendor/cakedc/users/templates/email/html/reset_password.php:14
+#: vendor/cakedc/users/templates/email/html/social_account_validation.php:14
+#: vendor/cakedc/users/templates/email/html/validation.php:13
+#: vendor/cakedc/users/templates/email/text/reset_password.php:12
+#: vendor/cakedc/users/templates/email/text/social_account_validation.php:12
+#: vendor/cakedc/users/templates/email/text/validation.php:12
 msgid "Hi {0}"
 msgstr "Hola {0}"
 
-#: Template/Email/html/reset_password.ctp:24
+#: vendor/cakedc/users/templates/email/html/reset_password.php:17
 msgid "Reset your password here"
 msgstr "Restablece tu contraseña aquí"
 
-#: Template/Email/html/reset_password.ctp:27
-#: Template/Email/html/social_account_validation.ctp:32
-#: Template/Email/html/validation.ctp:27
-#, fuzzy
+#: vendor/cakedc/users/templates/email/html/reset_password.php:20
+#: vendor/cakedc/users/templates/email/html/social_account_validation.php:23
+#: vendor/cakedc/users/templates/email/html/validation.php:19
 msgid ""
 "If the link is not correctly displayed, please copy the following address in "
 "your web browser {0}"
 msgstr ""
-"Por favor, copia la siguiente dirección en tu navegador si el enlace no se "
-"ve correctamente {0}"
+"Si el enlace no se muestra correctamente, por favor, copia la siguiente "
+"dirección en tu navegador {0}"
 
-#: Template/Email/html/reset_password.ctp:34
-#: Template/Email/html/social_account_validation.ctp:39
-#: Template/Email/html/validation.ctp:34
-#: Template/Email/text/reset_password.ctp:28
-#: Template/Email/text/social_account_validation.ctp:30
-#: Template/Email/text/validation.ctp:28
+#: vendor/cakedc/users/templates/email/html/reset_password.php:27
+#: vendor/cakedc/users/templates/email/html/social_account_validation.php:30
+#: vendor/cakedc/users/templates/email/html/validation.php:26
+#: vendor/cakedc/users/templates/email/text/reset_password.php:20
+#: vendor/cakedc/users/templates/email/text/social_account_validation.php:20
+#: vendor/cakedc/users/templates/email/text/validation.php:20
 msgid "Thank you"
 msgstr "Gracias"
 
-#: Template/Email/html/social_account_validation.ctp:18
+#: vendor/cakedc/users/templates/email/html/social_account_validation.php:18
 msgid "Activate your social login here"
 msgstr "Activa tu acceso social aquí"
 
-#: Template/Email/html/validation.ctp:24
+#: vendor/cakedc/users/templates/email/html/validation.php:16
 msgid "Activate your account here"
 msgstr "Activa tu cuenta aquí"
 
-#: Template/Email/text/reset_password.ctp:22
-#: Template/Email/text/validation.ctp:22
+#: vendor/cakedc/users/templates/email/text/reset_password.php:14
+#: vendor/cakedc/users/templates/email/text/validation.php:14
 msgid "Please copy the following address in your web browser {0}"
 msgstr "Por favor copia la siguiente dirección en tu navegador {0}"
 
-#: Template/Email/text/social_account_validation.ctp:24
+#: vendor/cakedc/users/templates/email/text/social_account_validation.php:14
 msgid ""
 "Please copy the following address in your web browser to activate your "
 "social login {0}"
@@ -536,304 +976,52 @@ msgstr ""
 "Por favor copia la siguiente dirección en tu navegador para activar tu "
 "acceso social {0}"
 
-#: Template/Users/add.ctp:13 Template/Users/edit.ctp:16
-#: Template/Users/index.ctp:13;26 Template/Users/view.ctp:15
-msgid "Actions"
-msgstr "Acciones"
+#~ msgid "Provider cannot be empty"
+#~ msgstr "El proveedor no puede ser vacío"
 
-#: Template/Users/add.ctp:15 Template/Users/edit.ctp:27
-#: Template/Users/view.ctp:23
-msgid "List Users"
-msgstr "Listar Usuarios"
+#~ msgid "Invalid app salt, app salt must be at least 256 bits (32 bytes) long"
+#~ msgstr "App salt inválido, debe contener al menos 256 bits (32 bytes)"
 
-#: Template/Users/add.ctp:21 Template/Users/register.ctp:17
-msgid "Add User"
-msgstr "Añadir Usuario"
+#~ msgid "You can't enable email validation workflow if use_email is false"
+#~ msgstr ""
+#~ "No es posible activar el flujo de trabajo para la validación de email si "
+#~ "use_mail es falso"
 
-#: Template/Users/add.ctp:23 Template/Users/edit.ctp:35
-#: Template/Users/index.ctp:22 Template/Users/profile.ctp:30
-#: Template/Users/register.ctp:19 Template/Users/view.ctp:33
-msgid "Username"
-msgstr "Usuario"
+#~ msgid "Issues trying to log in with your social account"
+#~ msgstr "Hubo un problema al iniciar sesión con tu cuenta social"
 
-#: Template/Users/add.ctp:24 Template/Users/edit.ctp:36
-#: Template/Users/index.ctp:23 Template/Users/profile.ctp:32
-#: Template/Users/register.ctp:20 Template/Users/view.ctp:35
-msgid "Email"
-msgstr "Email"
+#~ msgid "You are already logged in"
+#~ msgstr "Ya has iniciado sesión"
 
-#: Template/Users/add.ctp:25 Template/Users/register.ctp:21
-msgid "Password"
-msgstr "Contraseña"
+#~ msgid "{0}"
+#~ msgstr "{0}"
 
-#: Template/Users/add.ctp:26 Template/Users/edit.ctp:37
-#: Template/Users/index.ctp:24 Template/Users/register.ctp:26
-msgid "First name"
-msgstr "Nombre"
+#~ msgid "Please check your email to continue with password reset process"
+#~ msgstr ""
+#~ "Por favor, comprueba tu correo para continuar con el proceso de "
+#~ "restablecimiento de contraseña"
 
-#: Template/Users/add.ctp:27 Template/Users/edit.ctp:38
-#: Template/Users/index.ctp:25 Template/Users/register.ctp:27
-msgid "Last name"
-msgstr "Apellidos"
+#~ msgid "The user is not active"
+#~ msgstr "El usuario no está activo"
 
-#: Template/Users/add.ctp:30 Template/Users/edit.ctp:53
-#: Template/Users/view.ctp:49;74
-msgid "Active"
-msgstr "Activo"
+#~ msgid "The reCaptcha could not be validated"
+#~ msgstr "El código reCaptcha no se pudo validar"
 
-#: Template/Users/add.ctp:34 Template/Users/change_password.ctp:25
-#: Template/Users/edit.ctp:57 Template/Users/register.ctp:36
-#: Template/Users/request_reset_password.ctp:8
-#: Template/Users/resend_token_validation.ctp:20
-#: Template/Users/social_email.ctp:19
-msgid "Submit"
-msgstr "Enviar"
+#~ msgid "Utilities for CakeDC Users Plugin"
+#~ msgstr "Utilidades para CakeDC Users Plugin"
 
-#: Template/Users/change_password.ctp:5
-msgid "Please enter the new password"
-msgstr "Por favor introduce la nueva contraseña"
+#~ msgid "Add a new superadmin user for testing purposes"
+#~ msgstr "Añadir un nuevo superadmin"
 
-#: Template/Users/change_password.ctp:10
-msgid "Current password"
-msgstr "Contraseña actual"
+#~ msgid "Add a new user"
+#~ msgstr "Añadir un nuevo usuario"
 
-#: Template/Users/change_password.ctp:16
-msgid "New password"
-msgstr "Nueva contraseña"
+#~ msgid "fa fa-{0}"
+#~ msgstr "fa fa-{0}"
 
-#: Template/Users/change_password.ctp:21 Template/Users/register.ctp:24
-msgid "Confirm password"
-msgstr "Confirmar contraseña"
+#~ msgid "btn btn-social btn-{0} "
+#~ msgstr "btn btn-social btn-{0}"
 
-#: Template/Users/edit.ctp:21 Template/Users/index.ctp:40
-msgid "Delete"
-msgstr "Eliminar"
-
-#: Template/Users/edit.ctp:23 Template/Users/index.ctp:40
-#: Template/Users/view.ctp:21
-msgid "Are you sure you want to delete # {0}?"
-msgstr "¿Está seguro de que quieres eliminar # {0}?"
-
-#: Template/Users/edit.ctp:33 Template/Users/view.ctp:17
-msgid "Edit User"
-msgstr "Editar Usuario"
-
-#: Template/Users/edit.ctp:39 Template/Users/view.ctp:43
-msgid "Token"
-msgstr "Token"
-
-#: Template/Users/edit.ctp:41
-msgid "Token expires"
-msgstr "Token caduca"
-
-#: Template/Users/edit.ctp:44
-msgid "API token"
-msgstr "Api Token"
-
-#: Template/Users/edit.ctp:47
-msgid "Activation date"
-msgstr "Fecha de activación"
-
-#: Template/Users/edit.ctp:50
-msgid "TOS date"
-msgstr "Fecha TOS"
-
-#: Template/Users/edit.ctp:63
 #, fuzzy
-msgid "Reset Google Authenticator Token"
-msgstr "Restablecimiento del token de contraseña validado correctamente"
-
-#: Template/Users/edit.ctp:69
-msgid "Are you sure you want to reset token for user \"{0}\"?"
-msgstr ""
-
-#: Template/Users/index.ctp:15
-msgid "New {0}"
-msgstr "Nuevo {0}"
-
-#: Template/Users/index.ctp:37
-msgid "View"
-msgstr "Ver"
-
-#: Template/Users/index.ctp:38
-msgid "Change password"
-msgstr "Cambiar contraseña"
-
-#: Template/Users/index.ctp:39
-msgid "Edit"
-msgstr "Editar"
-
-#: Template/Users/index.ctp:49
-msgid "previous"
-msgstr "anterior"
-
-#: Template/Users/index.ctp:51
-msgid "next"
-msgstr "siguiente"
-
-#: Template/Users/login.ctp:19
-msgid "Please enter your username and password"
-msgstr "Por favor introduce tu usuario y contraseña"
-
-#: Template/Users/login.ctp:29
-msgid "Remember me"
-msgstr "Recuérdame"
-
-#: Template/Users/login.ctp:37
-msgid "Register"
-msgstr "Registrarse"
-
-#: Template/Users/login.ctp:43
-msgid "Reset Password"
-msgstr "Cambiar contraseña"
-
-#: Template/Users/login.ctp:48
-msgid "Login"
-msgstr "Iniciar sesión"
-
-#: Template/Users/profile.ctp:21 View/Helper/UserHelper.php:54
-msgid "{0} {1}"
-msgstr "{0} {1}"
-
-#: Template/Users/profile.ctp:27
-#, fuzzy
-msgid "Change Password"
-msgstr "Cambiar contraseña"
-
-#: Template/Users/profile.ctp:38 Template/Users/view.ctp:68
-msgid "Social Accounts"
-msgstr "Cuentas sociales"
-
-#: Template/Users/profile.ctp:42 Template/Users/view.ctp:73
-msgid "Avatar"
-msgstr "Avatar"
-
-#: Template/Users/profile.ctp:43 Template/Users/view.ctp:72
-msgid "Provider"
-msgstr "Proveedor"
-
-#: Template/Users/profile.ctp:44
-msgid "Link"
-msgstr "Enlace"
-
-#: Template/Users/profile.ctp:51
-msgid "Link to {0}"
-msgstr "Enlace a {0}"
-
-#: Template/Users/register.ctp:29
-msgid "Accept TOS conditions?"
-msgstr "¿Aceptas las condiciones del servicios?"
-
-#: Template/Users/request_reset_password.ctp:5
-msgid "Please enter your email to reset your password"
-msgstr "Por favor introduce tu email para restablecer tu contraseña"
-
-#: Template/Users/resend_token_validation.ctp:15
-msgid "Resend Validation email"
-msgstr "Reenviar email de validación"
-
-#: Template/Users/resend_token_validation.ctp:17
-msgid "Email or username"
-msgstr "Email o usuario"
-
-#: Template/Users/verify.ctp:13
-msgid "Verification Code"
-msgstr ""
-
-#: Template/Users/verify.ctp:15
-msgid ""
-"<span class=\"glyphicon glyphicon-log-in\" aria-hidden=\"true\"></span> "
-"Verify"
-msgstr ""
-
-#: Template/Users/view.ctp:19
-msgid "Delete User"
-msgstr "Eliminar Usuario"
-
-#: Template/Users/view.ctp:24
-msgid "New User"
-msgstr "Nuevo Usuario"
-
-#: Template/Users/view.ctp:31
-msgid "Id"
-msgstr "Id"
-
-#: Template/Users/view.ctp:37
-#, fuzzy
-msgid "First Name"
-msgstr "Nombre"
-
-#: Template/Users/view.ctp:39
-#, fuzzy
-msgid "Last Name"
-msgstr "Apellidos"
-
-#: Template/Users/view.ctp:41
-#, fuzzy
-msgid "Role"
-msgstr "Nuevo rol: {0}"
-
-#: Template/Users/view.ctp:45
-#, fuzzy
-msgid "Api Token"
-msgstr "Api Token"
-
-#: Template/Users/view.ctp:53
-#, fuzzy
-msgid "Token Expires"
-msgstr "Token caduca"
-
-#: Template/Users/view.ctp:55
-#, fuzzy
-msgid "Activation Date"
-msgstr "Fecha de activación"
-
-#: Template/Users/view.ctp:57
-msgid "Tos Date"
-msgstr "Fecha Tos"
-
-#: Template/Users/view.ctp:59;75
-msgid "Created"
-msgstr "Creado"
-
-#: Template/Users/view.ctp:61;76
-msgid "Modified"
-msgstr "Modificado"
-
-#: View/Helper/UserHelper.php:45
-msgid "Sign in with"
-msgstr "Iniciar sesión con"
-
-#: View/Helper/UserHelper.php:48
-msgid "fa fa-{0}"
-msgstr "fa fa-{0}"
-
-#: View/Helper/UserHelper.php:57
-msgid "btn btn-social btn-{0} "
-msgstr "btn btn-social btn-{0}"
-
-#: View/Helper/UserHelper.php:106
-msgid "Logout"
-msgstr "Salir"
-
-#: View/Helper/UserHelper.php:123
-msgid "Welcome, {0}"
-msgstr "Bienvenido/a, {0}"
-
-#: View/Helper/UserHelper.php:146
-msgid "reCaptcha is not configured! Please configure Users.reCaptcha.key"
-msgstr ""
-"reCaptcha no se ha configurado, por favor configura Users.reCaptcha.key"
-
-#: View/Helper/UserHelper.php:205
-#, fuzzy
-msgid "btn btn-social btn-{0}"
-msgstr "btn btn-social btn-{0}"
-
-#: View/Helper/UserHelper.php:211
-msgid "Connected with {0}"
-msgstr "Conectado con {0}"
-
-#: View/Helper/UserHelper.php:216
-msgid "Connect with {0}"
-msgstr "Conectar con {0}"
+#~ msgid "btn btn-social btn-{0}"
+#~ msgstr "btn btn-social btn-{0}"

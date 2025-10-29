@@ -45,7 +45,7 @@ trait UserValidationTrait
                         if ($result) {
                             $event = $this->dispatchEvent(
                                 Plugin::EVENT_AFTER_EMAIL_TOKEN_VALIDATION,
-                                ['user' => $result]
+                                ['user' => $result],
                             );
                             $eventResult = $event->getResult();
                             if (!empty($eventResult) && is_array($eventResult)) {
@@ -65,7 +65,7 @@ trait UserValidationTrait
                         $this->Flash->success(__d('cake_d_c/users', 'Reset password token was validated successfully'));
                         $this->getRequest()->getSession()->write(
                             Configure::read('Users.Key.Session.resetPasswordUserId'),
-                            $result->id
+                            $result->id,
                         );
 
                         return $this->redirect(['action' => 'changePassword']);
@@ -119,7 +119,7 @@ trait UserValidationTrait
                 }
                 $this->Flash->success(__d(
                     'cake_d_c/users',
-                    'Token has been reset successfully. Please check your email.'
+                    'Token has been reset successfully. Please check your email.',
                 ));
             } else {
                 $this->Flash->error(__d('cake_d_c/users', 'Token could not be reset'));

@@ -38,11 +38,13 @@ class SocialAccountBehavior extends Behavior
     public function initialize(array $config): void
     {
         parent::initialize($config);
-        $this->_table
-            ->belongsTo('Users')
-            ->setForeignKey('user_id')
-            ->setJoinType('INNER')
-            ->setClassName(Configure::read('Users.table'));
+        if (!$this->_table->hasAssociation('Users')) {
+            $this->_table
+                ->belongsTo('Users')
+                ->setForeignKey('user_id')
+                ->setJoinType('INNER')
+                ->setClassName(Configure::read('Users.table'));
+        }
     }
 
     /**
@@ -105,7 +107,7 @@ class SocialAccountBehavior extends Behavior
             }
         } else {
             throw new RecordNotFoundException(
-                __d('cake_d_c/users', 'Account not found for the given token and email.')
+                __d('cake_d_c/users', 'Account not found for the given token and email.'),
             );
         }
 
@@ -131,12 +133,12 @@ class SocialAccountBehavior extends Behavior
         if (!empty($socialAccount)) {
             if ($socialAccount->active) {
                 throw new AccountAlreadyActiveException(
-                    __d('cake_d_c/users', 'Account already validated')
+                    __d('cake_d_c/users', 'Account already validated'),
                 );
             }
         } else {
             throw new RecordNotFoundException(
-                __d('cake_d_c/users', 'Account not found for the given token and email.')
+                __d('cake_d_c/users', 'Account not found for the given token and email.'),
             );
         }
 

@@ -165,7 +165,7 @@ class LoginComponent extends Component
             $userId = $user['id'] ?? null;
             Log::info(
                 "Unsafe redirect `$queryRedirect` ignored, user id `{$userId}` " .
-                "redirected to `$redirectUrl` after successful login"
+                "redirected to `$redirectUrl` after successful login",
             );
             $queryRedirect = $redirectUrl;
         }
@@ -243,7 +243,7 @@ class LoginComponent extends Component
         $user->set($field, $now);
         $this->getController()->getUsersTable()->updateAll(
             [$field => $now->format('Y-m-d H:i:s')],
-            ['id' => $user->id]
+            ['id' => $user->id],
         );
     }
 
