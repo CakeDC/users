@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -13,90 +14,43 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Test\TestCase\Controller\Component;
 
+use Authentication\AuthenticationService;
+use Authentication\Authenticator\Result;
+use Authentication\Identity;
 use Cake\Controller\ComponentRegistry;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\TestSuite\TestCase;
+use CakeDC\Users\Controller\Component\LoginComponent;
 use CakeDC\Users\Controller\Component\SetupComponent;
 
-/**
- * Class SetupComponentTest
- *
- * @package CakeDC\Users\Test\TestCase\Controller\Component
- */
 class LoginComponentTest extends TestCase
 {
-    /**
-     * Test subject
-     *
-     * @var \CakeDC\Users\Controller\Component\SetupComponent
-     */
-    public $Component;
-
-    /**
-     * @var \Cake\Controller\Controller
-     */
-    public $Controller;
-
-    /**
-     * setUp method
-     *
-     * @return void
-     */
     public function setUp(): void
     {
         parent::setUp();
-        $this->Controller = new Controller(new \Cake\Http\ServerRequest());
+        $this->request = new \Cake\Http\ServerRequest();
+        $this->controller = new Controller($this->request);
+        $registry = new ComponentRegistry($this->controller);
+        $this->component = new LoginComponent($registry);
+        $this->component->initialize([]);
     }
 
-    /**
-     * tearDown method
-     *
-     * @return void
-     */
-    public function tearDown(): void
+    public function testLoginRehash()
     {
-        unset($this->Controller, $this->Component);
-
-        parent::tearDown();
-    }
-
-    /**
-     * Data provider for testInitialization
-     *
-     * @return array
-     */
-    public static function dataProviderInitialization()
-    {
-        return [
-            [true, true, true],
-            [false, true, true],
-            [true, false, true],
-            [true, true, false],
-            [false, false, false],
-        ];
-    }
-
-    /**
-     * Test initial setup
-     *
-     * @param bool $authentication Should use authentication component
-     * @param bool $authorization Should use authorization component
-     * @param bool $oneTimePass Should use OneTimePassword component
-     * @throws \Exception
-     * @dataProvider dataProviderInitialization
-     * @return void
-     */
-    public function testInitialization($authentication, $authorization, $oneTimePass)
-    {
-        Configure::write('Auth.AuthenticationComponent.load', $authentication);
-        Configure::write('Auth.AuthorizationComponent.enable', $authorization);
-        Configure::write('OneTimePasswordAuthenticator.login', $oneTimePass);
-        $registry = new ComponentRegistry($this->Controller);
-        $this->Component = new SetupComponent($registry);
-        $this->Component->initialize([]);
-        $this->assertSame($authentication, $this->Controller->components()->has('Authentication'));
-        $this->assertSame($authorization, $this->Controller->components()->has('Authorization'));
-        $this->assertSame($oneTimePass, $this->Controller->components()->has('OneTimePasswordAuthenticator'));
+        $authenticationService = $this->getMockBuilder(AuthenticationService::class)->getMock();
+        $result = $this->getMockBuilder(Result::class)->disableOriginalConstructor()->getMock();
+        $result->expects($this->once())->method('isValid')->willReturn(true);
+        $authenticationService->expects($this->once())->method('getResult')->willReturn($result);
+        $this->request = $this->request->withAttribute('authentication', $authenticationService);
+        $identity = $this->getMockBuilder(Identity::class)->disableOriginalConstructor()->getMock();
+        $identity->expects($this->once())->method('getOriginalData')->willReturn([
+            'email' => 'test@example.com',
+            'password' => 'password',
+        ]);
+        $this->request = $this->request->withAttribute('authentication', $authenticationService);
+        $this->request = $this->request->withAttribute('identity', $identity);
+        $this->controller->setRequest($this->request);
+        $this->component->handleLogin(false, false);
     }
 }

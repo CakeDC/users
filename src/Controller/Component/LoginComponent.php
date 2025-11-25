@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -229,8 +230,7 @@ class LoginComponent extends Component
             Log::warning("Error saving user id $user->id password after rehashing: getUsersTable method not found");
             return;
         }
-        if (!$this->getController()->getUsersTable()->save($user))
-        {
+        if (!$this->getController()->getUsersTable()->save($user)) {
             Log::warning("Error saving user id $user->id password after rehashing: " . implode(', ', $user->getErrors()));
         }
     }
