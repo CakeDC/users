@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Controller\Component;
 
+use Authentication\AuthenticationServiceInterface;
 use Authentication\Authenticator\ResultInterface;
 use Cake\Controller\Component;
 use Cake\Core\Configure;
+use Cake\Datasource\EntityInterface;
 use Cake\Http\ServerRequest;
 use Cake\Log\Log;
 use CakeDC\Auth\Authentication\AuthenticationService;
@@ -188,21 +190,48 @@ class LoginComponent extends Component
      */
     protected function handlePasswordRehash($service, $user, \Cake\Http\ServerRequest $request)
     {
-        $indentifiersNames = (array)Configure::read('Auth.PasswordRehash.identifiers');
-        foreach ($indentifiersNames as $indentifierName) {
+        // deprecated way to define identifiers
+        $identifiersNames = (array)Configure::read('Auth.PasswordRehash.identifiers');
+        foreach ($identifiersNames as $identifierName) {
+            if (!$service->identifiers()->has($identifierName)) {
+                continue;
+            }
             /**
              * @var \Authentication\Identifier\AbstractIdentifier|null $checker
              */
-            $checker = $service->identifiers()->get($indentifierName);
-            if (!$checker || method_exists($checker, 'needsPasswordRehash') && !$checker->needsPasswordRehash()) {
-                continue;
-            }
-            $passwordField = $checker->getConfig('fields.password', 'password');
-            $password = $request->getData($passwordField);
-            $user->set($passwordField, $password);
-            $user->setDirty('modified');
-            $this->getController()->getUsersTable()->save($user);
+            $checker = $service->identifiers()->get($identifierName);
+            $this->saveRehashedPassword($checker, $request, $user);
             break;
+        }
+
+        // new way to define identifiers, inside the authenticators
+        $authenticatorNames = (array)Configure::read('Auth.PasswordRehash.authenticators');
+        foreach ($authenticatorNames as $authenticatorName) {
+            /**
+             * @var \Authentication\Identifier\AbstractIdentifier|null $checker
+             */
+            $checker = $service->authenticators()->get($authenticatorName)->getIdentifier();
+            $this->saveRehashedPassword($checker, $request, $user);
+            break;
+        }
+    }
+
+    protected function saveRehashedPassword($checker, ServerRequest $request, EntityInterface $user): void
+    {
+        if (!$checker || method_exists($checker, 'needsPasswordRehash') && !$checker->needsPasswordRehash()) {
+            return;
+        }
+        $passwordField = $checker->getConfig('fields.password', 'password');
+        $password = $request->getData($passwordField);
+        $user->set($passwordField, $password);
+        $user->setDirty('modified');
+        if (!method_exists($this->getController(), 'getUsersTable')) {
+            Log::warning("Error saving user id $user->id password after rehashing: getUsersTable method not found");
+            return;
+        }
+        if (!$this->getController()->getUsersTable()->save($user))
+        {
+            Log::warning("Error saving user id $user->id password after rehashing: " . implode(', ', $user->getErrors()));
         }
     }
 
