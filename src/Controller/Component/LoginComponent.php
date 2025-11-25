@@ -16,6 +16,7 @@ namespace CakeDC\Users\Controller\Component;
 
 use Authentication\AuthenticationServiceInterface;
 use Authentication\Authenticator\ResultInterface;
+use Authentication\Identifier\IdentifierCollection;
 use Cake\Controller\Component;
 use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
@@ -195,6 +196,7 @@ class LoginComponent extends Component
         $identifiersNames = (array)Configure::read('Auth.PasswordRehash.identifiers');
         foreach ($identifiersNames as $identifierName) {
             if (!$service->identifiers()->has($identifierName)) {
+                Log::warning("Error saving user id $user->id password after rehashing: identifier $identifierName not found. Check your Auth.PasswordRehash.identifiers configuration.");
                 continue;
             }
             /**
@@ -202,18 +204,29 @@ class LoginComponent extends Component
              */
             $checker = $service->identifiers()->get($identifierName);
             $this->saveRehashedPassword($checker, $request, $user);
-            break;
         }
 
         // new way to define identifiers, inside the authenticators
         $authenticatorNames = (array)Configure::read('Auth.PasswordRehash.authenticators');
-        foreach ($authenticatorNames as $authenticatorName) {
+        foreach ($authenticatorNames as $authenticatorName => $identifierName) {
+            if (!$service->authenticators()->has($authenticatorName)) {
+                Log::warning("Error saving user id $user->id password after rehashing: authenticator $authenticatorName not found. Check your Auth.PasswordRehash.authenticators configuration.");
+                continue;
+            }
+            /**
+             * @var IdentifierCollection $identifierCollection
+             */
+            $identifierCollection = $service->authenticators()->get($authenticatorName)->getIdentifier();
+            if (!$identifierCollection->has($identifierName)) {
+                Log::warning("Error saving user id $user->id password after rehashing: identifier $identifierName not found. Check your Auth.PasswordRehash.authenticators configuration.");
+                continue;
+            }
+
             /**
              * @var \Authentication\Identifier\AbstractIdentifier|null $checker
              */
-            $checker = $service->authenticators()->get($authenticatorName)->getIdentifier();
+            $checker = $identifierCollection->get($identifierName);
             $this->saveRehashedPassword($checker, $request, $user);
-            break;
         }
     }
 
