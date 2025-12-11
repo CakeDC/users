@@ -20,20 +20,32 @@ use Authentication\Identity;
 use Cake\Controller\ComponentRegistry;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
+use Cake\Http\ServerRequest;
+use Cake\ORM\Entity;
 use Cake\TestSuite\TestCase;
 use CakeDC\Users\Controller\Component\LoginComponent;
 use CakeDC\Users\Controller\Component\SetupComponent;
 
 class LoginComponentTest extends TestCase
 {
+    protected ServerRequest $request;
+    protected Controller $controller;
+    protected LoginComponent $component;
+    protected Entity $user;
+
     public function setUp(): void
     {
         parent::setUp();
-        $this->request = new \Cake\Http\ServerRequest();
-        $this->controller = new Controller($this->request);
+        $this->request = new ServerRequest();
+        $this->controller = new \CakeDC\Users\Controller\UsersController($this->request);
         $registry = new ComponentRegistry($this->controller);
         $this->component = new LoginComponent($registry);
         $this->component->initialize([]);
+        $this->user = new \CakeDC\Users\Model\Entity\User([
+            'id' => 'd602b053-9d10-4a1c-b05d-5674f68a1f3a',
+            'email' => 'test@example.com',
+            'password' => 'password',
+        ]);
     }
 
     public function testLoginRehash()
@@ -44,10 +56,7 @@ class LoginComponentTest extends TestCase
         $authenticationService->expects($this->once())->method('getResult')->willReturn($result);
         $this->request = $this->request->withAttribute('authentication', $authenticationService);
         $identity = $this->getMockBuilder(Identity::class)->disableOriginalConstructor()->getMock();
-        $identity->expects($this->once())->method('getOriginalData')->willReturn([
-            'email' => 'test@example.com',
-            'password' => 'password',
-        ]);
+        $identity->expects($this->once())->method('getOriginalData')->willReturn($this->user);
         $this->request = $this->request->withAttribute('authentication', $authenticationService);
         $this->request = $this->request->withAttribute('identity', $identity);
         $this->controller->setRequest($this->request);
