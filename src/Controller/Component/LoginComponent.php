@@ -242,13 +242,14 @@ class LoginComponent extends Component
         $password = $request->getData($passwordField);
         $user->set($passwordField, $password);
         $user->setDirty('modified');
+        $userId = $user->get('id');
         if (!method_exists($this->getController(), 'getUsersTable')) {
-            Log::warning("Error saving user id $user->id password after rehashing: getUsersTable method not found");
+            Log::warning("Error saving user id $userId password after rehashing: getUsersTable method not found");
 
             return;
         }
         if (!$this->getController()->getUsersTable()->save($user)) {
-            Log::warning("Error saving user id $user->id password after rehashing: " . implode(', ', $user->getErrors()));
+            Log::warning("Error saving user id $userId password after rehashing: " . implode(', ', $user->getErrors()));
         }
     }
 
