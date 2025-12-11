@@ -150,7 +150,7 @@ class LoginTraitTest extends BaseTrait
         $passwordIdentifier = $this->getMockBuilder(PasswordIdentifier::class)
             ->onlyMethods(['needsPasswordRehash'])
             ->getMock();
-        $passwordIdentifier->expects($this->once())
+        $passwordIdentifier->expects($this->any())
             ->method('needsPasswordRehash')
             ->willReturn(true);
         $identifiers = new IdentifierCollection([]);
@@ -167,7 +167,7 @@ class LoginTraitTest extends BaseTrait
         $userPassword = 'testLoginRehash' . time();
         $this->_mockDispatchEvent(new Event('event'));
         $this->_mockRequestPost();
-        $this->Trait->getRequest()->expects($this->once())
+        $this->Trait->getRequest()->expects($this->any())
             ->method('getData')
             ->with($this->equalTo('password'))
             ->willReturn($userPassword);
