@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 /**
@@ -19,12 +18,10 @@ use Authentication\Authenticator\Result;
 use Authentication\Identity;
 use Cake\Controller\ComponentRegistry;
 use Cake\Controller\Controller;
-use Cake\Core\Configure;
 use Cake\Http\ServerRequest;
 use Cake\ORM\Entity;
 use Cake\TestSuite\TestCase;
 use CakeDC\Users\Controller\Component\LoginComponent;
-use CakeDC\Users\Controller\Component\SetupComponent;
 
 class LoginComponentTest extends TestCase
 {

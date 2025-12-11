@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 /**
@@ -14,9 +13,7 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Controller\Component;
 
-use Authentication\AuthenticationServiceInterface;
 use Authentication\Authenticator\ResultInterface;
-use Authentication\Identifier\IdentifierCollection;
 use Cake\Controller\Component;
 use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
@@ -214,7 +211,7 @@ class LoginComponent extends Component
                 continue;
             }
             /**
-             * @var IdentifierCollection $identifierCollection
+             * @var \Authentication\Identifier\IdentifierCollection $identifierCollection
              */
             $identifierCollection = $service->authenticators()->get($authenticatorName)->getIdentifier();
             if (!$identifierCollection->has($identifierName)) {
@@ -230,6 +227,12 @@ class LoginComponent extends Component
         }
     }
 
+    /**
+     * @param mixed $checker
+     * @param \Cake\Http\ServerRequest $request
+     * @param \Cake\Datasource\EntityInterface $user
+     * @return void
+     */
     protected function saveRehashedPassword($checker, ServerRequest $request, EntityInterface $user): void
     {
         if (!$checker || method_exists($checker, 'needsPasswordRehash') && !$checker->needsPasswordRehash()) {
@@ -241,6 +244,7 @@ class LoginComponent extends Component
         $user->setDirty('modified');
         if (!method_exists($this->getController(), 'getUsersTable')) {
             Log::warning("Error saving user id $user->id password after rehashing: getUsersTable method not found");
+
             return;
         }
         if (!$this->getController()->getUsersTable()->save($user)) {
