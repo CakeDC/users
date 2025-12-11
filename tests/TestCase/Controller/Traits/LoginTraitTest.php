@@ -235,10 +235,11 @@ class LoginTraitTest extends BaseTrait
             ->method('is')
             ->with('post')
             ->will($this->returnValue(false));
-        $this->Trait->Flash = $this->getMockBuilder('Cake\Controller\Component\FlashComponent')
+        $flash = $this->getMockBuilder('Cake\Controller\Component\FlashComponent')
             ->addMethods(['error'])
             ->disableOriginalConstructor()
             ->getMock();
+        $this->Trait->components()->set('Flash', $flash);
 
         $this->Trait->Flash->expects($this->never())
             ->method('error');
@@ -297,10 +298,11 @@ class LoginTraitTest extends BaseTrait
         $this->Trait->expects($this->once())
             ->method('redirect')
             ->with($this->logoutRedirect);
-        $this->Trait->Flash = $this->getMockBuilder('Cake\Controller\Component\FlashComponent')
+        $flash = $this->getMockBuilder('Cake\Controller\Component\FlashComponent')
             ->addMethods(['success'])
             ->disableOriginalConstructor()
             ->getMock();
+        $this->Trait->components()->set('Flash', $flash);
         $this->Trait->Flash->expects($this->once())
             ->method('success')
             ->with('You\'ve successfully logged out');

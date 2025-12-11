@@ -187,10 +187,11 @@ class BaseTrait extends TestCase
      */
     protected function _mockFlash()
     {
-        $this->Trait->Flash = $this->getMockBuilder('Cake\Controller\Component\FlashComponent')
+        $flash = $this->getMockBuilder('Cake\Controller\Component\FlashComponent')
                 ->addMethods(['error', 'success'])
                 ->disableOriginalConstructor()
                 ->getMock();
+        $this->Trait->components()->set('Flash', $flash);
     }
 
     /**
@@ -288,11 +289,14 @@ class BaseTrait extends TestCase
 
         $controller = new Controller($this->Trait->getRequest());
         $registry = new ComponentRegistry($controller);
-        $this->Trait->Authentication = new AuthenticationComponent($registry, [
+
+        $authentication = new AuthenticationComponent($registry, [
             'loginRedirect' => $this->successLoginRedirect,
             'logoutRedirect' => $this->logoutRedirect,
             'loginAction' => $this->loginAction,
         ]);
+
+        $this->Trait->components()->set('Authentication', $authentication);
     }
 
     /**

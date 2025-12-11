@@ -146,10 +146,10 @@ class RegisterBehavior extends BaseTokenBehavior
     public function buildValidator(\Cake\Event\EventInterface $event, Validator $validator, $name)
     {
         if ($name === 'default') {
-            return $this->_emailValidator($validator, $this->validateEmail);
+            $validator = $this->_emailValidator($validator, $this->validateEmail);
         }
 
-        return $validator;
+        $event->setResult($validator);
     }
 
     /**

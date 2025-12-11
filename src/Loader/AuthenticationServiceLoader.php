@@ -52,6 +52,18 @@ class AuthenticationServiceLoader
     protected function loadIdentifiers($service)
     {
         $identifiers = Configure::read('Auth.Identifiers');
+
+        if (empty($identifiers)) {
+            return;
+        }
+
+        deprecationWarning(
+            '15.2.0',
+            'Configuring identifiers globally via `Auth.Identifiers` is deprecated. ' .
+                'Please move each identifier\'s configuration into the `identifier` key within its specific authenticator under `Auth.Authenticators`. ' .
+                'For example, the `Auth.Identifiers.Password` configuration should now be placed inside `Auth.Authenticators.Form.identifier`.',
+        );
+
         foreach ($identifiers as $key => $item) {
             [$identifier, $options] = $this->_getItemLoadData($item, $key);
 
