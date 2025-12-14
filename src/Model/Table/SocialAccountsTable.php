@@ -22,6 +22,10 @@ use Cake\Validation\Validator;
  * SocialAccounts Model
  *
  * @mixin \CakeDC\Users\Model\Behavior\SocialAccountBehavior
+ * @extends \Cake\ORM\Table<array{
+ *      Timestamp: \Cake\ORM\Behavior\TimestampBehavior,
+ *      SocialAccount: \CakeDC\Users\Model\Behavior\SocialAccountBehavior
+ *  }>
  */
 class SocialAccountsTable extends Table
 {

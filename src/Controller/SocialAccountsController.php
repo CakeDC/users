@@ -45,7 +45,7 @@ class SocialAccountsController extends AppController
     public function validateAccount($provider, $reference, $token)
     {
         try {
-            $result = $this->SocialAccounts->validateAccount($provider, $reference, $token);
+            $result = $this->SocialAccounts->getBehavior('SocialAccount')->validateAccount($provider, $reference, $token);
             if ($result) {
                 $this->Flash->success(__d('cake_d_c/users', 'Account validated successfully'));
             } else {
@@ -73,7 +73,7 @@ class SocialAccountsController extends AppController
     public function resendValidation($provider, $reference)
     {
         try {
-            $result = $this->SocialAccounts->resendValidation($provider, $reference);
+            $result = $this->SocialAccounts->getBehavior('SocialAccount')->resendValidation($provider, $reference);
             if ($result) {
                 $this->Flash->success(__d('cake_d_c/users', 'Email sent successfully'));
             } else {

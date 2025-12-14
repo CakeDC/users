@@ -71,8 +71,11 @@ trait CreateUserTrait
         $email = $email ?: $username . '@example.com';
         $role = $role ?: $template['role'];
 
+        /** @var \CakeDC\Users\Model\Behavior\SocialBehavior $socialBehavior */
+        $socialBehavior = $UsersTable->getBehavior('Social');
+
         $user = [
-            'username' => $UsersTable->generateUniqueUsername($username),
+            'username' => $socialBehavior->generateUniqueUsername($username),
             'email' => $email,
             'password' => $password,
             'active' => 1,

@@ -1,19 +1,27 @@
 <?xml version="1.0"?>
 <psalm
+    errorLevel="8"
     allowCoercionFromStringToClassConst="true"
     allowStringToStandInForClass="true"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="https://getpsalm.org/schema/config"
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
 	errorBaseline="psalm-baseline.xml"
+    autoloader="tests/bootstrap.php"
+    findUnusedPsalmSuppress="true"
+    findUnusedCode="false"
 >
     <projectFiles>
         <directory name="src" />
+        <ignoreFiles>
+            <directory name="vendor"/>
+        </ignoreFiles>
     </projectFiles>
 
     <issueHandlers>
         <LessSpecificReturnType errorLevel="info" />
         <RedundantConditionGivenDocblockType errorLevel="info" />
         <DocblockTypeContradiction errorLevel="info" />
+        <MissingOverrideAttribute errorLevel="suppress"/>
     </issueHandlers>
 </psalm>

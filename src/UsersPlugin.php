@@ -21,7 +21,7 @@ use CakeDC\Users\Provider\AuthenticationServiceProvider;
 use CakeDC\Users\Provider\AuthorizationServiceProvider;
 use CakeDC\Users\Provider\ServiceProviderLoaderTrait;
 
-class Plugin extends BasePlugin
+class UsersPlugin extends BasePlugin
 {
     use ServiceProviderLoaderTrait;
 

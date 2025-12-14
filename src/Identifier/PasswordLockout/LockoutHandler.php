@@ -89,7 +89,7 @@ class LockoutHandler implements LockoutHandlerInterface
         $Table = $this->getTable();
         $entity = $Table->newEntity([$this->getConfig('userForeignKeyField') => $id]);
         $Table->saveOrFail($entity);
-        $Table->deleteAll($Table->query()->newExpr()->lt('created', $timeWindow));
+        $Table->deleteAll($Table->query()->expr()->lt('created', $timeWindow));
     }
 
     /**
@@ -137,7 +137,7 @@ class LockoutHandler implements LockoutHandlerInterface
         return $query
             ->where([
                 $this->getConfig('userForeignKeyField') => $id,
-                $query->newExpr()->gte('created', $timeWindow),
+                $query->expr()->gte('created', $timeWindow),
             ])
             ->orderByDesc('created');
     }

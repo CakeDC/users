@@ -17,10 +17,13 @@ use Authentication\Identifier\AbstractIdentifier;
 use Cake\Core\Configure;
 use Cake\Event\EventDispatcherTrait;
 use Cake\ORM\Locator\LocatorAwareTrait;
-use CakeDC\Users\Plugin;
+use CakeDC\Users\UsersPlugin;
 
 class SocialIdentifier extends AbstractIdentifier
 {
+    /**
+     * @use \Cake\Event\EventDispatcherTrait<\CakeDC\Users\Identifier\SocialIdentifier>
+     */
     use EventDispatcherTrait;
     use LocatorAwareTrait;
 
@@ -56,7 +59,7 @@ class SocialIdentifier extends AbstractIdentifier
         }
 
         if ($user->get('social_accounts')) {
-            $this->dispatchEvent(Plugin::EVENT_AFTER_REGISTER, ['user' => $user]);
+            $this->dispatchEvent(UsersPlugin::EVENT_AFTER_REGISTER, ['user' => $user]);
         }
 
         return $this->findUser($user)->firstOrFail();
@@ -97,7 +100,10 @@ class SocialIdentifier extends AbstractIdentifier
             'token_expiration' => Configure::read('Users.Token.expiration'),
         ];
 
-        return $this->getUsersTable()->socialLogin($data, $options);
+        /** @var \CakeDC\Users\Model\Behavior\SocialBehavior $socialBehavior */
+        $socialBehavior = $this->getUsersTable()->getBehavior('Social');
+
+        return $socialBehavior->socialLogin($data, $options);
     }
 
     /**

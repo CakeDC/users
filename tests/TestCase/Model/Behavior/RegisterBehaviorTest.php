@@ -95,7 +95,8 @@ class RegisterBehaviorTest extends TestCase
             'last_name' => 'user',
             'tos' => 1,
         ];
-        $result = $this->Table->register($this->Table->newEmptyEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 0]);
+        $result = $this->Table->getBehavior('Register')
+            ->register($this->Table->newEmptyEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 0]);
         $this->assertTrue($result->active);
     }
 
@@ -107,7 +108,8 @@ class RegisterBehaviorTest extends TestCase
     public function testValidateRegisterEmptyUser()
     {
         $user = [];
-        $result = $this->Table->register($this->Table->newEmptyEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1]);
+        $result = $this->Table->getBehavior('Register')
+            ->register($this->Table->newEmptyEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1]);
         $this->assertFalse($result);
     }
 
@@ -134,7 +136,8 @@ class RegisterBehaviorTest extends TestCase
             'last_name' => 'user',
             'tos' => 1,
         ];
-        $result = $this->Table->register($this->Table->newEmptyEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1]);
+        $result = $this->Table->getBehavior('Register')
+            ->register($this->Table->newEmptyEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1]);
         $this->assertNotEmpty($result);
         $this->assertFalse($result->active);
         $this->assertNotEmpty($result->tos_date);
@@ -208,7 +211,8 @@ class RegisterBehaviorTest extends TestCase
             'first_name' => 'test',
             'last_name' => 'user',
         ];
-        $result = $this->Table->register($this->Table->newEmptyEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1, 'use_tos' => 1]);
+        $result = $this->Table->getBehavior('Register')
+            ->register($this->Table->newEmptyEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1, 'use_tos' => 1]);
         $this->assertFalse($result);
     }
 
@@ -234,7 +238,8 @@ class RegisterBehaviorTest extends TestCase
             'first_name' => 'test',
             'last_name' => 'user',
         ];
-        $result = $this->Table->register($this->Table->newEmptyEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1, 'use_tos' => 0]);
+        $result = $this->Table->getBehavior('Register')
+            ->register($this->Table->newEmptyEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1, 'use_tos' => 0]);
         $this->assertNotEmpty($result);
     }
 
@@ -246,7 +251,7 @@ class RegisterBehaviorTest extends TestCase
     public function testActivateUser()
     {
         $user = $this->Table->find()->where(['id' => '00000000-0000-0000-0000-000000000001'])->first();
-        $result = $this->Table->activateUser($user);
+        $result = $this->Table->getBehavior('Register')->activateUser($user);
         $this->assertTrue($result->active);
     }
 
@@ -257,7 +262,8 @@ class RegisterBehaviorTest extends TestCase
      */
     public function testValidate()
     {
-        $result = $this->Table->validate('ae93ddbe32664ce7927cf0c5c5a5e59d', 'activateUser');
+        $result = $this->Table->getBehavior('Register')
+            ->validate('ae93ddbe32664ce7927cf0c5c5a5e59d', 'activateUser');
         $this->assertTrue($result->active);
         $this->assertEmpty($result->token_expires);
     }
@@ -270,7 +276,7 @@ class RegisterBehaviorTest extends TestCase
     public function testValidateUserWithExpiredToken()
     {
         $this->expectException(TokenExpiredException::class);
-        $this->Table->validate('token-5', 'activateUser');
+        $this->Table->getBehavior('Register')->validate('token-5', 'activateUser');
     }
 
     /**
@@ -281,7 +287,7 @@ class RegisterBehaviorTest extends TestCase
     public function testValidateNotExistingUser()
     {
         $this->expectException(UserNotFoundException::class);
-        $this->Table->validate('not-existing-token', 'activateUser');
+        $this->Table->getBehavior('Register')->validate('not-existing-token', 'activateUser');
     }
 
     /**
@@ -319,10 +325,11 @@ class RegisterBehaviorTest extends TestCase
             'tos' => 1,
         ];
         Configure::write('Users.Registration.defaultRole', false);
-        $result = $this->Table->register($this->Table->newEmptyEntity(), $user, [
-            'token_expiration' => 3600,
-            'validate_email' => 0,
-        ]);
+        $result = $this->Table->getBehavior('Register')
+            ->register($this->Table->newEmptyEntity(), $user, [
+                'token_expiration' => 3600,
+                'validate_email' => 0,
+            ]);
         $this->assertSame('user', $result['role']);
     }
 
@@ -343,10 +350,11 @@ class RegisterBehaviorTest extends TestCase
             'tos' => 1,
         ];
         Configure::write('Users.Registration.defaultRole', 'emperor');
-        $result = $this->Table->register($this->Table->newEmptyEntity(), $user, [
-            'token_expiration' => 3600,
-            'validate_email' => 0,
-        ]);
+        $result = $this->Table->getBehavior('Register')
+            ->register($this->Table->newEmptyEntity(), $user, [
+                'token_expiration' => 3600,
+                'validate_email' => 0,
+            ]);
         $this->assertSame('emperor', $result['role']);
     }
 }

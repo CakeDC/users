@@ -97,7 +97,7 @@ Cake\Core\Configure::write('Session', [
 ]);
 session_id('cli');
 
-Plugin::getCollection()->add(new \CakeDC\Users\Plugin([
+Plugin::getCollection()->add(new \CakeDC\Users\UsersPlugin([
     'path' => dirname(dirname(__FILE__)) . DS,
     'routes' => true,
 ]));

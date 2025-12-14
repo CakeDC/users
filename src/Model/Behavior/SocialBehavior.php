@@ -21,8 +21,8 @@ use Cake\Utility\Hash;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\UserNotActiveException;
-use CakeDC\Users\Plugin;
 use CakeDC\Users\Traits\RandomStringTrait;
+use CakeDC\Users\UsersPlugin;
 use DateTime;
 use InvalidArgumentException;
 
@@ -31,6 +31,9 @@ use InvalidArgumentException;
  */
 class SocialBehavior extends BaseTokenBehavior
 {
+    /**
+     * @use \Cake\Event\EventDispatcherTrait<\CakeDC\Users\Model\Behavior\SocialBehavior>
+     */
     use EventDispatcherTrait;
     use RandomStringTrait;
 
@@ -99,7 +102,7 @@ class SocialBehavior extends BaseTokenBehavior
             $accountData = $this->extractAccountData($data);
             $this->_table->SocialAccounts->patchEntity($existingAccount, $accountData);
             $this->_table->SocialAccounts->save($existingAccount);
-            $event = $this->dispatchEvent(Plugin::EVENT_SOCIAL_LOGIN_EXISTING_ACCOUNT, [
+            $event = $this->dispatchEvent(UsersPlugin::EVENT_SOCIAL_LOGIN_EXISTING_ACCOUNT, [
                 'userEntity' => $user,
                 'data' => $data,
             ]);
@@ -148,7 +151,7 @@ class SocialBehavior extends BaseTokenBehavior
 
         $user = $this->_populateUser($data, $existingUser, $useEmail, $validateEmail, $tokenExpiration);
 
-        $event = $this->dispatchEvent(Plugin::EVENT_BEFORE_SOCIAL_LOGIN_USER_CREATE, [
+        $event = $this->dispatchEvent(UsersPlugin::EVENT_BEFORE_SOCIAL_LOGIN_USER_CREATE, [
             'userEntity' => $user,
             'data' => $data,
         ]);

@@ -252,7 +252,10 @@ class UserHelperTest extends TestCase
         Configure::write('Users.reCaptcha.size', 'normal');
         Configure::write('Users.reCaptcha.tabindex', '3');
         $this->User->Form->create();
-        $result = $this->User->addReCaptcha();
+        $result = '';
+        $this->deprecated(function () use (&$result) {
+            $result = $this->User->addReCaptcha();
+        });
         $this->assertEquals('<div class="g-recaptcha" data-sitekey="testKey" data-theme="light" data-size="normal" data-tabindex="3"></div>', $result);
     }
 

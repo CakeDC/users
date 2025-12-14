@@ -25,6 +25,7 @@ use Cake\Validation\Validator;
  * @method iterable<\CakeDC\Users\Model\Entity\FailedPasswordAttempt>|\Cake\Datasource\ResultSetInterface<\CakeDC\Users\Model\Entity\FailedPasswordAttempt>|false deleteMany(iterable $entities, array $options = [])
  * @method iterable<\CakeDC\Users\Model\Entity\FailedPasswordAttempt>|\Cake\Datasource\ResultSetInterface<\CakeDC\Users\Model\Entity\FailedPasswordAttempt> deleteManyOrFail(iterable $entities, array $options = [])
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
+ * @extends \Cake\ORM\Table<array{Timestamp: \Cake\ORM\Behavior\TimestampBehavior}>
  */
 class FailedPasswordAttemptsTable extends Table
 {
