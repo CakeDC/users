@@ -36,7 +36,6 @@ class AuthenticationServiceLoader
     {
         $processors = TwoFactorProcessorLoader::processors();
         $service = new AuthenticationService(['processors' => $processors]);
-        $this->loadIdentifiers($service);
         $this->loadAuthenticators($service);
         $this->loadTwoFactorAuthenticator($service, $processors);
 

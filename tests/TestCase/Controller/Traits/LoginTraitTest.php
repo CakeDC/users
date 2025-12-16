@@ -288,10 +288,6 @@ class LoginTraitTest extends BaseTrait
     public function testLogout()
     {
         $this->_mockDispatchEvent(new Event('event'));
-        // $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
-            // ->onlyMethods(['logout', 'user'])
-            // ->disableOriginalConstructor()
-            // ->getMock();
         $this->_mockAuthentication([
             'id' => 1,
         ]);

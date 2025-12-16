@@ -250,12 +250,13 @@ class BaseTrait extends TestCase
         }
 
         $config = [
-            'identifiers' => [
-                'Authentication.Password',
-            ],
             'authenticators' => [
                 'Authentication.Session',
-                'Authentication.Form',
+                'Authentication.Form' => [
+                    'identifier' => [
+                        'Authentication.Password' => [],
+                    ]
+                ],
             ],
         ];
         $authentication = $this->getMockBuilder(AuthenticationService::class)->setConstructorArgs([$config])->onlyMethods([
@@ -309,12 +310,13 @@ class BaseTrait extends TestCase
     protected function _mockAuthenticationWithPasswordRehash($user = null, $failures = [])
     {
         $config = [
-            'identifiers' => [
-                'Authentication.Password',
-            ],
             'authenticators' => [
                 'Authentication.Session',
-                'Authentication.Form',
+                'Authentication.Form' => [
+                    'identifier' => [
+                        'Authentication.Password' => [],
+                    ]
+                ],
             ],
         ];
         $authentication = $this->getMockBuilder(AuthenticationService::class)->setConstructorArgs([$config])->onlyMethods([
