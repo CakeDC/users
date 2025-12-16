@@ -15,9 +15,6 @@ namespace CakeDC\Users\Test\TestCase\Provider;
 
 use Authentication\Authenticator\SessionAuthenticator;
 use Authentication\Authenticator\TokenAuthenticator;
-use Authentication\Identifier\JwtSubjectIdentifier;
-use Authentication\Identifier\PasswordIdentifier;
-use Authentication\Identifier\TokenIdentifier;
 use Cake\Core\Configure;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;

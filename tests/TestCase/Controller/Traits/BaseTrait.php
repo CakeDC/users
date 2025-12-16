@@ -255,7 +255,7 @@ class BaseTrait extends TestCase
                 'Authentication.Form' => [
                     'identifier' => [
                         'Authentication.Password' => [],
-                    ]
+                    ],
                 ],
             ],
         ];
@@ -315,7 +315,7 @@ class BaseTrait extends TestCase
                 'Authentication.Form' => [
                     'identifier' => [
                         'Authentication.Password' => [],
-                    ]
+                    ],
                 ],
             ],
         ];

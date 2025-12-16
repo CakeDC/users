@@ -34,12 +34,12 @@ class PasswordBehavior extends BaseTokenBehavior
      *
      * @param string $reference User username or email
      * @param array $options checkActive, sendEmail, expiration
-     * @return EntityInterface|null
+     * @return \Cake\Datasource\EntityInterface|null
      * @throws \InvalidArgumentException
      * @throws \CakeDC\Users\Exception\UserNotFoundException
      * @throws \CakeDC\Users\Exception\UserAlreadyActiveException
      */
-    public function resetToken($reference, array $options = []): EntityInterface|null
+    public function resetToken($reference, array $options = []): ?EntityInterface
     {
         if (empty($reference)) {
             throw new \InvalidArgumentException(__d('cake_d_c/users', 'Reference cannot be null'));
