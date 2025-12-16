@@ -111,11 +111,6 @@ parameters:
 			path: src/Model/Behavior/LinkSocialBehavior.php
 
 		-
-			message: "#^Method CakeDC\\\\Users\\\\Model\\\\Behavior\\\\PasswordBehavior\\:\\:resetToken\\(\\) should return string but returns Cake\\\\Datasource\\\\EntityInterface\\|false\\.$#"
-			count: 1
-			path: src/Model/Behavior/PasswordBehavior.php
-
-		-
 			message: "#^Access to an undefined property Cake\\\\Datasource\\\\EntityInterface\\:\\:\\$activation_date\\.$#"
 			count: 1
 			path: src/Model/Behavior/RegisterBehavior.php
