@@ -210,6 +210,18 @@ $config = [
             'Form' => [
                 'className' => 'CakeDC/Auth.Form',
                 'urlChecker' => 'Authentication.CakeRouter',
+                'identifier' => [
+                    'Authentication.Password' => [
+                        'fields' => [
+                            'username' => ['username', 'email'],
+                            'password' => 'password',
+                        ],
+                        'resolver' => [
+                            'className' => 'Authentication.Orm',
+                            'finder' => 'active',
+                        ],
+                    ],
+                ],
             ],
             'Token' => [
                 'className' => 'Authentication.Token',
@@ -217,6 +229,15 @@ $config = [
                 'header' => null,
                 'queryParam' => 'api_key',
                 'tokenPrefix' => null,
+                'identifier' => [
+                    'Authentication.Token' => [
+                        'tokenField' => 'api_token',
+                        'resolver' => [
+                            'className' => 'Authentication.Orm',
+                            'finder' => 'active',
+                        ],
+                    ],
+                ],
             ],
             'Cookie' => [
                 'className' => 'CakeDC/Auth.Cookie',
@@ -231,6 +252,11 @@ $config = [
             'Social' => [
                 'className' => 'CakeDC/Users.Social',
                 'skipTwoFactorVerify' => true,
+                'identifier' => [
+                    'CakeDC/Users.Social' => [
+                        'authFinder' => 'active',
+                    ],
+                ],
             ],
             'SocialPendingEmail' => [
                 'className' => 'CakeDC/Users.SocialPendingEmail',
@@ -243,31 +269,6 @@ $config = [
                     '/login',
                 ],
             ]
-        ],
-        'Identifiers' => [
-            'Password' => [
-                'className' => 'Authentication.Password',
-                'fields' => [
-                    'username' => ['username', 'email'],
-                    'password' => 'password',
-                ],
-                'resolver' => [
-                    'className' => 'Authentication.Orm',
-                    'finder' => 'active',
-                ],
-            ],
-            'Social' => [
-                'className' => 'CakeDC/Users.Social',
-                'authFinder' => 'active',
-            ],
-            'Token' => [
-                'className' => 'Authentication.Token',
-                'tokenField' => 'api_token',
-                'resolver' => [
-                    'className' => 'Authentication.Orm',
-                    'finder' => 'active',
-                ],
-            ],
         ],
         'Authorization' => [
             'enable' => true,

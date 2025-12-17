@@ -38,6 +38,8 @@ use Cake\Utility\Security;
  * @property string $login_token
  * @property \CakeDC\Users\Model\Entity\FrozenDate $login_token_date
  * @property \Cake\I18n\DateTime $lockout_time
+ * @property bool $active
+ * @property \Cake\I18n\DateTime|null $activation_date
  */
 class User extends Entity
 {

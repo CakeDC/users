@@ -111,10 +111,11 @@ class OneTimePasswordVerifyTraitTest extends BaseTrait
     public function testVerifyGetShowQR()
     {
         Configure::write('OneTimePasswordAuthenticator.login', true);
-        $this->Trait->OneTimePasswordAuthenticator = $this->getMockBuilder(OneTimePasswordAuthenticatorComponent::class)
+        $oneTimePasswordAuthenticator = $this->getMockBuilder(OneTimePasswordAuthenticatorComponent::class)
             ->disableOriginalConstructor()
             ->onlyMethods(['createSecret', 'getQRCodeImageAsDataUri'])
             ->getMock();
+        $this->Trait->components()->set('OneTimePasswordAuthenticator', $oneTimePasswordAuthenticator);
 
         $request = $this->getMockBuilder(ServerRequest::class)
             ->onlyMethods(['is', 'getData', 'getSession'])
@@ -161,11 +162,12 @@ class OneTimePasswordVerifyTraitTest extends BaseTrait
     {
         Configure::write('OneTimePasswordAuthenticator.login', true);
 
-        $this->Trait->OneTimePasswordAuthenticator = $this
+        $oneTimePasswordAuthenticator = $this
             ->getMockBuilder(OneTimePasswordAuthenticatorComponent::class)
             ->disableOriginalConstructor()
             ->onlyMethods(['createSecret', 'getQRCodeImageAsDataUri'])
             ->getMock();
+        $this->Trait->components()->set('OneTimePasswordAuthenticator', $oneTimePasswordAuthenticator);
 
         $request = $this->getMockBuilder(ServerRequest::class)
             ->onlyMethods(['is', 'getData', 'getSession'])
@@ -222,11 +224,12 @@ class OneTimePasswordVerifyTraitTest extends BaseTrait
     {
         Configure::write('OneTimePasswordAuthenticator.login', true);
 
-        $this->Trait->OneTimePasswordAuthenticator = $this
+        $oneTimePasswordAuthenticator = $this
             ->getMockBuilder(OneTimePasswordAuthenticatorComponent::class)
             ->disableOriginalConstructor()
             ->onlyMethods(['createSecret', 'getQRCodeImageAsDataUri'])
             ->getMock();
+        $this->Trait->components()->set('OneTimePasswordAuthenticator', $oneTimePasswordAuthenticator);
 
         $request = $this->getMockBuilder(ServerRequest::class)
             ->onlyMethods(['is', 'getData', 'getSession'])

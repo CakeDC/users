@@ -34,12 +34,12 @@ class PasswordBehavior extends BaseTokenBehavior
      *
      * @param string $reference User username or email
      * @param array $options checkActive, sendEmail, expiration
-     * @return string
+     * @return \Cake\Datasource\EntityInterface|null
      * @throws \InvalidArgumentException
      * @throws \CakeDC\Users\Exception\UserNotFoundException
      * @throws \CakeDC\Users\Exception\UserAlreadyActiveException
      */
-    public function resetToken($reference, array $options = [])
+    public function resetToken($reference, array $options = []): ?EntityInterface
     {
         if (empty($reference)) {
             throw new \InvalidArgumentException(__d('cake_d_c/users', 'Reference cannot be null'));
@@ -50,11 +50,12 @@ class PasswordBehavior extends BaseTokenBehavior
             throw new \InvalidArgumentException(__d('cake_d_c/users', 'Token expiration cannot be empty'));
         }
 
+        /** @var \CakeDC\Users\Model\Entity\User|null $user */
         $user = $this->_getUser($reference);
-
-        if (empty($user)) {
+        if (empty($user) || empty($user->id)) {
             throw new UserNotFoundException(__d('cake_d_c/users', 'User not found'));
         }
+
         if ($options['checkActive'] ?? false) {
             if ($user->active) {
                 throw new UserAlreadyActiveException(__d('cake_d_c/users', 'User account already validated'));
@@ -65,6 +66,7 @@ class PasswordBehavior extends BaseTokenBehavior
         if (($options['ensureActive'] ?? false) && !$user['active']) {
             throw new UserNotActiveException(__d('cake_d_c/users', 'User not active'));
         }
+
         $user->updateToken($expiration);
         $saveResult = $this->_table->save($user);
         if ($options['sendEmail'] ?? false) {
@@ -118,7 +120,7 @@ class PasswordBehavior extends BaseTokenBehavior
      * Get the user by email or username
      *
      * @param string $reference reference could be either an email or username
-     * @return mixed user entity if found
+     * @return \Cake\Datasource\EntityInterface|null
      */
     protected function _getUser($reference)
     {

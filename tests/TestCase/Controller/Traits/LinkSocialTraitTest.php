@@ -309,7 +309,12 @@ class LinkSocialTraitTest extends BaseTrait
                 '_existsIn' => __d('cake_d_c/users', 'Social account already associated to another user'),
             ],
         ]);
-        $Table = $this->getMockForModel('CakeDC/Users.Users', ['linkSocialAccount', 'get']);
+        $Table = $this->getMockBuilder(\CakeDC\Users\Model\Table\UsersTable::class)
+            ->setConstructorArgs([['alias' => 'Users', 'connection' => \Cake\Datasource\ConnectionManager::get('test')]])
+            ->onlyMethods(['newEntity', 'get'])
+            ->addMethods(['linkSocialAccount'])
+            ->getMock();
+
         $Table->setAlias('Users');
 
         $Table->expects($this->once())

@@ -15,9 +15,6 @@ namespace CakeDC\Users\Test\TestCase\Provider;
 
 use Authentication\Authenticator\SessionAuthenticator;
 use Authentication\Authenticator\TokenAuthenticator;
-use Authentication\Identifier\JwtSubjectIdentifier;
-use Authentication\Identifier\PasswordIdentifier;
-use Authentication\Identifier\TokenIdentifier;
 use Cake\Core\Configure;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
@@ -54,6 +51,18 @@ class AuthenticationServiceProviderTest extends TestCase
                 'className' => 'CakeDC/Auth.Form',
                 'loginUrl' => '/login',
                 'fields' => ['username' => 'email', 'password' => 'alt_password'],
+                'identifier' => [
+                    'Authentication.Password' => [
+                        'fields' => [
+                            'username' => ['username', 'email'],
+                            'password' => 'password',
+                        ],
+                        'resolver' => [
+                            'className' => 'Authentication.Orm',
+                            'finder' => 'active',
+                        ],
+                    ],
+                ],
             ],
             'Token' => [
                 'className' => 'Authentication.Token',
@@ -61,21 +70,16 @@ class AuthenticationServiceProviderTest extends TestCase
                 'header' => null,
                 'queryParam' => 'api_key',
                 'tokenPrefix' => null,
-            ],
-        ]);
-        Configure::write('Auth.Identifiers', [
-            'Password' => [
-                'className' => 'Authentication.Password',
-                'fields' => [
-                    'username' => 'email_2',
-                    'password' => 'password_2',
+                'identifier' => [
+                    'Authentication.Token' => [
+                        'tokenField' => 'api_token',
+                        'resolver' => [
+                            'className' => 'Authentication.Orm',
+                            'finder' => 'active',
+                        ],
+                    ],
                 ],
             ],
-            'Token' => [
-                'className' => 'Authentication.Token',
-                'tokenField' => 'api_token',
-            ],
-            'Authentication.JwtSubject',
         ]);
         Configure::write('OneTimePasswordAuthenticator.login', true);
         Configure::write('TwoFactorProcessors', [
@@ -105,6 +109,18 @@ class AuthenticationServiceProviderTest extends TestCase
                 'keyCheckEnabledRecaptcha' => 'Users.reCaptcha.login',
                 'fields' => ['username' => 'email', 'password' => 'alt_password'],
                 'className' => 'CakeDC/Auth.Form',
+                'identifier' => [
+                    'Authentication.Password' => [
+                        'fields' => [
+                            'username' => ['username', 'email'],
+                            'password' => 'password',
+                        ],
+                        'resolver' => [
+                            'className' => 'Authentication.Orm',
+                            'finder' => 'active',
+                        ],
+                    ],
+                ],
             ],
             TokenAuthenticator::class => [
                 'header' => null,
@@ -112,6 +128,15 @@ class AuthenticationServiceProviderTest extends TestCase
                 'tokenPrefix' => null,
                 'skipTwoFactorVerify' => true,
                 'className' => 'Authentication.Token',
+                'identifier' => [
+                    'Authentication.Token' => [
+                        'tokenField' => 'api_token',
+                        'resolver' => [
+                            'className' => 'Authentication.Orm',
+                            'finder' => 'active',
+                        ],
+                    ],
+                ],
             ],
             TwoFactorAuthenticator::class => [
                 'loginUrl' => null,
@@ -122,41 +147,6 @@ class AuthenticationServiceProviderTest extends TestCase
         ];
         $actual = [];
         foreach ($authenticators as $value) {
-            $config = $value->getConfig();
-            $actual[get_class($value)] = $config;
-        }
-        $this->assertEquals($expected, $actual);
-
-        /**
-         * @var \Authentication\Identifier\IdentifierCollection $identifiers
-         */
-        $identifiers = $service->identifiers();
-        $expected = [
-            PasswordIdentifier::class => [
-                'fields' => [
-                    'username' => 'email_2',
-                    'password' => 'password_2',
-                ],
-                'resolver' => 'Authentication.Orm',
-                'passwordHasher' => null,
-                'className' => 'Authentication.Password',
-            ],
-            TokenIdentifier::class => [
-                'tokenField' => 'api_token',
-                'dataField' => 'token',
-                'resolver' => 'Authentication.Orm',
-                'hashAlgorithm' => null,
-                'className' => 'Authentication.Token',
-            ],
-            JwtSubjectIdentifier::class => [
-                'tokenField' => 'id',
-                'dataField' => 'sub',
-                'resolver' => 'Authentication.Orm',
-                'className' => 'Authentication.JwtSubject',
-            ],
-        ];
-        $actual = [];
-        foreach ($identifiers as $value) {
             $config = $value->getConfig();
             $actual[get_class($value)] = $config;
         }
