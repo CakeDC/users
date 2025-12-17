@@ -2,6 +2,10 @@ Changelog
 =========
 Releases for CakePHP 5
 -------------
+* 15.1.2
+  * Fix loadIdentifier deprecation
+  * Add new configuration backward compatible for password rehash `'Auth.PasswordRehash' => ['authenticators' => ['Form' => 'PasswordLockout']]`
+  * Fix new defaults in `config/users.php` to configure identifiers inside of the authenticators array. Old configuration still valid, but deprecated.
 * 15.1.1
   * Update EmailDelivery
   * Github social login
