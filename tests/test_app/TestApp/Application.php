@@ -18,7 +18,7 @@ use Cake\Http\BaseApplication;
 use Cake\Http\MiddlewareQueue;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
-use CakeDC\Users\Plugin;
+use CakeDC\Users\UsersPlugin;
 
 class Application extends BaseApplication
 {
@@ -45,7 +45,7 @@ class Application extends BaseApplication
                 ],
             ]);
         }
-        $this->addPlugin(Plugin::class);
+        $this->addPlugin(UsersPlugin::class);
     }
 
     /**

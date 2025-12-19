@@ -15,7 +15,7 @@ namespace CakeDC\Users\Controller\Traits;
 
 use CakeDC\Auth\Authentication\AuthenticationService;
 use CakeDC\Users\Loader\LoginComponentLoader;
-use CakeDC\Users\Plugin;
+use CakeDC\Users\UsersPlugin;
 
 /**
  * Covers the login, logout and social login
@@ -64,7 +64,7 @@ trait LoginTrait
         $user = $this->getRequest()->getAttribute('identity');
         $user = $user ?? [];
 
-        $eventBefore = $this->dispatchEvent(Plugin::EVENT_BEFORE_LOGOUT, ['user' => $user]);
+        $eventBefore = $this->dispatchEvent(UsersPlugin::EVENT_BEFORE_LOGOUT, ['user' => $user]);
         if (is_array($eventBefore->getResult())) {
             return $this->redirect($eventBefore->getResult());
         }
@@ -72,7 +72,7 @@ trait LoginTrait
         $this->getRequest()->getSession()->destroy();
         $this->Flash->success(__d('cake_d_c/users', 'You\'ve successfully logged out'));
 
-        $eventAfter = $this->dispatchEvent(Plugin::EVENT_AFTER_LOGOUT, ['user' => $user]);
+        $eventAfter = $this->dispatchEvent(UsersPlugin::EVENT_AFTER_LOGOUT, ['user' => $user]);
         if (is_array($eventAfter->getResult())) {
             return $this->redirect($eventAfter->getResult());
         }

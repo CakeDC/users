@@ -17,7 +17,7 @@ use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
-use CakeDC\Users\Plugin;
+use CakeDC\Users\UsersPlugin;
 
 /**
  * Covers registration features and email token validation
@@ -60,7 +60,7 @@ trait RegisterTrait
             'use_tos' => $useTos,
         ];
         $requestData = $this->getRequest()->getData();
-        $event = $this->dispatchEvent(Plugin::EVENT_BEFORE_REGISTER, [
+        $event = $this->dispatchEvent(UsersPlugin::EVENT_BEFORE_REGISTER, [
             'usersTable' => $usersTable,
             'options' => $options,
             'userEntity' => $user,
@@ -152,7 +152,7 @@ trait RegisterTrait
         if ($validateEmail) {
             $message = __d('cake_d_c/users', 'Please validate your account before log in');
         }
-        $event = $this->dispatchEvent(Plugin::EVENT_AFTER_REGISTER, [
+        $event = $this->dispatchEvent(UsersPlugin::EVENT_AFTER_REGISTER, [
             'user' => $userSaved,
         ]);
         $result = $event->getResult();

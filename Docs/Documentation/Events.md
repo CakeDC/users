@@ -41,7 +41,7 @@ class UsersListener implements EventListenerInterface
     public function implementedEvents(): array
     {
         return [
-            \CakeDC\Users\Plugin::EVENT_BEFORE_LOGOUT => 'beforeLogout',
+            \CakeDC\Users\UsersPlugin::EVENT_BEFORE_LOGOUT => 'beforeLogout',
         ];
     }
 
@@ -90,7 +90,7 @@ class UsersListener implements EventListenerInterface
     public function implementedEvents(): array
     {
         return [
-            \CakeDC\Users\Plugin::EVENT_BEFORE_REGISTER => 'beforeRegister',
+            \CakeDC\Users\UsersPlugin::EVENT_BEFORE_REGISTER => 'beforeRegister',
         ];
     }
 
@@ -151,7 +151,7 @@ class UsersListener implements EventListenerInterface
     public function implementedEvents(): array
     {
         return [
-            \CakeDC\Users\Plugin::EVENT_BEFORE_SOCIAL_LOGIN_REDIRECT => 'beforeSocialLoginRedirect',
+            \CakeDC\Users\UsersPlugin::EVENT_BEFORE_SOCIAL_LOGIN_REDIRECT => 'beforeSocialLoginRedirect',
         ];
     }
 
@@ -198,7 +198,7 @@ class UsersListener implements EventListenerInterface
     public function implementedEvents(): array
     {
         return [
-            \CakeDC\Users\Plugin::EVENT_BEFORE_SOCIAL_LOGIN_REDIRECT => 'beforeSocialLoginRedirect',
+            \CakeDC\Users\UsersPlugin::EVENT_BEFORE_SOCIAL_LOGIN_REDIRECT => 'beforeSocialLoginRedirect',
         ];
     }
 
@@ -247,7 +247,7 @@ class UsersListener implements EventListenerInterface
     public function implementedEvents(): array
     {
         return [
-            \CakeDC\Users\Plugin::EVENT_AFTER_LOGIN => 'afterLogin',
+            \CakeDC\Users\UsersPlugin::EVENT_AFTER_LOGIN => 'afterLogin',
         ];
     }
 
@@ -296,7 +296,7 @@ class UsersListener implements EventListenerInterface
     public function implementedEvents(): array
     {
         return [
-            \CakeDC\Users\Plugin::EVENT_AFTER_LOGOUT => 'afterLogout',
+            \CakeDC\Users\UsersPlugin::EVENT_AFTER_LOGOUT => 'afterLogout',
         ];
     }
 
@@ -347,7 +347,7 @@ class UsersListener implements EventListenerInterface
     public function implementedEvents(): array
     {
         return [
-            \CakeDC\Users\Plugin::EVENT_AFTER_REGISTER => 'afterRegister',
+            \CakeDC\Users\UsersPlugin::EVENT_AFTER_REGISTER => 'afterRegister',
         ];
     }
 
@@ -398,7 +398,7 @@ class UsersListener implements EventListenerInterface
     public function implementedEvents(): array
     {
         return [
-            \CakeDC\Users\Plugin::EVENT_AFTER_CHANGE_PASSWORD => 'afterChangePassword',
+            \CakeDC\Users\UsersPlugin::EVENT_AFTER_CHANGE_PASSWORD => 'afterChangePassword',
         ];
     }
 
@@ -448,7 +448,7 @@ class UsersListener implements EventListenerInterface
     public function implementedEvents(): array
     {
         return [
-            \CakeDC\Users\Plugin::EVENT_AFTER_RESEND_TOKEN_VALIDATION => 'afterResendTokenValidation',
+            \CakeDC\Users\UsersPlugin::EVENT_AFTER_RESEND_TOKEN_VALIDATION => 'afterResendTokenValidation',
         ];
     }
 
@@ -497,7 +497,7 @@ class UsersListener implements EventListenerInterface
     public function implementedEvents(): array
     {
         return [
-            \CakeDC\Users\Plugin::EVENT_AFTER_EMAIL_TOKEN_VALIDATION => 'afterEmailTokenValidation',
+            \CakeDC\Users\UsersPlugin::EVENT_AFTER_EMAIL_TOKEN_VALIDATION => 'afterEmailTokenValidation',
         ];
     }
 
@@ -545,7 +545,7 @@ class UsersListener implements EventListenerInterface
     public function implementedEvents(): array
     {
         return [
-            \CakeDC\Users\Plugin::EVENT_AFTER_EMAIL_TOKEN_VALIDATION => 'afterEmailTokenValidation',
+            \CakeDC\Users\UsersPlugin::EVENT_AFTER_EMAIL_TOKEN_VALIDATION => 'afterEmailTokenValidation',
         ];
     }
 

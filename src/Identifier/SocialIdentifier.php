@@ -17,7 +17,7 @@ use Authentication\Identifier\AbstractIdentifier;
 use Cake\Core\Configure;
 use Cake\Event\EventDispatcherTrait;
 use Cake\ORM\Locator\LocatorAwareTrait;
-use CakeDC\Users\Plugin;
+use CakeDC\Users\UsersPlugin;
 
 class SocialIdentifier extends AbstractIdentifier
 {
@@ -56,7 +56,7 @@ class SocialIdentifier extends AbstractIdentifier
         }
 
         if ($user->get('social_accounts')) {
-            $this->dispatchEvent(Plugin::EVENT_AFTER_REGISTER, ['user' => $user]);
+            $this->dispatchEvent(UsersPlugin::EVENT_AFTER_REGISTER, ['user' => $user]);
         }
 
         return $this->findUser($user)->firstOrFail();

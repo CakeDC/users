@@ -17,7 +17,7 @@ use Cake\Core\Configure;
 use CakeDC\Users\Exception\TokenExpiredException;
 use CakeDC\Users\Exception\UserAlreadyActiveException;
 use CakeDC\Users\Exception\UserNotFoundException;
-use CakeDC\Users\Plugin;
+use CakeDC\Users\UsersPlugin;
 use CakeDC\Users\Utility\UsersUrl;
 use Exception;
 
@@ -44,7 +44,7 @@ trait UserValidationTrait
                         $result = $this->getUsersTable()->validate($token, 'activateUser');
                         if ($result) {
                             $event = $this->dispatchEvent(
-                                Plugin::EVENT_AFTER_EMAIL_TOKEN_VALIDATION,
+                                UsersPlugin::EVENT_AFTER_EMAIL_TOKEN_VALIDATION,
                                 ['user' => $result],
                             );
                             $eventResult = $event->getResult();
@@ -79,7 +79,7 @@ trait UserValidationTrait
         } catch (UserNotFoundException $ex) {
             $this->Flash->error(__d('cake_d_c/users', 'Invalid token or user account already validated'));
         } catch (TokenExpiredException $ex) {
-            $event = $this->dispatchEvent(Plugin::EVENT_ON_EXPIRED_TOKEN, ['type' => $type]);
+            $event = $this->dispatchEvent(UsersPlugin::EVENT_ON_EXPIRED_TOKEN, ['type' => $type]);
             $eventResult = $event->getResult();
             if (!empty($eventResult) && is_array($eventResult)) {
                 return $this->redirect($eventResult);
@@ -112,7 +112,7 @@ trait UserValidationTrait
                 'type' => 'email',
                 ])
             ) {
-                $event = $this->dispatchEvent(Plugin::EVENT_AFTER_RESEND_TOKEN_VALIDATION);
+                $event = $this->dispatchEvent(UsersPlugin::EVENT_AFTER_RESEND_TOKEN_VALIDATION);
                 $result = $event->getResult();
                 if (!empty($result) && is_array($result)) {
                     return $this->redirect($result);

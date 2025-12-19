@@ -9,7 +9,7 @@ For easier configuration, you can specify an array of config files to override t
 Make sure you loaded the plugin and is using a custom config/users.php file at Application::bootstrap
 ```
 // The following configuration setting must be set before loading the Users plugin
-$this->addPlugin(\CakeDC\Users\Plugin::class);
+$this->addPlugin(\CakeDC\Users\UsersPlugin::class);
 Configure::write('Users.config', ['users']);
 ```
 

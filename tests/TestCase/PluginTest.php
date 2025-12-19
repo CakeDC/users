@@ -23,7 +23,7 @@ use Cake\TestSuite\TestCase;
 use CakeDC\Auth\Middleware\TwoFactorMiddleware;
 use CakeDC\Users\Middleware\SocialAuthMiddleware;
 use CakeDC\Users\Middleware\SocialEmailMiddleware;
-use CakeDC\Users\Plugin;
+use CakeDC\Users\UsersPlugin;
 
 /**
  * PluginTest class

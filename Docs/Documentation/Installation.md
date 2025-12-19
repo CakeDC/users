@@ -60,7 +60,7 @@ Ensure the Users Plugin is loaded in your src/Application.php file
     {
         parent::bootstrap();
 
-        $this->addPlugin(\CakeDC\Users\Plugin::class);
+        $this->addPlugin(\CakeDC\Users\UsersPlugin::class);
         // Uncomment the line below to load your custom users.php config file
         //Configure::write('Users.config', ['users']);
     }
@@ -119,7 +119,7 @@ Customization
 
 First, make sure to set the config `Users.config` at Application::bootstrap
 ```
-$this->addPlugin(\CakeDC\Users\Plugin::class);
+$this->addPlugin(\CakeDC\Users\UsersPlugin::class);
 Configure::write('Users.config', ['users']);
 ```
 
