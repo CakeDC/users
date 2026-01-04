@@ -9,9 +9,9 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-use Migrations\AbstractMigration;
+use Migrations\BaseMigration;
 
-class AddAdditionalDataToUsers extends AbstractMigration
+class AddAdditionalDataToUsers extends BaseMigration
 {
     /**
      * Change Method.
