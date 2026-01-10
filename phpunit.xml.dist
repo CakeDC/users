@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
+  ~ Copyright 2010 - 2026, Cake Development Corporation (https://www.cakedc.com)
   ~
   ~ Licensed under The MIT License
   ~ Redistributions of files must retain the above copyright notice.
   ~
-  ~ @copyright Copyright 2010 - 2018, Cake Development Corporation (https://www.cakedc.com)
+  ~ @copyright Copyright 2010 - 2026, Cake Development Corporation (https://www.cakedc.com)
   ~ @license MIT License (http://www.opensource.org/licenses/mit-license.php)
   -->
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" colors="true" processIsolation="false" stopOnFailure="false" bootstrap="./tests/bootstrap.php" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.2/phpunit.xsd" cacheDirectory=".phpunit.cache">
