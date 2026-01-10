@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace CakeDC\Users\Test\TestCase\Model\Behavior;
