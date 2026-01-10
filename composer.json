@@ -29,7 +29,7 @@
     "prefer-stable": true,
     "require": {
         "php": ">=8.1",
-        "cakephp/cakephp": "5.3.0-RC2",
+        "cakephp/cakephp": "^5.3",
         "cakedc/auth": "^10.1",
         "cakephp/authorization": "^3.0",
         "cakephp/authentication": "^3.0"
