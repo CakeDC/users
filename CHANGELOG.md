@@ -2,6 +2,10 @@ Changelog
 =========
 Releases for CakePHP 5
 -------------
+* 16.0.0
+  * Require CakePHP ^5.3
+  * Added `src/Plugin.php` class which extends `UsersPlugin` for backward compatibility.
+  * Fix deprecations
 * 15.1.3
   * Fix loadIdentifier deprecation
   * Add new configuration backward compatible for password rehash `'Auth.PasswordRehash' => ['authenticators' => ['Form' => 'PasswordLockout']]`
