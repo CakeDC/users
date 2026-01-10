@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace CakeDC\Users\Test\TestCase\Model\Behavior;
 
 use Cake\Core\Configure;
+use Cake\Event\Event;
 use Cake\Mailer\Mailer;
 use Cake\Mailer\TransportFactory;
-use Cake\Event\Event;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
