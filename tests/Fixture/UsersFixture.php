@@ -69,6 +69,9 @@ class UsersFixture extends TestFixture
                     ],
                 ],
                 'last_login' => '2015-06-24 17:33:54',
+                'login_token' => null,
+                'login_token_date' => null,
+                'token_send_requested' => false,
             ],
             [
                 'id' => '00000000-0000-0000-0000-000000000002',
@@ -91,6 +94,9 @@ class UsersFixture extends TestFixture
                 'created' => '2015-06-24 17:33:54',
                 'modified' => '2015-06-24 17:33:54',
                 'last_login' => '2015-06-24 17:33:54',
+                'login_token' => null,
+                'login_token_date' => null,
+                'token_send_requested' => false,
             ],
             [
                 'id' => '00000000-0000-0000-0000-000000000003',
@@ -111,6 +117,9 @@ class UsersFixture extends TestFixture
                 'role' => UsersTable::ROLE_ADMIN,
                 'created' => '2015-06-24 17:33:54',
                 'modified' => '2015-06-24 17:33:54',
+                'login_token' => null,
+                'login_token_date' => null,
+                'token_send_requested' => false,
             ],
             [
                 'id' => '00000000-0000-0000-0000-000000000004',
@@ -131,6 +140,9 @@ class UsersFixture extends TestFixture
                 'role' => 'Lorem ipsum dolor sit amet',
                 'created' => '2015-06-24 17:33:54',
                 'modified' => '2015-06-24 17:33:54',
+                'login_token' => null,
+                'login_token_date' => null,
+                'token_send_requested' => false,
             ],
             [
                 'id' => '00000000-0000-0000-0000-000000000005',
@@ -151,6 +163,9 @@ class UsersFixture extends TestFixture
                 'role' => UsersTable::ROLE_USER,
                 'created' => '2015-06-24 17:33:54',
                 'modified' => '2015-06-24 17:33:54',
+                'login_token' => null,
+                'login_token_date' => null,
+                'token_send_requested' => false,
             ],
             [
                 'id' => '00000000-0000-0000-0000-000000000006',
@@ -171,6 +186,9 @@ class UsersFixture extends TestFixture
                 'role' => UsersTable::ROLE_USER,
                 'created' => '2015-06-24 17:33:54',
                 'modified' => '2015-06-24 17:33:54',
+                'login_token' => null,
+                'login_token_date' => null,
+                'token_send_requested' => false,
             ],
             [
                 'id' => '00000000-0000-0000-0000-000000000007',
@@ -191,6 +209,9 @@ class UsersFixture extends TestFixture
                 'role' => 'Lorem ipsum dolor sit amet',
                 'created' => '2015-06-24 17:33:54',
                 'modified' => '2015-06-24 17:33:54',
+                'login_token' => null,
+                'login_token_date' => null,
+                'token_send_requested' => false,
             ],
             [
                 'id' => '00000000-0000-0000-0000-000000000008',
@@ -211,6 +232,9 @@ class UsersFixture extends TestFixture
                 'role' => 'Lorem ipsum dolor sit amet',
                 'created' => '2015-06-24 17:33:54',
                 'modified' => '2015-06-24 17:33:54',
+                'login_token' => null,
+                'login_token_date' => null,
+                'token_send_requested' => false,
             ],
             [
                 'id' => '00000000-0000-0000-0000-000000000009',
@@ -231,6 +255,9 @@ class UsersFixture extends TestFixture
                 'role' => 'Lorem ipsum dolor sit amet',
                 'created' => '2015-06-24 17:33:54',
                 'modified' => '2015-06-24 17:33:54',
+                'login_token' => null,
+                'login_token_date' => null,
+                'token_send_requested' => false,
             ],
             [
                 'id' => '00000000-0000-0000-0000-000000000010',
@@ -251,6 +278,9 @@ class UsersFixture extends TestFixture
                 'role' => 'Lorem ipsum dolor sit amet',
                 'created' => '2015-06-24 17:33:54',
                 'modified' => '2015-06-24 17:33:54',
+                'login_token' => null,
+                'login_token_date' => null,
+                'token_send_requested' => false,
             ],
         ];
 
