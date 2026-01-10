@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace CakeDC\Users\Test\TestCase;
@@ -8,9 +7,6 @@ use Cake\Http\MiddlewareQueue;
 use Cake\Http\ServerRequest;
 use Cake\TestSuite\TestCase;
 use CakeDC\Users\UsersPlugin;
-use CakeDC\Users\Webauthn\AuthenticateAdapter;
-use CakeDC\Users\Webauthn\RegisterAdapter;
-use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * UsersPlugin Test Case

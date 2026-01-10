@@ -1,34 +1,14 @@
 <?php
-
 declare(strict_types=1);
 
 namespace CakeDC\Users\Test\TestCase\Model\Behavior;
 
 use Cake\Core\Configure;
-use Cake\Datasource\EntityInterface;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\I18n\DateTime;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
-use CakeDC\Users\Model\Behavior\OneTimeLoginLinkBehavior;
 use OutOfBoundsException;
-
-/**
- * Mock Delivery Handler
- */
-class MockDeliveryHandler
-{
-    public static $sent = [];
-
-    public function __construct(array $options = [])
-    {
-    }
-
-    public function send(EntityInterface $user, string $token): void
-    {
-        static::$sent[] = ['user' => $user, 'token' => $token];
-    }
-}
 
 /**
  * OneTimeLoginLinkBehavior Test Case
@@ -174,7 +154,7 @@ class OneTimeLoginLinkBehaviorTest extends TestCase
         // Mock expired token
         $this->table->updateAll(
             ['login_token_date' => DateTime::now()->subSeconds(700)],
-            ['id' => $user->id]
+            ['id' => $user->id],
         );
 
         Configure::write('Auth.OneTimeLogin.tokenLifeTime', 600);

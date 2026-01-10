@@ -1,14 +1,12 @@
 <?php
-
 declare(strict_types=1);
 
 namespace CakeDC\Users\Test\TestCase\Loader;
 
+use Cake\Core\Configure;
+use Cake\Http\ServerRequest;
 use Cake\TestSuite\TestCase;
 use CakeDC\Users\Loader\AuthenticationServiceLoader;
-use Authentication\AuthenticationService;
-use Cake\Http\ServerRequest;
-use Cake\Core\Configure;
 
 /**
  * AuthenticationServiceLoader Test Case
