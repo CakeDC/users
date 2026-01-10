@@ -70,14 +70,14 @@ class MyUser extends User
 
 * Pass the new table configuration to Users Plugin Configuration
 
-config/bootstrap.php
-```
+In your `src/Application.php`
+```php
+$this->addPlugin(\CakeDC\Users\Plugin::class);
 Configure::write('Users.config', ['users']);
-Plugin::load('CakeDC/Users', ['routes' => true, 'bootstrap' => true]);
 ```
 
-Then in your config/users.php
-```
+Then in your `config/users.php`
+```php
 return [
     'Users.table' => 'MyUsers',
 ];
@@ -140,18 +140,6 @@ class MyUsersController extends AppController
     {
         parent::initialize();
         $this->loadComponent('CakeDC/Users.Setup');
-        if ($this->components()->has('Security')) {
-            $this->Security->setConfig(
-                'unlockedActions',
-                [
-                    'login',
-                    'webauthn2faRegister',
-                    'webauthn2faRegisterOptions',
-                    'webauthn2faAuthenticate',
-                    'webauthn2faAuthenticateOptions',
-                ]
-            );
-        }
     }
 
     //add your new actions, override, etc here
@@ -261,5 +249,56 @@ class MyUsersMailer extends UsersMailer
 * Create the file `templates/email/text/custom_template_in_app_namespace.php`
 with your custom contents. Note you can also prepare an html version of the file,
 change the template, or do any other customization in the `MyUsersMailer` method.
+
+
+Using the SimpleCrudTrait
+-------------------------
+
+If you want to quickly add standard CRUD (Create, Read, Update, Delete) actions to your users controller, you can use the `SimpleCrudTrait`.
+
+```php
+namespace App\Controller;
+
+use App\Controller\AppController;
+use CakeDC\Users\Controller\Traits\SimpleCrudTrait;
+
+class MyUsersController extends AppController
+{
+    use SimpleCrudTrait;
+}
+```
+
+This trait provides the following actions:
+* `index()`: Lists and paginates users.
+* `view($id)`: Displays a single user.
+* `add()`: Handles user creation.
+* `edit($id)`: Handles user updates.
+* `delete($id)`: Handles user deletion.
+
+Make sure to configure the `Users.table` and update your permissions accordingly.
+
+
+Customizing the Users Table in Controllers
+------------------------------------------
+
+The `CustomUsersTableTrait` can be used in your controllers to easily access the configured Users table.
+
+```php
+namespace App\Controller;
+
+use App\Controller\AppController;
+use CakeDC\Users\Controller\Traits\CustomUsersTableTrait;
+
+class MyController extends AppController
+{
+    use CustomUsersTableTrait;
+
+    public function myAction()
+    {
+        $usersTable = $this->getUsersTable();
+        // ...
+    }
+}
+```
 
 

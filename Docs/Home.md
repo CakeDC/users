@@ -15,7 +15,7 @@ Documentation
 * [Configuration](Documentation/Configuration.md)
 * [Authentication](Documentation/Authentication.md)
 * [Authorization](Documentation/Authorization.md)
-* [SimpleRbacAuthorize](https://github.com/CakeDC/auth/blob/8.next-cake5/Docs/Documentation/SimpleRbacAuthorize.md)
+* [SimpleRbacAuthorize](https://github.com/CakeDC/auth/blob/master/Docs/Documentation/SimpleRbacAuthorize.md)
 * [Permissions](Documentation/Permissions.md)
 * [SuperuserAuthorize](https://github.com/CakeDC/auth/blob/master/Docs/Documentation/SuperuserAuthorize.md)
 * [Intercept Login Action](Documentation/InterceptLoginAction.md)

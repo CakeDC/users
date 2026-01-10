@@ -1,90 +1,83 @@
-CakeDC Users Plugin
-===================
+# CakeDC Users Plugin
 
-[![Build Status](https://img.shields.io/github/workflow/status/CakeDC/users/CI/master?style=flat-square)](https://github.com/CakeDC/users/actions?query=workflow%3ACI+branch%3Amaster)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/CakeDC/users/ci.yml?branch=master&style=flat-square)](https://github.com/CakeDC/users/actions?query=workflow%3ACI+branch%3Amaster)
 [![Coverage Status](https://img.shields.io/codecov/c/gh/CakeDC/users.svg?style=flat-square)](https://codecov.io/gh/CakeDC/users)
-[![Downloads](https://poser.pugx.org/CakeDC/users/d/total.png)](https://packagist.org/packages/CakeDC/users)
-[![Latest Version](https://poser.pugx.org/CakeDC/users/v/stable.png)](https://packagist.org/packages/CakeDC/users)
-[![License](https://poser.pugx.org/CakeDC/users/license.svg)](https://packagist.org/packages/CakeDC/users)
+[![Total Downloads](https://img.shields.io/packagist/dt/CakeDC/users.svg?style=flat-square)](https://packagist.org/packages/CakeDC/users)
+[![Latest Stable Version](https://img.shields.io/packagist/v/CakeDC/users.svg?style=flat-square)](https://packagist.org/packages/CakeDC/users)
+[![License](https://img.shields.io/packagist/l/CakeDC/users.svg?style=flat-square)](https://packagist.org/packages/CakeDC/users)
 
-Versions and branches
----------------------
+The **Users** plugin for CakePHP provides a comprehensive, extensible solution for user management, authentication, and authorization. It's designed to get you up and running with a full-featured user system in minutes, while remaining flexible enough for complex, custom applications.
 
-|    CakePHP     |                    CakeDC Users Plugin                     |  Tag   | Notes    |
-|:--------------:|:----------------------------------------------------------:|:------:|:---------|
-|      ^5.0      | [15.0](https://github.com/cakedc/users/tree/15.next-cake5) | 15.1.3 | stable   |
-|      ^5.0      | [14.4](https://github.com/cakedc/users/tree/14.next-cake5) | 14.3.4 | stable   |
-|      ^4.5      | [13.0](https://github.com/cakedc/users/tree/13.next-cake4) | 13.0.1 | stable   |
-|      ^5.0      | [12.0](https://github.com/cakedc/users/tree/12.next-cake5) |  12.0  | beta     |
-|      ^4.3      | [11.0](https://github.com/cakedc/users/tree/11.next-cake4) | 11.1.0 | stable   |
-|      ^4.0      |     [9.0](https://github.com/cakedc/users/tree/9.next)     | 9.0.5  | stable   |
-|   ^3.7  <4.0   |     [8.5](https://github.com/cakedc/users/tree/8.next)     | 8.5.1  | stable   |
-|   ^3.7  <4.0   |  [develop](https://github.com/cakedc/users/tree/develop)   |   -    | unstable |
-|      3.6       |     [8.1](https://github.com/cakedc/users/tree/8.1.0)      | 8.1.0  | stable   |
-|      3.5       |      [6.x](https://github.com/cakedc/users/tree/6.x)       | 6.0.1  | stable   |
-|      3.4       |      [5.x](https://github.com/cakedc/users/tree/5.x)       | 5.2.0  | stable   |
-| >=3.2.9 <3.4.0 |      [4.x](https://github.com/cakedc/users/tree/4.x)       | 4.2.1  | stable   |
-|     ^2.10      |      [2.x](https://github.com/cakedc/users/tree/2.x)       | 2.2.0  | stable   |
+## Versions and branches
 
-The  **Users** plugin covers the following features:
+| CakePHP | CakeDC Users Plugin | Tag | Notes |
+|:---:|:---:|:---:|:---|
+| ^5.0 | [15.x](https://github.com/cakedc/users/tree/master) | 15.1.3 | **Stable** (Current) |
+| ^5.0 | [14.x](https://github.com/cakedc/users/tree/14.next-cake5) | 14.3.4 | Stable |
+| ^4.5 | [13.x](https://github.com/cakedc/users/tree/13.next-cake4) | 13.0.1 | Stable |
+| ^4.3 | [11.x](https://github.com/cakedc/users/tree/11.next-cake4) | 11.1.0 | Stable |
+| ^4.0 | [9.x](https://github.com/cakedc/users/tree/9.next) | 9.0.5 | Stable |
+| ^3.7 | [8.x](https://github.com/cakedc/users/tree/8.next) | 8.5.1 | Stable |
 
-* User registration
-* Login/logout
-* Social login (Facebook, Twitter, Instagram, Google, Linkedin, etc)
-* Simple RBAC via https://github.com/CakeDC/auth
-* Remember me (Cookie) via https://github.com/CakeDC/auth
-* Manage user's profile
-* Admin management
-* One-Time Password for Two-Factor Authentication
-* Webauthn for Two-Factor Authentication (Yubico Key compatible)
-* reCaptcha v3 (14.2 only) and v2 supported in all versions
-* Password Meter
+## Key Features
 
-The plugin is here to provide users related features following 2 approaches:
+* **User Lifecycle:** Registration, email validation, profile management, and password reset.
+* **Authentication:** Login/Logout, "Remember Me" (Cookie), and Magic Link (one-click login).
+* **Social Login:** Facebook, Twitter, Instagram, Google, LinkedIn (via OpenID Connect), Amazon, GitHub.
+* **Security & 2FA:** 
+    * One-Time Password (OTP) for Two-Factor Authentication.
+    * Webauthn (Yubico Key, TouchID, etc.) for Two-Factor Authentication.
+    * Account lockout policy after failed attempts.
+    * Password strength meter.
+    * reCaptcha v2 and v3 support.
+* **Authorization:** Integrated RBAC (Role-Based Access Control) and Superuser support via [CakeDC/auth](https://github.com/CakeDC/auth).
+* **Extensibility:** Easily extend Controllers, Models (Tables/Entities), Mailers, and Templates.
+* **Admin Management:** Out-of-the-box CRUD for user management.
 
-* Quick drop-in working solution for users login/registration. Get users working in 5 minutes.
-* Extensible solution for a bigger/custom application. You'll be able to extend:
-  * UsersAuth Component
-  * Use your own UsersTable
-  * Use your own Controller
-
-On the previous versions of the plugin, extensibility was an issue, and one of the main
-objectives of the 3.0 rewrite is to guarantee all the pieces could be extended/reused as
-easily.
-
-Another decision made was limiting the plugin dependencies on other packages as much as possible.
-
-Requirements
-------------
+## Requirements
 
 * CakePHP 5.0+
 * PHP 8.1+
 
-Documentation
--------------
+## Quick Start (Installation)
 
-For documentation, as well as tutorials, see the [Docs](Docs/Home.md) directory of this repository.
+1. **Install via Composer:**
+   ```bash
+   composer require cakedc/users
+   ```
+2. **Load the Plugin:**
+   In your `src/Application.php`:
+   ```php
+   public function bootstrap(): void
+   {
+       parent::bootstrap();
+       $this->addPlugin('CakeDC/Users');
+   }
+   ```
+3. **Run Migrations:**
+   ```bash
+   bin/cake migrations migrate -p CakeDC/Users
+   ```
+4. **Create a Superuser:**
+   ```bash
+   bin/cake users add_superuser
+   ```
 
-Support
--------
+## Documentation
 
-For bugs and feature requests, please use the [issues](https://github.com/CakeDC/users/issues) section of this repository.
+For full installation details, configuration options, and tutorials, please visit the [Documentation](Docs/Home.md).
 
-Commercial support is also available, [contact us](https://www.cakedc.com/contact) for more information.
+## Support
 
-Contributing
-------------
+* **Bugs & Features:** Please use the [GitHub issues](https://github.com/CakeDC/users/issues) section.
+* **Commercial Support:** [Contact CakeDC](https://www.cakedc.com/contact) for professional assistance.
 
-This repository follows the [CakeDC Plugin Standard](https://www.cakedc.com/plugin-standard). If you'd like to contribute new features, enhancements or bug fixes to the plugin, please read our [Contribution Guidelines](https://www.cakedc.com/contribution-guidelines) for detailed instructions.
+## Contributing
 
-Security
-------------
+We welcome contributions! Please review our [Contribution Guidelines](CONTRIBUTING.md) and the [CakeDC Plugin Standard](https://www.cakedc.com/plugin-standard).
 
-If you've found a security issue in CakeDC Users plugin, please use the procedure described in [SECURITY.md](.github/SECURITY.md)
+## License
 
-License
--------
+Copyright 2010 - Present Cake Development Corporation (CakeDC). All rights reserved.
 
-Copyright 2019 Cake Development Corporation (CakeDC). All rights reserved.
-
-Licensed under the [MIT](http://www.opensource.org/licenses/mit-license.php) License. Redistributions of the source code included in this repository must retain the copyright notice found in each file.
+Licensed under the [MIT](LICENSE.txt) License. Redistributions of the source code must retain the copyright notice.

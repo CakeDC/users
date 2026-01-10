@@ -83,3 +83,14 @@ $this->User->addReCaptcha();
 ```
 
 Note reCaptcha script is added to script block when `addReCaptcha` method is called.
+
+Password Meter
+--------------
+
+Handles the password meter display and script inclusion:
+
+```php
+$this->User->addPasswordMeterScript();
+
+echo $this->User->addPasswordMeter();
+```

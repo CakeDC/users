@@ -6,9 +6,8 @@ Overriding the default configuration
 
 For easier configuration, you can specify an array of config files to override the default plugin keys this way:
 
-Make sure you loaded the plugin and is using a custom config/users.php file at Application::bootstrap
-```
-// The following configuration setting must be set before loading the Users plugin
+Make sure you loaded the plugin and are using a custom `config/users.php` file at `Application::bootstrap`
+```php
 $this->addPlugin(\CakeDC\Users\Plugin::class);
 Configure::write('Users.config', ['users']);
 ```
@@ -16,18 +15,18 @@ Configure::write('Users.config', ['users']);
 Configuration for social login
 ---------------------
 
-Create the facebook, twitter, etc applications you want to use and setup the configuration like this:
+Create the facebook, twitter, etc. applications you want to use and setup the configuration like this:
 In this example, we are using 2 providers: facebook and twitter. Note you'll need to add the providers to
-your composer.json file.
+your `composer.json` file.
 
+```shell
+composer require league/oauth2-facebook:@stable
+composer require league/oauth1-client:@stable
 ```
-$ composer require league/oauth2-facebook:@stable
-$ composer require league/oauth1-client:@stable
-```
 
-NOTE: twitter uses league/oauth1-client package
+NOTE: twitter uses `league/oauth1-client` package.
 
-And update your config/users.php file:
+And update your `config/users.php` file:
 
 ```php
 'Users.Social.login' => true,
@@ -37,19 +36,19 @@ And update your config/users.php file:
 'OAuth.providers.twitter.options.clientSecret' => 'YOUR APP SECRET',
 ```
 
-Or use the config override option when loading the plugin (see above)
+Or use the config override option when loading the plugin (see above).
 
 Additionally you will see you can configure two more keys for each provider:
 
-* linkSocialUri (default: /link-social/**provider**),
-* callbackLinkSocialUri(default: /callback-link-social/**provider**)
+* linkSocialUri (default: `/link-social/**provider**`),
+* callbackLinkSocialUri(default: `/callback-link-social/**provider**`)
 
-Those keys are needed to link an existing user account to a third-party account. **Remember to add the callback to your thrid-party app**
+Those keys are needed to link an existing user account to a third-party account. **Remember to add the callback to your third-party app.**
 
 Configuration for reCaptcha
 ---------------------
 To enable reCaptcha you need to register your site at google reCaptcha console
-and add this to your config/users.php file:
+and add this to your `config/users.php` file:
 
 ```php
 'Users.reCaptcha.key' => 'YOUR RECAPTCHA KEY',
@@ -59,15 +58,15 @@ and add this to your config/users.php file:
 'Users.reCaptcha.login' => true, //enable on login
 ```
 
-Note you'll need to add google/recaptcha to your composer.json file.
+Note you'll need to add `google/recaptcha` to your `composer.json` file.
 
-```
-$ composer require google/recaptcha:@stable
+```shell
+composer require google/recaptcha:@stable
 ```
 
 Configuration for Password Meter
 ---------------------
-Password meter is enabled by default but you can disable it or change config options adding this to your config/users.php file:
+Password meter is enabled by default but you can disable it or change config options adding this to your `config/users.php` file:
 
 ```php
 'Users.passwordMeter.enabled' => true, //enable or disable password meter. Defaults to true
@@ -80,36 +79,36 @@ Password meter is enabled by default but you can disable it or change config opt
 Note the score is calculated based on the following rules:
 
 * If you include a lower single character and an upper one ([a-zA-Z]) it increases the score by 1
-* If you include an special single character it increases the score by 1
+* If you include a special single character it increases the score by 1
 * If you include a digit it increases the score by 1
-* If you reaches the `pswMinLength` it increases the score by 1
+* If you reach the `pswMinLength` it increases the score by 1
 
 Configuration options
 ---------------------
 
-The plugin is configured via the Configure class. Check the `vendor/cakedc/users/config/users.php`
+The plugin is configured via the `Configure` class. Check the `vendor/cakedc/users/config/users.php`
 for a complete list of all the configuration keys.
 
 Loading the plugin and using the right configuration values will setup the Users plugin,
 with authentication service, authorization service, and the OAuth components for your application.
 
-This plugin uses by default the new [cakephp/authentication](https://github.com/cakephp/authentication)
-and [cakephp/authorization](https://github.com/cakephp/authorization) plugins we suggest you to take a look
-into their documentation for more information.
+This plugin uses by default the [cakephp/authentication](https://github.com/cakephp/authentication)
+and [cakephp/authorization](https://github.com/cakephp/authorization) plugins. We suggest you to take a look
+at their documentation for more information.
 
-Most authentication/authorization configuration is defined at 'Auth' key, for example
+Most authentication/authorization configuration is defined at 'Auth' key. For example,
 if you don't want the plugin to autoload the authorization service, you could add this
-to your config/users.php file:
+to your `config/users.php` file:
 
-```
+```php
 'Auth.Authorization.enable' => false,
 ```
 
 Interesting Users options and defaults
 
-NOTE: SOME keys were hidden in this doc page, please refer to `vendor/cakedc/users/config/users.php` for the complete list
+NOTE: SOME keys were hidden in this doc page, please refer to `vendor/cakedc/users/config/users.php` for the complete list.
 
-```
+```php
     'Users' => [
         // Table used to manage users
         'table' => 'CakeDC/Users.Users',
@@ -155,8 +154,24 @@ NOTE: SOME keys were hidden in this doc page, please refer to `vendor/cakedc/use
             'serviceLoader' => \CakeDC\Users\Loader\AuthenticationServiceLoader::class
         ],
         'AuthenticationComponent' => [...],
-        'Authenticators' => [...],
-        'Identifiers' => [...],
+        'Authenticators' => [
+             'Form' => [
+                 'className' => 'CakeDC/Auth.Form',
+                 'identifier' => [
+                     'Authentication.Password' => [
+                         'fields' => [
+                             'username' => ['username', 'email'],
+                             'password' => 'password',
+                         ],
+                         'resolver' => [
+                             'className' => 'Authentication.Orm',
+                             'finder' => 'active',
+                         ],
+                     ],
+                 ],
+             ],
+             // ...
+        ],
         "Authorization" => [
             'enable' => true,
             'serviceLoader' => \CakeDC\Users\Loader\AuthorizationServiceLoader::class
@@ -175,35 +190,32 @@ NOTE: SOME keys were hidden in this doc page, please refer to `vendor/cakedc/use
     'SocialAuthMiddleware' => [...],
     'OAuth' => [...]
 ];
-
 ```
 
 Authentication and Authorization
 --------------------------------
 
-This plugin uses the two new plugins cakephp/authentication and cakephp/authorization instead of
-CakePHP Authentication component, but don't worry, the default configuration should be enough for your
-projects. We tried to allow you to start quickly without the need to configure a lot of thing and also
+This plugin uses the two plugins `cakephp/authentication` and `cakephp/authorization` instead of
+the old CakePHP Auth component. The default configuration should be enough for your
+projects. We tried to allow you to start quickly without the need to configure a lot of things and also
 allow you to configure as much as possible.
 
-To learn more about it please check the configurations for [Authentication](Authentication.md) and [Authorization](Authorization.md)
+To learn more about it please check the configurations for [Authentication](Authentication.md) and [Authorization](Authorization.md).
 
 ## Using the user's email to login
 
-You need to configure 2 things (version 9.0.4):
+You need to configure 2 things:
 
-* Change the Password identifier fields and the Authenticator for Forms
-configuration to let it use the email instead of the username for
-user identify. Add this to your config/users.php:
+* Change the Form Authenticator configuration to let it use the email instead of the username for
+user identify. Add this to your `config/users.php`:
 
 ```php
-'Auth.Identifiers.Password.fields.username' => 'email',
-'Auth.Authenticators.Form.fields.username' => 'email',
+'Auth.Authenticators.Form.identifier.Authentication.Password.fields.username' => 'email',
 ```
 
-* Override the login.php template to change the Form->control to "email".
-Add (or copy from the [/templates/Users/login.php](../../templates/Users/login.php)) the file login.php to path /templates/plugin/CakeDC/Users/Users/login.php
-and ensure it has the following content
+* Override the `login.php` template to change the `Form->control` to "email".
+Add (or copy from the [`/templates/Users/login.php`](../../templates/Users/login.php)) the file `login.php` to path `/templates/plugin/CakeDC/Users/Users/login.php`
+and ensure it has the following content:
 
 ```php
         // ... inside the Form
@@ -218,26 +230,26 @@ and ensure it has the following content
 Email Templates
 ---------------
 
-To modify the templates as needed copy them to your application
+To modify the templates as needed copy them to your application:
 
-```
+```shell
 cp -r vendor/cakedc/users/templates/email/ templates/plugin/CakeDC/Users/email/
 ```
 
-Then customize the email templates as you need under the templates/Plugin/CakeDC/Users/email/ directory
+Then customize the email templates as you need under the `templates/plugin/CakeDC/Users/email/` directory.
 
 Plugin Templates
 ---------------
 
 Similar to Email Templates customization, follow the CakePHP conventions to put your new templates under
-templates/plugin/CakeDC/Users/[Controller]/[view].php
+`templates/plugin/CakeDC/Users/[Controller]/[view].php`.
 
 Check https://book.cakephp.org/5/en/plugins.html#overriding-plugin-templates-from-inside-your-application
 
 Flash Messages
 ---------------
 
-To modify the flash messages, use the standard PO file provided by the plugin and customize the messages
+To modify the flash messages, use the standard PO file provided by the plugin and customize the messages.
 Check https://book.cakephp.org/5/en/core-libraries/internationalization-and-localization.html#setting-up-translations
 for more details about how the PO files should be managed in your application.
 
@@ -246,30 +258,32 @@ We've included an updated POT file with all the `Users` domain keys for your cus
 Password Hasher customization
 -----------------------------
 
-Override the `Auth.Identifiers.Password` key in configuration adding a `passwordHasher` key https://book.cakephp.org/authentication/2/en/password-hashers.html#upgrading-hashing-algorithms
+Override the `passwordHasher` key in the `Authentication.Password` identifier configuration. See https://book.cakephp.org/authentication/3/en/password-hashers.html
 
 For example:
 
 ```php
-    'Auth.Identifiers' => [
-        'Password' => [
-            'className' => 'Authentication.Password',
-            'fields' => [
-                'username' => ['username', 'email'],
-                'password' => 'password',
-            ],
-            'resolver' => [
-                'className' => 'Authentication.Orm',
-                'finder' => 'active',
-            ],
-            'passwordHasher' => [
-                'className' => 'Authentication.Fallback',
-                'hashers' => [
-                    'Authentication.Default',
-                    [
-                        'className' => 'Authentication.Legacy',
-                        'hashType' => 'md5',
-                        'salt' => false, // turn off default usage of salt
+    'Auth.Authenticators.Form' => [
+        'className' => 'CakeDC/Auth.Form',
+        'identifier' => [
+            'Authentication.Password' => [
+                'fields' => [
+                    'username' => ['username', 'email'],
+                    'password' => 'password',
+                ],
+                'resolver' => [
+                    'className' => 'Authentication.Orm',
+                    'finder' => 'active',
+                ],
+                'passwordHasher' => [
+                    'className' => 'Authentication.Fallback',
+                    'hashers' => [
+                        'Authentication.Default',
+                        [
+                            'className' => 'Authentication.Legacy',
+                            'hashType' => 'md5',
+                            'salt' => false, // turn off default usage of salt
+                        ],
                     ],
                 ],
             ],

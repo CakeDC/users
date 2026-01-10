@@ -77,19 +77,21 @@ The ``skipTwoFactorVerify`` option is used to skip the two factor flow for a giv
 Identifiers
 -----------
 
-The identifiers are defined to work correctly with the default authenticators, we are using these identifiers:
+The identifiers are defined to work correctly with the default authenticators. We are using these identifiers:
 
-- ``Authentication.Password``, for ``Form`` authenticator
-- ``CakeDC/Users.Social``, for ``Social`` and ``SocialPendingEmail`` authenticators
-- ``Authentication.Token``, for ``Token`` authenticator
+- `Authentication.Password`, for `Form` authenticator
+- `CakeDC/Users.Social`, for `Social` and `SocialPendingEmail` authenticators
+- `Authentication.Token`, for `Token` authenticator
 
-As you add more authenticators you may also need to add other identifiers, please see [the identifiers available in the official CakePHP Authentication plugin documentation](https://book.cakephp.org/authentication/2/en/identifiers.html).
+As you add more authenticators you may also need to add other identifiers. Please see [the identifiers available in the official CakePHP Authentication plugin documentation](https://book.cakephp.org/authentication/3/en/identifiers.html).
 
-The default list for ``Auth.Identifiers`` is:
+> **Note:** Configuring identifiers globally via `Auth.Identifiers` is deprecated. Please move each identifier's configuration into the `identifier` key within its specific authenticator under `Auth.Authenticators`.
+
+The default list for `Auth.Authenticators.Form.identifier` is:
 
 ```php
-[
-    'Password' => [
+'identifier' => [
+    'Authentication.Password' => [
         'className' => 'Authentication.Password',
         'fields' => [
             'username' => ['username', 'email'],
@@ -100,49 +102,42 @@ The default list for ``Auth.Identifiers`` is:
             'finder' => 'active'
         ],
     ],
-    "Social" => [
-        'className' => 'CakeDC/Users.Social',
-        'authFinder' => 'active'
-    ],
-    'Token' => [
-        'className' => 'Authentication.Token',
-        'tokenField' => 'api_token',
-        'resolver' => [
-            'className' => 'Authentication.Orm',
-            'finder' => 'active'
-        ],
-    ]
 ]
 ```
 
-These identifiers are loaded by the ``\CakeDC\Users\Loader\AuthenticationServiceLoader`` class in the ``loadIdentifiers`` method. See [Authentication Service Loader](#authentication-service-loader) on how to adjust it to your needs.
+These identifiers are loaded by the `\CakeDC\Users\Loader\AuthenticationServiceLoader` class. See [Authentication Service Loader](#authentication-service-loader) on how to adjust it to your needs.
 
 Account lockout policy
 ----------------------
 Lock a users account after a number of failed password attempts in a certain time window.
 
-To enable this updated your config/users.php file with:
+To enable this, update your `config/users.php` file with:
+
 ```php
-    'Auth.Identifiers.Password.className' => 'CakeDC/Users.PasswordLockout',
-    'Auth.PasswordRehash' => [
-        'identifiers' => ['PasswordLockout'],
-    ],
+'Auth.Authenticators.Form.identifier.Authentication.Password.className' => 'CakeDC/Users.PasswordLockout',
+'Auth.PasswordRehash' => [
+    'identifiers' => ['PasswordLockout'],
+],
 ```
-Additionally, you can set number of attempts until lock, lockout time, time window and more, eg:
-```
-    'Auth.Identifiers.Password.className' => 'CakeDC/Users.PasswordLockout',
-    'Auth.PasswordRehash' => [
-        'identifiers' => ['PasswordLockout'],
-    ],
-    'Auth.Identifiers.Password.lockoutHandler' => [
-        'timeWindowInSeconds' => 30 * 60,//30 minutes (default is 15 minutes)
-        'lockoutTimeInSeconds' => 100 * 60,//100 minutes (default is 30 minutes)
+
+Additionally, you can set the number of attempts until lock, lockout time, time window and more, e.g.:
+
+```php
+'Auth.Authenticators.Form.identifier.Authentication.Password' => [
+    'className' => 'CakeDC/Users.PasswordLockout',
+    'lockoutHandler' => [
+        'timeWindowInSeconds' => 30 * 60, // 30 minutes (default is 15 minutes)
+        'lockoutTimeInSeconds' => 100 * 60, // 100 minutes (default is 30 minutes)
         'numberOfAttemptsFail' => 4, // default is 6 attempts
         'failedPasswordAttemptsModel' => 'CakeDC/Users.FailedPasswordAttempts',
-        'userLockoutField' => 'lockout_time',//Field in user entity used to lock the user.
+        'userLockoutField' => 'lockout_time', // Field in user entity used to lock the user.
         'usersModel' => 'Users',
-        'userForeignKeyField' => 'user_id', //Field defined in the 'failed_password_attempts' table as foreignKey of the model Users.
+        'userForeignKeyField' => 'user_id', // Field defined in the 'failed_password_attempts' table as foreignKey of the model Users.
     ],
+],
+'Auth.PasswordRehash' => [
+    'identifiers' => ['PasswordLockout'],
+],
 ```
 
 

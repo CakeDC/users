@@ -20,8 +20,8 @@ By default the feature is enabled. The default configuration is:
     ],
 ],
 ```
-* `tokenLifeTime`: 60 minutes by default. You can set how many seconds you want your token to be valid.
-* `DelveryHandlers`: Email delivery is included but it can be easily extended implementing `\CakeDC\Users\Model\Behavior\OneTimeDelivery\DeliveryInterface` (i.e SmsDelivery, PushDelivery, etc)
+* `tokenLifeTime`: 600 seconds (10 minutes) by default. You can set how many seconds you want your token to be valid.
+* `DeliveryHandlers`: Email delivery is included but it can be easily extended implementing `\CakeDC\Users\Model\Behavior\OneTimeDelivery\DeliveryInterface` (i.e. SMS Delivery, Push Delivery, etc.)
 
 Enabling
 --------
@@ -29,7 +29,7 @@ Enabling
 The feature is enabled by default but you can disable it application-wide and enable via Middleware (or any other way) for specific situations using:
 
 ```php
-Configure::write('OneTimeLogin.enabled', true),
+Configure::write('OneTimeLogin.enabled', true);
 ```
 
 Disabling
@@ -42,7 +42,7 @@ You can disable it by adding this in your config/users.php file:
 
 How does it work
 ----------------
-When the user access the login page, there is a new button `Send me a login link`. On click, the user will be redirected to a page to enter his email address. Once it is submitted, the user will receive an email with the link to automatically login.
+When the user accesses the login page, there is a new button `Send me a login link`. On click, the user will be redirected to a page to enter his email address. Once it is submitted, the user will receive an email with the link to automatically login.
 
 Two-factor authentication
 ----------------
