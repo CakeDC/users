@@ -9,11 +9,11 @@ The Rbac policy allows you to define a list of rules at config/permissions.php
 to perform checks based on request information (prefix, plugin, controller, action, etc)
 and user data.
 
-You can find the permission rule syntax at [CakeDC/auth documentation.](https://github.com/CakeDC/auth/blob/master/Docs/Documentation/Rbac.md#permission-rules-syntax)
+[You can find the permission rule syntax at [CakeDC/auth documentation.](https://github.com/CakeDC/auth/blob/master/Docs/Documentation/Rbac.md#permission-rules-syntax)
 
 I want to allow access to public actions (non-logged user)
 ----------------------------------------------------------
-To allow access to public actions (that does not requires a looged) we need to include a new rule at config/permissions.php
+To allow access to public actions (that does not require login) we need to include a new rule at `config/permissions.php`
 using the 'bypassAuth' key.
 
 ```php
@@ -32,9 +32,9 @@ return [
 
 I want to allow access to one specific action
 ---------------------------------------------
-To allow access to specific action we need to include a new rule at config/permissions.php
+To allow access to specific action we need to include a new rule at `config/permissions.php`
 
-- Path: /{controler}/{action}
+- Path: `/{controller}/{action}`
 ```php
 <?php
 return [
@@ -49,7 +49,7 @@ return [
         [
             //Allow user to access /dashboard/home
             'role' => 'user',
-            'controller' => 'Dashbord',
+            'controller' => 'Dashboard',
             'action' => 'home',
         ],
         [
@@ -62,7 +62,7 @@ return [
 ];
 ```
 
-- Path: /{plugin}/{prefix}/{controler}/{action}
+- Path: `/{plugin}/{prefix}/{controller}/{action}`
 ```php
 <?php
 return [
@@ -147,12 +147,12 @@ return [
 ];
 ```
 
-[For more information check owner rule documentation](https://github.com/CakeDC/auth/blob/6.next-cake4/Docs/Documentation/OwnerRule.md)
+[For more information check owner rule documentation](https://github.com/CakeDC/auth/blob/master/Docs/Documentation/OwnerRule.md)
 
 
 I want to allow access to action using a custom logic
 ----------------------------------------------------
-Permission rule can have a custom callback. Adde the rule at config/permissions.php using the 'allowed' key.
+Permission rule can have a custom callback. Add the rule at `config/permissions.php` using the 'allowed' key.
 
 ```php
 <?php
@@ -163,10 +163,10 @@ return [
             //
             'role' => 'user',
             'controller' => 'Posts',
-            'action' => ['edit']
+            'action' => ['edit'],
             'allowed' => function (array $user, $role, \Cake\Http\ServerRequest $request) {
-                $postId = \Cake\Utility\Hash::get($request->params, 'pass.0');
-                $post = \Cake\ORM\TableRegistry::get('Posts')->get($postId);
+                $postId = \Cake\Utility\Hash::get($request->getAttribute('params'), 'pass.0');
+                $post = \Cake\ORM\TableRegistry::getTableLocator()->get('Posts')->get($postId);
                 $userId = $user['id'];
                 if (!empty($post->user_id) && !empty($userId)) {
                     return $post->user_id === $userId;
@@ -178,6 +178,6 @@ return [
 ];
 ```
 
-[For more information check CakeDC/Auth documentation](https://github.com/CakeDC/auth/blob/6.next-cake4/Docs/Documentation/Rbac.md#permission-callbacks)
+[For more information check CakeDC/Auth documentation](https://github.com/CakeDC/auth/blob/master/Docs/Documentation/Rbac.md#permission-callbacks)
 
 

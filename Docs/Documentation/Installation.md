@@ -66,16 +66,16 @@ Ensure the Users Plugin is loaded in your src/Application.php file
     }
 ```
 
-**Important note: The plugin loads authentication and authorization plugin and
-uses RequestAuthorizationMiddleware with Rbac|Superuser policy you
-should not load then manually**
+**Important note: The plugin loads the authentication and authorization plugins and
+uses RequestAuthorizationMiddleware with Rbac|Superuser policy. You
+should not load them manually.**
 
 Creating config files
 ---------------------
-You need to create the file config/users.php to configure the plugin. This documentation
+You need to create the file `config/users.php` to configure the plugin. This documentation
 assumes that you will create this file.
 
-Example config/users.php
+Example `config/users.php`
 
 ```php
 <?php
@@ -84,14 +84,14 @@ return [
 ];
 ```
 
-***The plugin loads authentication and authorization plugins by default,
-to be able to access your pages you NEED to have defined rules at the
-file config/permissions.php.
+***The plugin loads authentication and authorization plugins by default.
+To be able to access your pages you NEED to have defined rules at the
+file `config/permissions.php`.
 You can copy the one from the plugin and add your permissions rules.***
 
 ```shell
 cd {project_dir}
-cp vendor/cakedc/users/config/permissions.php  config/permissions.php
+cp vendor/cakedc/users/config/permissions.php config/permissions.php
 ```
 [Go to permission documentation for more information.](./Permissions.md)
 
@@ -104,11 +104,11 @@ If you want to use the Users tables to store your users and social accounts:
 bin/cake migrations migrate -p CakeDC/Users
 ```
 
-Note you don't need to use the provided tables, you could customize the table names, fields etc in your
+Note you don't need to use the provided tables, you could customize the table names, fields etc. in your
 application and then use the plugin configuration to use your own tables instead. Please refer to the [Extending the Plugin](Extending-the-Plugin.md)
-section to check all the customization options
+section to check all the customization options.
 
-You can create the first user, the superuser by issuing the following command
+You can create the first user, the superuser, by issuing the following command:
 
 ```
 bin/cake users add_superuser
@@ -117,13 +117,13 @@ bin/cake users add_superuser
 Customization
 -------------
 
-First, make sure to set the config `Users.config` at Application::bootstrap
-```
+First, make sure to set the config `Users.config` at `Application::bootstrap`
+```php
 $this->addPlugin(\CakeDC\Users\Plugin::class);
 Configure::write('Users.config', ['users']);
 ```
 
-And update your config/users.php file, for example if you want to use social login:
+And update your `config/users.php` file, for example if you want to use social login:
 ```php
 <?php
 return [
@@ -143,4 +143,4 @@ IMPORTANT: Remember you'll need to configure your social login application **cal
 
 Note: using social authentication is not required.
 
-For more details, check the Configuration doc page
+For more details, check the Configuration doc page.

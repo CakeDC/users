@@ -76,7 +76,7 @@ If email is required and the social network does not return the user email then 
 
 In most situations you would not need to change any Oauth setting besides applications details.
 
-For new facebook aps you must use the graphApiVersion 2.8 or greater:
+For new facebook apps you must use the graphApiVersion 2.8 or greater:
 
 ```php
 'OAuth.providers.facebook.options.graphApiVersion' => 'v2.8',
@@ -118,39 +118,39 @@ By default it will use `username` field.
 
 Social Middlewares
 ------------------
-We provide two middleware to help us the integration with social providers, the SocialAuthMiddleware is
-the main one, it is responsible to redirect the user to the social provider site and setup information
-needed by the CakeDC/Users.Social authenticator. The second one SocialEmailMiddleware is used when social provider does
-not returns user email.
+We provide two middlewares to help us with the integration of social providers. The `SocialAuthMiddleware` is
+the main one, it is responsible for redirecting the user to the social provider site and setting up information
+needed by the `CakeDC/Users.Social` authenticator. The second one, `SocialEmailMiddleware`, is used when the social provider does
+not return the user email.
 
 Social Authenticators
 ---------------------
 The social authentication works with cakephp/authentication, we have two authenticators they work
 in combination with the two social middlewares:
- - CakeDC/Users.Social, works with SocialAuthMiddleware
- - CakeDC/Users.SocialPendingEmai, works with SocialEmailMiddleware
+- CakeDC/Users.Social, works with `SocialAuthMiddleware`
+- CakeDC/Users.SocialPendingEmail, works with `SocialEmailMiddleware`
 
 
-Social Indentifier
-------------------
-The social identifier "CakeDC/Users.Social", works with data provider by both social authenticator,
-it is responsible of finding or creating a user registry for the social user data request.
-By default, it'll fetch user data with finder 'all', but you can use a custom one. Add this to your
-config/users.php:
+Social Identifier
+-----------------
+The social identifier "CakeDC/Users.Social" works with data provided by both social authenticators.
+It is responsible for finding or creating a user record for the social user data request.
+By default, it'll fetch user data with finder 'active', but you can use a custom one. Add this to your
+`config/users.php`:
 
 ```php
-'Auth.Identifiers.Social.authFinder' => 'customSocialAuth',
+'Auth.Authenticators.Social.identifier.CakeDC/Users.Social.authFinder' => 'customSocialAuth',
 ```
 
 
 Handling Social Login Result
 ----------------------------
-We use a base component 'CakeDC/Users.Login' to handle login, it checks the result of authentication
-service to redirects user to an internal page or show an authentication error. It provide some error messages for social login.
-There are two custom messages (Auth.SocialLoginFailure.messages) and one default message (Auth.SocialLoginFailure.defaultMessage).
+We use a base component `CakeDC/Users.Login` to handle login, it checks the result of authentication
+service to redirect the user to an internal page or show an authentication error. It provides some error messages for social login.
+There are two custom messages (`Auth.SocialLoginFailure.messages`) and one default message (`Auth.SocialLoginFailure.defaultMessage`).
 
 
-To use a custom component to handle the login add this to your config/users.php file:
+To use a custom component to handle the login add this to your `config/users.php` file:
 ```php
 'Auth.SocialLoginFailure.component' => 'MyLoginA',
 ```

@@ -3,7 +3,9 @@ Events
 
 The events in this plugin follow these conventions `<Plugin><Category>.<EventName>`:
 
+* `Users.Authentication.beforeLogin`
 * `Users.Authentication.afterLogin`
+* `Users.Authentication.afterLoginFailure`
 * `Users.Authentication.beforeLogout`
 * `Users.Authentication.afterLogout`
 * `Users.Global.beforeRegister`
@@ -12,10 +14,85 @@ The events in this plugin follow these conventions `<Plugin><Category>.<EventNam
 * `Users.Global.afterResetPassword`
 * `Users.Global.onExpiredToken`
 * `Users.Global.afterResendTokenValidation`
+* `Users.Global.socialLoginExistingAccount`
+* `Users.Global.afterEmailTokenValidation`
 
 The events allow you to inject data into the plugin on the before* plugins and use the data for your
 own business.
 
+
+I want to add custom logic before user login
+--------------------------------------------
+When adding a custom logic to execute before user login you
+have access to the controller object. You can use this to perform any checks before the login process starts.
+
+- Create or update file src/Event/UsersListener.php:
+
+```php
+<?php
+
+namespace App\Event;
+
+use Cake\Event\EventListenerInterface;
+
+class UsersListener implements EventListenerInterface
+{
+    /**
+     * @return string[]
+     */
+    public function implementedEvents(): array
+    {
+        return [
+            \CakeDC\Users\UsersPlugin::EVENT_BEFORE_LOGIN => 'beforeLogin',
+        ];
+    }
+
+    /**
+     * @param \Cake\Event\Event $event
+     */
+    public function beforeLogin(\Cake\Event\Event $event)
+    {
+        $controller = $event->getSubject();
+        //your custom logic
+    }
+}
+```
+
+I want to add custom logic after login failure
+----------------------------------------------
+When a login attempt fails, you can use this event to log the failure or perform other actions.
+
+- Create or update file src/Event/UsersListener.php:
+
+```php
+<?php
+
+namespace App\Event;
+
+use Cake\Event\EventListenerInterface;
+
+class UsersListener implements EventListenerInterface
+{
+    /**
+     * @return string[]
+     */
+    public function implementedEvents(): array
+    {
+        return [
+            \CakeDC\Users\UsersPlugin::EVENT_AFTER_LOGIN_FAILURE => 'afterLoginFailure',
+        ];
+    }
+
+    /**
+     * @param \Cake\Event\Event $event
+     */
+    public function afterLoginFailure(\Cake\Event\Event $event)
+    {
+        $result = $event->getData('result');
+        //your custom logic
+    }
+}
+```
 
 I want to add custom logic before user logout
 ---------------------------------------------
@@ -129,6 +206,43 @@ class UsersListener implements EventListenerInterface
 - Add this at the end of your method Application::bootstrap if you have NOT done before.
 ```php
 $this->getEventManager()->on(new \App\Event\UsersListener());
+```
+
+I want to add custom logic when a social login matches an existing account
+-------------------------------------------------------------------------
+This event is triggered when a social login attempt matches an existing user account.
+
+- Create or update file src/Event/UsersListener.php:
+
+```php
+<?php
+
+namespace App\Event;
+
+use Cake\Event\EventListenerInterface;
+
+class UsersListener implements EventListenerInterface
+{
+    /**
+     * @return string[]
+     */
+    public function implementedEvents(): array
+    {
+        return [
+            \CakeDC\Users\UsersPlugin::EVENT_SOCIAL_LOGIN_EXISTING_ACCOUNT => 'socialLoginExistingAccount',
+        ];
+    }
+
+    /**
+     * @param \Cake\Event\Event $event
+     */
+    public function socialLoginExistingAccount(\Cake\Event\Event $event)
+    {
+        $user = $event->getData('user');
+        $socialUser = $event->getData('socialUser');
+        //your custom logic
+    }
+}
 ```
 
 I want to add custom logic before linking social account
