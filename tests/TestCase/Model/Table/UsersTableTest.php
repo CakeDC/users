@@ -89,7 +89,8 @@ class UsersTableTest extends TestCase
             'last_name' => 'user',
             'tos' => 1,
         ];
-        $result = $this->Users->register($this->Users->newEmptyEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 0]);
+        $result = $this->Users->getBehavior('Register')
+            ->register($this->Users->newEmptyEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 0]);
         $this->assertTrue($result->active);
     }
 
@@ -101,7 +102,8 @@ class UsersTableTest extends TestCase
     public function testValidateRegisterEmptyUser()
     {
         $user = [];
-        $result = $this->Users->register($this->Users->newEmptyEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1]);
+        $result = $this->Users->getBehavior('Register')
+            ->register($this->Users->newEmptyEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1]);
         $this->assertFalse($result);
     }
 
@@ -128,7 +130,8 @@ class UsersTableTest extends TestCase
             'last_name' => 'user',
             'tos' => 1,
         ];
-        $result = $this->Users->register($this->Users->newEmptyEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1]);
+        $result = $this->Users->getBehavior('Register')
+            ->register($this->Users->newEmptyEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1]);
         $this->assertNotEmpty($result);
         $this->assertFalse($result->active);
     }
@@ -147,7 +150,8 @@ class UsersTableTest extends TestCase
             'last_name' => 'user',
         ];
         $userEntity = $this->Users->newEmptyEntity();
-        $this->Users->register($userEntity, $user, ['token_expiration' => 3600, 'validate_email' => 1, 'use_tos' => 1]);
+        $this->Users->getBehavior('Register')
+            ->register($userEntity, $user, ['token_expiration' => 3600, 'validate_email' => 1, 'use_tos' => 1]);
         $this->assertEquals(['tos' => ['_required' => 'This field is required']], $userEntity->getErrors());
     }
 
@@ -172,7 +176,8 @@ class UsersTableTest extends TestCase
             'first_name' => 'test',
             'last_name' => 'user',
         ];
-        $result = $this->Users->register($this->Users->newEmptyEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1, 'use_tos' => 0]);
+        $result = $this->Users->getBehavior('Register')
+            ->register($this->Users->newEmptyEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1, 'use_tos' => 0]);
         $this->assertNotEmpty($result);
     }
 
@@ -184,7 +189,7 @@ class UsersTableTest extends TestCase
     public function testActivateUser()
     {
         $user = $this->Users->find()->where(['id' => '00000000-0000-0000-0000-000000000001'])->first();
-        $result = $this->Users->activateUser($user);
+        $result = $this->Users->getBehavior('Register')->activateUser($user);
         $this->assertTrue($result->active);
     }
 
@@ -210,7 +215,7 @@ class UsersTableTest extends TestCase
             'validate_email' => 1,
             'token_expiration' => 3600,
         ];
-        $result = $this->Users->socialLogin($data, $options);
+        $result = $this->Users->getBehavior('Social')->socialLogin($data, $options);
         $this->assertEquals('user-2@test.com', $result->email);
         $this->assertTrue($result->active);
     }
@@ -239,7 +244,7 @@ class UsersTableTest extends TestCase
             'validate_email' => 1,
             'token_expiration' => 3600,
         ];
-        $result = $this->Users->socialLogin($data, $options);
+        $result = $this->Users->getBehavior('Social')->socialLogin($data, $options);
         $this->assertEquals('user-2@test.com', $result->email);
         $this->assertFalse($result->active);
     }
@@ -270,7 +275,7 @@ class UsersTableTest extends TestCase
             'validate_email' => 1,
             'token_expiration' => 3600,
         ];
-        $result = $this->Users->socialLogin($data, $options);
+        $result = $this->Users->getBehavior('Social')->socialLogin($data, $options);
         $this->assertFalse($result);
     }
 
@@ -312,7 +317,7 @@ class UsersTableTest extends TestCase
             'validate_email' => 0,
             'token_expiration' => 3600,
         ];
-        $result = $this->Users->socialLogin($data, $options);
+        $result = $this->Users->getBehavior('Social')->socialLogin($data, $options);
         $this->assertNotEmpty($result);
         $this->assertEquals('no-existing-reference', $result->social_accounts[0]->reference);
         $this->assertEquals(1, count($result->social_accounts));

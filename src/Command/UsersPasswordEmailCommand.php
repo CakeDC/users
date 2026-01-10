@@ -42,11 +42,11 @@ class UsersPasswordEmailCommand extends Command
         if (empty($reference)) {
             $io->abort(__d('cake_d_c/users', 'Please enter a username or email.'));
         }
-        /**
-         * @var \CakeDC\Users\Model\Table\UsersTable $UsersTable
-         */
+        /** @var \CakeDC\Users\Model\Table\UsersTable $UsersTable */
         $UsersTable = $this->getTableLocator()->get('Users');
-        $resetUser = $UsersTable->resetToken($reference, [
+        /** @var \CakeDC\Users\Model\Behavior\PasswordBehavior $passwordBehavior */
+        $passwordBehavior = $UsersTable->getBehavior('Password');
+        $resetUser = $passwordBehavior->resetToken($reference, [
             'expiration' => Configure::read('Users.Token.expiration'),
             'checkActive' => false,
             'sendEmail' => true,

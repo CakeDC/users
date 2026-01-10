@@ -25,6 +25,7 @@ logic will be performed if you don't assign an array to result, but if
 you set it we will use as redirect url.
 
 - Create or update file src/Event/UsersListener.php:
+
 ```php
 <?php
 
@@ -41,7 +42,7 @@ class UsersListener implements EventListenerInterface
     public function implementedEvents(): array
     {
         return [
-            \CakeDC\Users\Plugin::EVENT_BEFORE_LOGOUT => 'beforeLogout',
+            \CakeDC\Users\UsersPlugin::EVENT_BEFORE_LOGOUT => 'beforeLogout',
         ];
     }
 
@@ -75,6 +76,7 @@ object and the controller object.
 You can also populate the new user entity or stop the register process.
 
 - Create or update file src/Event/UsersListener.php:
+
 ```php
 <?php
 
@@ -90,7 +92,7 @@ class UsersListener implements EventListenerInterface
     public function implementedEvents(): array
     {
         return [
-            \CakeDC\Users\Plugin::EVENT_BEFORE_REGISTER => 'beforeRegister',
+            \CakeDC\Users\UsersPlugin::EVENT_BEFORE_REGISTER => 'beforeRegister',
         ];
     }
 
@@ -136,6 +138,7 @@ have access to 'location' and 'request' keys in the event object and
 the controller object.
 
 - Create or update file src/Event/UsersListener.php:
+
 ```php
 <?php
 
@@ -151,7 +154,7 @@ class UsersListener implements EventListenerInterface
     public function implementedEvents(): array
     {
         return [
-            \CakeDC\Users\Plugin::EVENT_BEFORE_SOCIAL_LOGIN_REDIRECT => 'beforeSocialLoginRedirect',
+            \CakeDC\Users\UsersPlugin::EVENT_BEFORE_SOCIAL_LOGIN_REDIRECT => 'beforeSocialLoginRedirect',
         ];
     }
 
@@ -183,6 +186,7 @@ the social behavior object.
 You can also set a new user entity object as result.
 
 - Create or update file src/Event/UsersListener.php:
+
 ```php
 <?php
 
@@ -198,7 +202,7 @@ class UsersListener implements EventListenerInterface
     public function implementedEvents(): array
     {
         return [
-            \CakeDC\Users\Plugin::EVENT_BEFORE_SOCIAL_LOGIN_REDIRECT => 'beforeSocialLoginRedirect',
+            \CakeDC\Users\UsersPlugin::EVENT_BEFORE_SOCIAL_LOGIN_REDIRECT => 'beforeSocialLoginRedirect',
         ];
     }
 
@@ -229,6 +233,7 @@ have access to user data. You can also set an array as result to
 perform a custom redirect.
 
 - Create or update file src/Event/UsersListener.php:
+
 ```php
 <?php
 
@@ -247,7 +252,7 @@ class UsersListener implements EventListenerInterface
     public function implementedEvents(): array
     {
         return [
-            \CakeDC\Users\Plugin::EVENT_AFTER_LOGIN => 'afterLogin',
+            \CakeDC\Users\UsersPlugin::EVENT_AFTER_LOGIN => 'afterLogin',
         ];
     }
 
@@ -281,6 +286,7 @@ have access to user data and the controller object. You can also
 set an array as result to perform a custom redirect.
 
 - Create or update file src/Event/UsersListener.php:
+
 ```php
 <?php
 
@@ -296,7 +302,7 @@ class UsersListener implements EventListenerInterface
     public function implementedEvents(): array
     {
         return [
-            \CakeDC\Users\Plugin::EVENT_AFTER_LOGOUT => 'afterLogout',
+            \CakeDC\Users\UsersPlugin::EVENT_AFTER_LOGOUT => 'afterLogout',
         ];
     }
 
@@ -332,6 +338,7 @@ set a custom http response as result to render a different content
 or perform a custom redirect.
 
 - Create or update file src/Event/UsersListener.php:
+
 ```php
 <?php
 
@@ -347,7 +354,7 @@ class UsersListener implements EventListenerInterface
     public function implementedEvents(): array
     {
         return [
-            \CakeDC\Users\Plugin::EVENT_AFTER_REGISTER => 'afterRegister',
+            \CakeDC\Users\UsersPlugin::EVENT_AFTER_REGISTER => 'afterRegister',
         ];
     }
 
@@ -383,6 +390,7 @@ you have access to some user data and the controller object. You can also
 set an array as result to perform a custom redirect.
 
 - Create or update file src/Event/UsersListener.php:
+
 ```php
 <?php
 
@@ -398,7 +406,7 @@ class UsersListener implements EventListenerInterface
     public function implementedEvents(): array
     {
         return [
-            \CakeDC\Users\Plugin::EVENT_AFTER_CHANGE_PASSWORD => 'afterChangePassword',
+            \CakeDC\Users\UsersPlugin::EVENT_AFTER_CHANGE_PASSWORD => 'afterChangePassword',
         ];
     }
 
@@ -433,6 +441,7 @@ When adding a custom logic to execute after sending the token for user
 validation you can also set an array as result to perform a custom redirect.
 
 - Create or update file src/Event/UsersListener.php:
+
 ```php
 <?php
 
@@ -448,7 +457,7 @@ class UsersListener implements EventListenerInterface
     public function implementedEvents(): array
     {
         return [
-            \CakeDC\Users\Plugin::EVENT_AFTER_RESEND_TOKEN_VALIDATION => 'afterResendTokenValidation',
+            \CakeDC\Users\UsersPlugin::EVENT_AFTER_RESEND_TOKEN_VALIDATION => 'afterResendTokenValidation',
         ];
     }
 
@@ -482,6 +491,7 @@ you have access to some user data and the controller object. You can also
 set an array as result to perform a custom redirect.
 
 - Create or update file src/Event/UsersListener.php:
+
 ```php
 <?php
 
@@ -497,7 +507,7 @@ class UsersListener implements EventListenerInterface
     public function implementedEvents(): array
     {
         return [
-            \CakeDC\Users\Plugin::EVENT_AFTER_EMAIL_TOKEN_VALIDATION => 'afterEmailTokenValidation',
+            \CakeDC\Users\UsersPlugin::EVENT_AFTER_EMAIL_TOKEN_VALIDATION => 'afterEmailTokenValidation',
         ];
     }
 
@@ -530,6 +540,7 @@ I want to add custom logic after user email is validated to autologin user
 This is how you can autologin the user after email is validate:
 
 - Create or update file src/Event/UsersListener.php:
+
 ```php
 <?php
 
@@ -545,7 +556,7 @@ class UsersListener implements EventListenerInterface
     public function implementedEvents(): array
     {
         return [
-            \CakeDC\Users\Plugin::EVENT_AFTER_EMAIL_TOKEN_VALIDATION => 'afterEmailTokenValidation',
+            \CakeDC\Users\UsersPlugin::EVENT_AFTER_EMAIL_TOKEN_VALIDATION => 'afterEmailTokenValidation',
         ];
     }
 

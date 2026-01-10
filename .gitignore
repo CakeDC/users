@@ -5,4 +5,5 @@ composer.lock
 .php_cs*
 /coverage
 .phpunit.result.cache
+.phpunit.cache
 /config/Migrations/schema-dump-default.lock

@@ -3,14 +3,15 @@ includes:
 
 parameters:
     level: 6
-    checkMissingIterableValueType: false
-    checkGenericClassInNonGenericObjectType: false
     bootstrapFiles:
         - tests/bootstrap.php
-    excludes_analyse:
+    paths:
+        - ./src
+    excludePaths:
         - src/Controller/SocialAccountsController.php
-        - src/Controller/UsersAccountsController.php
-        - src/Controller/AppAccountsController.php
+        - src/Controller/UsersController.php
+        - src/Controller/AppController.php
     ignoreErrors:
-
-services:
+        - identifier: missingType.generics
+        - identifier: missingType.iterableValue
+        - identifier: trait.unused

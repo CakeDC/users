@@ -37,6 +37,15 @@ use Cake\Validation\Validator;
  * @mixin \CakeDC\Users\Model\Behavior\SocialBehavior
  * @mixin \CakeDC\Users\Model\Behavior\OneTimeLoginLinkBehavior
  * @property \CakeDC\Users\Model\Table\SocialAccountsTable $SocialAccounts
+ * @extends \Cake\ORM\Table<array{
+ *     Timestamp: \Cake\ORM\Behavior\TimestampBehavior,
+ *     Register: \CakeDC\Users\Model\Behavior\RegisterBehavior,
+ *     Password: \CakeDC\Users\Model\Behavior\PasswordBehavior,
+ *     Social: \CakeDC\Users\Model\Behavior\SocialBehavior,
+ *     LinkSocial: \CakeDC\Users\Model\Behavior\LinkSocialBehavior,
+ *     AuthFinder: \CakeDC\Users\Model\Behavior\AuthFinderBehavior,
+ *     OneTimeLoginLink: \CakeDC\Users\Model\Behavior\OneTimeLoginLinkBehavior
+ * }>
  */
 class UsersTable extends Table
 {

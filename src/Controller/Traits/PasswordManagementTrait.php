@@ -19,7 +19,7 @@ use Cake\Validation\Validator;
 use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Exception\UserNotFoundException;
 use CakeDC\Users\Exception\WrongPasswordException;
-use CakeDC\Users\Plugin;
+use CakeDC\Users\UsersPlugin;
 use Exception;
 
 /**
@@ -108,9 +108,9 @@ trait PasswordManagementTrait
                 if ($user->getErrors()) {
                     $this->Flash->error(__d('cake_d_c/users', 'Password could not be changed'));
                 } else {
-                    $result = $this->getUsersTable()->changePassword($user);
+                    $result = $this->getUsersTable()->getBehavior('Password')->changePassword($user);
                     if ($result) {
-                        $event = $this->dispatchEvent(Plugin::EVENT_AFTER_CHANGE_PASSWORD, ['user' => $result]);
+                        $event = $this->dispatchEvent(UsersPlugin::EVENT_AFTER_CHANGE_PASSWORD, ['user' => $result]);
                         $eventResult = $event->getResult();
                         if (!empty($eventResult) && is_array($eventResult)) {
                             return $this->redirect($event->getResult());
@@ -161,7 +161,7 @@ trait PasswordManagementTrait
 
         $reference = $this->getRequest()->getData('reference');
         try {
-            $resetUser = $this->getUsersTable()->resetToken($reference, [
+            $resetUser = $this->getUsersTable()->getBehavior('Password')->resetToken($reference, [
                 'expiration' => Configure::read('Users.Token.expiration'),
                 'checkActive' => false,
                 'sendEmail' => true,

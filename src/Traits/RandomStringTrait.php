@@ -18,7 +18,7 @@ trait RandomStringTrait
     /**
      * Generates random string
      *
-     * @param int $length String size.
+     * @param int|string $length String size.
      * @return string
      */
     public function randomString($length = 10)

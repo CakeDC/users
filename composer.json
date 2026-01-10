@@ -29,7 +29,7 @@
     "prefer-stable": true,
     "require": {
         "php": ">=8.1",
-        "cakephp/cakephp": "^5.0",
+        "cakephp/cakephp": "5.3.0-RC2",
         "cakedc/auth": "^10.1",
         "cakephp/authorization": "^3.0",
         "cakephp/authentication": "^3.0"
@@ -88,9 +88,9 @@
         "test": "phpunit --stderr",
         "stan": "phpstan analyse src/",
         "psalm": "php vendor/psalm/phar/psalm.phar --show-info=false src/ ",
-        "stan-setup": "cp composer.json composer.backup && composer require --dev phpstan/phpstan:~1.9.0 psalm/phar:~5.1.0 && mv composer.backup composer.json",
-        "stan-rebuild-baseline": "phpstan analyse --configuration phpstan.neon --error-format baselineNeon src/ > phpstan-baseline.neon",
-        "psalm-rebuild-baseline": "php vendor/psalm/phar/psalm.phar --show-info=false  --set-baseline=psalm-baseline.xml  src/",
+        "stan-setup": "cp composer.json composer.backup && composer require --dev phpstan/phpstan:~2.1.0 psalm/phar:~6.14.0 && mv composer.backup composer.json",
+        "stan-rebuild-baseline": "phpstan analyse --generate-baseline",
+        "psalm-rebuild-baseline": "php vendor/psalm/phar/psalm.phar --show-info=false --set-baseline=psalm-baseline.xml",
         "rector": "rector process src/",
         "rector-setup": "cp composer.json composer.backup && composer require --dev rector/rector:^0.11.2 && mv composer.backup composer.json",
         "coverage-test": "phpunit --stderr --coverage-clover=clover.xml"
