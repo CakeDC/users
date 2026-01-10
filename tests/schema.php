@@ -8,6 +8,7 @@ declare(strict_types=1);
  * and is converted to SQL via the Schema generation
  * features of the Database package.
  */
+
 return [
     [
         'table' => 'posts',
@@ -72,6 +73,9 @@ return [
             'additional_data' => ['type' => 'text', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
             'last_login' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
             'lockout_time' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
+            'login_token' => ['type' => 'string', 'length' => 32, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
+            'login_token_date' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
+            'token_send_requested' => ['type' => 'boolean', 'length' => null, 'null' => false, 'default' => false, 'comment' => '', 'precision' => null],
         ],
         'constraints' => [
             'primary' => [
