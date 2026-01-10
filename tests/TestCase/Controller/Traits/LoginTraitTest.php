@@ -150,7 +150,7 @@ class LoginTraitTest extends BaseTrait
         $passwordIdentifier = $this->getMockBuilder(PasswordIdentifier::class)
             ->onlyMethods(['needsPasswordRehash'])
             ->getMock();
-        $passwordIdentifier->expects($this->once())
+        $passwordIdentifier->expects($this->any())
             ->method('needsPasswordRehash')
             ->willReturn(true);
         $identifiers = new IdentifierCollection([]);
@@ -167,7 +167,7 @@ class LoginTraitTest extends BaseTrait
         $userPassword = 'testLoginRehash' . time();
         $this->_mockDispatchEvent(new Event('event'));
         $this->_mockRequestPost();
-        $this->Trait->getRequest()->expects($this->once())
+        $this->Trait->getRequest()->expects($this->any())
             ->method('getData')
             ->with($this->equalTo('password'))
             ->willReturn($userPassword);
@@ -235,10 +235,11 @@ class LoginTraitTest extends BaseTrait
             ->method('is')
             ->with('post')
             ->will($this->returnValue(false));
-        $this->Trait->Flash = $this->getMockBuilder('Cake\Controller\Component\FlashComponent')
+        $flash = $this->getMockBuilder('Cake\Controller\Component\FlashComponent')
             ->addMethods(['error'])
             ->disableOriginalConstructor()
             ->getMock();
+        $this->Trait->components()->set('Flash', $flash);
 
         $this->Trait->Flash->expects($this->never())
             ->method('error');
@@ -287,20 +288,17 @@ class LoginTraitTest extends BaseTrait
     public function testLogout()
     {
         $this->_mockDispatchEvent(new Event('event'));
-        // $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
-            // ->onlyMethods(['logout', 'user'])
-            // ->disableOriginalConstructor()
-            // ->getMock();
         $this->_mockAuthentication([
             'id' => 1,
         ]);
         $this->Trait->expects($this->once())
             ->method('redirect')
             ->with($this->logoutRedirect);
-        $this->Trait->Flash = $this->getMockBuilder('Cake\Controller\Component\FlashComponent')
+        $flash = $this->getMockBuilder('Cake\Controller\Component\FlashComponent')
             ->addMethods(['success'])
             ->disableOriginalConstructor()
             ->getMock();
+        $this->Trait->components()->set('Flash', $flash);
         $this->Trait->Flash->expects($this->once())
             ->method('success')
             ->with('You\'ve successfully logged out');

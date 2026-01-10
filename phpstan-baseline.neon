@@ -7,9 +7,8 @@ parameters:
 			path: src/Controller/Component/LoginComponent.php
 
 		-
-			message: '#^Call to an undefined method Cake\\Controller\\Controller\:\:getUsersTable\(\)\.$#'
-			identifier: method.notFound
-			count: 2
+			message: "#^Call to an undefined method Cake\\\\Controller\\\\Controller\\:\\:getUsersTable\\(\\)\\.$#"
+			count: 1
 			path: src/Controller/Component/LoginComponent.php
 
 		-
@@ -55,20 +54,7 @@ parameters:
 			path: src/Model/Behavior/LinkSocialBehavior.php
 
 		-
-			message: '#^Method CakeDC\\Users\\Model\\Behavior\\PasswordBehavior\:\:resetToken\(\) should return string but returns Cake\\Datasource\\EntityInterface\|false\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Model/Behavior/PasswordBehavior.php
-
-		-
-			message: '#^Unable to resolve the template type TEntity in call to method Cake\\ORM\\Table\<array\>\:\:save\(\)$#'
-			identifier: argument.templateType
-			count: 1
-			path: src/Model/Behavior/PasswordBehavior.php
-
-		-
-			message: '#^Access to an undefined property Cake\\Datasource\\EntityInterface\:\:\$activation_date\.$#'
-			identifier: property.notFound
+			message: "#^Access to an undefined property Cake\\\\Datasource\\\\EntityInterface\\:\\:\\$activation_date\\.$#"
 			count: 1
 			path: src/Model/Behavior/RegisterBehavior.php
 

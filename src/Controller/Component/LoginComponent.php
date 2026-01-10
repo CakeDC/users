@@ -16,6 +16,7 @@ namespace CakeDC\Users\Controller\Component;
 use Authentication\Authenticator\ResultInterface;
 use Cake\Controller\Component;
 use Cake\Core\Configure;
+use Cake\Datasource\EntityInterface;
 use Cake\Http\ServerRequest;
 use Cake\Log\Log;
 use CakeDC\Auth\Authentication\AuthenticationService;
@@ -188,21 +189,67 @@ class LoginComponent extends Component
      */
     protected function handlePasswordRehash($service, $user, \Cake\Http\ServerRequest $request)
     {
-        $indentifiersNames = (array)Configure::read('Auth.PasswordRehash.identifiers');
-        foreach ($indentifiersNames as $indentifierName) {
+        // deprecated way to define identifiers
+        $identifiersNames = (array)Configure::read('Auth.PasswordRehash.identifiers');
+        foreach ($identifiersNames as $identifierName) {
+            if (!$service->identifiers()->has($identifierName)) {
+                Log::warning("Error saving user id $user->id password after rehashing: identifier $identifierName not found. Check your Auth.PasswordRehash.identifiers configuration.");
+                continue;
+            }
             /**
              * @var \Authentication\Identifier\AbstractIdentifier|null $checker
              */
-            $checker = $service->identifiers()->get($indentifierName);
-            if (!$checker || method_exists($checker, 'needsPasswordRehash') && !$checker->needsPasswordRehash()) {
+            $checker = $service->identifiers()->get($identifierName);
+            $this->saveRehashedPassword($checker, $request, $user);
+        }
+
+        // new way to define identifiers, inside the authenticators
+        $authenticatorNames = (array)Configure::read('Auth.PasswordRehash.authenticators');
+        foreach ($authenticatorNames as $authenticatorName => $identifierName) {
+            if (!$service->authenticators()->has($authenticatorName)) {
+                Log::warning("Error saving user id $user->id password after rehashing: authenticator $authenticatorName not found. Check your Auth.PasswordRehash.authenticators configuration.");
                 continue;
             }
-            $passwordField = $checker->getConfig('fields.password', 'password');
-            $password = $request->getData($passwordField);
-            $user->set($passwordField, $password);
-            $user->setDirty('modified');
-            $this->getController()->getUsersTable()->save($user);
-            break;
+            /**
+             * @var \Authentication\Identifier\IdentifierCollection $identifierCollection
+             */
+            $identifierCollection = $service->authenticators()->get($authenticatorName)->getIdentifier();
+            if (!$identifierCollection->has($identifierName)) {
+                Log::warning("Error saving user id $user->id password after rehashing: identifier $identifierName not found. Check your Auth.PasswordRehash.authenticators configuration.");
+                continue;
+            }
+
+            /**
+             * @var \Authentication\Identifier\AbstractIdentifier|null $checker
+             */
+            $checker = $identifierCollection->get($identifierName);
+            $this->saveRehashedPassword($checker, $request, $user);
+        }
+    }
+
+    /**
+     * @param mixed $checker
+     * @param \Cake\Http\ServerRequest $request
+     * @param \Cake\Datasource\EntityInterface $user
+     * @return void
+     */
+    protected function saveRehashedPassword($checker, ServerRequest $request, EntityInterface $user): void
+    {
+        if (!$checker || method_exists($checker, 'needsPasswordRehash') && !$checker->needsPasswordRehash()) {
+            return;
+        }
+        $passwordField = $checker->getConfig('fields.password', 'password');
+        $password = $request->getData($passwordField);
+        $user->set($passwordField, $password);
+        $user->setDirty('modified');
+        $userId = $user->get('id');
+        if (!method_exists($this->getController(), 'getUsersTable')) {
+            Log::warning("Error saving user id $userId password after rehashing: getUsersTable method not found");
+
+            return;
+        }
+        if (!$this->getController()->getUsersTable()->save($user)) {
+            Log::warning("Error saving user id $userId password after rehashing: " . implode(', ', $user->getErrors()));
         }
     }
 

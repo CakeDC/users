@@ -141,6 +141,7 @@ class RegisterBehavior extends BaseTokenBehavior
      * @param \Cake\Event\Event $event event
      * @param \Cake\Validation\Validator $validator validator
      * @param string $name name
+     * @return void
      */
     public function buildValidator(\Cake\Event\EventInterface $event, Validator $validator, $name): void
     {

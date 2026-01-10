@@ -187,10 +187,11 @@ class BaseTrait extends TestCase
      */
     protected function _mockFlash()
     {
-        $this->Trait->Flash = $this->getMockBuilder('Cake\Controller\Component\FlashComponent')
+        $flash = $this->getMockBuilder('Cake\Controller\Component\FlashComponent')
                 ->addMethods(['error', 'success'])
                 ->disableOriginalConstructor()
                 ->getMock();
+        $this->Trait->components()->set('Flash', $flash);
     }
 
     /**
@@ -249,12 +250,13 @@ class BaseTrait extends TestCase
         }
 
         $config = [
-            'identifiers' => [
-                'Authentication.Password',
-            ],
             'authenticators' => [
                 'Authentication.Session',
-                'Authentication.Form',
+                'Authentication.Form' => [
+                    'identifier' => [
+                        'Authentication.Password' => [],
+                    ],
+                ],
             ],
         ];
         $authentication = $this->getMockBuilder(AuthenticationService::class)->setConstructorArgs([$config])->onlyMethods([
@@ -288,11 +290,14 @@ class BaseTrait extends TestCase
 
         $controller = new Controller($this->Trait->getRequest());
         $registry = new ComponentRegistry($controller);
-        $this->Trait->Authentication = new AuthenticationComponent($registry, [
+
+        $authentication = new AuthenticationComponent($registry, [
             'loginRedirect' => $this->successLoginRedirect,
             'logoutRedirect' => $this->logoutRedirect,
             'loginAction' => $this->loginAction,
         ]);
+
+        $this->Trait->components()->set('Authentication', $authentication);
     }
 
     /**
@@ -305,12 +310,13 @@ class BaseTrait extends TestCase
     protected function _mockAuthenticationWithPasswordRehash($user = null, $failures = [])
     {
         $config = [
-            'identifiers' => [
-                'Authentication.Password',
-            ],
             'authenticators' => [
                 'Authentication.Session',
-                'Authentication.Form',
+                'Authentication.Form' => [
+                    'identifier' => [
+                        'Authentication.Password' => [],
+                    ],
+                ],
             ],
         ];
         $authentication = $this->getMockBuilder(AuthenticationService::class)->setConstructorArgs([$config])->onlyMethods([
