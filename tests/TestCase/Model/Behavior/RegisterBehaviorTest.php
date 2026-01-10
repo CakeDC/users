@@ -16,9 +16,11 @@ namespace CakeDC\Users\Test\TestCase\Model\Behavior;
 use Cake\Core\Configure;
 use Cake\Mailer\Mailer;
 use Cake\Mailer\TransportFactory;
+use Cake\Event\Event;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
+use Cake\Validation\Validator;
 use CakeDC\Users\Exception\TokenExpiredException;
 use CakeDC\Users\Exception\UserNotFoundException;
 use CakeDC\Users\Model\Behavior\RegisterBehavior;
@@ -356,5 +358,33 @@ class RegisterBehaviorTest extends TestCase
                 'validate_email' => 0,
             ]);
         $this->assertSame('emperor', $result['role']);
+    }
+
+    /**
+     * Test buildValidator method with 'default' validator name
+     *
+     * @return void
+     */
+    public function testBuildValidatorDefault()
+    {
+        $event = new Event('Model.buildValidator');
+        $validator = new Validator();
+        $this->Behavior->buildValidator($event, $validator, 'default');
+        $this->assertSame($validator, $event->getResult());
+        $this->assertArrayHasKey('valid_email', $validator->field('email')->rules());
+    }
+
+    /**
+     * Test buildValidator method with non-default validator name
+     *
+     * @return void
+     */
+    public function testBuildValidatorNonDefault()
+    {
+        $event = new Event('Model.buildValidator');
+        $validator = new Validator();
+        $this->Behavior->buildValidator($event, $validator, 'custom');
+        $this->assertSame($validator, $event->getResult());
+        $this->assertArrayNotHasKey('valid_email', $validator->field('email')->rules());
     }
 }
