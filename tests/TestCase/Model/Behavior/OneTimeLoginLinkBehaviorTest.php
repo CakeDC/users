@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace CakeDC\Users\Test\TestCase\Model\Behavior;
@@ -133,7 +134,7 @@ class OneTimeLoginLinkBehaviorTest extends TestCase
     {
         $this->Behavior->sendLoginLink('user-1');
         $this->assertCount(1, MockDeliveryHandler::$sent);
-        
+
         $this->Behavior->sendLoginLink('user-1');
         $user = $this->table->findByUsername('user-1')->first();
         $this->assertTrue((bool)$user->token_send_requested);
