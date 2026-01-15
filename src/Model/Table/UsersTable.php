@@ -84,7 +84,9 @@ class UsersTable extends Table
     public function getSchema(): TableSchemaInterface
     {
         $schema = parent::getSchema();
-        $schema->setColumnType('additional_data', 'json');
+        if ($schema->hasColumn('additional_data')) {
+            $schema->setColumnType('additional_data', 'json');
+        }
 
         return $schema;
     }
