@@ -16,6 +16,7 @@ namespace CakeDC\Users\Controller\Traits;
 use Cake\Core\Configure;
 use CakeDC\Auth\Authentication\AuthenticationService;
 use CakeDC\Auth\Authenticator\TwoFactorAuthenticator;
+use CakeDC\Users\UsersPlugin;
 
 trait OneTimePasswordVerifyTrait
 {
@@ -43,6 +44,15 @@ trait OneTimePasswordVerifyTrait
         $temporarySession = $this->getRequest()->getSession()->read(
             AuthenticationService::TWO_FACTOR_VERIFY_SESSION_KEY,
         );
+
+        $event = $this->dispatchEvent(UsersPlugin::EVENT_2FA_SKIP_VERIFY, ['user' => $temporarySession]);
+        if ($event->getResult() === true) {
+            $this->getRequest()->getSession()->delete(AuthenticationService::TWO_FACTOR_VERIFY_SESSION_KEY);
+            $this->getRequest()->getSession()->write(TwoFactorAuthenticator::USER_SESSION_KEY, $temporarySession);
+
+            return $this->redirect($loginAction);
+        }
+
         $secretVerified = $temporarySession['secret_verified'] ?? null;
         // showing QR-code until shared secret is verified
         if (!$secretVerified) {
@@ -55,7 +65,10 @@ trait OneTimePasswordVerifyTrait
                 $temporarySession['email'],
                 $secret,
             );
-            $this->set(['secretDataUri' => $secretDataUri]);
+            $this->set([
+                'secretDataUri' => $secretDataUri, 
+                'secret' => $secret,    
+            ]);
         }
 
         if ($this->getRequest()->is('post')) {
