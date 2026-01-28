@@ -263,6 +263,7 @@ class BaseTrait extends TestCase
             'getResult',
             'getFailures',
             'identifiers',
+            'authenticators',
         ])->getMock();
 
         if ($user) {
@@ -285,6 +286,31 @@ class BaseTrait extends TestCase
         $authentication->expects($this->any())
             ->method('identifiers')
             ->will($this->returnValue($identifiers));
+
+        // Mock authenticators() for Auth.PasswordRehash.authenticators config
+        $formAuthenticator = $this->getMockBuilder(\Authentication\Authenticator\FormAuthenticator::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getIdentifier'])
+            ->getMock();
+        $formAuthenticator->expects($this->any())
+            ->method('getIdentifier')
+            ->willReturn($identifiers);
+
+        $authenticators = $this->getMockBuilder(\Authentication\Authenticator\AuthenticatorCollection::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['has', 'get'])
+            ->getMock();
+        $authenticators->expects($this->any())
+            ->method('has')
+            ->willReturnCallback(fn($name) => $name === 'Form');
+        $authenticators->expects($this->any())
+            ->method('get')
+            ->with('Form')
+            ->willReturn($formAuthenticator);
+
+        $authentication->expects($this->any())
+            ->method('authenticators')
+            ->willReturn($authenticators);
 
         $this->Trait->setRequest($this->Trait->getRequest()->withAttribute('authentication', $authentication));
 
