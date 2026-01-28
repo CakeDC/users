@@ -284,7 +284,9 @@ $config = [
         ],
         'RbacPolicy' => [],
         'PasswordRehash' => [
-            'identifiers' => ['Password'],
+            'authenticators' => [
+                'Form' => 'Password',
+            ],
         ],
     ],
     'OAuth' => [
