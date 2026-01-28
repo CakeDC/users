@@ -66,8 +66,8 @@ trait OneTimePasswordVerifyTrait
                 $secret,
             );
             $this->set([
-                'secretDataUri' => $secretDataUri, 
-                'secret' => $secret,    
+                'secretDataUri' => $secretDataUri,
+                'secret' => $secret,
             ]);
         }
 
