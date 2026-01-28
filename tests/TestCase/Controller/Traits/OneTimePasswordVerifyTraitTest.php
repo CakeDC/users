@@ -147,7 +147,7 @@ class OneTimePasswordVerifyTraitTest extends BaseTrait
             ->will($this->returnValue('newDataUriGenerated'));
         $this->Trait->expects($this->once())
             ->method('set')
-            ->with(['secretDataUri' => 'newDataUriGenerated']);
+            ->with(['secretDataUri' => 'newDataUriGenerated', 'secret' => 'newSecret']);
 
         $this->Trait->verify();
         $user = $this->Trait->getUsersTable()->findById('00000000-0000-0000-0000-000000000001')->firstOrFail();
