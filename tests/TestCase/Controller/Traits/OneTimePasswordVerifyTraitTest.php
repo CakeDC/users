@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
 use Cake\Core\Configure;
+use Cake\Event\Event;
 use Cake\Http\ServerRequest;
 use Cake\ORM\TableRegistry;
-use Cake\Event\Event;
-use CakeDC\Auth\Controller\Component\OneTimePasswordAuthenticatorComponent;
 use CakeDC\Auth\Authentication\AuthenticationService;
 use CakeDC\Auth\Authenticator\TwoFactorAuthenticator;
+use CakeDC\Auth\Controller\Component\OneTimePasswordAuthenticatorComponent;
 use CakeDC\Users\UsersPlugin;
 
 class OneTimePasswordVerifyTraitTest extends BaseTrait
@@ -297,7 +297,7 @@ class OneTimePasswordVerifyTraitTest extends BaseTrait
         $userData = [
             'id' => 1,
             'secret_verified' => 1,
-            'email' => 'test@example.com'
+            'email' => 'test@example.com',
         ];
         $session = $this->_mockSession([
             'temporarySession' => $userData,
@@ -316,14 +316,14 @@ class OneTimePasswordVerifyTraitTest extends BaseTrait
         $this->Trait->expects($this->once())
             ->method('redirect');
         $this->Trait->verify();
-        
+
         $this->assertNull(
-            $session->read(AuthenticationService::TWO_FACTOR_VERIFY_SESSION_KEY)
+            $session->read(AuthenticationService::TWO_FACTOR_VERIFY_SESSION_KEY),
         );
 
         $this->assertEquals(
             $userData,
-            $session->read(TwoFactorAuthenticator::USER_SESSION_KEY)
+            $session->read(TwoFactorAuthenticator::USER_SESSION_KEY),
         );
     }
 }
