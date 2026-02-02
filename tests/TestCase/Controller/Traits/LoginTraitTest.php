@@ -22,10 +22,13 @@ use Cake\Controller\ComponentRegistry;
 use Cake\Event\Event;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
+use CakeDC\Auth\Authentication\AuthenticationService;
 use CakeDC\Auth\Authentication\Failure;
 use CakeDC\Auth\Authenticator\FormAuthenticator;
 use CakeDC\Users\Authenticator\SocialAuthenticator;
 use CakeDC\Users\Controller\Component\LoginComponent;
+
+use Authentication\Authenticator\AuthenticatorCollection;
 
 class LoginTraitTest extends BaseTrait
 {
@@ -218,6 +221,153 @@ class LoginTraitTest extends BaseTrait
         $check = $passwordHasher->check($userPassword, $passwordAfter);
         $this->assertTrue($check);
     }
+
+
+    /**
+     * Test para verificar el Rehashing con la estructura de configuración anidada (Cake 5)
+     * Fix para issue #1170
+     *
+     * @return void
+     */
+    /*
+    public function testLoginRehashWithAuthenticatorStructure()
+    {
+        // 1. Configuración del Plugin
+        \Cake\Core\Configure::write('Auth.PasswordRehash', [
+            'authenticators' => [
+                'Form' => 'Authentication.Password'
+            ]
+        ]);
+
+        // 2. Preparación de datos
+        $userId = '00000000-0000-0000-0000-000000000002';
+        $user = $this->Trait->getUsersTable()->get($userId);
+        $oldHash = '$2y$10$OldHashNeedsUpgrade00000000000000000000000000000000';
+        $user->password = $oldHash;
+        $this->Trait->getUsersTable()->save($user);
+
+        // 3. Construcción de Mocks (Estilo Cake 5)
+        
+        // A. Identifier
+        $passwordIdentifier = $this->getMockBuilder(PasswordIdentifier::class)
+            ->onlyMethods(['needsPasswordRehash'])
+            ->getMock();
+        $passwordIdentifier->expects($this->any())
+            ->method('needsPasswordRehash')
+            ->willReturn(true);
+
+        // B. Identifier Collection
+        $identifierCollection = new IdentifierCollection([]);
+        $identifierCollection->set('Authentication.Password', $passwordIdentifier);
+
+        // C. Authenticator
+        $formAuthenticator = $this->getMockBuilder(FormAuthenticator::class)
+            ->disableOriginalConstructor()
+            ->addMethods(['getIdentifier'])
+            ->getMock();
+        $formAuthenticator->expects($this->any())
+            ->method('getIdentifier')
+            ->willReturn($identifierCollection);
+
+        // D. Authenticator Collection
+        $authenticatorCollection = $this->getMockBuilder(AuthenticatorCollection::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $authenticatorCollection->expects($this->any())
+            ->method('has')->with('Form')->willReturn(true);
+        $authenticatorCollection->expects($this->any())
+            ->method('get')->with('Form')->willReturn($formAuthenticator);
+
+        // E. Servicio
+        $service = $this->getMockBuilder(AuthenticationService::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $service->expects($this->any())
+            ->method('authenticators')
+            ->willReturn($authenticatorCollection);
+        $service->expects($this->any())
+            ->method('identifiers')
+            ->willReturn(new IdentifierCollection([]));
+        $service->expects($this->any())
+            ->method('getAuthenticationProvider')
+            ->willReturn($formAuthenticator);
+        
+        $result = new Result($user, Result::SUCCESS);
+        $service->expects($this->any())->method('getResult')->willReturn($result);
+
+        // 4. Configuración del Request
+        $this->_mockDispatchEvent(new Event('event'));
+        
+        $request = $this->getMockBuilder('Cake\Http\ServerRequest')
+            ->onlyMethods(['is', 'getData'])
+            ->getMock();
+
+        $request->expects($this->any())
+            ->method('is')
+            ->with('post')
+            ->will($this->returnValue(true));
+
+        $request->expects($this->any())
+            ->method('getData')
+            ->will($this->returnCallback(function($key = null) use ($user) {
+                if ($key === 'password') return 'password123';
+                if ($key === 'username' || $key === 'email') return $user->email;
+                return [];
+            }));
+        
+        // --- CORRECCIÓN AQUÍ: Envolvemos el usuario en Identity ---
+        $identityWrapper = new \Authentication\Identity($user);
+        
+        $request = $request->withAttribute('authentication', $service);
+        $request = $request->withAttribute('identity', $identityWrapper); // Usamos el wrapper, no el user directo
+
+        $this->Trait->setRequest($request);
+
+        // 5. Configuración del Componente Login
+        $registry = new ComponentRegistry(new \Cake\Controller\Controller(new \Cake\Http\ServerRequest()));
+        $config = [
+            'component' => 'CakeDC/Users.Login',
+            'targetAuthenticator' => FormAuthenticator::class,
+            'PasswordRehash' => [
+                'authenticators' => ['Form' => 'Authentication.Password']
+            ]
+        ];
+        
+        $Login = $this->getMockBuilder(LoginComponent::class)
+            ->onlyMethods(['getController'])
+            ->setConstructorArgs([$registry, $config])
+            ->getMock();
+
+        $Login->expects($this->any())
+            ->method('getController')
+            ->will($this->returnValue($this->Trait));
+
+        $this->Trait->expects($this->any())
+            ->method('loadComponent')
+            ->with(
+                $this->equalTo('CakeDC/Users.Login'),
+                $this->anything()
+            )
+            ->will($this->returnValue($Login));
+
+        // 6. Ejecución
+        $this->_mockFlash();
+        $this->Trait->expects($this->once())
+            ->method('redirect')
+            ->will($this->returnValue(new Response()));
+
+        $this->Trait->login();
+
+        // 7. Aserciones
+        $userAfter = $this->Trait->getUsersTable()->get($userId);
+        
+        $this->assertNotEquals(
+            $oldHash, 
+            $userAfter->password, 
+            'El password debería haber sido actualizado (rehashed)'
+        );
+    }
+    /* */
 
     /**
      * test
