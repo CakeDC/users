@@ -2,6 +2,8 @@ Changelog
 =========
 Releases for CakePHP 5
 -------------
+* 16.0.1
+  * add event for skipping two-factor authentication verification
 * 16.0.0
   * Require CakePHP ^5.3
   * Added `src/Plugin.php` class which extends `UsersPlugin` for backward compatibility.
