@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -51,9 +52,9 @@ class LoginTraitTest extends BaseTrait
             ->getMock();
 
         // $this->Trait->Auth = $this->getMockBuilder('Cake\Controller\Component\AuthComponent')
-            // ->onlyMethods(['setConfig'])
-            // ->disableOriginalConstructor()
-            // ->getMock();
+        // ->onlyMethods(['setConfig'])
+        // ->disableOriginalConstructor()
+        // ->getMock();
     }
 
     /**
@@ -150,105 +151,12 @@ class LoginTraitTest extends BaseTrait
      */
     public function testLoginRehash()
     {
-        $passwordIdentifier = $this->getMockBuilder(PasswordIdentifier::class)
-            ->onlyMethods(['needsPasswordRehash'])
-            ->getMock();
-        $passwordIdentifier->expects($this->any())
-            ->method('needsPasswordRehash')
-            ->willReturn(true);
-        $identifiers = new IdentifierCollection([]);
-        $identifiers->set('Password', $passwordIdentifier);
-
-        $SessionAuth = new SessionAuthenticator($identifiers);
-
-        $sessionFailure = new Failure(
-            $SessionAuth,
-            new Result(null, Result::FAILURE_IDENTITY_NOT_FOUND),
-        );
-        $failures = [$sessionFailure];
-
-        $userPassword = 'testLoginRehash' . time();
-        $this->_mockDispatchEvent(new Event('event'));
-        $this->_mockRequestPost();
-        $this->Trait->getRequest()->expects($this->any())
-            ->method('getData')
-            ->with($this->equalTo('password'))
-            ->willReturn($userPassword);
-
-        $this->_mockFlash();
-        $user = $this->Trait->getUsersTable()->get('00000000-0000-0000-0000-000000000002');
-        $passwordBefore = $user['password'];
-        $this->assertNotEmpty($passwordBefore);
-        $this->_mockAuthentication($user->toArray(), $failures, $identifiers);
-        $this->Trait->Flash->expects($this->never())
-            ->method('error');
-        $this->Trait->expects($this->once())
-            ->method('redirect')
-            ->with($this->successLoginRedirect)
-            ->will($this->returnValue(new Response()));
-
-        $registry = new ComponentRegistry(new \Cake\Controller\Controller(new \Cake\Http\ServerRequest()));
-        $config = [
-            'component' => 'CakeDC/Users.Login',
-            'defaultMessage' => __d('cake_d_c/users', 'Username or password is incorrect'),
-            'messages' => [
-                FormAuthenticator::FAILURE_INVALID_RECAPTCHA => __d('cake_d_c/users', 'Invalid reCaptcha'),
-            ],
-            'targetAuthenticator' => FormAuthenticator::class,
-        ];
-        $Login = $this->getMockBuilder(LoginComponent::class)
-            ->onlyMethods(['getController'])
-            ->setConstructorArgs([$registry, $config])
-            ->getMock();
-
-        $Login->expects($this->any())
-            ->method('getController')
-            ->will($this->returnValue($this->Trait));
-        $this->Trait->expects($this->any())
-            ->method('loadComponent')
-            ->with(
-                $this->equalTo('CakeDC/Users.Login'),
-                $this->equalTo($config),
-            )
-            ->will($this->returnValue($Login));
-
-        $result = $this->Trait->login();
-        $this->assertInstanceOf(Response::class, $result);
-        $userAfter = $this->Trait->getUsersTable()->get('00000000-0000-0000-0000-000000000002');
-        $passwordAfter = $userAfter['password'];
-        $this->assertNotEquals($passwordBefore, $passwordAfter);
-        $passwordHasher = new DefaultPasswordHasher();
-        $check = $passwordHasher->check($userPassword, $passwordAfter);
-        $this->assertTrue($check);
-    }
-
-
-    /**
-     * Test para verificar el Rehashing con la estructura de configuración anidada (Cake 5)
-     * Fix para issue #1170
-     *
-     * @return void
-     */
-    /*
-    public function testLoginRehashWithAuthenticatorStructure()
-    {
-        // 1. Configuración del Plugin
         \Cake\Core\Configure::write('Auth.PasswordRehash', [
             'authenticators' => [
-                'Form' => 'Authentication.Password'
+                'Form' => 'Password'
             ]
         ]);
 
-        // 2. Preparación de datos
-        $userId = '00000000-0000-0000-0000-000000000002';
-        $user = $this->Trait->getUsersTable()->get($userId);
-        $oldHash = '$2y$10$OldHashNeedsUpgrade00000000000000000000000000000000';
-        $user->password = $oldHash;
-        $this->Trait->getUsersTable()->save($user);
-
-        // 3. Construcción de Mocks (Estilo Cake 5)
-        
-        // A. Identifier
         $passwordIdentifier = $this->getMockBuilder(PasswordIdentifier::class)
             ->onlyMethods(['needsPasswordRehash'])
             ->getMock();
@@ -256,11 +164,9 @@ class LoginTraitTest extends BaseTrait
             ->method('needsPasswordRehash')
             ->willReturn(true);
 
-        // B. Identifier Collection
         $identifierCollection = new IdentifierCollection([]);
-        $identifierCollection->set('Authentication.Password', $passwordIdentifier);
+        $identifierCollection->set('Password', $passwordIdentifier);
 
-        // C. Authenticator
         $formAuthenticator = $this->getMockBuilder(FormAuthenticator::class)
             ->disableOriginalConstructor()
             ->addMethods(['getIdentifier'])
@@ -269,7 +175,6 @@ class LoginTraitTest extends BaseTrait
             ->method('getIdentifier')
             ->willReturn($identifierCollection);
 
-        // D. Authenticator Collection
         $authenticatorCollection = $this->getMockBuilder(AuthenticatorCollection::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -278,7 +183,10 @@ class LoginTraitTest extends BaseTrait
         $authenticatorCollection->expects($this->any())
             ->method('get')->with('Form')->willReturn($formAuthenticator);
 
-        // E. Servicio
+        $user = $this->Trait->getUsersTable()->get('00000000-0000-0000-0000-000000000002');
+        $passwordBefore = $user['password'];
+        $userPassword = 'testLoginRehash' . time();
+
         $service = $this->getMockBuilder(AuthenticationService::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -291,13 +199,12 @@ class LoginTraitTest extends BaseTrait
         $service->expects($this->any())
             ->method('getAuthenticationProvider')
             ->willReturn($formAuthenticator);
-        
+
         $result = new Result($user, Result::SUCCESS);
         $service->expects($this->any())->method('getResult')->willReturn($result);
 
-        // 4. Configuración del Request
         $this->_mockDispatchEvent(new Event('event'));
-        
+
         $request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->onlyMethods(['is', 'getData'])
             ->getMock();
@@ -305,25 +212,171 @@ class LoginTraitTest extends BaseTrait
         $request->expects($this->any())
             ->method('is')
             ->with('post')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
         $request->expects($this->any())
             ->method('getData')
-            ->will($this->returnCallback(function($key = null) use ($user) {
-                if ($key === 'password') return 'password123';
+            ->willReturnCallback(function ($key = null) use ($userPassword, $user) {
+                if ($key === 'password') return $userPassword;
                 if ($key === 'username' || $key === 'email') return $user->email;
                 return [];
-            }));
-        
-        // --- CORRECCIÓN AQUÍ: Envolvemos el usuario en Identity ---
+            });
+
         $identityWrapper = new \Authentication\Identity($user);
-        
         $request = $request->withAttribute('authentication', $service);
-        $request = $request->withAttribute('identity', $identityWrapper); // Usamos el wrapper, no el user directo
+        $request = $request->withAttribute('identity', $identityWrapper);
 
         $this->Trait->setRequest($request);
 
-        // 5. Configuración del Componente Login
+        $authComponent = $this->getMockBuilder(\Cake\Controller\Component::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getConfig'])
+            ->getMock();
+        $authComponent->expects($this->any())
+            ->method('getConfig')
+            ->with('loginRedirect')
+            ->willReturn('/home');
+
+        $this->Trait->components()->set('Authentication', $authComponent);
+
+        $this->_mockFlash();
+        $this->Trait->Flash->expects($this->never())
+            ->method('error');
+
+        $this->Trait->expects($this->once())
+            ->method('redirect')
+            ->with($this->successLoginRedirect)
+            ->willReturn(new Response());
+
+        $registry = new ComponentRegistry(new \Cake\Controller\Controller(new \Cake\Http\ServerRequest()));
+        $config = [
+            'component' => 'CakeDC/Users.Login',
+            'targetAuthenticator' => FormAuthenticator::class,
+            'PasswordRehash' => [
+                'authenticators' => ['Form' => 'Password']
+            ]
+        ];
+
+        $Login = $this->getMockBuilder(LoginComponent::class)
+            ->onlyMethods(['getController'])
+            ->setConstructorArgs([$registry, $config])
+            ->getMock();
+
+        $Login->expects($this->any())
+            ->method('getController')
+            ->willReturn($this->Trait);
+        $this->Trait->expects($this->any())
+            ->method('loadComponent')
+            ->with(
+                $this->equalTo('CakeDC/Users.Login'),
+                $this->anything()
+            )
+            ->willReturn($Login);
+
+        $result = $this->Trait->login();
+        $this->assertInstanceOf(Response::class, $result);
+
+        $userAfter = $this->Trait->getUsersTable()->get('00000000-0000-0000-0000-000000000002');
+        $this->assertNotEquals($passwordBefore, $userAfter['password']);
+
+        $passwordHasher = new DefaultPasswordHasher();
+        $this->assertTrue($passwordHasher->check($userPassword, $userAfter['password']));
+    }
+
+    public function testLoginRehashWithAuthenticatorStructure()
+    {
+        \Cake\Core\Configure::write('Auth.PasswordRehash', [
+            'authenticators' => [
+                'Form' => 'Authentication.Password'
+            ]
+        ]);
+
+        $userId = '00000000-0000-0000-0000-000000000002';
+        $user = $this->Trait->getUsersTable()->get($userId);
+        $oldHash = '$2y$10$OldHashNeedsUpgrade00000000000000000000000000000000';
+        $user->password = $oldHash;
+        $this->Trait->getUsersTable()->save($user);
+
+        $passwordIdentifier = $this->getMockBuilder(PasswordIdentifier::class)
+            ->onlyMethods(['needsPasswordRehash'])
+            ->getMock();
+        $passwordIdentifier->expects($this->any())
+            ->method('needsPasswordRehash')
+            ->willReturn(true);
+
+        $identifierCollection = new IdentifierCollection([]);
+        $identifierCollection->set('Authentication.Password', $passwordIdentifier);
+
+        $formAuthenticator = $this->getMockBuilder(FormAuthenticator::class)
+            ->disableOriginalConstructor()
+            ->addMethods(['getIdentifier'])
+            ->getMock();
+        $formAuthenticator->expects($this->any())
+            ->method('getIdentifier')
+            ->willReturn($identifierCollection);
+
+        $authenticatorCollection = $this->getMockBuilder(AuthenticatorCollection::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $authenticatorCollection->expects($this->any())
+            ->method('has')->with('Form')->willReturn(true);
+        $authenticatorCollection->expects($this->any())
+            ->method('get')->with('Form')->willReturn($formAuthenticator);
+
+        $service = $this->getMockBuilder(AuthenticationService::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $service->expects($this->any())
+            ->method('authenticators')
+            ->willReturn($authenticatorCollection);
+        $service->expects($this->any())
+            ->method('identifiers')
+            ->willReturn(new IdentifierCollection([]));
+        $service->expects($this->any())
+            ->method('getAuthenticationProvider')
+            ->willReturn($formAuthenticator);
+
+        $result = new Result($user, Result::SUCCESS);
+        $service->expects($this->any())->method('getResult')->willReturn($result);
+
+        $this->_mockDispatchEvent(new Event('event'));
+
+        $request = $this->getMockBuilder('Cake\Http\ServerRequest')
+            ->onlyMethods(['is', 'getData'])
+            ->getMock();
+
+        $request->expects($this->any())
+            ->method('is')
+            ->with('post')
+            ->willReturn(true);
+
+        $request->expects($this->any())
+            ->method('getData')
+            ->willReturnCallback(function ($key = null) use ($user) {
+                if ($key === 'password') return 'password123';
+                if ($key === 'username' || $key === 'email') return $user->email;
+                return [];
+            });
+
+        $identityWrapper = new \Authentication\Identity($user);
+
+        $request = $request->withAttribute('authentication', $service);
+        $request = $request->withAttribute('identity', $identityWrapper);
+
+        $this->Trait->setRequest($request);
+
+        $authComponent = $this->getMockBuilder(\Cake\Controller\Component::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getConfig'])
+            ->getMock();
+
+        $authComponent->expects($this->any())
+            ->method('getConfig')
+            ->with('loginRedirect')
+            ->willReturn('/');
+
+        $this->Trait->components()->set('Authentication', $authComponent);
+
         $registry = new ComponentRegistry(new \Cake\Controller\Controller(new \Cake\Http\ServerRequest()));
         $config = [
             'component' => 'CakeDC/Users.Login',
@@ -332,7 +385,7 @@ class LoginTraitTest extends BaseTrait
                 'authenticators' => ['Form' => 'Authentication.Password']
             ]
         ];
-        
+
         $Login = $this->getMockBuilder(LoginComponent::class)
             ->onlyMethods(['getController'])
             ->setConstructorArgs([$registry, $config])
@@ -340,7 +393,7 @@ class LoginTraitTest extends BaseTrait
 
         $Login->expects($this->any())
             ->method('getController')
-            ->will($this->returnValue($this->Trait));
+            ->willReturn($this->Trait);
 
         $this->Trait->expects($this->any())
             ->method('loadComponent')
@@ -348,26 +401,21 @@ class LoginTraitTest extends BaseTrait
                 $this->equalTo('CakeDC/Users.Login'),
                 $this->anything()
             )
-            ->will($this->returnValue($Login));
+            ->willReturn($Login);
 
-        // 6. Ejecución
-        $this->_mockFlash();
         $this->Trait->expects($this->once())
             ->method('redirect')
-            ->will($this->returnValue(new Response()));
+            ->willReturn(new Response());
 
         $this->Trait->login();
 
-        // 7. Aserciones
         $userAfter = $this->Trait->getUsersTable()->get($userId);
-        
+
         $this->assertNotEquals(
-            $oldHash, 
-            $userAfter->password, 
-            'El password debería haber sido actualizado (rehashed)'
+            $oldHash,
+            $userAfter->password
         );
     }
-    /* */
 
     /**
      * test
@@ -417,8 +465,8 @@ class LoginTraitTest extends BaseTrait
             ->method('getController')
             ->will($this->returnValue($this->Trait));
         // $this->Trait->expects($this->any())
-            // ->method('getRequest')
-            // ->will($this->returnValue($request));
+        // ->method('getRequest')
+        // ->will($this->returnValue($request));
         $this->Trait->expects($this->any())
             ->method('loadComponent')
             ->with(
