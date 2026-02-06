@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 /**
@@ -14,6 +13,7 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
+use Authentication\Authenticator\AuthenticatorCollection;
 use Authentication\Authenticator\Result;
 use Authentication\Authenticator\SessionAuthenticator;
 use Authentication\Identifier\IdentifierCollection;
@@ -28,8 +28,6 @@ use CakeDC\Auth\Authentication\Failure;
 use CakeDC\Auth\Authenticator\FormAuthenticator;
 use CakeDC\Users\Authenticator\SocialAuthenticator;
 use CakeDC\Users\Controller\Component\LoginComponent;
-
-use Authentication\Authenticator\AuthenticatorCollection;
 
 class LoginTraitTest extends BaseTrait
 {
@@ -153,8 +151,8 @@ class LoginTraitTest extends BaseTrait
     {
         \Cake\Core\Configure::write('Auth.PasswordRehash', [
             'authenticators' => [
-                'Form' => 'Password'
-            ]
+                'Form' => 'Password',
+            ],
         ]);
 
         $passwordIdentifier = $this->getMockBuilder(PasswordIdentifier::class)
@@ -217,8 +215,13 @@ class LoginTraitTest extends BaseTrait
         $request->expects($this->any())
             ->method('getData')
             ->willReturnCallback(function ($key = null) use ($userPassword, $user) {
-                if ($key === 'password') return $userPassword;
-                if ($key === 'username' || $key === 'email') return $user->email;
+                if ($key === 'password') {
+                    return $userPassword;
+                }
+                if ($key === 'username' || $key === 'email') {
+                    return $user->email;
+                }
+
                 return [];
             });
 
@@ -253,8 +256,8 @@ class LoginTraitTest extends BaseTrait
             'component' => 'CakeDC/Users.Login',
             'targetAuthenticator' => FormAuthenticator::class,
             'PasswordRehash' => [
-                'authenticators' => ['Form' => 'Password']
-            ]
+                'authenticators' => ['Form' => 'Password'],
+            ],
         ];
 
         $Login = $this->getMockBuilder(LoginComponent::class)
@@ -269,7 +272,7 @@ class LoginTraitTest extends BaseTrait
             ->method('loadComponent')
             ->with(
                 $this->equalTo('CakeDC/Users.Login'),
-                $this->anything()
+                $this->anything(),
             )
             ->willReturn($Login);
 
@@ -287,8 +290,8 @@ class LoginTraitTest extends BaseTrait
     {
         \Cake\Core\Configure::write('Auth.PasswordRehash', [
             'authenticators' => [
-                'Form' => 'Authentication.Password'
-            ]
+                'Form' => 'Authentication.Password',
+            ],
         ]);
 
         $userId = '00000000-0000-0000-0000-000000000002';
@@ -353,8 +356,13 @@ class LoginTraitTest extends BaseTrait
         $request->expects($this->any())
             ->method('getData')
             ->willReturnCallback(function ($key = null) use ($user) {
-                if ($key === 'password') return 'password123';
-                if ($key === 'username' || $key === 'email') return $user->email;
+                if ($key === 'password') {
+                    return 'password123';
+                }
+                if ($key === 'username' || $key === 'email') {
+                    return $user->email;
+                }
+
                 return [];
             });
 
@@ -382,8 +390,8 @@ class LoginTraitTest extends BaseTrait
             'component' => 'CakeDC/Users.Login',
             'targetAuthenticator' => FormAuthenticator::class,
             'PasswordRehash' => [
-                'authenticators' => ['Form' => 'Authentication.Password']
-            ]
+                'authenticators' => ['Form' => 'Authentication.Password'],
+            ],
         ];
 
         $Login = $this->getMockBuilder(LoginComponent::class)
@@ -399,7 +407,7 @@ class LoginTraitTest extends BaseTrait
             ->method('loadComponent')
             ->with(
                 $this->equalTo('CakeDC/Users.Login'),
-                $this->anything()
+                $this->anything(),
             )
             ->willReturn($Login);
 
@@ -413,7 +421,7 @@ class LoginTraitTest extends BaseTrait
 
         $this->assertNotEquals(
             $oldHash,
-            $userAfter->password
+            $userAfter->password,
         );
     }
 
