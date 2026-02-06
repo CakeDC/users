@@ -14,9 +14,13 @@ declare(strict_types=1);
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
 use Cake\Core\Configure;
+use Cake\Event\Event;
 use Cake\Http\ServerRequest;
 use Cake\ORM\TableRegistry;
+use CakeDC\Auth\Authentication\AuthenticationService;
+use CakeDC\Auth\Authenticator\TwoFactorAuthenticator;
 use CakeDC\Auth\Controller\Component\OneTimePasswordAuthenticatorComponent;
+use CakeDC\Users\UsersPlugin;
 
 class OneTimePasswordVerifyTraitTest extends BaseTrait
 {
@@ -147,7 +151,7 @@ class OneTimePasswordVerifyTraitTest extends BaseTrait
             ->will($this->returnValue('newDataUriGenerated'));
         $this->Trait->expects($this->once())
             ->method('set')
-            ->with(['secretDataUri' => 'newDataUriGenerated']);
+            ->with(['secretDataUri' => 'newDataUriGenerated', 'secret' => 'newSecret']);
 
         $this->Trait->verify();
         $user = $this->Trait->getUsersTable()->findById('00000000-0000-0000-0000-000000000001')->firstOrFail();
@@ -275,6 +279,51 @@ class OneTimePasswordVerifyTraitTest extends BaseTrait
                 ],
             ],
             $session->read(),
+        );
+    }
+
+    /**
+     * testVerifySkipEventCheck
+     */
+    public function testVerifySkipEventCheck()
+    {
+        Configure::write('OneTimePasswordAuthenticator.login', true);
+        $request = $this->getMockBuilder('Cake\Http\ServerRequest')
+            ->onlyMethods(['is', 'getData', 'getSession'])
+            ->addMethods(['allow'])
+            ->getMock();
+        $this->Trait->setRequest($request);
+
+        $userData = [
+            'id' => 1,
+            'secret_verified' => 1,
+            'email' => 'test@example.com',
+        ];
+        $session = $this->_mockSession([
+            'temporarySession' => $userData,
+        ]);
+
+        $eventMock = $this->getMockBuilder(Event::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $eventMock->method('getResult')->willReturn(true);
+
+        $this->Trait->expects($this->once())
+            ->method('dispatchEvent')
+            ->with(UsersPlugin::EVENT_2FA_SKIP_VERIFY, ['user' => $userData])
+            ->willReturn($eventMock);
+
+        $this->Trait->expects($this->once())
+            ->method('redirect');
+        $this->Trait->verify();
+
+        $this->assertNull(
+            $session->read(AuthenticationService::TWO_FACTOR_VERIFY_SESSION_KEY),
+        );
+
+        $this->assertEquals(
+            $userData,
+            $session->read(TwoFactorAuthenticator::USER_SESSION_KEY),
         );
     }
 }
