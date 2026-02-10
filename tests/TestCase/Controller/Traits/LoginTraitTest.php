@@ -299,7 +299,7 @@ class LoginTraitTest extends BaseTrait
         $oldHash = '$2y$10$OldHashNeedsUpgrade00000000000000000000000000000000';
         $this->Trait->getUsersTable()->updateAll(
             ['password' => $oldHash],
-            ['id' => $userId]
+            ['id' => $userId],
         );
 
         $passwordIdentifier = $this->getMockBuilder(PasswordIdentifier::class)
