@@ -297,8 +297,10 @@ class LoginTraitTest extends BaseTrait
         $userId = '00000000-0000-0000-0000-000000000002';
         $user = $this->Trait->getUsersTable()->get($userId);
         $oldHash = '$2y$10$OldHashNeedsUpgrade00000000000000000000000000000000';
-        $user->password = $oldHash;
-        $this->Trait->getUsersTable()->save($user);
+        $this->Trait->getUsersTable()->updateAll(
+            ['password' => $oldHash],
+            ['id' => $userId]
+        );
 
         $passwordIdentifier = $this->getMockBuilder(PasswordIdentifier::class)
             ->onlyMethods(['needsPasswordRehash'])
