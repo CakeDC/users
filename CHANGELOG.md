@@ -2,6 +2,8 @@ Changelog
 =========
 Releases for CakePHP 5
 -------------
+* 15.1.4
+  * Only set column type for `additional_data` if column exists
 * 15.1.3
   * Fix loadIdentifier deprecation
   * Add new configuration backward compatible for password rehash `'Auth.PasswordRehash' => ['authenticators' => ['Form' => 'PasswordLockout']]`
