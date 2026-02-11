@@ -186,6 +186,7 @@ trait PasswordManagementTrait
                 'If the account is valid, the system will send an instructional email to the address on record.',
             );
             $this->Flash->success($msg);
+            return $this->redirect(['action' => 'login']);
         } catch (Exception $exception) {
             $msg = __d('cake_d_c/users', 'There was an error please contact Administrator');
             $this->Flash->error($msg);
