@@ -304,7 +304,7 @@ class LinkSocialBehaviorTest extends TestCase
 
         return [
                 'provider' => [
-                    'data' => [
+                    [
                         'id' => 'reference-2-1',
                         'username' => null,
                         'full_name' => 'Full name',
@@ -332,8 +332,8 @@ class LinkSocialBehaviorTest extends TestCase
                         'link' => 'facebook-link-15579',
                         'provider' => 'Facebook',
                     ],
-                    'user' => '00000000-0000-0000-0000-000000000001',
-                    'result' => [
+                    '00000000-0000-0000-0000-000000000001',
+                    [
                         'id' => '00000000-0000-0000-0000-000000000003',
                         'provider' => 'Facebook',
                         'username' => null,

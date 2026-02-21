@@ -292,7 +292,6 @@ class PasswordBehaviorTest extends TestCase
         $realBehavior = $this->table->getBehavior('Password');
 
         $method = new ReflectionMethod(get_class($realBehavior), '_getUser');
-        $method->setAccessible(true);
 
         return $method->invoke($realBehavior, $reference);
     }

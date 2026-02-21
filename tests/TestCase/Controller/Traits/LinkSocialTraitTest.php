@@ -58,7 +58,7 @@ class LinkSocialTraitTest extends BaseTrait
         parent::setUp();
         $request = new ServerRequest();
         $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\UsersController')
-            ->onlyMethods(['dispatchEvent', 'redirect', 'set'])
+            ->onlyMethods(['dispatchEvent', 'redirect', 'set', 'getUsersTable'])
             ->setConstructorArgs([new ServerRequest()])
             ->getMock();
 
@@ -142,11 +142,11 @@ class LinkSocialTraitTest extends BaseTrait
 
         $this->Provider->expects($this->any())
             ->method('getState')
-            ->will($this->returnValue('_NEW_STATE_'));
+            ->willReturn('_NEW_STATE_');
 
         $this->Provider->expects($this->any())
             ->method('getAuthorizationUrl')
-            ->will($this->returnValue('http://facebook.com/redirect/url'));
+            ->willReturn('http://facebook.com/redirect/url');
 
         $this->Trait->Flash->expects($this->never())
             ->method('error');
@@ -157,7 +157,7 @@ class LinkSocialTraitTest extends BaseTrait
         $this->Trait->expects($this->once())
             ->method('redirect')
             ->with($this->equalTo('http://facebook.com/redirect/url'))
-            ->will($this->returnValue(new Response()));
+            ->willReturn(new Response());
 
         $this->Trait->linkSocial('facebook');
     }
@@ -226,14 +226,14 @@ class LinkSocialTraitTest extends BaseTrait
                 $this->equalTo('authorization_code'),
                 $this->equalTo(['code' => 'ZPO9972j3092304230']),
             )
-            ->will($this->returnValue($Token));
+            ->willReturn($Token);
 
         $this->Provider->expects($this->any())
             ->method('getResourceOwner')
             ->with(
                 $this->equalTo($Token),
             )
-            ->will($this->returnValue($user));
+            ->willReturn($user);
 
         $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\UsersController')
             ->onlyMethods(['dispatchEvent', 'redirect', 'set', 'getUsersTable', 'log'])
@@ -258,7 +258,7 @@ class LinkSocialTraitTest extends BaseTrait
 
         $this->Trait->expects($this->any())
             ->method('getUsersTable')
-            ->will($this->returnValue($Table));
+            ->willReturn($Table);
 
         $this->_mockAuthLoggedIn();
         $this->_mockDispatchEvent(new Event('event'));
@@ -311,19 +311,26 @@ class LinkSocialTraitTest extends BaseTrait
         ]);
         $Table = $this->getMockBuilder(\CakeDC\Users\Model\Table\UsersTable::class)
             ->setConstructorArgs([['alias' => 'Users', 'connection' => \Cake\Datasource\ConnectionManager::get('test')]])
-            ->onlyMethods(['newEntity', 'get'])
-            ->addMethods(['linkSocialAccount'])
+            ->onlyMethods(['newEntity', 'get', 'getBehavior'])
+            ->getMock();
+        $behavior = $this->getMockBuilder(\CakeDC\Users\Model\Behavior\LinkSocialBehavior::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['linkSocialAccount'])
             ->getMock();
 
         $Table->setAlias('Users');
 
         $Table->expects($this->once())
             ->method('get')
-            ->will($this->returnValue($user));
+            ->willReturn($user);
 
         $Table->expects($this->once())
+            ->method('getBehavior')
+            ->with('LinkSocial')
+            ->willReturn($behavior);
+        $behavior->expects($this->once())
             ->method('linkSocialAccount')
-            ->will($this->returnValue($user));
+            ->willReturn($user);
 
         $Token = new \League\OAuth2\Client\Token\AccessToken([
             'access_token' => 'test-token',
@@ -377,14 +384,14 @@ class LinkSocialTraitTest extends BaseTrait
                 $this->equalTo('authorization_code'),
                 $this->equalTo(['code' => 'ZPO9972j3092304230']),
             )
-            ->will($this->returnValue($Token));
+            ->willReturn($Token);
 
         $this->Provider->expects($this->any())
             ->method('getResourceOwner')
             ->with(
                 $this->equalTo($Token),
             )
-            ->will($this->returnValue($user));
+            ->willReturn($user);
 
         $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\UsersController')
             ->onlyMethods(['dispatchEvent', 'redirect', 'set', 'getUsersTable', 'log'])
@@ -393,7 +400,7 @@ class LinkSocialTraitTest extends BaseTrait
 
         $this->Trait->expects($this->any())
             ->method('getUsersTable')
-            ->will($this->returnValue($Table));
+            ->willReturn($Table);
 
         $this->Trait->setRequest(ServerRequestFactory::fromGlobals());
         $this->Trait->getRequest()->getSession()->write('oauth2state', '__TEST_STATE__');

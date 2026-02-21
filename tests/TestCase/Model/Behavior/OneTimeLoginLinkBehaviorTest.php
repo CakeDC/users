@@ -193,7 +193,7 @@ class OneTimeLoginLinkBehaviorTest extends TestCase
     public function testFindByUsernameOrEmailMissingUsername(): void
     {
         $this->expectException(OutOfBoundsException::class);
-        $this->table->find('byUsernameOrEmail', [])->first();
+        $this->table->find('byUsernameOrEmail')->first();
     }
 
     /**
@@ -204,6 +204,6 @@ class OneTimeLoginLinkBehaviorTest extends TestCase
     public function testFindByOneTimeTokenMissingToken(): void
     {
         $this->expectException(OutOfBoundsException::class);
-        $this->table->find('byOneTimeToken', [])->first();
+        $this->table->find('byOneTimeToken')->first();
     }
 }

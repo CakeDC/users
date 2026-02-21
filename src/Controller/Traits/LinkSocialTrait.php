@@ -72,7 +72,9 @@ trait LinkSocialTrait
             $userId = $identity['id'] ?? null;
             $user = $this->getUsersTable()->get($userId);
 
-            $this->getUsersTable()->linkSocialAccount($user, $data);
+            /** @var \CakeDC\Users\Model\Behavior\LinkSocialBehavior $linkSocial */
+            $linkSocial = $this->getUsersTable()->getBehavior('LinkSocial');
+            $linkSocial->linkSocialAccount($user, $data);
 
             if ($user->getErrors()) {
                 $this->Flash->error($message);
