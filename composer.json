@@ -35,6 +35,7 @@
         "cakephp/authentication": "^3.0"
     },
     "require-dev": {
+        "cakephp/migrations": "^4.5.1",
         "phpunit/phpunit": "^10.0",
         "league/oauth2-facebook": "@stable",
         "league/oauth2-instagram": "@stable",

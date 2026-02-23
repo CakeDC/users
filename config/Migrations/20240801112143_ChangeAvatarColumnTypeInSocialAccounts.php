@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-use Migrations\AbstractMigration;
+use Migrations\BaseMigration;
 
-class ChangeAvatarColumnTypeInSocialAccounts extends AbstractMigration
+class ChangeAvatarColumnTypeInSocialAccounts extends BaseMigration
 {
     /**
      * Change Method.
