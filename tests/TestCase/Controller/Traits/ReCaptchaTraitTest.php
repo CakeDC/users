@@ -110,7 +110,6 @@ class ReCaptchaTraitTest extends TestCase
         Configure::write('Users.reCaptcha.secret', 'secret');
         $trait = $this->getMockBuilder('CakeDC\Users\Controller\Traits\ReCaptchaTrait')->getMockForTrait();
         $method = new ReflectionMethod(get_class($trait), '_getReCaptchaInstance');
-        $method->setAccessible(true);
         $method->invokeArgs($trait, []);
         $this->assertNotEmpty($method->invoke($trait));
     }
@@ -119,7 +118,6 @@ class ReCaptchaTraitTest extends TestCase
     {
         $trait = $this->getMockBuilder('CakeDC\Users\Controller\Traits\ReCaptchaTrait')->getMockForTrait();
         $method = new ReflectionMethod(get_class($trait), '_getReCaptchaInstance');
-        $method->setAccessible(true);
         $method->invokeArgs($trait, []);
         $this->assertNull($method->invoke($trait));
     }

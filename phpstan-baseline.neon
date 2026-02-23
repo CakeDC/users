@@ -7,7 +7,14 @@ parameters:
 			path: src/Controller/Component/LoginComponent.php
 
 		-
-			message: "#^Call to an undefined method Cake\\\\Controller\\\\Controller\\:\\:getUsersTable\\(\\)\\.$#"
+			message: '#^Call to an undefined method Cake\\Controller\\Controller\:\:getUsersTable\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Controller/Component/LoginComponent.php
+
+		-
+			message: '#^Call to function method_exists\(\) with Authentication\\Authenticator\\AuthenticatorInterface and ''getIdentifier'' will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
 			count: 1
 			path: src/Controller/Component/LoginComponent.php
 
@@ -54,7 +61,8 @@ parameters:
 			path: src/Model/Behavior/LinkSocialBehavior.php
 
 		-
-			message: "#^Access to an undefined property Cake\\\\Datasource\\\\EntityInterface\\:\\:\\$activation_date\\.$#"
+			message: '#^Access to an undefined property Cake\\Datasource\\EntityInterface\:\:\$activation_date\.$#'
+			identifier: property.notFound
 			count: 1
 			path: src/Model/Behavior/RegisterBehavior.php
 

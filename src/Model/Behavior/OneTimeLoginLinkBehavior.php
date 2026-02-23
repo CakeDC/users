@@ -25,7 +25,7 @@ class OneTimeLoginLinkBehavior extends Behavior
     public function sendLoginLink(string $name): void
     {
         $table = $this->table();
-        $user = $table->find('byUsernameOrEmail', ['username' => $name])->first();
+        $user = $table->find('byUsernameOrEmail', username: $name)->first();
         if ($user === null) {
             throw new RecordNotFoundException(__('Username not found.'));
         }
@@ -65,7 +65,7 @@ class OneTimeLoginLinkBehavior extends Behavior
     {
         $lifeTime = Configure::read('Auth.OneTimeLogin.tokenLifeTime', 600);
         $user = $this->table()
-            ->find('byOneTimeToken', ['token' => $token])
+            ->find('byOneTimeToken', token: $token)
             ->first();
 
         if ($user && ($user->login_token_date >= DateTime::now()->subSeconds($lifeTime))) {
@@ -89,7 +89,7 @@ class OneTimeLoginLinkBehavior extends Behavior
      */
     public function requestTokenSend(string $username): void
     {
-        $user = $this->table()->find('byUsernameOrEmail', ['username' => $username])->first();
+        $user = $this->table()->find('byUsernameOrEmail', username: $username)->first();
         if ($user) {
             $this->table()->updateAll([
                 'token_send_requested' => true,
@@ -103,12 +103,11 @@ class OneTimeLoginLinkBehavior extends Behavior
      * Find by username or email.
      *
      * @param \Cake\ORM\Query $query The query builder.
-     * @param array $options Options.
+     * @param string|null $username Username or email.
      * @return \Cake\ORM\Query
      */
-    public function findByUsernameOrEmail(Query $query, array $options = []): Query
+    public function findByUsernameOrEmail(Query $query, ?string $username = null): Query
     {
-        $username = $options['username'] ?? null;
         if (empty($username)) {
             throw new OutOfBoundsException('Missing username');
         }
@@ -125,12 +124,11 @@ class OneTimeLoginLinkBehavior extends Behavior
      * Find by token
      *
      * @param \Cake\ORM\Query $query
-     * @param array $options
+     * @param string|null $token
      * @return \Cake\ORM\Query
      */
-    public function findByOneTimeToken(Query $query, array $options = []): Query
+    public function findByOneTimeToken(Query $query, ?string $token = null): Query
     {
-        $token = $options['token'] ?? null;
         if (empty($token)) {
             throw new OutOfBoundsException('Missing token');
         }

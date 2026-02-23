@@ -16,7 +16,6 @@ namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 use Authentication\Authenticator\Result;
 use Authentication\Controller\Component\AuthenticationComponent;
 use Authentication\Identifier\IdentifierCollection;
-use Authentication\Identifier\PasswordIdentifier;
 use Authentication\Identity;
 use Cake\Controller\ComponentRegistry;
 use Cake\Controller\Controller;
@@ -239,14 +238,7 @@ class BaseTrait extends TestCase
     protected function _mockAuthentication($user = null, $failures = [], $identifiers = null)
     {
         if ($identifiers === null) {
-            $passwordIdentifier = $this->getMockBuilder(PasswordIdentifier::class)
-                ->onlyMethods(['needsPasswordRehash'])
-                ->getMock();
-            $passwordIdentifier->expects($this->any())
-                ->method('needsPasswordRehash')
-                ->willReturn(false);
             $identifiers = new IdentifierCollection([]);
-            $identifiers->set('Password', $passwordIdentifier);
         }
 
         $config = [
