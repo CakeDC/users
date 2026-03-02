@@ -216,7 +216,12 @@ class LoginComponent extends Component
 
         /** @var \Authentication\Identifier\IdentifierCollection $identifierCollection */
         $identifierCollection = $authenticationProvider->getIdentifier();
+        $authenticators = $service->authenticators();
         foreach ($authenticatorNames as $authenticatorName => $identifierName) {
+            if ($authenticators->has($authenticatorName) && $authenticators->get($authenticatorName) !== $authenticationProvider) {
+                continue;
+            }
+
             if (!$identifierCollection->has($identifierName)) {
                 Log::warning("Error saving user id $user->id password after rehashing: identifier $identifierName not found for authenticator $authenticatorName. Check your Auth.PasswordRehash.authenticators configuration.");
                 continue;
