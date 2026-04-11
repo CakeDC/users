@@ -304,6 +304,7 @@ class RegisterBehaviorTest extends TestCase
 
         $result = $this->Behavior->activateUser($user);
         $this->assertSame($result, $user);
+        $this->assertNull($user->token);
         $this->assertNull($user->token_expires);
         $this->assertTrue($user->active);
         $this->assertInstanceOf(\DateTime::class, $user->activation_date);
