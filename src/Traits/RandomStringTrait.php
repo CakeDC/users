@@ -26,8 +26,6 @@ trait RandomStringTrait
         if (!is_numeric($length) || $length <= 0) {
             $length = 10;
         }
-        $string = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-
-        return substr(str_shuffle($string), 0, $length);
+        return substr(bin2hex(random_bytes((int)ceil($length / 2))), 0, $length);
     }
 }

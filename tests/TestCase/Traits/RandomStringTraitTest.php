@@ -33,18 +33,21 @@ class RandomStringTraitTest extends TestCase
         parent::tearDown();
     }
 
-    public function testRandomString()
+    public function testRandomStringLength()
     {
-        $result = $this->Trait->randomString();
-        $this->assertEquals(10, strlen($result));
+        $this->assertSame(10, strlen($this->Trait->randomString()));
+        $this->assertSame(30, strlen($this->Trait->randomString(30)));
+        $this->assertSame(10, strlen($this->Trait->randomString('-300')));
+        $this->assertSame(10, strlen($this->Trait->randomString('text')));
+    }
 
-        $result = $this->Trait->randomString(30);
-        $this->assertEquals(30, strlen($result));
+    public function testRandomStringUsesSecureRandomness()
+    {
+        $first = $this->Trait->randomString(32);
+        $second = $this->Trait->randomString(32);
 
-        $result = $this->Trait->randomString('-300');
-        $this->assertEquals(10, strlen($result));
-
-        $result = $this->Trait->randomString('text');
-        $this->assertEquals(10, strlen($result));
+        $this->assertNotSame($first, $second);
+        $this->assertMatchesRegularExpression('/^[0-9a-f]+$/', $first);
+        $this->assertMatchesRegularExpression('/^[0-9a-f]+$/', $second);
     }
 }
