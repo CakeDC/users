@@ -46,8 +46,16 @@ class RandomStringTraitTest extends TestCase
         $first = $this->Trait->randomString(32);
         $second = $this->Trait->randomString(32);
 
+        $this->assertSame(32, strlen($first));
+        $this->assertSame(32, strlen($second));
         $this->assertNotSame($first, $second);
-        $this->assertMatchesRegularExpression('/^[0-9a-f]+$/', $first);
-        $this->assertMatchesRegularExpression('/^[0-9a-f]+$/', $second);
+        $this->assertMatchesRegularExpression('/^[0-9a-zA-Z]+$/', $first);
+        $this->assertMatchesRegularExpression('/^[0-9a-zA-Z]+$/', $second);
+    }
+
+    public function testRandomStringOddLength()
+    {
+        $this->assertSame(31, strlen($this->Trait->randomString(31)));
+        $this->assertSame(1, strlen($this->Trait->randomString(1)));
     }
 }
