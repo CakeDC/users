@@ -24,6 +24,16 @@ use CakeDC\Users\Webauthn\Base64Utility;
 class UsersFixture extends TestFixture
 {
     /**
+     * Explicit table alias so _schemaFromReflection resolves to
+     * CakeDC\Users\Model\Table\UsersTable (which overrides additional_data to json type).
+     * Without this, the fixture namespace plugin-detection fails because
+     * Plugin::isLoaded() uses forward-slash names while the namespace uses backslashes.
+     *
+     * @var string
+     */
+    public string $tableAlias = 'CakeDC/Users.Users';
+
+    /**
      * Init method
      *
      * @return void

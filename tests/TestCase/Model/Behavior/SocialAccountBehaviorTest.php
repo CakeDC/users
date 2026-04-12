@@ -90,6 +90,25 @@ class SocialAccountBehaviorTest extends TestCase
     }
 
     /**
+     * Partial token (prefix of the real token) must be rejected — exercises timing-safe comparison
+     */
+    public function testValidateAccountPartialTokenIsRejected()
+    {
+        $this->expectException(RecordNotFoundException::class);
+        // 'token-123' is a prefix of the valid 'token-1234' — must still fail
+        $this->Behavior->validateAccount(SocialAccountsTable::PROVIDER_FACEBOOK, 'reference-1-1234', 'token-123');
+    }
+
+    /**
+     * Empty string token must be rejected — exercises timing-safe comparison with empty input
+     */
+    public function testValidateAccountEmptyTokenIsRejected()
+    {
+        $this->expectException(RecordNotFoundException::class);
+        $this->Behavior->validateAccount(SocialAccountsTable::PROVIDER_FACEBOOK, 'reference-1-1234', '');
+    }
+
+    /**
      * Test validateEmail method
      */
     public function testValidateEmailInvalidUser()
