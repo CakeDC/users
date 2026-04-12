@@ -61,19 +61,7 @@ parameters:
 			path: src/Model/Behavior/LinkSocialBehavior.php
 
 		-
-			message: '#^Access to an undefined property Cake\\Datasource\\EntityInterface\:\:\$activation_date\.$#'
-			identifier: property.notFound
-			count: 1
-			path: src/Model/Behavior/RegisterBehavior.php
-
-		-
 			message: '#^Access to an undefined property Cake\\Datasource\\EntityInterface\:\:\$active\.$#'
-			identifier: property.notFound
-			count: 1
-			path: src/Model/Behavior/RegisterBehavior.php
-
-		-
-			message: '#^Access to an undefined property Cake\\Datasource\\EntityInterface\:\:\$token_expires\.$#'
 			identifier: property.notFound
 			count: 1
 			path: src/Model/Behavior/RegisterBehavior.php
