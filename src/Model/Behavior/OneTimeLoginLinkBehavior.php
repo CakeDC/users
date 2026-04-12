@@ -32,7 +32,8 @@ class OneTimeLoginLinkBehavior extends Behavior
 
         $loginTokenDate = $user->login_token_date ?? null;
 
-        if ($loginTokenDate && $loginTokenDate > DateTime::now()->subSeconds(10)) {
+        $threshold = Configure::read('OneTimeLogin.thresholdTimeout', 60);
+        if ($loginTokenDate && $loginTokenDate > DateTime::now()->subSeconds($threshold)) {
             $this->requestTokenSend($name);
         } else {
             $token = bin2hex(random_bytes(32 / 2));
@@ -63,7 +64,7 @@ class OneTimeLoginLinkBehavior extends Behavior
      */
     public function loginWithToken(string $token): ?EntityInterface
     {
-        $lifeTime = Configure::read('Auth.OneTimeLogin.tokenLifeTime', 600);
+        $lifeTime = Configure::read('OneTimeLogin.tokenLifeTime', 600);
         $user = $this->table()
             ->find('byOneTimeToken', token: $token)
             ->first();

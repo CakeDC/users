@@ -157,7 +157,7 @@ class OneTimeLoginLinkBehaviorTest extends TestCase
             ['id' => $user->id],
         );
 
-        Configure::write('Auth.OneTimeLogin.tokenLifeTime', 600);
+        Configure::write('OneTimeLogin.tokenLifeTime', 600);
         $loggedUser = $this->Behavior->loginWithToken($token);
         $this->assertNull($loggedUser);
     }
