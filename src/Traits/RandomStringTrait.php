@@ -26,8 +26,14 @@ trait RandomStringTrait
         if (!is_numeric($length) || $length <= 0) {
             $length = 10;
         }
-        $string = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $length = (int)$length;
+        $alphabet = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $alphabetLength = strlen($alphabet);
+        $result = '';
+        for ($i = 0; $i < $length; $i++) {
+            $result .= $alphabet[random_int(0, $alphabetLength - 1)];
+        }
 
-        return substr(str_shuffle($string), 0, $length);
+        return $result;
     }
 }
