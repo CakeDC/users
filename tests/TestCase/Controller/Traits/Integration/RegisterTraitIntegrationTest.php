@@ -123,7 +123,7 @@ class RegisterTraitIntegrationTest extends TestCase
         //If access again get error
         $this->get($url);
         $this->assertRedirect('/login');
-        $this->assertFlashMessage('Token already expired');
+        $this->assertFlashMessage('Invalid token or user account already validated');
     }
 
     /**

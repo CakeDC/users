@@ -128,9 +128,10 @@ class RegisterBehavior extends BaseTokenBehavior
         if ($user->active) {
             throw new UserAlreadyActiveException(__d('cake_d_c/users', 'User account already validated'));
         }
-        $user->activation_date = new \DateTime();
-        $user->token_expires = null;
-        $user->active = true;
+        $user->set('token', null);
+        $user->set('token_expires', null);
+        $user->set('activation_date', new \DateTime());
+        $user->set('active', true);
 
         return $this->_table->save($user);
     }
