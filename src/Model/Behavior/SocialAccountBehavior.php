@@ -105,7 +105,7 @@ class SocialAccountBehavior extends Behavior
             ->where(['provider' => $provider, 'reference' => $reference])
             ->first();
 
-        if (!empty($socialAccount) && hash_equals((string)$socialAccount->token, (string)$token)) {
+        if (!empty($socialAccount) && $token !== '' && hash_equals((string)$socialAccount->token, (string)$token)) {
             if ($socialAccount->active) {
                 throw new AccountAlreadyActiveException(__d('cake_d_c/users', 'Account already validated'));
             }
