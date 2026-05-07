@@ -205,14 +205,14 @@ class SocialBehavior extends BaseTokenBehavior
                     $email = explode('@', $dataEmail);
                     $userData['username'] = Hash::get($email, 0);
                 } else {
-                    $firstName = $userData['first_name'] ?? null;
+                    $firstName = $userData['first_name'];
                     $lastName = $userData['last_name'];
                     $userData['username'] = strtolower($firstName . $lastName);
                     $userData['username'] = preg_replace('/[^A-Za-z0-9]/i', '', $userData['username']);
                 }
             }
 
-            $userData['username'] = $this->generateUniqueUsername($userData['username'] ?? null);
+            $userData['username'] = $this->generateUniqueUsername($userData['username']);
             if ($useEmail) {
                 $userData['email'] = $data['email'] ?? null;
                 if (empty($dataValidated)) {
