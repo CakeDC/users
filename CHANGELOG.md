@@ -2,6 +2,11 @@ Changelog
 =========
 Releases for CakePHP 5
 -------------
+* 16.0.4
+  * Fix timing-safe comparison for social account token validation using hash_equals()
+  * Reject empty/partial tokens explicitly in SocialAccountBehavior::validateAccount()
+  * Fix UsersFixture missing tableAlias causing incorrect Table class resolution for additional_data json type
+  * Fix schema.php discrepancies: users.active default, users.secret length, users.secret_verified default, social_accounts.avatar type, social_accounts.link type and nullability
 * 16.0.3
   * Fix type-hint finders with Cake\ORM\Query\SelectQuery for Cake 5 compatibility
   * Fix redundant null-coalescing on always-set array offsets in SocialBehavior (PHPStan)
