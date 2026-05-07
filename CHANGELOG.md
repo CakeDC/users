@@ -2,6 +2,14 @@ Changelog
 =========
 Releases for CakePHP 5
 -------------
+* 16.0.3
+  * Fix type-hint finders with Cake\ORM\Query\SelectQuery for Cake 5 compatibility
+  * Fix redundant null-coalescing on always-set array offsets in SocialBehavior (PHPStan)
+  * Fix ReCaptcha\Response mock incompatibility with PHP 8.4+ readonly classes
+  * Fix correct config keys and hardcoded threshold in OneTimeLoginLinkBehavior
+  * Fix clear activation token after email activation
+  * Use cryptographically secure random bytes in RandomStringTrait
+  * Fix authenticator check before issuing password rehash warning
 * 16.0.2
   * fix deprecations
 * 16.0.1
