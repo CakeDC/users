@@ -8,7 +8,7 @@ use Cake\Datasource\EntityInterface;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\I18n\DateTime;
 use Cake\ORM\Behavior;
-use Cake\ORM\Query;
+use Cake\ORM\Query\SelectQuery;
 use OutOfBoundsException;
 
 /**
@@ -103,11 +103,11 @@ class OneTimeLoginLinkBehavior extends Behavior
     /**
      * Find by username or email.
      *
-     * @param \Cake\ORM\Query $query The query builder.
+     * @param \Cake\ORM\Query\SelectQuery $query The query builder.
      * @param string|null $username Username or email.
-     * @return \Cake\ORM\Query
+     * @return \Cake\ORM\Query\SelectQuery
      */
-    public function findByUsernameOrEmail(Query $query, ?string $username = null): Query
+    public function findByUsernameOrEmail(SelectQuery $query, ?string $username = null): SelectQuery
     {
         if (empty($username)) {
             throw new OutOfBoundsException('Missing username');
@@ -124,11 +124,11 @@ class OneTimeLoginLinkBehavior extends Behavior
     /**
      * Find by token
      *
-     * @param \Cake\ORM\Query $query
-     * @param string|null $token
-     * @return \Cake\ORM\Query
+     * @param \Cake\ORM\Query\SelectQuery $query The query builder.
+     * @param string|null $token Login token.
+     * @return \Cake\ORM\Query\SelectQuery
      */
-    public function findByOneTimeToken(Query $query, ?string $token = null): Query
+    public function findByOneTimeToken(SelectQuery $query, ?string $token = null): SelectQuery
     {
         if (empty($token)) {
             throw new OutOfBoundsException('Missing token');
