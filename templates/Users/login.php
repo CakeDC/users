@@ -14,7 +14,11 @@ use Cake\Core\Configure;
 ?>
 <div class="users form">
     <?= $this->Flash->render('auth') ?>
-    <?= $this->Form->create() ?>
+    <?= $this->Form->create(null, ($ajaxEnabled ?? false) ? [
+        'hx-post' => $this->Url->build(['action' => 'login']),
+        'hx-target' => '#ajax-login-container',
+        'hx-swap' => 'innerHTML',
+    ] : []) ?>
     <fieldset>
         <legend><?= __d('cake_d_c/users', 'Please enter your username and password') ?></legend>
         <?= $this->Form->control('username', ['label' => __d('cake_d_c/users', 'Username'), 'required' => true, 'autofocus' => 'autofocus']) ?>

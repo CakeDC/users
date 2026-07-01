@@ -1,6 +1,10 @@
 <div class="users form">
     <?= $this->Flash->render('auth') ?>
-    <?= $this->Form->create($user) ?>
+    <?= $this->Form->create($user, ($ajaxEnabled ?? false) ? [
+        'hx-post' => $this->Url->build(['action' => 'changePassword']),
+        'hx-target' => '#ajax-login-container',
+        'hx-swap' => 'innerHTML',
+    ] : []) ?>
     <fieldset>
         <legend><?= __d('cake_d_c/users', 'Please enter the new password') ?></legend>
         <?php if ($validatePassword) : ?>

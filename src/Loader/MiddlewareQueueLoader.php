@@ -22,6 +22,7 @@ use Cake\Core\Configure;
 use Cake\Http\MiddlewareQueue;
 use CakeDC\Auth\Authentication\TwoFactorProcessorLoader;
 use CakeDC\Auth\Middleware\TwoFactorMiddleware;
+use CakeDC\Users\Middleware\AjaxRedirectMiddleware;
 use CakeDC\Users\Middleware\SocialAuthMiddleware;
 use CakeDC\Users\Middleware\SocialEmailMiddleware;
 
@@ -54,6 +55,7 @@ class MiddlewareQueueLoader
         $this->loadSocialMiddleware($middlewareQueue);
         $this->loadAuthenticationMiddleware($middlewareQueue, $authenticationServiceProvider);
         $this->load2faMiddleware($middlewareQueue);
+        $this->loadAjaxMiddleware($middlewareQueue);
 
         return $this->loadAuthorizationMiddleware($middlewareQueue, $authorizationServiceProvider);
     }
@@ -99,6 +101,19 @@ class MiddlewareQueueLoader
         $processors = TwoFactorProcessorLoader::processors();
         if (collection($processors)->some(fn($processor) => $processor->enabled())) {
             $middlewareQueue->add(TwoFactorMiddleware::class);
+        }
+    }
+
+    /**
+     * Load AjaxRedirectMiddleware when 'Users.Ajax.enabled' is true.
+     *
+     * @param \Cake\Http\MiddlewareQueue $middlewareQueue queue of middleware
+     * @return void
+     */
+    protected function loadAjaxMiddleware(MiddlewareQueue $middlewareQueue)
+    {
+        if (Configure::read('Users.Ajax.enabled')) {
+            $middlewareQueue->add(new AjaxRedirectMiddleware());
         }
     }
 

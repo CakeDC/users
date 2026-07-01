@@ -13,7 +13,11 @@ use Cake\Core\Configure;
 
 ?>
 <div class="users form large-10 medium-9 columns">
-    <?= $this->Form->create($user); ?>
+    <?= $this->Form->create($user, ($ajaxEnabled ?? false) ? [
+        'hx-post' => $this->Url->build(['action' => 'register']),
+        'hx-target' => '#ajax-login-container',
+        'hx-swap' => 'innerHTML',
+    ] : []); ?>
     <fieldset>
         <legend><?= __d('cake_d_c/users', 'Add User') ?></legend>
         <?php

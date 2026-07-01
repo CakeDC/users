@@ -2,7 +2,11 @@
     <div class="row">
         <div class="col-xs-offset-1 col-xs-10 col-sm-offset-2 col-sm-8 col-md-6 col-md-offset-3">
             <div class="users form well well-lg">
-                <?= $this->Form->create() ?>
+                <?= $this->Form->create(null, ($ajaxEnabled ?? false) ? [
+                    'hx-post' => $this->Url->build(['action' => 'verify']),
+                    'hx-target' => '#ajax-login-container',
+                    'hx-swap' => 'innerHTML',
+                ] : []) ?>
 
                 <?= $this->Flash->render('auth') ?>
                 <?= $this->Flash->render() ?>
