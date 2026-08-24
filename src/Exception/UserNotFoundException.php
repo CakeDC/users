@@ -24,7 +24,7 @@ class UserNotFoundException extends RecordNotFoundException
      * @param int $code code
      * @param \Throwable|null $previous previous
      */
-    public function __construct($message, $code = 500, $previous = null)
+    public function __construct($message, $code = 500, ?Throwable $previous = null)
     {
         parent::__construct($message, $code, $previous);
     }
