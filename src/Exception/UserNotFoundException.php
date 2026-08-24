@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace CakeDC\Users\Exception;
 
 use Cake\Datasource\Exception\RecordNotFoundException;
+use Throwable;
 
 class UserNotFoundException extends RecordNotFoundException
 {
@@ -22,9 +23,9 @@ class UserNotFoundException extends RecordNotFoundException
      *
      * @param string $message message
      * @param int $code code
-     * @param null $previous previous
+     * @param \Throwable|null $previous previous
      */
-    public function __construct($message, $code = 500, $previous = null)
+    public function __construct($message, $code = 500, ?Throwable $previous = null)
     {
         parent::__construct($message, $code, $previous);
     }
