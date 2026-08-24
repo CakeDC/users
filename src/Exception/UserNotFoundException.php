@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace CakeDC\Users\Exception;
 
 use Cake\Datasource\Exception\RecordNotFoundException;
+use Throwable;
 
 class UserNotFoundException extends RecordNotFoundException
 {
