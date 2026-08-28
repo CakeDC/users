@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace CakeDC\Users\Middleware;
 
 use CakeDC\Users\Utility\AjaxFlash;
+use CakeDC\Users\Utility\UsersUrl;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -45,8 +46,16 @@ class AjaxRedirectMiddleware implements MiddlewareInterface
     {
         $response = $handler->handle($request);
 
+        // Scope to the configured Users controller (honors a custom `Users.controller`)
+        // rather than a hardcoded plugin name, so an app controller is not left in a
+        // half-enabled state where the component/templates emit hx-* but redirects
+        // are never converted.
         /** @var \Cake\Http\ServerRequest $request */
-        if ($request->getParam('plugin') !== 'CakeDC/Users') {
+        $scope = UsersUrl::actionParams('login');
+        if (
+            $request->getParam('plugin') !== $scope['plugin']
+            || $request->getParam('controller') !== $scope['controller']
+        ) {
             return $response;
         }
 

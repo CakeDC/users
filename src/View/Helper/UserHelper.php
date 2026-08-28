@@ -19,6 +19,7 @@ use Cake\Utility\Inflector;
 use Cake\View\Helper;
 use Cake\View\StringTemplateTrait;
 use CakeDC\Users\Utility\UsersUrl;
+use Exception;
 use InvalidArgumentException;
 
 /**
@@ -199,6 +200,21 @@ class UserHelper extends Helper
     }
 
     /**
+     * Whether the current render is the plugin's HTMX-enhanced ajax context.
+     *
+     * Gated on the `ajaxEnabled` view var (set by AjaxResponseComponent only for the
+     * plugin's ajax-enabled controllers) rather than the raw `Users.Ajax.enabled`
+     * config, so reCaptcha on a form rendered outside that context — a custom app
+     * form, or a non-plugin page — keeps its normal (non-HTMX) rendering and works.
+     *
+     * @return bool
+     */
+    protected function isAjaxHtmxContext(): bool
+    {
+        return (bool)$this->getView()->get('ajaxEnabled');
+    }
+
+    /**
      * Add reCaptcha to the form
      *
      * @return mixed
@@ -214,20 +230,69 @@ class UserHelper extends Helper
                 ),
             );
         }
-        $this->addReCaptchaScript();
         $version = Configure::read('Users.reCaptcha.version', 2);
-        $method = "addReCaptchaV$version";
-        if (method_exists($this, $method)) {
-            try {
-                $this->Form->unlockField('g-recaptcha-response');
-            } catch (\Exception $e) {
-            }
-
-            return $this->{$method}();
+        if (!in_array($version, [2, 3, '2', '3'], true)) {
+            throw new InvalidArgumentException(
+                __d('cake_d_c/users', 'reCaptcha version is wrong. Please configure Users.reCaptcha.version as 2 or 3'),
+            );
         }
-        throw new InvalidArgumentException(
-            __d('cake_d_c/users', 'reCaptcha version is wrong. Please configure Users.reCaptcha.version as 2 or 3'),
+        $version = (int)$version;
+        try {
+            $this->Form->unlockField('g-recaptcha-response');
+        } catch (Exception $e) {
+        }
+
+        // In the plugin's HTMX render, reCaptcha's page-load lifecycle breaks: a v2
+        // widget swapped into the DOM is never auto-rendered, and v3's default
+        // button-bound flow submits the form natively (bypassing HTMX). There the
+        // integration renders differently and loads a glue script instead. Outside
+        // that render (a custom app form) the normal reCaptcha is kept.
+        if ($this->isAjaxHtmxContext()) {
+            return $this->addReCaptchaHtmx($version);
+        }
+
+        $this->addReCaptchaScript();
+
+        return $this->{"addReCaptchaV$version"}();
+    }
+
+    /**
+     * Render reCaptcha for the AJAX/HTMX channel and load the glue script that
+     * bridges Google's page-load lifecycle to HTMX:
+     *  - v2: the checkbox widget is rendered by the glue on load and after every
+     *    swap (`grecaptcha.render`), and its token rides along in the serialized form.
+     *  - v3: a hidden `g-recaptcha-response` field is filled by the glue from
+     *    `grecaptcha.execute()` on `htmx:confirm`, just before the request is issued
+     *    (a fresh token per submit, so the single-use limitation is handled too).
+     *
+     * @param int $version reCaptcha version (2 or 3)
+     * @return string markup to place inside the form
+     */
+    private function addReCaptchaHtmx(int $version): string
+    {
+        $key = (string)Configure::read('Users.reCaptcha.key');
+        // v3 needs api.js loaded with ?render=<key> so execute() is available;
+        // v2 needs ?render=explicit so the glue controls when widgets render.
+        $apiUrl = $version === 3
+            ? 'https://www.google.com/recaptcha/api.js?render=' . urlencode($key)
+            : 'https://www.google.com/recaptcha/api.js?render=explicit';
+        $this->Html->script($apiUrl, ['block' => 'script']);
+        $this->Html->scriptBlock(
+            sprintf('window.CakeDCUsersReCaptcha = {version: %d, siteKey: %s};', $version, json_encode($key)),
+            ['block' => 'script'],
         );
+        $this->Html->script('CakeDC/Users.reCaptchaHtmx', ['block' => 'script']);
+
+        if ($version === 3) {
+            return $this->Form->hidden('g-recaptcha-response', ['id' => false]);
+        }
+
+        return $this->Html->tag('div', '', [
+            'class' => 'g-recaptcha',
+            'data-sitekey' => $key,
+            'data-theme' => Configure::read('Users.reCaptcha.theme') ?: 'light',
+            'data-size' => Configure::read('Users.reCaptcha.size') ?: 'normal',
+        ]);
     }
 
     /**
@@ -268,7 +333,15 @@ class UserHelper extends Helper
     public function button(string $title, array $options = []): string
     {
         $key = Configure::read('Users.reCaptcha.key');
-        if ($key && Configure::read('Users.reCaptcha.version', 2) === 3) {
+        // The v3 "button-bound" flow (grecaptcha binds the click and calls onSubmit,
+        // which does a native form.submit()) bypasses HTMX. In the plugin's HTMX
+        // render the button stays a plain submit and reCaptchaHtmx.js runs execute()
+        // on htmx:confirm instead; outside it (a custom app form) the button-bound
+        // native flow is kept. See addReCaptchaHtmx().
+        if (
+            $key && (int)Configure::read('Users.reCaptcha.version', 2) === 3
+            && !$this->isAjaxHtmxContext()
+        ) {
             $options = array_merge($options, [
                 'class' => 'g-recaptcha',
                 'data-sitekey' => $key,

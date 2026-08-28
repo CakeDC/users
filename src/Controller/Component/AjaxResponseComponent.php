@@ -17,6 +17,7 @@ use Cake\Controller\Component;
 use Cake\Controller\Controller;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\EventInterface;
+use CakeDC\Users\UsersPlugin;
 use CakeDC\Users\Utility\AjaxFlash;
 
 /**
@@ -41,7 +42,7 @@ class AjaxResponseComponent extends Component
     {
         return [
             'Controller.beforeRender' => 'beforeRender',
-            'Users.Authentication.afterLoginFailure' => 'afterLoginFailure',
+            UsersPlugin::EVENT_AFTER_LOGIN_FAILURE => 'afterLoginFailure',
         ];
     }
 
@@ -91,7 +92,12 @@ class AjaxResponseComponent extends Component
     public function beforeRender(EventInterface $event): void
     {
         $controller = $this->getController();
-        $controller->set('ajaxEnabled', $this->isHtmx());
+        // This component is only loaded while the feature is enabled, so the plugin's
+        // forms are always HTMX-enhanced. `ajaxFragment` tells a full-page render
+        // (which emits the outer #ajax-login-container swap target) from an HTMX
+        // fragment re-render (which is swapped *into* that container, so omits it).
+        $controller->set('ajaxEnabled', true);
+        $controller->set('ajaxFragment', $this->isHtmx());
 
         if ($this->isHtmx()) {
             $controller->viewBuilder()->setLayout('ajax');

@@ -1,3 +1,8 @@
+<?php // Full page wraps the form in the #ajax-login-container swap target; the HTMX
+      // fragment re-render (swapped *into* that container) omits the wrapper. ?>
+<?php if (($ajaxEnabled ?? false) && !($ajaxFragment ?? false)) : ?>
+<div id="ajax-login-container">
+<?php endif; ?>
 <div class="users form">
     <?= $this->Flash->render('auth') ?>
     <?= $this->Form->create($user, ($ajaxEnabled ?? false) ? [
@@ -33,3 +38,6 @@
     <?= $this->Form->button(__d('cake_d_c/users', 'Submit'), ['id' => 'btn-submit']); ?>
     <?= $this->Form->end() ?>
 </div>
+<?php if (($ajaxEnabled ?? false) && !($ajaxFragment ?? false)) : ?>
+</div>
+<?php endif; ?>

@@ -40,15 +40,20 @@ class AjaxResponseComponentTest extends TestCase
 
         $this->assertSame('ajax', $controller->viewBuilder()->getLayout());
         $this->assertTrue($controller->viewBuilder()->getVar('ajaxEnabled'));
+        // An HTMX request re-renders only the fragment, so the outer wrapper is omitted.
+        $this->assertTrue($controller->viewBuilder()->getVar('ajaxFragment'));
     }
 
-    public function testNormalRequestSetsAjaxEnabledFalseAndNoJsonView(): void
+    public function testNormalRequestKeepsHtmlViewAndMarksFullPage(): void
     {
         [$controller, $component] = $this->makeComponent(new ServerRequest());
 
         $component->beforeRender(new Event('Controller.beforeRender', $controller));
 
-        $this->assertFalse($controller->viewBuilder()->getVar('ajaxEnabled'));
+        // The component is only loaded while the feature is enabled, so the forms are
+        // always HTMX-enhanced; a full page renders the wrapper (ajaxFragment false).
+        $this->assertTrue($controller->viewBuilder()->getVar('ajaxEnabled'));
+        $this->assertFalse($controller->viewBuilder()->getVar('ajaxFragment'));
         $this->assertNotSame('Json', $controller->viewBuilder()->getClassName());
     }
 

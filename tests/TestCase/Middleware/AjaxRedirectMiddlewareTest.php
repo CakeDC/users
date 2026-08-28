@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Test\TestCase\Middleware;
 
+use Cake\Core\Configure;
 use Cake\Http\Response;
 use Cake\Http\ServerRequestFactory;
 use Cake\TestSuite\TestCase;
@@ -24,7 +25,8 @@ class AjaxRedirectMiddlewareTest extends TestCase
     protected function pluginRequest(string $url, array $headers = [])
     {
         $request = ServerRequestFactory::fromGlobals(['REQUEST_URI' => $url])
-            ->withParam('plugin', 'CakeDC/Users');
+            ->withParam('plugin', 'CakeDC/Users')
+            ->withParam('controller', 'Users');
         foreach ($headers as $name => $value) {
             $request = $request->withHeader($name, $value);
         }
@@ -133,6 +135,39 @@ class AjaxRedirectMiddlewareTest extends TestCase
     public function testOutOfPluginScopeIsPassedThrough(): void
     {
         $request = ServerRequestFactory::fromGlobals(['REQUEST_URI' => '/articles'])
+            ->withHeader('HX-Request', 'true');
+        $response = (new AjaxRedirectMiddleware())->process($request, $this->redirectHandler('/x'));
+
+        $this->assertSame(302, $response->getStatusCode());
+        $this->assertSame('', $response->getHeaderLine('HX-Redirect'));
+    }
+
+    public function testCustomUsersControllerIsConverted(): void
+    {
+        // The scope honors a custom `Users.controller` (here an app controller with
+        // no plugin), so its redirects are still converted.
+        $original = Configure::read('Users.controller');
+        Configure::write('Users.controller', 'MyUsers');
+        try {
+            $request = ServerRequestFactory::fromGlobals(['REQUEST_URI' => '/login'])
+                ->withParam('controller', 'MyUsers')
+                ->withHeader('HX-Request', 'true');
+            $response = (new AjaxRedirectMiddleware())->process($request, $this->redirectHandler('/dashboard'));
+
+            $this->assertSame(200, $response->getStatusCode());
+            $this->assertSame('/dashboard', $response->getHeaderLine('HX-Redirect'));
+        } finally {
+            Configure::write('Users.controller', $original);
+        }
+    }
+
+    public function testOtherPluginControllerIsNotConverted(): void
+    {
+        // Another controller in the plugin (e.g. SocialAccounts) is out of scope now
+        // that conversion is narrowed to the configured Users controller only.
+        $request = ServerRequestFactory::fromGlobals(['REQUEST_URI' => '/social-accounts'])
+            ->withParam('plugin', 'CakeDC/Users')
+            ->withParam('controller', 'SocialAccounts')
             ->withHeader('HX-Request', 'true');
         $response = (new AjaxRedirectMiddleware())->process($request, $this->redirectHandler('/x'));
 

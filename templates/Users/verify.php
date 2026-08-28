@@ -1,3 +1,8 @@
+<?php // Full page wraps the form in the #ajax-login-container swap target; the HTMX
+      // fragment re-render (swapped *into* that container) omits the wrapper. ?>
+<?php if (($ajaxEnabled ?? false) && !($ajaxFragment ?? false)) : ?>
+<div id="ajax-login-container">
+<?php endif; ?>
 <div class="container">
     <div class="row">
         <div class="col-xs-offset-1 col-xs-10 col-sm-offset-2 col-sm-8 col-md-6 col-md-offset-3">
@@ -22,3 +27,6 @@
         </div>
     </div>
 </div>
+<?php if (($ajaxEnabled ?? false) && !($ajaxFragment ?? false)) : ?>
+</div>
+<?php endif; ?>

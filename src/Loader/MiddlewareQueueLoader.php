@@ -52,10 +52,15 @@ class MiddlewareQueueLoader
         AuthenticationServiceProviderInterface $authenticationServiceProvider,
         AuthorizationServiceProviderInterface $authorizationServiceProvider,
     ) {
+        // Ajax middleware must wrap the authentication, two-factor and authorization
+        // middleware so it can rewrite the redirects THEY emit (e.g. a successful
+        // login redirecting into the two-factor `verify` action, or an unauthorized
+        // access redirecting to login) into JSON / HX-Redirect responses. Loading it
+        // first makes it the outermost of the plugin middleware.
+        $this->loadAjaxMiddleware($middlewareQueue);
         $this->loadSocialMiddleware($middlewareQueue);
         $this->loadAuthenticationMiddleware($middlewareQueue, $authenticationServiceProvider);
         $this->load2faMiddleware($middlewareQueue);
-        $this->loadAjaxMiddleware($middlewareQueue);
 
         return $this->loadAuthorizationMiddleware($middlewareQueue, $authorizationServiceProvider);
     }

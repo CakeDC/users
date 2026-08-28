@@ -16,6 +16,7 @@ namespace CakeDC\Users\Test\TestCase\Controller;
 use Cake\Core\Configure;
 use Cake\Event\EventManager;
 use Cake\Http\ServerRequest;
+use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use CakeDC\Users\Controller\UsersController;
@@ -145,7 +146,7 @@ class AjaxIntegrationTest extends TestCase
     {
         $this->enableAjax();
         // Authenticate as a known fixture user.
-        $user = \Cake\ORM\TableRegistry::getTableLocator()
+        $user = TableRegistry::getTableLocator()
             ->get('CakeDC/Users.Users')
             ->get('00000000-0000-0000-0000-000000000002');
         $this->session(['Auth' => $user]);
