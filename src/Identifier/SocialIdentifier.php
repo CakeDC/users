@@ -21,9 +21,6 @@ use CakeDC\Users\UsersPlugin;
 
 class SocialIdentifier extends AbstractIdentifier
 {
-    /**
-     * @use \Cake\Event\EventDispatcherTrait<\CakeDC\Users\Identifier\SocialIdentifier>
-     */
     use EventDispatcherTrait;
     use LocatorAwareTrait;
 

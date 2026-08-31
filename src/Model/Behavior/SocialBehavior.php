@@ -31,9 +31,6 @@ use InvalidArgumentException;
  */
 class SocialBehavior extends BaseTokenBehavior
 {
-    /**
-     * @use \Cake\Event\EventDispatcherTrait<\CakeDC\Users\Model\Behavior\SocialBehavior>
-     */
     use EventDispatcherTrait;
     use RandomStringTrait;
 
