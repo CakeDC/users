@@ -12,9 +12,18 @@
 use Cake\Core\Configure;
 
 ?>
+<?php // Full page wraps the form in the #ajax-login-container swap target; the HTMX
+      // fragment re-render (swapped *into* that container) omits the wrapper. ?>
+<?php if (($ajaxEnabled ?? false) && !($ajaxFragment ?? false)) : ?>
+<div id="ajax-login-container">
+<?php endif; ?>
 <div class="users form">
     <?= $this->Flash->render('auth') ?>
-    <?= $this->Form->create() ?>
+    <?= $this->Form->create(null, ($ajaxEnabled ?? false) ? [
+        'hx-post' => $this->Url->build(['action' => 'login']),
+        'hx-target' => '#ajax-login-container',
+        'hx-swap' => 'innerHTML',
+    ] : []) ?>
     <fieldset>
         <legend><?= __d('cake_d_c/users', 'Please enter your username and password') ?></legend>
         <?= $this->Form->control('username', ['label' => __d('cake_d_c/users', 'Username'), 'required' => true, 'autofocus' => 'autofocus']) ?>
@@ -52,3 +61,6 @@ use Cake\Core\Configure;
     <?= $this->User->button(__d('cake_d_c/users', 'Login')); ?>
     <?= $this->Form->end() ?>
 </div>
+<?php if (($ajaxEnabled ?? false) && !($ajaxFragment ?? false)) : ?>
+</div>
+<?php endif; ?>

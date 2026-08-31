@@ -137,6 +137,14 @@ $config = [
         ],
         // Avatar placeholder
         'Avatar' => ['placeholder' => 'CakeDC/Users.avatar_placeholder.png'],
+        'Ajax' => [
+            // Master opt-in switch. When false the AjaxResponseComponent and
+            // AjaxRedirectMiddleware are never loaded; behavior is unchanged.
+            'enabled' => false,
+            // Skip FormProtection for JSON-negotiated requests (field-locking is
+            // meaningless without a server-rendered form). CSRF stays on via header.
+            'skipFormProtectionForJson' => true,
+        ],
         'RememberMe' => [
             // configure Remember Me component
             'active' => true,

@@ -23,6 +23,7 @@ Documentation
 * [Two Factor Authenticator](Documentation/Two-Factor-Authenticator.md)
 * [Webauthn Two-Factor Authentication (Yubico Key compatible)](Documentation/WebauthnTwoFactorAuthenticator.md)
 * [Magic Link](Documentation/MagicLink.md)
+* [Ajax, JSON & HTMX Responses](Documentation/AjaxAndHtmx.md)
 * [UserHelper](Documentation/UserHelper.md)
 * [AuthLinkHelper](Documentation/AuthLinkHelper.md)
 * [Events](Documentation/Events.md)
@@ -164,6 +165,18 @@ I want to
       ```php
         'Users.RememberMe.active' => false,
       ```
+  </details>
+
+  * <details>
+      <summary>Ajax / JSON / HTMX responses</summary>
+
+      Add this to your config/users.php file to enable JSON and HTMX responses (disabled by default):
+
+      ```php
+        'Users.Ajax.enabled' => true,
+      ```
+
+      See [Ajax, JSON & HTMX Responses](Documentation/AjaxAndHtmx.md) for details.
   </details>
 
 - allow access to

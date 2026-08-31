@@ -22,6 +22,7 @@ use Cake\Core\Configure;
 use Cake\Http\MiddlewareQueue;
 use CakeDC\Auth\Authentication\TwoFactorProcessorLoader;
 use CakeDC\Auth\Middleware\TwoFactorMiddleware;
+use CakeDC\Users\Middleware\AjaxRedirectMiddleware;
 use CakeDC\Users\Middleware\SocialAuthMiddleware;
 use CakeDC\Users\Middleware\SocialEmailMiddleware;
 
@@ -51,6 +52,12 @@ class MiddlewareQueueLoader
         AuthenticationServiceProviderInterface $authenticationServiceProvider,
         AuthorizationServiceProviderInterface $authorizationServiceProvider,
     ) {
+        // Ajax middleware must wrap the authentication, two-factor and authorization
+        // middleware so it can rewrite the redirects THEY emit (e.g. a successful
+        // login redirecting into the two-factor `verify` action, or an unauthorized
+        // access redirecting to login) into JSON / HX-Redirect responses. Loading it
+        // first makes it the outermost of the plugin middleware.
+        $this->loadAjaxMiddleware($middlewareQueue);
         $this->loadSocialMiddleware($middlewareQueue);
         $this->loadAuthenticationMiddleware($middlewareQueue, $authenticationServiceProvider);
         $this->load2faMiddleware($middlewareQueue);
@@ -99,6 +106,19 @@ class MiddlewareQueueLoader
         $processors = TwoFactorProcessorLoader::processors();
         if (collection($processors)->some(fn($processor) => $processor->enabled())) {
             $middlewareQueue->add(TwoFactorMiddleware::class);
+        }
+    }
+
+    /**
+     * Load AjaxRedirectMiddleware when 'Users.Ajax.enabled' is true.
+     *
+     * @param \Cake\Http\MiddlewareQueue $middlewareQueue queue of middleware
+     * @return void
+     */
+    protected function loadAjaxMiddleware(MiddlewareQueue $middlewareQueue)
+    {
+        if (Configure::read('Users.Ajax.enabled')) {
+            $middlewareQueue->add(new AjaxRedirectMiddleware());
         }
     }
 
