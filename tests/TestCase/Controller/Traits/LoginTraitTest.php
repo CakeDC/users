@@ -288,9 +288,10 @@ class LoginTraitTest extends BaseTrait
 
     public function testLoginRehashWithAuthenticatorStructure()
     {
+        // default configuration of the plugin (config/users.php)
         \Cake\Core\Configure::write('Auth.PasswordRehash', [
             'authenticators' => [
-                'Form' => 'Authentication.Password',
+                'Form' => 'Password',
             ],
         ]);
 
@@ -309,16 +310,13 @@ class LoginTraitTest extends BaseTrait
             ->method('needsPasswordRehash')
             ->willReturn(true);
 
-        $identifierCollection = new IdentifierCollection([]);
-        $identifierCollection->set('Authentication.Password', $passwordIdentifier);
+        // 'Authentication.Password' configured as identifier of the Form authenticator is loaded as 'Password'
+        $identifierCollection = new IdentifierCollection(['Authentication.Password' => []]);
+        $this->assertTrue($identifierCollection->has('Password'));
+        $identifierCollection->set('Password', $passwordIdentifier);
 
-        $formAuthenticator = $this->getMockBuilder(FormAuthenticator::class)
-            ->disableOriginalConstructor()
-            ->addMethods(['getIdentifier'])
-            ->getMock();
-        $formAuthenticator->expects($this->any())
-            ->method('getIdentifier')
-            ->willReturn($identifierCollection);
+        // the real authenticator, it proxies getIdentifier() to the base authenticator via __call
+        $formAuthenticator = new FormAuthenticator($identifierCollection);
 
         $authenticatorCollection = $this->getMockBuilder(AuthenticatorCollection::class)
             ->disableOriginalConstructor()
@@ -392,7 +390,7 @@ class LoginTraitTest extends BaseTrait
             'component' => 'CakeDC/Users.Login',
             'targetAuthenticator' => FormAuthenticator::class,
             'PasswordRehash' => [
-                'authenticators' => ['Form' => 'Authentication.Password'],
+                'authenticators' => ['Form' => 'Password'],
             ],
         ];
 
