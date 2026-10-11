@@ -210,7 +210,8 @@ class LoginComponent extends Component
         }
 
         $authenticationProvider = $service->getAuthenticationProvider();
-        if (!$authenticationProvider || !method_exists($authenticationProvider, 'getIdentifier')) {
+        // is_callable: CakeDC\Auth\Authenticator\FormAuthenticator proxies getIdentifier() via __call
+        if (!$authenticationProvider || !is_callable([$authenticationProvider, 'getIdentifier'])) {
             return;
         }
 
