@@ -16,9 +16,13 @@ namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 use Authentication\PasswordHasher\PasswordHasherFactory;
 use Cake\Core\Configure;
 use Cake\Event\Event;
+use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 use Cake\TestSuite\TestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\DataProvider;
 
+#[AllowMockObjectsWithoutExpectations]
 class PasswordManagementTraitTest extends BaseTrait
 {
     /**
@@ -37,18 +41,9 @@ class PasswordManagementTraitTest extends BaseTrait
         $this->traitMockMethods = ['set', 'redirect', 'validate', 'log', 'dispatchEvent', 'getUsersTable'];
         $this->traitMockAddMethods = [];
         $this->mockDefaultEmail = true;
-        $this->skipUsersMock = true;
         parent::setUp();
 
         $this->Trait->setRequest(new ServerRequest());
-        $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\UsersController')
-            ->onlyMethods($this->traitMockMethods)
-            ->setConstructorArgs([new ServerRequest()])
-            ->getMock();
-
-        $this->Trait->expects($this->any())
-            ->method('getUsersTable')
-            ->will($this->returnValue($this->table));
     }
 
     /**
@@ -66,24 +61,23 @@ class PasswordManagementTraitTest extends BaseTrait
      *
      * @return void
      */
-    public function testChangePasswordHappy()
+    public function testChangePasswordHappy(): void
     {
         $this->assertEquals('12345', $this->table->get('00000000-0000-0000-0000-000000000001')->password);
-        $this->_mockRequestPost(['post', 'put']);
-        $this->_mockAuthLoggedIn();
-        $this->_mockFlash();
+        $this->mockRequestPost(['post', 'put']);
+        $this->mockAuthLoggedIn();
+        $flash = $this->mockFlash();
         $this->Trait->getRequest()->expects($this->once())
                 ->method('getData')
-                ->will($this->returnValue([
+                ->willReturn([
                     'password' => 'new',
                     'password_confirm' => 'new',
-                ]));
+                ]);
         $this->Trait->expects($this->once())
                 ->method('redirect')
                 ->with(['prefix' => false, 'plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile']);
-        $this->Trait->Flash->expects($this->any())
-            ->method('success')
-            ->with('Password has been changed successfully');
+        $flash->expects('set')
+            ->with('Password has been changed successfully', ['element' => 'success']);
         $this->Trait->changePassword();
         $hasher = PasswordHasherFactory::build('Authentication.Default');
         $this->assertTrue($hasher->check('new', $this->table->get('00000000-0000-0000-0000-000000000001')->password));
@@ -94,21 +88,23 @@ class PasswordManagementTraitTest extends BaseTrait
      *
      * @return void
      */
-    public function testChangePasswordWithError()
+    public function testChangePasswordWithError(): void
     {
         $this->assertEquals('12345', $this->table->get('00000000-0000-0000-0000-000000000001')->password);
-        $this->_mockRequestPost(['post', 'put']);
-        $this->_mockAuthLoggedIn();
-        $this->_mockFlash();
+        $this->mockRequestPost(['post', 'put']);
+        $this->mockAuthLoggedIn();
+        $flash = $this->mockFlash();
         $this->Trait->getRequest()->expects($this->once())
                 ->method('getData')
-                ->will($this->returnValue([
+                ->willReturn([
                     'password' => 'new',
                     'password_confirm' => 'wrong_new',
-                ]));
-        $this->Trait->Flash->expects($this->once())
-            ->method('error')
-            ->with('Password could not be changed');
+                ]);
+        $flash->expects('set')
+            ->with('Password could not be changed', ['element' => 'error']);
+        $this->Trait->expects($this->exactly(2))
+            ->method('set')
+            ->willReturn($this->Trait);
         $this->Trait->changePassword();
     }
 
@@ -117,31 +113,28 @@ class PasswordManagementTraitTest extends BaseTrait
      *
      * @return void
      */
-    public function testChangePasswordWithAfterChangeEvent()
+    public function testChangePasswordWithAfterChangeEvent(): void
     {
         $this->assertEquals('12345', $this->table->get('00000000-0000-0000-0000-000000000001')->password);
-        $this->_mockRequestPost(['post', 'put']);
-        $this->_mockAuthLoggedIn();
-        $this->_mockFlash();
+        $this->mockRequestPost(['post', 'put']);
+        $this->mockAuthLoggedIn();
+        $this->mockFlash();
         $this->Trait->getRequest()->expects($this->once())
             ->method('getData')
-            ->will($this->returnValue([
+            ->willReturn([
                 'password' => 'new',
                 'password_confirm' => 'new',
-            ]));
+            ]);
         $event = new Event('event');
         $event->setResult([
             'action' => 'newAction',
         ]);
         $this->Trait->expects($this->once())
             ->method('dispatchEvent')
-            ->will($this->returnValue($event));
+            ->willReturn($event);
         $this->Trait->expects($this->once())
             ->method('redirect')
             ->with(['action' => 'newAction']);
-        $this->Trait->Flash->expects($this->any())
-            ->method('success')
-            ->with('Password has been changed successfully');
         $this->Trait->changePassword();
         $hasher = PasswordHasherFactory::build('Authentication.Default');
         $this->assertTrue($hasher->check('new', $this->table->get('00000000-0000-0000-0000-000000000001')->password));
@@ -152,25 +145,27 @@ class PasswordManagementTraitTest extends BaseTrait
      *
      * @return void
      */
-    public function testChangePasswordWithSamePassword()
+    public function testChangePasswordWithSamePassword(): void
     {
         $this->assertEquals(
             '$2y$10$IPPgJNSfvATsMBLbv/2r8OtpyTBibyM1g5GDxD4PivW9qBRwRkRbC',
             $this->table->get('00000000-0000-0000-0000-000000000006')->password,
         );
-        $this->_mockRequestPost(['post', 'put']);
-        $this->_mockAuthLoggedIn(['id' => '00000000-0000-0000-0000-000000000006', 'password' => '$2y$10$IPPgJNSfvATsMBLbv/2r8OtpyTBibyM1g5GDxD4PivW9qBRwRkRbC']);
-        $this->_mockFlash();
+        $this->mockRequestPost(['post', 'put']);
+        $this->mockAuthLoggedIn(['id' => '00000000-0000-0000-0000-000000000006', 'password' => '$2y$10$IPPgJNSfvATsMBLbv/2r8OtpyTBibyM1g5GDxD4PivW9qBRwRkRbC']);
+        $flash = $this->mockFlash();
         $this->Trait->getRequest()->expects($this->once())
             ->method('getData')
-            ->will($this->returnValue([
+            ->willReturn([
                 'current_password' => '12345',
                 'password' => '12345',
                 'password_confirm' => '12345',
-            ]));
-        $this->Trait->Flash->expects($this->once())
-            ->method('error')
-            ->with('You cannot use the current password as the new one');
+            ]);
+        $flash->expects('set')
+            ->with('You cannot use the current password as the new one', ['element' => 'error']);
+        $this->Trait->expects($this->exactly(2))
+            ->method('set')
+            ->willReturn($this->Trait);
         $this->Trait->changePassword();
     }
 
@@ -179,21 +174,23 @@ class PasswordManagementTraitTest extends BaseTrait
      *
      * @return void
      */
-    public function testChangePasswordWithEmptyCurrentPassword()
+    public function testChangePasswordWithEmptyCurrentPassword(): void
     {
-        $this->_mockRequestPost(['post', 'put']);
-        $this->_mockAuthLoggedIn(['id' => '00000000-0000-0000-0000-000000000006', 'password' => '$2y$10$IPPgJNSfvATsMBLbv/2r8OtpyTBibyM1g5GDxD4PivW9qBRwRkRbC']);
-        $this->_mockFlash();
+        $this->mockRequestPost(['post', 'put']);
+        $this->mockAuthLoggedIn(['id' => '00000000-0000-0000-0000-000000000006', 'password' => '$2y$10$IPPgJNSfvATsMBLbv/2r8OtpyTBibyM1g5GDxD4PivW9qBRwRkRbC']);
+        $flash = $this->mockFlash();
         $this->Trait->getRequest()->expects($this->once())
             ->method('getData')
-            ->will($this->returnValue([
+            ->willReturn([
                 'current_password' => '',
                 'password' => '54321',
                 'password_confirm' => '54321',
-            ]));
-        $this->Trait->Flash->expects($this->once())
-            ->method('error')
-            ->with('Password could not be changed');
+            ]);
+        $flash->expects('set')
+            ->with('Password could not be changed', ['element' => 'error']);
+        $this->Trait->expects($this->exactly(2))
+            ->method('set')
+            ->willReturn($this->Trait);
         $this->Trait->changePassword();
     }
 
@@ -202,25 +199,27 @@ class PasswordManagementTraitTest extends BaseTrait
      *
      * @return void
      */
-    public function testChangePasswordWithWrongCurrentPassword()
+    public function testChangePasswordWithWrongCurrentPassword(): void
     {
         $this->assertEquals(
             '$2y$10$IPPgJNSfvATsMBLbv/2r8OtpyTBibyM1g5GDxD4PivW9qBRwRkRbC',
             $this->table->get('00000000-0000-0000-0000-000000000006')->password,
         );
-        $this->_mockRequestPost(['post', 'put']);
-        $this->_mockAuthLoggedIn(['id' => '00000000-0000-0000-0000-000000000006', 'password' => '$2y$10$IPPgJNSfvATsMBLbv/2r8OtpyTBibyM1g5GDxD4PivW9qBRwRkRbC']);
-        $this->_mockFlash();
+        $this->mockRequestPost(['post', 'put']);
+        $this->mockAuthLoggedIn(['id' => '00000000-0000-0000-0000-000000000006', 'password' => '$2y$10$IPPgJNSfvATsMBLbv/2r8OtpyTBibyM1g5GDxD4PivW9qBRwRkRbC']);
+        $flash = $this->mockFlash();
         $this->Trait->getRequest()->expects($this->once())
             ->method('getData')
-            ->will($this->returnValue([
+            ->willReturn([
                 'current_password' => 'wrong-password',
                 'password' => '12345',
                 'password_confirm' => '12345',
-            ]));
-        $this->Trait->Flash->expects($this->once())
-            ->method('error')
-            ->with('The current password does not match');
+            ]);
+        $flash->expects('set')
+            ->with('The current password does not match', ['element' => 'error']);
+        $this->Trait->expects($this->exactly(2))
+            ->method('set')
+            ->willReturn($this->Trait);
         $this->Trait->changePassword();
     }
 
@@ -229,20 +228,22 @@ class PasswordManagementTraitTest extends BaseTrait
      *
      * @return void
      */
-    public function testChangePasswordWithInvalidUser()
+    public function testChangePasswordWithInvalidUser(): void
     {
-        $this->_mockRequestPost(['post', 'put']);
-        $this->_mockAuthLoggedIn(['id' => '12312312-0000-0000-0000-000000000002', 'password' => 'invalid-pass']);
-        $this->_mockFlash();
+        $this->mockRequestPost(['post', 'put']);
+        $this->mockAuthLoggedIn(['id' => '12312312-0000-0000-0000-000000000002', 'password' => 'invalid-pass']);
+        $flash = $this->mockFlash();
         $this->Trait->getRequest()->expects($this->once())
                 ->method('getData')
-                ->will($this->returnValue([
+                ->willReturn([
                     'password' => 'new',
                     'password_confirm' => 'new',
-                ]));
-        $this->Trait->Flash->expects($this->once())
-            ->method('error')
-            ->with('User was not found');
+                ]);
+        $flash->expects('set')
+            ->with('User was not found', ['element' => 'error']);
+        $this->Trait->expects($this->exactly(2))
+            ->method('set')
+            ->willReturn($this->Trait);
         $this->Trait->changePassword();
     }
 
@@ -251,24 +252,26 @@ class PasswordManagementTraitTest extends BaseTrait
      *
      * @return void
      */
-    public function testChangePasswordGetLoggedIn()
+    public function testChangePasswordGetLoggedIn(): void
     {
         $request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->onlyMethods(['is', 'referer', 'getData'])
             ->getMock();
         $this->Trait->setRequest($request);
-        $this->Trait->getRequest()->expects($this->any())
+        $this->Trait->getRequest()->expects($this->once())
             ->method('is')
             ->with(['post', 'put'])
-            ->will($this->returnValue(false));
-        $this->_mockAuthLoggedIn();
-        $this->Trait->expects($this->any())
+            ->willReturn(false);
+        $this->mockAuthLoggedIn();
+        $this->Trait->expects($this->exactly(2))
                 ->method('set')
-                ->will($this->returnCallback(function ($param1, $param2 = null) {
+                ->willReturnCallback(function ($param1, $param2 = null) {
                     if ($param1 === 'validatePassword') {
                         TestCase::assertEquals($param2, true);
                     }
-                }));
+
+                    return $this->Trait;
+                });
         $this->Trait->changePassword();
     }
 
@@ -277,30 +280,32 @@ class PasswordManagementTraitTest extends BaseTrait
      *
      * @return void
      */
-    public function testChangePasswordGetNotLoggedInInsideResetPasswordFlow()
+    public function testChangePasswordGetNotLoggedInInsideResetPasswordFlow(): void
     {
         $methods = ['is', 'referer', 'getData', 'getSession'];
         $request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->onlyMethods($methods)
             ->getMock();
         $this->Trait->setRequest($request);
-        $this->Trait->getRequest()->expects($this->any())
+        $this->Trait->getRequest()->expects($this->once())
             ->method('is')
             ->with(['post', 'put'])
-            ->will($this->returnValue(false));
+            ->willReturn(false);
 
-        $this->_mockAuthentication();
-        $this->_mockFlash();
-        $this->_mockSession([
+        $this->mockAuthentication(null, [], false);
+        $this->mockFlash();
+        $this->mockSession([
             Configure::read('Users.Key.Session.resetPasswordUserId') => '00000000-0000-0000-0000-000000000001',
         ]);
-        $this->Trait->expects($this->any())
+        $this->Trait->expects($this->exactly(2))
             ->method('set')
-            ->will($this->returnCallback(function ($param1, $param2 = null) {
+            ->willReturnCallback(function ($param1, $param2 = null) {
                 if ($param1 === 'validatePassword') {
                     TestCase::assertEquals($param2, false);
                 }
-            }));
+
+                return $this->Trait;
+            });
         $this->Trait->changePassword();
     }
 
@@ -309,14 +314,16 @@ class PasswordManagementTraitTest extends BaseTrait
      *
      * @return void
      */
-    public function testChangePasswordGetNotLoggedInOutsideResetPasswordFlow()
+    public function testChangePasswordGetNotLoggedInOutsideResetPasswordFlow(): void
     {
-        $this->_mockRequestGet();
-        $this->_mockAuthentication();
-        $this->_mockFlash();
-        $this->Trait->Flash->expects($this->once())
-            ->method('error')
-            ->with('User was not found');
+        $this->mockRequestGet();
+        $this->mockAuthentication(null, [], false);
+        $flash = $this->mockFlash();
+        $flash->expects('set')
+            ->with('User was not found', ['element' => 'error']);
+        $this->Trait->expects($this->once())
+            ->method('redirect')
+            ->willReturn(new Response());
         $this->Trait->changePassword();
     }
 
@@ -325,7 +332,7 @@ class PasswordManagementTraitTest extends BaseTrait
      *
      * @return void
      */
-    public function testResetPassword()
+    public function testResetPassword(): void
     {
         $token = 'token';
         $this->Trait->expects($this->once())
@@ -339,13 +346,16 @@ class PasswordManagementTraitTest extends BaseTrait
      *
      * @return void
      */
-    public function testRequestResetPasswordGet()
+    public function testRequestResetPasswordGet(): void
     {
         $this->assertEquals('ae93ddbe32664ce7927cf0c5c5a5e59d', $this->table->get('00000000-0000-0000-0000-000000000001')->token);
-        $this->_mockRequestGet();
-        $this->_mockFlash();
+        $this->mockRequestGet();
+        $this->mockFlash();
         $this->Trait->getRequest()->expects($this->never())
                 ->method('getData');
+        $this->Trait->expects($this->once())
+                ->method('set')
+                ->willReturn($this->Trait);
         $this->Trait->requestResetPassword();
     }
 
@@ -354,20 +364,23 @@ class PasswordManagementTraitTest extends BaseTrait
      *
      * @return void
      */
-    public function testRequestPasswordHappy()
+    public function testRequestPasswordHappy(): void
     {
         $this->assertEquals('6614f65816754310a5f0553436dd89e9', $this->table->get('00000000-0000-0000-0000-000000000002')->token);
-        $this->_mockRequestPost();
-        $this->_mockAuthLoggedIn();
-        $this->_mockFlash();
+        $this->mockRequestPost();
+        $this->mockAuthLoggedIn();
+        $flash = $this->mockFlash();
         $reference = 'user-2';
         $this->Trait->getRequest()->expects($this->once())
                 ->method('getData')
                 ->with('reference')
-                ->will($this->returnValue($reference));
-        $this->Trait->Flash->expects($this->any())
-            ->method('success')
-            ->with('Please check your email to continue with password reset process');
+                ->willReturn($reference);
+        $flash->expects('set')
+            ->with('If the account is valid, the system will send an instructional email to the address on record.', ['element' => 'success']);
+        $this->Trait->expects($this->once())
+                ->method('redirect')
+                ->with(['action' => 'login'])
+                ->willReturn(new Response());
         $this->Trait->requestResetPassword();
         $this->assertNotEquals('xxx', $this->table->get('00000000-0000-0000-0000-000000000002')->token);
     }
@@ -377,19 +390,18 @@ class PasswordManagementTraitTest extends BaseTrait
      *
      * @return void
      */
-    public function testRequestPasswordInvalidUser()
+    public function testRequestPasswordInvalidUser(): void
     {
-        $this->_mockRequestPost();
-        $this->_mockAuthLoggedIn(['id' => 'invalid-id', 'password' => 'invalid-pass']);
-        $this->_mockFlash();
+        $this->mockRequestPost();
+        $this->mockAuthLoggedIn(['id' => 'invalid-id', 'password' => 'invalid-pass']);
+        $flash = $this->mockFlash();
         $reference = '12312312-0000-0000-0000-000000000002';
         $this->Trait->getRequest()->expects($this->once())
                 ->method('getData')
                 ->with('reference')
-                ->will($this->returnValue($reference));
-        $this->Trait->Flash->expects($this->any())
-            ->method('error')
-            ->with('User 12312312-0000-0000-0000-000000000002 was not found');
+                ->willReturn($reference);
+        $flash->expects('set')
+            ->with('If the account is valid, the system will send an instructional email to the address on record.', ['element' => 'success']);
 
         $this->Trait->expects($this->never())
             ->method('redirect');
@@ -402,19 +414,18 @@ class PasswordManagementTraitTest extends BaseTrait
      *
      * @return void
      */
-    public function testRequestPasswordEmptyReference()
+    public function testRequestPasswordEmptyReference(): void
     {
-        $this->_mockRequestPost();
-        $this->_mockAuthLoggedIn(['id' => 'invalid-id', 'password' => 'invalid-pass']);
-        $this->_mockFlash();
+        $this->mockRequestPost();
+        $this->mockAuthLoggedIn(['id' => 'invalid-id', 'password' => 'invalid-pass']);
+        $flash = $this->mockFlash();
         $reference = '';
         $this->Trait->getRequest()->expects($this->once())
                 ->method('getData')
                 ->with('reference')
-                ->will($this->returnValue($reference));
-        $this->Trait->Flash->expects($this->any())
-            ->method('error')
-            ->with('There was an error please contact Administrator');
+                ->willReturn($reference);
+        $flash->expects('set')
+            ->with('There was an error please contact Administrator', ['element' => 'error']);
 
         $this->Trait->expects($this->never())
             ->method('redirect');
@@ -422,35 +433,31 @@ class PasswordManagementTraitTest extends BaseTrait
         $this->assertNull($actual);
     }
 
-    /**
-     * @dataProvider ensureUserActiveForResetPasswordFeature
-     * @return void
-     */
-    public function testEnsureUserActiveForResetPasswordFeature($ensureActive)
+    #[DataProvider('ensureUserActiveForResetPasswordFeature')]
+    public function testEnsureUserActiveForResetPasswordFeature(bool $ensureActive): void
     {
-        $expectError = $this->any();
-
         if ($ensureActive) {
             Configure::write('Users.Registration.ensureActive', true);
-            $expectError = $this->once();
         }
 
         $this->assertEquals('ae93ddbe32664ce7927cf0c5c5a5e59d', $this->table->get('00000000-0000-0000-0000-000000000001')->token);
-        $this->_mockRequestPost();
-        $this->_mockFlash();
+        $this->mockRequestPost();
+        $flash = $this->mockFlash();
         $reference = 'user-1';
         $this->Trait->getRequest()->expects($this->once())
                 ->method('getData')
                 ->with('reference')
-                ->will($this->returnValue($reference));
-        $this->Trait->Flash->expects($expectError)
-            ->method('success')
-            ->with('If the account is valid, the system will send an instructional email to the address on record.');
+                ->willReturn($reference);
+        $flash->expects('set')
+            ->with('If the account is valid, the system will send an instructional email to the address on record.', ['element' => 'success']);
+        $this->Trait->expects($this->once())
+                ->method('set')
+                ->willReturn($this->Trait);
         $this->Trait->requestResetPassword();
         $this->assertNotEquals('xxx', $this->table->get('00000000-0000-0000-0000-000000000001')->token);
     }
 
-    public static function ensureUserActiveForResetPasswordFeature()
+    public static function ensureUserActiveForResetPasswordFeature(): array
     {
         $ensureActive = true;
         $defaultBehavior = false;
@@ -461,20 +468,14 @@ class PasswordManagementTraitTest extends BaseTrait
         ];
     }
 
-    /**
-     * @dataProvider ensureOneTimePasswordAuthenticatorResets
-     * @return void
-     */
-    public function testRequestGoogleAuthTokenResetWithValidUser($userId, $entityId, $method, $msg)
+    #[DataProvider('ensureOneTimePasswordAuthenticatorResets')]
+    public function testRequestGoogleAuthTokenResetWithValidUser(mixed $userId, mixed $entityId, string $method, string $msg): void
     {
-        $this->_mockRequestPost();
-        $this->_mockFlash();
-        $this->Trait->Flash->expects($this->any())
-            ->method($method)
-            ->with($msg);
-        $response = new \Cake\Http\Response();
+        $this->mockRequestPost();
+        $this->mockFlash();
+        $response = new Response();
         $response = $response->withLocation('/');
-        $this->Trait->expects($this->any())
+        $this->Trait->expects($this->once())
             ->method('redirect')
             ->willReturn($response);
 
@@ -482,7 +483,7 @@ class PasswordManagementTraitTest extends BaseTrait
         $this->assertSame($response, $actual);
     }
 
-    public static function ensureOneTimePasswordAuthenticatorResets()
+    public static function ensureOneTimePasswordAuthenticatorResets(): array
     {
         $error = 'error';
         $success = 'success';

@@ -60,14 +60,14 @@ class PasswordManagementTraitIntegrationTest extends TestCase
             'reference' => '4@example.com',
         ];
         $this->post('/users/request-reset-password', $data);
-        $this->assertRedirect('/login');
+        $this->assertRedirect(BASE_TEST_PATH . '/login');
         $this->assertFlashMessage('If the account is valid, the system will send an instructional email to the address on record.');
         $userAfter = $Table->find()->where(['email' => '4@example.com'])->firstOrFail();
         $this->assertNotEquals('token-4', $userAfter->token);
         $this->assertNotEmpty($userAfter->token);
 
         $this->get("/users/reset-password/{$userAfter->token}");
-        $this->assertRedirect('/users/change-password');
+        $this->assertRedirect(BASE_TEST_PATH . '/users/change-password');
 
         $fieldName = Configure::read('Users.Key.Session.resetPasswordUserId');
         $this->session([
@@ -86,7 +86,7 @@ class PasswordManagementTraitIntegrationTest extends TestCase
             'password' => '9080706050',
             'password_confirm' => '9080706050',
         ]);
-        $this->assertRedirect('/login');
+        $this->assertRedirect(BASE_TEST_PATH . '/login');
         $this->assertFlashMessage('Password has been changed successfully');
     }
 

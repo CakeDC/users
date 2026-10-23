@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Test\TestCase\Model\Behavior;
 
+use BadMethodCallException;
+use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Hash;
@@ -35,7 +37,7 @@ class AuthFinderBehaviorTest extends TestCase
     /**
      * @var \Cake\ORM\Table
      */
-    protected \Cake\ORM\Table $table;
+    protected Table $table;
 
     /**
      * @var AuthFinderBehavior
@@ -81,7 +83,7 @@ class AuthFinderBehaviorTest extends TestCase
      */
     public function testFindAuthBadMethodCallException()
     {
-        $this->expectException(\BadMethodCallException::class);
+        $this->expectException(BadMethodCallException::class);
         $this->expectExceptionMessage("Missing 'username' in options data");
         $this->table->find('auth');
     }

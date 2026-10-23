@@ -16,6 +16,7 @@ use Cake\TestSuite\TestCase;
 use CakeDC\Auth\Social\Mapper\Facebook;
 use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Identifier\SocialIdentifier;
+use League\OAuth2\Client\Token\AccessToken;
 
 class SocialIdentifierTest extends TestCase
 {
@@ -53,7 +54,7 @@ class SocialIdentifierTest extends TestCase
     {
         $identifier = new SocialIdentifier([]);
 
-        $Token = new \League\OAuth2\Client\Token\AccessToken([
+        $Token = new AccessToken([
             'access_token' => 'test-token',
             'expires' => 1490988496,
         ]);
@@ -110,7 +111,7 @@ class SocialIdentifierTest extends TestCase
      */
     public function testIdentifyErrorSocialLogin()
     {
-        $Token = new \League\OAuth2\Client\Token\AccessToken([
+        $Token = new AccessToken([
             'access_token' => 'test-token',
             'expires' => 1490988496,
         ]);
@@ -120,7 +121,7 @@ class SocialIdentifierTest extends TestCase
         ])->getMock();
         $identifier->expects($this->once())
             ->method('createOrGetUser')
-            ->will($this->returnValue(false));
+            ->willReturn(false);
 
         $data = [
             'token' => $Token,
@@ -160,7 +161,7 @@ class SocialIdentifierTest extends TestCase
      */
     public function testIdentifyNoEmail()
     {
-        $Token = new \League\OAuth2\Client\Token\AccessToken([
+        $Token = new AccessToken([
             'access_token' => 'test-token',
             'expires' => 1490988496,
         ]);

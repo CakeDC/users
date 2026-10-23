@@ -28,7 +28,7 @@ class UsersMailer extends Mailer
      * @param \Cake\Datasource\EntityInterface $user User entity
      * @return void
      */
-    protected function validation(EntityInterface $user, array $options = [])
+    protected function validation(EntityInterface $user, array $options = []): void
     {
         $firstName = isset($user['first_name']) ? $user['first_name'] . ', ' : '';
         // un-hide the token to be able to send it in the email content
@@ -65,7 +65,7 @@ class UsersMailer extends Mailer
      * @param \Cake\Datasource\EntityInterface $user User entity
      * @return void
      */
-    protected function resetPassword(EntityInterface $user, array $options = [])
+    protected function resetPassword(EntityInterface $user, array $options = []): void
     {
         $firstName = isset($user['first_name']) ? $user['first_name'] . ', ' : '';
         $subject = __d('cake_d_c/users', '{0}Your reset password link', $firstName);
@@ -103,7 +103,7 @@ class UsersMailer extends Mailer
      * @param \Cake\Datasource\EntityInterface $socialAccount SocialAccount entity
      * @return void
      */
-    protected function socialAccountValidation(EntityInterface $user, EntityInterface $socialAccount)
+    protected function socialAccountValidation(EntityInterface $user, EntityInterface $socialAccount): void
     {
         $firstName = isset($user['first_name']) ? $user['first_name'] . ', ' : '';
         // note: we control the space after the username in the previous line

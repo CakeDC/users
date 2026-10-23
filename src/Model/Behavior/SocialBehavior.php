@@ -31,9 +31,6 @@ use InvalidArgumentException;
  */
 class SocialBehavior extends BaseTokenBehavior
 {
-    /**
-     * @use \Cake\Event\EventDispatcherTrait<\CakeDC\Users\Model\Behavior\SocialBehavior>
-     */
     use EventDispatcherTrait;
     use RandomStringTrait;
 
@@ -42,14 +39,14 @@ class SocialBehavior extends BaseTokenBehavior
      *
      * @var bool
      */
-    protected $validateSocialAccount = true;
+    protected bool $validateSocialAccount = true;
 
     /**
      * Username field it can be modified via config
      *
      * @var string
      */
-    protected string $_username = 'username';
+    protected string $username = 'username';
 
     /**
      * Initialize an action instance
@@ -61,7 +58,7 @@ class SocialBehavior extends BaseTokenBehavior
     {
         $this->validateSocialAccount = (bool)Configure::read('Users.Social.validateSocialAccount');
         if (isset($config['username'])) {
-            $this->_username = (string)$config['username'];
+            $this->username = (string)$config['username'];
         }
 
         parent::initialize($config);
@@ -77,10 +74,10 @@ class SocialBehavior extends BaseTokenBehavior
      * @throws \CakeDC\Users\Exception\AccountNotActiveException
      * @return \Cake\Datasource\EntityInterface|mixed|bool
      */
-    public function socialLogin(array $data, array $options)
+    public function socialLogin(array $data, array $options): mixed
     {
         $reference = $data['id'] ?? null;
-        $existingAccount = $this->_table->SocialAccounts->find()
+        $existingAccount = $this->table->SocialAccounts->find()
                 ->where([
                     'SocialAccounts.reference' => $reference,
                     'SocialAccounts.provider' => $data['provider'] ?? null,
@@ -88,7 +85,7 @@ class SocialBehavior extends BaseTokenBehavior
                 ->contain(['Users'])
                 ->first();
         if (empty($existingAccount->user)) {
-            $user = $this->_createSocialUser($data, $options);
+            $user = $this->createSocialUser($data, $options);
             if (!empty($user->social_accounts[0])) {
                 $existingAccount = $user->social_accounts[0];
             } else {
@@ -100,15 +97,16 @@ class SocialBehavior extends BaseTokenBehavior
         } else {
             $user = $existingAccount->user;
             $accountData = $this->extractAccountData($data);
-            $this->_table->SocialAccounts->patchEntity($existingAccount, $accountData);
-            $this->_table->SocialAccounts->save($existingAccount);
+            $this->table->SocialAccounts->patchEntity($existingAccount, $accountData);
+            $this->table->SocialAccounts->save($existingAccount);
+            /** @var \Cake\Event\Event<\CakeDC\Users\Model\Behavior\SocialBehavior> $event */
             $event = $this->dispatchEvent(UsersPlugin::EVENT_SOCIAL_LOGIN_EXISTING_ACCOUNT, [
                 'userEntity' => $user,
                 'data' => $data,
             ]);
 
             if ($event->getResult() instanceof EntityInterface) {
-                $user = $this->_table->save($event->getResult());
+                $user = $this->table->save($event->getResult());
             }
         }
         if (!empty($existingAccount)) {
@@ -137,20 +135,24 @@ class SocialBehavior extends BaseTokenBehavior
      * @throws \CakeDC\Users\Exception\MissingEmailException
      * @return \Cake\Datasource\EntityInterface|mixed|bool result of the save operation
      */
-    protected function _createSocialUser($data, $options = [])
+    protected function createSocialUser(array $data, array $options = []): mixed
     {
         $useEmail = $options['use_email'] ?? null;
+        if (is_int($useEmail)) {
+            $useEmail = (bool)$useEmail;
+        }
         $validateEmail = (bool)($options['validate_email'] ?? null);
         $tokenExpiration = $options['token_expiration'] ?? null;
         $email = $data['email'] ?? null;
         if ($useEmail && empty($email)) {
             throw new MissingEmailException(__d('cake_d_c/users', 'Email not present'));
         } else {
-            $existingUser = $this->_table->find('existingForSocialLogin', email: $email)->first();
+            $existingUser = $this->table->find('existingForSocialLogin', email: $email)->first();
         }
 
-        $user = $this->_populateUser($data, $existingUser, $useEmail, $validateEmail, $tokenExpiration);
+        $user = $this->populateUser($data, $existingUser, $useEmail, $validateEmail, $tokenExpiration);
 
+        /** @var \Cake\Event\Event<\CakeDC\Users\Model\Behavior\SocialBehavior> $event */
         $event = $this->dispatchEvent(UsersPlugin::EVENT_BEFORE_SOCIAL_LOGIN_USER_CREATE, [
             'userEntity' => $user,
             'data' => $data,
@@ -160,9 +162,9 @@ class SocialBehavior extends BaseTokenBehavior
             $user = $result;
         }
 
-        $this->_table->isValidateEmail = $validateEmail;
+        $this->table->isValidateEmail = $validateEmail;
 
-        return $this->_table->save($user);
+        return $this->table->save($user);
     }
 
     /**
@@ -171,13 +173,13 @@ class SocialBehavior extends BaseTokenBehavior
      *
      * @param array $data Array social login.
      * @param \Cake\Datasource\EntityInterface|null $existingUser user data.
-     * @param string $useEmail email to use.
+     * @param string|bool|null $useEmail email to use.
      * @param bool $validateEmail email to validate.
-     * @param string $tokenExpiration token_expires data.
+     * @param string|int|null $tokenExpiration token_expires data.
      * @return \Cake\Datasource\EntityInterface
      * @todo refactor
      */
-    protected function _populateUser($data, $existingUser, $useEmail, $validateEmail, $tokenExpiration)
+    protected function populateUser(array $data, ?EntityInterface $existingUser, bool|string|null $useEmail, bool $validateEmail, int|string|null $tokenExpiration): EntityInterface
     {
         $userData = [];
         $accountData = $this->extractAccountData($data);
@@ -227,8 +229,8 @@ class SocialBehavior extends BaseTokenBehavior
             $userData['gender'] = $data['gender'] ?? null;
             $userData['social_accounts'][] = $accountData;
 
-            $user = $this->_table->newEntity($userData);
-            $user = $this->_updateActive($user, false, $tokenExpiration);
+            $user = $this->table->newEntity($userData);
+            $user = $this->updateActive($user, false, (int)$tokenExpiration);
         } else {
             if (
                 $useEmail &&
@@ -242,7 +244,7 @@ class SocialBehavior extends BaseTokenBehavior
             }
             $user = $existingUser;
         }
-        $socialAccount = $this->_table->SocialAccounts->newEntity($accountData);
+        $socialAccount = $this->table->SocialAccounts->newEntity($accountData);
         //ensure provider is present in Entity
         $socialAccount['provider'] = $data['provider'] ?? null;
         $user['social_accounts'] = [$socialAccount];
@@ -257,12 +259,12 @@ class SocialBehavior extends BaseTokenBehavior
      * @param string $username username data.
      * @return string
      */
-    public function generateUniqueUsername($username)
+    public function generateUniqueUsername(string $username): string
     {
         $i = 0;
         while (true) {
-            $existingUsername = $this->_table->find()
-                ->where([$this->_table->aliasField($this->_username) => $username])
+            $existingUsername = $this->table->find()
+                ->where([$this->table->aliasField($this->username) => $username])
                 ->count();
             if ($existingUsername > 0) {
                 $username .= $i;
@@ -289,7 +291,7 @@ class SocialBehavior extends BaseTokenBehavior
         }
 
         return $query->where([
-            $this->_table->aliasField('email') => $email,
+            $this->table->aliasField('email') => $email,
         ]);
     }
 
@@ -300,7 +302,7 @@ class SocialBehavior extends BaseTokenBehavior
      * @throws \Exception
      * @return array
      */
-    protected function extractAccountData(array $data)
+    protected function extractAccountData(array $data): array
     {
         $accountData = [];
         $accountData['username'] = $data['username'] ?? null;

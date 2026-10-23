@@ -15,15 +15,17 @@ namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
 use Cake\Core\Configure;
 use Cake\TestSuite\TestCase;
+use CakeDC\Users\Controller\Traits\ReCaptchaTrait;
+use ReCaptcha\ReCaptcha;
 use ReCaptcha\Response;
 use ReflectionMethod;
 
 class ReCaptchaTraitTest extends TestCase
 {
     /**
-     * @var \CakeDC\Users\Controller\Traits\ReCaptchaTrait
+     * @var object
      */
-    public $Trait;
+    public object $Trait;
 
     /**
      * setUp callback
@@ -33,9 +35,17 @@ class ReCaptchaTraitTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\Traits\ReCaptchaTrait')
-            ->onlyMethods(['_getReCaptchaInstance'])
-            ->getMockForTrait();
+        Configure::delete('Users.reCaptcha.secret');
+        $this->Trait = new class {
+            use ReCaptchaTrait;
+
+            public ?ReCaptcha $reCaptchaInstance = null;
+
+            protected function getReCaptchaInstance(): ?ReCaptcha
+            {
+                return $this->reCaptchaInstance;
+            }
+        };
     }
 
     /**
@@ -53,9 +63,9 @@ class ReCaptchaTraitTest extends TestCase
      *
      * @return void
      */
-    public function testValidateValidReCaptcha()
+    public function testValidateValidReCaptcha(): void
     {
-        $ReCaptcha = $this->getMockBuilder('ReCaptcha\ReCaptcha')
+        $ReCaptcha = $this->getMockBuilder(ReCaptcha::class)
                 ->onlyMethods(['verify'])
                 ->disableOriginalConstructor()
                 ->getMock();
@@ -63,10 +73,8 @@ class ReCaptchaTraitTest extends TestCase
         $ReCaptcha->expects($this->once())
             ->method('verify')
             ->with('value')
-            ->will($this->returnValue($Response));
-        $this->Trait->expects($this->once())
-            ->method('_getReCaptchaInstance')
-            ->will($this->returnValue($ReCaptcha));
+            ->willReturn($Response);
+        $this->Trait->reCaptchaInstance = $ReCaptcha;
         $actual = $this->Trait->validateReCaptcha('value', '255.255.255.255');
         $this->assertTrue($actual);
     }
@@ -76,9 +84,9 @@ class ReCaptchaTraitTest extends TestCase
      *
      * @return void
      */
-    public function testValidateInvalidReCaptcha()
+    public function testValidateInvalidReCaptcha(): void
     {
-        $ReCaptcha = $this->getMockBuilder('ReCaptcha\ReCaptcha')
+        $ReCaptcha = $this->getMockBuilder(ReCaptcha::class)
                 ->onlyMethods(['verify'])
                 ->disableOriginalConstructor()
                 ->getMock();
@@ -86,34 +94,36 @@ class ReCaptchaTraitTest extends TestCase
         $ReCaptcha->expects($this->once())
             ->method('verify')
             ->with('invalid')
-            ->will($this->returnValue($Response));
-        $this->Trait->expects($this->once())
-            ->method('_getReCaptchaInstance')
-            ->will($this->returnValue($ReCaptcha));
+            ->willReturn($Response);
+        $this->Trait->reCaptchaInstance = $ReCaptcha;
         $actual = $this->Trait->validateReCaptcha('invalid', '255.255.255.255');
         $this->assertFalse($actual);
     }
 
-    public function testGetRecaptchaInstance()
+    public function testGetRecaptchaInstance(): void
     {
         Configure::write('Users.reCaptcha.secret', 'secret');
-        $trait = $this->getMockBuilder('CakeDC\Users\Controller\Traits\ReCaptchaTrait')->getMockForTrait();
-        $method = new ReflectionMethod(get_class($trait), '_getReCaptchaInstance');
+        $trait = new class {
+            use ReCaptchaTrait;
+        };
+        $method = new ReflectionMethod($trait, 'getReCaptchaInstance');
         $method->invokeArgs($trait, []);
         $this->assertNotEmpty($method->invoke($trait));
     }
 
-    public function testGetRecaptchaInstanceNull()
+    public function testGetRecaptchaInstanceNull(): void
     {
-        $trait = $this->getMockBuilder('CakeDC\Users\Controller\Traits\ReCaptchaTrait')->getMockForTrait();
-        $method = new ReflectionMethod(get_class($trait), '_getReCaptchaInstance');
+        $trait = new class {
+            use ReCaptchaTrait;
+        };
+        $method = new ReflectionMethod($trait, 'getReCaptchaInstance');
         $method->invokeArgs($trait, []);
         $this->assertNull($method->invoke($trait));
     }
 
-    public function testValidateReCaptchaFalse()
+    public function testValidateReCaptchaFalse(): void
     {
-        $ReCaptcha = $this->getMockBuilder('ReCaptcha\ReCaptcha')
+        $ReCaptcha = $this->getMockBuilder(ReCaptcha::class)
             ->onlyMethods(['verify'])
             ->disableOriginalConstructor()
             ->getMock();
@@ -121,10 +131,8 @@ class ReCaptchaTraitTest extends TestCase
         $ReCaptcha->expects($this->once())
             ->method('verify')
             ->with('value')
-            ->will($this->returnValue($Response));
-        $this->Trait->expects($this->once())
-            ->method('_getReCaptchaInstance')
-            ->will($this->returnValue($ReCaptcha));
+            ->willReturn($Response);
+        $this->Trait->reCaptchaInstance = $ReCaptcha;
 
         $this->assertFalse($this->Trait->validateReCaptcha('value', '255.255.255.255'));
     }

@@ -25,21 +25,21 @@ trait CustomUsersTableTrait
     /**
      * @var \Cake\ORM\Table|null
      */
-    protected ?Table $_usersTable = null;
+    protected ?Table $usersTable = null;
 
     /**
      * Gets the users table instance
      *
      * @return \Cake\ORM\Table
      */
-    public function getUsersTable()
+    public function getUsersTable(): Table
     {
-        if ($this->_usersTable instanceof Table) {
-            return $this->_usersTable;
+        if ($this->usersTable instanceof Table) {
+            return $this->usersTable;
         }
-        $this->_usersTable = TableRegistry::getTableLocator()->get(Configure::read('Users.table'));
+        $this->usersTable = TableRegistry::getTableLocator()->get(Configure::read('Users.table'));
 
-        return $this->_usersTable;
+        return $this->usersTable;
     }
 
     /**
@@ -48,8 +48,8 @@ trait CustomUsersTableTrait
      * @param \Cake\ORM\Table $table table
      * @return void
      */
-    public function setUsersTable(Table $table)
+    public function setUsersTable(Table $table): void
     {
-        $this->_usersTable = $table;
+        $this->usersTable = $table;
     }
 }

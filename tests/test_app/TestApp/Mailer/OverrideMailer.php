@@ -25,11 +25,11 @@ class OverrideMailer extends UsersMailer
      * Override the resetPassword email with a custom template and subject
      *
      * @param EntityInterface $user
-     * @return array|void
+     * @return void
      */
-    public function resetPassword(EntityInterface $user, array $options = [])
+    public function resetPassword(EntityInterface $user, array $options = []): void
     {
-        parent::resetPassword($user);
+        parent::resetPassword($user, $options);
         $this->setSubject('This is the new subject');
         $this->setTemplate('custom-template-in-app-namespace');
     }

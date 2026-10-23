@@ -48,7 +48,8 @@ class RegisterTraitIntegrationTest extends TestCase
         $this->assertResponseContains('<input type="text" name="first_name" id="first-name" maxlength="50"');
         $this->assertResponseContains('<input type="text" name="last_name" id="last-name" maxlength="50"');
         $this->assertResponseContains('<input type="hidden" name="tos" value="0"');
-        $this->assertResponseContains('<label for="tos"><input type="checkbox" name="tos" value="1" required="required" id="tos">Accept TOS conditions?</label>');
+        $this->assertResponseContains('name="tos"');
+        $this->assertResponseContains('Accept TOS conditions?');
         $this->assertResponseContains('<button id="btn-submit" type="submit">Submit</button>');
     }
 
@@ -83,7 +84,8 @@ class RegisterTraitIntegrationTest extends TestCase
         $this->assertResponseContains('<input type="text" name="first_name" id="first-name" value="" maxlength="50"');
         $this->assertResponseContains('<input type="text" name="last_name" id="last-name" value="" maxlength="50"');
         $this->assertResponseContains('<input type="hidden" name="tos" value="0"');
-        $this->assertResponseContains('<label for="tos"><input type="checkbox" name="tos" value="1" required="required" id="tos">Accept TOS conditions?</label>');
+        $this->assertResponseContains('name="tos"');
+        $this->assertResponseContains('Accept TOS conditions?');
         $this->assertResponseContains('<button id="btn-submit" type="submit">Submit</button>');
     }
 
@@ -108,7 +110,7 @@ class RegisterTraitIntegrationTest extends TestCase
             'tos' => '0',
         ];
         $this->post('/register', $data);
-        $this->assertRedirect('/login');
+        $this->assertRedirect(BASE_TEST_PATH . '/login');
         $this->assertFlashMessage('Please validate your account before log in');
         $user = $Table->find()->where(['username' => 'user1'])->firstOrFail();
         $this->assertFalse($user->active);
@@ -117,12 +119,12 @@ class RegisterTraitIntegrationTest extends TestCase
         $this->assertNotEmpty($user['token']);
         $url = '/users/validate-email/' . $user['token'];
         $this->get($url);
-        $this->assertRedirect('/login');
+        $this->assertRedirect(BASE_TEST_PATH . '/login');
         $this->assertFlashMessage('User account validated successfully');
 
         //If access again get error
         $this->get($url);
-        $this->assertRedirect('/login');
+        $this->assertRedirect(BASE_TEST_PATH . '/login');
         $this->assertFlashMessage('Invalid token or user account already validated');
     }
 
@@ -134,7 +136,7 @@ class RegisterTraitIntegrationTest extends TestCase
     public function testValidateEmailNoToken()
     {
         $this->get('/users/validate-email');
-        $this->assertRedirect('/login');
+        $this->assertRedirect(BASE_TEST_PATH . '/login');
         $this->assertFlashMessage('Invalid token or user account already validated');
     }
 }

@@ -13,17 +13,22 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Controller\Component;
 
+use Authentication\Authenticator\MissingIdentifierException;
 use Authentication\Authenticator\ResultInterface;
 use Cake\Controller\Component;
 use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
+use Cake\Http\Response;
 use Cake\Http\ServerRequest;
+use Cake\I18n\DateTime;
 use Cake\Log\Log;
 use CakeDC\Auth\Authentication\AuthenticationService;
 use CakeDC\Auth\Traits\IsAuthorizedTrait;
+use CakeDC\Users\Model\Entity\User;
 use CakeDC\Users\UsersPlugin;
 use CakeDC\Users\Utility\UsersUrl;
 use Laminas\Diactoros\Uri;
+use UnexpectedValueException;
 
 /**
  * LoginFailure component
@@ -35,7 +40,7 @@ class LoginComponent extends Component
     /**
      * @inheritDoc
      */
-    protected array $_defaultConfig = [
+    protected array $defaultConfig = [
         'defaultMessage' => null,
         'messages' => [],
         'targetAuthenticator' => null,
@@ -58,12 +63,12 @@ class LoginComponent extends Component
      * @param bool $redirectFailure should redirect on failure?
      * @return \Cake\Http\Response|null
      */
-    public function handleLogin($errorOnlyPost, $redirectFailure)
+    public function handleLogin(bool $errorOnlyPost, bool $redirectFailure): ?Response
     {
         $request = $this->getController()->getRequest();
         $service = $request->getAttribute('authentication');
         if (!$service) {
-            throw new \UnexpectedValueException('Authentication service not found in this request');
+            throw new UnexpectedValueException('Authentication service not found in this request');
         }
         $eventBefore = $this->getController()->dispatchEvent(UsersPlugin::EVENT_BEFORE_LOGIN, []);
         if (is_array($eventBefore->getResult())) {
@@ -94,7 +99,7 @@ class LoginComponent extends Component
      * @param bool $redirect should redirect?
      * @return \Cake\Http\Response|null
      */
-    public function handleFailure($redirect = true)
+    public function handleFailure(bool $redirect = true): ?Response
     {
         $controller = $this->getController();
         $request = $controller->getRequest();
@@ -116,7 +121,7 @@ class LoginComponent extends Component
      * @param \CakeDC\Auth\Authentication\AuthenticationService $service authentication service.
      * @return \Authentication\Authenticator\ResultInterface|null
      */
-    public function getTargetAuthenticatorResult(AuthenticationService $service)
+    public function getTargetAuthenticatorResult(AuthenticationService $service): ?ResultInterface
     {
         $target = $this->getConfig('targetAuthenticator');
         $failures = $service->getFailures();
@@ -135,7 +140,7 @@ class LoginComponent extends Component
      * @param \Authentication\Authenticator\ResultInterface|null $result Result object;
      * @return string
      */
-    public function getErrorMessage(?ResultInterface $result = null)
+    public function getErrorMessage(?ResultInterface $result = null): string
     {
         $messagesMap = $this->getConfig('messages');
 
@@ -149,10 +154,10 @@ class LoginComponent extends Component
     /**
      * Determine redirect url after user identified
      *
-     * @param array $user user data after identified
+     * @param \CakeDC\Users\Model\Entity\User|array $user user data after identified
      * @return \Cake\Http\Response|null
      */
-    protected function afterIdentifyUser($user)
+    protected function afterIdentifyUser(User|array $user): ?Response
     {
         $event = $this->getController()->dispatchEvent(UsersPlugin::EVENT_AFTER_LOGIN, ['user' => $user]);
         if (is_array($event->getResult())) {
@@ -187,20 +192,16 @@ class LoginComponent extends Component
      * @param \Cake\Http\ServerRequest $request The http request.
      * @return void
      */
-    protected function handlePasswordRehash($service, $user, \Cake\Http\ServerRequest $request)
+    protected function handlePasswordRehash(AuthenticationService $service, User $user, ServerRequest $request): void
     {
-        // deprecated way to define identifiers
+        // deprecated way to define identifiers via global Auth.Identifiers collection
+        // was removed in authentication 5.x (each authenticator owns a single identifier).
         $identifiersNames = (array)Configure::read('Auth.PasswordRehash.identifiers');
-        foreach ($identifiersNames as $identifierName) {
-            if (!$service->identifiers()->has($identifierName)) {
-                Log::warning("Error saving user id $user->id password after rehashing: identifier $identifierName not found. Check your Auth.PasswordRehash.identifiers configuration.");
-                continue;
-            }
-            /**
-             * @var \Authentication\Identifier\AbstractIdentifier|null $checker
-             */
-            $checker = $service->identifiers()->get($identifierName);
-            $this->saveRehashedPassword($checker, $request, $user);
+        if ($identifiersNames !== []) {
+            Log::warning(
+                'Auth.PasswordRehash.identifiers is deprecated and no longer supported. ' .
+                'Configure Auth.PasswordRehash.authenticators instead.',
+            );
         }
 
         // new way to define identifiers, inside the authenticators
@@ -210,27 +211,26 @@ class LoginComponent extends Component
         }
 
         $authenticationProvider = $service->getAuthenticationProvider();
-        if (!$authenticationProvider || !method_exists($authenticationProvider, 'getIdentifier')) {
+        if (!$authenticationProvider) {
             return;
         }
 
-        /** @var \Authentication\Identifier\IdentifierCollection $identifierCollection */
-        $identifierCollection = $authenticationProvider->getIdentifier();
         $authenticators = $service->authenticators();
         foreach ($authenticatorNames as $authenticatorName => $identifierName) {
             if ($authenticators->has($authenticatorName) && $authenticators->get($authenticatorName) !== $authenticationProvider) {
                 continue;
             }
 
-            if (!$identifierCollection->has($identifierName)) {
-                Log::warning("Error saving user id $user->id password after rehashing: identifier $identifierName not found for authenticator $authenticatorName. Check your Auth.PasswordRehash.authenticators configuration.");
+            try {
+                $checker = $authenticationProvider->getIdentifier();
+            } catch (MissingIdentifierException) {
+                Log::warning(
+                    "Error saving user id {$user->get('id')} password after rehashing: " .
+                    "identifier $identifierName not found for authenticator $authenticatorName. " .
+                    'Check your Auth.PasswordRehash.authenticators configuration.',
+                );
                 continue;
             }
-
-            /**
-             * @var \Authentication\Identifier\AbstractIdentifier|null $checker
-             */
-            $checker = $identifierCollection->get($identifierName);
             $this->saveRehashedPassword($checker, $request, $user);
         }
     }
@@ -241,7 +241,7 @@ class LoginComponent extends Component
      * @param \Cake\Datasource\EntityInterface $user
      * @return void
      */
-    protected function saveRehashedPassword($checker, ServerRequest $request, EntityInterface $user): void
+    protected function saveRehashedPassword(mixed $checker, ServerRequest $request, EntityInterface $user): void
     {
         if (!$checker || method_exists($checker, 'needsPasswordRehash') && !$checker->needsPasswordRehash()) {
             return;
@@ -288,13 +288,13 @@ class LoginComponent extends Component
      * @param \CakeDC\Users\Model\Entity\User $user User entity.
      * @return void
      */
-    protected function updateLastLogin($user)
+    protected function updateLastLogin(User $user): void
     {
         if (!Configure::read('Users.Login.updateLastLogin', true)) {
             return;
         }
         $field = Configure::read('Users.Login.lastLoginField', 'last_login');
-        $now = \Cake\I18n\DateTime::now();
+        $now = DateTime::now();
         $user->set($field, $now);
         $this->getController()->getUsersTable()->updateAll(
             [$field => $now->format('Y-m-d H:i:s')],
@@ -305,10 +305,10 @@ class LoginComponent extends Component
     /**
      * Add a flash message informing user is logged in
      *
-     * @param array $user user data
+     * @param \CakeDC\Users\Model\Entity\User|array $user user data
      * @return void
      */
-    protected function addFlashMessage($user)
+    protected function addFlashMessage(User|array $user): void
     {
         if (!Configure::read('Users.Login.flashMessage')) {
             return;

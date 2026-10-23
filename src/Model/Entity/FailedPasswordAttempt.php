@@ -25,7 +25,7 @@ class FailedPasswordAttempt extends Entity
      *
      * @var array<string, bool>
      */
-    protected array $_accessible = [
+    protected array $patchable = [
         'user_id' => true,
         'created' => true,
         'user' => true,

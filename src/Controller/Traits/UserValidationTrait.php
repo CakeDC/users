@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace CakeDC\Users\Controller\Traits;
 
 use Cake\Core\Configure;
+use Cake\Http\Response;
 use CakeDC\Users\Exception\TokenExpiredException;
 use CakeDC\Users\Exception\UserAlreadyActiveException;
 use CakeDC\Users\Exception\UserNotFoundException;
@@ -35,7 +36,7 @@ trait UserValidationTrait
      * @param string $token token
      * @return \Cake\Http\Response
      */
-    public function validate($type = null, $token = null)
+    public function validate(?string $type = null, ?string $token = null): Response
     {
         try {
             switch ($type) {
@@ -95,12 +96,12 @@ trait UserValidationTrait
      *
      * @return mixed
      */
-    public function resendTokenValidation()
+    public function resendTokenValidation(): mixed
     {
         $this->set('user', $this->getUsersTable()->newEntity([], ['validate' => false]));
         $this->viewBuilder()->setOption('serialize', ['user']);
         if (!$this->getRequest()->is('post')) {
-            return;
+            return null;
         }
         $reference = $this->getRequest()->getData('reference');
         try {
@@ -133,5 +134,7 @@ trait UserValidationTrait
         } catch (Exception $ex) {
             $this->Flash->error(__d('cake_d_c/users', 'Token could not be reset'));
         }
+
+        return null;
     }
 }

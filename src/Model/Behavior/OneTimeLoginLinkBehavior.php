@@ -30,7 +30,7 @@ class OneTimeLoginLinkBehavior extends Behavior
             throw new RecordNotFoundException(__('Username not found.'));
         }
 
-        $loginTokenDate = $user->login_token_date ?? null;
+        $loginTokenDate = $user->get('login_token_date') ?? null;
 
         $threshold = Configure::read('OneTimeLogin.thresholdTimeout', 60);
         if ($loginTokenDate && $loginTokenDate > DateTime::now()->subSeconds($threshold)) {
@@ -42,9 +42,9 @@ class OneTimeLoginLinkBehavior extends Behavior
                 'token_send_requested' => 0,
                 'login_token_date' => DateTime::now(),
             ], [
-                'id' => $user->id,
+                'id' => $user->get('id'),
             ]);
-            $user = $this->table()->get($user->id);
+            $user = $this->table()->get($user->get('id'));
 
             $deliveries = Configure::read('OneTimeLogin.DeliveryHandlers');
 
@@ -69,14 +69,14 @@ class OneTimeLoginLinkBehavior extends Behavior
             ->find('byOneTimeToken', token: $token)
             ->first();
 
-        if ($user && ($user->login_token_date >= DateTime::now()->subSeconds($lifeTime))) {
+        if ($user && ($user->get('login_token_date') >= DateTime::now()->subSeconds($lifeTime))) {
             $this->table()->updateAll([
                 'login_token' => null,
             ], [
-                'id' => $user->id,
+                'id' => $user->get('id'),
             ]);
 
-            return $this->table()->get($user->id);
+            return $this->table()->get($user->get('id'));
         }
 
         return null;
@@ -95,7 +95,7 @@ class OneTimeLoginLinkBehavior extends Behavior
             $this->table()->updateAll([
                 'token_send_requested' => true,
             ], [
-                'id' => $user->id,
+                'id' => $user->get('id'),
             ]);
         }
     }

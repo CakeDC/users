@@ -17,10 +17,13 @@ use Cake\TestSuite\TestCase;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\UserNotActiveException;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Test Case
  */
+#[AllowMockObjectsWithoutExpectations]
 class SocialBehaviorTest extends TestCase
 {
     /**
@@ -52,7 +55,7 @@ class SocialBehaviorTest extends TestCase
         parent::setUp();
         $this->Table = $this->getMockForModel('CakeDC/Users.Users', ['save']);
         $this->Behavior = $this->getMockBuilder('CakeDC\Users\Model\Behavior\SocialBehavior')
-            ->onlyMethods(['randomString', '_updateActive', 'generateUniqueUsername'])
+            ->onlyMethods(['randomString', 'updateActive', 'generateUniqueUsername'])
             ->setConstructorArgs([$this->Table])
             ->getMock();
     }
@@ -70,9 +73,8 @@ class SocialBehaviorTest extends TestCase
 
     /**
      * Test socialLogin with facebook and not existing user
-     *
-     * @dataProvider providerFacebookSocialLogin
      */
+    #[DataProvider('providerFacebookSocialLogin')]
     public function testSocialLoginFacebookProvider($data, $options, $dataUser)
     {
         $user = $this->Table->newEntity($dataUser, ['associated' => ['SocialAccounts']]);
@@ -81,20 +83,20 @@ class SocialBehaviorTest extends TestCase
         $this->Behavior->expects($this->once())
             ->method('generateUniqueUsername')
             ->with('email')
-            ->will($this->returnValue('username'));
+            ->willReturn('username');
 
         $this->Behavior->expects($this->once())
             ->method('randomString')
-            ->will($this->returnValue('password'));
+            ->willReturn('password');
 
         $this->Behavior->expects($this->once())
-            ->method('_updateActive')
-            ->will($this->returnValue($user));
+            ->method('updateActive')
+            ->willReturn($user);
 
         $this->Table->expects($this->once())
             ->method('save')
             ->with($user)
-            ->will($this->returnValue($user));
+            ->willReturn($user);
 
         $result = $this->Behavior->socialLogin($data, $options);
         $this->assertEquals($result, $user);
@@ -102,9 +104,8 @@ class SocialBehaviorTest extends TestCase
 
     /**
      * Test socialLogin with facebook and not existing user
-     *
-     * @dataProvider providerFacebookSocialLogin
      */
+    #[DataProvider('providerFacebookSocialLogin')]
     public function testSocialLoginFacebookProviderUsingEmail($data, $options, $dataUser)
     {
         $user = $this->Table->newEntity($dataUser, ['associated' => ['SocialAccounts']]);
@@ -113,20 +114,20 @@ class SocialBehaviorTest extends TestCase
         $this->Behavior->expects($this->once())
             ->method('generateUniqueUsername')
             ->with('email')
-            ->will($this->returnValue('username'));
+            ->willReturn('username');
 
         $this->Behavior->expects($this->once())
             ->method('randomString')
-            ->will($this->returnValue('password'));
+            ->willReturn('password');
 
         $this->Behavior->expects($this->once())
-            ->method('_updateActive')
-            ->will($this->returnValue($user));
+            ->method('updateActive')
+            ->willReturn($user);
 
         $this->Table->expects($this->once())
             ->method('save')
             ->with($user)
-            ->will($this->returnValue($user));
+            ->willReturn($user);
 
         $this->Behavior->initialize(['username' => 'email']);
         $result = $this->Behavior->socialLogin($data, $options);
@@ -136,7 +137,7 @@ class SocialBehaviorTest extends TestCase
     /**
      * Provider for socialLogin with facebook and not existing user
      */
-    public static function providerFacebookSocialLogin()
+    public static function providerFacebookSocialLogin(): array
     {
         return [
             [
@@ -206,9 +207,8 @@ class SocialBehaviorTest extends TestCase
 
     /**
      * Test socialLogin with facebook with existing and active user
-     *
-     * @dataProvider providerFacebookSocialLoginExistingReference
      */
+    #[DataProvider('providerFacebookSocialLoginExistingReference')]
     public function testSocialLoginExistingReferenceOkay($data, $options)
     {
         $this->Behavior->expects($this->never())
@@ -218,7 +218,7 @@ class SocialBehaviorTest extends TestCase
             ->method('randomString');
 
         $this->Behavior->expects($this->never())
-            ->method('_updateActive');
+            ->method('updateActive');
 
         $fullData = $data + [
             'credentials' => [
@@ -263,7 +263,7 @@ class SocialBehaviorTest extends TestCase
     /**
      * Provider for socialLogin with facebook with existing and active user
      */
-    public static function providerFacebookSocialLoginExistingReference()
+    public static function providerFacebookSocialLoginExistingReference(): array
     {
         return [
             [
@@ -282,9 +282,8 @@ class SocialBehaviorTest extends TestCase
 
     /**
      * Test socialLogin with existing and active user and not active social account
-     *
-     * @dataProvider providerSocialLoginExistingAndNotActiveAccount
      */
+    #[DataProvider('providerSocialLoginExistingAndNotActiveAccount')]
     public function testSocialLoginExistingNotActiveReference($data, $options)
     {
         $this->expectException(AccountNotActiveException::class);
@@ -295,14 +294,14 @@ class SocialBehaviorTest extends TestCase
             ->method('randomString');
 
         $this->Behavior->expects($this->never())
-            ->method('_updateActive');
+            ->method('updateActive');
         $this->Behavior->socialLogin($data, $options);
     }
 
     /**
      * Provider for socialLogin with existing and active user and not active social account
      */
-    public static function providerSocialLoginExistingAndNotActiveAccount()
+    public static function providerSocialLoginExistingAndNotActiveAccount(): array
     {
         return [
             'provider' => [
@@ -322,9 +321,8 @@ class SocialBehaviorTest extends TestCase
 
     /**
      * Test socialLogin with existing and active account but not active user
-     *
-     * @dataProvider providerSocialLoginExistingAccountNotActiveUser
      */
+    #[DataProvider('providerSocialLoginExistingAccountNotActiveUser')]
     public function testSocialLoginExistingReferenceNotActiveUser($data, $options)
     {
         $this->expectException(UserNotActiveException::class);
@@ -335,14 +333,14 @@ class SocialBehaviorTest extends TestCase
             ->method('randomString');
 
         $this->Behavior->expects($this->never())
-            ->method('_updateActive');
+            ->method('updateActive');
         $this->Behavior->socialLogin($data, $options);
     }
 
     /**
      * Provider for socialLogin with existing and active account but not active user
      */
-    public static function providerSocialLoginExistingAccountNotActiveUser()
+    public static function providerSocialLoginExistingAccountNotActiveUser(): array
     {
         return [
             'provider' => [
@@ -362,9 +360,8 @@ class SocialBehaviorTest extends TestCase
 
     /**
      * Test socialLogin with facebook and not existing user
-     *
-     * @dataProvider providerFacebookSocialLoginNoEmail
      */
+    #[DataProvider('providerFacebookSocialLoginNoEmail')]
     public function testSocialLoginNoEmail($data, $options)
     {
         $this->expectException(MissingEmailException::class);
@@ -374,7 +371,7 @@ class SocialBehaviorTest extends TestCase
     /**
      * Provider for socialLogin with facebook and not existing user
      */
-    public static function providerFacebookSocialLoginNoEmail()
+    public static function providerFacebookSocialLoginNoEmail(): array
     {
         return [
             'provider' => [
@@ -400,13 +397,12 @@ class SocialBehaviorTest extends TestCase
 
     /**
      * Test socialLogin with facebook and not existing user
-     *
-     * @dataProvider providerGenerateUsername
      */
+    #[DataProvider('providerGenerateUsername')]
     public function testGenerateUniqueUsername($param, $expected)
     {
         $this->Behavior = $this->getMockBuilder('CakeDC\Users\Model\Behavior\SocialBehavior')
-            ->onlyMethods(['randomString', '_updateActive'])
+            ->onlyMethods(['randomString', 'updateActive'])
             ->setConstructorArgs([$this->Table])
             ->getMock();
 
@@ -417,7 +413,7 @@ class SocialBehaviorTest extends TestCase
     /**
      * Provider for socialLogin with facebook and not existing user
      */
-    public static function providerGenerateUsername()
+    public static function providerGenerateUsername(): array
     {
         return [
             ['username', 'username'],

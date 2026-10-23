@@ -21,6 +21,7 @@ use CakeDC\Users\Exception\UserAlreadyActiveException;
 use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Exception\UserNotFoundException;
 use CakeDC\Users\Exception\WrongPasswordException;
+use InvalidArgumentException;
 
 /**
  * Covers the password management features
@@ -32,26 +33,26 @@ class PasswordBehavior extends BaseTokenBehavior
     /**
      * Resets user token
      *
-     * @param string $reference User username or email
+     * @param string|null $reference User username or email
      * @param array $options checkActive, sendEmail, expiration
      * @return \Cake\Datasource\EntityInterface|null
      * @throws \InvalidArgumentException
      * @throws \CakeDC\Users\Exception\UserNotFoundException
      * @throws \CakeDC\Users\Exception\UserAlreadyActiveException
      */
-    public function resetToken($reference, array $options = []): ?EntityInterface
+    public function resetToken(?string $reference = null, array $options = []): ?EntityInterface
     {
         if (empty($reference)) {
-            throw new \InvalidArgumentException(__d('cake_d_c/users', 'Reference cannot be null'));
+            throw new InvalidArgumentException(__d('cake_d_c/users', 'Reference cannot be null'));
         }
 
         $expiration = $options['expiration'] ?? null;
         if (empty($expiration)) {
-            throw new \InvalidArgumentException(__d('cake_d_c/users', 'Token expiration cannot be empty'));
+            throw new InvalidArgumentException(__d('cake_d_c/users', 'Token expiration cannot be empty'));
         }
 
         /** @var \CakeDC\Users\Model\Entity\User|null $user */
-        $user = $this->_getUser($reference);
+        $user = $this->getUser($reference);
         if (empty($user) || empty($user->id)) {
             throw new UserNotFoundException(__d('cake_d_c/users', 'User not found'));
         }
@@ -68,7 +69,7 @@ class PasswordBehavior extends BaseTokenBehavior
         }
 
         $user->updateToken($expiration);
-        $saveResult = $this->_table->save($user);
+        $saveResult = $this->table->save($user);
         if ($options['sendEmail'] ?? false) {
             $emailOptions = [];
             if (isset($options['linkGenerator']) && is_callable($options['linkGenerator'])) {
@@ -76,10 +77,10 @@ class PasswordBehavior extends BaseTokenBehavior
             }
             switch ($options['type'] ?? null) {
                 case 'email':
-                    $this->_sendValidationEmail($user, $emailOptions);
+                    $this->sendValidationEmail($user, $emailOptions);
                     break;
                 case 'password':
-                    $this->_sendResetPasswordEmail($user, $emailOptions);
+                    $this->sendResetPasswordEmail($user, $emailOptions);
                     break;
             }
         }
@@ -94,7 +95,7 @@ class PasswordBehavior extends BaseTokenBehavior
      * @param array $options Options.
      * @return void
      */
-    protected function _sendResetPasswordEmail($user, $options = [])
+    protected function sendResetPasswordEmail(EntityInterface $user, array $options = []): void
     {
         $this
             ->getMailer(Configure::read('Users.Email.mailerClass') ?: 'CakeDC/Users.Users')
@@ -108,7 +109,7 @@ class PasswordBehavior extends BaseTokenBehavior
      * @param array $options Options.
      * @return void
      */
-    protected function _sendValidationEmail($user, $options = [])
+    protected function sendValidationEmail(EntityInterface $user, array $options = []): void
     {
         $mailer = Configure::read('Users.Email.mailerClass') ?: 'CakeDC/Users.Users';
         $this
@@ -122,10 +123,10 @@ class PasswordBehavior extends BaseTokenBehavior
      * @param string $reference reference could be either an email or username
      * @return \Cake\Datasource\EntityInterface|null
      */
-    protected function _getUser($reference)
+    protected function getUser(string $reference): ?EntityInterface
     {
         $findWith = (array)Configure::read('Users.PasswordReset.findWith', ['username', 'email']);
-        $schema = $this->_table->getSchema();
+        $schema = $this->table->getSchema();
         $orConditions = [];
 
         foreach ($findWith as $field) {
@@ -138,7 +139,7 @@ class PasswordBehavior extends BaseTokenBehavior
             return null;
         }
 
-        return $this->_table->find()
+        return $this->table->find()
             ->where(['OR' => $orConditions])
             ->first();
     }
@@ -150,10 +151,10 @@ class PasswordBehavior extends BaseTokenBehavior
      * @throws \CakeDC\Users\Exception\WrongPasswordException
      * @return mixed
      */
-    public function changePassword(EntityInterface $user)
+    public function changePassword(EntityInterface $user): mixed
     {
         try {
-            $currentUser = $this->_table->get($user->id, contain: []);
+            $currentUser = $this->table->get($user->id, contain: []);
         } catch (RecordNotFoundException $e) {
             throw new UserNotFoundException(__d('cake_d_c/users', 'User not found'));
         }
@@ -169,9 +170,9 @@ class PasswordBehavior extends BaseTokenBehavior
                 ));
             }
         }
-        $user = $this->_table->save($user);
+        $user = $this->table->save($user);
         if (!empty($user)) {
-            $user = $this->_removeValidationToken($user);
+            $user = $this->removeValidationToken($user);
         }
 
         return $user;

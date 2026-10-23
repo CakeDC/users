@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Exception;
 
-class AccountNotActiveException extends \Cake\Core\Exception\CakeException
+use Cake\Core\Exception\CakeException;
+
+class AccountNotActiveException extends CakeException
 {
-    protected string $_messageTemplate = '/a/validate/%s/%s';
+    protected string $messageTemplate = '/a/validate/%s/%s';
 
     /**
      * AccountNotActiveException constructor.
@@ -24,7 +26,7 @@ class AccountNotActiveException extends \Cake\Core\Exception\CakeException
      * @param int $code code
      * @param null $previous previous
      */
-    public function __construct($message, $code = 500, $previous = null)
+    public function __construct(array|string $message, int $code = 500, null $previous = null)
     {
         parent::__construct($message, $code, $previous);
     }

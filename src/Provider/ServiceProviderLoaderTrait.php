@@ -30,7 +30,7 @@ trait ServiceProviderLoaderTrait
      * @param string $loaderKey service loader key
      * @return mixed
      */
-    protected function loadService(ServerRequestInterface $request, $loaderKey)
+    protected function loadService(ServerRequestInterface $request, string $loaderKey): mixed
     {
         $serviceLoader = $this->getLoader($loaderKey);
 
@@ -43,7 +43,7 @@ trait ServiceProviderLoaderTrait
      * @param string $loaderKey loader configuration key
      * @return callable
      */
-    protected function getLoader($loaderKey)
+    protected function getLoader(string $loaderKey): callable
     {
         $serviceLoader = Configure::read($loaderKey);
         if (is_string($serviceLoader)) {

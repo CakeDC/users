@@ -17,6 +17,7 @@ use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use CakeDC\Users\Model\Behavior\LinkSocialBehavior;
 use DateTime;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * App\Model\Behavior\LinkSocialBehavior Test Case
@@ -75,9 +76,9 @@ class LinkSocialBehaviorTest extends TestCase
      * @param array  $result Expected result
      * @author Marcelo Rocha <marcelo@promosapiens.com.br>
      * @return void
-     * @dataProvider providerFacebookLinkSocialAccount
      */
-    public function testlinkSocialAccountFacebookProvider($data, $userId, $result)
+    #[DataProvider('providerFacebookLinkSocialAccount')]
+    public function testLinkSocialAccountFacebookProvider(array $data, string $userId, array $result): void
     {
         $user = $this->Table->get($userId, contain: ['SocialAccounts']);
         $resultUser = $this->Behavior->linkSocialAccount($user, $data);
@@ -101,7 +102,7 @@ class LinkSocialBehaviorTest extends TestCase
      * @author Marcelo Rocha <marcelo@promosapiens.com.br>
      * @return array
      */
-    public static function providerFacebookLinkSocialAccount()
+    public static function providerFacebookLinkSocialAccount(): array
     {
         $expiresTime = new DateTime();
         $tokenExpires = $expiresTime->setTimestamp(1458423682)->format('Y-m-d H:i:s');
@@ -161,9 +162,9 @@ class LinkSocialBehaviorTest extends TestCase
      * @param string $userId User id to add social account
      * @author Marcelo Rocha <marcelo@promosapiens.com.br>
      * @return void
-     * @dataProvider providerFacebookLinkSocialAccountErrorSaving
      */
-    public function testlinkSocialAccountErrorSavingFacebookProvider($data, $userId)
+    #[DataProvider('providerFacebookLinkSocialAccountErrorSaving')]
+    public function testLinkSocialAccountErrorSavingFacebookProvider(array $data, string $userId): void
     {
         $user = $this->Table->get($userId);
         $resultUser = $this->Behavior->linkSocialAccount($user, $data);
@@ -193,11 +194,8 @@ class LinkSocialBehaviorTest extends TestCase
      * @author Marcelo Rocha <marcelo@promosapiens.com.br>
      * @return array
      */
-    public static function providerFacebookLinkSocialAccountErrorSaving()
+    public static function providerFacebookLinkSocialAccountErrorSaving(): array
     {
-        $expiresTime = new DateTime();
-        $tokenExpires = $expiresTime->setTimestamp(1458423682)->format('Y-m-d H:i:s');
-
         return [
             [
                 [
@@ -229,19 +227,6 @@ class LinkSocialBehaviorTest extends TestCase
                     'provider' => 'Facebook',
                 ],
                 '00000000-0000-0000-0000-000000000001',
-                [
-                    'provider' => 'Facebook',
-                    'username' => null,
-                    'reference' => '9999911112255',
-                    'avatar' => '',
-                    'link' => 'facebook-link-15579',
-                    'description' => null,
-                    'token' => 'token',
-                    'token_secret' => null,
-                    'token_expires' => $tokenExpires,
-                    'user_id' => '00000000-0000-0000-0000-000000000001',
-                    'active' => true,
-                ],
             ],
         ];
     }
@@ -254,9 +239,9 @@ class LinkSocialBehaviorTest extends TestCase
      * @param array  $result Expected result
      * @author Marcelo Rocha <marcelo@promosapiens.com.br>
      * @return void
-     * @dataProvider providerFacebookLinkSocialAccountAccountExists
      */
-    public function testlinkSocialAccountFacebookProviderAccountExists($data, $userId, $result)
+    #[DataProvider('providerFacebookLinkSocialAccountAccountExists')]
+    public function testLinkSocialAccountFacebookProviderAccountExists(array $data, string $userId, array $result): void
     {
         $user = $this->Table->get($userId);
         $resultUser = $this->Behavior->linkSocialAccount($user, $data);
@@ -297,7 +282,7 @@ class LinkSocialBehaviorTest extends TestCase
      * @author Marcelo Rocha <marcelo@promosapiens.com.br>
      * @return array
      */
-    public static function providerFacebookLinkSocialAccountAccountExists()
+    public static function providerFacebookLinkSocialAccountAccountExists(): array
     {
         $expiresTime = new DateTime();
         $tokenExpires = $expiresTime->setTimestamp(1458423682)->format('Y-m-d H:i:s');

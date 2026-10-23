@@ -17,6 +17,7 @@ use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use CakeDC\Users\Mailer\UsersMailer;
 use CakeDC\Users\Model\Entity\User;
+use ReflectionClass;
 
 /**
  * Test Case
@@ -174,7 +175,7 @@ class UsersMailerTest extends TestCase
      */
     public function invokeMethod(&$object, $methodName, $parameters = [])
     {
-        $reflection = new \ReflectionClass(get_class($object));
+        $reflection = new ReflectionClass(get_class($object));
         $method = $reflection->getMethod($methodName);
 
         return $method->invokeArgs($object, $parameters);

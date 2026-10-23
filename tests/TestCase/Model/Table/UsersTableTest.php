@@ -21,6 +21,7 @@ use Cake\TestSuite\TestCase;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Model\Table\SocialAccountsTable;
 use CakeDC\Users\Model\Table\UsersTable;
+use InvalidArgumentException;
 
 /**
  * Users\Model\Table\UsersTable Test Case
@@ -254,7 +255,7 @@ class UsersTableTest extends TestCase
      */
     public function testSocialLoginCreateNewAccountWithNoCredentials()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $data = [
             'provider' => SocialAccountsTable::PROVIDER_TWITTER,
             'email' => 'user@test.com',

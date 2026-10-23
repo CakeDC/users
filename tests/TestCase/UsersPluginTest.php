@@ -59,7 +59,7 @@ class UsersPluginTest extends TestCase
      */
     public function testServices(): void
     {
-        $container = $this->getMockBuilder('Cake\Core\ContainerInterface')->getMock();
+        $container = $this->getMockBuilder('Cake\Container\ContainerInterface')->getMock();
 
         $container->expects($this->exactly(2))
             ->method('has')
@@ -68,9 +68,7 @@ class UsersPluginTest extends TestCase
                 ['CakeDC\Users\Webauthn\RegisterAdapter', false],
             ]);
 
-        $mockDefinition = $this->getMockBuilder('League\Container\Definition\DefinitionInterface')
-            ->onlyMethods(['addArgument'])
-            ->getMockForAbstractClass();
+        $mockDefinition = $this->createMock('Cake\Container\Definition\DefinitionInterface');
 
         $mockDefinition->expects($this->exactly(2))
             ->method('addArgument')

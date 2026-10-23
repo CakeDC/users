@@ -23,6 +23,7 @@ use CakeDC\Auth\Social\Mapper\Facebook;
 use CakeDC\Users\Middleware\SocialEmailMiddleware;
 use Laminas\Diactoros\Uri;
 use League\OAuth2\Client\Provider\FacebookUser;
+use League\OAuth2\Client\Token\AccessToken;
 
 class SocialEmailMiddlewareTest extends TestCase
 {
@@ -93,7 +94,7 @@ class SocialEmailMiddlewareTest extends TestCase
      */
     public function testWithGetRquest()
     {
-        $Token = new \League\OAuth2\Client\Token\AccessToken([
+        $Token = new AccessToken([
             'access_token' => 'test-token',
             'expires' => 1490988496,
         ]);
@@ -205,7 +206,7 @@ class SocialEmailMiddlewareTest extends TestCase
      */
     public function testWithUser()
     {
-        $Token = new \League\OAuth2\Client\Token\AccessToken([
+        $Token = new AccessToken([
             'access_token' => 'test-token',
             'expires' => 1490988496,
         ]);
@@ -290,7 +291,7 @@ class SocialEmailMiddlewareTest extends TestCase
      */
     public function testWithoutEmail()
     {
-        $Token = new \League\OAuth2\Client\Token\AccessToken([
+        $Token = new AccessToken([
             'access_token' => 'test-token',
             'expires' => 1490988496,
         ]);

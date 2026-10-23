@@ -23,7 +23,7 @@ class SocialAccount extends Entity
     /**
      * @inheritDoc
      */
-    protected array $_accessible = [
+    protected array $patchable = [
         '*' => true,
         'id' => false,
     ];
@@ -31,7 +31,7 @@ class SocialAccount extends Entity
     /**
      * @inheritDoc
      */
-    protected array $_hidden = [
+    protected array $hidden = [
         'token',
         'token_secret',
         'token_expires',

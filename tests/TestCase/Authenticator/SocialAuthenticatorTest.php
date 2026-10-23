@@ -13,9 +13,9 @@ declare(strict_types=1);
 namespace CakeDC\Users\Test\TestCase\Authenticator;
 
 use Authentication\Authenticator\Result;
-use Authentication\Identifier\IdentifierCollection;
+use Authentication\Identifier\IdentifierFactory;
+use Authentication\Identifier\IdentifierInterface;
 use Cake\Core\Configure;
-use Cake\Http\Response;
 use Cake\Http\ServerRequestFactory;
 use Cake\TestSuite\TestCase;
 use CakeDC\Auth\Social\MapUser;
@@ -28,6 +28,9 @@ use CakeDC\Users\Exception\UserNotActiveException;
 use CakeDC\Users\Model\Entity\User;
 use Laminas\Diactoros\Uri;
 use League\OAuth2\Client\Provider\FacebookUser;
+use League\OAuth2\Client\Token\AccessToken;
+use PHPUnit\Framework\Attributes\DataProvider;
+use UnexpectedValueException;
 
 /**
  * Test Case for SocialAuthenticator class
@@ -111,6 +114,8 @@ class SocialAuthenticatorTest extends TestCase
      */
     public function testAuthenticateNoSocialService()
     {
+        $this->Provider->expects($this->never())
+            ->method('getAccessToken');
         $uri = new Uri('/auth/facebook');
         $this->Request = $this->Request->withUri($uri);
         $this->Request = $this->Request->withQueryParams([
@@ -125,12 +130,9 @@ class SocialAuthenticatorTest extends TestCase
         ]);
         $this->Request->getSession()->write('oauth2state', '__TEST_STATE__');
 
-        $identifiers = new IdentifierCollection([
-            'CakeDC/Users.Social',
-        ]);
+        $identifiers = IdentifierFactory::create('CakeDC/Users.Social');
         $Authenticator = new SocialAuthenticator($identifiers);
-        $Response = new Response();
-        $result = $Authenticator->authenticate($this->Request, $Response);
+        $result = $Authenticator->authenticate($this->Request);
         $this->assertInstanceOf(Result::class, $result);
         $this->assertEquals(Result::FAILURE_CREDENTIALS_MISSING, $result->getStatus());
         $actual = $result->getData();
@@ -158,7 +160,7 @@ class SocialAuthenticatorTest extends TestCase
         ]);
         $this->Request->getSession()->write('oauth2state', '__TEST_STATE__');
 
-        $Token = new \League\OAuth2\Client\Token\AccessToken([
+        $Token = new AccessToken([
             'access_token' => 'test-token',
             'expires' => 1490988496,
         ]);
@@ -202,29 +204,26 @@ class SocialAuthenticatorTest extends TestCase
         $this->Provider->expects($this->never())
             ->method('getState');
 
-        $this->Provider->expects($this->any())
+        $this->Provider->expects($this->atLeastOnce())
             ->method('getAccessToken')
             ->with(
                 $this->equalTo('authorization_code'),
                 $this->equalTo(['code' => 'ZPO9972j3092304230']),
             )
-            ->will($this->returnValue($Token));
+            ->willReturn($Token);
 
-        $this->Provider->expects($this->any())
+        $this->Provider->expects($this->atLeastOnce())
             ->method('getResourceOwner')
             ->with(
                 $this->equalTo($Token),
             )
-            ->will($this->returnValue($user));
+            ->willReturn($user);
 
         $service = (new ServiceFactory())->createFromProvider('facebook');
         $this->Request = $this->Request->withAttribute('socialService', $service);
-        $identifiers = new IdentifierCollection([
-            'CakeDC/Users.Social',
-        ]);
+        $identifiers = IdentifierFactory::create('CakeDC/Users.Social');
         $Authenticator = new SocialAuthenticator($identifiers);
-        $Response = new Response();
-        $result = $Authenticator->authenticate($this->Request, $Response);
+        $result = $Authenticator->authenticate($this->Request);
         $this->assertInstanceOf(Result::class, $result);
         $this->assertEquals(Result::SUCCESS, $result->getStatus());
         $actual = $result->getData();
@@ -253,7 +252,7 @@ class SocialAuthenticatorTest extends TestCase
         ]);
         $this->Request->getSession()->write('oauth2state', '__TEST_STATE__');
 
-        $Token = new \League\OAuth2\Client\Token\AccessToken([
+        $Token = new AccessToken([
             'access_token' => 'test-token',
             'expires' => 1490988496,
         ]);
@@ -264,29 +263,26 @@ class SocialAuthenticatorTest extends TestCase
         $this->Provider->expects($this->never())
             ->method('getState');
 
-        $this->Provider->expects($this->any())
+        $this->Provider->expects($this->atLeastOnce())
             ->method('getAccessToken')
             ->with(
                 $this->equalTo('authorization_code'),
                 $this->equalTo(['code' => 'ZPO9972j3092304230']),
             )
-            ->will($this->returnValue($Token));
+            ->willReturn($Token);
 
-        $this->Provider->expects($this->any())
+        $this->Provider->expects($this->atLeastOnce())
             ->method('getResourceOwner')
             ->with(
                 $this->equalTo($Token),
             )
-            ->will($this->throwException(new \UnexpectedValueException('User not found')));
+            ->willThrowException(new UnexpectedValueException('User not found'));
 
         $service = (new ServiceFactory())->createFromProvider('facebook');
         $this->Request = $this->Request->withAttribute('socialService', $service);
-        $identifiers = new IdentifierCollection([
-            'CakeDC/Users.Social',
-        ]);
+        $identifiers = IdentifierFactory::create('CakeDC/Users.Social');
         $Authenticator = new SocialAuthenticator($identifiers);
-        $Response = new Response();
-        $result = $Authenticator->authenticate($this->Request, $Response);
+        $result = $Authenticator->authenticate($this->Request);
         $this->assertInstanceOf(Result::class, $result);
         $this->assertEquals(Result::FAILURE_IDENTITY_NOT_FOUND, $result->getStatus());
         $actual = $result->getData();
@@ -314,7 +310,7 @@ class SocialAuthenticatorTest extends TestCase
         ]);
         $this->Request->getSession()->write('oauth2state', '__TEST_STATE__');
 
-        $Token = new \League\OAuth2\Client\Token\AccessToken([
+        $Token = new AccessToken([
             'access_token' => 'test-token',
             'expires' => 1490988496,
         ]);
@@ -357,31 +353,28 @@ class SocialAuthenticatorTest extends TestCase
         $this->Provider->expects($this->never())
             ->method('getState');
 
-        $this->Provider->expects($this->any())
+        $this->Provider->expects($this->atLeastOnce())
             ->method('getAccessToken')
             ->with(
                 $this->equalTo('authorization_code'),
                 $this->equalTo(['code' => 'ZPO9972j3092304230']),
             )
-            ->will($this->returnValue($Token));
+            ->willReturn($Token);
 
-        $this->Provider->expects($this->any())
+        $this->Provider->expects($this->atLeastOnce())
             ->method('getResourceOwner')
             ->with(
                 $this->equalTo($Token),
             )
-            ->will($this->returnValue($user));
+            ->willReturn($user);
 
         $service = (new ServiceFactory())->createFromProvider('facebook');
         $this->Request = $this->Request->withAttribute('socialService', $service);
-        $identifiers = new IdentifierCollection([
-            'CakeDC/Users.Social',
-        ]);
+        $identifiers = IdentifierFactory::create('CakeDC/Users.Social');
         $Authenticator = new SocialAuthenticator($identifiers);
-        $Response = new Response();
         $result = false;
         try {
-            $Authenticator->authenticate($this->Request, $Response);
+            $Authenticator->authenticate($this->Request);
         } catch (SocialAuthenticationException $e) {
             $rawData = ['token' => $Token] + $user->toArray();
             $mapper = new MapUser();
@@ -419,7 +412,7 @@ class SocialAuthenticatorTest extends TestCase
         ]);
         $this->Request->getSession()->write('oauth2state', '__TEST_STATE__');
 
-        $Token = new \League\OAuth2\Client\Token\AccessToken([
+        $Token = new AccessToken([
             'access_token' => 'test-token',
             'expires' => 1490988496,
         ]);
@@ -462,28 +455,27 @@ class SocialAuthenticatorTest extends TestCase
         $this->Provider->expects($this->never())
             ->method('getState');
 
-        $this->Provider->expects($this->any())
+        $this->Provider->expects($this->atLeastOnce())
             ->method('getAccessToken')
             ->with(
                 $this->equalTo('authorization_code'),
                 $this->equalTo(['code' => 'ZPO9972j3092304230']),
             )
-            ->will($this->returnValue($Token));
+            ->willReturn($Token);
 
-        $this->Provider->expects($this->any())
+        $this->Provider->expects($this->atLeastOnce())
             ->method('getResourceOwner')
             ->with(
                 $this->equalTo($Token),
             )
-            ->will($this->returnValue($user));
+            ->willReturn($user);
 
         $service = (new ServiceFactory())->createFromProvider('facebook');
         $this->Request = $this->Request->withAttribute('socialService', $service);
-        $identifiers = new IdentifierCollection([]);
+        $identifiers = IdentifierFactory::create('Authentication.Password');
         $Authenticator = new SocialAuthenticator($identifiers);
-        $Response = new Response();
-        $Authenticator->authenticate($this->Request, $Response);
-        $result = $Authenticator->authenticate($this->Request, $Response);
+        $Authenticator->authenticate($this->Request);
+        $result = $Authenticator->authenticate($this->Request);
         $this->assertInstanceOf(Result::class, $result);
         $this->assertEquals(Result::FAILURE_IDENTITY_NOT_FOUND, $result->getStatus());
         $actual = $result->getData();
@@ -514,9 +506,9 @@ class SocialAuthenticatorTest extends TestCase
      *
      * @param \Exception $exception thrown exception
      * @param string $status expected status from Result object
-     * @dataProvider dataProviderAuthenticateErrorException
      * @return void
      */
+    #[DataProvider('dataProviderAuthenticateErrorException')]
     public function testAuthenticateErrorException($exception, $status)
     {
         $uri = new Uri('/auth/facebook');
@@ -533,7 +525,7 @@ class SocialAuthenticatorTest extends TestCase
         ]);
         $this->Request->getSession()->write('oauth2state', '__TEST_STATE__');
 
-        $Token = new \League\OAuth2\Client\Token\AccessToken([
+        $Token = new AccessToken([
             'access_token' => 'test-token',
             'expires' => 1490988496,
         ]);
@@ -577,31 +569,30 @@ class SocialAuthenticatorTest extends TestCase
         $this->Provider->expects($this->never())
             ->method('getState');
 
-        $this->Provider->expects($this->any())
+        $this->Provider->expects($this->atLeastOnce())
             ->method('getAccessToken')
             ->with(
                 $this->equalTo('authorization_code'),
                 $this->equalTo(['code' => 'ZPO9972j3092304230']),
             )
-            ->will($this->returnValue($Token));
+            ->willReturn($Token);
 
-        $this->Provider->expects($this->any())
+        $this->Provider->expects($this->atLeastOnce())
             ->method('getResourceOwner')
             ->with(
                 $this->equalTo($Token),
             )
-            ->will($this->returnValue($user));
+            ->willReturn($user);
 
         $service = (new ServiceFactory())->createFromProvider('facebook');
         $this->Request = $this->Request->withAttribute('socialService', $service);
-        $identifiers = $this->getMockBuilder(IdentifierCollection::class)->getMock();
+        $identifiers = $this->getMockBuilder(IdentifierInterface::class)->getMock();
         $identifiers->expects($this->once())
             ->method('identify')
-            ->will($this->throwException($exception));
+            ->willThrowException($exception);
 
         $Authenticator = new SocialAuthenticator($identifiers);
-        $Response = new Response();
-        $result = $Authenticator->authenticate($this->Request, $Response);
+        $result = $Authenticator->authenticate($this->Request);
         $this->assertInstanceOf(Result::class, $result);
         $this->assertEquals($status, $result->getStatus());
         $actual = $result->getData();

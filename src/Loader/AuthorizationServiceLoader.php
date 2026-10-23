@@ -32,7 +32,7 @@ class AuthorizationServiceLoader
      * @param \Psr\Http\Message\ServerRequestInterface $request The request.
      * @return \Authorization\AuthorizationService
      */
-    public function __invoke(ServerRequestInterface $request)
+    public function __invoke(ServerRequestInterface $request): AuthorizationService
     {
         $map = new MapResolver();
         $map->map(

@@ -13,16 +13,12 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
-use Cake\Http\ServerRequest;
 use Cake\ORM\Table;
 use Cake\TestSuite\TestCase;
+use CakeDC\Users\Controller\Traits\CustomUsersTableTrait;
 
 class CustomUsersTableTraitTest extends TestCase
 {
-    /**
-     * Mocked controller instance for tests (avoid dynamic property deprecation)
-     */
-    protected $controller;
     /**
      * Instance of the trait under test (avoid dynamic properties on mocks)
      */
@@ -31,12 +27,9 @@ class CustomUsersTableTraitTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->controller = $this->getMockBuilder('Cake\Controller\Controller')
-                ->onlyMethods(['redirect', 'render'])
-                ->addMethods(['header', '_stop'])
-                ->setConstructorArgs([new ServerRequest()])
-                ->getMock();
-        $this->Trait = $this->getMockForTrait('CakeDC\Users\Controller\Traits\CustomUsersTableTrait');
+        $this->Trait = new class {
+            use CustomUsersTableTrait;
+        };
     }
 
     public function tearDown(): void

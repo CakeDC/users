@@ -14,8 +14,9 @@ declare(strict_types=1);
 namespace CakeDC\Users\Webauthn;
 
 use Webauthn\PublicKeyCredential;
+use Webauthn\PublicKeyCredentialLoader as BaseLoader;
 
-class PublicKeyCredentialLoader extends \Webauthn\PublicKeyCredentialLoader
+class PublicKeyCredentialLoader extends BaseLoader
 {
     /**
      * @inheritDoc

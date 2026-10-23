@@ -48,7 +48,7 @@ class AuthorizationServiceProviderTest extends TestCase
     public function testGetAuthorizationServiceCallableDefined()
     {
         $request = ServerRequestFactory::fromGlobals();
-        $request->withQueryParams(['method' => __METHOD__]);
+        $request = $request->withQueryParams(['method' => __METHOD__]);
         $service = new AuthorizationService(new ResolverCollection());
         Configure::write('Auth.Authorization.serviceLoader', function ($aRequest) use ($request, $service) {
             $this->assertSame($request, $aRequest);

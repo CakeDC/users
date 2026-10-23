@@ -13,15 +13,18 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Test\TestCase\Controller\Component;
 
-use Authentication\AuthenticationService;
 use Authentication\Authenticator\Result;
 use Authentication\Identity;
 use Cake\Controller\ComponentRegistry;
 use Cake\Controller\Controller;
+use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 use Cake\ORM\Entity;
 use Cake\TestSuite\TestCase;
+use CakeDC\Auth\Authentication\AuthenticationService;
 use CakeDC\Users\Controller\Component\LoginComponent;
+use CakeDC\Users\Controller\UsersController;
+use CakeDC\Users\Model\Entity\User;
 
 class LoginComponentTest extends TestCase
 {
@@ -34,18 +37,18 @@ class LoginComponentTest extends TestCase
     {
         parent::setUp();
         $this->request = new ServerRequest();
-        $this->controller = new \CakeDC\Users\Controller\UsersController($this->request);
+        $this->controller = new UsersController($this->request);
         $registry = new ComponentRegistry($this->controller);
         $this->component = new LoginComponent($registry);
         $this->component->initialize([]);
-        $this->user = new \CakeDC\Users\Model\Entity\User([
+        $this->user = new User([
             'id' => 'd602b053-9d10-4a1c-b05d-5674f68a1f3a',
             'email' => 'test@example.com',
             'password' => 'password',
         ]);
     }
 
-    public function testLoginRehash()
+    public function testLoginRehash(): void
     {
         $authenticationService = $this->getMockBuilder(AuthenticationService::class)->getMock();
         $result = $this->getMockBuilder(Result::class)->disableOriginalConstructor()->getMock();
@@ -54,9 +57,9 @@ class LoginComponentTest extends TestCase
         $this->request = $this->request->withAttribute('authentication', $authenticationService);
         $identity = $this->getMockBuilder(Identity::class)->disableOriginalConstructor()->getMock();
         $identity->expects($this->once())->method('getOriginalData')->willReturn($this->user);
-        $this->request = $this->request->withAttribute('authentication', $authenticationService);
         $this->request = $this->request->withAttribute('identity', $identity);
         $this->controller->setRequest($this->request);
-        $this->component->handleLogin(false, false);
+        $result = $this->component->handleLogin(false, false);
+        $this->assertInstanceOf(Response::class, $result);
     }
 }

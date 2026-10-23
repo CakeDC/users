@@ -16,6 +16,7 @@ namespace CakeDC\Users\Model\Behavior;
 use Cake\Datasource\EntityInterface;
 use Cake\I18n\DateTime;
 use Cake\ORM\Behavior;
+use CakeDC\Users\Model\Entity\SocialAccount;
 
 /**
  * LinkSocial behavior
@@ -25,7 +26,7 @@ class LinkSocialBehavior extends Behavior
     /**
      * @inheritDoc
      */
-    protected array $_defaultConfig = [];
+    protected array $defaultConfig = [];
 
     /**
      * Link an user account with a social account (facebook, google)
@@ -34,11 +35,11 @@ class LinkSocialBehavior extends Behavior
      * @param array $data Social account information.
      * @return \Cake\Datasource\EntityInterface
      */
-    public function linkSocialAccount(EntityInterface $user, $data)
+    public function linkSocialAccount(EntityInterface $user, array $data): EntityInterface
     {
         $reference = $data['id'] ?? null;
-        $alias = $this->_table->SocialAccounts->getAlias();
-        $socialAccount = $this->_table->SocialAccounts->find()
+        $alias = $this->table->SocialAccounts->getAlias();
+        $socialAccount = $this->table->SocialAccounts->find()
             ->where([
                 $alias . '.reference' => $reference,
                 $alias . '.provider' => $data['provider'] ?? null,
@@ -62,21 +63,21 @@ class LinkSocialBehavior extends Behavior
      *
      * @param \CakeDC\Users\Model\Entity\User $user User to link.
      * @param array $data Social account information.
-     * @param \CakeDC\Users\Model\Entity\SocialAccount $socialAccount to update or create.
+     * @param \CakeDC\Users\Model\Entity\SocialAccount|null $socialAccount to update or create.
      * @return \Cake\Datasource\EntityInterface
      */
-    protected function createOrUpdateSocialAccount(EntityInterface $user, $data, $socialAccount)
+    protected function createOrUpdateSocialAccount(EntityInterface $user, array $data, ?SocialAccount $socialAccount = null): EntityInterface
     {
         if (!$socialAccount) {
             /** @var \CakeDC\Users\Model\Entity\SocialAccount $socialAccount */
-            $socialAccount = $this->_table->SocialAccounts->newEntity([]);
+            $socialAccount = $this->table->SocialAccounts->newEntity([]);
         }
 
         $data['user_id'] = $user->id;
         /** @var \CakeDC\Users\Model\Entity\SocialAccount $socialAccount */
         $socialAccount = $this->populateSocialAccount($socialAccount, $data);
 
-        $result = $this->_table->SocialAccounts->save($socialAccount);
+        $result = $this->table->SocialAccounts->save($socialAccount);
 
         /** @var array<\CakeDC\Users\Model\Entity\SocialAccount> $accounts */
         $accounts = (array)$user->social_accounts;
@@ -108,7 +109,7 @@ class LinkSocialBehavior extends Behavior
      * @param array $data Social account information.
      * @return \Cake\Datasource\EntityInterface
      */
-    protected function populateSocialAccount($socialAccount, $data)
+    protected function populateSocialAccount(EntityInterface $socialAccount, array $data): EntityInterface
     {
         $accountData = $socialAccount->toArray();
         $accountData['username'] = $data['username'] ?? null;
@@ -132,7 +133,7 @@ class LinkSocialBehavior extends Behavior
         $accountData['data'] = serialize($data['raw'] ?? null);
         $accountData['active'] = true;
 
-        $socialAccount = $this->_table->SocialAccounts->patchEntity($socialAccount, $accountData);
+        $socialAccount = $this->table->SocialAccounts->patchEntity($socialAccount, $accountData);
         //ensure provider is present in Entity
         $socialAccount['provider'] = $data['provider'] ?? null;
 

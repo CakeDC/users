@@ -21,6 +21,7 @@ use Webauthn\AuthenticatorSelectionCriteria;
 use Webauthn\PublicKeyCredentialCreationOptions;
 use Webauthn\PublicKeyCredentialDescriptor;
 use Webauthn\PublicKeyCredentialParameters;
+use Webauthn\PublicKeyCredentialSource;
 
 class RegisterAdapter extends BaseAdapter
 {
@@ -54,7 +55,7 @@ class RegisterAdapter extends BaseAdapter
      *
      * @return \Webauthn\PublicKeyCredentialSource
      */
-    public function verifyResponse(): \Webauthn\PublicKeyCredentialSource
+    public function verifyResponse(): PublicKeyCredentialSource
     {
         $options = $this->request->getSession()->read('Webauthn2fa.registerOptions');
         $attestationStatementSupportManager = $this->getAttestationStatementSupportManager();

@@ -39,7 +39,7 @@ class SocialAuthMiddleware implements MiddlewareInterface
      * @param \CakeDC\Users\Exception\SocialAuthenticationException $exception Exception thrown
      * @return \Psr\Http\Message\ResponseInterface A response
      */
-    protected function onAuthenticationException(ServerRequest $request, $exception)
+    protected function onAuthenticationException(ServerRequest $request, SocialAuthenticationException $exception): ResponseInterface
     {
         $baseClassName = $exception->getPrevious() !== null ? get_class($exception->getPrevious()) : self::class;
         $response = new Response();
@@ -66,7 +66,7 @@ class SocialAuthMiddleware implements MiddlewareInterface
      * @param string $message the message
      * @return void
      */
-    private function setErrorMessage(ServerRequest $request, $message)
+    private function setErrorMessage(ServerRequest $request, string $message): void
     {
         $messages = (array)$request->getSession()->read('Flash.flash');
         $messages[] = [
@@ -85,7 +85,7 @@ class SocialAuthMiddleware implements MiddlewareInterface
      * @param string $action action at users controller
      * @return \Psr\Http\Message\ResponseInterface
      */
-    protected function responseWithActionLocation(Response $response, $action)
+    protected function responseWithActionLocation(Response $response, string $action): ResponseInterface
     {
         $url = Router::url(UsersUrl::actionUrl($action));
 

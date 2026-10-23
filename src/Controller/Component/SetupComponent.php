@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace CakeDC\Users\Controller\Component;
 
 use Cake\Controller\Component;
+use Cake\Controller\Controller;
 use Cake\Core\Configure;
 
 class SetupComponent extends Component
@@ -37,7 +38,7 @@ class SetupComponent extends Component
      * @return void
      * @throws \Exception
      */
-    protected function loadAuthComponents($controller)
+    protected function loadAuthComponents(Controller $controller): void
     {
         $authenticationConfig = Configure::read('Auth.AuthenticationComponent');
         if ($authenticationConfig['load'] ?? false) {

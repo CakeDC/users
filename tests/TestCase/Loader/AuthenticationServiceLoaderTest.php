@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Test\TestCase\Loader;
 
+use Authentication\AuthenticationServiceInterface;
+use Authentication\Authenticator\TokenAuthenticator;
 use Cake\Core\Configure;
 use Cake\Http\ServerRequest;
 use Cake\TestSuite\TestCase;
@@ -28,8 +30,8 @@ class AuthenticationServiceLoaderTest extends TestCase
         parent::setUp();
         $this->Loader = new AuthenticationServiceLoader();
         Configure::write('Auth.Authenticators', [
-            'Authentication.Session',
-            'Authentication.Form',
+            'Session' => 'Authentication.Session',
+            'Form' => 'Authentication.Form',
         ]);
         Configure::write('Auth.Identifiers', [
             'Authentication.Password',
@@ -58,7 +60,7 @@ class AuthenticationServiceLoaderTest extends TestCase
         $loader = $this->Loader;
         $service = $loader($request);
 
-        $this->assertInstanceOf(\Authentication\AuthenticationServiceInterface::class, $service);
+        $this->assertInstanceOf(AuthenticationServiceInterface::class, $service);
         $this->assertNotEmpty($service->authenticators());
     }
 
@@ -80,8 +82,8 @@ class AuthenticationServiceLoaderTest extends TestCase
         $loader = $this->Loader;
         $service = $loader($request);
 
-        $this->assertInstanceOf(\Authentication\AuthenticationServiceInterface::class, $service);
+        $this->assertInstanceOf(AuthenticationServiceInterface::class, $service);
         $authenticator = $service->authenticators()->get('Token');
-        $this->assertInstanceOf(\Authentication\Authenticator\TokenAuthenticator::class, $authenticator);
+        $this->assertInstanceOf(TokenAuthenticator::class, $authenticator);
     }
 }

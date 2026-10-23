@@ -20,10 +20,12 @@ use Cake\I18n\I18n;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use CakeDC\Users\Model\Entity\SocialAccount;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 
 /**
  * Users\View\Helper\UserHelper Test Case
  */
+#[AllowMockObjectsWithoutExpectations]
 class UserHelperTest extends TestCase
 {
     /**
@@ -81,8 +83,7 @@ class UserHelperTest extends TestCase
                 ->onlyMethods(['isAuthorized'])
                 ->setConstructorArgs([$this->View])
                 ->getMock();
-        $this->AuthLink->expects($this->any())
-            ->method('isAuthorized')
+        $this->AuthLink->method('isAuthorized')
             ->willReturn(true);
         $this->User = $this->getMockBuilder('CakeDC\Users\View\Helper\UserHelper')
             ->onlyMethods(['__get'])
@@ -118,7 +119,7 @@ class UserHelperTest extends TestCase
      *
      * @return void
      */
-    public function testLogout()
+    public function testLogout(): void
     {
         $builder = Router::createRouteBuilder('/');
         $builder->connect('/logout', [
@@ -137,7 +138,7 @@ class UserHelperTest extends TestCase
      *
      * @return void
      */
-    public function testLogoutDifferentMessage()
+    public function testLogoutDifferentMessage(): void
     {
         $builder = Router::createRouteBuilder('/');
         $builder->connect('/logout', [
@@ -156,7 +157,7 @@ class UserHelperTest extends TestCase
      *
      * @return void
      */
-    public function testLogoutWithOptions()
+    public function testLogoutWithOptions(): void
     {
         $builder = Router::createRouteBuilder('/');
         $builder->connect('/logout', [
@@ -175,7 +176,7 @@ class UserHelperTest extends TestCase
      *
      * @return void
      */
-    public function testWelcome()
+    public function testWelcome(): void
     {
         $builder = Router::createRouteBuilder('/');
         $builder->connect('/profile', [
@@ -204,7 +205,7 @@ class UserHelperTest extends TestCase
      *
      * @return void
      */
-    public function testWelcomeWillDisplayUsernameInstead()
+    public function testWelcomeWillDisplayUsernameInstead(): void
     {
         $builder = Router::createRouteBuilder('/');
         $builder->connect('/profile', [
@@ -232,7 +233,7 @@ class UserHelperTest extends TestCase
      *
      * @return void
      */
-    public function testWelcomeNotLoggedInUser()
+    public function testWelcomeNotLoggedInUser(): void
     {
         $request = new ServerRequest();
         $this->User->getView()->setRequest($request);
@@ -245,7 +246,7 @@ class UserHelperTest extends TestCase
      *
      * @return void
      */
-    public function testAddReCaptcha()
+    public function testAddReCaptcha(): void
     {
         Configure::write('Users.reCaptcha.key', 'testKey');
         Configure::write('Users.reCaptcha.theme', 'light');
@@ -264,14 +265,11 @@ class UserHelperTest extends TestCase
      *
      * @return void
      */
-    public function testAddReCaptchaV3()
+    public function testAddReCaptchaV3(): void
     {
         $this->View->expects($this->exactly(2))
             ->method('append')
-            ->willReturnMap([
-                    ['https://www.google.com/recaptcha/api.js', null],
-                    ['CakeDC/Users.reCaptchaV3', null],
-                ]);
+            ->willReturn($this->View);
         Configure::write('Users.reCaptcha.key', 'testKey');
         Configure::write('Users.reCaptcha.version', 3);
         Configure::write('Users.reCaptcha.theme', 'light');
@@ -281,14 +279,14 @@ class UserHelperTest extends TestCase
         $this->User->addReCaptcha();
     }
 
-    public function testButton()
+    public function testButton(): void
     {
         $title = 'test';
         $options = ['test' => 'test'];
         $this->assertEquals($this->User->Form->button($title, $options), $this->User->button($title, $options));
     }
 
-    public function testButtonReCaptchaV3()
+    public function testButtonReCaptchaV3(): void
     {
         Configure::write('Users.reCaptcha.key', 'testKey');
         Configure::write('Users.reCaptcha.version', 3);
@@ -308,7 +306,7 @@ class UserHelperTest extends TestCase
      *
      * @return void
      */
-    public function testAddReCaptchaEmpty()
+    public function testAddReCaptchaEmpty(): void
     {
         $result = $this->User->addReCaptcha();
         $expected = '<p>reCaptcha is not configured! Please configure Users.reCaptcha.key</p>';
@@ -320,11 +318,12 @@ class UserHelperTest extends TestCase
      *
      * @return void
      */
-    public function testAddReCaptchaScript()
+    public function testAddReCaptchaScript(): void
     {
         $this->View->expects($this->once())
             ->method('append')
-            ->with('script', $this->stringContains('https://www.google.com/recaptcha/api.js'));
+            ->with('script', $this->stringContains('https://www.google.com/recaptcha/api.js'))
+            ->willReturn($this->View);
         $this->User->addReCaptchaScript();
     }
 
@@ -333,7 +332,7 @@ class UserHelperTest extends TestCase
      *
      * @return void
      */
-    public function testSocialLoginLink()
+    public function testSocialLoginLink(): void
     {
         $result = $this->User->socialLogin('facebook');
         $this->assertEquals('<a href="/auth/facebook" class="btn btn-social btn-facebook"><i class="fa fa-facebook"></i>Sign in with Facebook</a>', $result);
@@ -347,7 +346,7 @@ class UserHelperTest extends TestCase
      *
      * @return void
      */
-    public function testSocialLoginTranslation()
+    public function testSocialLoginTranslation(): void
     {
         I18n::setLocale('es_ES');
         $result = $this->User->socialLogin('facebook');
@@ -360,7 +359,7 @@ class UserHelperTest extends TestCase
      *
      * @return void
      */
-    public function testSocialConnectLinkList()
+    public function testSocialConnectLinkList(): void
     {
         Configure::write('Users.Social.login', true);
 
@@ -381,7 +380,7 @@ class UserHelperTest extends TestCase
      *
      * @return void
      */
-    public function testSocialConnectLinkListIsConnectedWithFacebook()
+    public function testSocialConnectLinkListIsConnectedWithFacebook(): void
     {
         Configure::write('Users.Social.login', true);
 
@@ -420,7 +419,7 @@ class UserHelperTest extends TestCase
      *
      * @return void
      */
-    public function testSocialConnectLinkListSocialIsNotEnabled()
+    public function testSocialConnectLinkListSocialIsNotEnabled(): void
     {
         Configure::write('Users.Social.login', false);
 
@@ -458,7 +457,7 @@ class UserHelperTest extends TestCase
      *
      * @return void
      */
-    public function testSocialConnectLinkListSocialEnabledButNotConfiguredProvider()
+    public function testSocialConnectLinkListSocialEnabledButNotConfiguredProvider(): void
     {
         Configure::write('Users.Social.login', true);
 

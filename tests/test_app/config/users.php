@@ -1,5 +1,8 @@
 <?php
 
+use CakeDC\Auth\Authentication\TwoFactorProcessor\OneTimePasswordProcessor;
+use CakeDC\Auth\Authentication\TwoFactorProcessor\Webauthn2faProcessor;
+
 return [
     'Users.Social.login' => true,
     'Auth.AuthenticationComponent.loginRedirect' => '/pages/home',
@@ -10,7 +13,7 @@ return [
     'OAuth.providers.google.options.clientId' => '0000000990909090',
     'OAuth.providers.google.options.clientSecret' => '1565464559789798',
     'TwoFactorProcessors' => [
-        \CakeDC\Auth\Authentication\TwoFactorProcessor\OneTimePasswordProcessor::class,
-        \CakeDC\Auth\Authentication\TwoFactorProcessor\Webauthn2faProcessor::class,
+        OneTimePasswordProcessor::class,
+        Webauthn2faProcessor::class,
     ],
 ];

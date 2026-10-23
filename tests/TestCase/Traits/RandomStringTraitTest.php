@@ -14,37 +14,41 @@ declare(strict_types=1);
 namespace CakeDC\Users\Test\TestCase\Traits;
 
 use Cake\TestSuite\TestCase;
+use CakeDC\Users\Traits\RandomStringTrait;
 
 class RandomStringTraitTest extends TestCase
 {
     /**
-     * @var \CakeDC\Users\Traits\RandomStringTrait|\PHPUnit\Framework\MockObject\MockObject
+     * @var object
      */
-    public $Trait;
+    public object $traitObject;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->Trait = $this->getMockForTrait('CakeDC\Users\Traits\RandomStringTrait');
+        $this->traitObject = new class {
+            use RandomStringTrait;
+        };
     }
 
     public function tearDown(): void
     {
+        unset($this->traitObject);
         parent::tearDown();
     }
 
-    public function testRandomStringLength()
+    public function testRandomStringLength(): void
     {
-        $this->assertSame(10, strlen($this->Trait->randomString()));
-        $this->assertSame(30, strlen($this->Trait->randomString(30)));
-        $this->assertSame(10, strlen($this->Trait->randomString('-300')));
-        $this->assertSame(10, strlen($this->Trait->randomString('text')));
+        $this->assertSame(10, strlen($this->traitObject->randomString()));
+        $this->assertSame(30, strlen($this->traitObject->randomString(30)));
+        $this->assertSame(10, strlen($this->traitObject->randomString(-300)));
+        $this->assertSame(10, strlen($this->traitObject->randomString('text')));
     }
 
-    public function testRandomStringUsesSecureRandomness()
+    public function testRandomStringUsesSecureRandomness(): void
     {
-        $first = $this->Trait->randomString(32);
-        $second = $this->Trait->randomString(32);
+        $first = $this->traitObject->randomString(32);
+        $second = $this->traitObject->randomString(32);
 
         $this->assertSame(32, strlen($first));
         $this->assertSame(32, strlen($second));
@@ -53,9 +57,9 @@ class RandomStringTraitTest extends TestCase
         $this->assertMatchesRegularExpression('/^[0-9a-zA-Z]+$/', $second);
     }
 
-    public function testRandomStringOddLength()
+    public function testRandomStringOddLength(): void
     {
-        $this->assertSame(31, strlen($this->Trait->randomString(31)));
-        $this->assertSame(1, strlen($this->Trait->randomString(1)));
+        $this->assertSame(31, strlen($this->traitObject->randomString(31)));
+        $this->assertSame(1, strlen($this->traitObject->randomString(1)));
     }
 }

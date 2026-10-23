@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace CakeDC\Users\Webauthn;
 
 use Cake\Core\Configure;
+use Cake\Datasource\EntityInterface;
 use Cake\Http\ServerRequest;
 use Cake\ORM\TableRegistry;
 use CakeDC\Users\Model\Table\UsersTable;
@@ -21,6 +22,7 @@ use Cose\Algorithm\Signature\RSA\PS512;
 use Cose\Algorithm\Signature\RSA\RS256;
 use Cose\Algorithm\Signature\RSA\RS384;
 use Cose\Algorithm\Signature\RSA\RS512;
+use OutOfBoundsException;
 use Webauthn\AttestationStatement\AttestationObjectLoader;
 use Webauthn\AttestationStatement\AttestationStatementSupportManager;
 use Webauthn\AttestationStatement\NoneAttestationStatementSupport;
@@ -33,16 +35,16 @@ class BaseAdapter
     /**
      * @var \Cake\Http\ServerRequest
      */
-    protected $request;
+    protected ServerRequest $request;
     /**
      * @var \CakeDC\Users\Webauthn\Repository\UserCredentialSourceRepository
      */
-    protected $repository;
+    protected UserCredentialSourceRepository $repository;
 
     /**
      * @var \Cake\Datasource\EntityInterface
      */
-    private $user;
+    private EntityInterface $user;
     /**
      * @var \Webauthn\PublicKeyCredentialRpEntity
      */
@@ -72,9 +74,9 @@ class BaseAdapter
          */
         $userSession = $request->getSession()->read('Webauthn2fa.User');
         if (empty($userSession->id)) {
-            throw new \OutOfBoundsException(__d('cake_d_c/users', "The user id was not found into session key 'Webauthn2fa.User'"));
+            throw new OutOfBoundsException(__d('cake_d_c/users', "The user id was not found into session key 'Webauthn2fa.User'"));
         }
-        $usersTable = $usersTable ?? TableRegistry::getTableLocator()
+        $usersTable ??= TableRegistry::getTableLocator()
             ->get($userSession->getSource());
         $this->user = $usersTable->get($userSession->id);
         $this->repository = new UserCredentialSourceRepository(
@@ -100,7 +102,7 @@ class BaseAdapter
     /**
      * @return mixed|array|null
      */
-    public function getUser()
+    public function getUser(): mixed
     {
         return $this->user;
     }

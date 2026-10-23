@@ -16,6 +16,7 @@ namespace CakeDC\Users\Model\Behavior;
 use Cake\Datasource\EntityInterface;
 use Cake\I18n\DateTime;
 use Cake\ORM\Behavior;
+use CakeDC\Users\Model\Entity\User;
 
 /**
  * Covers the user registration
@@ -27,18 +28,20 @@ class BaseTokenBehavior extends Behavior
      *
      * @param \Cake\Datasource\EntityInterface $user User to be updated.
      * @param bool $validateEmail email user to validate.
-     * @param int $tokenExpiration seconds to expire from now
+     * @param int|null $tokenExpiration seconds to expire from now
      * @return \Cake\Datasource\EntityInterface
      */
-    protected function _updateActive(EntityInterface $user, $validateEmail, $tokenExpiration)
+    protected function updateActive(EntityInterface $user, bool $validateEmail, ?int $tokenExpiration = null): EntityInterface
     {
-        $emailValidated = $user['validated'];
+        $emailValidated = $user->get('validated');
         if (!$emailValidated && $validateEmail) {
-            $user['active'] = false;
-            $user->updateToken($tokenExpiration);
+            $user->set('active', false);
+            if ($user instanceof User) {
+                $user->updateToken($tokenExpiration ?? 0);
+            }
         } else {
-            $user['active'] = true;
-            $user['activation_date'] = new DateTime();
+            $user->set('active', true);
+            $user->set('activation_date', new DateTime());
         }
 
         return $user;
@@ -50,11 +53,11 @@ class BaseTokenBehavior extends Behavior
      * @param \Cake\Datasource\EntityInterface $user user object.
      * @return \Cake\Datasource\EntityInterface
      */
-    protected function _removeValidationToken(EntityInterface $user)
+    protected function removeValidationToken(EntityInterface $user): EntityInterface
     {
-        $user['token'] = null;
-        $user['token_expires'] = null;
+        $user->set('token', null);
+        $user->set('token_expires', null);
 
-        return $this->_table->save($user);
+        return $this->table->save($user);
     }
 }

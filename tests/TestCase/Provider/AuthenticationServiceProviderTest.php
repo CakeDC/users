@@ -21,6 +21,7 @@ use Cake\Http\ServerRequest;
 use Cake\Http\ServerRequestFactory;
 use Cake\TestSuite\TestCase;
 use CakeDC\Auth\Authentication\AuthenticationService as CakeDCAuthenticationService;
+use CakeDC\Auth\Authentication\TwoFactorProcessor\OneTimePasswordProcessor;
 use CakeDC\Auth\Authenticator\FormAuthenticator;
 use CakeDC\Auth\Authenticator\TwoFactorAuthenticator;
 use CakeDC\Users\Provider\AuthenticationServiceProvider;
@@ -52,15 +53,14 @@ class AuthenticationServiceProviderTest extends TestCase
                 'loginUrl' => '/login',
                 'fields' => ['username' => 'email', 'password' => 'alt_password'],
                 'identifier' => [
-                    'Authentication.Password' => [
-                        'fields' => [
-                            'username' => ['username', 'email'],
-                            'password' => 'password',
-                        ],
-                        'resolver' => [
-                            'className' => 'Authentication.Orm',
-                            'finder' => 'active',
-                        ],
+                    'className' => 'Authentication.Password',
+                    'fields' => [
+                        'username' => ['username', 'email'],
+                        'password' => 'password',
+                    ],
+                    'resolver' => [
+                        'className' => 'Authentication.Orm',
+                        'finder' => 'active',
                     ],
                 ],
             ],
@@ -71,19 +71,18 @@ class AuthenticationServiceProviderTest extends TestCase
                 'queryParam' => 'api_key',
                 'tokenPrefix' => null,
                 'identifier' => [
-                    'Authentication.Token' => [
-                        'tokenField' => 'api_token',
-                        'resolver' => [
-                            'className' => 'Authentication.Orm',
-                            'finder' => 'active',
-                        ],
+                    'className' => 'Authentication.Token',
+                    'tokenField' => 'api_token',
+                    'resolver' => [
+                        'className' => 'Authentication.Orm',
+                        'finder' => 'active',
                     ],
                 ],
             ],
         ]);
         Configure::write('OneTimePasswordAuthenticator.login', true);
         Configure::write('TwoFactorProcessors', [
-            \CakeDC\Auth\Authentication\TwoFactorProcessor\OneTimePasswordProcessor::class,
+            OneTimePasswordProcessor::class,
         ]);
 
         $authenticationServiceProvider = new AuthenticationServiceProvider();
@@ -110,15 +109,14 @@ class AuthenticationServiceProviderTest extends TestCase
                 'fields' => ['username' => 'email', 'password' => 'alt_password'],
                 'className' => 'CakeDC/Auth.Form',
                 'identifier' => [
-                    'Authentication.Password' => [
-                        'fields' => [
-                            'username' => ['username', 'email'],
-                            'password' => 'password',
-                        ],
-                        'resolver' => [
-                            'className' => 'Authentication.Orm',
-                            'finder' => 'active',
-                        ],
+                    'className' => 'Authentication.Password',
+                    'fields' => [
+                        'username' => ['username', 'email'],
+                        'password' => 'password',
+                    ],
+                    'resolver' => [
+                        'className' => 'Authentication.Orm',
+                        'finder' => 'active',
                     ],
                 ],
             ],
@@ -129,12 +127,11 @@ class AuthenticationServiceProviderTest extends TestCase
                 'skipTwoFactorVerify' => true,
                 'className' => 'Authentication.Token',
                 'identifier' => [
-                    'Authentication.Token' => [
-                        'tokenField' => 'api_token',
-                        'resolver' => [
-                            'className' => 'Authentication.Orm',
-                            'finder' => 'active',
-                        ],
+                    'className' => 'Authentication.Token',
+                    'tokenField' => 'api_token',
+                    'resolver' => [
+                        'className' => 'Authentication.Orm',
+                        'finder' => 'active',
                     ],
                 ],
             ],
@@ -161,7 +158,7 @@ class AuthenticationServiceProviderTest extends TestCase
     public function testGetAuthenticationServiceCallableDefined()
     {
         $request = ServerRequestFactory::fromGlobals();
-        $request->withQueryParams(['method' => __METHOD__]);
+        $request = $request->withQueryParams(['method' => __METHOD__]);
         $service = new CakeDCAuthenticationService([
             'identifiers' => [
                 'Authentication.Password',
@@ -193,13 +190,19 @@ class AuthenticationServiceProviderTest extends TestCase
                 'fields' => ['username' => 'email'],
                 'identify' => true,
                 'impersonateSessionKey' => 'AuthImpersonate',
-                'className' => 'Authentication.Session',
             ],
             'Form' => [
                 'className' => 'CakeDC/Auth.Form',
                 'loginUrl' => '/login',
                 'fields' => ['username' => 'email', 'password' => 'alt_password'],
-                'className' => 'CakeDC/Auth.Form',
+                'identifier' => [
+                    'className' => 'Authentication.Password',
+                    'fields' => ['username' => 'email', 'password' => 'alt_password'],
+                    'resolver' => [
+                        'className' => 'Authentication.Orm',
+                        'finder' => 'active',
+                    ],
+                ],
             ],
             'Token' => [
                 'className' => 'Authentication.Token',
@@ -207,7 +210,14 @@ class AuthenticationServiceProviderTest extends TestCase
                 'header' => null,
                 'queryParam' => 'api_key',
                 'tokenPrefix' => null,
-                'className' => 'Authentication.Token',
+                'identifier' => [
+                    'className' => 'Authentication.Token',
+                    'tokenField' => 'api_token',
+                    'resolver' => [
+                        'className' => 'Authentication.Orm',
+                        'finder' => 'active',
+                    ],
+                ],
             ],
         ]);
         Configure::write('Auth.Identifiers', [
@@ -244,6 +254,14 @@ class AuthenticationServiceProviderTest extends TestCase
                 'fields' => ['username' => 'email', 'password' => 'alt_password'],
                 'keyCheckEnabledRecaptcha' => 'Users.reCaptcha.login',
                 'className' => 'CakeDC/Auth.Form',
+                'identifier' => [
+                    'className' => 'Authentication.Password',
+                    'fields' => ['username' => 'email', 'password' => 'alt_password'],
+                    'resolver' => [
+                        'className' => 'Authentication.Orm',
+                        'finder' => 'active',
+                    ],
+                ],
             ],
             TokenAuthenticator::class => [
                 'header' => null,
@@ -251,6 +269,14 @@ class AuthenticationServiceProviderTest extends TestCase
                 'tokenPrefix' => null,
                 'skipTwoFactorVerify' => true,
                 'className' => 'Authentication.Token',
+                'identifier' => [
+                    'className' => 'Authentication.Token',
+                    'tokenField' => 'api_token',
+                    'resolver' => [
+                        'className' => 'Authentication.Orm',
+                        'finder' => 'active',
+                    ],
+                ],
             ],
         ];
         $actual = [];

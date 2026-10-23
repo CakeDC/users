@@ -46,7 +46,7 @@ class User extends Entity
     /**
      * @inheritDoc
      */
-    protected array $_accessible = [
+    protected array $patchable = [
         '*' => true,
         'id' => false,
         'is_superuser' => false,
@@ -56,7 +56,7 @@ class User extends Entity
     /**
      * @inheritDoc
      */
-    protected array $_hidden = [
+    protected array $hidden = [
         'additional_data',
         'api_token',
         'password',
@@ -69,7 +69,7 @@ class User extends Entity
      * @param string $password password that will be set.
      * @return string|bool
      */
-    protected function _setPassword($password)
+    protected function _setPassword(string $password): string|bool
     {
         return $this->hashPassword($password);
     }
@@ -78,7 +78,7 @@ class User extends Entity
      * @param string $password password that will be confirm.
      * @return string|bool
      */
-    protected function _setConfirmPassword($password)
+    protected function _setConfirmPassword(string $password): string|bool
     {
         return $this->hashPassword($password);
     }
@@ -87,13 +87,13 @@ class User extends Entity
      * @param string $tos tos option. It will be set the tos_date
      * @return bool
      */
-    protected function _setTos($tos)
+    protected function _setTos(string|int $tos): bool
     {
         if ((bool)$tos) {
             $this->set('tos_date', DateTime::now());
         }
 
-        return $tos;
+        return (bool)$tos;
     }
 
     /**
@@ -103,7 +103,7 @@ class User extends Entity
      * @param string $password password to be hashed
      * @return mixed
      */
-    public function hashPassword($password)
+    public function hashPassword(string $password): mixed
     {
         $PasswordHasher = $this->getPasswordHasher();
 
@@ -115,7 +115,7 @@ class User extends Entity
      *
      * @return mixed
      */
-    public function getPasswordHasher()
+    public function getPasswordHasher(): mixed
     {
         $passwordHasher = Configure::read('Users.passwordHasher');
         if (!class_exists($passwordHasher)) {
@@ -132,7 +132,7 @@ class User extends Entity
      * @param string $hashedPassword hash used to check password.
      * @return bool
      */
-    public function checkPassword($password, $hashedPassword)
+    public function checkPassword(string $password, string $hashedPassword): bool
     {
         $PasswordHasher = $this->getPasswordHasher();
 
@@ -144,7 +144,7 @@ class User extends Entity
      *
      * @return bool
      */
-    public function tokenExpired()
+    public function tokenExpired(): bool
     {
         if (empty($this->token_expires)) {
             return true;
@@ -158,7 +158,7 @@ class User extends Entity
      *
      * @return string|null avatar
      */
-    protected function _getAvatar()
+    protected function _getAvatar(): ?string
     {
         $avatar = null;
         if (isset($this->social_accounts[0])) {
@@ -174,7 +174,7 @@ class User extends Entity
      * @param int $tokenExpiration seconds to expire the token from Now
      * @return void
      */
-    public function updateToken($tokenExpiration = 0)
+    public function updateToken(int $tokenExpiration = 0): void
     {
         $expiration = new DateTime('now');
         $this->token_expires = $expiration->addSeconds($tokenExpiration);

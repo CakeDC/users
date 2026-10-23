@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Model\Behavior;
 
+use BadMethodCallException;
 use Cake\ORM\Behavior;
 use Cake\ORM\Query\SelectQuery;
 
@@ -27,9 +28,9 @@ class AuthFinderBehavior extends Behavior
      * @param \Cake\ORM\Query\SelectQuery $query Query object to modify
      * @return \Cake\ORM\Query\SelectQuery
      */
-    public function findActive(SelectQuery $query)
+    public function findActive(SelectQuery $query): SelectQuery
     {
-        $query->where([$this->_table->aliasField('active') => 1]);
+        $query->where([$this->table->aliasField('active') => 1]);
 
         return $query;
     }
@@ -42,17 +43,17 @@ class AuthFinderBehavior extends Behavior
      * @return \Cake\ORM\Query\SelectQuery
      * @throws \BadMethodCallException
      */
-    public function findAuth(SelectQuery $query, mixed ...$args)
+    public function findAuth(SelectQuery $query, mixed ...$args): SelectQuery
     {
         $options = $query->getOptions();
         $identifier = $options['username'] ?? null;
         if (empty($identifier)) {
-            throw new \BadMethodCallException(__d('cake_d_c/users', 'Missing \'username\' in options data'));
+            throw new BadMethodCallException(__d('cake_d_c/users', 'Missing \'username\' in options data'));
         }
         $where = $query->clause('where') ?: [];
         $query
             ->where(function ($exp) use ($identifier, $where) {
-                $or = $exp->or([$this->_table->aliasField('email') => $identifier]);
+                $or = $exp->or([$this->table->aliasField('email') => $identifier]);
 
                 return $or->add($where);
             }, [], true)

@@ -14,7 +14,10 @@ declare(strict_types=1);
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
 use Cake\Event\Event;
+use Cake\Http\Response;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 
+#[AllowMockObjectsWithoutExpectations]
 class UserValidationTraitTest extends BaseTrait
 {
     /**
@@ -41,17 +44,17 @@ class UserValidationTraitTest extends BaseTrait
      *
      * @return void
      */
-    public function testValidateHappyEmail()
+    public function testValidateHappyEmail(): void
     {
-        $this->_mockFlash();
+        $flash = $this->mockFlash();
         $user = $this->table->findByToken('token-3')->first();
         $this->assertFalse($user->active);
-        $this->Trait->Flash->expects($this->once())
-                ->method('success')
-                ->with('User account validated successfully');
+        $flash->expects('set')
+                ->with('User account validated successfully', ['element' => 'success']);
         $this->Trait->expects($this->once())
                 ->method('redirect')
-                ->with($this->loginUrl());
+                ->with($this->loginUrl())
+                ->willReturn(new Response());
         $this->Trait->validate('email', 'token-3');
         $user = $this->table->findById($user->id)->first();
         $this->assertTrue($user->active);
@@ -62,7 +65,7 @@ class UserValidationTraitTest extends BaseTrait
      *
      * @return void
      */
-    public function testValidateHappyEmailWithAfterEmailTokenValidationEvent()
+    public function testValidateHappyEmailWithAfterEmailTokenValidationEvent(): void
     {
         $event = new Event('event');
         $event->setResult([
@@ -70,10 +73,11 @@ class UserValidationTraitTest extends BaseTrait
         ]);
         $this->Trait->expects($this->once())
             ->method('dispatchEvent')
-            ->will($this->returnValue($event));
+            ->willReturn($event);
         $this->Trait->expects($this->once())
             ->method('redirect')
-            ->with(['action' => 'newAction']);
+            ->with(['action' => 'newAction'])
+            ->willReturn(new Response());
         $this->Trait->validate('email', 'token-3');
     }
 
@@ -82,15 +86,15 @@ class UserValidationTraitTest extends BaseTrait
      *
      * @return void
      */
-    public function testValidateUserNotFound()
+    public function testValidateUserNotFound(): void
     {
-        $this->_mockFlash();
-        $this->Trait->Flash->expects($this->once())
-                ->method('error')
-                ->with('Invalid token or user account already validated');
+        $flash = $this->mockFlash();
+        $flash->expects('set')
+                ->with('Invalid token or user account already validated', ['element' => 'error']);
         $this->Trait->expects($this->once())
                 ->method('redirect')
-                ->with($this->loginUrl());
+                ->with($this->loginUrl())
+                ->willReturn(new Response());
         $this->Trait->validate('email', 'not-found');
     }
 
@@ -99,15 +103,15 @@ class UserValidationTraitTest extends BaseTrait
      *
      * @return void
      */
-    public function testValidateTokenExpired()
+    public function testValidateTokenExpired(): void
     {
-        $this->_mockFlash();
-        $this->Trait->Flash->expects($this->once())
-                ->method('error')
-                ->with('Token already expired');
+        $flash = $this->mockFlash();
+        $flash->expects('set')
+                ->with('Token already expired', ['element' => 'error']);
         $this->Trait->expects($this->once())
                 ->method('redirect')
-                ->with($this->loginUrl());
+                ->with($this->loginUrl())
+                ->willReturn(new Response());
         $this->Trait->validate('email', '6614f65816754310a5f0553436dd89e9');
     }
 
@@ -116,7 +120,7 @@ class UserValidationTraitTest extends BaseTrait
      *
      * @return void
      */
-    public function testValidateTokenExpiredWithOnExpiredEvent()
+    public function testValidateTokenExpiredWithOnExpiredEvent(): void
     {
         $event = new Event('event');
         $event->setResult([
@@ -124,10 +128,11 @@ class UserValidationTraitTest extends BaseTrait
         ]);
         $this->Trait->expects($this->once())
             ->method('dispatchEvent')
-            ->will($this->returnValue($event));
+            ->willReturn($event);
         $this->Trait->expects($this->once())
             ->method('redirect')
-            ->with(['action' => 'newAction']);
+            ->with(['action' => 'newAction'])
+            ->willReturn(new Response());
         $this->Trait->validate('email', '6614f65816754310a5f0553436dd89e9');
     }
 
@@ -136,15 +141,15 @@ class UserValidationTraitTest extends BaseTrait
      *
      * @return void
      */
-    public function testValidateInvalidOp()
+    public function testValidateInvalidOp(): void
     {
-        $this->_mockFlash();
-        $this->Trait->Flash->expects($this->once())
-                ->method('error')
-                ->with('Invalid validation type');
+        $flash = $this->mockFlash();
+        $flash->expects('set')
+                ->with('Invalid validation type', ['element' => 'error']);
         $this->Trait->expects($this->once())
                 ->method('redirect')
-                ->with($this->loginUrl());
+                ->with($this->loginUrl())
+                ->willReturn(new Response());
         $this->Trait->validate('invalid-op', '6614f65816754310a5f0553436dd89e9');
     }
 
@@ -153,18 +158,18 @@ class UserValidationTraitTest extends BaseTrait
      *
      * @return void
      */
-    public function testValidateHappyPassword()
+    public function testValidateHappyPassword(): void
     {
-        $this->_mockRequestGet();
-        $this->_mockFlash();
+        $this->mockRequestGet();
+        $flash = $this->mockFlash();
         $user = $this->table->findByToken('token-4')->first();
         $this->assertTrue($user->active);
-        $this->Trait->Flash->expects($this->once())
-                ->method('success')
-                ->with('Reset password token was validated successfully');
+        $flash->expects('set')
+                ->with('Reset password token was validated successfully', ['element' => 'success']);
         $this->Trait->expects($this->once())
                 ->method('redirect')
-                ->with(['action' => 'changePassword']);
+                ->with(['action' => 'changePassword'])
+                ->willReturn(new Response());
         $this->Trait->validate('password', 'token-4');
         $user = $this->table->findById($user->id)->first();
         $this->assertTrue($user->active);
@@ -175,21 +180,21 @@ class UserValidationTraitTest extends BaseTrait
      *
      * @return void
      */
-    public function testResendTokenValidationHappy()
+    public function testResendTokenValidationHappy(): void
     {
-        $this->_mockRequestPost();
-        $this->_mockFlash();
+        $this->mockRequestPost();
+        $flash = $this->mockFlash();
         $this->Trait->getRequest()->expects($this->once())
                 ->method('getData')
                 ->with('reference')
-                ->will($this->returnValue('user-3'));
+                ->willReturn('user-3');
 
-        $this->Trait->Flash->expects($this->once())
-                ->method('success')
-                ->with('Token has been reset successfully. Please check your email.');
+        $flash->expects('set')
+                ->with('Token has been reset successfully. Please check your email.', ['element' => 'success']);
         $this->Trait->expects($this->once())
                 ->method('redirect')
-                ->with($this->loginUrl());
+                ->with($this->loginUrl())
+                ->willReturn(new Response());
         $this->Trait->resendTokenValidation();
     }
 
@@ -198,14 +203,14 @@ class UserValidationTraitTest extends BaseTrait
      *
      * @return void
      */
-    public function testResendTokenValidationWithAfterResendTokenValidationEvent()
+    public function testResendTokenValidationWithAfterResendTokenValidationEvent(): void
     {
-        $this->_mockRequestPost();
-        $this->_mockFlash();
+        $this->mockRequestPost();
+        $this->mockFlash();
         $this->Trait->getRequest()->expects($this->once())
             ->method('getData')
             ->with('reference')
-            ->will($this->returnValue('user-3'));
+            ->willReturn('user-3');
 
         $event = new Event('event');
         $event->setResult([
@@ -213,10 +218,11 @@ class UserValidationTraitTest extends BaseTrait
         ]);
         $this->Trait->expects($this->once())
             ->method('dispatchEvent')
-            ->will($this->returnValue($event));
+            ->willReturn($event);
         $this->Trait->expects($this->once())
             ->method('redirect')
-            ->with(['action' => 'newAction']);
+            ->with(['action' => 'newAction'])
+            ->willReturn(new Response());
 
         $this->Trait->resendTokenValidation();
     }
@@ -226,21 +232,21 @@ class UserValidationTraitTest extends BaseTrait
      *
      * @return void
      */
-    public function testResendTokenValidationAlreadyActive()
+    public function testResendTokenValidationAlreadyActive(): void
     {
-        $this->_mockRequestPost();
-        $this->_mockFlash();
+        $this->mockRequestPost();
+        $flash = $this->mockFlash();
         $this->Trait->getRequest()->expects($this->once())
                 ->method('getData')
                 ->with('reference')
-                ->will($this->returnValue('user-4'));
+                ->willReturn('user-4');
 
-        $this->Trait->Flash->expects($this->once())
-                ->method('error')
-                ->with('User user-4 is already active');
+        $flash->expects('set')
+                ->with('User user-4 is already active', ['element' => 'error']);
         $this->Trait->expects($this->never())
                 ->method('redirect')
-                ->with($this->loginUrl());
+                ->with($this->loginUrl())
+                ->willReturn(new Response());
         $this->Trait->resendTokenValidation();
     }
 
@@ -249,21 +255,21 @@ class UserValidationTraitTest extends BaseTrait
      *
      * @return void
      */
-    public function testResendTokenValidationNotFound()
+    public function testResendTokenValidationNotFound(): void
     {
-        $this->_mockRequestPost();
-        $this->_mockFlash();
+        $this->mockRequestPost();
+        $flash = $this->mockFlash();
         $this->Trait->getRequest()->expects($this->once())
                 ->method('getData')
                 ->with('reference')
-                ->will($this->returnValue('not-found'));
+                ->willReturn('not-found');
 
-        $this->Trait->Flash->expects($this->once())
-                ->method('error')
-                ->with('User not-found was not found');
+        $flash->expects('set')
+                ->with('User not-found was not found', ['element' => 'error']);
         $this->Trait->expects($this->never())
                 ->method('redirect')
-                ->with($this->loginUrl());
+                ->with($this->loginUrl())
+                ->willReturn(new Response());
         $this->Trait->resendTokenValidation();
     }
 

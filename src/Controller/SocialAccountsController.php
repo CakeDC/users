@@ -14,8 +14,10 @@ declare(strict_types=1);
 namespace CakeDC\Users\Controller;
 
 use Cake\Datasource\Exception\RecordNotFoundException;
+use Cake\Http\Response;
 use CakeDC\Users\Exception\AccountAlreadyActiveException;
 use CakeDC\Users\Utility\UsersUrl;
+use Exception;
 
 /**
  * SocialAccounts Controller
@@ -42,7 +44,7 @@ class SocialAccountsController extends AppController
      * @param string $token token
      * @return \Cake\Http\Response
      */
-    public function validateAccount($provider, $reference, $token)
+    public function validateAccount(string $provider, string $reference, string $token): Response
     {
         try {
             $result = $this->SocialAccounts->getBehavior('SocialAccount')->validateAccount($provider, $reference, $token);
@@ -55,7 +57,7 @@ class SocialAccountsController extends AppController
             $this->Flash->error(__d('cake_d_c/users', 'Invalid token and/or social account'));
         } catch (AccountAlreadyActiveException $exception) {
             $this->Flash->error(__d('cake_d_c/users', 'Social Account already active'));
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->Flash->error(__d('cake_d_c/users', 'Social Account could not be validated'));
         }
 
@@ -70,7 +72,7 @@ class SocialAccountsController extends AppController
      * @return mixed
      * @throws \CakeDC\Users\Exception\AccountAlreadyActiveException
      */
-    public function resendValidation($provider, $reference)
+    public function resendValidation(string $provider, string $reference): mixed
     {
         try {
             $result = $this->SocialAccounts->getBehavior('SocialAccount')->resendValidation($provider, $reference);
@@ -83,7 +85,7 @@ class SocialAccountsController extends AppController
             $this->Flash->error(__d('cake_d_c/users', 'Invalid account'));
         } catch (AccountAlreadyActiveException $exception) {
             $this->Flash->error(__d('cake_d_c/users', 'Social Account already active'));
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->Flash->error(__d('cake_d_c/users', 'Email could not be resent'));
         }
 

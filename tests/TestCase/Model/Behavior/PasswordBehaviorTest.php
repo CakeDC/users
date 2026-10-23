@@ -63,7 +63,7 @@ class PasswordBehaviorTest extends TestCase
         parent::setUp();
         $this->table = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
         $this->Behavior = $this->getMockBuilder('CakeDC\Users\Model\Behavior\PasswordBehavior')
-                ->onlyMethods(['_sendResetPasswordEmail'])
+                ->onlyMethods(['sendResetPasswordEmail'])
                 ->setConstructorArgs([$this->table])
                 ->getMock();
         TransportFactory::drop('test');
@@ -96,7 +96,7 @@ class PasswordBehaviorTest extends TestCase
         $user = $this->table->findByUsername('user-1')->first();
         $token = $user->token;
         $this->Behavior->expects($this->never())
-                ->method('_sendResetPasswordEmail')
+                ->method('sendResetPasswordEmail')
                 ->with($user);
         $result = $this->Behavior->resetToken('user-1', [
             'expiration' => 3600,
@@ -116,7 +116,7 @@ class PasswordBehaviorTest extends TestCase
         $token = $user->token;
         $tokenExpires = $user->token_expires;
         $this->Behavior->expects($this->once())
-                ->method('_sendResetPasswordEmail');
+                ->method('sendResetPasswordEmail');
         $result = $this->Behavior->resetToken('user-1', [
             'expiration' => 3600,
             'checkActive' => true,
@@ -135,6 +135,8 @@ class PasswordBehaviorTest extends TestCase
     public function testResetTokenWithNullParams()
     {
         $this->expectException(InvalidArgumentException::class);
+        $this->Behavior->expects($this->never())
+            ->method('sendResetPasswordEmail');
         $this->Behavior->resetToken(null);
     }
 
@@ -145,6 +147,8 @@ class PasswordBehaviorTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Token expiration cannot be empty');
+        $this->Behavior->expects($this->never())
+            ->method('sendResetPasswordEmail');
         $this->Behavior->resetToken('ref');
     }
 
@@ -154,6 +158,8 @@ class PasswordBehaviorTest extends TestCase
     public function testResetTokenNotExistingUser()
     {
         $this->expectException(UserNotFoundException::class);
+        $this->Behavior->expects($this->never())
+            ->method('sendResetPasswordEmail');
         $this->Behavior->resetToken('user-not-found', [
             'expiration' => 3600,
         ]);
@@ -171,7 +177,7 @@ class PasswordBehaviorTest extends TestCase
         $this->table->expects($this->never())
                 ->method('save');
         $this->Behavior->expects($this->never())
-                ->method('_sendResetPasswordEmail');
+                ->method('sendResetPasswordEmail');
         $this->Behavior->resetToken('user-4', [
             'expiration' => 3600,
             'checkActive' => true,
@@ -185,6 +191,8 @@ class PasswordBehaviorTest extends TestCase
     {
         $this->expectException(UserNotActiveException::class);
         $this->table->findByUsername('user-1')->firstOrFail();
+        $this->Behavior->expects($this->never())
+            ->method('sendResetPasswordEmail');
         $this->Behavior->resetToken('user-1', [
             'ensureActive' => true,
             'expiration' => 3600,
@@ -197,6 +205,8 @@ class PasswordBehaviorTest extends TestCase
     public function testResetTokenUserActive()
     {
         $user = TableRegistry::getTableLocator()->get('CakeDC/Users.Users')->findByUsername('user-2')->first();
+        $this->Behavior->expects($this->never())
+            ->method('sendResetPasswordEmail');
         $result = $this->Behavior->resetToken('user-2', [
             'ensureActive' => true,
             'expiration' => 3600,
@@ -214,6 +224,8 @@ class PasswordBehaviorTest extends TestCase
         $user->password = 'new';
         $user->password_confirmation = 'new';
 
+        $this->Behavior->expects($this->never())
+            ->method('sendResetPasswordEmail');
         $result = $this->Behavior->changePassword($user);
         $this->assertInstanceOf(User::class, $result);
         $this->assertEmpty($result->getErrors());
@@ -228,6 +240,8 @@ class PasswordBehaviorTest extends TestCase
             ->onlyMethods(['send'])
             ->getMock();
         Configure::write('Users.Email.mailerClass', OverrideMailer::class);
+        $this->Behavior->expects($this->never())
+            ->method('sendResetPasswordEmail');
         $this->Behavior = $this->getMockBuilder(PasswordBehavior::class)
             ->setConstructorArgs([$this->table])
             ->onlyMethods(['getMailer'])
@@ -256,10 +270,12 @@ class PasswordBehaviorTest extends TestCase
     public function testGetUserFindsByEmailWhenConfigured()
     {
         Configure::write('Users.PasswordReset.findWith', ['email']);
-        $user = $this->_executeGetUser('user-1@test.com');
+        $this->Behavior->expects($this->never())
+            ->method('sendResetPasswordEmail');
+        $user = $this->executeGetUser('user-1@test.com');
         $this->assertNotNull($user);
 
-        $user = $this->_executeGetUser('user-1');
+        $user = $this->executeGetUser('user-1');
         $this->assertNull($user);
     }
 
@@ -268,10 +284,12 @@ class PasswordBehaviorTest extends TestCase
      */
     public function testGetUserFindsByUsernameAndEmailByDefault()
     {
-        $userByEmail = $this->_executeGetUser('user-1@test.com');
+        $this->Behavior->expects($this->never())
+            ->method('sendResetPasswordEmail');
+        $userByEmail = $this->executeGetUser('user-1@test.com');
         $this->assertNotNull($userByEmail);
 
-        $userByUsername = $this->_executeGetUser('user-1');
+        $userByUsername = $this->executeGetUser('user-1');
         $this->assertNotNull($userByUsername);
 
         $this->assertEquals($userByEmail->id, $userByUsername->id);
@@ -283,7 +301,7 @@ class PasswordBehaviorTest extends TestCase
      * @param string $reference Reference to get user by
      * @return \CakeDC\Users\Model\Entity\User|null
      */
-    protected function _executeGetUser($reference)
+    protected function executeGetUser($reference)
     {
         if ($this->table->hasBehavior('Password')) {
             $this->table->removeBehavior('Password');
@@ -291,7 +309,7 @@ class PasswordBehaviorTest extends TestCase
         $this->table->addBehavior('CakeDC/Users.Password');
         $realBehavior = $this->table->getBehavior('Password');
 
-        $method = new ReflectionMethod(get_class($realBehavior), '_getUser');
+        $method = new ReflectionMethod(get_class($realBehavior), 'getUser');
 
         return $method->invoke($realBehavior, $reference);
     }

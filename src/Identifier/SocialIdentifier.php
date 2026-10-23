@@ -13,17 +13,18 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Identifier;
 
+use ArrayAccess;
 use Authentication\Identifier\AbstractIdentifier;
 use Cake\Core\Configure;
+use Cake\Datasource\EntityInterface;
 use Cake\Event\EventDispatcherTrait;
 use Cake\ORM\Locator\LocatorAwareTrait;
+use Cake\ORM\Query\SelectQuery;
+use Cake\ORM\Table;
 use CakeDC\Users\UsersPlugin;
 
 class SocialIdentifier extends AbstractIdentifier
 {
-    /**
-     * @use \Cake\Event\EventDispatcherTrait<\CakeDC\Users\Identifier\SocialIdentifier>
-     */
     use EventDispatcherTrait;
     use LocatorAwareTrait;
 
@@ -34,9 +35,9 @@ class SocialIdentifier extends AbstractIdentifier
      * - `usersTable` name of usersTable to use:
      * - `resolver` The resolver implementation to use.
      *
-     * @var array
+     * @var array<string, mixed>
      */
-    protected array $_defaultConfig = [
+    protected array $defaultConfig = [
         'authFinder' => 'active',
     ];
 
@@ -46,7 +47,7 @@ class SocialIdentifier extends AbstractIdentifier
      * @param array $credentials Authentication credentials
      * @return \ArrayAccess|array|null
      */
-    public function identify(array $credentials): \ArrayAccess|array|null
+    public function identify(array $credentials): ArrayAccess|array|null
     {
         if (!isset($credentials[self::CREDENTIAL_KEY])) {
             return null;
@@ -71,7 +72,7 @@ class SocialIdentifier extends AbstractIdentifier
      * @param \Cake\Datasource\EntityInterface $user The user.
      * @return \Cake\ORM\Query\SelectQuery
      */
-    protected function findUser($user)
+    protected function findUser(EntityInterface $user): SelectQuery
     {
         $table = $this->getUsersTable();
         $finder = $this->getConfig('authFinder');
@@ -92,7 +93,7 @@ class SocialIdentifier extends AbstractIdentifier
      * @param mixed $data social data
      * @return mixed
      */
-    protected function createOrGetUser($data)
+    protected function createOrGetUser(mixed $data): mixed
     {
         $options = [
             'use_email' => Configure::read('Users.Email.required'),
@@ -111,7 +112,7 @@ class SocialIdentifier extends AbstractIdentifier
      *
      * @return \Cake\ORM\Table
      */
-    protected function getUsersTable()
+    protected function getUsersTable(): Table
     {
         $userModel = $this->getConfig('usersTable', Configure::read('Users.table'));
 

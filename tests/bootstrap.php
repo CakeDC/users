@@ -19,7 +19,16 @@ declare(strict_types=1);
  * installed as a dependency of an application.
  */
 
+use Cake\Cache\Cache;
+use Cake\Core\Configure;
 use Cake\Core\Plugin;
+use Cake\Database\TypeFactory;
+use Cake\Datasource\ConnectionManager;
+use Cake\Error\ErrorTrap;
+use Cake\Routing\Router;
+use Cake\TestSuite\Fixture\SchemaLoader;
+use Cake\Utility\Security;
+use CakeDC\Users\UsersPlugin;
 
 $findRoot = function ($root) {
     do {
@@ -57,7 +66,7 @@ define('CAKE', CORE_PATH . 'src' . DS);
 require ROOT . '/vendor/cakephp/cakephp/src/functions.php';
 require ROOT . '/vendor/autoload.php';
 
-Cake\Core\Configure::write('debug', true);
+Configure::write('debug', true);
 
 ini_set('intl.default_locale', 'en_US');
 $pathsCache = [
@@ -91,13 +100,20 @@ $cache = [
     ],
 ];
 
-Cake\Cache\Cache::setConfig($cache);
-Cake\Core\Configure::write('Session', [
+Cache::setConfig($cache);
+Configure::write('Session', [
     'defaults' => 'php',
 ]);
 session_id('cli');
 
-Plugin::getCollection()->add(new \CakeDC\Users\UsersPlugin([
+// CakePHP 6: Router::fullBaseUrl() throws when App.fullBaseUrl is empty.
+// config/users.php calls Router::fullBaseUrl() at load time, so set it
+// before loading the plugin / root bootstrap (see migration-notes #18).
+define('BASE_TEST_PATH', 'http://example.com');
+Configure::write('App.fullBaseUrl', BASE_TEST_PATH);
+Router::fullBaseUrl(BASE_TEST_PATH);
+
+Plugin::getCollection()->add(new UsersPlugin([
     'path' => dirname(dirname(__FILE__)) . DS,
     'routes' => true,
 ]));
@@ -110,16 +126,16 @@ if (!getenv('db_dsn')) {
     putenv('db_dsn=sqlite:///:memory:');
 }
 
-Cake\Datasource\ConnectionManager::setConfig('test', [
+ConnectionManager::setConfig('test', [
     'url' => getenv('db_dsn'),
     'timezone' => 'UTC',
 ]);
 
-\Cake\Database\TypeFactory::map('json', 'Cake\Database\Type\JsonType');
+TypeFactory::map('json', 'Cake\Database\Type\JsonType');
 
 class_alias('TestApp\Controller\AppController', 'App\Controller\AppController');
 
-\Cake\Core\Configure::write('App', [
+Configure::write('App', [
     'namespace' => 'TestApp',
     'encoding' => 'UTF-8',
     'base' => false,
@@ -136,15 +152,15 @@ class_alias('TestApp\Controller\AppController', 'App\Controller\AppController');
         'templates' => [dirname(APP) . DS . 'templates' . DS],
     ],
 ]);
-\Cake\Utility\Security::setSalt('yoyz186elmi66ab9pz4imbb3tgy9vnsgsfgwe2r8tyxbbfdygu9e09tlxyg8p7dq');
+Security::setSalt('yoyz186elmi66ab9pz4imbb3tgy9vnsgsfgwe2r8tyxbbfdygu9e09tlxyg8p7dq');
 
-\Cake\Core\Configure::write('Users.AllowedRedirectHosts', [
+Configure::write('Users.AllowedRedirectHosts', [
     'localhost',
     'example.com',
 ]);
 
 if (env('FIXTURE_SCHEMA_METADATA')) {
-    $loader = new \Cake\TestSuite\Fixture\SchemaLoader();
+    $loader = new SchemaLoader();
     $loader->loadInternalFile(env('FIXTURE_SCHEMA_METADATA'));
 }
 
@@ -155,4 +171,4 @@ $error = [
     'trace' => true,
     'ignoredDeprecationPaths' => [],
 ];
-(new Cake\Error\ErrorTrap($error))->register();
+(new ErrorTrap($error))->register();

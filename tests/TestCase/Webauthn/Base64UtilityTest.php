@@ -15,6 +15,7 @@ namespace CakeDC\Users\Test\TestCase\Webauthn;
 use Cake\TestSuite\TestCase;
 use CakeDC\Users\Webauthn\Base64Utility;
 use ParagonIE\ConstantTime\Base64UrlSafe;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class Base64UtilityTest extends TestCase
 {
@@ -22,10 +23,9 @@ class Base64UtilityTest extends TestCase
      * Test methods basicEncode and basicDecode
      *
      * @param string $originalText
-     * @dataProvider dataProviderBasicEncodeDecodeText
-     * @return void
      */
-    public function testBasicEncodeDecode($originalText)
+    #[DataProvider('dataProviderBasicEncodeDecodeText')]
+    public function testBasicEncodeDecode(string $originalText): void
     {
         $encoded = Base64Utility::basicEncode($originalText);
         $this->assertNotEmpty($encoded);
@@ -51,10 +51,9 @@ class Base64UtilityTest extends TestCase
      *
      * @param string $encodedTextWithPadding
      * @param string $originalText
-     * @dataProvider dataProviderComplyEncodedNoPadding
-     * @return void
      */
-    public function testComplyEncodedNoPadding($encodedTextWithPadding, $originalText)
+    #[DataProvider('dataProviderComplyEncodedNoPadding')]
+    public function testComplyEncodedNoPadding(string $encodedTextWithPadding, string $originalText): void
     {
         $encoded = Base64Utility::complyEncodedNoPadding($encodedTextWithPadding);
         $this->assertNotEmpty($encoded);

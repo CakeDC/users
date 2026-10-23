@@ -33,7 +33,7 @@ trait LoginTrait
      * @throws \Cake\Http\Exception\NotFoundException
      * @return mixed
      */
-    public function socialLogin()
+    public function socialLogin(): mixed
     {
         $Login = LoginComponentLoader::forSocial($this);
 
@@ -46,7 +46,7 @@ trait LoginTrait
      * @return mixed
      * @throws \Exception
      */
-    public function login()
+    public function login(): mixed
     {
         $this->getRequest()->getSession()->delete(AuthenticationService::TWO_FACTOR_VERIFY_SESSION_KEY);
         $Login = LoginComponentLoader::forForm($this);
@@ -59,10 +59,10 @@ trait LoginTrait
      *
      * @return mixed
      */
-    public function logout()
+    public function logout(): mixed
     {
         $user = $this->getRequest()->getAttribute('identity');
-        $user = $user ?? [];
+        $user ??= [];
 
         $eventBefore = $this->dispatchEvent(UsersPlugin::EVENT_BEFORE_LOGOUT, ['user' => $user]);
         if (is_array($eventBefore->getResult())) {

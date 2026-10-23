@@ -39,13 +39,13 @@ trait PasswordManagementTrait
      * @param string|int|null $id user_id, null for logged in user id
      * @return mixed
      */
-    public function changePassword($id = null)
+    public function changePassword(string|int|null $id = null): mixed
     {
         $user = $this->getUsersTable()->newEntity([], ['validate' => false]);
         $user->setNew(false);
 
         $identity = $this->getRequest()->getAttribute('identity');
-        $identity = $identity ?? [];
+        $identity ??= [];
         $userId = $identity['id'] ?? null;
 
         if ($userId) {
@@ -65,7 +65,7 @@ trait PasswordManagementTrait
                 );
                 $this->redirect(Configure::read('Users.Profile.route'));
 
-                return;
+                return null;
             }
         } else {
             // password reset
@@ -81,7 +81,7 @@ trait PasswordManagementTrait
                 $this->Flash->error(__d('cake_d_c/users', 'User was not found'));
                 $this->redirect($redirect);
 
-                return;
+                return null;
             }
         }
         $this->set('validatePassword', $validatePassword);
@@ -97,7 +97,7 @@ trait PasswordManagementTrait
                     $this->getRequest()->getData(),
                     [
                         'validate' => 'current',
-                        'accessibleFields' => [
+                        'patchableFields' => [
                             'current_password' => true,
                             'password' => true,
                             'password_confirm' => true,
@@ -133,15 +133,17 @@ trait PasswordManagementTrait
         }
         $this->set(['user' => $user]);
         $this->viewBuilder()->setOption('serialize', ['user']);
+
+        return null;
     }
 
     /**
      * Reset password
      *
-     * @param null $token token data.
+     * @param string|null $token token data.
      * @return void
      */
-    public function resetPassword($token = null)
+    public function resetPassword(?string $token = null): void
     {
         $this->validate('password', $token);
     }
@@ -202,7 +204,7 @@ trait PasswordManagementTrait
      * @param mixed $id of the user record.
      * @return \Cake\Http\Response|null.
      */
-    public function resetOneTimePasswordAuthenticator($id = null): ?Response
+    public function resetOneTimePasswordAuthenticator(mixed $id = null): ?Response
     {
         if ($this->getRequest()->is('post')) {
             try {
@@ -214,7 +216,7 @@ trait PasswordManagementTrait
 
                 $message = __d('cake_d_c/users', 'Google Authenticator token was successfully reset');
                 $this->Flash->success($message, 'default');
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->Flash->error(__d('cake_d_c/users', 'Could not reset Google Authenticator'), 'default');
             }
         }

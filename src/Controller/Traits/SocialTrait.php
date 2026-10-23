@@ -28,7 +28,7 @@ trait SocialTrait
      * @throws \Cake\Http\Exception\NotFoundException
      * @return mixed
      */
-    public function socialEmail()
+    public function socialEmail(): mixed
     {
         $Login = LoginComponentLoader::forSocial($this);
 

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Test\TestCase\Model\Behavior;
 
+use ArrayObject;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Event\Event;
 use Cake\ORM\TableRegistry;
@@ -63,7 +64,7 @@ class SocialAccountBehaviorTest extends TestCase
      */
     public function tearDown(): void
     {
-        unset($this->Table, $this->Behavior, $this->Email);
+        unset($this->Table, $this->Behavior);
         parent::tearDown();
     }
 
@@ -72,7 +73,7 @@ class SocialAccountBehaviorTest extends TestCase
      *
      * @return void
      */
-    public function testValidateEmail()
+    public function testValidateEmail(): void
     {
         $token = 'token-1234';
         $result = $this->Behavior->validateAccount(SocialAccountsTable::PROVIDER_FACEBOOK, 'reference-1-1234', $token);
@@ -83,16 +84,16 @@ class SocialAccountBehaviorTest extends TestCase
     /**
      * Test validateEmail method
      */
-    public function testValidateEmailInvalidToken()
+    public function testValidateEmailInvalidToken(): void
     {
         $this->expectException(RecordNotFoundException::class);
-        $this->Behavior->validateAccount(1, 'reference-1234', 'invalid-token');
+        $this->Behavior->validateAccount(SocialAccountsTable::PROVIDER_FACEBOOK, 'reference-1234', 'invalid-token');
     }
 
     /**
      * Partial token (prefix of the real token) must be rejected — exercises timing-safe comparison
      */
-    public function testValidateAccountPartialTokenIsRejected()
+    public function testValidateAccountPartialTokenIsRejected(): void
     {
         $this->expectException(RecordNotFoundException::class);
         // 'token-123' is a prefix of the valid 'token-1234' — must still fail
@@ -102,7 +103,7 @@ class SocialAccountBehaviorTest extends TestCase
     /**
      * Empty string token must be rejected — exercises timing-safe comparison with empty input
      */
-    public function testValidateAccountEmptyTokenIsRejected()
+    public function testValidateAccountEmptyTokenIsRejected(): void
     {
         $this->expectException(RecordNotFoundException::class);
         $this->Behavior->validateAccount(SocialAccountsTable::PROVIDER_FACEBOOK, 'reference-1-1234', '');
@@ -111,16 +112,16 @@ class SocialAccountBehaviorTest extends TestCase
     /**
      * Test validateEmail method
      */
-    public function testValidateEmailInvalidUser()
+    public function testValidateEmailInvalidUser(): void
     {
         $this->expectException(RecordNotFoundException::class);
-        $this->Behavior->validateAccount(1, 'invalid-user', 'token-1234');
+        $this->Behavior->validateAccount(SocialAccountsTable::PROVIDER_FACEBOOK, 'invalid-user', 'token-1234');
     }
 
     /**
      * Test validateEmail method
      */
-    public function testValidateEmailActiveAccount()
+    public function testValidateEmailActiveAccount(): void
     {
         $this->expectException(AccountAlreadyActiveException::class);
         $this->Behavior->validateAccount(SocialAccountsTable::PROVIDER_TWITTER, 'reference-1-1234', 'token-1234');
@@ -132,11 +133,11 @@ class SocialAccountBehaviorTest extends TestCase
      *
      * @return void
      */
-    public function testAfterSaveSocialNotActiveUserNotActive()
+    public function testAfterSaveSocialNotActiveUserNotActive(): void
     {
         $event = new Event('eventName');
         $entity = $this->Table->find()->first();
-        $this->Behavior->afterSave($event, $entity, new \ArrayObject([]));
+        $this->Behavior->afterSave($event, $entity, new ArrayObject([]));
         $this->assertTrue($event->getResult());
     }
 
@@ -146,11 +147,11 @@ class SocialAccountBehaviorTest extends TestCase
      *
      * @return void
      */
-    public function testAfterSaveSocialActiveUserActive()
+    public function testAfterSaveSocialActiveUserActive(): void
     {
         $event = new Event('eventName');
         $entity = $this->Table->findById('00000000-0000-0000-0000-000000000003')->first();
-        $this->Behavior->afterSave($event, $entity, new \ArrayObject([]));
+        $this->Behavior->afterSave($event, $entity, new ArrayObject([]));
         $this->assertTrue($event->getResult());
     }
 
@@ -160,11 +161,11 @@ class SocialAccountBehaviorTest extends TestCase
      *
      * @return void
      */
-    public function testAfterSaveSocialActiveUserNotActive()
+    public function testAfterSaveSocialActiveUserNotActive(): void
     {
         $event = new Event('eventName');
         $entity = $this->Table->findById('00000000-0000-0000-0000-000000000002')->first();
-        $this->Behavior->afterSave($event, $entity, new \ArrayObject([]));
+        $this->Behavior->afterSave($event, $entity, new ArrayObject([]));
         $this->assertTrue($event->getResult());
     }
 }

@@ -7,6 +7,7 @@ use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use CakeDC\Users\Model\Table\UsersTable;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * CakeDC\Users\Command\UsersChangeRoleCommand Test Case
@@ -62,9 +63,9 @@ class UsersChangeRoleCommandTest extends TestCase
      * @param string $command
      * @param string $expectedMessage
      * @return void
-     * @dataProvider dataProviderExecuteMissingInfo
      * @uses \CakeDC\Users\Command\UsersChangeRoleCommand::execute()
      */
+    #[DataProvider('dataProviderExecuteMissingInfo')]
     public function testExecuteMissingInfo(string $command, $expectedMessage): void
     {
         $UsersTable = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');

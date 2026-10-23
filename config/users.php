@@ -209,17 +209,16 @@ $config = [
             ],
             'Form' => [
                 'className' => 'CakeDC/Auth.Form',
-                'urlChecker' => 'Authentication.CakeRouter',
+                'urlChecker' => 'Authentication.Default',
                 'identifier' => [
-                    'Authentication.Password' => [
-                        'fields' => [
-                            'username' => ['username', 'email'],
-                            'password' => 'password',
-                        ],
-                        'resolver' => [
-                            'className' => 'Authentication.Orm',
-                            'finder' => 'active',
-                        ],
+                    'className' => 'Authentication.Password',
+                    'fields' => [
+                        'username' => ['username', 'email'],
+                        'password' => 'password',
+                    ],
+                    'resolver' => [
+                        'className' => 'Authentication.Orm',
+                        'finder' => 'active',
                     ],
                 ],
             ],
@@ -230,12 +229,11 @@ $config = [
                 'queryParam' => 'api_key',
                 'tokenPrefix' => null,
                 'identifier' => [
-                    'Authentication.Token' => [
-                        'tokenField' => 'api_token',
-                        'resolver' => [
-                            'className' => 'Authentication.Orm',
-                            'finder' => 'active',
-                        ],
+                    'className' => 'Authentication.Token',
+                    'tokenField' => 'api_token',
+                    'resolver' => [
+                        'className' => 'Authentication.Orm',
+                        'finder' => 'active',
                     ],
                 ],
             ],
@@ -247,15 +245,14 @@ $config = [
                     'expires' => new \DateTime('+1 month'),
                     'httponly' => true,
                 ],
-                'urlChecker' => 'Authentication.CakeRouter',
+                'urlChecker' => 'Authentication.Default',
             ],
             'Social' => [
                 'className' => 'CakeDC/Users.Social',
                 'skipTwoFactorVerify' => true,
                 'identifier' => [
-                    'CakeDC/Users.Social' => [
-                        'authFinder' => 'active',
-                    ],
+                    'className' => 'CakeDC/Users.Social',
+                    'authFinder' => 'active',
                 ],
             ],
             'SocialPendingEmail' => [

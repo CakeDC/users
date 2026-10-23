@@ -21,7 +21,7 @@ trait RandomStringTrait
      * @param string|int $length String size.
      * @return string
      */
-    public function randomString($length = 10)
+    public function randomString(string|int $length = 10): string
     {
         if (!is_numeric($length) || $length <= 0) {
             $length = 10;

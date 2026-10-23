@@ -18,6 +18,7 @@ use Cake\Http\ServerRequestFactory;
 use Cake\TestSuite\TestCase;
 use CakeDC\Users\Utility\UsersUrl;
 use Laminas\Diactoros\Uri;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class UsersUrlTest extends TestCase
 {
@@ -26,7 +27,7 @@ class UsersUrlTest extends TestCase
      *
      * @return array
      */
-    public static function dataProviderActionRouteParams()
+    public static function dataProviderActionRouteParams(): array
     {
         return [
             ['verify', ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'verify'], null],
@@ -109,13 +110,12 @@ class UsersUrlTest extends TestCase
     /**
      * Test actionRouteParams method
      *
-     * @dataProvider dataProviderActionRouteParams
      * @param string $action user action.
      * @param array $expected expected url
-     * @param string $controller controller name for users, optional
-     * @return void
+     * @param string|null $controller controller name for users, optional
      */
-    public function testActionRouteParams($action, $expected, $controller = null)
+    #[DataProvider('dataProviderActionRouteParams')]
+    public function testActionRouteParams(string $action, array $expected, ?string $controller = null): void
     {
         Configure::write('Users.controller', $controller);
         $actual = UsersUrl::actionRouteParams($action);
@@ -127,7 +127,7 @@ class UsersUrlTest extends TestCase
      *
      * @return array
      */
-    public static function dataProviderActionParams()
+    public static function dataProviderActionParams(): array
     {
         return [
             ['verify', ['prefix' => null, 'plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'verify'], null],
@@ -210,13 +210,12 @@ class UsersUrlTest extends TestCase
     /**
      * Test actionParams method
      *
-     * @dataProvider dataProviderActionParams
      * @param string $action user action.
      * @param array $expected expected url
-     * @param string $controller controller name for users, optional
-     * @return void
+     * @param string|null $controller controller name for users, optional
      */
-    public function testActionParams($action, $expected, $controller = null)
+    #[DataProvider('dataProviderActionParams')]
+    public function testActionParams(string $action, array $expected, ?string $controller = null): void
     {
         Configure::write('Users.controller', $controller);
         $actual = UsersUrl::actionParams($action);
@@ -228,7 +227,7 @@ class UsersUrlTest extends TestCase
      *
      * @return array
      */
-    public static function dataProviderActionUrl()
+    public static function dataProviderActionUrl(): array
     {
         return [
             ['verify', ['prefix' => false, 'plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'verify'], null],
@@ -311,13 +310,12 @@ class UsersUrlTest extends TestCase
     /**
      * Test actionUrl method
      *
-     * @dataProvider dataProviderActionUrl
      * @param string $action user action.
      * @param array $expected expected url
-     * @param string $controller controller name for users, optional
-     * @return void
+     * @param string|null $controller controller name for users, optional
      */
-    public function testActionUrl($action, $expected, $controller = null)
+    #[DataProvider('dataProviderActionUrl')]
+    public function testActionUrl(string $action, array $expected, ?string $controller = null): void
     {
         Configure::write('Users.controller', $controller);
         $actual = UsersUrl::actionUrl($action);
@@ -329,7 +327,7 @@ class UsersUrlTest extends TestCase
      *
      * @return array
      */
-    public static function dataProviderCheckActionOnRequest()
+    public static function dataProviderCheckActionOnRequest(): array
     {
         return [
             [
@@ -370,12 +368,11 @@ class UsersUrlTest extends TestCase
      *
      * @param string $action user action
      * @param array $params request params
-     * @param string $controller users controller
+     * @param string|null $controller users controller
      * @param bool $expected result expected
-     * @dataProvider dataProviderCheckActionOnRequest
-     * @return void
      */
-    public function testCheckActionOnRequest($action, $params, $controller, $expected)
+    #[DataProvider('dataProviderCheckActionOnRequest')]
+    public function testCheckActionOnRequest(string $action, array $params, ?string $controller, bool $expected): void
     {
         Configure::write('Users.controller', $controller);
 

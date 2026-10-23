@@ -13,12 +13,6 @@ parameters:
 			path: src/Controller/Component/LoginComponent.php
 
 		-
-			message: '#^Call to function method_exists\(\) with Authentication\\Authenticator\\AuthenticatorInterface and ''getIdentifier'' will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: src/Controller/Component/LoginComponent.php
-
-		-
 			message: '#^Parameter \#1 \$request of method CakeDC\\Users\\Middleware\\SocialAuthMiddleware\:\:goNext\(\) expects Cake\\Http\\ServerRequest, Psr\\Http\\Message\\ServerRequestInterface given\.$#'
 			identifier: argument.type
 			count: 1
@@ -41,23 +35,11 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: src/Middleware/SocialEmailMiddleware.php
-
-		-
-			message: '#^Call to an undefined method Cake\\Datasource\\EntityInterface\:\:updateToken\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/Model/Behavior/BaseTokenBehavior.php
 
 		-
 			message: '#^Access to an undefined property Cake\\ORM\\Table\:\:\$SocialAccounts\.$#'
 			identifier: property.notFound
 			count: 5
-			path: src/Model/Behavior/LinkSocialBehavior.php
-
-		-
-			message: '#^Negated boolean expression is always false\.$#'
-			identifier: booleanNot.alwaysFalse
-			count: 1
 			path: src/Model/Behavior/LinkSocialBehavior.php
 
 		-
@@ -85,24 +67,6 @@ parameters:
 			path: src/Model/Behavior/RegisterBehavior.php
 
 		-
-			message: '#^Access to an undefined property CakeDC\\Users\\Model\\Entity\\SocialAccount\:\:\$active\.$#'
-			identifier: property.notFound
-			count: 1
-			path: src/Model/Behavior/SocialAccountBehavior.php
-
-		-
-			message: '#^Method CakeDC\\Users\\Model\\Behavior\\SocialAccountBehavior\:\:resendValidation\(\) should return CakeDC\\Users\\Model\\Entity\\User but returns array\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Model/Behavior/SocialAccountBehavior.php
-
-		-
-			message: '#^Method CakeDC\\Users\\Model\\Behavior\\SocialAccountBehavior\:\:validateAccount\(\) should return CakeDC\\Users\\Model\\Entity\\User but returns Cake\\Datasource\\EntityInterface\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Model/Behavior/SocialAccountBehavior.php
-
-		-
 			message: '#^Access to an undefined property Cake\\ORM\\Table\:\:\$SocialAccounts\.$#'
 			identifier: property.notFound
 			count: 4
@@ -113,18 +77,6 @@ parameters:
 			identifier: property.notFound
 			count: 1
 			path: src/Model/Behavior/SocialBehavior.php
-
-		-
-			message: '#^Parameter \#3 \$tokenExpiration of method CakeDC\\Users\\Model\\Behavior\\BaseTokenBehavior\:\:_updateActive\(\) expects int, string given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Model/Behavior/SocialBehavior.php
-
-		-
-			message: '#^Method CakeDC\\Users\\Model\\Entity\\User\:\:_setTos\(\) should return bool but returns string\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Model/Entity/User.php
 
 		-
 			message: '#^PHPDoc tag @property for property CakeDC\\Users\\Model\\Table\\FailedPasswordAttemptsTable\:\:\$Users contains unresolvable type\.$#'

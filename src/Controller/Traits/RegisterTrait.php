@@ -18,6 +18,7 @@ use Cake\Datasource\EntityInterface;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
 use CakeDC\Users\UsersPlugin;
+use function collection;
 
 /**
  * Covers registration features and email token validation
@@ -34,14 +35,14 @@ trait RegisterTrait
      * @return mixed
      * @throws \Cake\Http\Exception\NotFoundException
      */
-    public function register()
+    public function register(): mixed
     {
         if (!Configure::read('Users.Registration.active')) {
             throw new NotFoundException();
         }
 
         $identity = $this->getRequest()->getAttribute('identity');
-        $identity = $identity ?? [];
+        $identity ??= [];
         $userId = $identity['id'] ?? null;
         if (!empty($userId) && !Configure::read('Users.Registration.allowLoggedIn')) {
             $this->Flash->error(__d('cake_d_c/users', 'You must log out to register a new user account'));
@@ -71,21 +72,21 @@ trait RegisterTrait
             $data = $result->toArray();
             $data['password'] = $requestData['password'] ?? null; //since password is a hidden property
             $userSaved = $usersTable->getBehavior('Register')->register($user, $data, $options);
-            $errors = \collection($user->getErrors())->unfold()->toArray();
+            $errors = collection($user->getErrors())->unfold()->toArray();
             if ($userSaved) {
-                return $this->_afterRegister($userSaved);
+                return $this->afterRegister($userSaved);
             } elseif (Configure::read('Users.Registration.showVerboseError') && count($errors) > 0) {
                 $this->set(compact('user'));
                 foreach ($errors as $error) {
                     $this->Flash->error($error);
                 }
 
-                return;
+                return null;
             } else {
                 $this->set(['user' => $user]);
                 $this->Flash->error(__d('cake_d_c/users', 'The user could not be saved'));
 
-                return;
+                return null;
             }
         }
         if ($event->isStopped()) {
@@ -96,30 +97,30 @@ trait RegisterTrait
         $this->viewBuilder()->setOption('serialize', ['user']);
 
         if (!$this->getRequest()->is('post')) {
-            return;
+            return null;
         }
 
-        if (!$this->_validateRegisterPost()) {
+        if (!$this->validateRegisterPost()) {
             $this->Flash->error(__d('cake_d_c/users', 'Invalid reCaptcha'));
 
-            return;
+            return null;
         }
 
         $userSaved = $usersTable->getBehavior('Register')->register($user, $requestData, $options);
-        $errors = \collection($user->getErrors())->unfold()->toArray();
+        $errors = collection($user->getErrors())->unfold()->toArray();
         if (!$userSaved && Configure::read('Users.Registration.showVerboseError') && count($errors) > 0) {
             foreach ($errors as $error) {
                 $this->Flash->error($error);
             }
 
-            return;
+            return null;
         } elseif (!$userSaved) {
             $this->Flash->error(__d('cake_d_c/users', 'The user could not be saved'));
 
-            return;
+            return null;
         }
 
-        return $this->_afterRegister($userSaved);
+        return $this->afterRegister($userSaved);
     }
 
     /**
@@ -127,7 +128,7 @@ trait RegisterTrait
      *
      * @return bool
      */
-    protected function _validateRegisterPost()
+    protected function validateRegisterPost(): bool
     {
         if (!Configure::read('Users.reCaptcha.registration')) {
             return true;
@@ -145,7 +146,7 @@ trait RegisterTrait
      * @param \Cake\Datasource\EntityInterface $userSaved User entity saved
      * @return \Cake\Http\Response
      */
-    protected function _afterRegister(EntityInterface $userSaved)
+    protected function afterRegister(EntityInterface $userSaved): Response
     {
         $validateEmail = (bool)Configure::read('Users.Email.validate');
         $message = __d('cake_d_c/users', 'You have registered successfully, please log in');
@@ -170,7 +171,7 @@ trait RegisterTrait
      * @param string $token token
      * @return void
      */
-    public function validateEmail($token = null)
+    public function validateEmail(?string $token = null): void
     {
         $this->validate('email', $token);
     }

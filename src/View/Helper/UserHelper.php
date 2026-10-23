@@ -19,6 +19,7 @@ use Cake\Utility\Inflector;
 use Cake\View\Helper;
 use Cake\View\StringTemplateTrait;
 use CakeDC\Users\Utility\UsersUrl;
+use Exception;
 use InvalidArgumentException;
 
 /**
@@ -37,7 +38,7 @@ class UserHelper extends Helper
     /**
      * @inheritDoc
      */
-    protected array $_defaultConfig = [
+    protected array $defaultConfig = [
         'templates' => [
             'socialButton' => '<a href="/auth/{{name}}" class="btn btn-social btn-{{name}}">{{icon}}{{title}}</a>',
             'icon' => '<i class="fa fa-{{name}}"></i>',
@@ -220,7 +221,7 @@ class UserHelper extends Helper
         if (method_exists($this, $method)) {
             try {
                 $this->Form->unlockField('g-recaptcha-response');
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
             }
 
             return $this->{$method}();

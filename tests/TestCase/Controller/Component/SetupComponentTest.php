@@ -16,8 +16,10 @@ namespace CakeDC\Users\Test\TestCase\Controller\Component;
 use Cake\Controller\ComponentRegistry;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
+use Cake\Http\ServerRequest;
 use Cake\TestSuite\TestCase;
 use CakeDC\Users\Controller\Component\SetupComponent;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Class SetupComponentTest
@@ -46,7 +48,7 @@ class SetupComponentTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->Controller = new Controller(new \Cake\Http\ServerRequest());
+        $this->Controller = new Controller(new ServerRequest());
     }
 
     /**
@@ -66,7 +68,7 @@ class SetupComponentTest extends TestCase
      *
      * @return array
      */
-    public static function dataProviderInitialization()
+    public static function dataProviderInitialization(): array
     {
         return [
             [true, true, true],
@@ -84,10 +86,10 @@ class SetupComponentTest extends TestCase
      * @param bool $authorization Should use authorization component
      * @param bool $oneTimePass Should use OneTimePassword component
      * @throws \Exception
-     * @dataProvider dataProviderInitialization
      * @return void
      */
-    public function testInitialization($authentication, $authorization, $oneTimePass)
+    #[DataProvider('dataProviderInitialization')]
+    public function testInitialization(bool $authentication, bool $authorization, bool $oneTimePass): void
     {
         Configure::write('Auth.AuthenticationComponent.load', $authentication);
         Configure::write('Auth.AuthorizationComponent.enable', $authorization);

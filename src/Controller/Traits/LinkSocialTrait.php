@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Controller\Traits;
 
+use Cake\Http\Response;
 use CakeDC\Auth\Social\MapUser;
 use CakeDC\Auth\Social\Service\ServiceFactory;
 use CakeDC\Users\UsersPlugin;
+use Exception;
 
 /**
  * Actions to allow user to link social accounts
@@ -29,7 +31,7 @@ trait LinkSocialTrait
      * @throws \Cake\Http\Exception\NotFoundException Quando o provider informado não existe
      * @return \Cake\Http\Response Redirects on successful
      */
-    public function linkSocial($alias = null)
+    public function linkSocial(?string $alias = null): Response
     {
         $authUrl = (new ServiceFactory())
                 ->setRedirectUriField('callbackLinkSocialUri')
@@ -51,7 +53,7 @@ trait LinkSocialTrait
      * @throws \Cake\Http\Exception\NotFoundException Quando o provider informado não existe
      * @return \Cake\Http\Response Redirects to profile if okay or error
      */
-    public function callbackLinkSocial($alias = null)
+    public function callbackLinkSocial(?string $alias = null): Response
     {
         $message = __d('cake_d_c/users', 'Could not associate account, please try again.');
         try {
@@ -68,7 +70,7 @@ trait LinkSocialTrait
             $mapper = new MapUser();
             $data = $mapper($server, $data);
             $identity = $this->getRequest()->getAttribute('identity');
-            $identity = $identity ?? [];
+            $identity ??= [];
             $userId = $identity['id'] ?? null;
             $user = $this->getUsersTable()->get($userId);
 
@@ -81,7 +83,7 @@ trait LinkSocialTrait
             } else {
                 $this->Flash->success(__d('cake_d_c/users', 'Social account was associated.'));
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $log = sprintf(
                 'Error linking social account: %s %s',
                 $e->getMessage(),

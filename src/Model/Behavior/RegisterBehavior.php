@@ -15,11 +15,14 @@ namespace CakeDC\Users\Model\Behavior;
 
 use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
+use Cake\Event\EventInterface;
 use Cake\Mailer\MailerAwareTrait;
 use Cake\Validation\Validator;
 use CakeDC\Users\Exception\TokenExpiredException;
 use CakeDC\Users\Exception\UserAlreadyActiveException;
 use CakeDC\Users\Exception\UserNotFoundException;
+use CakeDC\Users\Model\Entity\User;
+use DateTime;
 
 /**
  * Covers the user registration
@@ -58,7 +61,7 @@ class RegisterBehavior extends BaseTokenBehavior
      * @param array $options ['tokenExpiration]
      * @return \Cake\Datasource\EntityInterface|bool
      */
-    public function register($user, $data, $options)
+    public function register(EntityInterface $user, array $data, array $options): EntityInterface|bool
     {
         $validateEmail = (bool)($options['validate_email'] ?? null);
         $tokenExpiration = $options['token_expiration'] ?? null;
@@ -66,11 +69,11 @@ class RegisterBehavior extends BaseTokenBehavior
         if (is_string($validator)) {
             $validate = $validator;
         } else {
-            $this->_table->setValidator('current', $validator ?: $this->getRegisterValidators($options));
+            $this->table->setValidator('current', $validator ?: $this->getRegisterValidators($options));
             $validate = 'current';
         }
 
-        $user = $this->_table->patchEntity(
+        $user = $this->table->patchEntity(
             $user,
             $data,
             ['validate' => $validate],
@@ -78,11 +81,11 @@ class RegisterBehavior extends BaseTokenBehavior
         $user['role'] = Configure::read('Users.Registration.defaultRole') ?: 'user';
         $user->validated = false;
         //@todo move updateActive to afterSave?
-        $user = $this->_updateActive($user, $validateEmail, $tokenExpiration);
-        $this->_table->isValidateEmail = $validateEmail;
-        $userSaved = $this->_table->save($user);
+        $user = $this->updateActive($user, $validateEmail, $tokenExpiration);
+        $this->table->isValidateEmail = $validateEmail;
+        $userSaved = $this->table->save($user);
         if ($userSaved && $validateEmail) {
-            $this->_sendValidationEmail($user);
+            $this->sendValidationEmail($user);
         }
 
         return $userSaved;
@@ -91,29 +94,29 @@ class RegisterBehavior extends BaseTokenBehavior
     /**
      * Validates token and return user
      *
-     * @param string $token toke to be validated.
-     * @param null $callback function that will be returned.
+     * @param string|null $token toke to be validated.
+     * @param string|null $callback function that will be returned.
      * @throws \CakeDC\Users\Exception\TokenExpiredException when token has expired.
      * @throws \CakeDC\Users\Exception\UserNotFoundException when user isn't found.
      * @return \Cake\Datasource\EntityInterface $user
      */
-    public function validate($token, $callback = null)
+    public function validate(?string $token = null, ?string $callback = null): EntityInterface
     {
-        $user = $token ? $this->_table->find()
+        $user = $token ? $this->table->find()
             ->select(['token_expires', 'id', 'active', 'token'])
             ->where(['token' => $token])
             ->first() : null;
         if (empty($user)) {
             throw new UserNotFoundException(__d('cake_d_c/users', 'User not found for the given token and email.'));
         }
-        if ($user->tokenExpired()) {
+        if ($user instanceof User && $user->tokenExpired()) {
             throw new TokenExpiredException(__d('cake_d_c/users', 'Token has already expired user with no token'));
         }
         if (!method_exists($this, (string)$callback)) {
             return $user;
         }
 
-        return $this->_table->getBehavior('Register')->{$callback}($user);
+        return $this->table->getBehavior('Register')->{$callback}($user);
     }
 
     /**
@@ -123,17 +126,17 @@ class RegisterBehavior extends BaseTokenBehavior
      * @return mixed User entity or bool false if the user could not be activated
      * @throws \CakeDC\Users\Exception\UserAlreadyActiveException
      */
-    public function activateUser(EntityInterface $user)
+    public function activateUser(EntityInterface $user): mixed
     {
         if ($user->active) {
             throw new UserAlreadyActiveException(__d('cake_d_c/users', 'User account already validated'));
         }
         $user->set('token', null);
         $user->set('token_expires', null);
-        $user->set('activation_date', new \DateTime());
+        $user->set('activation_date', new DateTime());
         $user->set('active', true);
 
-        return $this->_table->save($user);
+        return $this->table->save($user);
     }
 
     /**
@@ -144,10 +147,10 @@ class RegisterBehavior extends BaseTokenBehavior
      * @param string $name name
      * @return void
      */
-    public function buildValidator(\Cake\Event\EventInterface $event, Validator $validator, $name): void
+    public function buildValidator(EventInterface $event, Validator $validator, string $name): void
     {
         if ($name === 'default') {
-            $event->setResult($this->_emailValidator($validator, $this->validateEmail));
+            $event->setResult($this->emailValidator($validator, $this->validateEmail));
 
             return;
         }
@@ -162,7 +165,7 @@ class RegisterBehavior extends BaseTokenBehavior
      * @param bool $validateEmail true when email needs to be required
      * @return \Cake\Validation\Validator
      */
-    protected function _emailValidator(Validator $validator, $validateEmail)
+    protected function emailValidator(Validator $validator, bool $validateEmail): Validator
     {
         $this->validateEmail = (bool)$validateEmail;
         $validator
@@ -180,7 +183,7 @@ class RegisterBehavior extends BaseTokenBehavior
      * @param \Cake\Validation\Validator $validator Validator instance.
      * @return \Cake\Validation\Validator
      */
-    protected function _tosValidator(Validator $validator)
+    protected function tosValidator(Validator $validator): Validator
     {
         $validator
             ->requirePresence('tos', 'create')
@@ -195,18 +198,18 @@ class RegisterBehavior extends BaseTokenBehavior
      * @param array $options Array of options ['validate_email' => true/false, 'use_tos' => true/false]
      * @return \Cake\Validation\Validator
      */
-    public function getRegisterValidators($options)
+    public function getRegisterValidators(array $options): Validator
     {
-        $validateEmail = $options['validate_email'] ?? null;
+        $validateEmail = isset($options['validate_email']) ? (bool)$options['validate_email'] : null;
         $useTos = $options['use_tos'] ?? null;
 
-        $validator = $this->_table->validationRegister(new Validator());
+        $validator = $this->table->validationRegister(new Validator());
         if ($useTos) {
-            $validator = $this->_tosValidator($validator);
+            $validator = $this->tosValidator($validator);
         }
 
         if ($validateEmail) {
-            $validator = $this->_emailValidator($validator, $validateEmail);
+            $validator = $this->emailValidator($validator, $validateEmail);
         }
 
         return $validator;
@@ -218,7 +221,7 @@ class RegisterBehavior extends BaseTokenBehavior
      * @param \Cake\Datasource\EntityInterface $user user
      * @return void
      */
-    protected function _sendValidationEmail($user)
+    protected function sendValidationEmail(EntityInterface $user): void
     {
         $mailer = Configure::read('Users.Email.mailerClass') ?: 'CakeDC/Users.Users';
         $this

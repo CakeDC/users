@@ -12,8 +12,13 @@ declare(strict_types=1);
  */
 namespace CakeDC\Users\Loader;
 
+use Cake\Controller\Component;
+use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Utility\Hash;
+use CakeDC\Auth\Authenticator\FormAuthenticator;
+use CakeDC\Users\Authenticator\SocialAuthenticator;
+use CakeDC\Users\Controller\Component\LoginComponent;
 
 class LoginComponentLoader
 {
@@ -24,7 +29,7 @@ class LoginComponentLoader
      * @return \CakeDC\Users\Controller\Component\LoginComponent|\Cake\Controller\Component
      * @throws \Exception
      */
-    public static function forForm($controller)
+    public static function forForm(Controller $controller): LoginComponent|Component
     {
         $config = [
             'component' => 'CakeDC/Users.Login',
@@ -32,7 +37,7 @@ class LoginComponentLoader
             'messages' => [
                 'FAILURE_INVALID_RECAPTCHA' => __d('cake_d_c/users', 'Invalid reCaptcha'),
             ],
-            'targetAuthenticator' => \CakeDC\Auth\Authenticator\FormAuthenticator::class,
+            'targetAuthenticator' => FormAuthenticator::class,
         ];
 
         return self::createComponent($controller, 'Auth.FormLoginFailure', $config);
@@ -45,7 +50,7 @@ class LoginComponentLoader
      * @return \CakeDC\Users\Controller\Component\LoginComponent|\Cake\Controller\Component
      * @throws \Exception
      */
-    public static function forSocial($controller)
+    public static function forSocial(Controller $controller): LoginComponent|Component
     {
         $config = [
             'component' => 'CakeDC/Users.Login',
@@ -60,7 +65,7 @@ class LoginComponentLoader
                     'Your social account has not been validated yet. Please check your inbox for instructions',
                 ),
             ],
-            'targetAuthenticator' => \CakeDC\Users\Authenticator\SocialAuthenticator::class,
+            'targetAuthenticator' => SocialAuthenticator::class,
         ];
 
         return self::createComponent($controller, 'Auth.SocialLoginFailure', $config);
@@ -75,7 +80,7 @@ class LoginComponentLoader
      * @return \CakeDC\Users\Controller\Component\LoginComponent|\Cake\Controller\Component
      * @throws \Exception
      */
-    protected static function createComponent($controller, $key, array $config)
+    protected static function createComponent(Controller $controller, string $key, array $config): LoginComponent|Component
     {
         $custom = (array)Configure::read($key);
         $config = Hash::merge($config, $custom);

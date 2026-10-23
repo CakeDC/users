@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Test\TestCase\Webauthn\Repository;
 
+use Cake\Database\Type\JsonType;
+use Cake\Database\TypeFactory;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use CakeDC\Users\Webauthn\Base64Utility;
@@ -22,7 +24,7 @@ class UserCredentialSourceRepositoryTest extends TestCase
      *
      * @return void
      */
-    public function testFindOneByCredentialId()
+    public function testFindOneByCredentialId(): void
     {
         $UsersTable = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
         $user = $UsersTable->get('00000000-0000-0000-0000-000000000001');
@@ -41,7 +43,7 @@ class UserCredentialSourceRepositoryTest extends TestCase
      *
      * @return void
      */
-    public function testFindAllForUserEntity()
+    public function testFindAllForUserEntity(): void
     {
         $UsersTable = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
         $userId = '00000000-0000-0000-0000-000000000001';
@@ -72,9 +74,9 @@ class UserCredentialSourceRepositoryTest extends TestCase
      *
      * @return void
      */
-    public function testSaveCredentialSource()
+    public function testSaveCredentialSource(): void
     {
-        \Cake\Database\TypeFactory::map('json', \Cake\Database\Type\JsonType::class);
+        TypeFactory::map('json', JsonType::class);
 
         $publicKeyCredentialId = '12b37486-9299-4331-ac33-85b2d985b6fe';
         $userId = '00000000-0000-0000-0000-000000000001';
@@ -106,8 +108,9 @@ class UserCredentialSourceRepositoryTest extends TestCase
         $credentials = $repository->findAllForUserEntity($userEntity);
         $this->assertCount(2, $credentials);
         $userAfter = $UsersTable->get($user->id);
+        $expectedKey = Base64Utility::basicEncode($publicKey->getPublicKeyCredentialId());
         $this->assertArrayHasKey(
-            '12b37486-9299-4331-ac33-85b2d985b6fe',
+            $expectedKey,
             $userAfter->additional_data['webauthn_credentials'],
         );
         $this->assertArrayHasKey(

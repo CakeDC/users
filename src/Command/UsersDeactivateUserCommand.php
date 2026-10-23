@@ -4,8 +4,6 @@ declare(strict_types=1);
 namespace CakeDC\Users\Command;
 
 use Cake\Command\Command;
-use Cake\Console\Arguments;
-use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 use CakeDC\Users\Command\Logic\ChangeUserActiveTrait;
 
@@ -34,14 +32,14 @@ class UsersDeactivateUserCommand extends Command
     /**
      * Implement this method with your command's logic.
      *
-     * @param \Cake\Console\Arguments $args The command arguments.
-     * @param \Cake\Console\ConsoleIo $io The console io
-     * @return int|null|void The exit code or null for success
+     * @return int|null The exit code or null for success
      */
-    public function execute(Arguments $args, ConsoleIo $io)
+    public function execute(): ?int
     {
-        $user = $this->_changeUserActive($args, $io, false);
-        $io->out(__d('cake_d_c/users', 'User was de-activated: {0}', $user->username));
+        $user = $this->changeUserActive(false);
+        $this->io->out(__d('cake_d_c/users', 'User was de-activated: {0}', $user->username));
+
+        return static::CODE_SUCCESS;
     }
 
     /**

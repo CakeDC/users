@@ -13,11 +13,14 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
+use Cake\Http\Response;
 use Cake\Http\ServerRequest;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 
 /**
  * @property \CakeDC\Users\Controller\Traits\ProfileTrait&\PHPUnit\Framework\MockObject\MockObject $Trait
  */
+#[AllowMockObjectsWithoutExpectations]
 class ProfileTraitTest extends BaseTrait
 {
     /**
@@ -39,18 +42,9 @@ class ProfileTraitTest extends BaseTrait
     {
         $this->traitClassName = 'CakeDC\Users\Controller\UsersController';
         $this->traitMockMethods = ['set', 'getUsersTable', 'redirect', 'validate'];
-        $this->skipUsersMock = true;
         parent::setUp();
 
         $this->Trait->setRequest(new ServerRequest());
-        $this->Trait = $this->getMockBuilder('CakeDC\Users\Controller\UsersController')
-            ->onlyMethods($this->traitMockMethods)
-            ->setConstructorArgs([new ServerRequest()])
-            ->getMock();
-
-        $this->Trait->expects($this->any())
-            ->method('getUsersTable')
-            ->will($this->returnValue($this->table));
     }
 
     /**
@@ -58,15 +52,17 @@ class ProfileTraitTest extends BaseTrait
      *
      * @return void
      */
-    public function testProfileGetNotLoggedInUserNotFound()
+    public function testProfileGetNotLoggedInUserNotFound(): void
     {
         $userId = '00000000-0000-0000-0000-000000000000'; //not found
-        $this->_mockRequestGet();
-        $this->_mockAuthentication();
-        $this->_mockFlash();
-        $this->Trait->Flash->expects($this->once())
-            ->method('error')
-            ->with('User was not found');
+        $this->mockRequestGet();
+        $this->mockAuthentication(null, [], false);
+        $flash = $this->mockFlash();
+        $flash->expects('set')
+            ->with('User was not found', ['element' => 'error']);
+        $this->Trait->expects($this->once())
+            ->method('redirect')
+            ->willReturn(new Response());
         $this->Trait->profile($userId);
     }
 
@@ -75,15 +71,17 @@ class ProfileTraitTest extends BaseTrait
      *
      * @return void
      */
-    public function testProfileGetLoggedInUserNotFound()
+    public function testProfileGetLoggedInUserNotFound(): void
     {
         $userId = '00000000-0000-0000-0000-000000000000'; //not found
-        $this->_mockRequestGet();
-        $this->_mockAuthLoggedIn();
-        $this->_mockFlash();
-        $this->Trait->Flash->expects($this->once())
-            ->method('error')
-            ->with('User was not found');
+        $this->mockRequestGet();
+        $this->mockAuthLoggedIn();
+        $flash = $this->mockFlash();
+        $flash->expects('set')
+            ->with('User was not found', ['element' => 'error']);
+        $this->Trait->expects($this->once())
+            ->method('redirect')
+            ->willReturn(new Response());
         $this->Trait->profile($userId);
     }
 
@@ -92,14 +90,16 @@ class ProfileTraitTest extends BaseTrait
      *
      * @return void
      */
-    public function testProfileGetNotLoggedInEmptyId()
+    public function testProfileGetNotLoggedInEmptyId(): void
     {
-        $this->_mockRequestGet();
-        $this->_mockAuthentication();
-        $this->_mockFlash();
-        $this->Trait->Flash->expects($this->once())
-            ->method('error')
-            ->with('Not authorized, please login first');
+        $this->mockRequestGet();
+        $this->mockAuthentication(null, [], false);
+        $flash = $this->mockFlash();
+        $flash->expects('set')
+            ->with('Not authorized, please login first', ['element' => 'error']);
+        $this->Trait->expects($this->once())
+            ->method('redirect')
+            ->willReturn(new Response());
         $this->Trait->profile();
     }
 
@@ -108,20 +108,22 @@ class ProfileTraitTest extends BaseTrait
      *
      * @return void
      */
-    public function testProfileGetLoggedInMyProfile()
+    public function testProfileGetLoggedInMyProfile(): void
     {
-        $this->_mockRequestGet();
-        $this->_mockAuthLoggedIn();
-        $this->_mockFlash();
-        $this->Trait->expects($this->any())
+        $this->mockRequestGet();
+        $this->mockAuthLoggedIn();
+        $this->mockFlash();
+        $this->Trait->expects($this->exactly(2))
             ->method('set')
-            ->will($this->returnCallback(function ($param1, $param2 = null) {
+            ->willReturnCallback(function ($param1, $param2 = null) {
                 if ($param1 === 'avatarPlaceholder') {
                     BaseTrait::assertEquals('CakeDC/Users.avatar_placeholder.png', $param2);
                 } elseif (is_array($param1)) {
                     BaseTrait::assertEquals('user-1', $param1['user']->username);
                 }
-            }));
+
+                return $this->Trait;
+            });
         $this->Trait->profile();
     }
 }

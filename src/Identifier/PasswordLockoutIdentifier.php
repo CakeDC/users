@@ -17,6 +17,8 @@ use ArrayAccess;
 use Authentication\Identifier\PasswordIdentifier;
 use CakeDC\Users\Identifier\PasswordLockout\LockoutHandler;
 use CakeDC\Users\Identifier\PasswordLockout\LockoutHandlerInterface;
+use InvalidArgumentException;
+use RuntimeException;
 
 class PasswordLockoutIdentifier extends PasswordIdentifier
 {
@@ -30,7 +32,7 @@ class PasswordLockoutIdentifier extends PasswordIdentifier
      */
     public function __construct(array $config = [])
     {
-        $this->_defaultConfig['lockoutHandler'] = [
+        $this->defaultConfig['lockoutHandler'] = [
             'className' => LockoutHandler::class,
         ];
 
@@ -40,12 +42,12 @@ class PasswordLockoutIdentifier extends PasswordIdentifier
     /**
      * @inheritDoc
      */
-    protected function _checkPassword(ArrayAccess|array|null $identity, ?string $password): bool
+    protected function checkPassword(ArrayAccess|array|null $identity, ?string $password): bool
     {
         if (!isset($identity['id'])) {
             return false;
         }
-        $check = parent::_checkPassword($identity, $password);
+        $check = parent::checkPassword($identity, $password);
         $handler = $this->getLockoutHandler();
         if (!$check) {
             $handler->newFail($identity['id']);
@@ -70,7 +72,7 @@ class PasswordLockoutIdentifier extends PasswordIdentifier
 
             return $this->lockoutHandler;
         }
-        throw new \RuntimeException(__d('cake_d_c/users', 'Lockout handler has not been set.'));
+        throw new RuntimeException(__d('cake_d_c/users', 'Lockout handler has not been set.'));
     }
 
     /**
@@ -85,7 +87,7 @@ class PasswordLockoutIdentifier extends PasswordIdentifier
             ];
         }
         if (!isset($config['className'])) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 __d(
                     'cake_d_c/users',
                     'Option `className` for lockout handler is not present.',

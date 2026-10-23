@@ -106,7 +106,7 @@ class UsersTable extends Table
      * @param \Cake\Validation\Validator $validator Cake validator object.
      * @return \Cake\Validation\Validator
      */
-    public function validationPasswordConfirm(Validator $validator)
+    public function validationPasswordConfirm(Validator $validator): Validator
     {
         $validator
             ->requirePresence('password_confirm', 'create')
@@ -122,7 +122,6 @@ class UsersTable extends Table
                         'cake_d_c/users',
                         'Your password does not match your confirm password. Please try again',
                     ),
-                    'allowEmpty' => false,
                 ]]);
 
         return $validator;
@@ -134,7 +133,7 @@ class UsersTable extends Table
      * @param \Cake\Validation\Validator $validator Cake validator object.
      * @return \Cake\Validation\Validator
      */
-    public function validationCurrentPassword(Validator $validator)
+    public function validationCurrentPassword(Validator $validator): Validator
     {
         $validator
             ->notBlank('current_password');
@@ -194,7 +193,7 @@ class UsersTable extends Table
      * @param \Cake\Validation\Validator $validator Cake validator object.
      * @return \Cake\Validation\Validator
      */
-    public function validationRegister(Validator $validator)
+    public function validationRegister(Validator $validator): Validator
     {
         $validator = $this->validationDefault($validator);
 

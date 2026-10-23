@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Controller\Traits;
 
+use Cake\Http\Response;
 use Cake\Utility\Inflector;
 
 /**
@@ -27,7 +28,7 @@ trait SimpleCrudTrait
      *
      * @return void
      */
-    public function index()
+    public function index(): void
     {
         $table = $this->fetchTable();
         $tableAlias = $table->getAlias();
@@ -43,7 +44,7 @@ trait SimpleCrudTrait
      * @return void
      * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view(?string $id = null): void
     {
         $table = $this->fetchTable();
         $tableAlias = $table->getAlias();
@@ -58,7 +59,7 @@ trait SimpleCrudTrait
      *
      * @return mixed Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add(): mixed
     {
         $table = $this->fetchTable();
         $tableAlias = $table->getAlias();
@@ -67,7 +68,7 @@ trait SimpleCrudTrait
         $this->set('tableAlias', $tableAlias);
         $this->viewBuilder()->setOption('serialize', [$tableAlias, 'tableAlias']);
         if (!$this->getRequest()->is('post')) {
-            return;
+            return null;
         }
         $entity = $table->patchEntity($entity, $this->getRequest()->getData());
         $singular = Inflector::singularize(Inflector::humanize($tableAlias));
@@ -77,6 +78,8 @@ trait SimpleCrudTrait
             return $this->redirect(['action' => 'index']);
         }
         $this->Flash->error(__d('cake_d_c/users', 'The {0} could not be saved', $singular));
+
+        return null;
     }
 
     /**
@@ -86,7 +89,7 @@ trait SimpleCrudTrait
      * @return mixed Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
-    public function edit($id = null)
+    public function edit(?string $id = null): mixed
     {
         $table = $this->fetchTable();
         $tableAlias = $table->getAlias();
@@ -97,7 +100,7 @@ trait SimpleCrudTrait
         $this->set('tableAlias', $tableAlias);
         $this->viewBuilder()->setOption('serialize', [$tableAlias, 'tableAlias']);
         if (!$this->getRequest()->is(['patch', 'post', 'put'])) {
-            return;
+            return null;
         }
         $entity = $table->patchEntity($entity, $this->getRequest()->getData());
         $singular = Inflector::singularize(Inflector::humanize($tableAlias));
@@ -107,6 +110,8 @@ trait SimpleCrudTrait
             return $this->redirect(['action' => 'index']);
         }
         $this->Flash->error(__d('cake_d_c/users', 'The {0} could not be saved', $singular));
+
+        return null;
     }
 
     /**
@@ -116,7 +121,7 @@ trait SimpleCrudTrait
      * @return \Cake\Http\Response Redirects to index.
      * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
-    public function delete($id = null)
+    public function delete(?string $id = null): Response
     {
         $this->getRequest()->allowMethod(['post', 'delete']);
         $table = $this->fetchTable();

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace CakeDC\Users\Controller\Traits;
 
 use Cake\Datasource\Exception\RecordNotFoundException;
+use Cake\Http\Response;
 use CakeDC\Users\Utility\UsersUrl;
 
 /**
@@ -28,7 +29,7 @@ trait OneTimeTokenTrait
      *
      * @return \Cake\Http\Response|null
      */
-    public function requestLoginLink()
+    public function requestLoginLink(): ?Response
     {
         if ($this->getRequest()->is('post')) {
             $email = $this->getRequest()->getData('email');
@@ -61,7 +62,7 @@ trait OneTimeTokenTrait
      *
      * @return \Cake\Http\Response|null
      */
-    public function singleTokenLogin()
+    public function singleTokenLogin(): ?Response
     {
         $errorMessage = null;
         $token = null;

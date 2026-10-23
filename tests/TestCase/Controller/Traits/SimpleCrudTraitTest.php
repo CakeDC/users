@@ -17,6 +17,8 @@ use Cake\Datasource\Exception\InvalidPrimaryKeyException;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Datasource\Paging\PaginatedResultSet;
 use Cake\Datasource\ResultSetDecorator;
+use Cake\Http\Response;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 
 /**
  * Class SimpleCrudTraitTest
@@ -24,6 +26,7 @@ use Cake\Datasource\ResultSetDecorator;
  * @package CakeDC\Users\Test\TestCase\Controller\Traits
  * @property \CakeDC\Users\Controller\Traits\SimpleCrudTrait&\PHPUnit\Framework\MockObject\MockObject $Trait
  */
+#[AllowMockObjectsWithoutExpectations]
 class SimpleCrudTraitTest extends BaseTrait
 {
     public $viewVars;
@@ -40,14 +43,15 @@ class SimpleCrudTraitTest extends BaseTrait
         $this->traitMockAddMethods = ['isStopped'];
         parent::setUp();
         $viewVarsContainer = $this;
-        $this->Trait->expects($this->any())
-            ->method('set')
-            ->will($this->returnCallback(function ($param1, $param2 = null) use ($viewVarsContainer) {
+        $this->Trait->method('set')
+            ->willReturnCallback(function ($param1, $param2 = null) use ($viewVarsContainer) {
                 $viewVarsContainer->viewVars[$param1] = $param2;
-            }));
+
+                return $viewVarsContainer->Trait;
+            });
         $this->Trait->expects($this->once())
             ->method('fetchTable')
-            ->will($this->returnValue($this->table));
+            ->willReturn($this->table);
     }
 
     /**
@@ -66,14 +70,14 @@ class SimpleCrudTraitTest extends BaseTrait
      *
      * @return void
      */
-    public function testIndex()
+    public function testIndex(): void
     {
         $results = new ResultSetDecorator([]);
         $paginated = new PaginatedResultSet($results, []);
         $this->Trait->expects($this->once())
             ->method('paginate')
             ->with($this->table)
-            ->will($this->returnValue($paginated));
+            ->willReturn($paginated);
         $this->Trait->index();
         $expected = [
             'Users' => $paginated,
@@ -87,7 +91,7 @@ class SimpleCrudTraitTest extends BaseTrait
      *
      * @return void
      */
-    public function testView()
+    public function testView(): void
     {
         $id = '00000000-0000-0000-0000-000000000001';
         $this->Trait->view($id);
@@ -103,7 +107,7 @@ class SimpleCrudTraitTest extends BaseTrait
      *
      * @return void
      */
-    public function testViewNotFound()
+    public function testViewNotFound(): void
     {
         $this->expectException(RecordNotFoundException::class);
         $this->Trait->view('00000000-0000-0000-0000-000000000000');
@@ -114,7 +118,7 @@ class SimpleCrudTraitTest extends BaseTrait
      *
      * @return void
      */
-    public function testViewInvalidPK()
+    public function testViewInvalidPK(): void
     {
         $this->expectException(InvalidPrimaryKeyException::class);
         $this->Trait->view();
@@ -125,9 +129,9 @@ class SimpleCrudTraitTest extends BaseTrait
      *
      * @return void
      */
-    public function testAddGet()
+    public function testAddGet(): void
     {
-        $this->_mockRequestGet();
+        $this->mockRequestGet();
         $this->Trait->add();
         $expected = [
             'Users' => $this->table->newEmptyEntity(),
@@ -141,28 +145,23 @@ class SimpleCrudTraitTest extends BaseTrait
      *
      * @return void
      */
-    public function testAddPostHappy()
+    public function testAddPostHappy(): void
     {
         $this->assertSame(0, $this->table->find()->where(['username' => 'testuser'])->count());
-        $this->_mockRequestPost();
-        $this->_mockFlash();
-        $this->Trait->getRequest()->expects($this->once())
-            ->method('is')
-            ->with('post')
-            ->will($this->returnValue(true));
+        $this->mockRequestPost();
+        $flash = $this->mockFlash();
         $this->Trait->getRequest()->expects($this->once())
             ->method('getData')
             ->with()
-            ->will($this->returnValue([
+            ->willReturn([
                 'username' => 'testuser',
                 'email' => 'testuser@test.com',
                 'password' => 'password',
                 'first_name' => 'test',
                 'last_name' => 'user',
-            ]));
-        $this->Trait->Flash->expects($this->once())
-            ->method('success')
-            ->with('The User has been saved');
+            ]);
+        $flash->expects('set')
+            ->with('The User has been saved', ['element' => 'success']);
 
         $this->Trait->add();
 
@@ -174,28 +173,23 @@ class SimpleCrudTraitTest extends BaseTrait
      *
      * @return void
      */
-    public function testAddPostErrors()
+    public function testAddPostErrors(): void
     {
         $this->assertSame(0, $this->table->find()->where(['username' => 'testuser'])->count());
-        $this->_mockRequestPost();
-        $this->_mockFlash();
-        $this->Trait->getRequest()->expects($this->once())
-            ->method('is')
-            ->with('post')
-            ->will($this->returnValue(true));
+        $this->mockRequestPost();
+        $flash = $this->mockFlash();
         $this->Trait->getRequest()->expects($this->once())
             ->method('getData')
             ->with()
-            ->will($this->returnValue([
+            ->willReturn([
                 'username' => 'testuser',
                 'email' => 'testuser@test.com',
                 'first_name' => 'test',
                 'last_name' => 'user',
-            ]));
+            ]);
 
-        $this->Trait->Flash->expects($this->once())
-            ->method('error')
-            ->with('The User could not be saved');
+        $flash->expects('set')
+            ->with('The User could not be saved', ['element' => 'error']);
 
         $this->Trait->add();
 
@@ -207,25 +201,20 @@ class SimpleCrudTraitTest extends BaseTrait
      *
      * @return void
      */
-    public function testEditPostHappy()
+    public function testEditPostHappy(): void
     {
         $this->assertEquals('user-1@test.com', $this->table->get('00000000-0000-0000-0000-000000000001')->email);
-        $this->_mockRequestPost(['patch', 'post', 'put']);
-        $this->_mockFlash();
-        $this->Trait->getRequest()->expects($this->once())
-            ->method('is')
-            ->with(['patch', 'post', 'put'])
-            ->will($this->returnValue(true));
+        $this->mockRequestPost(['patch', 'post', 'put']);
+        $flash = $this->mockFlash();
         $this->Trait->getRequest()->expects($this->once())
             ->method('getData')
             ->with()
-            ->will($this->returnValue([
+            ->willReturn([
                 'email' => 'newtestuser@test.com',
-            ]));
+            ]);
 
-        $this->Trait->Flash->expects($this->once())
-            ->method('success')
-            ->with('The User has been saved');
+        $flash->expects('set')
+            ->with('The User has been saved', ['element' => 'success']);
 
         $this->Trait->edit('00000000-0000-0000-0000-000000000001');
 
@@ -237,25 +226,20 @@ class SimpleCrudTraitTest extends BaseTrait
      *
      * @return void
      */
-    public function testEditPostErrors()
+    public function testEditPostErrors(): void
     {
         $this->assertEquals('user-1@test.com', $this->table->get('00000000-0000-0000-0000-000000000001')->email);
-        $this->_mockRequestPost(['patch', 'post', 'put']);
-        $this->_mockFlash();
-        $this->Trait->getRequest()->expects($this->once())
-            ->method('is')
-            ->with(['patch', 'post', 'put'])
-            ->will($this->returnValue(true));
+        $this->mockRequestPost(['patch', 'post', 'put']);
+        $flash = $this->mockFlash();
         $this->Trait->getRequest()->expects($this->once())
             ->method('getData')
             ->with()
-            ->will($this->returnValue([
+            ->willReturn([
                 'email' => 'not-an-email',
-            ]));
+            ]);
 
-        $this->Trait->Flash->expects($this->once())
-            ->method('error')
-            ->with('The User could not be saved');
+        $flash->expects('set')
+            ->with('The User could not be saved', ['element' => 'error']);
 
         $this->Trait->edit('00000000-0000-0000-0000-000000000001');
 
@@ -267,24 +251,24 @@ class SimpleCrudTraitTest extends BaseTrait
      *
      * @return void
      */
-    public function testDeleteHappy()
+    public function testDeleteHappy(): void
     {
         $this->expectException(RecordNotFoundException::class);
         $this->assertNotEmpty($this->table->get('00000000-0000-0000-0000-000000000001'));
-        $this->_mockRequestPost();
         $request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->onlyMethods(['is', 'allowMethod'])
             ->getMock();
-        $request->expects($this->any())
+        $request->expects($this->once())
             ->method('allowMethod')
-            ->with(['post', 'delete'])
-            ->will($this->returnValue(true));
+            ->with(['post', 'delete']);
         $this->Trait->setRequest($request);
 
-        $this->_mockFlash();
-        $this->Trait->Flash->expects($this->once())
-            ->method('success')
-            ->with('The User has been deleted');
+        $flash = $this->mockFlash();
+        $flash->expects('set')
+            ->with('The User has been deleted', ['element' => 'success']);
+        $this->Trait->expects($this->once())
+            ->method('redirect')
+            ->willReturn(new Response());
 
         $this->Trait->delete('00000000-0000-0000-0000-000000000001');
 
@@ -296,19 +280,17 @@ class SimpleCrudTraitTest extends BaseTrait
      *
      * @return void
      */
-    public function testDeleteNotFound()
+    public function testDeleteNotFound(): void
     {
         $this->expectException(RecordNotFoundException::class);
         $this->assertNotEmpty($this->table->get('00000000-0000-0000-0000-000000000001'));
-        $this->_mockRequestPost();
 
         $request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->onlyMethods(['is', 'allowMethod'])
             ->getMock();
-        $request->expects($this->any())
+        $request->expects($this->once())
             ->method('allowMethod')
-            ->with(['post', 'delete'])
-            ->will($this->returnValue(true));
+            ->with(['post', 'delete']);
         $this->Trait->setRequest($request);
 
         $this->Trait->delete('00000000-0000-0000-0000-000000000000');

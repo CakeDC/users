@@ -27,9 +27,13 @@ use CakeDC\Users\Exception\SocialAuthenticationException;
 use CakeDC\Users\Middleware\SocialAuthMiddleware;
 use Laminas\Diactoros\Uri;
 use League\OAuth2\Client\Provider\FacebookUser;
+use League\OAuth2\Client\Token\AccessToken;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\DataProvider;
 use TestApp\Http\TestRequestHandler;
 use UnexpectedValueException;
 
+#[AllowMockObjectsWithoutExpectations]
 class SocialAuthMiddlewareTest extends TestCase
 {
     protected array $fixtures = [
@@ -129,13 +133,13 @@ class SocialAuthMiddlewareTest extends TestCase
             'provider' => 'facebook',
         ]);
 
-        $this->Provider->expects($this->any())
+        $this->Provider->expects($this->atLeastOnce())
             ->method('getState')
-            ->will($this->returnValue('_NEW_STATE_'));
+            ->willReturn('_NEW_STATE_');
 
-        $this->Provider->expects($this->any())
+        $this->Provider->expects($this->atLeastOnce())
             ->method('getAuthorizationUrl')
-            ->will($this->returnValue('http://facebook.com/redirect/url'));
+            ->willReturn('http://facebook.com/redirect/url');
 
         $Middleware = new SocialAuthMiddleware();
         $response = new Response();
@@ -210,7 +214,7 @@ class SocialAuthMiddlewareTest extends TestCase
      *
      * @return array
      */
-    public static function dataProviderSocialAuthenticationException()
+    public static function dataProviderSocialAuthenticationException(): array
     {
         $missingEmail = [
             new MissingEmailException('Missing email'),
@@ -248,9 +252,9 @@ class SocialAuthMiddlewareTest extends TestCase
      * @param array $flash flash that should be on session
      * @param array $location value of location header that should be on request
      * @param bool $keepSocialUser should keed a raw data of social user
-     * @dataProvider dataProviderSocialAuthenticationException
      * @return void
      */
+    #[DataProvider('dataProviderSocialAuthenticationException')]
     public function testSocialAuthenticationException($previousException, $flash, $location, $keepSocialUser)
     {
         $builder = Router::createRouteBuilder('/');
@@ -288,7 +292,7 @@ class SocialAuthMiddlewareTest extends TestCase
         $checked = false;
 
         $service = (new ServiceFactory())->createFromProvider('facebook');
-        $Token = new \League\OAuth2\Client\Token\AccessToken([
+        $Token = new AccessToken([
             'access_token' => 'test-token',
             'expires' => 1490988496,
         ]);

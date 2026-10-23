@@ -24,6 +24,7 @@ use Cake\Validation\Validator;
 use CakeDC\Users\Exception\TokenExpiredException;
 use CakeDC\Users\Exception\UserNotFoundException;
 use CakeDC\Users\Model\Behavior\RegisterBehavior;
+use DateTime;
 
 /**
  * Test Case
@@ -95,10 +96,10 @@ class RegisterBehaviorTest extends TestCase
             'password_confirm' => 'password',
             'first_name' => 'test',
             'last_name' => 'user',
-            'tos' => 1,
+            'tos' => '1',
         ];
         $result = $this->Table->getBehavior('Register')
-            ->register($this->Table->newEmptyEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 0]);
+            ->register($this->Table->newEmptyEntity(), $user, ['token_expiration' => 3600, 'validate_email' => false]);
         $this->assertTrue($result->active);
     }
 
@@ -111,7 +112,7 @@ class RegisterBehaviorTest extends TestCase
     {
         $user = [];
         $result = $this->Table->getBehavior('Register')
-            ->register($this->Table->newEmptyEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1]);
+            ->register($this->Table->newEmptyEntity(), $user, ['token_expiration' => 3600, 'validate_email' => true]);
         $this->assertFalse($result);
     }
 
@@ -136,10 +137,10 @@ class RegisterBehaviorTest extends TestCase
             'password_confirm' => 'password',
             'first_name' => 'test',
             'last_name' => 'user',
-            'tos' => 1,
+            'tos' => '1',
         ];
         $result = $this->Table->getBehavior('Register')
-            ->register($this->Table->newEmptyEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1]);
+            ->register($this->Table->newEmptyEntity(), $user, ['token_expiration' => 3600, 'validate_email' => true]);
         $this->assertNotEmpty($result);
         $this->assertFalse($result->active);
         $this->assertNotEmpty($result->tos_date);
@@ -162,8 +163,7 @@ class RegisterBehaviorTest extends TestCase
         $this->Table = $this->getMockForModel('CakeDC/Users.Users', ['patchEntity', 'save']);
 
         $this->Behavior = $this->getMockBuilder('CakeDC\Users\Model\Behavior\RegisterBehavior')
-                ->onlyMethods(['_updateActive'])
-                ->addMethods(['getValidators'])
+                ->onlyMethods(['updateActive'])
                 ->setConstructorArgs([$this->Table])
                 ->getMock();
 
@@ -174,29 +174,26 @@ class RegisterBehaviorTest extends TestCase
             'password_confirm' => 'password',
             'first_name' => 'test',
             'last_name' => 'user',
-            'tos' => 1,
+            'tos' => '1',
         ];
-
-        $this->Behavior->expects($this->never())
-                ->method('getValidators');
 
         $entityUser = $this->Table->newEntity($user);
 
         $this->Behavior->expects($this->once())
-                ->method('_updateActive')
-                ->will($this->returnValue($entityUser));
+                ->method('updateActive')
+                ->willReturn($entityUser);
 
         $this->Table->expects($this->once())
                 ->method('patchEntity')
                 ->with($this->Table->newEmptyEntity(), $user, ['validate' => 'custom'])
-                ->will($this->returnValue($entityUser));
+                ->willReturn($entityUser);
 
         $this->Table->expects($this->once())
                 ->method('save')
                 ->with($entityUser)
-                ->will($this->returnValue($entityUser));
+                ->willReturn($entityUser);
 
-        $result = $this->Behavior->register($this->Table->newEmptyEntity(), $user, ['validator' => 'custom', 'validate_email' => 1]);
+        $result = $this->Behavior->register($this->Table->newEmptyEntity(), $user, ['validator' => 'custom', 'validate_email' => true]);
         $this->assertNotEmpty($result->tos_date);
     }
 
@@ -214,7 +211,7 @@ class RegisterBehaviorTest extends TestCase
             'last_name' => 'user',
         ];
         $result = $this->Table->getBehavior('Register')
-            ->register($this->Table->newEmptyEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1, 'use_tos' => 1]);
+            ->register($this->Table->newEmptyEntity(), $user, ['token_expiration' => 3600, 'validate_email' => true, 'use_tos' => 1]);
         $this->assertFalse($result);
     }
 
@@ -241,7 +238,7 @@ class RegisterBehaviorTest extends TestCase
             'last_name' => 'user',
         ];
         $result = $this->Table->getBehavior('Register')
-            ->register($this->Table->newEmptyEntity(), $user, ['token_expiration' => 3600, 'validate_email' => 1, 'use_tos' => 0]);
+            ->register($this->Table->newEmptyEntity(), $user, ['token_expiration' => 3600, 'validate_email' => true, 'use_tos' => 0]);
         $this->assertNotEmpty($result);
     }
 
@@ -307,7 +304,7 @@ class RegisterBehaviorTest extends TestCase
         $this->assertNull($user->token);
         $this->assertNull($user->token_expires);
         $this->assertTrue($user->active);
-        $this->assertInstanceOf(\DateTime::class, $user->activation_date);
+        $this->assertInstanceOf(DateTime::class, $user->activation_date);
         $this->assertEquals(date('Y-m-d'), $user->activation_date->format('Y-m-d'));
     }
 
@@ -325,13 +322,13 @@ class RegisterBehaviorTest extends TestCase
             'password_confirm' => 'password',
             'first_name' => 'test',
             'last_name' => 'user',
-            'tos' => 1,
+            'tos' => '1',
         ];
         Configure::write('Users.Registration.defaultRole', false);
         $result = $this->Table->getBehavior('Register')
             ->register($this->Table->newEmptyEntity(), $user, [
                 'token_expiration' => 3600,
-                'validate_email' => 0,
+                'validate_email' => false,
             ]);
         $this->assertSame('user', $result['role']);
     }
@@ -350,13 +347,13 @@ class RegisterBehaviorTest extends TestCase
             'password_confirm' => 'password',
             'first_name' => 'test',
             'last_name' => 'user',
-            'tos' => 1,
+            'tos' => '1',
         ];
         Configure::write('Users.Registration.defaultRole', 'emperor');
         $result = $this->Table->getBehavior('Register')
             ->register($this->Table->newEmptyEntity(), $user, [
                 'token_expiration' => 3600,
-                'validate_email' => 0,
+                'validate_email' => false,
             ]);
         $this->assertSame('emperor', $result['role']);
     }

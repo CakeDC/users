@@ -15,12 +15,12 @@ namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
 use Authentication\Authenticator\Result;
 use Authentication\Controller\Component\AuthenticationComponent;
-use Authentication\Identifier\IdentifierCollection;
 use Authentication\Identity;
 use Cake\Controller\ComponentRegistry;
 use Cake\Controller\Controller;
 use Cake\Event\Event;
 use Cake\Http\ServerRequest;
+use Cake\Http\Session;
 use Cake\Mailer\Mailer;
 use Cake\Mailer\TransportFactory;
 use Cake\ORM\Entity;
@@ -28,6 +28,8 @@ use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use CakeDC\Auth\Authentication\AuthenticationService;
 use CakeDC\Users\Model\Entity\User;
+use JMac\Testing\Double;
+use JMac\Testing\Integrations\PHPUnit\VerifiesDoubles;
 use PHPUnit\Framework\MockObject\RuntimeException;
 
 /**
@@ -37,6 +39,8 @@ use PHPUnit\Framework\MockObject\RuntimeException;
  */
 class BaseTrait extends TestCase
 {
+    use VerifiesDoubles;
+
     /**
      * Fixtures
      *
@@ -90,17 +94,15 @@ class BaseTrait extends TestCase
         $this->table = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
         try {
             $buildTrait = $this->getMockBuilder($this->traitClassName)
-                ->onlyMethods($traitMockMethods)
-                ->addMethods($this->traitMockAddMethods);
+                ->onlyMethods($traitMockMethods);
             if (class_exists($this->traitClassName)) {
                 $buildTrait->setConstructorArgs([new ServerRequest()]);
             }
             $this->Trait = $buildTrait->getMock();
 
             if (!$this->skipUsersMock) {
-                $this->Trait->expects($this->any())
-                    ->method('getUsersTable')
-                    ->will($this->returnValue($this->table));
+                $this->Trait->method('getUsersTable')
+                    ->willReturn($this->table);
             }
         } catch (RuntimeException $ex) {
             $this->fail('Unit tests extending BaseTraitTest should declare the trait class name in the $traitClassName variable before calling setUp()');
@@ -139,9 +141,9 @@ class BaseTrait extends TestCase
      *
      * @return \Cake\Http\Session
      */
-    protected function _mockSession($attributes)
+    protected function mockSession(array $attributes): Session
     {
-        $session = new \Cake\Http\Session();
+        $session = new Session();
 
         foreach ($attributes as $field => $value) {
             $session->write($field, $value);
@@ -149,7 +151,7 @@ class BaseTrait extends TestCase
 
         $this->Trait
             ->getRequest()
-            ->expects($this->any())
+            ->expects($this->atLeastOnce())
             ->method('getSession')
             ->willReturn($session);
 
@@ -161,7 +163,7 @@ class BaseTrait extends TestCase
      *
      * @return void
      */
-    protected function _mockRequestGet($withSession = false)
+    protected function mockRequestGet(bool $withSession = false): void
     {
         $methods = ['is', 'referer', 'getData'];
 
@@ -172,10 +174,8 @@ class BaseTrait extends TestCase
         $request = $this->getMockBuilder('Cake\Http\ServerRequest')
                 ->onlyMethods($methods)
                 ->getMock();
-        $request->expects($this->any())
-                ->method('is')
-                ->with('post')
-                ->will($this->returnValue(false));
+        $request->method('is')
+                ->willReturn(false);
         $this->Trait->setRequest($request);
     }
 
@@ -184,13 +184,13 @@ class BaseTrait extends TestCase
      *
      * @return void
      */
-    protected function _mockFlash()
+    protected function mockFlash(): object
     {
-        $flash = $this->getMockBuilder('Cake\Controller\Component\FlashComponent')
-                ->addMethods(['error', 'success'])
-                ->disableOriginalConstructor()
-                ->getMock();
+        $flash = Double::for('Cake\Controller\Component\FlashComponent');
+        $flash->allows('set');
         $this->Trait->components()->set('Flash', $flash);
+
+        return $flash;
     }
 
     /**
@@ -199,16 +199,13 @@ class BaseTrait extends TestCase
      * @param mixed $with used in with
      * @return void
      */
-    protected function _mockRequestPost($with = 'post')
+    protected function mockRequestPost(mixed $with = 'post'): void
     {
         $request = $this->getMockBuilder('Cake\Http\ServerRequest')
                 ->onlyMethods(['is', 'getData'])
-                ->addMethods(['allow'])
                 ->getMock();
-        $request->expects($this->any())
-                ->method('is')
-                ->with($with)
-                ->will($this->returnValue(true));
+        $request->method('is')
+                ->willReturn(true);
         $this->Trait->setRequest($request);
     }
 
@@ -217,36 +214,32 @@ class BaseTrait extends TestCase
      *
      * @return void
      */
-    protected function _mockAuthLoggedIn($user = [])
+    protected function mockAuthLoggedIn(array $user = []): void
     {
         $user += [
             'id' => '00000000-0000-0000-0000-000000000001',
             'password' => '12345',
         ];
 
-        $this->_mockAuthentication($user);
+        $this->mockAuthentication($user, [], false);
     }
 
     /**
      * Mock the Authentication service
      *
-     * @param array $user
-     * @param array $failures
-     * @param \Authentication\Identifier\IdentifierCollection $identifiers custom identifiers collection
+     * @param array|null $user user data to authenticate, null for anonymous
+     * @param array $failures list of authentication failures
+     * @param bool $expectGetResult whether the service result is consumed (login flows) or not
      * @return void
      */
-    protected function _mockAuthentication($user = null, $failures = [], $identifiers = null)
+    protected function mockAuthentication(?array $user = null, array $failures = [], bool $expectGetResult = true): void
     {
-        if ($identifiers === null) {
-            $identifiers = new IdentifierCollection([]);
-        }
-
         $config = [
             'authenticators' => [
                 'Authentication.Session',
                 'Authentication.Form' => [
                     'identifier' => [
-                        'Authentication.Password' => [],
+                        'className' => 'Authentication.Password',
                     ],
                 ],
             ],
@@ -254,7 +247,6 @@ class BaseTrait extends TestCase
         $authentication = $this->getMockBuilder(AuthenticationService::class)->setConstructorArgs([$config])->onlyMethods([
             'getResult',
             'getFailures',
-            'identifiers',
         ])->getMock();
 
         if ($user) {
@@ -266,17 +258,17 @@ class BaseTrait extends TestCase
             $result = new Result($user, Result::FAILURE_CREDENTIALS_MISSING);
         }
 
-        $authentication->expects($this->any())
-            ->method('getResult')
-            ->will($this->returnValue($result));
+        if ($expectGetResult) {
+            $authentication->expects($this->atLeastOnce())
+                ->method('getResult')
+                ->willReturn($result);
+        } else {
+            $authentication->expects($this->never())
+                ->method('getResult');
+        }
 
-        $authentication->expects($this->any())
-            ->method('getFailures')
-            ->will($this->returnValue($failures));
-
-        $authentication->expects($this->any())
-            ->method('identifiers')
-            ->will($this->returnValue($identifiers));
+        $authentication->method('getFailures')
+            ->willReturn($failures);
 
         $this->Trait->setRequest($this->Trait->getRequest()->withAttribute('authentication', $authentication));
 
@@ -299,14 +291,14 @@ class BaseTrait extends TestCase
      * @param array $failures
      * @return void
      */
-    protected function _mockAuthenticationWithPasswordRehash($user = null, $failures = [])
+    protected function mockAuthenticationWithPasswordRehash(?array $user = null, array $failures = []): void
     {
         $config = [
             'authenticators' => [
                 'Authentication.Session',
                 'Authentication.Form' => [
                     'identifier' => [
-                        'Authentication.Password' => [],
+                        'className' => 'Authentication.Password',
                     ],
                 ],
             ],
@@ -314,11 +306,7 @@ class BaseTrait extends TestCase
         $authentication = $this->getMockBuilder(AuthenticationService::class)->setConstructorArgs([$config])->onlyMethods([
             'getResult',
             'getFailures',
-            'identifiers',
         ])->getMock();
-        $authentication->expects($this->any())
-            ->method('identifiers')
-            ->willReturn($identifiers);
         if ($user) {
             $user = is_object($user) ? $user : new User($user);
             $identity = new Identity($user);
@@ -328,13 +316,12 @@ class BaseTrait extends TestCase
             $result = new Result($user, Result::FAILURE_CREDENTIALS_MISSING);
         }
 
-        $authentication->expects($this->any())
+        $authentication->expects($this->atLeastOnce())
             ->method('getResult')
-            ->will($this->returnValue($result));
+            ->willReturn($result);
 
-        $authentication->expects($this->any())
-            ->method('getFailures')
-            ->will($this->returnValue($failures));
+        $authentication->method('getFailures')
+            ->willReturn($failures);
 
         $this->Trait->setRequest($this->Trait->getRequest()->withAttribute('authentication', $authentication));
 
@@ -354,7 +341,7 @@ class BaseTrait extends TestCase
      * @param array $result array of data
      * @return void
      */
-    protected function _mockDispatchEvent(?Event $event = null, $result = [])
+    protected function mockDispatchEvent(?Event $event = null, array $result = []): void
     {
         if (is_null($event)) {
             $event = new Event('cool-name-here');
@@ -364,8 +351,8 @@ class BaseTrait extends TestCase
             $event->setResult(new Entity($result));
         }
 
-        $this->Trait->expects($this->any())
+        $this->Trait->expects($this->atLeastOnce())
                 ->method('dispatchEvent')
-                ->will($this->returnValue($event));
+                ->willReturn($event);
     }
 }

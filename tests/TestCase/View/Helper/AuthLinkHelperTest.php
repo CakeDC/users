@@ -70,7 +70,7 @@ class AuthLinkHelperTest extends TestCase
             ->with(
                 $this->equalTo(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile']),
             )
-            ->will($this->returnValue(false));
+            ->willReturn(false);
         $result = $this->AuthLink->link(
             'title',
             ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile'],
@@ -97,7 +97,7 @@ class AuthLinkHelperTest extends TestCase
             ->with(
                 $this->equalTo(['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile']),
             )
-            ->will($this->returnValue(true));
+            ->willReturn(true);
         $link = $this->AuthLink->link(
             'title',
             ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'profile'],
@@ -113,6 +113,8 @@ class AuthLinkHelperTest extends TestCase
      */
     public function testLinkAuthorizedAllowedTrue(): void
     {
+        $this->AuthLink->expects($this->never())
+            ->method('isAuthorized');
         $link = $this->AuthLink->link('title', '/', ['allowed' => true, 'before' => 'before_', 'after' => '_after', 'class' => 'link-class']);
         $this->assertSame('before_<a href="/" class="link-class">title</a>_after', $link);
     }
@@ -124,6 +126,8 @@ class AuthLinkHelperTest extends TestCase
      */
     public function testLinkAuthorizedAllowedFalse(): void
     {
+        $this->AuthLink->expects($this->never())
+            ->method('isAuthorized');
         $link = $this->AuthLink->link('title', '/', ['allowed' => false, 'before' => 'before_', 'after' => '_after', 'class' => 'link-class']);
         $this->assertEmpty($link);
     }
@@ -135,6 +139,8 @@ class AuthLinkHelperTest extends TestCase
      */
     public function testGetRequest(): void
     {
+        $this->AuthLink->expects($this->never())
+            ->method('isAuthorized');
         $actual = $this->AuthLink->getRequest();
         $this->assertInstanceOf(ServerRequest::class, $actual);
     }
@@ -160,7 +166,7 @@ class AuthLinkHelperTest extends TestCase
             ->with(
                 $this->equalTo($url),
             )
-            ->will($this->returnValue(true));
+            ->willReturn(true);
         $link = $this->AuthLink->postLink('Post Link Title', $url, [
             'allowed' => true,
             'class' => 'link-class',
@@ -191,7 +197,7 @@ class AuthLinkHelperTest extends TestCase
             ->with(
                 $this->equalTo($url),
             )
-            ->will($this->returnValue(false));
+            ->willReturn(false);
 
         $link = $this->AuthLink->postLink('Post Link Title', $url, [
                 'allowed' => true,
@@ -222,7 +228,7 @@ class AuthLinkHelperTest extends TestCase
             ->with(
                 $this->equalTo($url),
             )
-            ->will($this->returnValue(false));
+            ->willReturn(false);
 
         $link = $this->AuthLink->postLink('Post Link Title', $url, [
             'allowed' => true,

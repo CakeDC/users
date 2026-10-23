@@ -15,11 +15,13 @@ namespace CakeDC\Users\Controller\Traits;
 
 use Cake\Core\Configure;
 use Cake\Http\Exception\BadRequestException;
+use Cake\Http\Response;
 use Cake\Log\Log;
 use Cake\Routing\Router;
 use CakeDC\Auth\Authenticator\TwoFactorAuthenticator;
 use CakeDC\Users\Webauthn\AuthenticateAdapter;
 use CakeDC\Users\Webauthn\RegisterAdapter;
+use Throwable;
 
 trait Webauthn2faTrait
 {
@@ -29,9 +31,9 @@ trait Webauthn2faTrait
      * @param \CakeDC\Users\Webauthn\RegisterAdapter|null $adapter
      * @return void
      */
-    public function webauthn2fa(?RegisterAdapter $adapter = null)
+    public function webauthn2fa(?RegisterAdapter $adapter = null): void
     {
-        $adapter = $adapter ?? $this->getWebauthn2faRegisterAdapter();
+        $adapter ??= $this->getWebauthn2faRegisterAdapter();
         $user = $adapter->getUser();
         $this->set('isRegister', !$adapter->hasCredential());
         $this->set('username', $user->webauthn_username ?? $user->username);
@@ -43,9 +45,9 @@ trait Webauthn2faTrait
      * @param \CakeDC\Users\Webauthn\RegisterAdapter|null $adapter
      * @return \Cake\Http\Response
      */
-    public function webauthn2faRegisterOptions(?RegisterAdapter $adapter = null)
+    public function webauthn2faRegisterOptions(?RegisterAdapter $adapter = null): Response
     {
-        $adapter = $adapter ?? $this->getWebauthn2faRegisterAdapter();
+        $adapter ??= $this->getWebauthn2faRegisterAdapter();
         if (!$adapter->hasCredential()) {
             return $this->getResponse()
                 ->withStringBody(json_encode($adapter->getOptions()));
@@ -63,10 +65,10 @@ trait Webauthn2faTrait
      * @return \Cake\Http\Response
      * @throws \Throwable
      */
-    public function webauthn2faRegister(?RegisterAdapter $adapter = null): \Cake\Http\Response
+    public function webauthn2faRegister(?RegisterAdapter $adapter = null): Response
     {
         try {
-            $adapter = $adapter ?? $this->getWebauthn2faRegisterAdapter();
+            $adapter ??= $this->getWebauthn2faRegisterAdapter();
             if (!$adapter->hasCredential()) {
                 $adapter->verifyResponse();
 
@@ -75,7 +77,7 @@ trait Webauthn2faTrait
             throw new BadRequestException(
                 __d('cake_d_c/users', 'User already has configured webauthn2fa'),
             );
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $user = $this->request->getSession()->read('Webauthn2fa.User');
             Log::debug(__d('cake_d_c/users', 'Register error with webauthn for user id: {0}', $user['id'] ?? 'empty'));
             throw $e;
@@ -88,9 +90,9 @@ trait Webauthn2faTrait
      * @param \CakeDC\Users\Webauthn\AuthenticateAdapter|null $adapter
      * @return \Cake\Http\Response
      */
-    public function webauthn2faAuthenticateOptions(?AuthenticateAdapter $adapter = null): \Cake\Http\Response
+    public function webauthn2faAuthenticateOptions(?AuthenticateAdapter $adapter = null): Response
     {
-        $adapter = $adapter ?? $this->getWebauthn2faAuthenticateAdapter();
+        $adapter ??= $this->getWebauthn2faAuthenticateAdapter();
 
         return $this->getResponse()->withStringBody(
             json_encode($adapter->getOptions()),
@@ -104,10 +106,10 @@ trait Webauthn2faTrait
      * @return \Cake\Http\Response
      * @throws \Throwable
      */
-    public function webauthn2faAuthenticate(?AuthenticateAdapter $adapter = null): \Cake\Http\Response
+    public function webauthn2faAuthenticate(?AuthenticateAdapter $adapter = null): Response
     {
         try {
-            $adapter = $adapter ?? $this->getWebauthn2faAuthenticateAdapter();
+            $adapter ??= $this->getWebauthn2faAuthenticateAdapter();
             $adapter->verifyResponse();
             $redirectUrl = Configure::read('Auth.AuthenticationComponent.loginAction') + [
                 '?' => $this->getRequest()->getQueryParams(),
@@ -122,7 +124,7 @@ trait Webauthn2faTrait
                 'success' => true,
                 'redirectUrl' => Router::url($redirectUrl),
             ]));
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $user = $this->request->getSession()->read('Webauthn2fa.User');
             Log::debug(__d('cake_d_c/users', 'Register error with webauthn for user id: {0}', $user['id'] ?? 'empty'));
             throw $e;

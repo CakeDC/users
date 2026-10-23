@@ -15,11 +15,11 @@ class UserCredentialSourceRepository implements PublicKeyCredentialSourceReposit
     /**
      * @var \Cake\Datasource\EntityInterface $user
      */
-    private $user;
+    private EntityInterface $user;
     /**
      * @var \Cake\ORM\Table|null
      */
-    private $usersTable;
+    private ?Table $usersTable = null;
 
     /**
      * @param \Cake\Datasource\EntityInterface $user The user.
@@ -70,8 +70,9 @@ class UserCredentialSourceRepository implements PublicKeyCredentialSourceReposit
         $credentials = $this->user['additional_data']['webauthn_credentials'] ?? [];
         $id = Base64Utility::basicEncode($publicKeyCredentialSource->getPublicKeyCredentialId());
         $credentials[$id] = json_decode(json_encode($publicKeyCredentialSource), true);
-        $this->user['additional_data'] = $this->user['additional_data'] ?? [];
-        $this->user['additional_data']['webauthn_credentials'] = $credentials;
+        $additionalData = $this->user->get('additional_data') ?? [];
+        $additionalData['webauthn_credentials'] = $credentials;
+        $this->user->set('additional_data', $additionalData);
         $this->usersTable->saveOrFail($this->user);
     }
 }

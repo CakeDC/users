@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace CakeDC\Users;
 
+use Cake\Container\ContainerInterface;
 use Cake\Core\BasePlugin;
-use Cake\Core\ContainerInterface;
 use Cake\Http\MiddlewareQueue;
 use Cake\Http\ServerRequest;
 use CakeDC\Users\Provider\AuthenticationServiceProvider;

@@ -73,7 +73,7 @@ class ProfileTraitIntegrationTest extends TestCase
             'password' => '98765432102',
             'password_confirm' => '98765432102',
         ]);
-        $this->assertRedirect('/profile');
+        $this->assertRedirect(BASE_TEST_PATH . '/profile');
         $this->assertFlashMessage('Password has been changed successfully');
     }
 }

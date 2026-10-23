@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\View\Helper;
 
+use Cake\Http\ServerRequest;
 use Cake\View\Helper\HtmlHelper;
 use CakeDC\Auth\Traits\IsAuthorizedTrait;
 
@@ -30,14 +31,14 @@ class AuthLinkHelper extends HtmlHelper
     /**
      * Generate a link if the target url is authorized for the logged in user
      *
-     * @param string $title link's title.
+     * @param array|string $title link's title.
      * @param array|string|null $url url that the user is making request.
      * @param array $options Array with option data. Extra options include
      * 'before' and 'after' to quickly inject some html code in the link, like icons etc
      * 'allowed' to manage if the link should be displayed, default is null to check isAuthorized
      * @return string
      */
-    public function link($title, $url = null, array $options = []): string
+    public function link(array|string $title, array|string|null $url = null, array $options = []): string
     {
         $linkOptions = $options;
         unset($linkOptions['before'], $linkOptions['after'], $linkOptions['allowed']);
@@ -64,7 +65,7 @@ class AuthLinkHelper extends HtmlHelper
      * @param array $options Link's options
      * @return string Link as a string.
      */
-    public function postLink($title, $url = null, array $options = []): string
+    public function postLink(string $title, array|string|null $url = null, array $options = []): string
     {
         return $this->isAuthorized($url)
                     ? $this->Form->postLink($title, $url, $options)
@@ -76,7 +77,7 @@ class AuthLinkHelper extends HtmlHelper
      *
      * @return \Cake\Http\ServerRequest
      */
-    public function getRequest()
+    public function getRequest(): ServerRequest
     {
         return $this->getView()->getRequest();
     }

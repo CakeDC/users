@@ -52,7 +52,7 @@ class AuthenticateAdapter extends BaseAdapter
      * @return \Webauthn\PublicKeyCredentialSource
      * @throws \Throwable
      */
-    public function verifyResponse(): \Webauthn\PublicKeyCredentialSource
+    public function verifyResponse(): PublicKeyCredentialSource
     {
         /** @var \Webauthn\PublicKeyCredentialRequestOptions $options */
         $options = PublicKeyCredentialRequestOptions::createFromString(

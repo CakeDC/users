@@ -15,7 +15,9 @@ namespace CakeDC\Users\Loader;
 
 use Cake\Core\Configure;
 use CakeDC\Auth\Authentication\AuthenticationService;
+use CakeDC\Auth\Authentication\TwoFactorProcessorCollection;
 use CakeDC\Auth\Authentication\TwoFactorProcessorLoader;
+use InvalidArgumentException;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
@@ -32,7 +34,7 @@ class AuthenticationServiceLoader
      * @param \Psr\Http\Message\ServerRequestInterface $request The request.
      * @return \CakeDC\Auth\Authentication\AuthenticationService
      */
-    public function __invoke(ServerRequestInterface $request)
+    public function __invoke(ServerRequestInterface $request): AuthenticationService
     {
         $processors = TwoFactorProcessorLoader::processors();
         $service = new AuthenticationService(['processors' => $processors]);
@@ -43,45 +45,17 @@ class AuthenticationServiceLoader
     }
 
     /**
-     * Load the indentifiers defined at config Auth.Identifiers
-     *
-     * @param \CakeDC\Auth\Authentication\AuthenticationService $service Authentication service to load identifiers
-     * @return void
-     */
-    protected function loadIdentifiers($service)
-    {
-        $identifiers = Configure::read('Auth.Identifiers');
-
-        if (empty($identifiers)) {
-            return;
-        }
-
-        deprecationWarning(
-            '15.2.0',
-            'Configuring identifiers globally via `Auth.Identifiers` is deprecated. ' .
-                'Please move each identifier\'s configuration into the `identifier` key within its specific authenticator under `Auth.Authenticators`. ' .
-                'For example, the `Auth.Identifiers.Password` configuration should now be placed inside `Auth.Authenticators.Form.identifier`.',
-        );
-
-        foreach ($identifiers as $key => $item) {
-            [$identifier, $options] = $this->_getItemLoadData($item, $key);
-
-            $service->identifiers()->load($identifier, $options);
-        }
-    }
-
-    /**
      * Load the authenticators defined at config Auth.Authenticators
      *
      * @param \CakeDC\Auth\Authentication\AuthenticationService $service Authentication service to load identifiers
      * @return void
      */
-    protected function loadAuthenticators($service)
+    protected function loadAuthenticators(AuthenticationService $service): void
     {
         $authenticators = Configure::read('Auth.Authenticators');
 
         foreach ($authenticators as $key => $item) {
-            [$authenticator, $options] = $this->_getItemLoadData($item, $key);
+            [$authenticator, $options] = $this->getItemLoadData($item, $key);
 
             $service->loadAuthenticator($authenticator, $options);
         }
@@ -94,7 +68,7 @@ class AuthenticationServiceLoader
      * @param \CakeDC\Auth\Authentication\TwoFactorProcessorCollection $processors TwoFactorProcessors collection
      * @return void
      */
-    protected function loadTwoFactorAuthenticator($service, $processors)
+    protected function loadTwoFactorAuthenticator(AuthenticationService $service, TwoFactorProcessorCollection $processors): void
     {
         if (collection($processors)->some(fn($processor) => $processor->enabled())) {
             $service->loadAuthenticator('CakeDC/Auth.TwoFactor', [
@@ -105,10 +79,10 @@ class AuthenticationServiceLoader
 
     /**
      * @param mixed $item Item configuration or className
-     * @param string $key Item array key.
+     * @param string|int $key Item array key.
      * @return array
      */
-    protected function _getItemLoadData($item, $key)
+    protected function getItemLoadData(mixed $item, string|int $key): array
     {
         $options = [];
         if (!is_array($item)) {
@@ -116,7 +90,7 @@ class AuthenticationServiceLoader
         }
         $options = $item;
         if (!isset($options['className'])) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 __d('cake_d_c/users', 'Property  {0}.className should be defined', $key),
             );
         }

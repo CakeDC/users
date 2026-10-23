@@ -44,15 +44,15 @@ class SocialPendingEmailAuthenticator extends AbstractAuthenticator
      * - `loginUrl` Login URL or an array of URLs.
      * - `urlChecker` Url checker config.
      *
-     * @var array
+     * @var array<string, mixed>
      */
-    protected array $_defaultConfig = [
+    protected array $defaultConfig = [
         'loginUrl' => [
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => 'socialEmail',
         ],
-        'urlChecker' => 'Authentication.CakeRouter',
+        'urlChecker' => 'Authentication.Default',
     ];
 
     /**
@@ -61,7 +61,7 @@ class SocialPendingEmailAuthenticator extends AbstractAuthenticator
      * @param \Psr\Http\Message\ServerRequestInterface $request The request that contains login information.
      * @return \Authentication\Authenticator\ResultInterface
      */
-    protected function _buildLoginUrlErrorResult($request)
+    protected function buildLoginUrlErrorResult(ServerRequestInterface $request): ResultInterface
     {
         $errors = [
             sprintf(
@@ -84,8 +84,8 @@ class SocialPendingEmailAuthenticator extends AbstractAuthenticator
      */
     public function authenticate(ServerRequestInterface $request): ResultInterface
     {
-        if (!$this->_checkUrl($request)) {
-            return $this->_buildLoginUrlErrorResult($request);
+        if (!$this->checkUrl($request)) {
+            return $this->buildLoginUrlErrorResult($request);
         }
         $rawData = $request->getAttribute('session')->read(Configure::read('Users.Key.Session.social'));
         $body = $request->getParsedBody();

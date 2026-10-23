@@ -6,6 +6,7 @@ namespace CakeDC\Users\Test\TestCase\Command;
 use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use UnexpectedValueException;
 
 /**
  * CakeDC\Users\Command\UsersResetAllPasswordsCommand Test Case
@@ -40,7 +41,7 @@ class UsersResetAllPasswordsCommandTest extends TestCase
         $UsersTable = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
         $users = $UsersTable->find()->all()->toArray();
         if (empty($users)) {
-            throw new \UnexpectedValueException(__('Test expect to have users'));
+            throw new UnexpectedValueException(__('Test expect to have users'));
         }
         foreach ($users as $user) {
             /**

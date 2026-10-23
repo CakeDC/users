@@ -50,7 +50,7 @@ class MiddlewareQueueLoader
         MiddlewareQueue $middlewareQueue,
         AuthenticationServiceProviderInterface $authenticationServiceProvider,
         AuthorizationServiceProviderInterface $authorizationServiceProvider,
-    ) {
+    ): MiddlewareQueue {
         $this->loadSocialMiddleware($middlewareQueue);
         $this->loadAuthenticationMiddleware($middlewareQueue, $authenticationServiceProvider);
         $this->load2faMiddleware($middlewareQueue);
@@ -64,7 +64,7 @@ class MiddlewareQueueLoader
      * @param \Cake\Http\MiddlewareQueue $middlewareQueue The middleware queue to update.
      * @return void
      */
-    protected function loadSocialMiddleware(MiddlewareQueue $middlewareQueue)
+    protected function loadSocialMiddleware(MiddlewareQueue $middlewareQueue): void
     {
         if (Configure::read('Users.Social.login')) {
             $middlewareQueue
@@ -83,7 +83,7 @@ class MiddlewareQueueLoader
     protected function loadAuthenticationMiddleware(
         MiddlewareQueue $middlewareQueue,
         AuthenticationServiceProviderInterface $authenticationServiceProvider,
-    ) {
+    ): void {
         $authentication = new AuthenticationMiddleware($authenticationServiceProvider);
         $middlewareQueue->add($authentication);
     }
@@ -94,7 +94,7 @@ class MiddlewareQueueLoader
      * @param \Cake\Http\MiddlewareQueue $middlewareQueue queue of middleware
      * @return void
      */
-    protected function load2faMiddleware(MiddlewareQueue $middlewareQueue)
+    protected function load2faMiddleware(MiddlewareQueue $middlewareQueue): void
     {
         $processors = TwoFactorProcessorLoader::processors();
         if (collection($processors)->some(fn($processor) => $processor->enabled())) {
@@ -112,7 +112,7 @@ class MiddlewareQueueLoader
     protected function loadAuthorizationMiddleware(
         MiddlewareQueue $middlewareQueue,
         AuthorizationServiceProviderInterface $authorizationServiceProvider,
-    ) {
+    ): MiddlewareQueue {
         if (Configure::read('Auth.Authorization.enable') === false) {
             return $middlewareQueue;
         }

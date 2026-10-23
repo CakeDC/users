@@ -30,10 +30,10 @@ trait ProfileTrait
      * @param mixed $id Profile id object.
      * @return mixed
      */
-    public function profile($id = null)
+    public function profile(mixed $id = null): mixed
     {
         $identity = $this->getRequest()->getAttribute('identity');
-        $identity = $identity ?? [];
+        $identity ??= [];
         $loggedUserId = $identity['id'] ?? null;
         $isCurrentUser = false;
         if (!Configure::read('Users.Profile.viewOthers') || empty($id)) {
@@ -58,5 +58,7 @@ trait ProfileTrait
         }
         $this->set(['user' => $user, 'isCurrentUser' => $isCurrentUser]);
         $this->viewBuilder()->setOption('serialize', ['user', 'isCurrentUser']);
+
+        return null;
     }
 }

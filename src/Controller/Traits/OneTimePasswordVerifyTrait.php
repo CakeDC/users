@@ -14,9 +14,12 @@ declare(strict_types=1);
 namespace CakeDC\Users\Controller\Traits;
 
 use Cake\Core\Configure;
+use Cake\Http\Response;
 use CakeDC\Auth\Authentication\AuthenticationService;
 use CakeDC\Auth\Authenticator\TwoFactorAuthenticator;
+use CakeDC\Users\Model\Entity\User;
 use CakeDC\Users\UsersPlugin;
+use Exception;
 
 trait OneTimePasswordVerifyTrait
 {
@@ -29,7 +32,7 @@ trait OneTimePasswordVerifyTrait
      *
      * @return mixed
      */
-    public function verify()
+    public function verify(): mixed
     {
         $loginAction = array_merge(
             Configure::read('Auth.AuthenticationComponent.loginAction'),
@@ -74,6 +77,8 @@ trait OneTimePasswordVerifyTrait
         if ($this->getRequest()->is('post')) {
             return $this->onPostVerifyCode($loginAction);
         }
+
+        return null;
     }
 
     /**
@@ -82,7 +87,7 @@ trait OneTimePasswordVerifyTrait
      *
      * @return bool
      */
-    protected function isVerifyAllowed()
+    protected function isVerifyAllowed(): bool
     {
         if (!Configure::read('OneTimePasswordAuthenticator.login')) {
             $message = __d('cake_d_c/users', 'Please enable Google Authenticator first.');
@@ -116,10 +121,10 @@ trait OneTimePasswordVerifyTrait
     /**
      * Get the Google Authenticator secret of user, if not exists try to create one and save
      *
-     * @param \CakeDC\Users\Model\Entity\User $user user data present on session
+     * @param \CakeDC\Users\Model\Entity\User|array $user user data present on session
      * @return string if empty the creation has failed
      */
-    protected function onVerifyGetSecret($user)
+    protected function onVerifyGetSecret(User|array $user): string
     {
         if (isset($user['secret']) && $user['secret']) {
             return $user['secret'];
@@ -136,7 +141,7 @@ trait OneTimePasswordVerifyTrait
             $query->execute();
             $user['secret'] = $secret;
             $this->getRequest()->getSession()->write(AuthenticationService::TWO_FACTOR_VERIFY_SESSION_KEY, $user);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->getRequest()->getSession()->destroy();
             $this->log($e);
             $message = __d('cake_d_c/users', 'Could not verify, please try again');
@@ -158,7 +163,7 @@ trait OneTimePasswordVerifyTrait
      * @param array $loginAction url to login page used in redirect
      * @return \Cake\Http\Response
      */
-    protected function onPostVerifyCode($loginAction)
+    protected function onPostVerifyCode(array $loginAction): Response
     {
         $codeVerified = false;
         $verificationCode = $this->getRequest()->getData('code');
@@ -191,7 +196,7 @@ trait OneTimePasswordVerifyTrait
      * @param \CakeDC\Users\Model\Entity\User $user user data present on session
      * @return \Cake\Http\Response
      */
-    protected function onPostVerifyCodeOkay($loginAction, $user)
+    protected function onPostVerifyCodeOkay(array $loginAction, User $user): Response
     {
         unset($user['secret']);
 

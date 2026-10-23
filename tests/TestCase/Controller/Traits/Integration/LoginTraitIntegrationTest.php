@@ -18,6 +18,7 @@ use Cake\Event\EventManager;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
+use CakeDC\Auth\Authentication\TwoFactorProcessor\Webauthn2faProcessor;
 
 class LoginTraitIntegrationTest extends TestCase
 {
@@ -58,7 +59,7 @@ class LoginTraitIntegrationTest extends TestCase
         $this->enableRetainFlashMessages();
         $this->get('/pages/home');
 
-        $this->assertRedirectContains('/login?redirect=%2Fpages%2Fhome');
+        $this->assertRedirect(BASE_TEST_PATH . '/login?redirect=%2Fpages%2Fhome');
         $this->assertFlashMessage('You are not authorized to access that location.');
     }
 
@@ -68,7 +69,7 @@ class LoginTraitIntegrationTest extends TestCase
         $this->enableRetainFlashMessages();
         $this->get('/pages/home');
 
-        $this->assertRedirectContains('/login?redirect=%2Fpages%2Fhome');
+        $this->assertRedirect(BASE_TEST_PATH . '/login?redirect=%2Fpages%2Fhome');
         $this->assertFlashMessage('You are not authorized to access that location.Location = http://localhost/pages/home');
     }
 
@@ -176,7 +177,7 @@ class LoginTraitIntegrationTest extends TestCase
             'username' => 'user-2',
             'password' => '12345',
         ]);
-        $this->assertRedirect('/pages/home');
+        $this->assertRedirect(BASE_TEST_PATH . '/pages/home');
     }
 
     /**
@@ -191,7 +192,7 @@ class LoginTraitIntegrationTest extends TestCase
             'username' => 'user-4',
             'password' => '12345',
         ]);
-        $this->assertRedirect('/pages/home');
+        $this->assertRedirect(BASE_TEST_PATH . '/pages/home');
     }
 
     /**
@@ -209,7 +210,7 @@ class LoginTraitIntegrationTest extends TestCase
             'username' => 'user-2',
             'password' => '12345',
         ]);
-        $this->assertRedirectContains('/verify');
+        $this->assertRedirect(BASE_TEST_PATH . '/verify');
     }
 
     /**
@@ -223,7 +224,7 @@ class LoginTraitIntegrationTest extends TestCase
             Configure::write(['Webauthn2fa.enabled' => true, 'Webauthn2fa.appName' => 'TestUsers']);
             Configure::write([
                 'TwoFactorProcessors' => [
-                    \CakeDC\Auth\Authentication\TwoFactorProcessor\Webauthn2faProcessor::class,
+                    Webauthn2faProcessor::class,
                 ],
             ]);
         });
@@ -232,7 +233,7 @@ class LoginTraitIntegrationTest extends TestCase
             'username' => 'user-2',
             'password' => '12345',
         ]);
-        $this->assertRedirectContains('/users/webauthn2fa');
+        $this->assertRedirect(BASE_TEST_PATH . '/users/webauthn2fa');
     }
 
     /**
@@ -244,7 +245,7 @@ class LoginTraitIntegrationTest extends TestCase
     {
         $this->loginAsUserId('00000000-0000-0000-0000-000000000002');
         $this->get('/logout');
-        $this->assertRedirect('/login');
+        $this->assertRedirect(BASE_TEST_PATH . '/login');
     }
 
     /**
@@ -255,7 +256,7 @@ class LoginTraitIntegrationTest extends TestCase
     public function testLogoutNoUser()
     {
         $this->get('/logout');
-        $this->assertRedirect('/login');
+        $this->assertRedirect(BASE_TEST_PATH . '/login');
     }
 
     /**
@@ -269,7 +270,7 @@ class LoginTraitIntegrationTest extends TestCase
             'username' => 'user-4',
             'password' => '12345',
         ]);
-        $this->assertRedirect('/pages/home');
+        $this->assertRedirect(BASE_TEST_PATH . '/pages/home');
     }
 
     /**
@@ -285,7 +286,7 @@ class LoginTraitIntegrationTest extends TestCase
             'password' => '12345',
         ]);
         // /login is authorized for this user, and example.com is in the allowed hosts
-        $this->assertRedirect('http://example.com/login');
+        $this->assertRedirect(BASE_TEST_PATH . '/login');
     }
 
     public function testRedirectAfterLoginToFullBase(): void
@@ -295,7 +296,7 @@ class LoginTraitIntegrationTest extends TestCase
             'password' => '12345',
         ]);
         // /login is authorized for this user, and example.com is in the allowed hosts
-        $this->assertRedirect('http://example.com/login');
+        $this->assertRedirect(BASE_TEST_PATH . '/login');
     }
 
     /**
@@ -309,6 +310,6 @@ class LoginTraitIntegrationTest extends TestCase
             'username' => 'user-4',
             'password' => '12345',
         ]);
-        $this->assertRedirect('/pages/home');
+        $this->assertRedirect(BASE_TEST_PATH . '/pages/home');
     }
 }

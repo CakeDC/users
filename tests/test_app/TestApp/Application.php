@@ -16,6 +16,9 @@ namespace TestApp;
 use Cake\Core\Configure;
 use Cake\Http\BaseApplication;
 use Cake\Http\MiddlewareQueue;
+use Cake\Mailer\Mailer;
+use Cake\Mailer\Transport\DebugTransport;
+use Cake\Mailer\TransportFactory;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
 use CakeDC\Users\UsersPlugin;
@@ -30,15 +33,15 @@ class Application extends BaseApplication
     public function bootstrap(): void
     {
         parent::bootstrap();
-        if (!\Cake\Mailer\TransportFactory::getConfig('default')) {
-            \Cake\Mailer\TransportFactory::setConfig([
+        if (!TransportFactory::getConfig('default')) {
+            TransportFactory::setConfig([
                 'default' => [
-                    'className' => \Cake\Mailer\Transport\DebugTransport::class,
+                    'className' => DebugTransport::class,
                 ],
             ]);
         }
-        if (!\Cake\Mailer\Mailer::getConfig('default')) {
-            \Cake\Mailer\Mailer::setConfig([
+        if (!Mailer::getConfig('default')) {
+            Mailer::setConfig([
                 'default' => [
                     'transport' => 'default',
                     'from' => 'you@localhost',

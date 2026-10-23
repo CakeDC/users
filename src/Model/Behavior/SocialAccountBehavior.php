@@ -21,6 +21,7 @@ use Cake\Event\EventInterface;
 use Cake\Mailer\MailerAwareTrait;
 use Cake\ORM\Behavior;
 use CakeDC\Users\Exception\AccountAlreadyActiveException;
+use CakeDC\Users\Model\Entity\SocialAccount;
 
 /**
  * Covers social account features
@@ -38,8 +39,8 @@ class SocialAccountBehavior extends Behavior
     public function initialize(array $config): void
     {
         parent::initialize($config);
-        if (!$this->_table->hasAssociation('Users')) {
-            $this->_table
+        if (!$this->table->hasAssociation('Users')) {
+            $this->table
                 ->belongsTo('Users')
                 ->setForeignKey('user_id')
                 ->setJoinType('INNER')
@@ -55,23 +56,25 @@ class SocialAccountBehavior extends Behavior
      * @param \ArrayObject $options options
      * @return mixed
      */
-    public function afterSave(EventInterface $event, EntityInterface $entity, ArrayObject $options)
+    public function afterSave(EventInterface $event, EntityInterface $entity, ArrayObject $options): mixed
     {
         if ($entity->get('active')) {
             $event->setResult(true);
 
-            return;
+            return null;
         }
-        $user = $this->_table->getAssociation('Users')->find()
+        $user = $this->table->getAssociation('Users')->find()
             ->where(['Users.id' => $entity->get('user_id'), 'Users.active' => true])
             ->first();
         if (empty($user)) {
             $event->setResult(true);
 
-            return;
+            return null;
         }
 
         $event->setResult($this->sendSocialValidationEmail($entity, $user));
+
+        return null;
     }
 
     /**
@@ -81,7 +84,7 @@ class SocialAccountBehavior extends Behavior
      * @param \Cake\Datasource\EntityInterface $user user
      * @return array
      */
-    protected function sendSocialValidationEmail(EntityInterface $socialAccount, EntityInterface $user)
+    protected function sendSocialValidationEmail(EntityInterface $socialAccount, EntityInterface $user): array
     {
         return $this
             ->getMailer(Configure::read('Users.Email.mailerClass') ?: 'CakeDC/Users.Users')
@@ -96,17 +99,17 @@ class SocialAccountBehavior extends Behavior
      * @param string $token token
      * @throws \Cake\Datasource\Exception\RecordNotFoundException
      * @throws \CakeDC\Users\Exception\AccountAlreadyActiveException
-     * @return \CakeDC\Users\Model\Entity\User
+     * @return \Cake\Datasource\EntityInterface
      */
-    public function validateAccount($provider, $reference, $token)
+    public function validateAccount(string $provider, string $reference, string $token): EntityInterface
     {
-        $socialAccount = $this->_table->find()
+        $socialAccount = $this->table->find()
             ->select(['id', 'provider', 'reference', 'active', 'token'])
             ->where(['provider' => $provider, 'reference' => $reference])
             ->first();
 
-        if (!empty($socialAccount) && $token !== '' && hash_equals((string)$socialAccount->token, (string)$token)) {
-            if ($socialAccount->active) {
+        if (!empty($socialAccount) && $token !== '' && hash_equals((string)$socialAccount->get('token'), (string)$token)) {
+            if ($socialAccount->get('active')) {
                 throw new AccountAlreadyActiveException(__d('cake_d_c/users', 'Account already validated'));
             }
         } else {
@@ -115,7 +118,13 @@ class SocialAccountBehavior extends Behavior
             );
         }
 
-        return $this->_activateAccount($socialAccount);
+        if (!$socialAccount instanceof SocialAccount) {
+            throw new RecordNotFoundException(
+                __d('cake_d_c/users', 'Account not found for the given token and email.'),
+            );
+        }
+
+        return $this->activateAccount($socialAccount);
     }
 
     /**
@@ -125,17 +134,17 @@ class SocialAccountBehavior extends Behavior
      * @param string $reference reference
      * @throws \Cake\Datasource\Exception\RecordNotFoundException
      * @throws \CakeDC\Users\Exception\AccountAlreadyActiveException
-     * @return \CakeDC\Users\Model\Entity\User
+     * @return array
      */
-    public function resendValidation($provider, $reference)
+    public function resendValidation(string $provider, string $reference): array
     {
-        $socialAccount = $this->_table->find()
+        $socialAccount = $this->table->find()
             ->where(['provider' => $provider, 'reference' => $reference])
             ->contain('Users')
             ->first();
 
         if (!empty($socialAccount)) {
-            if ($socialAccount->active) {
+            if ($socialAccount->get('active')) {
                 throw new AccountAlreadyActiveException(
                     __d('cake_d_c/users', 'Account already validated'),
                 );
@@ -146,7 +155,7 @@ class SocialAccountBehavior extends Behavior
             );
         }
 
-        return $this->sendSocialValidationEmail($socialAccount, $socialAccount->user);
+        return $this->sendSocialValidationEmail($socialAccount, $socialAccount->get('user'));
     }
 
     /**
@@ -155,10 +164,10 @@ class SocialAccountBehavior extends Behavior
      * @param \CakeDC\Users\Model\Entity\SocialAccount $socialAccount social account
      * @return \Cake\Datasource\EntityInterface
      */
-    protected function _activateAccount($socialAccount)
+    protected function activateAccount(SocialAccount $socialAccount): EntityInterface
     {
-        $socialAccount->active = true;
+        $socialAccount->set('active', true);
 
-        return $this->_table->save($socialAccount);
+        return $this->table->saveOrFail($socialAccount);
     }
 }

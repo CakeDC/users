@@ -4,8 +4,6 @@ declare(strict_types=1);
 namespace CakeDC\Users\Command;
 
 use Cake\Command\Command;
-use Cake\Console\Arguments;
-use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 use CakeDC\Users\Command\Logic\UpdateUserTrait;
 
@@ -34,26 +32,26 @@ class UsersResetPasswordCommand extends Command
     /**
      * Implement this method with your command's logic.
      *
-     * @param \Cake\Console\Arguments $args The command arguments.
-     * @param \Cake\Console\ConsoleIo $io The console io
-     * @return void The exit code or null for success
+     * @return int|null The exit code or null for success
      */
-    public function execute(Arguments $args, ConsoleIo $io)
+    public function execute(): ?int
     {
-        $username = $args->getArgumentAt(0);
-        $password = $args->getArgumentAt(1);
+        $username = $this->args->getArgumentAt(0);
+        $password = $this->args->getArgumentAt(1);
         if (empty($username)) {
-            $io->abort(__d('cake_d_c/users', 'Please enter a username.'));
+            $this->io->abort(__d('cake_d_c/users', 'Please enter a username.'));
         }
         if (empty($password)) {
-            $io->abort(__d('cake_d_c/users', 'Please enter a password.'));
+            $this->io->abort(__d('cake_d_c/users', 'Please enter a password.'));
         }
         $data = [
             'password' => $password,
         ];
-        $this->_updateUser($io, $username, $data);
-        $io->out(__d('cake_d_c/users', 'Password changed for user: {0}', $username));
-        $io->out(__d('cake_d_c/users', 'New password: {0}', $password));
+        $this->updateUser($username, $data);
+        $this->io->out(__d('cake_d_c/users', 'Password changed for user: {0}', $username));
+        $this->io->out(__d('cake_d_c/users', 'New password: {0}', $password));
+
+        return static::CODE_SUCCESS;
     }
 
     /**

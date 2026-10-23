@@ -23,7 +23,7 @@ class UsersUrl
      *
      * @return bool
      */
-    public static function isCustom()
+    public static function isCustom(): bool
     {
         $controller = Configure::read('Users.controller', 'CakeDC/Users.Users');
 
@@ -33,11 +33,11 @@ class UsersUrl
     /**
      * Get an user action url
      *
-     * @param string $action user action
+     * @param string|null $action user action
      * @param array $extra extra url attributes
      * @return array
      */
-    public static function actionUrl($action, $extra = [])
+    public static function actionUrl(?string $action = null, array $extra = []): array
     {
         $params = static::actionParams($action);
         $params['prefix'] = $params['prefix'] ?: false;
@@ -49,10 +49,10 @@ class UsersUrl
     /**
      * Get an user action route. This should not be used for links like HtmlHelper::link
      *
-     * @param string $action user action
+     * @param string|null $action user action
      * @return array
      */
-    public static function actionRouteParams($action)
+    public static function actionRouteParams(?string $action = null): array
     {
         return array_filter(static::actionParams($action));
     }
@@ -60,10 +60,10 @@ class UsersUrl
     /**
      * Get an user action route. This should not be used for links like HtmlHelper::link
      *
-     * @param string $action user action
+     * @param string|null $action user action
      * @return array
      */
-    public static function actionParams($action)
+    public static function actionParams(?string $action = null): array
     {
         $prefix = null;
         $controller = Configure::read('Users.controller', 'CakeDC/Users.Users');
@@ -84,7 +84,7 @@ class UsersUrl
      * @param \Cake\Http\ServerRequest $request the request
      * @return bool
      */
-    public static function checkActionOnRequest($action, ServerRequest $request)
+    public static function checkActionOnRequest(string $action, ServerRequest $request): bool
     {
         $route = static::actionParams($action);
         foreach ($route as $param => $value) {
@@ -101,7 +101,7 @@ class UsersUrl
      *
      * @return void
      */
-    public static function setupConfigUrls()
+    public static function setupConfigUrls(): void
     {
         $urls = self::getDefaultConfigUrls();
         foreach ($urls as $configKey => $url) {
@@ -116,7 +116,7 @@ class UsersUrl
      *
      * @return array
      */
-    private static function getDefaultConfigUrls()
+    private static function getDefaultConfigUrls(): array
     {
         $loginAction = static::actionUrl('login');
 

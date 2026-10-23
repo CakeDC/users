@@ -102,7 +102,7 @@ class DefaultRedirectHandler extends CakeRedirectHandler
      * @param array $options Defined options.
      * @return void
      */
-    protected function addFlashMessage(Session $session, $options): void
+    protected function addFlashMessage(Session $session, array $options): void
     {
         $messages = (array)$session->read('Flash.flash');
         $messages[] = $this->createFlashMessage($options);
@@ -115,7 +115,7 @@ class DefaultRedirectHandler extends CakeRedirectHandler
      * @param array $options Handler options
      * @return array
      */
-    protected function createFlashMessage($options): array
+    protected function createFlashMessage(array $options): array
     {
         $message = (array)($options['flash'] ?? []);
         $unauthorizedUrl = '';

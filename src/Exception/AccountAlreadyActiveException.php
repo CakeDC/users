@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Exception;
 
-class AccountAlreadyActiveException extends \Cake\Core\Exception\CakeException
+use Cake\Core\Exception\CakeException;
+
+class AccountAlreadyActiveException extends CakeException
 {
     /**
      * AccountAlreadyActiveException constructor.
@@ -22,7 +24,7 @@ class AccountAlreadyActiveException extends \Cake\Core\Exception\CakeException
      * @param int $code code
      * @param null $previous previous
      */
-    public function __construct($message, $code = 500, $previous = null)
+    public function __construct(array|string $message, int $code = 500, null $previous = null)
     {
         parent::__construct($message, $code, $previous);
     }

@@ -15,8 +15,9 @@ namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
 use Authentication\Authenticator\Result;
 use Authentication\Authenticator\SessionAuthenticator;
-use Authentication\Identifier\IdentifierCollection;
+use Authentication\Identifier\PasswordIdentifier;
 use Cake\Controller\ComponentRegistry;
+use Cake\Controller\Controller;
 use Cake\Event\Event;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
@@ -45,15 +46,11 @@ class SocialTraitTest extends BaseTrait
     public function setUp(): void
     {
         $this->traitClassName = 'CakeDC\Users\Controller\UsersController';
-        $this->traitMockMethods = ['dispatchEvent', 'redirect', 'getUsersTable', 'set'];
+        $this->traitMockMethods = ['dispatchEvent', 'redirect', 'getUsersTable', 'set', 'loadComponent'];
         $this->traitMockAddMethods = ['isStopped'];
 
         parent::setUp();
         $request = new ServerRequest();
-        $this->Trait = $this->getMockBuilder($this->traitClassName)
-            ->onlyMethods(['dispatchEvent', 'redirect', 'set', 'loadComponent'])
-            ->setConstructorArgs([new ServerRequest()])
-            ->getMock();
 
         $this->Trait->setRequest($request);
     }
@@ -73,13 +70,11 @@ class SocialTraitTest extends BaseTrait
      *
      * @return void
      */
-    public function testSocialEmailSuccess()
+    public function testSocialEmailSuccess(): void
     {
-        $identifiers = new IdentifierCollection([
-            'CakeDC/Users.Social',
-        ]);
-        $FormAuth = new FormAuthenticator($identifiers);
-        $SessionAuth = new SessionAuthenticator($identifiers);
+        $identifier = new PasswordIdentifier();
+        $FormAuth = new FormAuthenticator($identifier);
+        $SessionAuth = new SessionAuthenticator($identifier);
 
         $sessionFailure = new Failure(
             $SessionAuth,
@@ -93,25 +88,23 @@ class SocialTraitTest extends BaseTrait
         );
         $failures = [$sessionFailure, $formFailure];
 
-        $this->_mockDispatchEvent(new Event('event'));
+        $this->mockDispatchEvent(new Event('event'));
         $this->Trait->setRequest($this->getMockBuilder('Cake\Http\ServerRequest')
             ->onlyMethods(['is'])
             ->getMock());
-        $this->Trait->getRequest()->expects($this->any())
+        $this->Trait->getRequest()->expects($this->never())
             ->method('is')
-            ->with('post')
-            ->will($this->returnValue(true));
+            ->with('post');
 
-        $this->_mockFlash();
-        $this->_mockAuthentication(['id' => 1], $failures);
-        $this->Trait->Flash->expects($this->never())
-            ->method('error');
+        $flash = $this->mockFlash();
+        $this->mockAuthentication(['id' => 1], $failures);
+        $flash->expects('set')->never();
         $this->Trait->expects($this->once())
             ->method('redirect')
             ->with($this->successLoginRedirect)
-            ->will($this->returnValue(new Response()));
+            ->willReturn(new Response());
 
-        $registry = new ComponentRegistry(new \Cake\Controller\Controller(new \Cake\Http\ServerRequest()));
+        $registry = new ComponentRegistry(new Controller(new ServerRequest()));
         $config = [
             'component' => 'CakeDC/Users.Login',
             'defaultMessage' => __d('cake_d_c/users', 'Could not proceed with social account. Please try again'),
@@ -132,16 +125,16 @@ class SocialTraitTest extends BaseTrait
             ->setConstructorArgs([$registry, $config])
             ->getMock();
 
-        $Login->expects($this->any())
+        $Login->expects($this->atLeastOnce())
             ->method('getController')
-            ->will($this->returnValue($this->Trait));
-        $this->Trait->expects($this->any())
+            ->willReturn($this->Trait);
+        $this->Trait->expects($this->atLeastOnce())
             ->method('loadComponent')
             ->with(
                 $this->equalTo('CakeDC/Users.Login'),
                 $this->equalTo($config),
             )
-            ->will($this->returnValue($Login));
+            ->willReturn($Login);
 
         $result = $this->Trait->socialEmail();
         $this->assertInstanceOf(Response::class, $result);

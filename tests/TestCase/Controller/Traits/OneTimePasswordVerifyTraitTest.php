@@ -43,13 +43,8 @@ class OneTimePasswordVerifyTraitTest extends BaseTrait
         $this->traitMockAddMethods = ['isStopped'];
 
         parent::setUp();
-        $request = new ServerRequest();
-        $this->Trait = $this->getMockBuilder($this->traitClassName)
-            ->onlyMethods(['dispatchEvent', 'redirect', 'set', 'getUsersTable'])
-            ->setConstructorArgs([new ServerRequest()])
-            ->getMock();
 
-        $this->Trait->setRequest($request);
+        $this->Trait->setRequest(new ServerRequest());
         Configure::write('Auth.AuthenticationComponent.loginAction', $this->loginPage);
     }
 
@@ -71,17 +66,16 @@ class OneTimePasswordVerifyTraitTest extends BaseTrait
         Configure::write('OneTimePasswordAuthenticator.login', true);
         $request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->onlyMethods(['is', 'getData', 'getSession'])
-            ->addMethods(['allow'])
             ->getMock();
         $this->Trait->setRequest($request);
         $this->Trait->getRequest()->expects($this->once())
             ->method('is')
             ->with('post')
-            ->will($this->returnValue(false));
+            ->willReturn(false);
         $this->Trait->expects($this->never())
             ->method('redirect');
 
-        $this->_mockSession([
+        $this->mockSession([
             'temporarySession' => [
                 'id' => 1,
                 'secret_verified' => 1,
@@ -96,12 +90,11 @@ class OneTimePasswordVerifyTraitTest extends BaseTrait
      */
     public function testVerifyNotEnabled()
     {
-        $this->_mockFlash();
+        $flash = $this->mockFlash();
         Configure::write('OneTimePasswordAuthenticator.login', false);
         $this->Trait->setRequest($this->Trait->getRequest()->withQueryParams(['redirect' => 'dashboard/list']));
-        $this->Trait->Flash->expects($this->once())
-            ->method('error')
-            ->with('Please enable Google Authenticator first.');
+        $flash->expects('set')
+            ->with('Please enable Google Authenticator first.', ['element' => 'error', 'key' => 'auth', 'params' => []]);
         $this->Trait->expects($this->once())
             ->method('redirect')
             ->with($this->loginPage + ['?' => ['redirect' => 'dashboard/list']]);
@@ -123,32 +116,31 @@ class OneTimePasswordVerifyTraitTest extends BaseTrait
 
         $request = $this->getMockBuilder(ServerRequest::class)
             ->onlyMethods(['is', 'getData', 'getSession'])
-            ->addMethods(['allow'])
             ->getMock();
         $this->Trait->setRequest($request);
 
-        $this->_mockSession([
+        $this->mockSession([
             'temporarySession' => [
                 'id' => '00000000-0000-0000-0000-000000000001',
                 'email' => 'email@example.com',
                 'secret_verified' => 0,
             ],
         ]);
-        $this->Trait->expects($this->any())
+        $this->Trait->expects($this->atLeastOnce())
             ->method('getUsersTable')
-            ->will($this->returnValue(TableRegistry::getTableLocator()->get('CakeDC/Users.Users')));
+            ->willReturn(TableRegistry::getTableLocator()->get('CakeDC/Users.Users'));
 
         $this->Trait->getRequest()->expects($this->once())
             ->method('is')
             ->with('post')
-            ->will($this->returnValue(false));
+            ->willReturn(false);
         $this->Trait->OneTimePasswordAuthenticator->expects($this->once())
             ->method('createSecret')
-            ->will($this->returnValue('newSecret'));
+            ->willReturn('newSecret');
         $this->Trait->OneTimePasswordAuthenticator->expects($this->once())
             ->method('getQRCodeImageAsDataUri')
             ->with('email@example.com', 'newSecret')
-            ->will($this->returnValue('newDataUriGenerated'));
+            ->willReturn('newDataUriGenerated');
         $this->Trait->expects($this->once())
             ->method('set')
             ->with(['secretDataUri' => 'newDataUriGenerated', 'secret' => 'newSecret']);
@@ -175,7 +167,6 @@ class OneTimePasswordVerifyTraitTest extends BaseTrait
 
         $request = $this->getMockBuilder(ServerRequest::class)
             ->onlyMethods(['is', 'getData', 'getSession'])
-            ->addMethods(['allow'])
             ->getMock();
         $this->Trait->setRequest($request);
         $this->Trait
@@ -183,28 +174,28 @@ class OneTimePasswordVerifyTraitTest extends BaseTrait
             ->expects($this->once())
             ->method('is')
             ->with('post')
-            ->will($this->returnValue(false));
+            ->willReturn(false);
 
         $this->Trait->OneTimePasswordAuthenticator
             ->expects($this->once())
             ->method('createSecret')
-            ->will($this->returnValue('newSecret'));
+            ->willReturn('newSecret');
         $this->Trait->OneTimePasswordAuthenticator
             ->expects($this->once())
             ->method('getQRCodeImageAsDataUri')
             ->with('email@example.com', 'newSecret')
-            ->will($this->returnValue('newDataUriGenerated'));
+            ->willReturn('newDataUriGenerated');
 
-        $session = $this->_mockSession([
+        $session = $this->mockSession([
             'temporarySession' => [
                 'id' => '00000000-0000-0000-0000-000000000001',
                 'email' => 'email@example.com',
                 'secret_verified' => false,
             ],
         ]);
-        $this->Trait->expects($this->any())
+        $this->Trait->expects($this->atLeastOnce())
             ->method('getUsersTable')
-            ->will($this->returnValue(TableRegistry::getTableLocator()->get('CakeDC/Users.Users')));
+            ->willReturn(TableRegistry::getTableLocator()->get('CakeDC/Users.Users'));
         $this->Trait->verify();
 
         $this->assertEquals(
@@ -237,7 +228,6 @@ class OneTimePasswordVerifyTraitTest extends BaseTrait
 
         $request = $this->getMockBuilder(ServerRequest::class)
             ->onlyMethods(['is', 'getData', 'getSession'])
-            ->addMethods(['allow'])
             ->getMock();
         $this->Trait->setRequest($request);
         $this->Trait
@@ -245,7 +235,7 @@ class OneTimePasswordVerifyTraitTest extends BaseTrait
             ->expects($this->once())
             ->method('is')
             ->with('post')
-            ->will($this->returnValue(false));
+            ->willReturn(false);
 
         $this->Trait->OneTimePasswordAuthenticator
             ->expects($this->never())
@@ -254,9 +244,9 @@ class OneTimePasswordVerifyTraitTest extends BaseTrait
             ->expects($this->once())
             ->method('getQRCodeImageAsDataUri')
             ->with('email@example.com', 'alreadyPresentSecret')
-            ->will($this->returnValue('newDataUriGenerated'));
+            ->willReturn('newDataUriGenerated');
 
-        $session = $this->_mockSession([
+        $session = $this->mockSession([
             'temporarySession' => [
                 'id' => '00000000-0000-0000-0000-000000000001',
                 'email' => 'email@example.com',
@@ -264,9 +254,8 @@ class OneTimePasswordVerifyTraitTest extends BaseTrait
                 'secret' => 'alreadyPresentSecret',
             ],
         ]);
-        $this->Trait->expects($this->any())
-            ->method('getUsersTable')
-            ->will($this->returnValue(TableRegistry::getTableLocator()->get('CakeDC/Users.Users')));
+        $this->Trait->expects($this->never())
+            ->method('getUsersTable');
         $this->Trait->verify();
 
         $this->assertEquals(
@@ -290,7 +279,6 @@ class OneTimePasswordVerifyTraitTest extends BaseTrait
         Configure::write('OneTimePasswordAuthenticator.login', true);
         $request = $this->getMockBuilder('Cake\Http\ServerRequest')
             ->onlyMethods(['is', 'getData', 'getSession'])
-            ->addMethods(['allow'])
             ->getMock();
         $this->Trait->setRequest($request);
 
@@ -299,14 +287,14 @@ class OneTimePasswordVerifyTraitTest extends BaseTrait
             'secret_verified' => 1,
             'email' => 'test@example.com',
         ];
-        $session = $this->_mockSession([
+        $session = $this->mockSession([
             'temporarySession' => $userData,
         ]);
 
         $eventMock = $this->getMockBuilder(Event::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $eventMock->method('getResult')->willReturn(true);
+        $eventMock->expects($this->once())->method('getResult')->willReturn(true);
 
         $this->Trait->expects($this->once())
             ->method('dispatchEvent')

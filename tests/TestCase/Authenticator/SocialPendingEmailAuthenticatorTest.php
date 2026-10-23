@@ -13,15 +13,15 @@ declare(strict_types=1);
 namespace CakeDC\Users\Test\TestCase\Authenticator;
 
 use Authentication\Authenticator\Result;
-use Authentication\Identifier\IdentifierCollection;
+use Authentication\Identifier\IdentifierFactory;
 use Cake\Core\Configure;
-use Cake\Http\Client\Response;
 use Cake\Http\ServerRequestFactory;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use CakeDC\Auth\Social\Mapper\Facebook;
 use CakeDC\Users\Authenticator\SocialPendingEmailAuthenticator;
 use CakeDC\Users\Model\Entity\User;
+use League\OAuth2\Client\Token\AccessToken;
 
 class SocialPendingEmailAuthenticatorTest extends TestCase
 {
@@ -75,12 +75,9 @@ class SocialPendingEmailAuthenticatorTest extends TestCase
             [],
         );
         $requestNoEmail->getSession()->write(Configure::read('Users.Key.Session.social'), $user);
-        $Response = new Response();
-        $identifiers = new IdentifierCollection([
-            'CakeDC/Users.Social',
-        ]);
+        $identifiers = IdentifierFactory::create('CakeDC/Users.Social');
         $Authenticator = new SocialPendingEmailAuthenticator($identifiers);
-        $result = $Authenticator->authenticate($requestNoEmail, $Response);
+        $result = $Authenticator->authenticate($requestNoEmail);
         $this->assertInstanceOf(Result::class, $result);
         $this->assertEquals(Result::FAILURE_OTHER, $result->getStatus());
     }
@@ -113,17 +110,14 @@ class SocialPendingEmailAuthenticatorTest extends TestCase
         Configure::write('Users.Email.validate', false);
         $request->getSession()->write(Configure::read('Users.Key.Session.social'), $user);
         $requestNoEmail->getSession()->write(Configure::read('Users.Key.Session.social'), $user);
-        $Response = new Response();
-        $identifiers = new IdentifierCollection([
-            'CakeDC/Users.Social',
-        ]);
+        $identifiers = IdentifierFactory::create('CakeDC/Users.Social');
         $Authenticator = new SocialPendingEmailAuthenticator($identifiers);
-        $result = $Authenticator->authenticate($requestNoEmail, $Response);
+        $result = $Authenticator->authenticate($requestNoEmail);
         $this->assertInstanceOf(Result::class, $result);
         $this->assertEquals(Result::FAILURE_CREDENTIALS_MISSING, $result->getStatus());
 
         $Authenticator = new SocialPendingEmailAuthenticator($identifiers);
-        $result = $Authenticator->authenticate($request, $Response);
+        $result = $Authenticator->authenticate($request);
 
         $this->assertInstanceOf(Result::class, $result);
         $this->assertEquals(Result::SUCCESS, $result->getStatus());
@@ -137,9 +131,9 @@ class SocialPendingEmailAuthenticatorTest extends TestCase
      *
      * @return mixed
      */
-    protected function getUserData()
+    protected function getUserData(): array
     {
-        $Token = new \League\OAuth2\Client\Token\AccessToken([
+        $Token = new AccessToken([
             'access_token' => 'test-token',
             'expires' => 1490988496,
         ]);

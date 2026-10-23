@@ -130,7 +130,7 @@ class SocialAccountsTable extends Table
      * @param \Cake\ORM\Query\SelectQuery $query query
      * @return \Cake\ORM\Query\SelectQuery
      */
-    public function findActive(SelectQuery $query)
+    public function findActive(SelectQuery $query): SelectQuery
     {
         return $query->where([
             $this->aliasField('active') => true,
