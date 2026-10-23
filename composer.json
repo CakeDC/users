@@ -49,7 +49,7 @@
         "phpunit/phpunit": "^12.0 | ^13.0",
         "robthree/twofactorauth": "^3.0 || ^2.0",
         "thenetworg/oauth2-azure": "^2.1",
-        "web-auth/webauthn-lib": "^4.4"
+        "web-auth/webauthn-lib": "^5.3"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

@@ -6,11 +6,14 @@ namespace CakeDC\Users\Webauthn\Repository;
 use Cake\Datasource\EntityInterface;
 use Cake\ORM\Table;
 use CakeDC\Users\Webauthn\Base64Utility;
-use Webauthn\PublicKeyCredentialSource;
-use Webauthn\PublicKeyCredentialSourceRepository;
+use Symfony\Component\Serializer\SerializerInterface;
+use Webauthn\AttestationStatement\AttestationStatementSupportManager;
+use Webauthn\AttestationStatement\NoneAttestationStatementSupport;
+use Webauthn\CredentialRecord;
+use Webauthn\Denormalizer\WebauthnSerializerFactory;
 use Webauthn\PublicKeyCredentialUserEntity;
 
-class UserCredentialSourceRepository implements PublicKeyCredentialSourceRepository
+class UserCredentialSourceRepository
 {
     /**
      * @var \Cake\Datasource\EntityInterface $user
@@ -20,6 +23,8 @@ class UserCredentialSourceRepository implements PublicKeyCredentialSourceReposit
      * @var \Cake\ORM\Table|null
      */
     private ?Table $usersTable = null;
+
+    private ?SerializerInterface $serializer = null;
 
     /**
      * @param \Cake\Datasource\EntityInterface $user The user.
@@ -32,47 +37,82 @@ class UserCredentialSourceRepository implements PublicKeyCredentialSourceReposit
     }
 
     /**
-     * @param string $publicKeyCredentialId  Public key credential id
-     * @return \Webauthn\PublicKeyCredentialSource|null
+     * @param string $publicKeyCredentialId Public key credential id
+     * @return \Webauthn\CredentialRecord|null
      */
-    public function findOneByCredentialId(string $publicKeyCredentialId): ?PublicKeyCredentialSource
+    public function findOneByCredentialId(string $publicKeyCredentialId): ?CredentialRecord
     {
         $encodedId = Base64Utility::basicEncode($publicKeyCredentialId);
         $credential = $this->user['additional_data']['webauthn_credentials'][$encodedId] ?? null;
 
         return $credential
-            ? PublicKeyCredentialSource::createFromArray($credential)
+            ? $this->createRecord($credential)
             : null;
     }
 
     /**
-     * @inheritDoc
+     * @param \Webauthn\PublicKeyCredentialUserEntity $publicKeyCredentialUserEntity User entity.
+     * @return array<\Webauthn\CredentialRecord>
      */
     public function findAllForUserEntity(PublicKeyCredentialUserEntity $publicKeyCredentialUserEntity): array
     {
-        if ($publicKeyCredentialUserEntity->getId() != $this->user->get('id')) {
+        if ($publicKeyCredentialUserEntity->id != $this->user->get('id')) {
             return [];
         }
         $credentials = $this->user['additional_data']['webauthn_credentials'] ?? [];
         $list = [];
         foreach ($credentials as $credential) {
-            $list[] = PublicKeyCredentialSource::createFromArray($credential);
+            $list[] = $this->createRecord($credential);
         }
 
         return $list;
     }
 
     /**
-     * @param \Webauthn\PublicKeyCredentialSource $publicKeyCredentialSource Public key credential source
+     * @param \Webauthn\CredentialRecord $credentialRecord Credential record
+     * @return void
      */
-    public function saveCredentialSource(PublicKeyCredentialSource $publicKeyCredentialSource): void
+    public function saveCredentialSource(CredentialRecord $credentialRecord): void
     {
         $credentials = $this->user['additional_data']['webauthn_credentials'] ?? [];
-        $id = Base64Utility::basicEncode($publicKeyCredentialSource->getPublicKeyCredentialId());
-        $credentials[$id] = json_decode(json_encode($publicKeyCredentialSource), true);
+        $id = Base64Utility::basicEncode($credentialRecord->publicKeyCredentialId);
+        $credentials[$id] = json_decode(
+            $this->getSerializer()->serialize($credentialRecord, 'json'),
+            true,
+        );
         $additionalData = $this->user->get('additional_data') ?? [];
         $additionalData['webauthn_credentials'] = $credentials;
         $this->user->set('additional_data', $additionalData);
         $this->usersTable->saveOrFail($this->user);
+    }
+
+    /**
+     * @param array $data Stored credential data.
+     * @return \Webauthn\CredentialRecord
+     */
+    protected function createRecord(array $data): CredentialRecord
+    {
+        return $this->getSerializer()->deserialize(
+            (string)json_encode($data),
+            CredentialRecord::class,
+            'json',
+        );
+    }
+
+    /**
+     * @return \Symfony\Component\Serializer\SerializerInterface
+     */
+    protected function getSerializer(): SerializerInterface
+    {
+        if ($this->serializer === null) {
+            $factory = new WebauthnSerializerFactory(
+                new AttestationStatementSupportManager([
+                    new NoneAttestationStatementSupport(),
+                ]),
+            );
+            $this->serializer = $factory->create();
+        }
+
+        return $this->serializer;
     }
 }

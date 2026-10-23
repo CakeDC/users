@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace CakeDC\Users\Webauthn;
 
 use Cake\Http\Exception\BadRequestException;
-use Webauthn\AuthenticationExtensions\AuthenticationExtensionsClientInputs;
+use Webauthn\AuthenticationExtensions\AuthenticationExtensions;
 use Webauthn\AuthenticatorAssertionResponse;
 use Webauthn\AuthenticatorAssertionResponseValidator;
+use Webauthn\CredentialRecord;
 use Webauthn\PublicKeyCredentialRequestOptions;
-use Webauthn\PublicKeyCredentialSource;
 
 class AuthenticateAdapter extends BaseAdapter
 {
@@ -28,15 +28,17 @@ class AuthenticateAdapter extends BaseAdapter
     public function getOptions(): PublicKeyCredentialRequestOptions
     {
         $userEntity = $this->getUserEntity();
-        $allowedCredentials = array_map(function (PublicKeyCredentialSource $credential) {
+        $allowedCredentials = array_map(function (CredentialRecord $credential) {
             return $credential->getPublicKeyCredentialDescriptor();
         }, $this->repository->findAllForUserEntity($userEntity));
 
-        $options = (new PublicKeyCredentialRequestOptions(random_bytes(32)))
-            ->setRpId($this->rpEntity->getId())
-            ->setUserVerification(PublicKeyCredentialRequestOptions::USER_VERIFICATION_REQUIREMENT_PREFERRED)
-            ->allowCredentials(...$allowedCredentials)
-            ->setExtensions(new AuthenticationExtensionsClientInputs());
+        $options = PublicKeyCredentialRequestOptions::create(
+            random_bytes(32),
+            rpId: $this->rpEntity->id,
+            allowCredentials: $allowedCredentials,
+            userVerification: PublicKeyCredentialRequestOptions::USER_VERIFICATION_REQUIREMENT_PREFERRED,
+            extensions: AuthenticationExtensions::create(),
+        );
 
         $this->request->getSession()->write(
             'Webauthn2fa.authenticateOptions',
@@ -49,30 +51,47 @@ class AuthenticateAdapter extends BaseAdapter
     /**
      * Verify the registration response
      *
-     * @return \Webauthn\PublicKeyCredentialSource
+     * @return \Webauthn\CredentialRecord
      * @throws \Throwable
      */
-    public function verifyResponse(): PublicKeyCredentialSource
+    public function verifyResponse(): CredentialRecord
     {
         /** @var \Webauthn\PublicKeyCredentialRequestOptions $options */
-        $options = PublicKeyCredentialRequestOptions::createFromString(
+        $options = $this->createSerializer()->deserialize(
             (string)$this->request->getSession()->read('Webauthn2fa.authenticateOptions'),
+            PublicKeyCredentialRequestOptions::class,
+            'json',
         );
 
         $publicKeyCredentialLoader = $this->createPublicKeyCredentialLoader();
 
         $publicKeyCredential = $publicKeyCredentialLoader->loadArray($this->request->getData());
-        $authenticatorAssertionResponse = $publicKeyCredential->getResponse();
+        $authenticatorAssertionResponse = $publicKeyCredential->response;
         if ($authenticatorAssertionResponse instanceof AuthenticatorAssertionResponse) {
-            $authenticatorAssertionResponseValidator = $this->createAssertionResponseValidator();
+            $storedCredential = $this->repository->findOneByCredentialId($publicKeyCredential->rawId);
+            if (!$storedCredential) {
+                throw new BadRequestException(
+                    __d(
+                        'cake_d_c/users',
+                        'Could not validate credential response for authentication',
+                    ),
+                );
+            }
+            $authenticatorAssertionResponseValidator = AuthenticatorAssertionResponseValidator::create(
+                $this->createCeremonyStepManagerFactory()->requestCeremony(),
+            );
 
-            return $authenticatorAssertionResponseValidator->check(
-                $publicKeyCredential->getRawId(),
+            $credential = $authenticatorAssertionResponseValidator->check(
+                $storedCredential,
                 $authenticatorAssertionResponse,
                 $options,
-                $this->request,
-                $this->getUserEntity()->getId(),
+                (string)$this->request->host(),
+                $this->getUserEntity()->id,
             );
+
+            $this->repository->saveCredentialSource($credential);
+
+            return $credential;
         }
 
         throw new BadRequestException(
@@ -80,19 +99,6 @@ class AuthenticateAdapter extends BaseAdapter
                 'cake_d_c/users',
                 'Could not validate credential response for authentication',
             ),
-        );
-    }
-
-    /**
-     * @return \Webauthn\AuthenticatorAssertionResponseValidator
-     */
-    protected function createAssertionResponseValidator(): AuthenticatorAssertionResponseValidator
-    {
-        return new AuthenticatorAssertionResponseValidator(
-            $this->repository,
-            null,
-            $this->createExtensionOutputCheckerHandler(),
-            $this->getAlgorithmManager(),
         );
     }
 }

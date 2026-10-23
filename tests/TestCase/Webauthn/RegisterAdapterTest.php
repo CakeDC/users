@@ -19,11 +19,11 @@ use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use CakeDC\Users\Webauthn\RegisterAdapter;
 use Cose\Algorithms;
+use Webauthn\CredentialRecord;
 use Webauthn\Exception\AuthenticatorResponseVerificationException;
 use Webauthn\PublicKeyCredentialCreationOptions;
 use Webauthn\PublicKeyCredentialParameters;
 use Webauthn\PublicKeyCredentialRpEntity;
-use Webauthn\PublicKeyCredentialSource;
 use Webauthn\PublicKeyCredentialUserEntity;
 
 class RegisterAdapterTest extends TestCase
@@ -97,7 +97,7 @@ class RegisterAdapterTest extends TestCase
         $credentialsList = $adapter->getUser()->additional_data['webauthn_credentials'] ?? [];
         $this->assertCount(0, $credentialsList);
         $actual = $adapter->verifyResponse();
-        $this->assertInstanceOf(PublicKeyCredentialSource::class, $actual);
+        $this->assertInstanceOf(CredentialRecord::class, $actual);
         $credentialsList = $adapter->getUser()->additional_data['webauthn_credentials'];
         $this->assertCount(1, $credentialsList);
         $key = key($credentialsList);

@@ -24,7 +24,10 @@ use CakeDC\Users\Webauthn\AuthenticateAdapter;
 use CakeDC\Users\Webauthn\Base64Utility;
 use CakeDC\Users\Webauthn\RegisterAdapter;
 use Exception;
-use Webauthn\PublicKeyCredentialSource;
+use Webauthn\AttestationStatement\AttestationStatementSupportManager;
+use Webauthn\AttestationStatement\NoneAttestationStatementSupport;
+use Webauthn\CredentialRecord;
+use Webauthn\Denormalizer\WebauthnSerializerFactory;
 
 /**
  * Class Webauthn2faTraitTest
@@ -305,7 +308,7 @@ class Webauthn2FaTraitTest extends BaseTrait
             'counter' => 191,
             'otherUI' => null,
         ];
-        $credential = PublicKeyCredentialSource::createFromArray($credentialData);
+        $credential = self::createCredentialRecord($credentialData);
         $adapter->expects($this->once())
             ->method('verifyResponse')
             ->willReturn($credential);
@@ -437,7 +440,7 @@ class Webauthn2FaTraitTest extends BaseTrait
             'counter' => 191,
             'otherUI' => null,
         ];
-        $credential = PublicKeyCredentialSource::createFromArray($credentialData);
+        $credential = self::createCredentialRecord($credentialData);
         $adapter->expects($this->once())
             ->method('verifyResponse')
             ->willReturn($credential);
@@ -495,5 +498,24 @@ class Webauthn2FaTraitTest extends BaseTrait
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('Test exception error for webauthn2faAuthenticate');
         $this->Trait->webauthn2faAuthenticate();
+    }
+
+    /**
+     * @param array $data Credential data.
+     * @return \Webauthn\CredentialRecord
+     */
+    protected static function createCredentialRecord(array $data): CredentialRecord
+    {
+        $factory = new WebauthnSerializerFactory(
+            new AttestationStatementSupportManager([
+                new NoneAttestationStatementSupport(),
+            ]),
+        );
+
+        return $factory->create()->deserialize(
+            (string)json_encode($data),
+            CredentialRecord::class,
+            'json',
+        );
     }
 }

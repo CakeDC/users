@@ -9,7 +9,10 @@ use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use CakeDC\Users\Webauthn\Base64Utility;
 use CakeDC\Users\Webauthn\Repository\UserCredentialSourceRepository;
-use Webauthn\PublicKeyCredentialSource;
+use Webauthn\AttestationStatement\AttestationStatementSupportManager;
+use Webauthn\AttestationStatement\NoneAttestationStatementSupport;
+use Webauthn\CredentialRecord;
+use Webauthn\Denormalizer\WebauthnSerializerFactory;
 use Webauthn\PublicKeyCredentialUserEntity;
 
 class UserCredentialSourceRepositoryTest extends TestCase
@@ -30,7 +33,7 @@ class UserCredentialSourceRepositoryTest extends TestCase
         $user = $UsersTable->get('00000000-0000-0000-0000-000000000001');
         $repository = new UserCredentialSourceRepository($user, $UsersTable);
         $credential = $repository->findOneByCredentialId('12b37486-9299-4331-ac33-85b2d985b6fe');
-        $this->assertInstanceOf(PublicKeyCredentialSource::class, $credential);
+        $this->assertInstanceOf(CredentialRecord::class, $credential);
 
         //Not found id
         $repository = new UserCredentialSourceRepository($user, $UsersTable);
@@ -56,7 +59,7 @@ class UserCredentialSourceRepositoryTest extends TestCase
         $repository = new UserCredentialSourceRepository($user, $UsersTable);
         $credentials = $repository->findAllForUserEntity($userEntity);
         $this->assertCount(1, $credentials);
-        $this->assertInstanceOf(PublicKeyCredentialSource::class, $credentials[0]);
+        $this->assertInstanceOf(CredentialRecord::class, $credentials[0]);
 
         //Not found id
         $userEntityInvalid = new PublicKeyCredentialUserEntity(
@@ -102,13 +105,13 @@ class UserCredentialSourceRepositoryTest extends TestCase
             $userId,
             'John Doe',
         );
-        $publicKey = PublicKeyCredentialSource::createFromArray($credentialData);
+        $publicKey = self::createCredentialRecord($credentialData);
         $repository = new UserCredentialSourceRepository($user, $UsersTable);
         $repository->saveCredentialSource($publicKey);
         $credentials = $repository->findAllForUserEntity($userEntity);
         $this->assertCount(2, $credentials);
         $userAfter = $UsersTable->get($user->id);
-        $expectedKey = Base64Utility::basicEncode($publicKey->getPublicKeyCredentialId());
+        $expectedKey = Base64Utility::basicEncode($publicKey->publicKeyCredentialId);
         $this->assertArrayHasKey(
             $expectedKey,
             $userAfter->additional_data['webauthn_credentials'],
@@ -120,6 +123,25 @@ class UserCredentialSourceRepositoryTest extends TestCase
         $this->assertCount(
             2,
             $userAfter->additional_data['webauthn_credentials'],
+        );
+    }
+
+    /**
+     * @param array $data Credential data.
+     * @return \Webauthn\CredentialRecord
+     */
+    protected static function createCredentialRecord(array $data): CredentialRecord
+    {
+        $factory = new WebauthnSerializerFactory(
+            new AttestationStatementSupportManager([
+                new NoneAttestationStatementSupport(),
+            ]),
+        );
+
+        return $factory->create()->deserialize(
+            (string)json_encode($data),
+            CredentialRecord::class,
+            'json',
         );
     }
 }
