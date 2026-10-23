@@ -29,8 +29,8 @@
     "prefer-stable": true,
     "require": {
         "php": ">=8.5",
-        "cakephp/cakephp": "6.x-dev",
         "cakedc/auth": "dev-12.next-cake6",
+        "cakephp/cakephp": "6.x-dev",
         "cakephp/authentication": "5.x-dev",
         "cakephp/authorization": "4.x-dev"
     },
