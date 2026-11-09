@@ -26,7 +26,7 @@ jobs:
       if: matrix.db-type == 'pgsql'
       run: docker run --rm --name=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=cakephp -p 5432:5432 -d postgres
 
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v7
 
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
@@ -45,7 +45,7 @@ jobs:
       run: echo "::set-output name=date::$(date +'%Y-%m')"
 
     - name: Cache composer dependencies
-      uses: actions/cache@v4
+      uses: actions/cache@v6
       with:
         path: ${{ steps.composer-cache.outputs.dir }}
         key: ${{ runner.os }}-composer-${{ steps.key-date.outputs.date }}-${{ hashFiles('composer.json') }}-${{ matrix.prefer-lowest }}
@@ -75,14 +75,14 @@ jobs:
 
     - name: Submit code coverage
       if: matrix.php-version == '8.2'
-      uses: codecov/codecov-action@v1
+      uses: codecov/codecov-action@v7
 
   cs-stan:
     name: Coding Standard & Static Analysis
     runs-on: ubuntu-22.04
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v7
 
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
@@ -100,7 +100,7 @@ jobs:
       run: echo "::set-output name=date::$(date +'%Y-%m')"
 
     - name: Cache composer dependencies
-      uses: actions/cache@v4
+      uses: actions/cache@v6
       with:
         path: ${{ steps.composer-cache.outputs.dir }}
         key: ${{ runner.os }}-composer-${{ steps.key-date.outputs.date }}-${{ hashFiles('composer.json') }}-${{ matrix.prefer-lowest }}
