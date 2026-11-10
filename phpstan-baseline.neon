@@ -141,11 +141,6 @@ parameters:
 			path: src/Model/Behavior/RegisterBehavior.php
 
 		-
-			message: "#^Access to an undefined property CakeDC\\\\Users\\\\Model\\\\Entity\\\\SocialAccount\\:\\:\\$active\\.$#"
-			count: 1
-			path: src/Model/Behavior/SocialAccountBehavior.php
-
-		-
 			message: "#^Method CakeDC\\\\Users\\\\Model\\\\Behavior\\\\SocialAccountBehavior\\:\\:resendValidation\\(\\) should return CakeDC\\\\Users\\\\Model\\\\Entity\\\\User but returns array\\.$#"
 			count: 1
 			path: src/Model/Behavior/SocialAccountBehavior.php
