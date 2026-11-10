@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 /**
  * Copyright 2010 - 2019, Cake Development Corporation (https://www.cakedc.com)
  *
@@ -21,6 +22,8 @@ use CakeDC\Users\Webauthn\Base64Utility;
  */
 class UsersFixture extends TestFixture
 {
+    public string $tableAlias = 'CakeDC/Users.Users';
+
     /**
      * Init method
      *
