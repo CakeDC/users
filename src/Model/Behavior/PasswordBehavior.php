@@ -34,7 +34,7 @@ class PasswordBehavior extends BaseTokenBehavior
      *
      * @param string $reference User username or email
      * @param array $options checkActive, sendEmail, expiration
-     * @return string
+     * @return \CakeDC\Users\Model\Entity\User|false
      * @throws \InvalidArgumentException
      * @throws \CakeDC\Users\Exception\UserNotFoundException
      * @throws \CakeDC\Users\Exception\UserAlreadyActiveException
@@ -50,6 +50,7 @@ class PasswordBehavior extends BaseTokenBehavior
             throw new \InvalidArgumentException(__d('cake_d_c/users', 'Token expiration cannot be empty'));
         }
 
+        /** @var \CakeDC\Users\Model\Entity\User|null $user */
         $user = $this->_getUser($reference);
 
         if (empty($user)) {
@@ -128,7 +129,7 @@ class PasswordBehavior extends BaseTokenBehavior
     /**
      * Change password method
      *
-     * @param \Cake\Datasource\EntityInterface $user user data.
+     * @param \CakeDC\Users\Model\Entity\User $user user data.
      * @throws \CakeDC\Users\Exception\WrongPasswordException
      * @return mixed
      */

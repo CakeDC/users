@@ -41,6 +41,7 @@ trait PasswordManagementTrait
      */
     public function changePassword($id = null)
     {
+        /** @var \CakeDC\Users\Model\Entity\User $user */
         $user = $this->getUsersTable()->newEntity([], ['validate' => false]);
         $user->setNew(false);
 

@@ -2,6 +2,12 @@ Changelog
 =========
 Releases for CakePHP 5
 -------------
+* 14.3.6
+  * Preserve an existing user's role when linking a social account for the first time
+  * Update SimpleCrudTraitIntegrationTest postLink assertions for CakePHP 5.4
+  * Update ReCaptcha tests for the readonly Response class
+  * Resolve PHPStan errors with TSubject and entity type annotations
+  * Enable the phpcs composer installer plugin for coding standard checks
 * 14.3.4
   * Replace usage of 'admin' by UsersTable::ROLE_ADMIN constant across the plugin.
   * Fix role in UsersAddSuperuserCommand to be 'admin' instead of 'superadmin'.

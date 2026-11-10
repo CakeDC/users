@@ -99,6 +99,7 @@ class RegisterBehavior extends BaseTokenBehavior
      */
     public function validate($token, $callback = null)
     {
+        /** @var \CakeDC\Users\Model\Entity\User|null $user */
         $user = $token ? $this->_table->find()
             ->select(['token_expires', 'id', 'active', 'token'])
             ->where(['token' => $token])

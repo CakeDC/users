@@ -22,16 +22,20 @@ use Cake\Utility\Security;
 /**
  * User Entity.
  *
+ * @property string $id
  * @property string $email
  * @property string $role
  * @property string $username
  * @property bool $is_superuser
+ * @property bool $active
+ * @property \Cake\I18n\DateTime|null $activation_date
  * @property \Cake\I18n\Time|\Cake\I18n\DateTime $token_expires
  * @property string $token
  * @property string $api_token
  * @property array|string $additional_data
  * @property \CakeDC\Users\Model\Entity\SocialAccount[] $social_accounts
  * @property string $password
+ * @property string $password_confirm
  * @property \Cake\I18n\DateTime $lockout_time
  */
 class User extends Entity

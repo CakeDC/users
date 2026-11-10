@@ -17,6 +17,21 @@ use Cake\ORM\Entity;
 
 /**
  * Account Entity.
+ *
+ * @property string $id
+ * @property string $user_id
+ * @property string $provider
+ * @property string|null $username
+ * @property string $reference
+ * @property string|null $avatar
+ * @property string|null $description
+ * @property string|null $link
+ * @property string $token
+ * @property string|null $token_secret
+ * @property \Cake\I18n\DateTime|null $token_expires
+ * @property bool $active
+ * @property string $data
+ * @property \CakeDC\Users\Model\Entity\User $user
  */
 class SocialAccount extends Entity
 {
