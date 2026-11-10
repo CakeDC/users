@@ -22,6 +22,8 @@ use CakeDC\Users\Webauthn\Base64Utility;
  */
 class UsersFixture extends TestFixture
 {
+    public string $tableAlias = 'CakeDC/Users.Users';
+
     /**
      * Init method
      *
