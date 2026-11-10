@@ -27,6 +27,8 @@ use Cake\Utility\Security;
  * @property string $role
  * @property string $username
  * @property bool $is_superuser
+ * @property bool $active
+ * @property \Cake\I18n\DateTime|null $activation_date
  * @property \Cake\I18n\Time|\Cake\I18n\DateTime $token_expires
  * @property string $token
  * @property string $api_token
