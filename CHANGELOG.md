@@ -2,6 +2,10 @@ Changelog
 =========
 Releases for CakePHP 5
 -------------
+* 15.1.5
+  * Preserve an existing user's role when linking a social account for the first time
+  * Update SimpleCrudTraitIntegrationTest postLink assertions for CakePHP 5.4
+  * Update ReCaptcha tests for the readonly Response class
 * 15.1.4
   * Only set column type for `additional_data` if column exists
 * 15.1.3
