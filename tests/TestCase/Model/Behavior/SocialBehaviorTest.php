@@ -17,6 +17,7 @@ use Cake\TestSuite\TestCase;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\UserNotActiveException;
+use CakeDC\Users\Model\Table\UsersTable;
 
 /**
  * Test Case
@@ -29,8 +30,8 @@ class SocialBehaviorTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.CakeDC/Users.SocialAccounts',
         'plugin.CakeDC/Users.Users',
+        'plugin.CakeDC/Users.SocialAccounts',
     ];
 
     /**
@@ -389,6 +390,57 @@ class SocialBehaviorTest extends TestCase
             ],
 
         ];
+    }
+
+    /**
+     * Test that a new social account linked to an existing user by email
+     * does not reset the user role.
+     */
+    public function testSocialLoginExistingUserByEmailKeepsRole()
+    {
+        $locator = $this->getTableLocator();
+        $locator->remove('Users');
+        $locator->remove('CakeDC/Users.Users');
+        $table = $locator->get('CakeDC/Users.Users');
+
+        $userId = '00000000-0000-0000-0000-000000000001';
+        $this->assertSame(UsersTable::ROLE_ADMIN, $table->get($userId)->role);
+
+        $data = [
+            'id' => 'reference-new-google',
+            'provider' => 'Google',
+            'email' => 'user-1@test.com',
+            'validated' => false,
+            'username' => null,
+            'full_name' => 'Full name',
+            'link' => 'google-link',
+            'credentials' => [
+                'token' => 'token',
+                'secret' => null,
+                'expires' => null,
+            ],
+            'raw' => [],
+        ];
+        $options = [
+            'use_email' => true,
+            'validate_email' => true,
+            'token_expiration' => 3600,
+        ];
+
+        try {
+            $table->getBehavior('Social')->socialLogin($data, $options);
+            $this->fail('Expected AccountNotActiveException');
+        } catch (AccountNotActiveException $e) {
+            // The social account must be validated before it can be used.
+        }
+
+        $account = $table->SocialAccounts->find()->where([
+            'SocialAccounts.reference' => 'reference-new-google',
+            'SocialAccounts.provider' => 'Google',
+        ])->firstOrFail();
+        $this->assertSame($userId, $account->user_id);
+        $this->assertFalse($account->active);
+        $this->assertSame(UsersTable::ROLE_ADMIN, $table->get($userId)->role);
     }
 
     /**
