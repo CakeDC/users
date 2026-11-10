@@ -2,6 +2,8 @@ Changelog
 =========
 Releases for CakePHP 4.5
 ------------------------
+* 13.2.0
+  * Preserve an existing user's role when linking a social account for the first time
 * 13.1.0
   * Backport: add finder to pull user correctly on reset password
 * 13.0.0
