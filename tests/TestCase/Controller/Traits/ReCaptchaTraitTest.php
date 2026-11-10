@@ -15,6 +15,7 @@ namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
 use Cake\Core\Configure;
 use Cake\TestSuite\TestCase;
+use ReCaptcha\Response;
 use ReflectionMethod;
 
 class ReCaptchaTraitTest extends TestCase
@@ -58,13 +59,7 @@ class ReCaptchaTraitTest extends TestCase
                 ->onlyMethods(['verify'])
                 ->disableOriginalConstructor()
                 ->getMock();
-        $Response = $this->getMockBuilder('ReCaptcha\Response')
-                ->onlyMethods(['isSuccess'])
-                ->disableOriginalConstructor()
-                ->getMock();
-        $Response->expects($this->once())
-            ->method('isSuccess')
-            ->will($this->returnValue(true));
+        $Response = new Response(true);
         $ReCaptcha->expects($this->once())
             ->method('verify')
             ->with('value')
@@ -87,13 +82,7 @@ class ReCaptchaTraitTest extends TestCase
                 ->onlyMethods(['verify'])
                 ->disableOriginalConstructor()
                 ->getMock();
-        $Response = $this->getMockBuilder('ReCaptcha\Response')
-                ->onlyMethods(['isSuccess'])
-                ->disableOriginalConstructor()
-                ->getMock();
-        $Response->expects($this->once())
-            ->method('isSuccess')
-            ->will($this->returnValue(false));
+        $Response = new Response(false);
         $ReCaptcha->expects($this->once())
             ->method('verify')
             ->with('invalid')
@@ -130,13 +119,7 @@ class ReCaptchaTraitTest extends TestCase
             ->onlyMethods(['verify'])
             ->disableOriginalConstructor()
             ->getMock();
-        $Response = $this->getMockBuilder('ReCaptcha\Response')
-            ->onlyMethods(['isSuccess'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $Response->expects($this->once())
-            ->method('isSuccess')
-            ->will($this->returnValue(false));
+        $Response = new Response(false);
         $ReCaptcha->expects($this->once())
             ->method('verify')
             ->with('value')
