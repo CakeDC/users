@@ -226,6 +226,7 @@ class SocialBehavior extends BaseTokenBehavior
 
             $user = $this->_table->newEntity($userData);
             $user = $this->_updateActive($user, false, $tokenExpiration);
+            $user['role'] = Configure::read('Users.Registration.defaultRole') ?: 'user';
         } else {
             if (
                 $useEmail &&
@@ -240,7 +241,6 @@ class SocialBehavior extends BaseTokenBehavior
         //ensure provider is present in Entity
         $socialAccount['provider'] = $data['provider'] ?? null;
         $user['social_accounts'] = [$socialAccount];
-        $user['role'] = Configure::read('Users.Registration.defaultRole') ?: 'user';
 
         return $user;
     }
