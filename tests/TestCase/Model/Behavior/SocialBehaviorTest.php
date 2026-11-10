@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace CakeDC\Users\Test\TestCase\Model\Behavior;
 
+use Cake\Core\Configure;
 use Cake\TestSuite\TestCase;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
@@ -398,10 +399,7 @@ class SocialBehaviorTest extends TestCase
      */
     public function testSocialLoginExistingUserByEmailKeepsRole()
     {
-        $locator = $this->getTableLocator();
-        $locator->remove('Users');
-        $locator->remove('CakeDC/Users.Users');
-        $table = $locator->get('CakeDC/Users.Users');
+        $table = $this->getRealUsersTable();
 
         $userId = '00000000-0000-0000-0000-000000000001';
         $this->assertSame(UsersTable::ROLE_ADMIN, $table->get($userId)->role);
@@ -444,6 +442,96 @@ class SocialBehaviorTest extends TestCase
     }
 
     /**
+     * Test that a new social user uses the configured default role.
+     */
+    public function testSocialLoginNewUserUsesCustomDefaultRole()
+    {
+        $previousRole = Configure::read('Users.Registration.defaultRole');
+        Configure::write('Users.Registration.defaultRole', 'custom');
+
+        try {
+            $table = $this->getRealUsersTable();
+            $data = [
+                'id' => 'reference-new-custom-role',
+                'provider' => 'Google',
+                'email' => 'new-social-user@test.com',
+                'validated' => true,
+                'username' => null,
+                'full_name' => 'New Social User',
+                'link' => 'google-link',
+                'credentials' => [
+                    'token' => 'token',
+                    'secret' => null,
+                    'expires' => null,
+                ],
+                'raw' => [],
+            ];
+            $options = [
+                'use_email' => true,
+                'validate_email' => true,
+                'token_expiration' => 3600,
+            ];
+
+            $user = $table->getBehavior('Social')->socialLogin($data, $options);
+
+            $this->assertSame('custom', $user->role);
+            $this->assertSame(
+                UsersTable::ROLE_ADMIN,
+                $table->get('00000000-0000-0000-0000-000000000001')->role
+            );
+            $this->assertSame(
+                UsersTable::ROLE_ADMIN,
+                $table->get('00000000-0000-0000-0000-000000000002')->role
+            );
+        } finally {
+            Configure::write('Users.Registration.defaultRole', $previousRole);
+        }
+    }
+
+    /**
+     * Test that use_email=false still preserves the role of an existing user.
+     */
+    public function testSocialLoginExistingUserByEmailWithUseEmailFalseKeepsRole()
+    {
+        $previousSkip = Configure::read('OAuth.providers.Twitter.skipSocialAccountValidation');
+        Configure::write('OAuth.providers.Twitter.skipSocialAccountValidation', true);
+
+        try {
+            $table = $this->getRealUsersTable();
+            $userId = '00000000-0000-0000-0000-000000000002';
+            $this->assertSame(UsersTable::ROLE_ADMIN, $table->get($userId)->role);
+
+            $data = [
+                'id' => 'reference-new-twitter',
+                'provider' => 'Twitter',
+                'email' => 'user-2@test.com',
+                'validated' => false,
+                'username' => null,
+                'full_name' => 'Full name',
+                'link' => 'twitter-link',
+                'credentials' => [
+                    'token' => 'token',
+                    'secret' => null,
+                    'expires' => null,
+                ],
+                'raw' => [],
+            ];
+            $options = [
+                'use_email' => false,
+                'validate_email' => true,
+                'token_expiration' => 3600,
+            ];
+
+            $user = $table->getBehavior('Social')->socialLogin($data, $options);
+
+            $this->assertSame($userId, $user->id);
+            $this->assertSame(UsersTable::ROLE_ADMIN, $table->get($userId)->role);
+        } finally {
+            Configure::write('OAuth.providers.Twitter.skipSocialAccountValidation', $previousSkip);
+        }
+    }
+
+    /**
      * Test socialLogin with facebook and not existing user
      *
      * @dataProvider providerGenerateUsername
@@ -470,5 +558,19 @@ class SocialBehaviorTest extends TestCase
             ['user-5', 'user-50'],
 
         ];
+    }
+
+    /**
+     * Returns a real Users table without the save mock from setUp().
+     *
+     * @return \CakeDC\Users\Model\Table\UsersTable
+     */
+    protected function getRealUsersTable(): UsersTable
+    {
+        $locator = $this->getTableLocator();
+        $locator->remove('Users');
+        $locator->remove('CakeDC/Users.Users');
+
+        return $locator->get('CakeDC/Users.Users');
     }
 }
