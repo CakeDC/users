@@ -12,5 +12,6 @@ parameters:
         - src/Controller/UsersAccountsController.php
         - src/Controller/AppAccountsController.php
     ignoreErrors:
+        - '#^Unable to resolve the template type TSubject in call to method .*::dispatchEvent\(\)$#'
 
 services:

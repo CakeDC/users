@@ -25,6 +25,7 @@ class OneTimeLoginLinkBehavior extends Behavior
     public function sendLoginLink(string $name): void
     {
         $table = $this->table();
+        /** @var \CakeDC\Users\Model\Entity\User|null $user */
         $user = $table->find('byUsernameOrEmail', ['username' => $name])->first();
         if ($user === null) {
             throw new RecordNotFoundException(__('Username not found.'));
@@ -43,6 +44,7 @@ class OneTimeLoginLinkBehavior extends Behavior
             ], [
                 'id' => $user->id,
             ]);
+            /** @var \CakeDC\Users\Model\Entity\User $user */
             $user = $this->table()->get($user->id);
 
             $deliveries = Configure::read('OneTimeLogin.DeliveryHandlers');
@@ -64,6 +66,7 @@ class OneTimeLoginLinkBehavior extends Behavior
     public function loginWithToken(string $token): ?EntityInterface
     {
         $lifeTime = Configure::read('Auth.OneTimeLogin.tokenLifeTime', 600);
+        /** @var \CakeDC\Users\Model\Entity\User|null $user */
         $user = $this->table()
             ->find('byOneTimeToken', ['token' => $token])
             ->first();
@@ -89,6 +92,7 @@ class OneTimeLoginLinkBehavior extends Behavior
      */
     public function requestTokenSend(string $username): void
     {
+        /** @var \CakeDC\Users\Model\Entity\User|null $user */
         $user = $this->table()->find('byUsernameOrEmail', ['username' => $username])->first();
         if ($user) {
             $this->table()->updateAll([
