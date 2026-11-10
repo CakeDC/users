@@ -12,7 +12,7 @@ The **Users** plugin for CakePHP provides a comprehensive, extensible solution f
 
 | CakePHP |                    CakeDC Users Plugin                     | Tag | Notes |
 |:-------:|:----------------------------------------------------------:|:---:|:---|
-|  ^5.3   | [16.x](https://github.com/cakedc/users/tree/16.next-cake5) | 16.0.0 | **Stable** (Current) |
+|  ^5.3   | [16.x](https://github.com/cakedc/users/tree/16.next-cake5) | 16.0.5 | **Stable** (Current) |
 |  ^5.0   | [15.x](https://github.com/cakedc/users/tree/15.next-cake5) | 15.1.3 | Stable |
 |  ^5.0   | [14.x](https://github.com/cakedc/users/tree/14.next-cake5) | 14.3.4 | Stable |
 |  ^4.5   | [13.x](https://github.com/cakedc/users/tree/13.next-cake4) | 13.0.1 | Stable |

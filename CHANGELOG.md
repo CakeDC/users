@@ -2,6 +2,10 @@ Changelog
 =========
 Releases for CakePHP 5
 -------------
+* 16.0.5
+  * Preserve an existing user's role when linking a social account for the first time
+  * Update SimpleCrudTraitIntegrationTest postLink assertions for CakePHP 5.4
+  * Resolve PHPStan errors: remove invalid @use generics, add entity property/type annotations, clean stale baseline entries
 * 16.0.4
   * Fix timing-safe comparison for social account token validation using hash_equals()
   * Reject empty/partial tokens explicitly in SocialAccountBehavior::validateAccount()
