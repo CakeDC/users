@@ -22,6 +22,7 @@ use Cake\Utility\Security;
 /**
  * User Entity.
  *
+ * @property string $id
  * @property string $email
  * @property string $role
  * @property string $username
