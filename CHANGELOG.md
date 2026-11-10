@@ -2,6 +2,8 @@ Changelog
 =========
 Releases for CakePHP 4.5
 ------------------------
+* 11.3.6
+  * Preserve an existing user's role when linking a social account for the first time
 * 11.3.5
   * Update ci.yml with php8.2 and php8.3
   * fix: minor fix on last_login datetime format
