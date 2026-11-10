@@ -17,6 +17,7 @@ use Cake\TestSuite\TestCase;
 use CakeDC\Users\Exception\AccountNotActiveException;
 use CakeDC\Users\Exception\MissingEmailException;
 use CakeDC\Users\Exception\UserNotActiveException;
+use CakeDC\Users\Model\Table\UsersTable;
 
 /**
  * Test Case
@@ -389,6 +390,56 @@ class SocialBehaviorTest extends TestCase
             ],
 
         ];
+    }
+
+    /**
+     * Test social login with an existing user matched by email
+     *
+     * @return void
+     */
+    public function testSocialLoginExistingUserByEmailKeepsRole()
+    {
+        // Use a fresh table instance so the entity is saved through the real table
+        $this->getTableLocator()->clear();
+        $table = $this->getTableLocator()->get('CakeDC/Users.Users');
+        $userId = '00000000-0000-0000-0000-000000000001';
+        $this->assertSame(UsersTable::ROLE_ADMIN, $table->get($userId)->role);
+
+        $data = [
+            'id' => 'reference-new-google',
+            'provider' => 'Google',
+            'email' => 'user-1@test.com',
+            'validated' => false,
+            'username' => null,
+            'full_name' => 'Full name',
+            'link' => 'google-link',
+            'credentials' => [
+                'token' => 'token',
+                'secret' => null,
+                'expires' => null,
+            ],
+            'raw' => [],
+        ];
+        $options = [
+            'use_email' => true,
+            'validate_email' => true,
+            'token_expiration' => 3600,
+        ];
+
+        try {
+            $table->getBehavior('Social')->socialLogin($data, $options);
+            $this->fail('Expected AccountNotActiveException');
+        } catch (AccountNotActiveException $e) {
+            // The social account requires validation before it can be used
+        }
+
+        $account = $table->SocialAccounts->find()->where([
+            'SocialAccounts.reference' => 'reference-new-google',
+            'SocialAccounts.provider' => 'Google',
+        ])->firstOrFail();
+        $this->assertSame($userId, $account->user_id);
+        $this->assertFalse($account->active);
+        $this->assertSame(UsersTable::ROLE_ADMIN, $table->get($userId)->role);
     }
 
     /**
