@@ -128,7 +128,7 @@ class PasswordBehavior extends BaseTokenBehavior
     /**
      * Change password method
      *
-     * @param \Cake\Datasource\EntityInterface $user user data.
+     * @param \CakeDC\Users\Model\Entity\User $user user data.
      * @throws \CakeDC\Users\Exception\WrongPasswordException
      * @return mixed
      */

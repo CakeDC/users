@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace CakeDC\Users\Webauthn\Repository;
 
 use Cake\Datasource\EntityInterface;
+use CakeDC\Users\Model\Entity\User;
 use CakeDC\Users\Model\Table\UsersTable;
 use CakeDC\Users\Webauthn\Base64Utility;
 use Webauthn\PublicKeyCredentialSource;
@@ -13,7 +14,7 @@ use Webauthn\PublicKeyCredentialUserEntity;
 class UserCredentialSourceRepository implements PublicKeyCredentialSourceRepository
 {
     /**
-     * @var \Cake\Datasource\EntityInterface
+     * @var \CakeDC\Users\Model\Entity\User
      */
     private $user;
     /**
@@ -27,6 +28,7 @@ class UserCredentialSourceRepository implements PublicKeyCredentialSourceReposit
      */
     public function __construct(EntityInterface $user, ?UsersTable $usersTable = null)
     {
+        assert($user instanceof User);
         $this->user = $user;
         $this->usersTable = $usersTable;
     }

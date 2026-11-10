@@ -16,6 +16,7 @@ namespace CakeDC\Users\Model\Behavior;
 use Cake\Datasource\EntityInterface;
 use Cake\I18n\DateTime;
 use Cake\ORM\Behavior;
+use CakeDC\Users\Model\Entity\User;
 
 /**
  * Covers the user registration
@@ -32,6 +33,7 @@ class BaseTokenBehavior extends Behavior
      */
     protected function _updateActive(EntityInterface $user, $validateEmail, $tokenExpiration)
     {
+        assert($user instanceof User);
         $emailValidated = $user['validated'];
         if (!$emailValidated && $validateEmail) {
             $user['active'] = false;

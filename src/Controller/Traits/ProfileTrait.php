@@ -42,6 +42,7 @@ trait ProfileTrait
         try {
             $appContain = (array)Configure::read('Auth.Profile.contain');
             $socialContain = Configure::read('Users.Social.login') ? ['SocialAccounts'] : [];
+            /** @var \CakeDC\Users\Model\Entity\User $user */
             $user = $this->getUsersTable()->get($id, contain: array_merge($appContain, $socialContain));
             $this->set('avatarPlaceholder', Configure::read('Users.Avatar.placeholder'));
             if ($user->id === $loggedUserId) {

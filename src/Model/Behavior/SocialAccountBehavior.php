@@ -96,6 +96,7 @@ class SocialAccountBehavior extends Behavior
      */
     public function validateAccount($provider, $reference, $token)
     {
+        /** @var \CakeDC\Users\Model\Entity\SocialAccount|null $socialAccount */
         $socialAccount = $this->_table->find()
             ->select(['id', 'provider', 'reference', 'active', 'token'])
             ->where(['provider' => $provider, 'reference' => $reference])
@@ -125,6 +126,7 @@ class SocialAccountBehavior extends Behavior
      */
     public function resendValidation($provider, $reference)
     {
+        /** @var \CakeDC\Users\Model\Entity\SocialAccount|null $socialAccount */
         $socialAccount = $this->_table->find()
             ->where(['provider' => $provider, 'reference' => $reference])
             ->contain('Users')

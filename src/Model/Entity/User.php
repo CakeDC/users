@@ -22,6 +22,7 @@ use Cake\Utility\Security;
 /**
  * User Entity.
  *
+ * @property string $id
  * @property string $email
  * @property string $role
  * @property string $username
@@ -32,6 +33,7 @@ use Cake\Utility\Security;
  * @property array|string $additional_data
  * @property \CakeDC\Users\Model\Entity\SocialAccount[] $social_accounts
  * @property string $password
+ * @property string $password_confirm
  * @property \Cake\I18n\DateTime $lockout_time
  */
 class User extends Entity
