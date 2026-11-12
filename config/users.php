@@ -285,7 +285,8 @@ $config = [
         'RbacPolicy' => [],
         'PasswordRehash' => [
             'authenticators' => [
-                'Form' => 'Authentication.Password',
+                // name of the identifier inside the collection of the authenticator ('Authentication.Password' is loaded as 'Password')
+                'Form' => 'Password',
             ],
         ],
     ],

@@ -256,7 +256,7 @@ class LoginTraitTest extends BaseTrait
             'component' => 'CakeDC/Users.Login',
             'targetAuthenticator' => FormAuthenticator::class,
             'PasswordRehash' => [
-                'authenticators' => ['Form' => 'Password'],
+                'authenticators' => ['Form' => $identifierName],
             ],
         ];
 
@@ -286,11 +286,27 @@ class LoginTraitTest extends BaseTrait
         $this->assertTrue($passwordHasher->check($userPassword, $userAfter['password']));
     }
 
-    public function testLoginRehashWithAuthenticatorStructure()
+    /**
+     * Data provider for testLoginRehashWithAuthenticatorStructure
+     *
+     * @return array
+     */
+    public static function dataProviderRehashIdentifierName(): array
+    {
+        return [
+            'default configuration' => ['Password'],
+            'legacy configuration with plugin prefix' => ['Authentication.Password'],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderRehashIdentifierName
+     */
+    public function testLoginRehashWithAuthenticatorStructure(string $identifierName)
     {
         \Cake\Core\Configure::write('Auth.PasswordRehash', [
             'authenticators' => [
-                'Form' => 'Authentication.Password',
+                'Form' => $identifierName,
             ],
         ]);
 
@@ -309,16 +325,13 @@ class LoginTraitTest extends BaseTrait
             ->method('needsPasswordRehash')
             ->willReturn(true);
 
-        $identifierCollection = new IdentifierCollection([]);
-        $identifierCollection->set('Authentication.Password', $passwordIdentifier);
+        // 'Authentication.Password' configured as identifier of the Form authenticator is loaded as 'Password'
+        $identifierCollection = new IdentifierCollection(['Authentication.Password' => []]);
+        $this->assertTrue($identifierCollection->has('Password'));
+        $identifierCollection->set('Password', $passwordIdentifier);
 
-        $formAuthenticator = $this->getMockBuilder(FormAuthenticator::class)
-            ->disableOriginalConstructor()
-            ->addMethods(['getIdentifier'])
-            ->getMock();
-        $formAuthenticator->expects($this->any())
-            ->method('getIdentifier')
-            ->willReturn($identifierCollection);
+        // the real authenticator, it proxies getIdentifier() to the base authenticator via __call
+        $formAuthenticator = new FormAuthenticator($identifierCollection);
 
         $authenticatorCollection = $this->getMockBuilder(AuthenticatorCollection::class)
             ->disableOriginalConstructor()
@@ -392,7 +405,7 @@ class LoginTraitTest extends BaseTrait
             'component' => 'CakeDC/Users.Login',
             'targetAuthenticator' => FormAuthenticator::class,
             'PasswordRehash' => [
-                'authenticators' => ['Form' => 'Authentication.Password'],
+                'authenticators' => ['Form' => 'Password'],
             ],
         ];
 

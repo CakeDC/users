@@ -59,4 +59,44 @@ class LoginComponentTest extends TestCase
         $this->controller->setRequest($this->request);
         $this->component->handleLogin(false, false);
     }
+
+    /**
+     * An authenticator with __call() that does not provide getIdentifier() must not break the login,
+     * the password rehash is skipped instead.
+     */
+    public function testGetIdentifierCollectionWithMagicCallAuthenticator()
+    {
+        $authenticator = new class {
+            public function __call(string $name, array $arguments): mixed
+            {
+                throw new \BadMethodCallException("Method $name does not exist");
+            }
+        };
+
+        $method = new \ReflectionMethod($this->component, 'getIdentifierCollection');
+        $this->assertNull($method->invoke($this->component, $authenticator));
+    }
+
+    /**
+     * The CakeDC\Auth FormAuthenticator only proxies getIdentifier() via __call(),
+     * the identifier collection of its base authenticator is used.
+     */
+    public function testGetIdentifierCollectionWithCakeDCFormAuthenticator()
+    {
+        $collection = new \Authentication\Identifier\IdentifierCollection(['Authentication.Password' => []]);
+        $authenticator = new \CakeDC\Auth\Authenticator\FormAuthenticator($collection);
+
+        $method = new \ReflectionMethod($this->component, 'getIdentifierCollection');
+        $this->assertSame($collection, $method->invoke($this->component, $authenticator));
+    }
+
+    public function testResolveIdentifierName()
+    {
+        $collection = new \Authentication\Identifier\IdentifierCollection(['Authentication.Password' => []]);
+        $method = new \ReflectionMethod($this->component, 'resolveIdentifierName');
+
+        $this->assertSame('Password', $method->invoke($this->component, $collection, 'Password'));
+        $this->assertSame('Password', $method->invoke($this->component, $collection, 'Authentication.Password'));
+        $this->assertNull($method->invoke($this->component, $collection, 'Authentication.Token'));
+    }
 }
