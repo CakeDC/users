@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace CakeDC\Users\Controller\Component;
 
 use Authentication\Authenticator\ResultInterface;
+use Authentication\Identifier\IdentifierCollection;
 use Cake\Controller\Component;
 use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
@@ -210,20 +211,23 @@ class LoginComponent extends Component
         }
 
         $authenticationProvider = $service->getAuthenticationProvider();
-        // is_callable: CakeDC\Auth\Authenticator\FormAuthenticator proxies getIdentifier() via __call
-        if (!$authenticationProvider || !is_callable([$authenticationProvider, 'getIdentifier'])) {
+        if (!$authenticationProvider) {
             return;
         }
 
-        /** @var \Authentication\Identifier\IdentifierCollection $identifierCollection */
-        $identifierCollection = $authenticationProvider->getIdentifier();
+        $identifierCollection = $this->getIdentifierCollection($authenticationProvider);
+        if ($identifierCollection === null) {
+            return;
+        }
+
         $authenticators = $service->authenticators();
         foreach ($authenticatorNames as $authenticatorName => $identifierName) {
             if ($authenticators->has($authenticatorName) && $authenticators->get($authenticatorName) !== $authenticationProvider) {
                 continue;
             }
 
-            if (!$identifierCollection->has($identifierName)) {
+            $identifierKey = $this->resolveIdentifierName($identifierCollection, (string)$identifierName);
+            if ($identifierKey === null) {
                 Log::warning("Error saving user id $user->id password after rehashing: identifier $identifierName not found for authenticator $authenticatorName. Check your Auth.PasswordRehash.authenticators configuration.");
                 continue;
             }
@@ -231,9 +235,55 @@ class LoginComponent extends Component
             /**
              * @var \Authentication\Identifier\AbstractIdentifier|null $checker
              */
-            $checker = $identifierCollection->get($identifierName);
+            $checker = $identifierCollection->get($identifierKey);
             $this->saveRehashedPassword($checker, $request, $user);
         }
+    }
+
+    /**
+     * Get the identifier collection of the authenticator that authenticated the user.
+     *
+     * Wrapping authenticators like CakeDC\Auth\Authenticator\FormAuthenticator expose the real
+     * authenticator via getBaseAuthenticator() and only proxy getIdentifier() through __call().
+     * The wrapper is unwrapped explicitly instead of relying on is_callable(), which is true for
+     * any method name on a class with __call(). An authenticator that declares getIdentifier()
+     * itself is used as is.
+     *
+     * @param object $authenticator Authenticator that authenticated the user.
+     * @return \Authentication\Identifier\IdentifierCollection|null
+     */
+    protected function getIdentifierCollection(object $authenticator): ?IdentifierCollection
+    {
+        if (!method_exists($authenticator, 'getIdentifier') && method_exists($authenticator, 'getBaseAuthenticator')) {
+            $authenticator = $authenticator->getBaseAuthenticator();
+        }
+        if (!method_exists($authenticator, 'getIdentifier')) {
+            return null;
+        }
+
+        $identifier = $authenticator->getIdentifier();
+
+        return $identifier instanceof IdentifierCollection ? $identifier : null;
+    }
+
+    /**
+     * Find the configured identifier in the collection.
+     *
+     * Identifiers are registered without plugin prefix ('Authentication.Password' is loaded as 'Password'),
+     * so a configured plugin name like 'Authentication.Password' is resolved to its alias as well.
+     *
+     * @param \Authentication\Identifier\IdentifierCollection $collection Identifier collection.
+     * @param string $identifierName Configured identifier name.
+     * @return string|null Name of the identifier inside the collection, null if not found.
+     */
+    protected function resolveIdentifierName(IdentifierCollection $collection, string $identifierName): ?string
+    {
+        if ($collection->has($identifierName)) {
+            return $identifierName;
+        }
+        [, $alias] = pluginSplit($identifierName);
+
+        return $alias !== $identifierName && $collection->has($alias) ? $alias : null;
     }
 
     /**

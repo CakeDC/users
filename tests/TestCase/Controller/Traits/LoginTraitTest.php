@@ -256,7 +256,7 @@ class LoginTraitTest extends BaseTrait
             'component' => 'CakeDC/Users.Login',
             'targetAuthenticator' => FormAuthenticator::class,
             'PasswordRehash' => [
-                'authenticators' => ['Form' => 'Password'],
+                'authenticators' => ['Form' => $identifierName],
             ],
         ];
 
@@ -286,12 +286,27 @@ class LoginTraitTest extends BaseTrait
         $this->assertTrue($passwordHasher->check($userPassword, $userAfter['password']));
     }
 
-    public function testLoginRehashWithAuthenticatorStructure()
+    /**
+     * Data provider for testLoginRehashWithAuthenticatorStructure
+     *
+     * @return array
+     */
+    public static function dataProviderRehashIdentifierName(): array
     {
-        // default configuration of the plugin (config/users.php)
+        return [
+            'default configuration' => ['Password'],
+            'legacy configuration with plugin prefix' => ['Authentication.Password'],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderRehashIdentifierName
+     */
+    public function testLoginRehashWithAuthenticatorStructure(string $identifierName)
+    {
         \Cake\Core\Configure::write('Auth.PasswordRehash', [
             'authenticators' => [
-                'Form' => 'Password',
+                'Form' => $identifierName,
             ],
         ]);
 
