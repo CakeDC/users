@@ -63,6 +63,32 @@ class RegisterAdapterTest extends TestCase
     }
 
     /**
+     * The registration options must only offer standard COSE algorithms. Ed256 (-260) and Ed512 (-261) are not
+     * defined by any specification and web-auth/cose-lib warns when they are created (an exception from v5.0.0), so
+     * EdDSA (-8, Ed25519) is offered instead.
+     *
+     * @return void
+     */
+    public function testGetOptionsOffersOnlyStandardAlgorithms(): void
+    {
+        $userId = '00000000-0000-0000-0000-000000000002';
+        $UsersTable = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
+        $request = ServerRequestFactory::fromGlobals();
+        $request->getSession()->write('Webauthn2fa.User', $UsersTable->get($userId));
+        $adapter = new RegisterAdapter($request, $UsersTable);
+
+        $algorithms = array_map(
+            fn(PublicKeyCredentialParameters $parameters) => $parameters->getAlg(),
+            $adapter->getOptions()->getPubKeyCredParams(),
+        );
+
+        $this->assertContains(Algorithms::COSE_ALGORITHM_EDDSA, $algorithms);
+        $this->assertContains(Algorithms::COSE_ALGORITHM_ES256, $algorithms);
+        $this->assertNotContains(-260, $algorithms);
+        $this->assertNotContains(-261, $algorithms);
+    }
+
+    /**
      * Test verifyResponse
      *
      * @return void
