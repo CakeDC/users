@@ -63,13 +63,13 @@ class RegisterAdapterTest extends TestCase
     }
 
     /**
-     * The registration options must only offer standard COSE algorithms. Ed256 (-260) and Ed512 (-261) are not
-     * defined by any specification and web-auth/cose-lib warns when they are created (an exception from v5.0.0), so
-     * EdDSA (-8, Ed25519) is offered instead.
+     * The registration options offer the standard EdDSA algorithm (-8, Ed25519) and keep the non-standard Ed256
+     * (-260) and Ed512 (-261) for backward compatibility, without the E_USER_WARNING that web-auth/cose-lib 4.8
+     * triggers when they are created without acknowledging that they are non-standard.
      *
      * @return void
      */
-    public function testGetOptionsOffersOnlyStandardAlgorithms(): void
+    public function testGetOptionsOffersEdDsaWithoutNonStandardAlgorithmWarnings(): void
     {
         $userId = '00000000-0000-0000-0000-000000000002';
         $UsersTable = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
@@ -77,15 +77,27 @@ class RegisterAdapterTest extends TestCase
         $request->getSession()->write('Webauthn2fa.User', $UsersTable->get($userId));
         $adapter = new RegisterAdapter($request, $UsersTable);
 
-        $algorithms = array_map(
-            fn(PublicKeyCredentialParameters $parameters) => $parameters->getAlg(),
-            $adapter->getOptions()->getPubKeyCredParams(),
-        );
+        $warnings = [];
+        set_error_handler(function (int $level, string $message) use (&$warnings): bool {
+            $warnings[] = $message;
 
+            return true;
+        }, E_USER_WARNING);
+        try {
+            $parameters = $adapter->getOptions()->getPubKeyCredParams();
+        } finally {
+            restore_error_handler();
+        }
+        $algorithms = array_map(fn(PublicKeyCredentialParameters $parameter) => $parameter->getAlg(), $parameters);
+
+        $this->assertSame([], $warnings);
         $this->assertContains(Algorithms::COSE_ALGORITHM_EDDSA, $algorithms);
         $this->assertContains(Algorithms::COSE_ALGORITHM_ES256, $algorithms);
-        $this->assertNotContains(-260, $algorithms);
-        $this->assertNotContains(-261, $algorithms);
+        // Kept for backward compatibility with keys already registered with them.
+        $this->assertContains(-260, $algorithms);
+        $this->assertContains(-261, $algorithms);
+        // EdDSA (-8) is preferred over the non-standard variants.
+        $this->assertLessThan(array_search(-260, $algorithms, true), array_search(-8, $algorithms, true));
     }
 
     /**
