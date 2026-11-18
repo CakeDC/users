@@ -3,7 +3,7 @@ Changelog
 Releases for CakePHP 5
 -------------
 * 17.0.0
-  * Upgrade to cakephp/authentication 4.x and cakedc/auth 12
+  * Upgrade to cakephp/authentication 4.x and cakedc/auth 13
   * Identifiers use the single-identifier format instead of a collection keyed by name
   * Remove `Authentication.CakeRouter`; auth URLs use the default URL checker
   * `Auth.PasswordRehash.identifiers` removed; use `Auth.PasswordRehash.authenticators`
