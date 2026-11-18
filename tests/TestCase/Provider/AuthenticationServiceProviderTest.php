@@ -46,7 +46,6 @@ class AuthenticationServiceProviderTest extends TestCase
                 'skipTwoFactorVerify' => true,
                 'sessionKey' => 'CustomAuth',
                 'fields' => ['username' => 'email'],
-                'identify' => true,
             ],
             'Form' => [
                 'className' => 'CakeDC/Auth.Form',
@@ -97,7 +96,6 @@ class AuthenticationServiceProviderTest extends TestCase
             SessionAuthenticator::class => [
                 'fields' => ['username' => 'email'],
                 'sessionKey' => 'CustomAuth',
-                'identify' => true,
                 'identityAttribute' => 'identity',
                 'skipTwoFactorVerify' => true,
                 'impersonateSessionKey' => 'AuthImpersonate',
@@ -188,7 +186,6 @@ class AuthenticationServiceProviderTest extends TestCase
                 'skipTwoFactorVerify' => true,
                 'sessionKey' => 'CustomAuth',
                 'fields' => ['username' => 'email'],
-                'identify' => true,
                 'impersonateSessionKey' => 'AuthImpersonate',
             ],
             'Form' => [
@@ -220,14 +217,6 @@ class AuthenticationServiceProviderTest extends TestCase
                 ],
             ],
         ]);
-        Configure::write('Auth.Identifiers', [
-            'Authentication.Password',
-            'Token' => [
-                'className' => 'Authentication.Token',
-                'tokenField' => 'api_token',
-            ],
-            'Authentication.JwtSubject',
-        ]);
         Configure::write('OneTimePasswordAuthenticator.login', false);
         Configure::write('TwoFactorProcessors', []);
 
@@ -243,7 +232,6 @@ class AuthenticationServiceProviderTest extends TestCase
             SessionAuthenticator::class => [
                 'fields' => ['username' => 'email'],
                 'sessionKey' => 'CustomAuth',
-                'identify' => true,
                 'identityAttribute' => 'identity',
                 'skipTwoFactorVerify' => true,
                 'impersonateSessionKey' => 'AuthImpersonate',

@@ -194,17 +194,6 @@ class LoginComponent extends Component
      */
     protected function handlePasswordRehash(AuthenticationService $service, User $user, ServerRequest $request): void
     {
-        // deprecated way to define identifiers via global Auth.Identifiers collection
-        // was removed in authentication 5.x (each authenticator owns a single identifier).
-        $identifiersNames = (array)Configure::read('Auth.PasswordRehash.identifiers');
-        if ($identifiersNames !== []) {
-            Log::warning(
-                'Auth.PasswordRehash.identifiers is deprecated and no longer supported. ' .
-                'Configure Auth.PasswordRehash.authenticators instead.',
-            );
-        }
-
-        // new way to define identifiers, inside the authenticators
         $authenticatorNames = (array)Configure::read('Auth.PasswordRehash.authenticators');
         if ($authenticatorNames === []) {
             return;
@@ -216,8 +205,8 @@ class LoginComponent extends Component
         }
 
         $authenticators = $service->authenticators();
-        foreach ($authenticatorNames as $authenticatorName => $identifierName) {
-            if ($authenticators->has($authenticatorName) && $authenticators->get($authenticatorName) !== $authenticationProvider) {
+        foreach (array_keys($authenticatorNames) as $authenticatorName) {
+            if (!$authenticators->has($authenticatorName) || $authenticators->get($authenticatorName) !== $authenticationProvider) {
                 continue;
             }
 
@@ -226,7 +215,7 @@ class LoginComponent extends Component
             } catch (MissingIdentifierException) {
                 Log::warning(
                     "Error saving user id {$user->get('id')} password after rehashing: " .
-                    "identifier $identifierName not found for authenticator $authenticatorName. " .
+                    "identifier not found for authenticator $authenticatorName. " .
                     'Check your Auth.PasswordRehash.authenticators configuration.',
                 );
                 continue;

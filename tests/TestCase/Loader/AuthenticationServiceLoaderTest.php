@@ -33,9 +33,6 @@ class AuthenticationServiceLoaderTest extends TestCase
             'Session' => 'Authentication.Session',
             'Form' => 'Authentication.Form',
         ]);
-        Configure::write('Auth.Identifiers', [
-            'Authentication.Password',
-        ]);
     }
 
     /**

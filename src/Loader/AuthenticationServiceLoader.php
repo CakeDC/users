@@ -28,8 +28,7 @@ use Psr\Http\Message\ServerRequestInterface;
 class AuthenticationServiceLoader
 {
     /**
-     * Load the authentication service with authenticators from config Auth.Authenticators,
-     * and identifiers from config Auth.Identifiers.
+     * Load the authentication service with authenticators from config Auth.Authenticators.
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request The request.
      * @return \CakeDC\Auth\Authentication\AuthenticationService

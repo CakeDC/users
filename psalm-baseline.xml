@@ -123,9 +123,6 @@
     <UndefinedInterfaceMethod occurrences="1">
       <code>tokenExpired</code>
     </UndefinedInterfaceMethod>
-    <UndefinedPropertyAssignment occurrences="1">
-      <code>$this-&gt;_table-&gt;isValidateEmail</code>
-    </UndefinedPropertyAssignment>
     <UndefinedThisPropertyAssignment occurrences="3">
       <code>$this-&gt;validateEmail</code>
       <code>$this-&gt;useTos</code>
@@ -193,9 +190,6 @@
     <PropertyNotSetInConstructor occurrences="1">
       <code>SocialBehavior</code>
     </PropertyNotSetInConstructor>
-    <UndefinedPropertyAssignment occurrences="1">
-      <code>$this-&gt;_table-&gt;isValidateEmail</code>
-    </UndefinedPropertyAssignment>
   </file>
   <file src="src/Model/Entity/User.php">
     <InvalidReturnStatement occurrences="1">

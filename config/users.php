@@ -209,7 +209,6 @@ $config = [
             ],
             'Form' => [
                 'className' => 'CakeDC/Auth.Form',
-                'urlChecker' => 'Authentication.Default',
                 'identifier' => [
                     'className' => 'Authentication.Password',
                     'fields' => [
@@ -245,7 +244,6 @@ $config = [
                     'expires' => new \DateTime('+1 month'),
                     'httponly' => true,
                 ],
-                'urlChecker' => 'Authentication.Default',
             ],
             'Social' => [
                 'className' => 'CakeDC/Users.Social',
@@ -258,6 +256,10 @@ $config = [
             'SocialPendingEmail' => [
                 'className' => 'CakeDC/Users.SocialPendingEmail',
                 'skipTwoFactorVerify' => true,
+                'identifier' => [
+                    'className' => 'CakeDC/Users.Social',
+                    'authFinder' => 'active',
+                ],
             ],
             'OneTimeToken' => [
                 'className' => 'CakeDC/Auth.OneTimeToken',
