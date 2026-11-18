@@ -186,9 +186,9 @@ I want to
      First add this to your config/users.php:
 
      ```
-     'Auth.Identifiers.Password.resolver.finder' => 'myFinderName',
-     'Auth.Identifiers.Social.authFinder' => 'myFinderName',
-     'Auth.Identifiers.Token.resolver.finder' => 'myFinderName',
+     'Auth.Authenticators.Form.identifier.resolver.finder' => 'myFinderName',
+     'Auth.Authenticators.Social.identifier.authFinder' => 'myFinderName',
+     'Auth.Authenticators.Token.identifier.resolver.finder' => 'myFinderName',
      ```
      Important: You must have extended the model, see how to at [Extending the Plugin](Documentation/Extending-the-Plugin.md)
   </details>

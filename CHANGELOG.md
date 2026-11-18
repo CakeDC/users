@@ -2,6 +2,13 @@ Changelog
 =========
 Releases for CakePHP 5
 -------------
+* 17.0.0
+  * Upgrade to cakephp/authentication 4.x and cakedc/auth 12
+  * Identifiers use the single-identifier format instead of a collection keyed by name
+  * Remove `Authentication.CakeRouter`; auth URLs use the default URL checker
+  * `Auth.PasswordRehash.identifiers` removed; use `Auth.PasswordRehash.authenticators`
+  * `SocialPendingEmail` requires an explicit identifier
+  * Remove `AuthenticationServiceLoader::loadIdentifiers()` and the global `Auth.Identifiers` config
 * 16.0.5
   * Preserve an existing user's role when linking a social account for the first time
   * Update SimpleCrudTraitIntegrationTest postLink assertions for CakePHP 5.4

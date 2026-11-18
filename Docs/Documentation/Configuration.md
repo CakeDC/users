@@ -158,15 +158,14 @@ NOTE: SOME keys were hidden in this doc page, please refer to `vendor/cakedc/use
              'Form' => [
                  'className' => 'CakeDC/Auth.Form',
                  'identifier' => [
-                     'Authentication.Password' => [
-                         'fields' => [
-                             'username' => ['username', 'email'],
-                             'password' => 'password',
-                         ],
-                         'resolver' => [
-                             'className' => 'Authentication.Orm',
-                             'finder' => 'active',
-                         ],
+                     'className' => 'Authentication.Password',
+                     'fields' => [
+                         'username' => ['username', 'email'],
+                         'password' => 'password',
+                     ],
+                     'resolver' => [
+                         'className' => 'Authentication.Orm',
+                         'finder' => 'active',
                      ],
                  ],
              ],
@@ -210,7 +209,7 @@ You need to configure 2 things:
 user identify. Add this to your `config/users.php`:
 
 ```php
-'Auth.Authenticators.Form.identifier.Authentication.Password.fields.username' => 'email',
+'Auth.Authenticators.Form.identifier.fields.username' => 'email',
 ```
 
 * Override the `login.php` template to change the `Form->control` to "email".
@@ -258,7 +257,7 @@ We've included an updated POT file with all the `Users` domain keys for your cus
 Password Hasher customization
 -----------------------------
 
-Override the `passwordHasher` key in the `Authentication.Password` identifier configuration. See https://book.cakephp.org/authentication/3/en/password-hashers.html
+Override the `passwordHasher` key in the `Authentication.Password` identifier configuration. See https://book.cakephp.org/authentication/4/en/password-hashers.html
 
 For example:
 
@@ -266,24 +265,23 @@ For example:
     'Auth.Authenticators.Form' => [
         'className' => 'CakeDC/Auth.Form',
         'identifier' => [
-            'Authentication.Password' => [
-                'fields' => [
-                    'username' => ['username', 'email'],
-                    'password' => 'password',
-                ],
-                'resolver' => [
-                    'className' => 'Authentication.Orm',
-                    'finder' => 'active',
-                ],
-                'passwordHasher' => [
-                    'className' => 'Authentication.Fallback',
-                    'hashers' => [
-                        'Authentication.Default',
-                        [
-                            'className' => 'Authentication.Legacy',
-                            'hashType' => 'md5',
-                            'salt' => false, // turn off default usage of salt
-                        ],
+            'className' => 'Authentication.Password',
+            'fields' => [
+                'username' => ['username', 'email'],
+                'password' => 'password',
+            ],
+            'resolver' => [
+                'className' => 'Authentication.Orm',
+                'finder' => 'active',
+            ],
+            'passwordHasher' => [
+                'className' => 'Authentication.Fallback',
+                'hashers' => [
+                    'Authentication.Default',
+                    [
+                        'className' => 'Authentication.Legacy',
+                        'hashType' => 'md5',
+                        'salt' => false, // turn off default usage of salt
                     ],
                 ],
             ],

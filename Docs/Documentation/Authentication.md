@@ -83,24 +83,20 @@ The identifiers are defined to work correctly with the default authenticators. W
 - `CakeDC/Users.Social`, for `Social` and `SocialPendingEmail` authenticators
 - `Authentication.Token`, for `Token` authenticator
 
-As you add more authenticators you may also need to add other identifiers. Please see [the identifiers available in the official CakePHP Authentication plugin documentation](https://book.cakephp.org/authentication/3/en/identifiers.html).
+As you add more authenticators you may also need to add other identifiers. Please see [the identifiers available in the official CakePHP Authentication plugin documentation](https://book.cakephp.org/authentication/4/en/identifiers.html).
 
-> **Note:** Configuring identifiers globally via `Auth.Identifiers` is deprecated. Please move each identifier's configuration into the `identifier` key within its specific authenticator under `Auth.Authenticators`.
-
-The default list for `Auth.Authenticators.Form.identifier` is:
+The default configuration for `Auth.Authenticators.Form.identifier` is:
 
 ```php
 'identifier' => [
-    'Authentication.Password' => [
-        'className' => 'Authentication.Password',
-        'fields' => [
-            'username' => ['username', 'email'],
-            'password' => 'password'
-        ],
-        'resolver' => [
-            'className' => 'Authentication.Orm',
-            'finder' => 'active'
-        ],
+    'className' => 'Authentication.Password',
+    'fields' => [
+        'username' => ['username', 'email'],
+        'password' => 'password'
+    ],
+    'resolver' => [
+        'className' => 'Authentication.Orm',
+        'finder' => 'active'
     ],
 ]
 ```
@@ -114,16 +110,16 @@ Lock a users account after a number of failed password attempts in a certain tim
 To enable this, update your `config/users.php` file with:
 
 ```php
-'Auth.Authenticators.Form.identifier.Authentication.Password.className' => 'CakeDC/Users.PasswordLockout',
+'Auth.Authenticators.Form.identifier.className' => 'CakeDC/Users.PasswordLockout',
 'Auth.PasswordRehash' => [
-    'identifiers' => ['PasswordLockout'],
+    'authenticators' => ['Form' => 'CakeDC/Users.PasswordLockout'],
 ],
 ```
 
 Additionally, you can set the number of attempts until lock, lockout time, time window and more, e.g.:
 
 ```php
-'Auth.Authenticators.Form.identifier.Authentication.Password' => [
+'Auth.Authenticators.Form.identifier' => [
     'className' => 'CakeDC/Users.PasswordLockout',
     'lockoutHandler' => [
         'timeWindowInSeconds' => 30 * 60, // 30 minutes (default is 15 minutes)
@@ -136,7 +132,7 @@ Additionally, you can set the number of attempts until lock, lockout time, time 
     ],
 ],
 'Auth.PasswordRehash' => [
-    'identifiers' => ['PasswordLockout'],
+    'authenticators' => ['Form' => 'CakeDC/Users.PasswordLockout'],
 ],
 ```
 
