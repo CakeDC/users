@@ -103,7 +103,8 @@
     },
     "repositories": [{
         "name": "cakedc-auth",
-        "type": "path",
-        "url": "../cakephp-auth"
+        "type": "vcs",
+        "url": "https://github.com/CakeDC/auth",
+        "no-api": true
     }]
 }
