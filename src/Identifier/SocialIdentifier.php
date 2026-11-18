@@ -31,7 +31,7 @@ class SocialIdentifier extends AbstractIdentifier
      * - `usersTable` name of usersTable to use:
      * - `resolver` The resolver implementation to use.
      *
-     * @var array
+     * @var array<string, mixed>
      */
     protected array $_defaultConfig = [
         'authFinder' => 'active',

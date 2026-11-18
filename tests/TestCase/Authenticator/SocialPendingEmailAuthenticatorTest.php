@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace CakeDC\Users\Test\TestCase\Authenticator;
 
 use Authentication\Authenticator\Result;
-use Authentication\Identifier\IdentifierCollection;
+use Authentication\Identifier\IdentifierFactory;
 use Cake\Core\Configure;
 use Cake\Http\Client\Response;
 use Cake\Http\ServerRequestFactory;
@@ -76,9 +76,7 @@ class SocialPendingEmailAuthenticatorTest extends TestCase
         );
         $requestNoEmail->getSession()->write(Configure::read('Users.Key.Session.social'), $user);
         $Response = new Response();
-        $identifiers = new IdentifierCollection([
-            'CakeDC/Users.Social',
-        ]);
+        $identifiers = IdentifierFactory::create('CakeDC/Users.Social');
         $Authenticator = new SocialPendingEmailAuthenticator($identifiers);
         $result = $Authenticator->authenticate($requestNoEmail, $Response);
         $this->assertInstanceOf(Result::class, $result);
@@ -114,9 +112,7 @@ class SocialPendingEmailAuthenticatorTest extends TestCase
         $request->getSession()->write(Configure::read('Users.Key.Session.social'), $user);
         $requestNoEmail->getSession()->write(Configure::read('Users.Key.Session.social'), $user);
         $Response = new Response();
-        $identifiers = new IdentifierCollection([
-            'CakeDC/Users.Social',
-        ]);
+        $identifiers = IdentifierFactory::create('CakeDC/Users.Social');
         $Authenticator = new SocialPendingEmailAuthenticator($identifiers);
         $result = $Authenticator->authenticate($requestNoEmail, $Response);
         $this->assertInstanceOf(Result::class, $result);

@@ -189,21 +189,6 @@ class LoginComponent extends Component
      */
     protected function handlePasswordRehash($service, $user, \Cake\Http\ServerRequest $request)
     {
-        // deprecated way to define identifiers
-        $identifiersNames = (array)Configure::read('Auth.PasswordRehash.identifiers');
-        foreach ($identifiersNames as $identifierName) {
-            if (!$service->identifiers()->has($identifierName)) {
-                Log::warning("Error saving user id $user->id password after rehashing: identifier $identifierName not found. Check your Auth.PasswordRehash.identifiers configuration.");
-                continue;
-            }
-            /**
-             * @var \Authentication\Identifier\AbstractIdentifier|null $checker
-             */
-            $checker = $service->identifiers()->get($identifierName);
-            $this->saveRehashedPassword($checker, $request, $user);
-        }
-
-        // new way to define identifiers, inside the authenticators
         $authenticatorNames = (array)Configure::read('Auth.PasswordRehash.authenticators');
         if ($authenticatorNames === []) {
             return;
@@ -214,23 +199,13 @@ class LoginComponent extends Component
             return;
         }
 
-        /** @var \Authentication\Identifier\IdentifierCollection $identifierCollection */
-        $identifierCollection = $authenticationProvider->getIdentifier();
         $authenticators = $service->authenticators();
-        foreach ($authenticatorNames as $authenticatorName => $identifierName) {
-            if ($authenticators->has($authenticatorName) && $authenticators->get($authenticatorName) !== $authenticationProvider) {
+        foreach (array_keys($authenticatorNames) as $authenticatorName) {
+            if (!$authenticators->has($authenticatorName) || $authenticators->get($authenticatorName) !== $authenticationProvider) {
                 continue;
             }
 
-            if (!$identifierCollection->has($identifierName)) {
-                Log::warning("Error saving user id $user->id password after rehashing: identifier $identifierName not found for authenticator $authenticatorName. Check your Auth.PasswordRehash.authenticators configuration.");
-                continue;
-            }
-
-            /**
-             * @var \Authentication\Identifier\AbstractIdentifier|null $checker
-             */
-            $checker = $identifierCollection->get($identifierName);
+            $checker = $authenticationProvider->getIdentifier();
             $this->saveRehashedPassword($checker, $request, $user);
         }
     }

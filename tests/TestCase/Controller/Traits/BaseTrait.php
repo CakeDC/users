@@ -15,7 +15,6 @@ namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
 use Authentication\Authenticator\Result;
 use Authentication\Controller\Component\AuthenticationComponent;
-use Authentication\Identifier\IdentifierCollection;
 use Authentication\Identity;
 use Cake\Controller\ComponentRegistry;
 use Cake\Controller\Controller;
@@ -232,21 +231,16 @@ class BaseTrait extends TestCase
      *
      * @param array $user
      * @param array $failures
-     * @param \Authentication\Identifier\IdentifierCollection $identifiers custom identifiers collection
      * @return void
      */
-    protected function _mockAuthentication($user = null, $failures = [], $identifiers = null)
+    protected function _mockAuthentication($user = null, $failures = [])
     {
-        if ($identifiers === null) {
-            $identifiers = new IdentifierCollection([]);
-        }
-
         $config = [
             'authenticators' => [
                 'Authentication.Session',
                 'Authentication.Form' => [
                     'identifier' => [
-                        'Authentication.Password' => [],
+                        'className' => 'Authentication.Password',
                     ],
                 ],
             ],
@@ -254,7 +248,6 @@ class BaseTrait extends TestCase
         $authentication = $this->getMockBuilder(AuthenticationService::class)->setConstructorArgs([$config])->onlyMethods([
             'getResult',
             'getFailures',
-            'identifiers',
         ])->getMock();
 
         if ($user) {
@@ -273,10 +266,6 @@ class BaseTrait extends TestCase
         $authentication->expects($this->any())
             ->method('getFailures')
             ->will($this->returnValue($failures));
-
-        $authentication->expects($this->any())
-            ->method('identifiers')
-            ->will($this->returnValue($identifiers));
 
         $this->Trait->setRequest($this->Trait->getRequest()->withAttribute('authentication', $authentication));
 
@@ -306,7 +295,7 @@ class BaseTrait extends TestCase
                 'Authentication.Session',
                 'Authentication.Form' => [
                     'identifier' => [
-                        'Authentication.Password' => [],
+                        'className' => 'Authentication.Password',
                     ],
                 ],
             ],
@@ -314,11 +303,7 @@ class BaseTrait extends TestCase
         $authentication = $this->getMockBuilder(AuthenticationService::class)->setConstructorArgs([$config])->onlyMethods([
             'getResult',
             'getFailures',
-            'identifiers',
         ])->getMock();
-        $authentication->expects($this->any())
-            ->method('identifiers')
-            ->willReturn($identifiers);
         if ($user) {
             $user = is_object($user) ? $user : new User($user);
             $identity = new Identity($user);

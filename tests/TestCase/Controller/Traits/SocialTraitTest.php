@@ -15,7 +15,6 @@ namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 
 use Authentication\Authenticator\Result;
 use Authentication\Authenticator\SessionAuthenticator;
-use Authentication\Identifier\IdentifierCollection;
 use Cake\Controller\ComponentRegistry;
 use Cake\Event\Event;
 use Cake\Http\Response;
@@ -75,11 +74,8 @@ class SocialTraitTest extends BaseTrait
      */
     public function testSocialEmailSuccess()
     {
-        $identifiers = new IdentifierCollection([
-            'CakeDC/Users.Social',
-        ]);
-        $FormAuth = new FormAuthenticator($identifiers);
-        $SessionAuth = new SessionAuthenticator($identifiers);
+        $FormAuth = new FormAuthenticator();
+        $SessionAuth = new SessionAuthenticator();
 
         $sessionFailure = new Failure(
             $SessionAuth,

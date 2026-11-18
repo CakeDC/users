@@ -45,22 +45,20 @@ class AuthenticationServiceProviderTest extends TestCase
                 'skipTwoFactorVerify' => true,
                 'sessionKey' => 'CustomAuth',
                 'fields' => ['username' => 'email'],
-                'identify' => true,
             ],
             'Form' => [
                 'className' => 'CakeDC/Auth.Form',
                 'loginUrl' => '/login',
                 'fields' => ['username' => 'email', 'password' => 'alt_password'],
                 'identifier' => [
-                    'Authentication.Password' => [
-                        'fields' => [
-                            'username' => ['username', 'email'],
-                            'password' => 'password',
-                        ],
-                        'resolver' => [
-                            'className' => 'Authentication.Orm',
-                            'finder' => 'active',
-                        ],
+                    'className' => 'Authentication.Password',
+                    'fields' => [
+                        'username' => ['username', 'email'],
+                        'password' => 'password',
+                    ],
+                    'resolver' => [
+                        'className' => 'Authentication.Orm',
+                        'finder' => 'active',
                     ],
                 ],
             ],
@@ -71,12 +69,11 @@ class AuthenticationServiceProviderTest extends TestCase
                 'queryParam' => 'api_key',
                 'tokenPrefix' => null,
                 'identifier' => [
-                    'Authentication.Token' => [
-                        'tokenField' => 'api_token',
-                        'resolver' => [
-                            'className' => 'Authentication.Orm',
-                            'finder' => 'active',
-                        ],
+                    'className' => 'Authentication.Token',
+                    'tokenField' => 'api_token',
+                    'resolver' => [
+                        'className' => 'Authentication.Orm',
+                        'finder' => 'active',
                     ],
                 ],
             ],
@@ -98,7 +95,6 @@ class AuthenticationServiceProviderTest extends TestCase
             SessionAuthenticator::class => [
                 'fields' => ['username' => 'email'],
                 'sessionKey' => 'CustomAuth',
-                'identify' => true,
                 'identityAttribute' => 'identity',
                 'skipTwoFactorVerify' => true,
                 'impersonateSessionKey' => 'AuthImpersonate',
@@ -110,15 +106,14 @@ class AuthenticationServiceProviderTest extends TestCase
                 'fields' => ['username' => 'email', 'password' => 'alt_password'],
                 'className' => 'CakeDC/Auth.Form',
                 'identifier' => [
-                    'Authentication.Password' => [
-                        'fields' => [
-                            'username' => ['username', 'email'],
-                            'password' => 'password',
-                        ],
-                        'resolver' => [
-                            'className' => 'Authentication.Orm',
-                            'finder' => 'active',
-                        ],
+                    'className' => 'Authentication.Password',
+                    'fields' => [
+                        'username' => ['username', 'email'],
+                        'password' => 'password',
+                    ],
+                    'resolver' => [
+                        'className' => 'Authentication.Orm',
+                        'finder' => 'active',
                     ],
                 ],
             ],
@@ -129,12 +124,11 @@ class AuthenticationServiceProviderTest extends TestCase
                 'skipTwoFactorVerify' => true,
                 'className' => 'Authentication.Token',
                 'identifier' => [
-                    'Authentication.Token' => [
-                        'tokenField' => 'api_token',
-                        'resolver' => [
-                            'className' => 'Authentication.Orm',
-                            'finder' => 'active',
-                        ],
+                    'className' => 'Authentication.Token',
+                    'tokenField' => 'api_token',
+                    'resolver' => [
+                        'className' => 'Authentication.Orm',
+                        'finder' => 'active',
                     ],
                 ],
             ],
@@ -162,11 +156,7 @@ class AuthenticationServiceProviderTest extends TestCase
     {
         $request = ServerRequestFactory::fromGlobals();
         $request->withQueryParams(['method' => __METHOD__]);
-        $service = new CakeDCAuthenticationService([
-            'identifiers' => [
-                'Authentication.Password',
-            ],
-        ]);
+        $service = new CakeDCAuthenticationService();
         Configure::write('Auth.Authentication.serviceLoader', function ($aRequest) use ($request, $service) {
             $this->assertSame($request, $aRequest);
 
@@ -191,7 +181,6 @@ class AuthenticationServiceProviderTest extends TestCase
                 'skipTwoFactorVerify' => true,
                 'sessionKey' => 'CustomAuth',
                 'fields' => ['username' => 'email'],
-                'identify' => true,
                 'impersonateSessionKey' => 'AuthImpersonate',
                 'className' => 'Authentication.Session',
             ],
@@ -210,14 +199,6 @@ class AuthenticationServiceProviderTest extends TestCase
                 'className' => 'Authentication.Token',
             ],
         ]);
-        Configure::write('Auth.Identifiers', [
-            'Authentication.Password',
-            'Token' => [
-                'className' => 'Authentication.Token',
-                'tokenField' => 'api_token',
-            ],
-            'Authentication.JwtSubject',
-        ]);
         Configure::write('OneTimePasswordAuthenticator.login', false);
         Configure::write('TwoFactorProcessors', []);
 
@@ -233,7 +214,6 @@ class AuthenticationServiceProviderTest extends TestCase
             SessionAuthenticator::class => [
                 'fields' => ['username' => 'email'],
                 'sessionKey' => 'CustomAuth',
-                'identify' => true,
                 'identityAttribute' => 'identity',
                 'skipTwoFactorVerify' => true,
                 'impersonateSessionKey' => 'AuthImpersonate',

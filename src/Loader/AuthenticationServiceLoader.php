@@ -26,8 +26,7 @@ use Psr\Http\Message\ServerRequestInterface;
 class AuthenticationServiceLoader
 {
     /**
-     * Load the authentication service with authenticators from config Auth.Authenticators,
-     * and identifiers from config Auth.Identifiers.
+     * Load the authentication service with authenticators from config Auth.Authenticators.
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request The request.
      * @return \CakeDC\Auth\Authentication\AuthenticationService
@@ -40,34 +39,6 @@ class AuthenticationServiceLoader
         $this->loadTwoFactorAuthenticator($service, $processors);
 
         return $service;
-    }
-
-    /**
-     * Load the indentifiers defined at config Auth.Identifiers
-     *
-     * @param \CakeDC\Auth\Authentication\AuthenticationService $service Authentication service to load identifiers
-     * @return void
-     */
-    protected function loadIdentifiers($service)
-    {
-        $identifiers = Configure::read('Auth.Identifiers');
-
-        if (empty($identifiers)) {
-            return;
-        }
-
-        deprecationWarning(
-            '15.2.0',
-            'Configuring identifiers globally via `Auth.Identifiers` is deprecated. ' .
-                'Please move each identifier\'s configuration into the `identifier` key within its specific authenticator under `Auth.Authenticators`. ' .
-                'For example, the `Auth.Identifiers.Password` configuration should now be placed inside `Auth.Authenticators.Form.identifier`.',
-        );
-
-        foreach ($identifiers as $key => $item) {
-            [$identifier, $options] = $this->_getItemLoadData($item, $key);
-
-            $service->identifiers()->load($identifier, $options);
-        }
     }
 
     /**

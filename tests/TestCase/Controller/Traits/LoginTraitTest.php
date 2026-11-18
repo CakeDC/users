@@ -16,7 +16,6 @@ namespace CakeDC\Users\Test\TestCase\Controller\Traits;
 use Authentication\Authenticator\AuthenticatorCollection;
 use Authentication\Authenticator\Result;
 use Authentication\Authenticator\SessionAuthenticator;
-use Authentication\Identifier\IdentifierCollection;
 use Authentication\Identifier\PasswordIdentifier;
 use Authentication\PasswordHasher\DefaultPasswordHasher;
 use Cake\Controller\ComponentRegistry;
@@ -72,8 +71,7 @@ class LoginTraitTest extends BaseTrait
      */
     public function testLoginHappy()
     {
-        $identifiers = new IdentifierCollection();
-        $SessionAuth = new SessionAuthenticator($identifiers);
+        $SessionAuth = new SessionAuthenticator();
 
         $sessionFailure = new Failure(
             $SessionAuth,
@@ -162,16 +160,13 @@ class LoginTraitTest extends BaseTrait
             ->method('needsPasswordRehash')
             ->willReturn(true);
 
-        $identifierCollection = new IdentifierCollection([]);
-        $identifierCollection->set('Password', $passwordIdentifier);
-
         $formAuthenticator = $this->getMockBuilder(FormAuthenticator::class)
             ->disableOriginalConstructor()
             ->addMethods(['getIdentifier'])
             ->getMock();
         $formAuthenticator->expects($this->any())
             ->method('getIdentifier')
-            ->willReturn($identifierCollection);
+            ->willReturn($passwordIdentifier);
 
         $authenticatorCollection = $this->getMockBuilder(AuthenticatorCollection::class)
             ->disableOriginalConstructor()
@@ -191,9 +186,6 @@ class LoginTraitTest extends BaseTrait
         $service->expects($this->any())
             ->method('authenticators')
             ->willReturn($authenticatorCollection);
-        $service->expects($this->any())
-            ->method('identifiers')
-            ->willReturn(new IdentifierCollection([]));
         $service->expects($this->any())
             ->method('getAuthenticationProvider')
             ->willReturn($formAuthenticator);
@@ -309,16 +301,13 @@ class LoginTraitTest extends BaseTrait
             ->method('needsPasswordRehash')
             ->willReturn(true);
 
-        $identifierCollection = new IdentifierCollection([]);
-        $identifierCollection->set('Authentication.Password', $passwordIdentifier);
-
         $formAuthenticator = $this->getMockBuilder(FormAuthenticator::class)
             ->disableOriginalConstructor()
             ->addMethods(['getIdentifier'])
             ->getMock();
         $formAuthenticator->expects($this->any())
             ->method('getIdentifier')
-            ->willReturn($identifierCollection);
+            ->willReturn($passwordIdentifier);
 
         $authenticatorCollection = $this->getMockBuilder(AuthenticatorCollection::class)
             ->disableOriginalConstructor()
@@ -334,9 +323,6 @@ class LoginTraitTest extends BaseTrait
         $service->expects($this->any())
             ->method('authenticators')
             ->willReturn($authenticatorCollection);
-        $service->expects($this->any())
-            ->method('identifiers')
-            ->willReturn(new IdentifierCollection([]));
         $service->expects($this->any())
             ->method('getAuthenticationProvider')
             ->willReturn($formAuthenticator);
@@ -589,12 +575,9 @@ class LoginTraitTest extends BaseTrait
      */
     public function testLogin($AuthClass, $resultStatus, $message, $method, $failureConfig)
     {
-        $identifiers = new IdentifierCollection([
-            'CakeDC/Users.Social',
-        ]);
-        $FormAuth = new FormAuthenticator($identifiers);
-        $SessionAuth = new SessionAuthenticator($identifiers);
-        $SocialAuth = new $AuthClass($identifiers);
+        $FormAuth = new FormAuthenticator();
+        $SessionAuth = new SessionAuthenticator();
+        $SocialAuth = new $AuthClass();
 
         $sessionFailure = new Failure(
             $SessionAuth,
@@ -668,11 +651,8 @@ class LoginTraitTest extends BaseTrait
      */
     public function testSocialLoginSuccess()
     {
-        $identifiers = new IdentifierCollection([
-            'CakeDC/Users.Social',
-        ]);
-        $FormAuth = new FormAuthenticator($identifiers);
-        $SessionAuth = new SessionAuthenticator($identifiers);
+        $FormAuth = new FormAuthenticator();
+        $SessionAuth = new SessionAuthenticator();
 
         $sessionFailure = new Failure(
             $SessionAuth,
