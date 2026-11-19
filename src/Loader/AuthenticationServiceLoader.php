@@ -81,6 +81,10 @@ class AuthenticationServiceLoader
         $authenticators = Configure::read('Auth.Authenticators');
 
         foreach ($authenticators as $key => $item) {
+            // `false` disables an authenticator of the defaults (e.g. `'Auth.Authenticators.Token' => false`)
+            if ($item === false) {
+                continue;
+            }
             [$authenticator, $options] = $this->_getItemLoadData($item, $key);
 
             $service->loadAuthenticator($authenticator, $options);
