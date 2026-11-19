@@ -84,4 +84,22 @@ class AuthenticationServiceLoaderTest extends TestCase
         $authenticator = $service->authenticators()->get('Token');
         $this->assertInstanceOf(\Authentication\Authenticator\TokenAuthenticator::class, $authenticator);
     }
+
+    /**
+     * An authenticator set to `false` (e.g. by the app config overriding the plugin defaults) is not loaded
+     *
+     * @return void
+     */
+    public function testInvokeSkipsDisabledAuthenticators(): void
+    {
+        Configure::write('Auth.Authenticators', [
+            'Session' => ['className' => 'Authentication.Session'],
+            'Token' => false,
+        ]);
+
+        $service = ($this->Loader)(new ServerRequest());
+
+        $this->assertTrue($service->authenticators()->has('Session'));
+        $this->assertFalse($service->authenticators()->has('Token'));
+    }
 }
