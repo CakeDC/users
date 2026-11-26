@@ -63,6 +63,44 @@ class RegisterAdapterTest extends TestCase
     }
 
     /**
+     * The registration options offer the standard EdDSA algorithm (-8, Ed25519) and keep the non-standard Ed256
+     * (-260) and Ed512 (-261) for backward compatibility, without the E_USER_WARNING that web-auth/cose-lib 4.8
+     * triggers when they are created without acknowledging that they are non-standard.
+     *
+     * @return void
+     */
+    public function testGetOptionsOffersEdDsaWithoutNonStandardAlgorithmWarnings(): void
+    {
+        $userId = '00000000-0000-0000-0000-000000000002';
+        $UsersTable = TableRegistry::getTableLocator()->get('CakeDC/Users.Users');
+        $request = ServerRequestFactory::fromGlobals();
+        $request->getSession()->write('Webauthn2fa.User', $UsersTable->get($userId));
+        $adapter = new RegisterAdapter($request, $UsersTable);
+
+        $warnings = [];
+        set_error_handler(function (int $level, string $message) use (&$warnings): bool {
+            $warnings[] = $message;
+
+            return true;
+        }, E_USER_WARNING);
+        try {
+            $parameters = $adapter->getOptions()->getPubKeyCredParams();
+        } finally {
+            restore_error_handler();
+        }
+        $algorithms = array_map(fn(PublicKeyCredentialParameters $parameter) => $parameter->getAlg(), $parameters);
+
+        $this->assertSame([], $warnings);
+        $this->assertContains(Algorithms::COSE_ALGORITHM_EDDSA, $algorithms);
+        $this->assertContains(Algorithms::COSE_ALGORITHM_ES256, $algorithms);
+        // Kept for backward compatibility with keys already registered with them.
+        $this->assertContains(-260, $algorithms);
+        $this->assertContains(-261, $algorithms);
+        // EdDSA (-8) is preferred over the non-standard variants.
+        $this->assertLessThan(array_search(-260, $algorithms, true), array_search(-8, $algorithms, true));
+    }
+
+    /**
      * Test verifyResponse
      *
      * @return void

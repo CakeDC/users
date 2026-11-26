@@ -15,12 +15,14 @@ use Cose\Algorithm\Signature\ECDSA\ES384;
 use Cose\Algorithm\Signature\ECDSA\ES512;
 use Cose\Algorithm\Signature\EdDSA\Ed256;
 use Cose\Algorithm\Signature\EdDSA\Ed512;
+use Cose\Algorithm\Signature\EdDSA\EdDSA;
 use Cose\Algorithm\Signature\RSA\PS256;
 use Cose\Algorithm\Signature\RSA\PS384;
 use Cose\Algorithm\Signature\RSA\PS512;
 use Cose\Algorithm\Signature\RSA\RS256;
 use Cose\Algorithm\Signature\RSA\RS384;
 use Cose\Algorithm\Signature\RSA\RS512;
+use ReflectionClass;
 use Webauthn\AttestationStatement\AttestationObjectLoader;
 use Webauthn\AttestationStatement\AttestationStatementSupportManager;
 use Webauthn\AttestationStatement\NoneAttestationStatementSupport;
@@ -177,11 +179,71 @@ class BaseAdapter
                 PS256::create(),
                 PS384::create(),
                 PS512::create(),
-                Ed256::create(),
-                Ed512::create(),
+                // Standard EdDSA (-8, Ed25519), preferred over the non-standard variants below.
+                new EdDSA(),
+                $this->createLegacyEd256(),
+                $this->createLegacyEd512(),
             );
         }
 
         return $this->algorithmManager;
+    }
+
+    /**
+     * Ed256 (-260), kept for backward compatibility with keys already registered with it.
+     *
+     * It is defined by no specification (it signs the SHA-256 digest with pure Ed25519) and IANA assigns -260 to
+     * WalnutDSA (RFC 9021). web-auth/cose-lib >= 4.8 triggers an E_USER_WARNING unless the caller acknowledges that
+     * it is non-standard, and will throw from v5.0.0.
+     *
+     * @return \Cose\Algorithm\Signature\EdDSA\Ed256
+     */
+    protected function createLegacyEd256(): Ed256
+    {
+        if ($this->acknowledgesNonStandardAlgorithm(Ed256::class)) {
+            return new Ed256(acknowledgeNonStandardAlgorithm: true);
+        }
+
+        return new Ed256();
+    }
+
+    /**
+     * Ed512 (-261), kept for backward compatibility with keys already registered with it.
+     *
+     * It is defined by no specification (it signs the SHA-512 digest with pure Ed25519) and IANA assigns -261 to
+     * TurboSHAKE128 (RFC 9861). web-auth/cose-lib >= 4.8 triggers an E_USER_WARNING unless the caller acknowledges
+     * that it is non-standard, and will throw from v5.0.0.
+     *
+     * @return \Cose\Algorithm\Signature\EdDSA\Ed512
+     */
+    protected function createLegacyEd512(): Ed512
+    {
+        if ($this->acknowledgesNonStandardAlgorithm(Ed512::class)) {
+            return new Ed512(acknowledgeNonStandardAlgorithm: true);
+        }
+
+        return new Ed512();
+    }
+
+    /**
+     * Whether the installed web-auth/cose-lib (>= 4.8) asks to acknowledge the non-standard algorithm. Older versions
+     * have no such constructor parameter.
+     *
+     * @param class-string $algorithm Algorithm class.
+     * @return bool
+     */
+    private function acknowledgesNonStandardAlgorithm(string $algorithm): bool
+    {
+        $constructor = (new ReflectionClass($algorithm))->getConstructor();
+        if ($constructor === null) {
+            return false;
+        }
+        foreach ($constructor->getParameters() as $parameter) {
+            if ($parameter->getName() === 'acknowledgeNonStandardAlgorithm') {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
