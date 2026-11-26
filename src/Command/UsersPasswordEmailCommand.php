@@ -8,6 +8,7 @@ use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 use Cake\Core\Configure;
+use CakeDC\Users\Exception\UserNotFoundException;
 
 /**
  * UsersPasswordEmail command.
@@ -46,11 +47,16 @@ class UsersPasswordEmailCommand extends Command
         $UsersTable = $this->getTableLocator()->get('Users');
         /** @var \CakeDC\Users\Model\Behavior\PasswordBehavior $passwordBehavior */
         $passwordBehavior = $UsersTable->getBehavior('Password');
-        $resetUser = $passwordBehavior->resetToken($reference, [
-            'expiration' => Configure::read('Users.Token.expiration'),
-            'checkActive' => false,
-            'sendEmail' => true,
-        ]);
+        try {
+            $resetUser = $passwordBehavior->resetToken($reference, [
+                'expiration' => Configure::read('Users.Token.expiration'),
+                'checkActive' => false,
+                'sendEmail' => true,
+                'type' => 'password',
+            ]);
+        } catch (UserNotFoundException $exception) {
+            $io->abort($exception->getMessage());
+        }
         if ($resetUser) {
             $msg = __d(
                 'cake_d_c/users',

@@ -5,6 +5,7 @@ namespace CakeDC\Users\Test\TestCase\Command;
 
 use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
 use Cake\ORM\TableRegistry;
+use Cake\TestSuite\EmailTrait;
 use Cake\TestSuite\TestCase;
 
 /**
@@ -15,6 +16,7 @@ use Cake\TestSuite\TestCase;
 class UsersPasswordEmailCommandTest extends TestCase
 {
     use ConsoleIntegrationTestTrait;
+    use EmailTrait;
 
     /**
      * @inheritDoc
@@ -70,5 +72,37 @@ class UsersPasswordEmailCommandTest extends TestCase
         //Should not change
         $user = $UsersTable->get($userIdTarget);
         $this->assertSame('token-3', $user->token);
+    }
+
+    /**
+     * The reset password email is actually sent, with the new token.
+     *
+     * @return void
+     */
+    public function testExecuteSendsTheResetPasswordEmail(): void
+    {
+        $this->exec('cake_d_c/users.users password_email user-3');
+
+        $this->assertExitSuccess();
+        $this->assertMailCount(1);
+        $this->assertMailSentTo('user-3@test.com');
+        $token = TableRegistry::getTableLocator()->get('CakeDC/Users.Users')
+            ->get('00000000-0000-0000-0000-000000000003')
+            ->token;
+        $this->assertMailContains($token);
+    }
+
+    /**
+     * An unknown user is a console error, not an exception.
+     *
+     * @return void
+     */
+    public function testExecuteUnknownUser(): void
+    {
+        $this->exec('cake_d_c/users.users password_email nobody');
+
+        $this->assertExitError();
+        $this->assertErrorContains('User not found');
+        $this->assertNoMailSent();
     }
 }
