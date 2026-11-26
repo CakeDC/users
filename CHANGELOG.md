@@ -2,6 +2,13 @@ Changelog
 =========
 Releases for CakePHP 5
 -------------
+* 17.1.0
+  * Upgrade to web-auth/webauthn-lib 5.3.13 or higher to fix its security advisories; older versions conflict
+  * Declare PHP 8.2, already required by CakePHP 5.3
+  * Webauthn API change for apps that extend `CakeDC\Users\Webauthn` classes: they use `Webauthn\CredentialRecord` instead of `Webauthn\PublicKeyCredentialSource` (see the 17.0 to 17.1 migration guide)
+  * Credentials stored by 17.0 keep working
+  * Webauthn no longer offers the non-standard Ed256 (-260) and Ed512 (-261) algorithms
+  * Webauthn 2FA no longer works inside an iframe of another origin (webauthn-lib 5 rejects cross-origin responses)
 * 17.0.0
   * Upgrade to cakephp/authentication 4.x and cakedc/auth 13
   * Identifiers use the single-identifier format instead of a collection keyed by name

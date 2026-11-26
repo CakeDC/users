@@ -48,7 +48,7 @@ trait Webauthn2faTrait
         $adapter = $adapter ?? $this->getWebauthn2faRegisterAdapter();
         if (!$adapter->hasCredential()) {
             return $this->getResponse()
-                ->withStringBody(json_encode($adapter->getOptions()));
+                ->withStringBody($adapter->serializeOptions($adapter->getOptions()));
         }
 
         throw new BadRequestException(
@@ -93,7 +93,7 @@ trait Webauthn2faTrait
         $adapter = $adapter ?? $this->getWebauthn2faAuthenticateAdapter();
 
         return $this->getResponse()->withStringBody(
-            json_encode($adapter->getOptions()),
+            $adapter->serializeOptions($adapter->getOptions()),
         );
     }
 

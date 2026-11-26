@@ -8,7 +8,7 @@ Enable
 First install the library web-auth/webauthn-lib using composer:
 
 ```
-composer require web-auth/webauthn-lib:^4.4
+composer require web-auth/webauthn-lib:^5.3.13
 ```
 
 Then add this in your config/users.php file:
