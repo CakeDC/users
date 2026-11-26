@@ -13,18 +13,19 @@ use Cose\Algorithm\Signature\ECDSA\ES256;
 use Cose\Algorithm\Signature\ECDSA\ES256K;
 use Cose\Algorithm\Signature\ECDSA\ES384;
 use Cose\Algorithm\Signature\ECDSA\ES512;
-use Cose\Algorithm\Signature\EdDSA\Ed256;
-use Cose\Algorithm\Signature\EdDSA\Ed512;
 use Cose\Algorithm\Signature\RSA\PS256;
 use Cose\Algorithm\Signature\RSA\PS384;
 use Cose\Algorithm\Signature\RSA\PS512;
 use Cose\Algorithm\Signature\RSA\RS256;
 use Cose\Algorithm\Signature\RSA\RS384;
 use Cose\Algorithm\Signature\RSA\RS512;
-use Webauthn\AttestationStatement\AttestationObjectLoader;
+use Symfony\Component\Serializer\SerializerInterface;
 use Webauthn\AttestationStatement\AttestationStatementSupportManager;
 use Webauthn\AttestationStatement\NoneAttestationStatementSupport;
 use Webauthn\AuthenticationExtensions\ExtensionOutputCheckerHandler;
+use Webauthn\CeremonyStep\CeremonyStepManagerFactory;
+use Webauthn\Denormalizer\WebauthnSerializerFactory;
+use Webauthn\PublicKeyCredentialOptions;
 use Webauthn\PublicKeyCredentialRpEntity;
 use Webauthn\PublicKeyCredentialUserEntity;
 
@@ -63,7 +64,7 @@ class BaseAdapter
     public function __construct(ServerRequest $request, ?UsersTable $usersTable = null)
     {
         $this->request = $request;
-        $this->rpEntity = new PublicKeyCredentialRpEntity(
+        $this->rpEntity = PublicKeyCredentialRpEntity::create(
             Configure::read('Webauthn2fa.appName'), // The application name
             Configure::read('Webauthn2fa.id'),
         );
@@ -139,17 +140,57 @@ class BaseAdapter
     }
 
     /**
+     * @return \Symfony\Component\Serializer\SerializerInterface
+     */
+    protected function createSerializer(): SerializerInterface
+    {
+        $factory = new WebauthnSerializerFactory(
+            $this->getAttestationStatementSupportManager(),
+        );
+
+        return $factory->create();
+    }
+
+    /**
+     * Host of the current request, without the port
+     *
+     * @return string
+     */
+    protected function getRequestHost(): string
+    {
+        return $this->request->getUri()->getHost();
+    }
+
+    /**
+     * @param \Webauthn\PublicKeyCredentialOptions $options Options to serialize.
+     * @return string
+     */
+    public function serializeOptions(PublicKeyCredentialOptions $options): string
+    {
+        return $this->createSerializer()->serialize($options, 'json');
+    }
+
+    /**
      * @return \CakeDC\Users\Webauthn\PublicKeyCredentialLoader
      */
     protected function createPublicKeyCredentialLoader(): PublicKeyCredentialLoader
     {
-        $attestationObjectLoader = new AttestationObjectLoader(
-            $this->getAttestationStatementSupportManager(),
-        );
-
         return new PublicKeyCredentialLoader(
-            $attestationObjectLoader,
+            $this->createSerializer(),
         );
+    }
+
+    /**
+     * @return \Webauthn\CeremonyStep\CeremonyStepManagerFactory
+     */
+    protected function createCeremonyStepManagerFactory(): CeremonyStepManagerFactory
+    {
+        $factory = new CeremonyStepManagerFactory();
+        $factory->setAlgorithmManager($this->getAlgorithmManager());
+        $factory->setAttestationStatementSupportManager($this->getAttestationStatementSupportManager());
+        $factory->setExtensionOutputCheckerHandler($this->createExtensionOutputCheckerHandler());
+
+        return $factory;
     }
 
     /**
@@ -177,8 +218,6 @@ class BaseAdapter
                 PS256::create(),
                 PS384::create(),
                 PS512::create(),
-                Ed256::create(),
-                Ed512::create(),
             );
         }
 

@@ -28,7 +28,7 @@
     },
     "prefer-stable": true,
     "require": {
-        "php": ">=8.1",
+        "php": ">=8.2",
         "cakephp/cakephp": "^5.3",
         "cakedc/auth": "^13.0",
         "cakephp/authorization": "^3.0",
@@ -47,8 +47,11 @@
         "endroid/qr-code": "^6.0 || ^5.0",
         "league/oauth1-client": "^1.7",
         "cakephp/cakephp-codesniffer": "^5.0",
-        "web-auth/webauthn-lib": "^4.4",
+        "web-auth/webauthn-lib": "^5.3.13",
         "thenetworg/oauth2-azure": "^2.1"
+    },
+    "conflict": {
+        "web-auth/webauthn-lib": "<5.3.13"
     },
     "suggest": {
         "league/oauth1-client": "Provides Social Authentication with Twitter",
@@ -60,7 +63,8 @@
         "google/recaptcha": "Provides reCAPTCHA validation for registration form",
         "robthree/twofactorauth": "Provides Google Authenticator functionality",
         "cakephp/authorization": "Provide authorization for users",
-        "thenetworg/oauth2-azure": "Provides Social Authentication with MS Azure"
+        "thenetworg/oauth2-azure": "Provides Social Authentication with MS Azure",
+        "symfony/serializer": "Used by Webauthn two-factor authentication; installed with web-auth/webauthn-lib"
     },
     "autoload": {
         "psr-4": {
